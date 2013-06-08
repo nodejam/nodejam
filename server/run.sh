@@ -1,5 +1,5 @@
 ./compile.sh $1
-echo Lappd application starting...
+echo Fora application starting...
 
 cd app
 
