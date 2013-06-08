@@ -1,0 +1,14 @@
+node_modules
+backups/*
+!backups/placeholder
+!backups/backup.sh
+server/www-user/images/*
+!server/www-user/images/placeholder
+server/www-user/thumbnails/*
+!server/www-user/thumbnails/placeholder
+server/www-user/originals/*
+!server/www-user/originals/placeholder
+server/www-user/temp/*
+!server/www-user/temp/placeholder
+Thumbs.db
+

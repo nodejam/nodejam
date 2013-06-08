@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{#if title}}
+    <title>{{title}}</title>
+    {{else}}
+    <title>The Lapp’d Project</title>
+    {{/if}}
+    <!-- CSS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|PT+Serif:400italic,700italic,400,700' rel='stylesheet' type='text/css' />
+    <link href="/css/lib/font-awesome/css/font-awesome.css" rel="stylesheet" media="screen" />
+    <link href="/css/css/HINT.css" rel="stylesheet" media="screen" />
+    <link href="/css/css/toggle-switch.css" rel="stylesheet" media="screen" />
+    <link href="/css/main.css" rel="stylesheet" media="screen" />
+    
+    <!-- JS -->
+    <script src="/js/lib/jquery-min.js"></script>
+    <script src="/js/lib/angular-min.js"></script>    
+
+    <script src="/js/lib/jquery-cookie.js"></script>
+    <script src="/lib/bangjs/jquery-drags.js"></script>
+    <script src="/lib/bangjs/reMarked.js"></script>
+    <script src="/lib/bangjs/bangjs.js"></script>
+    <script src="/lib/bangjs/bangjs-toolbar.js"></script>
+
+    <script src="/js/main.js"></script>    
+            
+  </head>
+  <body>
+    <div class="container{{#if containerClass}} {{containerClass}}{{/if}}">
+        {{#if coverPage}}
+            {{#if coverPage.image}}
+                <div class="cover-pic" style="background-image:url({{coverPage.image}})">
+                    <div class="icon" data-url="/{{stub}}" style="background-image:url({{coverPage.icon}})">
+                    </div>
+                    <h1>{{coverPage.name}}</h1>
+                    <p class="description">{{coverPage.description}}</p>
+                    {{#if coverPage.options}}
+                        {{{coverPage.options}}}
+                    {{/if}}
+                </div>
+            {{else}}
+                <div class="cover-pic tile" style="background-image:url({{coverPage.tile}})">
+                    <div class="icon" data-url="/{{stub}}" style="background-image:url({{coverPage.icon}})">
+                    </div>
+                    <h1>{{coverPage.name}}</h1>
+                    <p class="description">{{coverPage.description}}</p>
+                    {{#if coverPage.options}}
+                        {{{coverPage.options}}}
+                    {{/if}}                    
+                </div>
+            {{/if}}            
+        {{/if}}
+        
+        <div class="mainbar">            
+            <p class="brand-alt">        
+                <a href="/">
+                    <img src="/images/logo-square.png" alt="logo" />
+                </a>
+            </p>
+
+            <div class="account-options">
+            {{#if user}}
+                <a class="settings" href="{{userFeedUrl user}}"><img src="{{user.picture}}" alt="Settings" /></a>
+            {{else}}            
+                <ul class="signin-options">
+                    <li><i class="icon-twitter"></i><a class="twitter" href="/auth/twitter">login</a></li>
+                    <!--<li><a class="facebook" href="#"><img src="/images/facebook.png" alt="Facebook sign in" /></a></li>-->
+                </ul>            
+            {{/if}}
+            </div>     
+        </div>
+
+        {{#if navLinks}}
+        <ul class="nav">
+            {{{navLinks}}}
+        </ul>
+        {{/if}}
+
+        {{#if pageOptions}}
+        <ul class="page-options">
+            {{{pageOptions}}}
+        </ul>
+        {{/if}}
+
+        <div style="clear:both"></div>
+
+        {{{body}}}
+    </div>
+  </body>
+</html>
