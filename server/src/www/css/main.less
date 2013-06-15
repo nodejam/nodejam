@@ -2,6 +2,7 @@
 .fontBase { font-family: 'Open Sans', sans-serif; }
 .fontContent { font-family: 'PT Serif', serif; }
 .fontContentHeading { font-family: 'PT Serif', serif; }
+.fontAlt { font-family: 'Oswald', sans-serif; }
 
 @fontSizeLarge: 16px;
 @fontSize: 14px;
@@ -35,7 +36,7 @@
 
 
 /* TAGS */
-body { .fontBase; color: @colorText; margin: auto }
+body { .fontBase; color: @colorText; margin: 0; }
 
 em { font-style: italic; font-weight: normal }
 strong { font-weight: bold }
@@ -74,7 +75,52 @@ li { list-style: none }
 /* By default, scr-tiny is hidden and will be show only on tiny screens */
 .scr-tiny { display: none }
 
-.container { margin: auto }
+/* HEADER and LOGO */
+.header {
+    .logo {
+        .fontAlt; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 20px; background: #ddd; color: white; float: left; 
+        text-transform: uppercase; position: absolute; top: 16px; left: 16px; 
+        &:hover { background: #333; }
+    }    
+}
+
+/* PAGES */
+@import "scrsz-min.less" screen and (max-width: 639px);
+@import "scrsz-small.less" screen and (min-width: 640px) and (max-width: 959px);
+@import "scrsz-med.less" screen and (min-width: 960px) and (max-width: 1279px);
+@import "scrsz-large.less" screen and (min-width: 1280px) and (max-width: 1719px);
+@import "scrsz-max.less" screen and (min-width: 1720px);
+
+.cover-page {
+    .cover { position: fixed; top: 0; right: 0; margin-top: 0; background-position: center; background-size: cover; }
+}
+
+.std-page {
+    .cover { display: none }    
+}
+
+/* CONTENT AREAS */
+.fixed-width-content {
+    margin: auto;
+}
+
+full-width-content {
+    width: 100%;
+}
+
+/* HOME */
+.welcome-page {        
+    ul.sections {
+        .fontContent; background: white; height: 1000px; opacity: 0.8;
+        
+        h1 { font-size: 52px; margin: 0 0 12px 0; color: green }
+        h2 { font-size: 32px; margin: 0 0 8px 0 }
+        p { font-size: 20px; margin: 0 0 24px 0 }
+    }
+}
+
+
+
 
 .cover-pic { 
     width: 100%; position: absolute; left: 0; background: @colorDark; background-size: 100%; background-repeat: no-repeat; 

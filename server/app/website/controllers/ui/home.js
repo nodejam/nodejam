@@ -26,7 +26,11 @@
       var _this = this;
 
       return this.attachUser(arguments, function() {
-        return res.render('home/index.hbs', {});
+        return res.render('home/welcome.hbs', {
+          pageName: 'welcome-page',
+          coverPage: true,
+          coverPicture: 'http://farm9.staticflickr.com/8449/8039166184_a4e1b14bb8_h.jpg'
+        });
       });
     };
 

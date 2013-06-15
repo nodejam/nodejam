@@ -56,7 +56,7 @@
       }
     ],
     adminkeys: {
-      "default": 'steve;Austin;005'
+      "default": 'gorilla^007~5'
     }
   });
 

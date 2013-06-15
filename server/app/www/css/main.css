@@ -8,6 +8,9 @@
 .fontContentHeading {
   font-family: 'PT Serif', serif;
 }
+.fontAlt {
+  font-family: 'Oswald', sans-serif;
+}
 /* COLORS */
 /* BORDERS */
 .rounded {
@@ -17,7 +20,7 @@
 body {
   font-family: 'Open Sans', sans-serif;
   color: #333333;
-  margin: auto;
+  margin: 0;
 }
 em {
   font-style: italic;
@@ -133,8 +136,88 @@ li {
 .scr-tiny {
   display: none;
 }
-.container {
+/* HEADER and LOGO */
+.header .logo {
+  font-family: 'Oswald', sans-serif;
+  padding: 6px 10px 6px 2px;
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  font-size: 20px;
+  background: #ddd;
+  color: white;
+  float: left;
+  text-transform: uppercase;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+.header .logo:hover {
+  background: #333;
+}
+/* PAGES */
+@media screen and (max-width: 639px) {
+  
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  
+}
+@media screen and (min-width: 960px) and (max-width: 1279px) {
+  
+}
+@media screen and (min-width: 1280px) and (max-width: 1719px) {
+  
+}
+@media screen and (min-width: 1720px) {
+  .cover-page .cover {
+    width: 400px;
+    height: 100%;
+  }
+  .cover-page .container {
+    margin: 72px 400px 48px 0;
+  }
+  .fixed-width-content {
+    width: 720px;
+    padding: 20px;
+  }
+}
+.cover-page .cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin-top: 0;
+  background-position: center;
+  background-size: cover;
+}
+.std-page .cover {
+  display: none;
+}
+/* CONTENT AREAS */
+.fixed-width-content {
   margin: auto;
+}
+full-width-content {
+  width: 100%;
+}
+/* HOME */
+.welcome-page ul.sections {
+  font-family: 'PT Serif', serif;
+  background: white;
+  height: 1000px;
+  opacity: 0.8;
+}
+.welcome-page ul.sections h1 {
+  font-size: 52px;
+  margin: 0 0 12px 0;
+  color: #008000;
+}
+.welcome-page ul.sections h2 {
+  font-size: 32px;
+  margin: 0 0 8px 0;
+}
+.welcome-page ul.sections p {
+  font-size: 20px;
+  margin: 0 0 24px 0;
 }
 .cover-pic {
   width: 100%;

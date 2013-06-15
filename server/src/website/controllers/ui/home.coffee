@@ -10,7 +10,10 @@ class Home extends controller.Controller
     
     index: (req, res, next) =>
         @attachUser arguments, =>
-            res.render 'home/index.hbs', { }
+            res.render 'home/welcome.hbs', { 
+                pageName: 'welcome-page', 
+                coverPage: true,
+                coverPicture: 'http://farm9.staticflickr.com/8449/8039166184_a4e1b14bb8_h.jpg' }
 
 
 exports.Home = Home
