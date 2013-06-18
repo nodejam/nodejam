@@ -13,19 +13,43 @@
     __extends(Comment, _super);
 
     function Comment() {
-      this.validate = __bind(this.validate, this);
-      this.save = __bind(this.save, this);      _ref = Comment.__super__.constructor.apply(this, arguments);
+      this.save = __bind(this.save, this);
+      this.validate = __bind(this.validate, this);      _ref = Comment.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
     /*
         Fields
-        - collection (string)
+        - forum (string)
         - itemid (string)
         - data
         - createdBy (summarized user)
     */
 
+
+    Comment.prototype.validate = function() {
+      var errors, _errors;
+
+      errors = Comment.__super__.validate.call(this).errors;
+      if (!this.forum) {
+        errors.push('Missing forum.');
+      }
+      if (!this.itemid) {
+        errors.push('Missing itemid.');
+      }
+      if (!this.data) {
+        errors.push('Missing data.');
+      }
+      _errors = Comment._models.User.validateSummary(this.createdBy);
+      if (_errors.length) {
+        errors.push('Invalid createdBy.');
+        errors = errors.concat(_errors);
+      }
+      return {
+        isValid: errors.length === 0,
+        errors: errors
+      };
+    };
 
     Comment._meta = {
       type: Comment,
@@ -45,30 +69,6 @@
 
     Comment.prototype.save = function(context, cb) {
       return Comment.__super__.save.call(this, context, cb);
-    };
-
-    Comment.prototype.validate = function() {
-      var errors, _errors;
-
-      errors = Comment.__super__.validate.call(this).errors;
-      if (!this.collection) {
-        errors.push('Missing collection.');
-      }
-      if (!this.itemid) {
-        errors.push('Missing itemid.');
-      }
-      if (!this.data) {
-        errors.push('Missing data.');
-      }
-      _errors = Comment._models.User.validateSummary(this.createdBy);
-      if (_errors.length) {
-        errors.push('Invalid createdBy.');
-        errors = errors.concat(_errors);
-      }
-      return {
-        isValid: errors.length === 0,
-        errors: errors
-      };
     };
 
     return Comment;

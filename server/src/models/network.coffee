@@ -9,7 +9,7 @@ class Network extends BaseModel
             - name
             - stub
             - authenticationTypes (list of { name:string, params:depends on name })
-            - collection types (list of string)
+            - item types (list of string)
             - admins
     ###    
         
@@ -35,7 +35,7 @@ class Network extends BaseModel
             errors.push 'Authentication Types are missing.'
         else
             for type in @authenticationTypes
-                if ['facebook', 'twitter', 'custom'].indexOf type.name is -1 
+                if ['facebook', 'twitter', 'fora'].indexOf type.name is -1 
                     errors.push "#{type.name} is not a valid Authentication Type."
                 if type.name is 'twitter'
                     if not type.params
@@ -48,19 +48,11 @@ class Network extends BaseModel
                         if not type.params.TWITTER_CALLBACK
                             errors.push "Twitter callback is missing."
         
-        if not @collectionTypes or not @collectionTypes.length
-            errors.push 'Collection Types are missing.'
-        else
-            valid = (item.name for item in conf.collectionTypes)
-            for type in @collectionTypes
-                if valid.indexOf type is -1 
-                    errors.push "#{type} is not a valid Collection Type."
-        
         if not @admins or not @admins.length
             errors.push 'Admins are missing.'
         else
             for admin in @admins                        
-                _errors = Collection._models.User.validateSummary(admin)
+                _errors = Network._models.User.validateSummary(admin)
                 if _errors.length
                     errors.push 'Invalid admin.'
                     errors = errors.concat _errors

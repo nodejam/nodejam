@@ -11,8 +11,11 @@ class Forum extends BaseModel
             - type (string)
             - settings (string)            
             - icon
+            - iconThumbnail
             - cover
             - createdBy (summarized user)
+            - moderators (array of summarized user)
+            - totalItems (integer))
             - totalSubscribers (integer) 
     ###    
         
@@ -35,6 +38,7 @@ class Forum extends BaseModel
         @totalItems ?= 0
         @totalSubscribers ?= 0
         @settings = {}
+        @moderators = []
         super
         
 
@@ -95,13 +99,22 @@ class Forum extends BaseModel
         if not @iconThumbnail
             errors.push 'Invalid iconThumbnail.'
             
-        if not @tile
-            errors.push 'Invalid tile.'
-       
+        if not @cover
+            errors.push 'Invalid cover.'
+            
         _errors = Forum._models.User.validateSummary(@createdBy)
         if _errors.length            
             errors.push 'Invalid createdBy.'
             errors = errors.concat _errors
+
+        if @moderators.length < 1
+            errors.push 'There should be at least one moderator.'
+        else
+            for mod in @moderators
+                _errors = Forum._models.User.validateSummary(mod)
+                if _errors.length 
+                    errors.push 'Invalid moderator.'
+                    errors = errors.concat _errors
 
         switch @type
             when 'post'
@@ -116,7 +129,6 @@ class Forum extends BaseModel
         if isNaN(@totalSubscribers)
             errors.push 'Invalid totalSubscribers.'
         
-
         { isValid: errors.length is 0, errors }
     
     

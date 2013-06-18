@@ -162,23 +162,56 @@ li {
 @media screen and (min-width: 640px) and (max-width: 959px) {
   
 }
-@media screen and (min-width: 960px) and (max-width: 1279px) {
+@media screen and (min-width: 960px) and (max-width: 1199px) {
   
 }
-@media screen and (min-width: 1280px) and (max-width: 1719px) {
-  
+@media screen and (min-width: 1200px) and (max-width: 1599px) {
+  .cover-page .cover {
+    width: 320px;
+    height: 100%;
+  }
+  .cover-page .container {
+    margin: 72px 320px 48px 0;
+  }
+  .fixed-width-content {
+    width: 760px;
+    padding: 20px;
+  }
 }
-@media screen and (min-width: 1720px) {
+@media screen and (min-width: 1600px) {
+  /* 
+      Max Size. 1600PX+ 
+      1200px + 400px
+  */
   .cover-page .cover {
     width: 400px;
     height: 100%;
   }
   .cover-page .container {
-    margin: 72px 400px 48px 0;
+    margin: 96px 400px 48px 0;
   }
-  .fixed-width-content {
-    width: 720px;
-    padding: 20px;
+  .std-page .container {
+    margin: 96px 0 48px 0;
+  }
+  .content-section {
+    width: 800px;
+    margin: auto;
+  }
+  .content-section .full-width {
+    width: 768px;
+    padding-left: 16px;
+    padding-right: 16px;
+    float: left;
+  }
+  .content-section .half-width {
+    width: 368px;
+    padding-left: 16px;
+    padding-right: 16px;
+    float: left;
+  }
+  .boxed {
+    height: 400px;
+    margin-bottom: 16px;
   }
 }
 .cover-page .cover {
@@ -191,13 +224,6 @@ li {
 }
 .std-page .cover {
   display: none;
-}
-/* CONTENT AREAS */
-.fixed-width-content {
-  margin: auto;
-}
-full-width-content {
-  width: 100%;
 }
 /* HOME */
 .welcome-page ul.sections {

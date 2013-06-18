@@ -34,7 +34,9 @@ foraProject = new models.Network {
     name: 'Fora',
     stub: 'fora',
     domain: 'local.foraproject.org',
-
+    templates: {
+        home: 'welcome/index.hbs'
+    },
     admins: [ 
         {
             id: '__',

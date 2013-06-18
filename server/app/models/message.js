@@ -60,19 +60,19 @@
         switch (_format) {
           case 'timeline':
             switch (this.reason) {
-              case 'new-collection':
-                user = this.data.collection.createdBy;
+              case 'new-forum':
+                user = this.data.forum.createdBy;
                 return {
                   subject: {
                     thumbnail: user.thumbnail,
                     name: user.name,
                     link: user.domain === 'tw' ? "/@" + user.username : "/" + user.domain + "/" + user.username
                   },
-                  verb: "added a new collection",
+                  verb: "added a new forum",
                   object: {
-                    thumbnail: this.data.collection.icon,
-                    name: this.data.collection.name,
-                    link: "/" + this.data.collection.stub
+                    thumbnail: this.data.forum.icon,
+                    name: this.data.forum.name,
+                    link: "/" + this.data.forum.stub
                   },
                   time: moment(this.timestamp).from(Date.now())
                 };
@@ -87,7 +87,7 @@
                   verb: "published",
                   object: {
                     name: this.data.post.title,
-                    link: "/" + this.data.post.collections[0].stub + "/" + this.data.post.uid
+                    link: "/" + this.data.post.forum.stub + "/" + this.data.post.uid
                   },
                   time: moment(this.timestamp).from(Date.now())
                 };

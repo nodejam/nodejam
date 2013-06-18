@@ -1,4 +1,10 @@
-sessions = require './sessions'
+modules = {
+    sessions: 'Sessions',
+    forums: 'Forums',
+    posts: 'Posts',
+}
 
-exports.Sessions = sessions.Sessions
+for k,v of modules
+    exports[v] = require("./#{k}")[v]
+
 

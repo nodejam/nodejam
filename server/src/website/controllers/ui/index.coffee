@@ -1,7 +1,12 @@
-auth = require './auth'
-home = require './home'
-users = require './users'
+modules = {
+    auth: 'Auth',
+    home: 'Home',
+    forums: 'Forums',
+    users: 'Users',
+    dev_designs: 'Dev_Designs'
+}
 
-exports.Auth = auth.Auth
-exports.Home = home.Home
-exports.Users = users.Users
+for k,v of modules
+    exports[v] = require("./#{k}")[v]
+
+

@@ -1,30 +1,29 @@
-Session = require('./session').Session
-User = require('./user').User
-Post = require('./post').Post
-Forum = require('./forum').Forum
-Token = require('./token').Token
-UserInfo = require('./userinfo').UserInfo
-Message =  require('./message').Message
-Network = require('./network').Network
-ItemView = require('./itemview').ItemView
-Comment = require('./comment').Comment
+modules = {
+    session: 'Session',
+    user: 'User',
+    forum: 'Forum',
+    post: 'Post',
+    token: 'Token',
+    userinfo: 'UserInfo',
+    message: 'Message',
+    network: 'Network',
+    itemview: 'ItemView',
+    comment: 'Comment',
+}
+
+models = {}
+
+for k,v of modules
+    models[v] = require("./#{k}")[v]
+
 
 class Models
 
     constructor: (@dbconf) ->
-        @Session = Session
-        @User = User
-        @Post = Post
-        @Forum = Forum
-        @Token = Token
-        @UserInfo = UserInfo
-        @Message = Message
-        @Network = Network
-        @ItemView = ItemView
-        @Comment = Comment
-        @initModel(model) for model in [Session, User, Post, Forum, Token, UserInfo, Message, Network, ItemView, Comment]
-
-
+        for k, v of models
+            @[k] = v
+            @initModel v
+        
 
     initModel: (model) ->
         model._database = new (require '../common/database').Database(@dbconf)

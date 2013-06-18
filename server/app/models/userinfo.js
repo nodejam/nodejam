@@ -16,7 +16,7 @@
         Fields
             - network (string)        
             - userid (string)         
-            - subscriptions (list of collection summary)   
+            - subscriptions (list of forum summary)   
             - following (list of user summary)
             - lastMessageAccessTime (integer)
     */
@@ -54,7 +54,7 @@
     };
 
     UserInfo.prototype.validate = function() {
-      var coll, errors, user, _errors, _i, _j, _len, _len1, _ref, _ref1;
+      var errors, forum, user, _errors, _i, _j, _len, _len1, _ref, _ref1;
 
       errors = UserInfo.__super__.validate.call(this).errors;
       if (!this.network || typeof this.network !== 'string') {
@@ -68,8 +68,8 @@
       }
       _ref = this.subscriptions;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        coll = _ref[_i];
-        _errors = UserInfo._models.Collection.validateSummary(coll);
+        forum = _ref[_i];
+        _errors = UserInfo._models.Forum.validateSummary(forum);
         if (_errors.length) {
           errors.push('Invalid subscription.');
           errors = errors.concat(_errors);

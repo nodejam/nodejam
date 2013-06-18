@@ -5,11 +5,31 @@ class Comment extends BaseModel
 
     ###
         Fields
-        - collection (string)
+        - forum (string)
         - itemid (string)
         - data
         - createdBy (summarized user)
     ###
+    
+    validate: =>
+        errors = super().errors
+
+        if not @forum
+            errors.push 'Missing forum.'
+
+        if not @itemid
+            errors.push 'Missing itemid.'
+            
+        if not @data
+            errors.push 'Missing data.'
+        
+        _errors = Comment._models.User.validateSummary(@createdBy)
+        if _errors.length
+            errors.push 'Invalid createdBy.'
+            errors = errors.concat _errors
+                       
+        { isValid: errors.length is 0, errors }
+        
     
     @_meta: {
         type: Comment,
@@ -30,27 +50,7 @@ class Comment extends BaseModel
     save: (context, cb) =>
         super context, cb
         
-        
-        
-    validate: =>
-        errors = super().errors
 
-        if not @collection
-            errors.push 'Missing collection.'
-
-        if not @itemid
-            errors.push 'Missing itemid.'
-            
-        if not @data
-            errors.push 'Missing data.'
-        
-        _errors = Comment._models.User.validateSummary(@createdBy)
-        if _errors.length
-            errors.push 'Invalid createdBy.'
-            errors = errors.concat _errors
-                       
-        { isValid: errors.length is 0, errors }
-        
         
     
 exports.Comment = Comment

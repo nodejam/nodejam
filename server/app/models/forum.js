@@ -20,8 +20,11 @@
             - type (string)
             - settings (string)            
             - icon
+            - iconThumbnail
             - cover
             - createdBy (summarized user)
+            - moderators (array of summarized user)
+            - totalItems (integer))
             - totalSubscribers (integer)
     */
 
@@ -52,6 +55,7 @@
         this.totalSubscribers = 0;
       }
       this.settings = {};
+      this.moderators = [];
       Forum.__super__.constructor.apply(this, arguments);
     }
 
@@ -94,7 +98,7 @@
     };
 
     Forum.prototype.validate = function() {
-      var errors, _errors;
+      var errors, mod, _errors, _i, _len, _ref;
 
       errors = Forum.__super__.validate.call(this).errors;
       if (!this.network || typeof this.network !== 'string') {
@@ -118,13 +122,26 @@
       if (!this.iconThumbnail) {
         errors.push('Invalid iconThumbnail.');
       }
-      if (!this.tile) {
-        errors.push('Invalid tile.');
+      if (!this.cover) {
+        errors.push('Invalid cover.');
       }
       _errors = Forum._models.User.validateSummary(this.createdBy);
       if (_errors.length) {
         errors.push('Invalid createdBy.');
         errors = errors.concat(_errors);
+      }
+      if (this.moderators.length < 1) {
+        errors.push('There should be at least one moderator.');
+      } else {
+        _ref = this.moderators;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          mod = _ref[_i];
+          _errors = Forum._models.User.validateSummary(mod);
+          if (_errors.length) {
+            errors.push('Invalid moderator.');
+            errors = errors.concat(_errors);
+          }
+        }
       }
       switch (this.type) {
         case 'post':

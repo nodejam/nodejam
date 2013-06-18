@@ -7,7 +7,7 @@ class UserInfo extends BaseModel
         Fields
             - network (string)        
             - userid (string)         
-            - subscriptions (list of collection summary)   
+            - subscriptions (list of forum summary)   
             - following (list of user summary)
             - lastMessageAccessTime (integer)
     ###    
@@ -48,11 +48,10 @@ class UserInfo extends BaseModel
             errors.push 'Missing userid.'
 
         if not @subscriptions
-            errors.push 'Missing subscriptions.'
-        
+            errors.push 'Missing subscriptions.'        
 
-        for coll in @subscriptions
-            _errors = UserInfo._models.Collection.validateSummary(coll)
+        for forum in @subscriptions
+            _errors = UserInfo._models.Forum.validateSummary(forum)
             if _errors.length
                 errors.push 'Invalid subscription.'
                 errors = errors.concat _errors

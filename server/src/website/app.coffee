@@ -54,6 +54,7 @@ findHandler = (name, getHandler) ->
         when 'ui/networks' then new uiControllers.Networks()            
         when 'ui/home' then new uiControllers.Home()
         when 'ui/forums' then new uiControllers.Forums()
+        when 'ui/dev_designs' then new uiControllers.Dev_Designs()
         when 'api/sessions' then new apiControllers.Sessions()
         when 'api/users' then new apiControllers.Users()
         when 'api/networks' then new apiControllers.Networks()
@@ -91,12 +92,15 @@ handleDomainUrls = (domain, fnHandler) ->
 #AUTH
 app.get '/auth/twitter', findHandler('ui/auth', (c) -> c.twitter)
 app.get '/auth/twitter/callback', findHandler('ui/auth', (c) -> c.twitterCallback)
-app.post '/api/sessions', findHandler('api/sessions', (c) -> c.createSession)
+app.post '/api/:version/sessions', findHandler('api/sessions', (c) -> c.create)
 
 #HOME
 app.get '/', findHandler('ui/home', (c) -> c.index)
-app.get '/timeline', findHandler('ui/home', (c) -> c.timeline)
+app.get '/:forum', findHandler('ui/forums', (c) -> c.index)
+app.post '/api/:version/forums', findHandler('ui/forums', (c) -> c.create)
 
+#TESTING DESIGNS
+app.get '/app/dev/designs/cover', findHandler('ui/dev_designs', (c) -> c.cover)
 
 #ERROR HANDLING
 app.use(app.router)

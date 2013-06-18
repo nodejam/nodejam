@@ -6,52 +6,17 @@
     {{else}}
     <title>The Fora Project</title>
     {{/if}}
-    <!-- CSS -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|PT+Serif:400italic,700italic,400,700|Oswald' rel='stylesheet' type='text/css' />
-    <link href="/css/lib/font-awesome/css/font-awesome.css" rel="stylesheet" media="screen" />
-    <link href="/css/css/HINT.css" rel="stylesheet" media="screen" />
-    <link href="/css/css/toggle-switch.css" rel="stylesheet" media="screen" />
-    <link href="/css/main.css" rel="stylesheet" media="screen" />
-    
-    <!-- JS -->
-    <script src="/js/lib/jquery-min.js"></script>
-    <script src="/js/lib/angular-min.js"></script>    
 
-    <script src="/js/lib/jquery-cookie.js"></script>
-    <script src="/lib/bangjs/jquery-drags.js"></script>
-    <script src="/lib/bangjs/reMarked.js"></script>
-    <script src="/lib/bangjs/bangjs.js"></script>
-    <script src="/lib/bangjs/bangjs-toolbar.js"></script>
-
-    <script src="/js/main.js"></script>    
-         
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|PT+Serif:400italic,700italic,400,700' rel='stylesheet' type='text/css' />
+    <link href="/css/lib.css" rel="stylesheet" media="screen" />
+    <link href="/css/fora.css" rel="stylesheet" media="screen" />
+    <script src="/js/lib-base.js"></script>
+    <script src="/js/lib.js"></script>
+    <script src="/js/fora.js"></script>    
+            
   </head>
-  <body class="{{pageName}} {{#if coverPage}}cover-page{{else}}std-page{{/if}}">
-    <div class="header">
-        <div class="logo">
-            Fora
-        </div>
-    </div>
-
-    {{#if coverPage}}
-    {{#if coverPicture}}
-    <div class="cover" style="background-image:url({{coverPicture}})">
-    {{coverContent}}
-    </div>
-    {{else}}
-    <div class="cover">
-    {{coverContent}}
-    </div>
-    {{/if}}
-    {{/if}}
-
-    <div class="container">
-        <div class="fixed-width-content">
-            {{{body}}}
-        </div>
-    </div>
-        <!--
+  <body>
+    <div class="container{{#if containerClass}} {{containerClass}}{{/if}}">
         {{#if coverPage}}
             {{#if coverPage.image}}
                 <div class="cover-pic" style="background-image:url({{coverPage.image}})">
@@ -89,7 +54,7 @@
             {{else}}            
                 <ul class="signin-options">
                     <li><i class="icon-twitter"></i><a class="twitter" href="/auth/twitter">login</a></li>
-                    <li><a class="facebook" href="#"><img src="/images/facebook.png" alt="Facebook sign in" /></a></li>
+                    <!--<li><a class="facebook" href="#"><img src="/images/facebook.png" alt="Facebook sign in" /></a></li>-->
                 </ul>            
             {{/if}}
             </div>     
@@ -108,7 +73,8 @@
         {{/if}}
 
         <div style="clear:both"></div>
-        -->
+
+        {{{body}}}
     </div>
   </body>
 </html>

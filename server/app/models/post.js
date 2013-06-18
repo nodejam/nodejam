@@ -69,21 +69,18 @@
       this.createView = __bind(this.createView, this);
       this.summarize = __bind(this.summarize, this);
       this.save = __bind(this.save, this);
-      var _ref, _ref1, _ref2, _ref3, _ref4;
+      var _ref, _ref1, _ref2, _ref3;
 
-      if ((_ref = this.forums) == null) {
-        this.forums = [];
-      }
-      if ((_ref1 = this.recommendations) == null) {
+      if ((_ref = this.recommendations) == null) {
         this.recommendations = [];
       }
-      if ((_ref2 = this.meta) == null) {
+      if ((_ref1 = this.meta) == null) {
         this.meta = [];
       }
-      if ((_ref3 = this.tags) == null) {
+      if ((_ref2 = this.tags) == null) {
         this.tags = [];
       }
-      if ((_ref4 = this.rating) == null) {
+      if ((_ref3 = this.rating) == null) {
         this.rating = 1;
       }
       this.createdAt = Date.now();
@@ -139,7 +136,7 @@
             },
             uid: this.uid,
             createdBy: this.createdBy,
-            forums: this.forums,
+            forum: this.forum,
             title: this.title,
             content: this.content ? mdparser(this.content) : void 0,
             cover: this.cover
@@ -148,52 +145,44 @@
     };
 
     Post.refreshForumSnapshot = function(post, context, cb) {
-      var forum, _i, _len, _ref, _results;
-
-      _ref = post.forums;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        forum = _ref[_i];
-        _results.push(Post._models.Forum.get({
-          stub: forum.stub
-        }, {}, function(err, forum) {
-          return Post.search({
+      return Post._models.Forum.get({
+        stub: forum.stub
+      }, {}, function(err, forum) {
+        return Post.search({
+          "forums.stub": forum.stub,
+          state: 'published'
+        }, {
+          sort: {
+            publishedAt: -1
+          },
+          limit: 4
+        }, {}, function(err, posts) {
+          return Post.getCursor({
             "forums.stub": forum.stub,
             state: 'published'
-          }, {
-            sort: {
-              publishedAt: -1
-            },
-            limit: 4
-          }, {}, function(err, posts) {
-            return Post.getCursor({
-              "forums.stub": forum.stub,
-              state: 'published'
-            }, context, function(err, cursor) {
-              return cursor.count(function(err, count) {
-                var p;
+          }, context, function(err, cursor) {
+            return cursor.count(function(err, count) {
+              var p;
 
-                forum.snapshot = {
-                  recentPosts: (function() {
-                    var _j, _len1, _results1;
+              forum.snapshot = {
+                recentPosts: (function() {
+                  var _i, _len, _results;
 
-                    _results1 = [];
-                    for (_j = 0, _len1 = posts.length; _j < _len1; _j++) {
-                      p = posts[_j];
-                      _results1.push(p.summarize());
-                    }
-                    return _results1;
-                  })()
-                };
-                forum.totalItems = count;
-                forum.lastRefreshedAt = posts[0] ? posts[0].publishedAt : 0;
-                return forum.save(context, cb);
-              });
+                  _results = [];
+                  for (_i = 0, _len = posts.length; _i < _len; _i++) {
+                    p = posts[_i];
+                    _results.push(p.summarize());
+                  }
+                  return _results;
+                })()
+              };
+              forum.totalItems = count;
+              forum.lastRefreshedAt = posts[0] ? posts[0].publishedAt : 0;
+              return forum.save(context, cb);
             });
           });
-        }));
-      }
-      return _results;
+        });
+      });
     };
 
     Post.validateForumSnapshot = function(forum) {
@@ -242,7 +231,7 @@
     };
 
     Post.prototype.validate = function() {
-      var errors, forum, user, _errors, _i, _j, _len, _len1, _ref, _ref1;
+      var errors, user, _errors, _i, _len, _ref;
 
       errors = Post.__super__.validate.call(this).errors;
       if (!this.network || typeof this.network !== 'string') {
@@ -251,17 +240,13 @@
       if (!this.uid) {
         errors.push('Invalid stub.');
       }
-      if (!this.forums.length) {
-        errors.push('Post should belong to at least one forum.');
+      if (!this.forum) {
+        errors.push('Post should belong to a forum.');
       }
-      _ref = this.forums;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        forum = _ref[_i];
-        _errors = Post._models.Forum.validateSummary(forum);
-        if (_errors.length) {
-          errors.push("Invalid forum.");
-          errors = errors.concat(_errors);
-        }
+      _errors = Post._models.Forum.validateSummary(forum);
+      if (_errors.length) {
+        errors.push("Invalid forum.");
+        errors = errors.concat(_errors);
       }
       if (!this.state || (this.state !== 'published' && this.state !== 'draft')) {
         errors.push('Invalid state.');
@@ -271,9 +256,9 @@
         errors.push('Invalid createdBy.');
         errors = errors.concat(_errors);
       }
-      _ref1 = this.recommendations;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        user = _ref1[_j];
+      _ref = this.recommendations;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        user = _ref[_i];
         _errors = Post._models.User.validateSummary(user);
         if (_errors.length) {
           errors.push("Invalid recommendation.");

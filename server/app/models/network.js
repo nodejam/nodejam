@@ -24,7 +24,7 @@
             - name
             - stub
             - authenticationTypes (list of { name:string, params:depends on name })
-            - collection types (list of string)
+            - item types (list of string)
             - admins
     */
 
@@ -38,7 +38,7 @@
     };
 
     Network.prototype.validate = function() {
-      var admin, errors, item, type, valid, _errors, _i, _j, _k, _len, _len1, _len2, _ref1, _ref2, _ref3;
+      var admin, errors, type, _errors, _i, _j, _len, _len1, _ref1, _ref2;
 
       errors = Network.__super__.validate.call(this).errors;
       if (!this.name) {
@@ -53,7 +53,7 @@
         _ref1 = this.authenticationTypes;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           type = _ref1[_i];
-          if (['facebook', 'twitter', 'custom'].indexOf(type.name === -1)) {
+          if (['facebook', 'twitter', 'fora'].indexOf(type.name === -1)) {
             errors.push("" + type.name + " is not a valid Authentication Type.");
           }
           if (type.name === 'twitter') {
@@ -73,35 +73,13 @@
           }
         }
       }
-      if (!this.collectionTypes || !this.collectionTypes.length) {
-        errors.push('Collection Types are missing.');
-      } else {
-        valid = (function() {
-          var _j, _len1, _ref2, _results;
-
-          _ref2 = conf.collectionTypes;
-          _results = [];
-          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-            item = _ref2[_j];
-            _results.push(item.name);
-          }
-          return _results;
-        })();
-        _ref2 = this.collectionTypes;
-        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-          type = _ref2[_j];
-          if (valid.indexOf(type === -1)) {
-            errors.push("" + type + " is not a valid Collection Type.");
-          }
-        }
-      }
       if (!this.admins || !this.admins.length) {
         errors.push('Admins are missing.');
       } else {
-        _ref3 = this.admins;
-        for (_k = 0, _len2 = _ref3.length; _k < _len2; _k++) {
-          admin = _ref3[_k];
-          _errors = Collection._models.User.validateSummary(admin);
+        _ref2 = this.admins;
+        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+          admin = _ref2[_j];
+          _errors = Network._models.User.validateSummary(admin);
           if (_errors.length) {
             errors.push('Invalid admin.');
             errors = errors.concat(_errors);

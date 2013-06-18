@@ -52,7 +52,6 @@ class Post extends BaseModel
         
     
     constructor: (params) ->
-        @forums ?= []
         @recommendations ?= []
         @meta ?= []
         @tags ?= []
@@ -98,7 +97,7 @@ class Post extends BaseModel
                     },
                     @uid,
                     @createdBy,
-                    @forums,
+                    @forum,
                     @title,
                     content: if @content then mdparser(@content),
                     @cover
@@ -107,17 +106,16 @@ class Post extends BaseModel
         
     
     @refreshForumSnapshot: (post, context, cb) =>
-        for forum in post.forums
-            @_models.Forum.get { stub: forum.stub }, {}, (err, forum) =>
-                @search { "forums.stub": forum.stub, state: 'published' }, { sort: { publishedAt: -1 }, limit: 4 }, {}, (err, posts) =>
-                    @getCursor { "forums.stub": forum.stub, state: 'published' }, context, (err, cursor) =>
-                        cursor.count (err, count) =>
-                            forum.snapshot = {
-                                recentPosts: (p.summarize() for p in posts),
-                            }
-                            forum.totalItems = count
-                            forum.lastRefreshedAt = if posts[0] then posts[0].publishedAt else 0                            
-                            forum.save context, cb                        
+        @_models.Forum.get { stub: forum.stub }, {}, (err, forum) =>
+            @search { "forums.stub": forum.stub, state: 'published' }, { sort: { publishedAt: -1 }, limit: 4 }, {}, (err, posts) =>
+                @getCursor { "forums.stub": forum.stub, state: 'published' }, context, (err, cursor) =>
+                    cursor.count (err, count) =>
+                        forum.snapshot = {
+                            recentPosts: (p.summarize() for p in posts),
+                        }
+                        forum.totalItems = count
+                        forum.lastRefreshedAt = if posts[0] then posts[0].publishedAt else 0                            
+                        forum.save context, cb                        
 
 
 
@@ -167,14 +165,13 @@ class Post extends BaseModel
         if not @uid
             errors.push 'Invalid stub.'
 
-        if not @forums.length
-            errors.push 'Post should belong to at least one forum.'
+        if not @forum
+            errors.push 'Post should belong to a forum.'
 
-        for forum in @forums
-            _errors = Post._models.Forum.validateSummary(forum)
-            if _errors.length                 
-                errors.push "Invalid forum."
-                errors = errors.concat _errors 
+        _errors = Post._models.Forum.validateSummary(forum)
+        if _errors.length                 
+            errors.push "Invalid forum."
+            errors = errors.concat _errors 
 
         if not @state or (@state isnt 'published' and @state isnt 'draft')
             errors.push 'Invalid state.'

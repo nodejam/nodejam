@@ -21,11 +21,11 @@
     __extends(Sessions, _super);
 
     function Sessions() {
-      this.createSession = __bind(this.createSession, this);      _ref = Sessions.__super__.constructor.apply(this, arguments);
+      this.create = __bind(this.create, this);      _ref = Sessions.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    Sessions.prototype.createSession = function(req, res, next) {
+    Sessions.prototype.create = function(req, res, next) {
       var accessToken, client, options,
         _this = this;
 

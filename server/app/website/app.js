@@ -86,6 +86,8 @@
           return new uiControllers.Home();
         case 'ui/forums':
           return new uiControllers.Forums();
+        case 'ui/dev_designs':
+          return new uiControllers.Dev_Designs();
         case 'api/sessions':
           return new apiControllers.Sessions();
         case 'api/users':
@@ -156,16 +158,24 @@
     return c.twitterCallback;
   }));
 
-  app.post('/api/sessions', findHandler('api/sessions', function(c) {
-    return c.createSession;
+  app.post('/api/:version/sessions', findHandler('api/sessions', function(c) {
+    return c.create;
   }));
 
   app.get('/', findHandler('ui/home', function(c) {
     return c.index;
   }));
 
-  app.get('/timeline', findHandler('ui/home', function(c) {
-    return c.timeline;
+  app.get('/:forum', findHandler('ui/forums', function(c) {
+    return c.index;
+  }));
+
+  app.post('/api/:version/forums', findHandler('ui/forums', function(c) {
+    return c.create;
+  }));
+
+  app.get('/app/dev/designs/cover', findHandler('ui/dev_designs', function(c) {
+    return c.cover;
   }));
 
   app.use(app.router);

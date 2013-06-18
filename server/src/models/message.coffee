@@ -44,19 +44,19 @@ class Message extends BaseModel
             switch _format
                 when 'timeline'
                     switch @reason
-                        when 'new-collection'
-                            user = @data.collection.createdBy
+                        when 'new-forum'
+                            user = @data.forum.createdBy
                             {                        
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
                                     link: if user.domain is 'tw' then "/@#{user.username}" else "/#{user.domain}/#{user.username}"
                                 },
-                                verb: "added a new collection",
+                                verb: "added a new forum",
                                 object: {
-                                    thumbnail: @data.collection.icon,
-                                    name: @data.collection.name,
-                                    link: "/#{@data.collection.stub}"
+                                    thumbnail: @data.forum.icon,
+                                    name: @data.forum.name,
+                                    link: "/#{@data.forum.stub}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }
@@ -71,7 +71,7 @@ class Message extends BaseModel
                                 verb: "published",
                                 object: {
                                     name: @data.post.title,
-                                    link: "/#{@data.post.collections[0].stub}/#{@data.post.uid}"
+                                    link: "/#{@data.post.forum.stub}/#{@data.post.uid}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }                   

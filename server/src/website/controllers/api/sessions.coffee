@@ -8,7 +8,7 @@ AppError = require('../../../common/apperror').AppError
 
 class Sessions extends controller.Controller
     
-    createSession: (req, res, next) =>
+    create: (req, res, next) =>
         if req.body.domain == 'fb'        
             client = new FaceBookClient()            
             options = {
