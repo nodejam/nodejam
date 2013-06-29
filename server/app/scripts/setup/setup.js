@@ -42,7 +42,7 @@
   }
 
   init = function() {
-    var createForum, createForumTasks, createPost, createPostTasks, createUser, createUserTasks, forum, post, tasks, user, _fn, _fn1, _fn2, _globals, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+    var article, createArticle, createArticleTasks, createForum, createForumTasks, createUser, createUserTasks, forum, tasks, user, _fn, _fn1, _fn2, _globals, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
 
     _globals = {};
     if (__indexOf.call(process.argv, '--delete') >= 0) {
@@ -99,48 +99,48 @@
         forum = _ref1[_j];
         _fn1(forum);
       }
-      createPost = function(post, cb) {
+      createArticle = function(article, cb) {
         var meta, passkey;
 
-        passkey = _globals.sessions[post._createdBy].passkey;
-        console.log("Creating a new post with passkey(" + passkey + ")....");
-        console.log("Creating " + post.title + "...");
-        post.content = fs.readFileSync(path.resolve(__dirname, "posts/" + post._content), 'utf-8');
-        post.publish = true;
-        forum = post._forum;
-        meta = post._meta;
-        delete post._forum;
-        delete post._createdBy;
-        delete post._content;
-        delete post._meta;
-        return doHttpRequest("/api/v1/" + forum + "?passkey=" + passkey, querystring.stringify(post), 'post', function(err, resp) {
+        passkey = _globals.sessions[article._createdBy].passkey;
+        console.log("Creating a new article with passkey(" + passkey + ")....");
+        console.log("Creating " + article.title + "...");
+        article.content = fs.readFileSync(path.resolve(__dirname, "articles/" + article._content), 'utf-8');
+        article.publish = true;
+        forum = article._forum;
+        meta = article._meta;
+        delete article._forum;
+        delete article._createdBy;
+        delete article._content;
+        delete article._meta;
+        return doHttpRequest("/api/v1/" + forum + "?passkey=" + passkey, querystring.stringify(article), 'post', function(err, resp) {
           console.log("Created " + resp.title + " with uid " + resp.uid);
           if (meta.split(',').indexOf('featured') > -1) {
             return doHttpRequest("/api/v1/admin/feature?passkey=" + passkey + "&forum=" + resp.forums[0].stub + "&uid=" + resp.uid, null, 'get', function(err, r) {
-              console.log("Added featured tag to post " + resp.title + ".");
+              console.log("Added featured tag to article " + resp.title + ".");
               return cb();
             });
           }
         });
       };
-      createPostTasks = [];
-      _ref2 = data.posts;
-      _fn2 = function(post) {
-        return createPostTasks.push(function(cb) {
-          return createPost(post, cb);
+      createArticleTasks = [];
+      _ref2 = data.articles;
+      _fn2 = function(article) {
+        return createArticleTasks.push(function(cb) {
+          return createArticle(article, cb);
         });
       };
       for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-        post = _ref2[_k];
-        _fn2(post);
+        article = _ref2[_k];
+        _fn2(article);
       }
       tasks = function() {
         return async.series(createUserTasks, function() {
           console.log('Created users.');
           return async.series(createForumTasks, function() {
             console.log('Created forums.');
-            return async.series(createPostTasks, function() {
-              console.log('Created posts.');
+            return async.series(createArticleTasks, function() {
+              console.log('Created articles.');
               return console.log('Setup complete.');
             });
           });

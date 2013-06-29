@@ -138,7 +138,7 @@ earlyMornings = {
 
 forums = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
 
-#Posts
+#Articles
 believeYouCanChange = {
     title: 'Believe you can change',
     _content: 'believe-you-can-change.md',
@@ -227,8 +227,8 @@ takeAStepBack = {
     _meta: 'featured'
 }
 
-posts = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack]
+articles = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack]
 
 exports.users = users
 exports.forums = forums
-exports.posts = posts
+exports.articles = articles

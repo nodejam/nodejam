@@ -67,6 +67,7 @@ class BaseModel
         meta
 
 
+
     @getLimit: (limit, _default, max) ->
         result = _default
         if limit
@@ -134,7 +135,7 @@ class BaseModel
         
     validateFields: (model, fields, cb) =>
         errors = []        
-        new Validator.validate model, fields, cb
+        new Validator().validate model, fields, cb
 
 
     

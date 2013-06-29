@@ -5,26 +5,17 @@
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
   clone = function(source) {
-    var obj;
-
-    obj = {};
-    extend(obj, source);
-    return obj;
+    return JSON.parse(JSON.stringify(source));
   };
 
   extend = function(target, source) {
-    var key, val, _results;
+    var key, val;
 
-    _results = [];
     for (key in source) {
       val = source[key];
-      if (typeof val !== "function") {
-        _results.push(target[key] = val);
-      } else {
-        _results.push(void 0);
-      }
+      target[key] = val;
     }
-    return _results;
+    return target;
   };
 
   isComposite = function(dataType) {

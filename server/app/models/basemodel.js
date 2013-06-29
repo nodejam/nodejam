@@ -228,7 +228,7 @@
       var errors;
 
       errors = [];
-      return new Validator.validate(model, fields, cb);
+      return new Validator().validate(model, fields, cb);
     };
 
     BaseModel.prototype.destroy = function(context, cb) {

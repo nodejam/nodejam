@@ -1,14 +1,13 @@
 root = exports ? this
 
 clone = (source) ->
-    obj = {}
-    extend obj, source
-    return obj
+    JSON.parse JSON.stringify source
+    
 
 extend = (target, source) ->
     for key, val of source
-        if typeof val != "function"
-            target[key] = val
+        target[key] = val
+    target
 
 
 isComposite = (dataType) ->

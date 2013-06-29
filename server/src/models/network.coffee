@@ -16,49 +16,50 @@ class Network extends BaseModel
     @_meta: {
         type: Network,
         collection: 'networks',
+        fields: {
+            name: 'string',
+            stub: 'string',
+            authenticationTypes: { 
+                type: 'array', 
+                contents: 'object', 
+                validate: ->
+                    if not @authenticationTypes.length
+                        'Authentication types not defined.'
+                    else
+                        errors = []
+                        for type in @authenticationTypes
+                            if ['facebook', 'twitter', 'fora'].indexOf type.name is -1 
+                                errors.push "#{type.name} is not a valid Authentication Type."
+                            if type.name is 'twitter'
+                                if not type.params
+                                    errors.push "Twitter authentication parameters are missing."
+                                else
+                                    if not type.params.TWITTER_CONSUMER_KEY
+                                        errors.push "Twitter consumer key is missing."
+                                    if not type.params.TWITTER_SECRET
+                                        errors.push "Twitter consumer secret is missing."
+                                    if not type.params.TWITTER_CALLBACK
+                                        errors.push "Twitter callback is missing."
+                        errors
+                        
+            },
+            admins: {
+                type: 'array',
+                contents: 'object',
+                validate: ->
+                    if not @admins.length
+                        errors.push 'Admins are missing.'                        
+                    else
+                        errors = []
+                        for admin in @admins
+                            errors.concat admin.validate()
+                        errors
+            }
+        }
         logging: {
             isLogged: true,
         }
     }
     
 
-    validate: =>
-        errors = super().errors
-        
-        if not @name
-            errors.push 'Network name is missing.'
-            
-        if not @stub
-            errors.push 'Stub is missing.'            
-                
-        if not @authenticationTypes or not @authenticationTypes.length
-            errors.push 'Authentication Types are missing.'
-        else
-            for type in @authenticationTypes
-                if ['facebook', 'twitter', 'fora'].indexOf type.name is -1 
-                    errors.push "#{type.name} is not a valid Authentication Type."
-                if type.name is 'twitter'
-                    if not type.params
-                        errors.push "Twitter authentication parameters are missing."
-                    else
-                        if not type.params.TWITTER_CONSUMER_KEY
-                            errors.push "Twitter consumer key is missing."
-                        if not type.params.TWITTER_SECRET
-                            errors.push "Twitter consumer secret is missing."
-                        if not type.params.TWITTER_CALLBACK
-                            errors.push "Twitter callback is missing."
-        
-        if not @admins or not @admins.length
-            errors.push 'Admins are missing.'
-        else
-            for admin in @admins                        
-                _errors = Network._models.User.validateSummary(admin)
-                if _errors.length
-                    errors.push 'Invalid admin.'
-                    errors = errors.concat _errors
-        
-        { isValid: errors.length is 0, errors }
-    
-    
-    
 exports.Network = Network

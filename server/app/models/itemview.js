@@ -26,7 +26,10 @@
           contents: 'string'
         },
         createdBy: {
-          type: ItemView._models.User.Summary
+          type: 'class',
+          validate: function() {
+            return this.createdBy.validate();
+          }
         },
         publishedAt: {
           type: 'number',
@@ -73,7 +76,6 @@
     };
 
     function ItemView(params) {
-      this.validate = __bind(this.validate, this);
       this.save = __bind(this.save, this);
       var _ref;
 
@@ -85,46 +87,6 @@
 
     ItemView.prototype.save = function(context, cb) {
       return ItemView.__super__.save.apply(this, arguments);
-    };
-
-    ItemView.prototype.validate = function() {
-      var errors, item, _errors, _i, _len, _ref;
-
-      errors = ItemView.__super__.validate.call(this).errors;
-      if (!this.network || typeof this.network !== 'string') {
-        errors.push('Invalid network.');
-      }
-      if (!this.forum) {
-        errors.push('Invalid forum.');
-      }
-      if (!this.data) {
-        errors.push('data missing.');
-      }
-      _ref = this.meta;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
-        if (typeof item !== 'string') {
-          errors.push("Invalid item(" + item + ") in meta.");
-        }
-      }
-      if (!this.type || ['featured', 'post'].indexOf(this.type) === -1) {
-        errors.push("Invalid type.");
-      }
-      _errors = ItemView._models.User.validateSummary(this.createdBy);
-      if (_errors.length) {
-        errors.push('Invalid createdBy.');
-        errors = errors.concat(_errors);
-      }
-      if (this.publishedAt && isNaN(this.publishedAt)) {
-        errors.push('PublishedAt must be a number.');
-      }
-      if (!this.state) {
-        errors.push('Invalid state.');
-      }
-      return {
-        isValid: errors.length === 0,
-        errors: errors
-      };
     };
 
     return ItemView;
