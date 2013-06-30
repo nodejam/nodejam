@@ -1,7 +1,7 @@
-BaseModel = require('./basemodel').BaseModel
+Models = require './'
 AppError = require('../common/apperror').AppError
 
-class Token extends BaseModel
+class Token extends Models.BaseModel
 
     @_meta: {
         type: Token,

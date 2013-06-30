@@ -1,10 +1,10 @@
 async = require '../common/async'
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
-Post = require('./post').Post
+Models = require './'
 mdparser = require('../common/markdownutil').marked
 
-class Article extends Post
+class Article extends Models.Post
 
     @_meta:
         (->

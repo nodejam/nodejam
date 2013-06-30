@@ -1,7 +1,7 @@
-BaseModel = require('./basemodel').BaseModel
+Models = require './'
 AppError = require('../common/apperror').AppError
 
-class ItemView extends BaseModel
+class ItemView extends Models.BaseModel
 
     @_meta: {
         type: ItemView,

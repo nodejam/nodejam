@@ -1,7 +1,7 @@
-BaseModel = require('./basemodel').BaseModel
+Models = require './'
 AppError = require('../common/apperror').AppError
 
-class Forum extends BaseModel
+class Forum extends Models.BaseModel
         
     @_meta: {
         type: Forum,

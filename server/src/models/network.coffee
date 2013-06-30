@@ -1,8 +1,8 @@
-BaseModel = require('./basemodel').BaseModel
+Models = require './'
 AppError = require('../common/apperror').AppError
 conf = require '../conf'
 
-class Network extends BaseModel
+class Network extends Models.BaseModel
 
     ###
         Fields
@@ -45,8 +45,8 @@ class Network extends BaseModel
             },
             admins: {
                 type: 'array',
-                contents: 'object',
-                validate: ->
+                contents: Models.User.Summary,
+                validate: ->                    
                     if not @admins.length
                         errors.push 'Admins are missing.'                        
                     else

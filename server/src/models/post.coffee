@@ -1,9 +1,9 @@
 async = require '../common/async'
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
-BaseModel = require('./basemodel').BaseModel
+Models = require './'
 
-class Post extends BaseModel
+class Post extends Models.BaseModel
     
     @_meta: {
         type: Post,
