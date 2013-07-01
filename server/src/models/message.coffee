@@ -1,8 +1,8 @@
-Models = require './'
 AppError = require('../common/apperror').AppError
 moment = require('../common/moment')
+BaseModel = require('./basemodel').BaseModel
 
-class Message extends Models.BaseModel
+class Message extends BaseModel
     
     @_meta: {
         type: Message,

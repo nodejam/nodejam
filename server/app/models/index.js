@@ -42,8 +42,6 @@
 
   })();
 
-  Models.BaseModel = require('./basemodel').BaseModel;
-
   exports.Models = Models;
 
 }).call(this);

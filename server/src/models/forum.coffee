@@ -1,7 +1,8 @@
-Models = require './'
 AppError = require('../common/apperror').AppError
+BaseModel = require('./basemodel').BaseModel
+User = require('./user').User
 
-class Forum extends Models.BaseModel
+class Forum extends BaseModel
         
     @_meta: {
         type: Forum,
@@ -14,9 +15,9 @@ class Forum extends Models.BaseModel
             icon: 'string',
             iconThumbnail: 'string',
             cover: { type: 'string', required: 'false' },
-            createdBy: { type: Models.User.Summary, validate: -> @createdBy.validate() },
+            createdBy: { type: User.Summary, validate: -> @createdBy.validate() },
             moderators: { 
-                type: Models.User.Summary, 
+                type: User.Summary, 
                 validate: -> 
                     if @moderators.length
                         m.validate() for m in @moderators

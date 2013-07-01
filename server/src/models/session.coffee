@@ -1,7 +1,7 @@
-Models = require('./index').Models
 AppError = require('../common/apperror').AppError
+BaseModel = require('./basemodel').BaseModel
 
-class Session extends Models.BaseModel
+class Session extends BaseModel
 
     
     @_meta: {

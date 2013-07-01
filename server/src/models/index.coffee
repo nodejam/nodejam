@@ -29,5 +29,4 @@ class Models
         model._database = new (require '../common/database').Database(@dbconf)
         model._models = this
 
-Models.BaseModel = require('./basemodel').BaseModel
 exports.Models = Models
