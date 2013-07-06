@@ -214,13 +214,10 @@
     };
 
     BaseModel.prototype.validate = function(cb) {
-      var meta, _ref,
-        _this = this;
+      var meta, _ref;
 
       meta = this.constructor.__getMeta__();
-      return ((_ref = meta.validate) != null ? _ref : this.validateFields).call(this, meta.fields, function(err, errors) {
-        return cb(err, errors);
-      });
+      return ((_ref = meta.validate) != null ? _ref : this.validateFields).call(this, meta.fields, cb);
     };
 
     BaseModel.prototype.validateFields = function(fields, cb) {

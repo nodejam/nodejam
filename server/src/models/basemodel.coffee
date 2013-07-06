@@ -127,11 +127,10 @@ class BaseModel
     
     validate: (cb) =>
         meta = @constructor.__getMeta__()
-        (meta.validate ? @validateFields).call @, meta.fields, (err, errors) =>
-            cb err, errors
-
+        (meta.validate ? @validateFields).call @, meta.fields, cb
 
         
+
     validateFields: (fields, cb) =>
         new Validator().validate @, fields, cb
 

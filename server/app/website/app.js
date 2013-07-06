@@ -162,20 +162,20 @@
     return c.create;
   }));
 
+  app.post('/api/forums', findHandler('api/forums', function(c) {
+    return c.create;
+  }));
+
+  app.post('/api/forums/:forum', findHandler('api/forums', function(c) {
+    return c.createItem;
+  }));
+
   app.get('/', findHandler('ui/home', function(c) {
     return c.index;
   }));
 
   app.get('/:forum', findHandler('ui/forums', function(c) {
     return c.index;
-  }));
-
-  app.post('/api/forums', findHandler('ui/forums', function(c) {
-    return c.create;
-  }));
-
-  app.get('/app/dev/designs/cover', findHandler('ui/dev_designs', function(c) {
-    return c.cover;
   }));
 
   app.use(app.router);

@@ -159,12 +159,29 @@ class User extends BaseModel
         super
 
 
-    summarize: (fields = []) =>
-        fields = fields.concat ['domain', 'username', 'name', 'network']
-        result = super fields
-        result.id = @_id.toString()
-        result
+    summarize: =>        
+        summary = new Summary {
+            id: @_id.toString()
+            domain: @domain
+            username: @username
+            name: @name
+            network: @network
+        }
 
     
+    class Summary extends BaseModel    
+        @_getMeta: ->
+            {
+                type: Summary,
+                fields: {
+                    id: 'string',
+                    domain: 'string',
+                    username: 'string',
+                    name: 'string',
+                    network: 'string'
+                }
+            }
+            
+        
 
 exports.User = User

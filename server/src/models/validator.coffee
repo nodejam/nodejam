@@ -12,7 +12,12 @@ class Validator
         errors = []
 
         for fieldName, def of fields
-            @validateField(model[fieldName], fieldName, model, def)
+            errors.concat @validateField(model[fieldName], fieldName, model, def)
+        
+        if cb
+            cb null, errors
+        else
+            errors
             
                 
 
@@ -47,14 +52,14 @@ class Validator
             #Check types.            
             if fieldDef.type is 'array'
                 for item in value
-                    errors.push @validateField item, '', null, fieldDef.contents
+                    errors.concat @validateField item, '', null, fieldDef.contents
             else
                 #If it is a custom class
                 if (@isCustomClass(fieldDef.type) and value.constructor isnt fieldDef.type) or (typeof(value) isnt fieldDef.type)
-                    errors.push "#{fieldName} should be a #{fieldDef.type}."                        
+                    errors.concat "#{fieldName} should be a #{fieldDef.type}."                        
 
         if def.validate
-            errors.push def.validate.call model
+            errors.concat def.validate.call model
         
         return errors
                 

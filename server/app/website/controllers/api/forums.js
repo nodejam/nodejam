@@ -23,7 +23,6 @@
     function Forums() {
       this.getTypeSpecificController = __bind(this.getTypeSpecificController, this);
       this.invokeTypeSpecificController = __bind(this.invokeTypeSpecificController, this);
-      this.addItemComment = __bind(this.addItemComment, this);
       this.removeItem = __bind(this.removeItem, this);
       this.editItem = __bind(this.editItem, this);
       this.createItem = __bind(this.createItem, this);
@@ -40,7 +39,7 @@
         var stub;
 
         stub = req.body.name.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/, '');
-        return models.Collection.get({
+        return models.Forum.get({
           network: req.network.stub,
           $or: [
             {
@@ -50,9 +49,12 @@
             }
           ]
         }, {}, function(err, forum) {
+          var message;
+
           if (forum) {
             return res.send('A forum with the same name exists.');
           } else {
+            console.log;
             forum = new models.Collection;
             forum.network = req.network.stub;
             forum.type = req.body.type;
@@ -69,9 +71,26 @@
             forum.moderators.push(req.user);
             forum.createdAt = Date.now();
             forum.settings.comments = {
-              enable: true
+              enable: req.body.comments_enable ? Boolean(req.body.comments_enable) : true,
+              showByDefault: req.body.comments_showByDefault ? Boolean(req.body.comments_showByDefault) : true
             };
-            return _this.getTypeSpecificController(forum.type).createCollection(req, res, next, forum);
+            res.send(forum);
+            message = new models.Message({
+              network: req.network.stub,
+              userid: '0',
+              type: "global-notification",
+              reason: 'new-forum',
+              related: [
+                {
+                  type: 'user',
+                  id: req.user.id
+                }
+              ],
+              data: {
+                forum: forum
+              }
+            });
+            return message.save({}, function(err, msg) {});
           }
         });
       });
@@ -144,34 +163,13 @@
       });
     };
 
-    Forums.prototype.addItemComment = function(req, res, next) {
-      return this.invokeTypeSpecificController(arguments, function(c) {
-        return c.addComment;
-      });
-    };
-
     Forums.prototype.invokeTypeSpecificController = function(_arg, getHandler) {
       var next, req, res,
         _this = this;
 
       req = _arg[0], res = _arg[1], next = _arg[2];
       return this.ensureSession([req, res, next], function() {
-        return models.Collection.get({
-          stub: req.params.forum,
-          network: req.network.stub
-        }, {}, function(err, forum) {
-          if (!err) {
-            if (forum) {
-              return getHandler(_this.getTypeSpecificController(forum.type))(req, res, next, forum);
-            } else {
-              return res.render('404.hbs', {
-                layout: false
-              });
-            }
-          } else {
-            return next(err);
-          }
-        });
+        return getHandler(_this.getTypeSpecificController(req.body.type))(req, res, next, forum);
       });
     };
 

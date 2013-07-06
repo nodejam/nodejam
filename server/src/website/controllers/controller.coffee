@@ -7,7 +7,7 @@ class Controller
 
     ensureSession: (args, fn) =>
         [req, res, next] = args 
-        @getUserWithPasskey req.cookies.passkey, req.network, (err, user) =>
+        @getUserWithPasskey (req.query.passkey ? req.cookies.passkey), req.network, (err, user) =>
             if user?.id and user?.domain and user?.username
                 req.user = user
                 fn()
@@ -18,7 +18,7 @@ class Controller
 
     attachUser: (args, fn) ->
         [req, res, next] = args
-        @getUserWithPasskey req.cookies.passkey, req.network, (err, user) =>
+        @getUserWithPasskey r(req.query.passkey ? req.cookies.passkey), req.network, (err, user) =>
             req.user = user ? { id: 0 }
             fn()
 

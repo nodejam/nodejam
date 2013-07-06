@@ -6,24 +6,6 @@ controller = require '../controller'
 
 class Posts extends controller.Controller
             
-    createForum: (req, res, next, forum) =>
-        forum.settings.comments.showByDefault = true        
-        
-        forum.save {}, (err, forum) =>
-            res.send forum                
-        
-        message = new models.Message {
-            network: req.network.stub,
-            userid: '0',
-            type: "global-notification",
-            reason: 'new-forum',
-            related: [ { type: 'user', id: req.user.id } ],
-            data: { forum }
-        }
-        message.save {}, (err, msg) =>  
-            
-
-
     create: (req, res, next, forum) =>
         post = new models.Post
         post.network = req.network.stub

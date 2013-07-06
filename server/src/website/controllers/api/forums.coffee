@@ -10,11 +10,11 @@ class Forums extends controller.Controller
     create: (req, res, next) =>
         @ensureSession arguments, =>
             stub = req.body.name.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
-
-            models.Collection.get { network: req.network.stub, $or: [{ stub }, { name: req.body.name }] }, {}, (err, forum) =>
+            models.Forum.get { network: req.network.stub, $or: [{ stub }, { name: req.body.name }] }, {}, (err, forum) =>
                 if forum
                     res.send 'A forum with the same name exists.'
                 else
+                    console.log 
                     forum = new models.Collection
                     forum.network = req.network.stub
                     forum.type = req.body.type
@@ -30,10 +30,23 @@ class Forums extends controller.Controller
                     forum.moderators.push req.user
                     forum.createdAt = Date.now()
                     forum.settings.comments = {
-                        enable: true
+                        enable: if req.body.comments_enable then Boolean(req.body.comments_enable) else true
+                        showByDefault: if req.body.comments_showByDefault then Boolean(req.body.comments_showByDefault) else true
                     }
-                    @getTypeSpecificController(forum.type).createCollection req, res, next, forum
-                
+                    res.send forum
+        
+                    #Put a notification.
+                    message = new models.Message {
+                        network: req.network.stub,
+                        userid: '0',
+                        type: "global-notification",
+                        reason: 'new-forum',
+                        related: [ { type: 'user', id: req.user.id } ],
+                        data: { forum }
+                    }
+                    message.save {}, (err, msg) =>  
+                                
+
                 
     edit: (req, res, next) =>
         @ensureSession arguments, =>
@@ -75,21 +88,10 @@ class Forums extends controller.Controller
     removeItem: (req, res, next) =>
         @invokeTypeSpecificController arguments, (c) -> c.remove
             
-            
-    addItemComment: (req, res, next) =>
-        @invokeTypeSpecificController arguments, (c) -> c.addComment
-        
-                        
+                                    
     invokeTypeSpecificController: ([req, res, next], getHandler) =>            
         @ensureSession [req, res, next], =>
-            models.Collection.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
-                if not err
-                    if forum
-                        getHandler(@getTypeSpecificController(forum.type)) req, res, next, forum
-                    else
-                        res.render '404.hbs', { layout: false }                                   
-                else
-                    next err            
+            getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
 
 
     getTypeSpecificController: (type) =>

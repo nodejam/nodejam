@@ -44,7 +44,8 @@ init = () ->
         createUser = (user, cb) ->
             console.log "Creating #{user.username}..." 
             user.secret = conf.networks[0].adminkeys.default
-            doHttpRequest '/api/sessions', querystring.stringify(user), 'post', (err, resp) ->                
+            doHttpRequest '/api/sessions', querystring.stringify(user), 'post', (err, resp) ->   
+                resp = JSON.parse resp             
                 console.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
                 cb()
@@ -63,6 +64,7 @@ init = () ->
             delete forum._createdBy
             
             doHttpRequest "/api/forums?passkey=#{passkey}", querystring.stringify(forum), 'post', (err, resp) ->                
+                resp = JSON.parse resp            
                 console.log "Created #{resp.name}"
                 cb()
             
@@ -88,10 +90,12 @@ init = () ->
             delete article._content
             delete article._meta
             
-            doHttpRequest "/api/#{forum}?passkey=#{passkey}", querystring.stringify(article), 'post', (err, resp) ->                
+            doHttpRequest "/api/forums/#{forum}?passkey=#{passkey}", querystring.stringify(article), 'post', (err, resp) ->                
+                resp = JSON.parse resp
                 console.log "Created #{resp.title} with uid #{resp.uid}"
                 if meta.split(',').indexOf('featured') > -1
                     doHttpRequest "/api/admin/feature?passkey=#{passkey}&forum=#{resp.forums[0].stub}&uid=#{resp.uid}", null, 'get', (err, r) ->                
+                        resp = JSON.parse resp
                         console.log "Added featured tag to article #{resp.title}."
                         cb()
                 
@@ -119,6 +123,7 @@ init = () ->
 
 
 doHttpRequest = (url, data, method, cb) ->
+    console.log "HTTP #{method.toUpperCase()} to #{url}"
     options = {
         host: HOST,
         port: PORT,
@@ -135,7 +140,8 @@ doHttpRequest = (url, data, method, cb) ->
             response += chunk
             
         res.on 'end', ->
-            cb null, JSON.parse response
+            console.log response
+            cb null, response
 
     if data
         req.write(data)

@@ -16,15 +16,18 @@
     }
 
     Validator.prototype.validate = function(model, fields, cb) {
-      var def, errors, fieldName, _results;
+      var def, errors, fieldName;
 
       errors = [];
-      _results = [];
       for (fieldName in fields) {
         def = fields[fieldName];
-        _results.push(this.validateField(model[fieldName], fieldName, model, def));
+        errors.concat(this.validateField(model[fieldName], fieldName, model, def));
       }
-      return _results;
+      if (cb) {
+        return cb(null, errors);
+      } else {
+        return errors;
+      }
     };
 
     Validator.prototype.validateField = function(value, fieldName, model, def) {
@@ -56,16 +59,16 @@
         if (fieldDef.type === 'array') {
           for (_i = 0, _len = value.length; _i < _len; _i++) {
             item = value[_i];
-            errors.push(this.validateField(item, '', null, fieldDef.contents));
+            errors.concat(this.validateField(item, '', null, fieldDef.contents));
           }
         } else {
           if ((this.isCustomClass(fieldDef.type) && value.constructor !== fieldDef.type) || (typeof value !== fieldDef.type)) {
-            errors.push("" + fieldName + " should be a " + fieldDef.type + ".");
+            errors.concat("" + fieldName + " should be a " + fieldDef.type + ".");
           }
         }
       }
       if (def.validate) {
-        errors.push(def.validate.call(model));
+        errors.concat(def.validate.call(model));
       }
       return errors;
     };

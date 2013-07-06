@@ -16,6 +16,8 @@
   Forum = require('./forum').Forum;
 
   User = (function(_super) {
+    var Summary, _ref;
+
     __extends(User, _super);
 
     User._getMeta = function() {
@@ -260,17 +262,42 @@
       return User.__super__.save.apply(this, arguments);
     };
 
-    User.prototype.summarize = function(fields) {
-      var result;
+    User.prototype.summarize = function() {
+      var summary;
 
-      if (fields == null) {
-        fields = [];
-      }
-      fields = fields.concat(['domain', 'username', 'name', 'network']);
-      result = User.__super__.summarize.call(this, fields);
-      result.id = this._id.toString();
-      return result;
+      return summary = new Summary({
+        id: this._id.toString(),
+        domain: this.domain,
+        username: this.username,
+        name: this.name,
+        network: this.network
+      });
     };
+
+    Summary = (function(_super1) {
+      __extends(Summary, _super1);
+
+      function Summary() {
+        _ref = Summary.__super__.constructor.apply(this, arguments);
+        return _ref;
+      }
+
+      Summary._getMeta = function() {
+        return {
+          type: Summary,
+          fields: {
+            id: 'string',
+            domain: 'string',
+            username: 'string',
+            name: 'string',
+            network: 'string'
+          }
+        };
+      };
+
+      return Summary;
+
+    })(BaseModel);
 
     return User;
 

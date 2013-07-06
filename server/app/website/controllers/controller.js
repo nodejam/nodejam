@@ -19,11 +19,11 @@
     }
 
     Controller.prototype.ensureSession = function(args, fn) {
-      var next, req, res,
+      var next, req, res, _ref,
         _this = this;
 
       req = args[0], res = args[1], next = args[2];
-      return this.getUserWithPasskey(req.cookies.passkey, req.network, function(err, user) {
+      return this.getUserWithPasskey((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey, req.network, function(err, user) {
         if ((user != null ? user.id : void 0) && (user != null ? user.domain : void 0) && (user != null ? user.username : void 0)) {
           req.user = user;
           return fn();
@@ -36,11 +36,11 @@
     };
 
     Controller.prototype.attachUser = function(args, fn) {
-      var next, req, res,
+      var next, req, res, _ref,
         _this = this;
 
       req = args[0], res = args[1], next = args[2];
-      return this.getUserWithPasskey(req.cookies.passkey, req.network, function(err, user) {
+      return this.getUserWithPasskey(r((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey), req.network, function(err, user) {
         req.user = user != null ? user : {
           id: 0
         };

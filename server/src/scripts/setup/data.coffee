@@ -1,16 +1,50 @@
 #Users
+
+tributeToAaron = {
+    username: 'aaronsw', 
+    name: 'Aaron Swartz Tribute', 
+    location: 'Brooklyn, NYC',
+    domain: 'users',
+    domainid: 'aaronsw',
+    email: 'me@aaronsw.com',
+    picture: 'http://i1.sndcdn.com/artworks-000039832777-og5thh-crop.jpg?86be403',
+    thumbnail: 'http://i1.sndcdn.com/artworks-000039832777-og5thh-crop.jpg?86be403',
+}
+
 jeswin = {
     username: 'jeswin', 
     name: 'Jeswin', 
     location: 'Bangalore, India',
     domain: 'users',
     domainid: 'jeswin',
-    email: 'jeswin@gmail.com',
-    picture: 'http://img-android.lisisoft.com/imgmic/1/8/1981-i-com.oslwp.srcEdz6OGpF.jpg',
-    thumbnail: 'http://img-android.lisisoft.com/imgmic/1/8/1981-i-com.oslwp.srcEdz6OGpF.jpg',
+    email: 'jeswinpk@agilehead.com',
+    picture: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.96.gif?r=3',
+    thumbnail: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.40.gif?r=3',
 }
 
-users = [jeswin]
+ebin = {
+    username: 'ebin', 
+    name: 'Ebin John', 
+    location: 'Bangalore, India',
+    domain: 'users',
+    domainid: 'ebin',
+    email: 'ebin.john@outlook.com',
+    picture: 'https://lh4.googleusercontent.com/-SyoIfkRItqE/AAAAAAAAAAI/AAAAAAAAAw0/nxHk4Nqrpm8/s120-c/photo.jpg',
+    thumbnail: 'https://lh4.googleusercontent.com/-SyoIfkRItqE/AAAAAAAAAAI/AAAAAAAAAw0/nxHk4Nqrpm8/s120-c/photo.jpg',
+}
+
+anupk7 = {
+    username: 'anupk7', 
+    name: 'Anup Kesavan', 
+    location: 'Bangalore, India',
+    domain: 'users',
+    domainid: 'anupk7',
+    email: 'anupk7@gmail.com',
+    picture: 'http://m.c.lnkd.licdn.com/mpr/pub/image-JLwJ9fTJBTv3Ur9xL18X4Ph00ExD3ZziHjwE4tuK0R2-tCRVJLwEuu6J0rLm3Zhhd9sr/anup-kesavan-ponnarassery.jpg',
+    thumbnail: 'http://m.c.lnkd.licdn.com/mpr/pub/image-JLwJ9fTJBTv3Ur9xL18X4Ph00ExD3ZziHjwE4tuK0R2-tCRVJLwEuu6J0rLm3Zhhd9sr/anup-kesavan-ponnarassery.jpg',
+}
+
+users = [tributeToAaron, jeswin, ebin, anupk7]
 
 #Forums
 poetry = {
@@ -21,7 +55,7 @@ poetry = {
     permission: 'public',
     type: 'post',
     category: 'literature',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 movies = {
@@ -33,7 +67,7 @@ movies = {
     permission: 'public',    
     type: 'post',
     category: 'movies',
-    _createdBy: 'jeswin'    
+    _createdBy: 'aaronsw'      
 }
 
 rawNerve = {
@@ -45,7 +79,7 @@ rawNerve = {
     permission: 'public',
     type: 'post',
     category: 'life',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 itsMyLife = {
@@ -56,7 +90,7 @@ itsMyLife = {
     permission: 'public',
     type: 'post',
     category: 'life',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 makingStuff =  {
@@ -67,7 +101,7 @@ makingStuff =  {
     permission: 'public',
     type: 'post',
     category: 'life',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 travel = {
@@ -78,7 +112,7 @@ travel = {
     permission: 'public',
     type: 'post',
     category: 'travel',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 computers = {
@@ -89,7 +123,7 @@ computers = {
     permission: 'public',
     type: 'post',
     category: 'technology',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 theGreatMasters = {
@@ -100,7 +134,7 @@ theGreatMasters = {
     permission: 'public',
     type: 'post',
     category: 'art',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 streetFood = {
@@ -111,7 +145,7 @@ streetFood = {
     permission: 'public',
     type: 'post',
     category: 'food-and-drinks'
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 guzzlers = {
@@ -122,7 +156,7 @@ guzzlers = {
     permission: 'public',
     type: 'post',
     category: 'food-and-drinks'
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 earlyMornings = {
@@ -133,7 +167,7 @@ earlyMornings = {
     permission: 'public',
     type: 'post',
     category: 'life',
-    _createdBy: 'jeswin'
+    _createdBy: 'aaronsw'  
 }
 
 forums = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
@@ -145,7 +179,7 @@ believeYouCanChange = {
     cover: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
     smallCover: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -155,7 +189,7 @@ cherishMistakes = {
     cover: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
     smallCover: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -165,7 +199,7 @@ confrontReality = {
     cover: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
     smallCover: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -175,7 +209,7 @@ darkKnight = {
     cover: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
     smallCover: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -185,7 +219,7 @@ fixTheMachine = {
     cover: 'http://www.woodstock.com/images/spot1.jpg',
     smallCover: 'http://www.woodstock.com/images/spot1.jpg',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -195,7 +229,7 @@ leanIntoThePain = {
     cover: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
     smallCover: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -203,7 +237,7 @@ lookAtYourselfObjectively = {
     title: 'Look at yourself objectively',
     _content: 'look-at-yourself-objectively.md',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -213,7 +247,7 @@ optimalBiases = {
     cover: 'http://upload.wikimedia.org/wikipedia/commons/d/da/Claude_Monet,_Saint-Georges_majeur_au_cr%C3%A9puscule.jpg',
     smallCover: 'http://upload.wikimedia.org/wikipedia/commons/d/da/Claude_Monet,_Saint-Georges_majeur_au_cr%C3%A9puscule.jpg',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 
@@ -223,7 +257,7 @@ takeAStepBack = {
     cover: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
     smallCover: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
     _forum: 'raw-nerve',
-    _createdBy: 'jeswin',
+    _createdBy: 'aaronsw'  ,
     _meta: 'featured'
 }
 

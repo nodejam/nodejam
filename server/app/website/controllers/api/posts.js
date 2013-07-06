@@ -23,36 +23,9 @@
       this.addComment = __bind(this.addComment, this);
       this.remove = __bind(this.remove, this);
       this.edit = __bind(this.edit, this);
-      this.create = __bind(this.create, this);
-      this.createForum = __bind(this.createForum, this);      _ref = Posts.__super__.constructor.apply(this, arguments);
+      this.create = __bind(this.create, this);      _ref = Posts.__super__.constructor.apply(this, arguments);
       return _ref;
     }
-
-    Posts.prototype.createForum = function(req, res, next, forum) {
-      var message,
-        _this = this;
-
-      forum.settings.comments.showByDefault = true;
-      forum.save({}, function(err, forum) {
-        return res.send(forum);
-      });
-      message = new models.Message({
-        network: req.network.stub,
-        userid: '0',
-        type: "global-notification",
-        reason: 'new-forum',
-        related: [
-          {
-            type: 'user',
-            id: req.user.id
-          }
-        ],
-        data: {
-          forum: forum
-        }
-      });
-      return message.save({}, function(err, msg) {});
-    };
 
     Posts.prototype.create = function(req, res, next, forum) {
       var post,

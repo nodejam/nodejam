@@ -1,8 +1,8 @@
 fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
-Install instructions from new Ubuntu 13.04
-===============================================
+Install instructions (Ubuntu 13.04)
+===================================
 Note: This should also work on earlier versions of Ubuntu.
 
 sudo apt-get install build-essential
