@@ -2,11 +2,11 @@ async = require '../common/async'
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
-User = require('./user').User
 
 class Post extends BaseModel
     
     @_getMeta: ->
+        User = require('./user').User        
         {
             type: Post,
             collection: 'posts',

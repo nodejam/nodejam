@@ -1,11 +1,11 @@
 AppError = require('../common/apperror').AppError
 conf = require '../conf'
 BaseModel = require('./basemodel').BaseModel
-User = require('./user').User
 
 class Network extends BaseModel
 
     @_getMeta: ->
+        User = require('./user').User
         {
             type: Network,
             collection: 'networks',

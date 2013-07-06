@@ -1,10 +1,10 @@
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
-User = require('./user').User
 
 class Comment extends BaseModel
 
     @_getMeta: ->
+        User = require('./user').User
         {
             type: Comment,
             collection: 'comments',

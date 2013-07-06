@@ -182,6 +182,4 @@ class User extends BaseModel
                 }
             }
             
-        
-
 exports.User = User

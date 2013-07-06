@@ -1,10 +1,10 @@
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
-User = require('./user').User
 
 class Forum extends BaseModel
         
     @_getMeta: ->
+        User = require('./user').User
         {
             type: Forum,
             collection: 'forums',
