@@ -50,7 +50,7 @@ class Validator
                     errors.push @validateField item, '', null, fieldDef.contents
             else
                 #If it is a custom class
-                if (@isCustomClass(type) and value.constructor isnt type) or (typeof(value) isnt fieldDef.type)
+                if (@isCustomClass(fieldDef.type) and value.constructor isnt fieldDef.type) or (typeof(value) isnt fieldDef.type)
                     errors.push "#{fieldName} should be a #{fieldDef.type}."                        
 
         if def.validate

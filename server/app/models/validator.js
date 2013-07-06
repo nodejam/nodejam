@@ -22,7 +22,7 @@
       _results = [];
       for (fieldName in fields) {
         def = fields[fieldName];
-        _results.push(errors.concat(def.validate ? def.validate.call(model) : this.validateField(model[fieldName], fieldName, model, def)));
+        _results.push(this.validateField(model[fieldName], fieldName, model, def));
       }
       return _results;
     };
@@ -30,8 +30,8 @@
     Validator.prototype.validateField = function(value, fieldName, model, def) {
       var errors, fieldDef, item, _i, _len;
 
-      if (!def.skipValidation) {
-        errors = [];
+      errors = [];
+      if (!def.useCustomValidationOnly) {
         if (['string', 'number', 'boolean', 'object'].indexOf(def) !== -1) {
           fieldDef = {
             type: def,
@@ -50,29 +50,24 @@
         } else {
           fieldDef = def;
         }
-        if (!this.isCustomClass(fieldDef.type)) {
-          if (fieldDef.required && !value) {
-            errors.push("" + fieldName + " is required.");
-          }
-          switch (fieldDef.type) {
-            case '':
-              break;
-            case 'array':
-              for (_i = 0, _len = value.length; _i < _len; _i++) {
-                item = value[_i];
-                this.validateField(item, '', null, fieldDef.contents);
-              }
-              break;
-            default:
-              if (typeof value !== fieldDef.type) {
-                errors.push("" + fieldName + " should be a " + fieldDef.type + ".");
-              }
+        if (fieldDef.required == null) {
+          fieldDef.required = true;
+        }
+        if (fieldDef.type === 'array') {
+          for (_i = 0, _len = value.length; _i < _len; _i++) {
+            item = value[_i];
+            errors.push(this.validateField(item, '', null, fieldDef.contents));
           }
         } else {
-          errors.concat(typeof value.validate === "function" ? value.validate() : void 0);
+          if ((this.isCustomClass(fieldDef.type) && value.constructor !== fieldDef.type) || (typeof value !== fieldDef.type)) {
+            errors.push("" + fieldName + " should be a " + fieldDef.type + ".");
+          }
         }
-        return errors;
       }
+      if (def.validate) {
+        errors.push(def.validate.call(model));
+      }
+      return errors;
     };
 
     Validator.prototype.isCustomClass = function(type) {
