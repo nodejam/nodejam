@@ -16,13 +16,13 @@
     }
 
     Validator.prototype.validate = function(model, fields, cb) {
-      var def, errors, fieldName, _ref, _results;
+      var def, errors, fieldName, _results;
 
       errors = [];
       _results = [];
       for (fieldName in fields) {
         def = fields[fieldName];
-        _results.push(errors.concat(((_ref = fieldDef.validate) != null ? _ref : this.validateField)(model[fieldName], fieldName, model, fieldDef)));
+        _results.push(errors.concat(def.validate ? def.validate.call(model) : this.validateField(model[fieldName], fieldName, model, def)));
       }
       return _results;
     };
@@ -50,7 +50,7 @@
         } else {
           fieldDef = def;
         }
-        if (!this.isCustomType(fieldDef.type)) {
+        if (!this.isCustomClass(fieldDef.type)) {
           if (fieldDef.required && !value) {
             errors.push("" + fieldName + " is required.");
           }
@@ -65,7 +65,7 @@
               break;
             default:
               if (typeof value !== fieldDef.type) {
-                _errors.push("" + fieldName + " should be a " + fieldDef.type + ".");
+                errors.push("" + fieldName + " should be a " + fieldDef.type + ".");
               }
           }
         } else {

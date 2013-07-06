@@ -21,7 +21,7 @@
       var meta;
 
       utils.extend(this, params);
-      meta = this.constructor._getMeta();
+      meta = this.constructor.__getMeta__();
       if (this._id) {
         this._id = meta.type._database.ObjectId(this._id);
       }
@@ -31,7 +31,7 @@
       var meta,
         _this = this;
 
-      meta = this._getMeta();
+      meta = this.__getMeta__();
       return this._database.findOne(meta.collection, params, function(err, result) {
         return cb(err, result ? new meta.type(result) : void 0);
       });
@@ -41,7 +41,7 @@
       var meta,
         _this = this;
 
-      meta = this._getMeta();
+      meta = this.__getMeta__();
       return this._database.find(meta.collection, params, function(err, cursor) {
         return cursor.toArray(function(err, items) {
           var item;
@@ -64,7 +64,7 @@
       var meta,
         _this = this;
 
-      meta = this._getMeta();
+      meta = this.__getMeta__();
       return this._database.find(meta.collection, params, function(err, cursor) {
         fnCursor(cursor);
         return cursor.toArray(function(err, items) {
@@ -87,7 +87,7 @@
     BaseModel.getCursor = function(params, context, cb) {
       var meta;
 
-      meta = this._getMeta();
+      meta = this.__getMeta__();
       return this._database.find(meta.collection, params, cb);
     };
 
@@ -95,7 +95,7 @@
       var meta,
         _this = this;
 
-      meta = this._getMeta();
+      meta = this.__getMeta__();
       return this._database.findOne(meta.collection, {
         _id: this._database.ObjectId(id)
       }, function(err, result) {
@@ -107,7 +107,7 @@
       var meta,
         _this = this;
 
-      meta = this._getMeta();
+      meta = this.__getMeta__();
       if (meta.validateMultiRecordOperationParams(params)) {
         return this._database.remove(meta.collection, params, function(err) {
           return typeof cb === "function" ? cb(err) : void 0;
@@ -117,10 +117,10 @@
       }
     };
 
-    BaseModel._getMeta = function() {
+    BaseModel.__getMeta__ = function() {
       var meta, _ref;
 
-      meta = this._meta;
+      meta = this._getMeta();
       if ((_ref = meta.validateMultiRecordOperationParams) == null) {
         meta.validateMultiRecordOperationParams = function(params) {
           return false;
@@ -146,7 +146,7 @@
       var def, fieldName, meta, _ref,
         _this = this;
 
-      meta = this.constructor._getMeta();
+      meta = this.constructor.__getMeta__();
       _ref = meta.fields;
       for (fieldName in _ref) {
         def = _ref[fieldName];
@@ -214,28 +214,24 @@
     };
 
     BaseModel.prototype.validate = function(cb) {
-      var errors, meta, _ref,
+      var meta, _ref,
         _this = this;
 
-      errors = [];
-      meta = this.constructor._getMeta();
+      meta = this.constructor.__getMeta__();
       return ((_ref = meta.validate) != null ? _ref : this.validateFields).call(this, meta.fields, function(err, errors) {
         return cb(err, errors);
       });
     };
 
-    BaseModel.prototype.validateFields = function(model, fields, cb) {
-      var errors;
-
-      errors = [];
-      return new Validator().validate(model, fields, cb);
+    BaseModel.prototype.validateFields = function(fields, cb) {
+      return new Validator().validate(this, fields, cb);
     };
 
     BaseModel.prototype.destroy = function(context, cb) {
       var meta,
         _this = this;
 
-      meta = this.constructor._getMeta();
+      meta = this.constructor.__getMeta__();
       return meta.type._database.remove(meta.collection, {
         _id: this._id
       }, function(err) {

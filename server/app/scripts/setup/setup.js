@@ -59,7 +59,7 @@
       createUser = function(user, cb) {
         console.log("Creating " + user.username + "...");
         user.secret = conf.networks[0].adminkeys["default"];
-        return doHttpRequest('/api/v1/sessions', querystring.stringify(user), 'post', function(err, resp) {
+        return doHttpRequest('/api/sessions', querystring.stringify(user), 'post', function(err, resp) {
           console.log("Created " + resp.username);
           _globals.sessions[user.username] = resp;
           return cb();
@@ -83,7 +83,7 @@
         console.log("Creating a new forum with passkey(" + passkey + ")....");
         console.log("Creating " + forum.name + "...");
         delete forum._createdBy;
-        return doHttpRequest("/api/v1/forums?passkey=" + passkey, querystring.stringify(forum), 'post', function(err, resp) {
+        return doHttpRequest("/api/forums?passkey=" + passkey, querystring.stringify(forum), 'post', function(err, resp) {
           console.log("Created " + resp.name);
           return cb();
         });
@@ -113,10 +113,10 @@
         delete article._createdBy;
         delete article._content;
         delete article._meta;
-        return doHttpRequest("/api/v1/" + forum + "?passkey=" + passkey, querystring.stringify(article), 'post', function(err, resp) {
+        return doHttpRequest("/api/" + forum + "?passkey=" + passkey, querystring.stringify(article), 'post', function(err, resp) {
           console.log("Created " + resp.title + " with uid " + resp.uid);
           if (meta.split(',').indexOf('featured') > -1) {
-            return doHttpRequest("/api/v1/admin/feature?passkey=" + passkey + "&forum=" + resp.forums[0].stub + "&uid=" + resp.uid, null, 'get', function(err, r) {
+            return doHttpRequest("/api/admin/feature?passkey=" + passkey + "&forum=" + resp.forums[0].stub + "&uid=" + resp.uid, null, 'get', function(err, r) {
               console.log("Added featured tag to article " + resp.title + ".");
               return cb();
             });

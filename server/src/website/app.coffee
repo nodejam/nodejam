@@ -92,12 +92,12 @@ handleDomainUrls = (domain, fnHandler) ->
 #AUTH
 app.get '/auth/twitter', findHandler('ui/auth', (c) -> c.twitter)
 app.get '/auth/twitter/callback', findHandler('ui/auth', (c) -> c.twitterCallback)
-app.post '/api/:version/sessions', findHandler('api/sessions', (c) -> c.create)
+app.post '/api/sessions', findHandler('api/sessions', (c) -> c.create)
 
 #HOME
 app.get '/', findHandler('ui/home', (c) -> c.index)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.index)
-app.post '/api/:version/forums', findHandler('ui/forums', (c) -> c.create)
+app.post '/api/forums', findHandler('ui/forums', (c) -> c.create)
 
 #TESTING DESIGNS
 app.get '/app/dev/designs/cover', findHandler('ui/dev_designs', (c) -> c.cover)

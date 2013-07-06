@@ -158,7 +158,7 @@
     return c.twitterCallback;
   }));
 
-  app.post('/api/:version/sessions', findHandler('api/sessions', function(c) {
+  app.post('/api/sessions', findHandler('api/sessions', function(c) {
     return c.create;
   }));
 
@@ -170,7 +170,7 @@
     return c.index;
   }));
 
-  app.post('/api/:version/forums', findHandler('ui/forums', function(c) {
+  app.post('/api/forums', findHandler('ui/forums', function(c) {
     return c.create;
   }));
 

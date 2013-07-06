@@ -9,7 +9,7 @@ AppError = require('../../../common/apperror').AppError
 class Sessions extends controller.Controller
     
     create: (req, res, next) =>
-        if req.body.domain == 'fb'        
+        if req.body.domain is 'fb'        
             client = new FaceBookClient()            
             options = {
                 path: '/me?' + querystring.stringify { 
@@ -39,7 +39,7 @@ class Sessions extends controller.Controller
                     next new AppError 'Invalid credentials', 'INVALID_CREDENTIALS'
                     
                     
-        else if req.body.domain == 'users'
+        else if req.body.domain is 'users'
             if req.body.secret is req.network.adminkeys.default
                 accessToken = utils.uniqueId(24)
                 models.User.getOrCreateUser req.body, 'users', req.network.stub, accessToken, (err, user, session) =>

@@ -54,7 +54,7 @@ foraProject = new models.Network {
     
 networks = [foraProject]
     
-exports = {
+module.exports = {
     db,
     auth,
     admins,

@@ -12,15 +12,16 @@ class Validator
         errors = []
 
         for fieldName, def of fields
-            errors.concat (fieldDef.validate ? @validateField)(model[fieldName], fieldName, model, fieldDef)
-                
+            @validateField(model[fieldName], fieldName, model, def)
+            
                 
 
     validateField: (value, fieldName, model, def) =>
-        if not def.skipValidation
-            errors = []
+        errors = []
 
+        if not def.useCustomValidationOnly                
             #Convert short hands to full definitions.
+            #eg: 'string' means { type: 'string', required: true }
             if ['string', 'number', 'boolean', 'object'].indexOf(def) isnt -1
                 fieldDef = {
                     type: def,
@@ -39,23 +40,23 @@ class Validator
             else
                 fieldDef = def
 
+            #Required is true unless explicitly set.
+            if not fieldDef.required?
+                fieldDef.required = true
+
+            #Check types.            
+            if fieldDef.type is 'array'
+                for item in value
+                    errors.push @validateField item, '', null, fieldDef.contents
+            else
+                #If it is a custom class
+                if (@isCustomClass(type) and value.constructor isnt type) or (typeof(value) isnt fieldDef.type)
+                    errors.push "#{fieldName} should be a #{fieldDef.type}."                        
+
+        if def.validate
+            errors.push def.validate.call model
         
-            if not @isCustomType fieldDef.type
-                if fieldDef.required and not value
-                    errors.push "#{fieldName} is required."
-                
-                switch fieldDef.type
-                    when '' then break                        
-                    when 'array'
-                        for item in value
-                            @validateField item, '', null, fieldDef.contents
-                    else
-                        if typeof(value) isnt fieldDef.type
-                            _errors.push "#{fieldName} should be a #{fieldDef.type}."                    
-            else            
-                errors.concat value.validate?()
-            
-            return errors
+        return errors
                 
             
 

@@ -20,81 +20,73 @@
       return _ref;
     }
 
-    /*
-        Fields
-            - name
-            - stub
-            - authenticationTypes (list of { name:string, params:depends on name })
-            - item types (list of string)
-            - admins
-    */
+    Network._getMeta = function() {
+      return {
+        type: Network,
+        collection: 'networks',
+        fields: {
+          name: 'string',
+          stub: 'string',
+          authenticationTypes: {
+            type: 'array',
+            contents: 'object',
+            validate: function() {
+              var errors, type, _i, _len, _ref1;
 
-
-    Network._meta = {
-      type: Network,
-      collection: 'networks',
-      fields: {
-        name: 'string',
-        stub: 'string',
-        authenticationTypes: {
-          type: 'array',
-          contents: 'object',
-          validate: function() {
-            var errors, type, _i, _len, _ref1;
-
-            if (!this.authenticationTypes.length) {
-              return 'Authentication types not defined.';
-            } else {
-              errors = [];
-              _ref1 = this.authenticationTypes;
-              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                type = _ref1[_i];
-                if (['facebook', 'twitter', 'fora'].indexOf(type.name === -1)) {
-                  errors.push("" + type.name + " is not a valid Authentication Type.");
-                }
-                if (type.name === 'twitter') {
-                  if (!type.params) {
-                    errors.push("Twitter authentication parameters are missing.");
-                  } else {
-                    if (!type.params.TWITTER_CONSUMER_KEY) {
-                      errors.push("Twitter consumer key is missing.");
-                    }
-                    if (!type.params.TWITTER_SECRET) {
-                      errors.push("Twitter consumer secret is missing.");
-                    }
-                    if (!type.params.TWITTER_CALLBACK) {
-                      errors.push("Twitter callback is missing.");
+              if (!this.authenticationTypes.length) {
+                return 'Authentication types not defined.';
+              } else {
+                errors = [];
+                _ref1 = this.authenticationTypes;
+                for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                  type = _ref1[_i];
+                  if (['facebook', 'twitter', 'fora'].indexOf(type.name === -1)) {
+                    errors.push("" + type.name + " is not a valid Authentication Type.");
+                  }
+                  if (type.name === 'twitter') {
+                    if (!type.params) {
+                      errors.push("Twitter authentication parameters are missing.");
+                    } else {
+                      if (!type.params.TWITTER_CONSUMER_KEY) {
+                        errors.push("Twitter consumer key is missing.");
+                      }
+                      if (!type.params.TWITTER_SECRET) {
+                        errors.push("Twitter consumer secret is missing.");
+                      }
+                      if (!type.params.TWITTER_CALLBACK) {
+                        errors.push("Twitter callback is missing.");
+                      }
                     }
                   }
                 }
+                return errors;
               }
-              return errors;
+            }
+          },
+          admins: {
+            type: 'array',
+            contents: User.Summary,
+            validate: function() {
+              var admin, errors, _i, _len, _ref1;
+
+              if (!this.admins.length) {
+                return errors.push('Admins are missing.');
+              } else {
+                errors = [];
+                _ref1 = this.admins;
+                for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                  admin = _ref1[_i];
+                  errors.concat(admin.validate());
+                }
+                return errors;
+              }
             }
           }
         },
-        admins: {
-          type: 'array',
-          contents: User.Summary,
-          validate: function() {
-            var admin, errors, _i, _len, _ref1;
-
-            if (!this.admins.length) {
-              return errors.push('Admins are missing.');
-            } else {
-              errors = [];
-              _ref1 = this.admins;
-              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                admin = _ref1[_i];
-                errors.concat(admin.validate());
-              }
-              return errors;
-            }
-          }
+        logging: {
+          isLogged: true
         }
-      },
-      logging: {
-        isLogged: true
-      }
+      };
     };
 
     return Network;
