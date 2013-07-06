@@ -37,7 +37,7 @@ npm install marked
 npm install less
 
 nginx configuration file
-========================
+------------------------
 
 ```
 #This redirects non-www to www urls
@@ -89,18 +89,18 @@ server {
 ```      
 
 /etc/hosts
-==========
+----------
 For development set local.foraproject.org to localhost
 You could use any other, but that's the path expected by the setup script.
 
 Mongodb Security
-================
+----------------
 Edit /etc/mongodb.conf
 bind_ip = 127.0.0.1
 port = MONGODB_PORT    
 
 Notes
-=====
+-----
 Because the path the node modules was changed, this is also required to be run (as root):
 rm /usr/local/lib/node
 ln -s /usr/local/lib/node_modules /usr/local/lib/node 
