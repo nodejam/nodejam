@@ -153,7 +153,6 @@
     };
 
     Post.refreshForumSnapshot = function(post, context, cb) {
-      console.log(JSON.stringify(post));
       return Post._models.Forum.get({
         stub: post.forum.stub
       }, {}, function(err, forum) {

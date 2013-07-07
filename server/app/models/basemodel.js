@@ -141,28 +141,33 @@
     };
 
     BaseModel.constructModel = function(obj, meta) {
-      var arr, field, fieldDef, item, name, result, value, _i, _j, _len, _len1, _ref;
+      var arr, contentType, field, fieldDef, item, name, result, value, _i, _len, _ref;
 
-      if (meta.constructor) {
-        return meta.constructor(obj);
+      if (meta.initializer) {
+        return meta.initializer(obj);
       } else {
         result = {};
         _ref = meta.fields;
-        for (field = _i = 0, _len = _ref.length; _i < _len; field = ++_i) {
-          name = _ref[field];
+        for (name in _ref) {
+          field = _ref[name];
           value = obj[name];
           fieldDef = this.getFullFieldDefinition(field);
-          if (this.isCustomClass(field.type)) {
+          if (this.isCustomClass(fieldDef.type)) {
             if (value) {
-              result[name] = this.constructModel(value, field.type._getMeta());
+              result[name] = this.constructModel(value, fieldDef.type._getMeta());
             }
           } else {
             if (value) {
-              if (field.type === 'array') {
+              if (fieldDef.type === 'array') {
                 arr = [];
-                for (_j = 0, _len1 = value.length; _j < _len1; _j++) {
-                  item = value[_j];
-                  arr.push(this.constructModel(item, field.contents._getMeta()));
+                contentType = this.getFullFieldDefinition(fieldDef.contents);
+                if (this.isCustomClass(contentType)) {
+                  for (_i = 0, _len = value.length; _i < _len; _i++) {
+                    item = value[_i];
+                    arr.push(this.constructModel(item, contentType._getMeta()));
+                  }
+                } else {
+                  arr = value;
                 }
                 result[name] = arr;
               } else {
@@ -170,6 +175,9 @@
               }
             }
           }
+        }
+        if (obj._id) {
+          result._id = obj._id;
         }
         return new meta.type(result);
       }

@@ -78,25 +78,31 @@ class BaseModel
         
         
     @constructModel: (obj, meta) ->
-        if meta.constructor
-            meta.constructor obj
+        if meta.initializer
+            meta.initializer obj
         else
             result = {}
-            for name, field in meta.fields
+            for name, field of meta.fields
                 value = obj[name]
                 fieldDef = @getFullFieldDefinition field
-                if @isCustomClass field.type
+                if @isCustomClass fieldDef.type
                     if value
-                        result[name] = @constructModel value, field.type._getMeta()
+                        result[name] = @constructModel value, fieldDef.type._getMeta()
                 else
                     if value
-                        if field.type is 'array'
+                        if fieldDef.type is 'array'
                             arr = []
-                            for item in value
-                                arr.push @constructModel item, field.contents._getMeta()
+                            contentType = @getFullFieldDefinition fieldDef.contents
+                            if @isCustomClass contentType
+                                for item in value
+                                    arr.push @constructModel item, contentType._getMeta()
+                            else
+                                arr = value
                             result[name] = arr
                         else
-                            result[name] = value                            
+                            result[name] = value    
+            if obj._id
+                result._id = obj._id       
             new meta.type result
      
                 

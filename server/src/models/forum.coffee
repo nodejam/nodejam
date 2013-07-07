@@ -1,24 +1,24 @@
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
+userModule = require('./user')
 
 class Forum extends BaseModel
         
     @_getMeta: ->
-        User = require('./user').User
         {
             type: Forum,
             collection: 'forums',
             fields: {
                 network: 'string',
                 name: 'string',
-                stub: 'stub',
+                stub: 'string',
                 settings: 'object',
                 icon: 'string',
                 iconThumbnail: 'string',
                 cover: { type: 'string', required: 'false' },
-                createdBy: { type: User.Summary, validate: -> @createdBy.validate() },
+                createdBy: { type: userModule.User.Summary, validate: -> @createdBy.validate() },
                 moderators: { 
-                    type: User.Summary, 
+                    type: userModule.User.Summary, 
                     validate: -> 
                         if @moderators.length
                             m.validate() for m in @moderators
@@ -75,7 +75,36 @@ class Forum extends BaseModel
             errors = errors.concat _errors
                 
         errors
+        
+        
+        
+    summarize: =>        
+        summary = new Summary {
+            id: @_id.toString()
+            network: @network,
+            name: @name,
+            stub: @stub,
+            type: @type,
+            createdBy: @createdBy
+        }
+        
+        
+    
+    class Summary extends BaseModel    
+        @_getMeta: ->
+            {
+                type: Summary,
+                fields: {
+                    id: 'string',
+                    network: 'string',
+                    name: 'string',
+                    stub: 'string',
+                    type: 'string',
+                    createdBy: userModule.User.Summary
+                }
+            }    
                 
+    Forum.Summary = Summary
     
     
 exports.Forum = Forum

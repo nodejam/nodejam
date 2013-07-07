@@ -89,7 +89,6 @@ class Post extends BaseModel
         
     
     @refreshForumSnapshot: (post, context, cb) =>
-        console.log JSON.stringify post
         @_models.Forum.get { stub: post.forum.stub }, {}, (err, forum) =>
             @search { "forums.stub": forum.stub, state: 'published' }, { sort: { publishedAt: -1 }, limit: 4 }, {}, (err, posts) =>
                 @getCursor { "forums.stub": forum.stub, state: 'published' }, context, (err, cursor) =>
