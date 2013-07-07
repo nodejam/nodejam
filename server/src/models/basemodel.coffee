@@ -100,12 +100,12 @@ class BaseModel
                             event = {}
                             event.type = meta.logging.onInsert
                             event.data = this
-                            meta.type._database.insert 'events', event, =>
-                            
-                        meta.type._database.insert meta.collection, @, (err, r) =>
+                            @constructor._database.insert 'events', event, =>
+                        
+                        @constructor._database.insert meta.collection, @, (err, r) =>
                             cb? err, r
                     else
-                        meta.type._database.update meta.collection, { _id: @_id }, @, (err, r) =>
+                        @constructor._database.update meta.collection, { _id: @_id }, @, (err, r) =>
                             cb? err, @
             
                 if @_id and meta.concurrency is 'optimistic'
@@ -138,7 +138,7 @@ class BaseModel
     
     destroy: (context, cb) =>
         meta = @constructor.__getMeta__()
-        meta.type._database.remove meta.collection, { _id: @_id }, (err) =>
+        @constructor._database.remove meta.collection, { _id: @_id }, (err) =>
             cb? err, @
 
     

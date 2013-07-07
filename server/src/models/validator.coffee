@@ -48,15 +48,19 @@ class Validator
             #Required is true unless explicitly set.
             if not fieldDef.required?
                 fieldDef.required = true
-
+            
+            if fieldDef.required and not value
+                errors.concat "#{fieldName} is required."
+            
             #Check types.            
-            if fieldDef.type is 'array'
-                for item in value
-                    errors.concat @validateField item, '', null, fieldDef.contents
-            else
-                #If it is a custom class
-                if (@isCustomClass(fieldDef.type) and value.constructor isnt fieldDef.type) or (typeof(value) isnt fieldDef.type)
-                    errors.concat "#{fieldName} should be a #{fieldDef.type}."                        
+            if value
+                if fieldDef.type is 'array'
+                    for item in value
+                        errors.concat @validateField item, '', null, fieldDef.contents
+                else
+                    #If it is a custom class
+                    if (@isCustomClass(fieldDef.type) and value.constructor isnt fieldDef.type) or (typeof(value) isnt fieldDef.type)
+                        errors.concat "#{fieldName} should be a #{fieldDef.type}."                        
 
         if def.validate
             errors.concat def.validate.call model

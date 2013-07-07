@@ -56,14 +56,19 @@
         if (fieldDef.required == null) {
           fieldDef.required = true;
         }
-        if (fieldDef.type === 'array') {
-          for (_i = 0, _len = value.length; _i < _len; _i++) {
-            item = value[_i];
-            errors.concat(this.validateField(item, '', null, fieldDef.contents));
-          }
-        } else {
-          if ((this.isCustomClass(fieldDef.type) && value.constructor !== fieldDef.type) || (typeof value !== fieldDef.type)) {
-            errors.concat("" + fieldName + " should be a " + fieldDef.type + ".");
+        if (fieldDef.required && !value) {
+          errors.concat("" + fieldName + " is required.");
+        }
+        if (value) {
+          if (fieldDef.type === 'array') {
+            for (_i = 0, _len = value.length; _i < _len; _i++) {
+              item = value[_i];
+              errors.concat(this.validateField(item, '', null, fieldDef.contents));
+            }
+          } else {
+            if ((this.isCustomClass(fieldDef.type) && value.constructor !== fieldDef.type) || (typeof value !== fieldDef.type)) {
+              errors.concat("" + fieldName + " should be a " + fieldDef.type + ".");
+            }
           }
         }
       }

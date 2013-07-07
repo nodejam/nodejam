@@ -14,7 +14,7 @@ modules = {
 
 models = {}
 
-for k,v of modules
+for k, v of modules
     models[v] = require("./#{k}")[v]
 
 

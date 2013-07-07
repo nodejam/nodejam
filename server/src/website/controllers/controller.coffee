@@ -18,7 +18,7 @@ class Controller
 
     attachUser: (args, fn) ->
         [req, res, next] = args
-        @getUserWithPasskey r(req.query.passkey ? req.cookies.passkey), req.network, (err, user) =>
+        @getUserWithPasskey (req.query.passkey ? req.cookies.passkey), req.network, (err, user) =>
             req.user = user ? { id: 0 }
             fn()
 

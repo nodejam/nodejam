@@ -175,6 +175,7 @@
 
   believeYouCanChange = {
     title: 'Believe you can change',
+    type: "article",
     _content: 'believe-you-can-change.md',
     cover: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
     smallCover: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
@@ -185,6 +186,7 @@
 
   cherishMistakes = {
     title: 'Cherish Mistakes',
+    type: "article",
     _content: 'cherish-mistakes.md',
     cover: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
     smallCover: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
@@ -195,6 +197,7 @@
 
   confrontReality = {
     title: 'Confront Reality',
+    type: "article",
     _content: 'confront-reality.md',
     cover: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
     smallCover: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
@@ -205,6 +208,7 @@
 
   darkKnight = {
     title: 'Dark Knight',
+    type: "article",
     _content: 'dark-knight.md',
     cover: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
     smallCover: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
@@ -215,6 +219,7 @@
 
   fixTheMachine = {
     title: 'Lean into the pain',
+    type: "article",
     _content: 'lean-into-the-pain.md',
     cover: 'http://www.woodstock.com/images/spot1.jpg',
     smallCover: 'http://www.woodstock.com/images/spot1.jpg',
@@ -225,6 +230,7 @@
 
   leanIntoThePain = {
     title: 'Fix the machine not the person',
+    type: "article",
     _content: 'fix-the-machine-not-the-person.md',
     cover: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
     smallCover: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
@@ -235,6 +241,7 @@
 
   lookAtYourselfObjectively = {
     title: 'Look at yourself objectively',
+    type: "article",
     _content: 'look-at-yourself-objectively.md',
     _forum: 'raw-nerve',
     _createdBy: 'aaronsw',
@@ -243,6 +250,7 @@
 
   optimalBiases = {
     title: 'Optimal biases',
+    type: "article",
     _content: 'optimal-biases.md',
     cover: 'http://upload.wikimedia.org/wikipedia/commons/d/da/Claude_Monet,_Saint-Georges_majeur_au_cr%C3%A9puscule.jpg',
     smallCover: 'http://upload.wikimedia.org/wikipedia/commons/d/da/Claude_Monet,_Saint-Georges_majeur_au_cr%C3%A9puscule.jpg',
@@ -253,6 +261,7 @@
 
   takeAStepBack = {
     title: 'Take a step back',
+    type: "article",
     _content: 'take-a-step-back.md',
     cover: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
     smallCover: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',

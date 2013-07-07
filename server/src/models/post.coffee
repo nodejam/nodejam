@@ -2,6 +2,7 @@ async = require '../common/async'
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
+mdparser = require('../common/markdownutil').marked
 
 class Post extends BaseModel
     
@@ -66,14 +67,6 @@ class Post extends BaseModel
             super
 
 
-
-    summarize: (fields = []) =>
-        fields = fields.concat ['uid', 'title', 'createdAt', 'timestamp', 'publishedAt', 'createdBy', 'network']
-        result = super fields
-        result.id = @_id.toString()
-        result         
-        
-
     
     createView: (type) =>
         switch type
@@ -96,7 +89,8 @@ class Post extends BaseModel
         
     
     @refreshForumSnapshot: (post, context, cb) =>
-        @_models.Forum.get { stub: forum.stub }, {}, (err, forum) =>
+        console.log JSON.stringify post
+        @_models.Forum.get { stub: post.forum.stub }, {}, (err, forum) =>
             @search { "forums.stub": forum.stub, state: 'published' }, { sort: { publishedAt: -1 }, limit: 4 }, {}, (err, posts) =>
                 @getCursor { "forums.stub": forum.stub, state: 'published' }, context, (err, cursor) =>
                     cursor.count (err, count) =>
@@ -106,44 +100,9 @@ class Post extends BaseModel
                         forum.totalItems = count
                         forum.lastRefreshedAt = if posts[0] then posts[0].publishedAt else 0                            
                         forum.save context, cb                        
-
-
-
-    @validateForumSnapshot: (forum) =>
-        errors = []
-        
-        if forum.snapshot        
-            for item in forum.snapshot.recentPosts
-                _errors = Post.validateSummary item
-                if _errors.length
-                    errors = errors.concat _errors
-                    
-                if isNaN forum.totalItems
-                    errors.push "snapshot.totalPosts should be a number."
-                
-                if isNaN forum.lastRefreshedAt
-                    errors.push "snapshot.lastRefreshedAt should be a number."
-        
-        errors    
+     
         
 
-    @validateSummary: (post) =>
-        errors = []
-        
-        if not post
-            errors.push "Invalid post."
-        
-        required = ['id', 'uid', 'title', 'createdAt', 'timestamp', 'publishedAt', 'createdBy']
-        for field in required
-            if not post[field]
-                errors.push "Invalid #{field}"
-
-        _errors = Post._models.User.validateSummary(post.createdBy)
-        if _errors.length            
-            errors.push 'Invalid createdBy.'
-            errors = errors.concat _errors
-                
-        errors
 
 
 exports.Post = Post

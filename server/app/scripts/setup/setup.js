@@ -81,8 +81,7 @@
         var passkey;
 
         passkey = _globals.sessions[forum._createdBy].passkey;
-        console.log("Creating a new forum with passkey(" + passkey + ")....");
-        console.log("Creating " + forum.name + "...");
+        console.log("Creating a new forum " + forum.name + " with passkey(" + passkey + ")....");
         delete forum._createdBy;
         return doHttpRequest("/api/forums?passkey=" + passkey, querystring.stringify(forum), 'post', function(err, resp) {
           resp = JSON.parse(resp);

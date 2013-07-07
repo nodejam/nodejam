@@ -176,13 +176,13 @@
                 event = {};
                 event.type = meta.logging.onInsert;
                 event.data = _this;
-                meta.type._database.insert('events', event, function() {});
+                _this.constructor._database.insert('events', event, function() {});
               }
-              return meta.type._database.insert(meta.collection, _this, function(err, r) {
+              return _this.constructor._database.insert(meta.collection, _this, function(err, r) {
                 return typeof cb === "function" ? cb(err, r) : void 0;
               });
             } else {
-              return meta.type._database.update(meta.collection, {
+              return _this.constructor._database.update(meta.collection, {
                 _id: _this._id
               }, _this, function(err, r) {
                 return typeof cb === "function" ? cb(err, _this) : void 0;
@@ -229,7 +229,7 @@
         _this = this;
 
       meta = this.constructor.__getMeta__();
-      return meta.type._database.remove(meta.collection, {
+      return this.constructor._database.remove(meta.collection, {
         _id: this._id
       }, function(err) {
         return typeof cb === "function" ? cb(err, _this) : void 0;

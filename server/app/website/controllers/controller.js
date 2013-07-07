@@ -40,7 +40,7 @@
         _this = this;
 
       req = args[0], res = args[1], next = args[2];
-      return this.getUserWithPasskey(r((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey), req.network, function(err, user) {
+      return this.getUserWithPasskey((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey, req.network, function(err, user) {
         req.user = user != null ? user : {
           id: 0
         };

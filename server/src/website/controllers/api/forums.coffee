@@ -1,11 +1,11 @@
-controllers = require './'
 conf = require '../../../conf'
 models = new (require '../../../models').Models(conf.db)
 utils = require '../../../common/utils'
 AppError = require('../../../common/apperror').AppError
-controller = require '../controller'
+Controller = require('../controller').Controller
+controllers = require './'
 
-class Forums extends controller.Controller
+class Forums extends Controller
     
     create: (req, res, next) =>
         @ensureSession arguments, =>
@@ -15,7 +15,7 @@ class Forums extends controller.Controller
                     res.send 'A forum with the same name exists.'
                 else
                     console.log 
-                    forum = new models.Collection
+                    forum = new models.Forum
                     forum.network = req.network.stub
                     forum.type = req.body.type
                     forum.name = req.body.name
@@ -33,7 +33,8 @@ class Forums extends controller.Controller
                         enable: if req.body.comments_enable then Boolean(req.body.comments_enable) else true
                         showByDefault: if req.body.comments_showByDefault then Boolean(req.body.comments_showByDefault) else true
                     }
-                    res.send forum
+                    forum.save {}, (err, forum) =>
+                        res.send forum
         
                     #Put a notification.
                     message = new models.Message {
@@ -50,7 +51,7 @@ class Forums extends controller.Controller
                 
     edit: (req, res, next) =>
         @ensureSession arguments, =>
-            models.Collection.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
+            models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
                 if req.user.id is forum.createdBy.id or @isAdmin(req.user, req.network)
                     forum.description = req.body.description
                     forum.icon = req.body.icon
@@ -60,8 +61,8 @@ class Forums extends controller.Controller
                     else
                         forum.cover = ''
                     forum.tile = req.body.tile ? '/images/forum-tile.png'                                        
-                    forum.save {}, (err, coll) =>            
-                        res.send coll                
+                    forum.save {}, (err, forum) =>            
+                        res.send forum                
                 else
                     next new AppError "Access denied.", 'ACCESS_DENIED'
                     
@@ -69,7 +70,7 @@ class Forums extends controller.Controller
                     
     remove: (req, res, next) =>
         @ensureSession arguments, =>
-            models.Collection.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
+            models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
                 if @isAdmin(req.user, req.network)
                     forum.destroy {}, => res.send "DELETED #{forum.stub}."
                 else
@@ -89,15 +90,16 @@ class Forums extends controller.Controller
         @invokeTypeSpecificController arguments, (c) -> c.remove
             
                                     
-    invokeTypeSpecificController: ([req, res, next], getHandler) =>            
+    invokeTypeSpecificController: ([req, res, next], getHandler) =>   
         @ensureSession [req, res, next], =>
-            getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
+            models.Forum.get { network: req.network.stub, stub: req.params.forum }, {}, (err, forum) =>
+                getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
 
 
     getTypeSpecificController: (type) =>
         switch type
-            when 'post'
-                return new controllers.Posts()
+            when 'article'
+                return new controllers.Articles()
                         
                 
 exports.Forums = Forums
