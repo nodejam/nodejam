@@ -1,7 +1,6 @@
 utils = require('../common/utils')
 console = require 'console'
 AppError = require('../common/apperror').AppError
-Validator = require('./validator').Validator
 
 class BaseModel
 
@@ -188,7 +187,7 @@ class BaseModel
         errors = []
 
         for fieldName, def of fields
-            errors.concat @validateField(model[fieldName], fieldName, model, def)
+            errors.concat @validateField(fieldName, def)
         
         if cb
             cb null, errors
@@ -196,9 +195,10 @@ class BaseModel
             errors
             
 
-    validateField: (value, fieldName, model, def) =>
+    validateField: (fieldName, def) =>
         errors = []
 
+        value = @[fieldName]
         if not def.useCustomValidationOnly                
             fieldDef = BaseModel.getFullFieldDefinition(def)
             
@@ -216,7 +216,7 @@ class BaseModel
                         errors.concat "#{fieldName} should be a #{fieldDef.type}."                        
 
         if def.validate
-            errors.concat def.validate.call model
+            errors.concat def.validate.call @
         
         errors            
         
