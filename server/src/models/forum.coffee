@@ -16,7 +16,7 @@ class Forum extends BaseModel
                 icon: 'string',
                 iconThumbnail: 'string',
                 cover: { type: 'string', required: 'false' },
-                createdBy: User.Summary,
+                createdBy: { type: User.Summary, validate: -> @createdBy.validate() },
                 moderators: { 
                     type: User.Summary, 
                     validate: -> 
