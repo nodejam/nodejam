@@ -5,6 +5,7 @@
   modules = {
     sessions: 'Sessions',
     forums: 'Forums',
+    posts: 'Posts',
     articles: 'Articles'
   };
 

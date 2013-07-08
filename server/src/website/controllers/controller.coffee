@@ -49,6 +49,7 @@ class Controller
     isAdmin: (user, network) =>
         (u for u in network.admins when u.username is user?.username and u.domain is user?.domain).length        
                 
+                
         
     getValue: (src, field, safe = true) =>
         src[field]

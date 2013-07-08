@@ -3,9 +3,9 @@ utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').markedb
 BaseModel = require('./basemodel').BaseModel
-Post = require('./post').Post
+postModule = require('./post')
 
-class Article extends Post
+class Article extends postModule.Post
 
     @_getMeta: ->
         meta = {
@@ -20,13 +20,14 @@ class Article extends Post
                 }
             }
         }
-        utils.extend meta, utils.clone(Post._getMeta())
+        utils.extend meta, utils.clone(postModule.Post._getMeta())
         
         
         
     constructor: ->
         @type = 'article'
         super
+        
 
 
     summarize: =>        
@@ -45,7 +46,7 @@ class Article extends Post
     
     class Summary extends BaseModel    
         @_getMeta: ->
-            User = require('./user').User
+            userModule = require('./user')
             {
                 type: Summary,
                 fields: {
@@ -56,7 +57,7 @@ class Article extends Post
                     createdAt: 'number',
                     timestamp: 'number',
                     publishedAt: 'number',
-                    createdBy: User.Summary,
+                    createdBy: userModule.User.Summary,
                 }
             }
 

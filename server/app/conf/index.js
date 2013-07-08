@@ -52,7 +52,7 @@
     admins: [
       {
         id: '__',
-        domain: 'tw',
+        domain: 'users',
         username: 'jeswin',
         name: 'Jeswin Kumar',
         domainIdType: 'username'

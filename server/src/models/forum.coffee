@@ -1,10 +1,10 @@
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
-userModule = require('./user')
 
 class Forum extends BaseModel
         
     @_getMeta: ->
+        userModule = require('./user')
         {
             type: Forum,
             collection: 'forums',
@@ -49,34 +49,7 @@ class Forum extends BaseModel
     save: (context, cb) =>
         super
 
-
-
-    summarize: (fields = []) =>
-        fields = fields.concat ['name', 'stub', 'type', 'createdBy', 'network']
-        result = super fields
-        result.id = @_id.toString()
-        result        
-
-
-
-    @validateSummary: (forum) =>
-        errors = []
-        if not forum
-            errors.push "Invalid forum."
-        
-        required = ['id', 'name', 'stub', 'type', 'createdBy', 'network']
-        for field in required
-            if not forum[field]
-                errors.push "Invalid #{field}"
-
-        _errors = Forum._models.User.validateSummary(forum.createdBy)
-        if _errors.length            
-            errors.push 'Invalid createdBy.'
-            errors = errors.concat _errors
-                
-        errors
-        
-        
+ 
         
     summarize: =>        
         summary = new Summary {
@@ -92,6 +65,7 @@ class Forum extends BaseModel
     
     class Summary extends BaseModel    
         @_getMeta: ->
+            userModule = require('./user')
             {
                 type: Summary,
                 fields: {

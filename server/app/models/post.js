@@ -19,25 +19,25 @@
     __extends(Post, _super);
 
     Post._getMeta = function() {
-      var User;
+      var articleModule, userModule;
 
-      User = require('./user').User;
+      articleModule = require('./article');
+      userModule = require('./user');
       return {
         type: Post,
         collection: 'posts',
         fields: {
           network: 'string',
-          uid: 'string',
           forum: 'string',
           createdBy: {
-            type: User.Summary,
+            type: userModule.User.Summary,
             validate: function() {
               return this.createdBy.validate();
             }
           },
           recommendations: {
             type: 'array',
-            contents: User.Summary,
+            contents: userModule.User.Summary,
             validate: function() {
               var user, _i, _len, _ref, _results;
 
@@ -108,14 +108,8 @@
     }
 
     Post.prototype.save = function(context, cb) {
-      var _ref,
-        _this = this;
+      var _this = this;
 
-      if (!this._id) {
-        if ((_ref = this.uid) == null) {
-          this.uid = utils.uniqueId();
-        }
-      }
       if (this.stub) {
         return Post.get({
           stub: this.stub
@@ -142,7 +136,6 @@
               text: this.summary.text ? mdparser(this.summary.text) : void 0,
               image: this.summary.image
             },
-            uid: this.uid,
             createdBy: this.createdBy,
             forum: this.forum,
             title: this.title,

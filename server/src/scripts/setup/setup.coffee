@@ -75,6 +75,8 @@ init = () ->
             
         createArticle = (article, cb) ->
             passkey = _globals.sessions[article._createdBy].passkey
+            adminkey = _globals.sessions['jeswin'].passkey
+            
             console.log "Creating a new article with passkey(#{passkey})...."
             console.log "Creating #{article.title}..."
             
@@ -91,9 +93,9 @@ init = () ->
             
             doHttpRequest "/api/forums/#{forum}?passkey=#{passkey}", querystring.stringify(article), 'post', (err, resp) ->                
                 resp = JSON.parse resp
-                console.log "Created #{resp.title} with uid #{resp.uid}"
-                if meta.split(',').indexOf('featured') > -1
-                    doHttpRequest "/api/admin/feature?passkey=#{passkey}&forum=#{resp.forums[0].stub}&uid=#{resp.uid}", null, 'get', (err, r) ->                
+                console.log "Created #{resp.title} with id #{resp._id}"
+                if meta.split(',').indexOf('featured') isnt -1
+                    doHttpRequest "/api/admin/posts/#{resp._id}?passkey=#{adminkey}", querystring.stringify({ tags: 'featured'}), 'put', (err, resp) ->                
                         resp = JSON.parse resp
                         console.log "Added featured tag to article #{resp.title}."
                         cb()

@@ -2,12 +2,11 @@ utils = require '../common/utils'
 Models = require './'
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
-forumModule = require('./forum')
 
 class User extends BaseModel
 
     @_getMeta: ->
-        
+        forumModule = require('./forum')
         {
             type: User,
             collection: 'users',

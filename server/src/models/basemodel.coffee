@@ -102,8 +102,11 @@ class BaseModel
                         else
                             result[name] = value    
             if obj._id
-                result._id = obj._id       
-            new meta.type result
+                result._id = obj._id
+            if meta.typeConstructor
+                meta.typeConstructor result
+            else
+                new meta.type result
      
                 
                 

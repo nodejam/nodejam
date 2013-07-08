@@ -179,7 +179,11 @@
         if (obj._id) {
           result._id = obj._id;
         }
-        return new meta.type(result);
+        if (meta.typeConstructor) {
+          return meta.typeConstructor(result);
+        } else {
+          return new meta.type(result);
+        }
       }
     };
 

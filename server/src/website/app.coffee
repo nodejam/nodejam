@@ -59,8 +59,9 @@ findHandler = (name, getHandler) ->
         when 'api/users' then new apiControllers.Users()
         when 'api/networks' then new apiControllers.Networks()
         when 'api/forums' then new apiControllers.Forums()
+        when 'api/posts' then new apiControllers.Posts()
+        when 'api/articles' then new apiControllers.Articles()
         when 'api/files/images' then new apiControllers.Images()
-        when 'api/admin' then new apiControllers.Admin()            
         else throw new Error "Cannot find controller #{name}."
 
     handler = getHandler(controller)
@@ -99,6 +100,9 @@ app.post '/api/sessions', findHandler('api/sessions', (c) -> c.create)
 # FORUMS and POSTS
 app.post '/api/forums', findHandler('api/forums', (c) -> c.create)
 app.post '/api/forums/:forum', findHandler('api/forums', (c) -> c.createItem)
+
+#ADMIN
+app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.adminUpdate)
 
 # UI Routes
 # ---------

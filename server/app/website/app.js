@@ -96,10 +96,12 @@
           return new apiControllers.Networks();
         case 'api/forums':
           return new apiControllers.Forums();
+        case 'api/posts':
+          return new apiControllers.Posts();
+        case 'api/articles':
+          return new apiControllers.Articles();
         case 'api/files/images':
           return new apiControllers.Images();
-        case 'api/admin':
-          return new apiControllers.Admin();
         default:
           throw new Error("Cannot find controller " + name + ".");
       }
@@ -168,6 +170,10 @@
 
   app.post('/api/forums/:forum', findHandler('api/forums', function(c) {
     return c.createItem;
+  }));
+
+  app.put("/api/admin/posts/:id", findHandler('api/posts', function(c) {
+    return c.adminUpdate;
   }));
 
   app.get('/', findHandler('ui/home', function(c) {
