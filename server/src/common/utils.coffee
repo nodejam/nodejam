@@ -1,12 +1,16 @@
 root = exports ? this
 
-clone = (source) ->
-    JSON.parse JSON.stringify source
+#neat trick via http://oranlooney.com/functional-javascript
+__Clone = ->
+clone = (obj) ->
+    __Clone.prototype = obj
+    new __Clone
     
 
 extend = (target, source) ->
     for key, val of source
-        target[key] = val
+        if not target[key]?
+            target[key] = val
     target
 
 

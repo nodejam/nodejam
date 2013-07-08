@@ -64,22 +64,20 @@ class Forum extends BaseModel
         
         
     
-    class Summary extends BaseModel    
-        @_getMeta: ->
-            userModule = require('./user')
-            {
-                type: Summary,
-                fields: {
-                    id: 'string',
-                    network: 'string',
-                    name: 'string',
-                    stub: 'string',
-                    type: 'string',
-                    createdBy: userModule.User.Summary
-                }
-            }    
-                
-    Forum.Summary = Summary
-    
-    
+class Summary extends BaseModel    
+    @_getMeta: ->
+        userModule = require('./user')
+        {
+            type: Summary,
+            fields: {
+                id: 'string',
+                network: 'string',
+                name: 'string',
+                stub: 'string',
+                type: 'string',
+                createdBy: userModule.User.Summary
+            }
+        }    
+            
+Forum.Summary = Summary
 exports.Forum = Forum

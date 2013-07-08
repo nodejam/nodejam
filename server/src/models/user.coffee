@@ -169,19 +169,18 @@ class User extends BaseModel
         }
 
     
-    class Summary extends BaseModel    
-        @_getMeta: ->
-            {
-                type: Summary,
-                fields: {
-                    id: 'string',
-                    domain: 'string',
-                    username: 'string',
-                    name: 'string',
-                    network: 'string'
-                }
+class Summary extends BaseModel    
+    @_getMeta: ->
+        {
+            type: Summary,
+            fields: {
+                id: 'string',
+                domain: 'string',
+                username: 'string',
+                name: 'string',
+                network: 'string'
             }
+        }
             
-    User.Summary = Summary            
-    
+User.Summary = Summary                
 exports.User = User

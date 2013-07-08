@@ -20,7 +20,7 @@ class Article extends postModule.Post
                 }
             }
         }
-        utils.extend meta, utils.clone(postModule.Post._getMeta())
+        @mergeMeta meta, postModule.Post._getMeta()
         
         
         

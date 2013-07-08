@@ -54,7 +54,6 @@
           if (forum) {
             return res.send('A forum with the same name exists.');
           } else {
-            console.log;
             forum = new models.Forum;
             forum.network = req.network.stub;
             forum.type = req.body.type;

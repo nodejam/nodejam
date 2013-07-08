@@ -58,6 +58,19 @@ class BaseModel
             
             
             
+    @mergeMeta: (child, parent) ->
+        fields = utils.clone(parent.fields)
+        for k,v of child.fields
+            fields[k] = v
+        meta = utils.clone(parent)
+        for k,v of child
+            if k isnt 'fields'
+                child[k] = v
+            else
+                child.fields = fields
+                
+                
+    
     @__getMeta__: (model = @) ->
         try
             meta = model._getMeta()
