@@ -68,18 +68,18 @@
             type: 'array',
             contents: User.Summary,
             validate: function() {
-              var admin, errors, _i, _len, _ref1;
+              var admin, _i, _len, _ref1, _results;
 
               if (!this.admins.length) {
-                return errors.push('Admins are missing.');
+                return errors.push('admins are missing.');
               } else {
-                errors = [];
                 _ref1 = this.admins;
+                _results = [];
                 for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
                   admin = _ref1[_i];
-                  errors.concat(admin.validate());
+                  _results.push(admin.validate());
                 }
-                return errors;
+                return _results;
               }
             }
           }

@@ -30,7 +30,7 @@
           iconThumbnail: 'string',
           cover: {
             type: 'string',
-            required: 'false'
+            required: false
           },
           createdBy: {
             type: userModule.User.Summary,
@@ -39,7 +39,8 @@
             }
           },
           moderators: {
-            type: userModule.User.Summary,
+            type: 'array',
+            contents: userModule.User.Summary,
             validate: function() {
               var m, _i, _len, _ref, _results;
 
@@ -52,7 +53,7 @@
                 }
                 return _results;
               } else {
-                return 'There should be at least one moderator.';
+                return 'moderators are missing.';
               }
             }
           },

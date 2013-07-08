@@ -30,13 +30,11 @@
           type: {
             type: 'string',
             validate: function() {
-              if (['message', 'global-notification', 'user-notification'].indexOf(this.type) !== -1) {
-                return 'Message type is incorrect.';
-              }
+              return ['message', 'global-notification', 'user-notification'].indexOf(this.type) !== -1;
             }
           },
           to: {
-            type: 'class',
+            useCustomValidationOnly: true,
             validate: function() {
               if (this.type === 'user-notification' || this.type === 'message') {
                 return this.to.validate();
@@ -44,7 +42,7 @@
             }
           },
           from: {
-            type: 'class',
+            useCustomValidationOnly: true,
             validate: function() {
               if (this.type === 'message') {
                 return this.from.validate();

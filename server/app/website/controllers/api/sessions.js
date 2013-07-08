@@ -62,15 +62,15 @@
             return next(new AppError('Invalid credentials', 'INVALID_CREDENTIALS'));
           }
         });
-      } else if (req.body.domain === 'users') {
+      } else if (req.body.domain === 'fora') {
         if (req.body.secret === req.network.adminkeys["default"]) {
           accessToken = utils.uniqueId(24);
-          return models.User.getOrCreateUser(req.body, 'users', req.network.stub, accessToken, function(err, user, session) {
+          return models.User.getOrCreateUser(req.body, 'fora', req.network.stub, accessToken, function(err, user, session) {
             if (!err) {
               res.contentType('json');
               return res.send({
                 userid: user._id,
-                domain: 'users',
+                domain: 'fora',
                 username: user.username,
                 domainidType: user.domainidType,
                 name: user.name,

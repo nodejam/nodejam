@@ -15,15 +15,16 @@ class Forum extends BaseModel
                 settings: 'object',
                 icon: 'string',
                 iconThumbnail: 'string',
-                cover: { type: 'string', required: 'false' },
+                cover: { type: 'string', required: false },
                 createdBy: { type: userModule.User.Summary, validate: -> @createdBy.validate() },
-                moderators: { 
-                    type: userModule.User.Summary, 
+                moderators: {
+                    type: 'array', 
+                    contents: userModule.User.Summary, 
                     validate: -> 
                         if @moderators.length
                             m.validate() for m in @moderators
                         else
-                            'There should be at least one moderator.'
+                            'moderators are missing.'
                 },
                 totalItems: 'number',
                 totalSubscribers: 'number',              

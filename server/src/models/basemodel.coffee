@@ -1,5 +1,4 @@
 utils = require('../common/utils')
-console = require 'console'
 AppError = require('../common/apperror').AppError
 
 class BaseModel
@@ -59,14 +58,17 @@ class BaseModel
             
             
             
-    @__getMeta__: ->
-        meta = @_getMeta()
-        meta.validateMultiRecordOperationParams ?= (params) -> 
-            false
-        meta
-
-
-
+    @__getMeta__: (model = @) ->
+        try
+            meta = model._getMeta()
+            meta.validateMultiRecordOperationParams ?= (params) -> 
+                false
+            meta
+        catch e
+            utils.dumpError e
+        
+    
+    
     @getLimit: (limit, _default, max) ->
         result = _default
         if limit
@@ -87,7 +89,7 @@ class BaseModel
                 fieldDef = @getFullFieldDefinition field
                 if @isCustomClass fieldDef.type
                     if value
-                        result[name] = @constructModel value, fieldDef.type._getMeta()
+                        result[name] = @constructModel value, @__getMeta__(fieldDef.type)
                 else
                     if value
                         if fieldDef.type is 'array'
@@ -95,7 +97,7 @@ class BaseModel
                             contentType = @getFullFieldDefinition fieldDef.contents
                             if @isCustomClass contentType
                                 for item in value
-                                    arr.push @constructModel item, contentType._getMeta()
+                                    arr.push @constructModel item, @__getMeta__(contentType.type)
                             else
                                 arr = value
                             result[name] = arr
@@ -179,7 +181,7 @@ class BaseModel
                     fnSave()        
             else
                 console.log "Validation failed for object with id #{@_id} in collection #{meta.collection}."
-                for error in validation.errors
+                for error in errors
                     console.log error
                 console.log "Error generated at #{Date().toString('yyyy-MM-dd')}."
                 cb? new AppError "Model failed validation."
@@ -196,36 +198,37 @@ class BaseModel
         errors = []
 
         for fieldName, def of fields
-            errors.concat @validateField(fieldName, def)
-        
+            BaseModel.addError errors, fieldName, @validateField(@[fieldName], fieldName, def)
+            
         if cb
             cb null, errors
         else
             errors
             
 
-    validateField: (fieldName, def) =>
+    validateField: (value, fieldName, def) =>
         errors = []
 
-        value = @[fieldName]
         if not def.useCustomValidationOnly                
             fieldDef = BaseModel.getFullFieldDefinition(def)
             
-            if fieldDef.required and not value
-                errors.concat "#{fieldName} is required."
+            if fieldDef.required and not value?
+                errors.push "#{JSON.stringify fieldName} is #{JSON.stringify value}"
+                errors.push "#{fieldName} is required."
             
             #Check types.            
             if value
                 if fieldDef.type is 'array'
                     for item in value
-                        errors.concat @validateField item, '', null, fieldDef.contents
+                        BaseModel.addError errors, fieldName, @validateField(item, "[#{fieldName} item]", fieldDef.contents)
                 else
                     #If it is a custom class
-                    if (BaseModel.isCustomClass(fieldDef.type) and value.constructor isnt fieldDef.type) or (typeof(value) isnt fieldDef.type)
-                        errors.concat "#{fieldName} should be a #{fieldDef.type}."                        
+                    if (BaseModel.isCustomClass(fieldDef.type) and not (value instanceof fieldDef.type)) or (not BaseModel.isCustomClass(fieldDef.type) and typeof(value) isnt fieldDef.type)
+                        errors.push "#{fieldName} is #{JSON.stringify value}"
+                        errors.push "#{fieldName} should be a #{fieldDef.type}."
 
         if def.validate
-            errors.concat def.validate.call @
+            BaseModel.addError(errors, fieldName, def.validate.call @)
         
         errors            
         
@@ -237,6 +240,24 @@ class BaseModel
             cb? err, @
 
 
+    
+    @addError: (list, fieldName, error) ->
+        if error is true
+            return list
+        if error is false
+            list.push "#{fieldName} is invalid."
+            return list
+        if error instanceof Array
+            if error.length > 0
+                for item in error
+                    if item instanceof Array
+                        BaseModel.addError list, fieldName, item
+                    else
+                        list.push error
+            return list
+        if error
+            list.push error
+            return list
 
 exports.BaseModel = BaseModel
 

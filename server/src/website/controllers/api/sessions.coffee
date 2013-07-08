@@ -39,13 +39,13 @@ class Sessions extends controller.Controller
                     next new AppError 'Invalid credentials', 'INVALID_CREDENTIALS'
                     
                     
-        else if req.body.domain is 'users'
+        else if req.body.domain is 'fora'
             if req.body.secret is req.network.adminkeys.default
                 accessToken = utils.uniqueId(24)
-                models.User.getOrCreateUser req.body, 'users', req.network.stub, accessToken, (err, user, session) =>
+                models.User.getOrCreateUser req.body, 'fora', req.network.stub, accessToken, (err, user, session) =>
                     if not err
                         res.contentType 'json'
-                        res.send { userid: user._id, domain: 'users', username: user.username, domainidType: user.domainidType, name: user.name, passkey: session.passkey }
+                        res.send { userid: user._id, domain: 'fora', username: user.username, domainidType: user.domainidType, name: user.name, passkey: session.passkey }
                     else
                         next err
             else

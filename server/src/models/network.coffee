@@ -41,12 +41,9 @@ class Network extends BaseModel
                     contents: User.Summary,
                     validate: ->                    
                         if not @admins.length
-                            errors.push 'Admins are missing.'                        
+                            errors.push 'admins are missing.'                        
                         else
-                            errors = []
-                            for admin in @admins
-                                errors.concat admin.validate()
-                            errors
+                            admin.validate() for admin in @admins
                 }
             }
             logging: {
