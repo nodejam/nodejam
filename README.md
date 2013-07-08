@@ -5,36 +5,36 @@ Install instructions (Ubuntu 13.04)
 ===================================
 Note: This should also work on earlier versions of Ubuntu.
 
-sudo apt-get install build-essential
-    - To build node.js from source.
-    - node.js packaged with the distro is often outdated.
+sudo apt-get install build-essential  
+    - To build node.js from source.  
+    - node.js packaged with the distro is often outdated.  
     
-sudo apt-get build-dep nodejs
+sudo apt-get build-dep nodejs  
     
-Install node.js
-    - Download source tarball from nodejs.org
-    - configure
-    - make
-    - sudo make install
+Install node.js  
+    - Download source tarball from nodejs.org  
+    - configure  
+    - make  
+    - sudo make install  
 
-sudo apt-get install nginx
-sudo apt-get install git
-sudo apt-get install mongodb
-sudo apt-get install graphicsmagick
-sudo npm install -g coffee-script
-npm install express
-npm install mongodb
-npm install validator
-npm install sanitizer
-npm install hbs
-npm install fs-extra
-npm install gm
-npm install mongo-express
-npm install node-minify
-npm install oauth
-npm install forever
-npm install marked
-npm install less
+sudo apt-get install nginx  
+sudo apt-get install git  
+sudo apt-get install mongodb  
+sudo apt-get install graphicsmagick  
+sudo npm install -g coffee-script  
+npm install express  
+npm install mongodb  
+npm install validator  
+npm install sanitizer  
+npm install hbs  
+npm install fs-extra  
+npm install gm  
+npm install mongo-express  
+npm install node-minify  
+npm install oauth  
+npm install forever  
+npm install marked  
+npm install less  
 
 nginx configuration file
 ------------------------
@@ -90,22 +90,22 @@ server {
 
 /etc/hosts
 ----------
-For development set local.foraproject.org to localhost
-You could use any other, but that's the path expected by the setup script.
+For development set local.foraproject.org to localhost  
+You could use any other, but that's the path expected by the setup script.  
 
 Mongodb Security
 ----------------
-Edit /etc/mongodb.conf
-bind_ip = 127.0.0.1
-port = MONGODB_PORT    
+Edit /etc/mongodb.conf  
+bind_ip = 127.0.0.1  
+port = MONGODB_PORT  
 
 Notes
 -----
-Because the path the node modules was changed, this is also required to be run (as root):
-rm /usr/local/lib/node
-ln -s /usr/local/lib/node_modules /usr/local/lib/node 
-Or: in .bashrc
-export NODE_PATH="/usr/local/lib/node_modules"
+Because the path the node modules was changed, this is also required to be run (as root):  
+rm /usr/local/lib/node  
+ln -s /usr/local/lib/node_modules /usr/local/lib/node  
+Or: in .bashrc  
+export NODE_PATH="/usr/local/lib/node_modules"  
 
 
 
