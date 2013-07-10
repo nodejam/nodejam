@@ -310,10 +310,29 @@
     };
 
     BaseModel.prototype.validate = function(cb) {
-      var meta, _ref;
+      var meta,
+        _this = this;
 
       meta = this.constructor.__getMeta__();
-      return ((_ref = meta.validate) != null ? _ref : this.validateFields).call(this, meta.fields, cb);
+      if (!meta.useCustomValidationOnly) {
+        return this.validateFields(meta.fields, function(err, errors) {
+          if (meta.validate) {
+            return meta.validate.call(_this, meta.fields, function(err, _errors) {
+              return cb(err, errors.concat(_errors));
+            });
+          } else {
+            return cb(err, errors);
+          }
+        });
+      } else {
+        if (meta.validate != null) {
+          return meta.validate.call(this, meta.fields, function(err, errors) {
+            return cb(err, errors);
+          });
+        } else {
+          return cb(null, []);
+        }
+      }
     };
 
     BaseModel.prototype.validateFields = function(fields, cb) {

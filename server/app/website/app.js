@@ -182,12 +182,12 @@
 
   app.use(app.router);
 
-  /*
-  app.use (err, req, res, next) ->
-      utils.log err
-      res.send(500, { error: err })
-  */
-
+  app.use(function(err, req, res, next) {
+    utils.log(err);
+    return res.send(500, {
+      error: err
+    });
+  });
 
   app.use(function(req, res, next) {
     res.status(404);
@@ -208,53 +208,57 @@
         accessToken: 1
       }, function() {});
     });
+    db.collection('users', function(_, coll) {
+      return coll.ensureIndex({
+        'username': 1,
+        'domain': 1
+      }, function() {});
+    });
     db.collection('forums', function(_, coll) {
       coll.ensureIndex({
-        'createdBy.id': 1
+        'network': 1
+      }, function() {});
+      coll.ensureIndex({
+        'createdBy.id': 1,
+        'network': 1
       }, function() {});
       coll.ensureIndex({
         'createdBy.username': 1,
-        'createdBy.domain': 1
+        'createdBy.domain': 1,
+        'network': 1
       }, function() {});
       return coll.ensureIndex({
-        'stub': 1
+        'stub': 1,
+        'network': 1
       }, function() {});
     });
     db.collection('posts', function(_, coll) {
       coll.ensureIndex({
-        uid: 1
+        state: 1,
+        'network': 1
       }, function() {});
       coll.ensureIndex({
-        uid: 1,
-        state: 1
+        state: 1,
+        publishedAt: 1,
+        'network': 1
       }, function() {});
       coll.ensureIndex({
-        uid: -1,
-        state: 1
-      }, function() {});
-      coll.ensureIndex({
-        publishedAt: 1
-      }, function() {});
-      coll.ensureIndex({
-        'createdBy.id': 1
+        'createdBy.id': 1,
+        'network': 1
       }, function() {});
       return coll.ensureIndex({
         'createdBy.username': 1,
-        'createdBy.domain': 1
+        'createdBy.domain': 1,
+        'network': 1
       }, function() {});
     });
     db.collection('messages', function(_, coll) {
-      coll.ensureIndex({
-        userid: 1
-      }, function() {});
       return coll.ensureIndex({
-        'related.type': 1,
-        'related.id': 'related.id'
+        userid: 1
       }, function() {});
     });
     return db.collection('tokens', function(_, coll) {
       return coll.ensureIndex({
-        type: 1,
         key: 1
       }, function() {});
     });

@@ -7,7 +7,6 @@ modules = {
     userinfo: 'UserInfo',
     message: 'Message',
     network: 'Network',
-    itemview: 'ItemView',
     comment: 'Comment',
     article: 'Article'
 }

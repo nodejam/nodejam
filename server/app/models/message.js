@@ -103,7 +103,7 @@
                   verb: "published",
                   object: {
                     name: this.data.post.title,
-                    link: "/" + this.data.post.forum.stub + "/" + this.data.post.uid
+                    link: "/" + this.data.post.forum.stub + "/" + this.data.post._id
                   },
                   time: moment(this.timestamp).from(Date.now())
                 };

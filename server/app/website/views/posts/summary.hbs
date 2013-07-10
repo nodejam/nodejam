@@ -1,0 +1,27 @@
+{{#if summary.image}}
+    <li class="{{type}}-item-type with-image" data-url="/{{collections.0.stub}}/{{uid}}">
+        <div class="image" style="background-image:url({{summary.image}})">
+        </div>
+        <div class="text-content">
+            <h2><a href="/{{collections.0.stub}}/{{uid}}">{{summary.title}}</a></h2>
+            <div class="content">
+                {{{summary.text}}}
+            </div>
+        </div>
+        <p class="source">
+            <img src="{{createdBy.thumbnail}}" alt="{{createdBy.name}}" /><a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a> in <a href="/{{collections.0.stub}}">{{collections.0.name}}</a>
+        </p>
+    </li>
+{{else}}
+    <li class="{{type}}-item-type just-text" data-url="/{{collections.0.stub}}/{{uid}}">
+        <div class="text-content">
+            <h2><a href="/{{collections.0.stub}}/{{uid}}">{{summary.title}}</a></h2>
+            <div class="content">
+                {{{summary.text}}}
+            </div>
+        </div>
+        <p class="source">
+            <img src="{{createdBy.thumbnail}}" alt="{{createdBy.name}}" /><a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a> in <a href="/{{collections.0.stub}}">{{collections.0.name}}</a>
+        </p>
+    </li>
+{{/if}}

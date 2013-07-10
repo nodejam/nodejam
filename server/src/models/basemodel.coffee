@@ -204,8 +204,20 @@ class BaseModel
     
     validate: (cb) =>
         meta = @constructor.__getMeta__()
-        (meta.validate ? @validateFields).call @, meta.fields, cb
-
+        if not meta.useCustomValidationOnly
+            @validateFields meta.fields, (err, errors) =>
+                if meta.validate
+                    meta.validate.call @, meta.fields, (err, _errors) =>
+                        cb err, errors.concat _errors
+                else
+                    cb err, errors
+        else
+            if meta.validate?
+                meta.validate.call @, meta.fields, (err, errors) =>
+                    cb err, errors
+            else
+                cb null, []
+                        
         
 
     validateFields: (fields, cb) =>

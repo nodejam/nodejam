@@ -62,7 +62,7 @@ class Message extends BaseModel
                                 verb: "published",
                                 object: {
                                     name: @data.post.title,
-                                    link: "/#{@data.post.forum.stub}/#{@data.post.uid}"
+                                    link: "/#{@data.post.forum.stub}/#{@data.post._id}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }                   

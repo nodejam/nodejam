@@ -1,1 +1,13 @@
-Highway to hell...
+<script>
+    view = new Lappd.Views.Home.IndexView()
+</script>
+<div class="page-content">
+    <ul class="post-summaries">
+        {{#if posts}}
+            {{#each items}}
+                {{> postSummary this}}
+            {{/each}}
+        {{/if}}
+    </ul>
+</div>
+

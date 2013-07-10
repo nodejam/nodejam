@@ -13,7 +13,9 @@ class Article extends postModule.Post
                 stub: { type: 'string', required: false },
                 state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },
                 title: 'string',
-                summary: { type: 'string', required: 'false' },            
+                summary: { type: 'string', required: 'false' },
+                cover: { type: 'string', required: false },
+                smallCover: { type: 'string', required: false, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
                 content: { type: 'string', required: 'false' },
                 format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 },
                 publishedAt: { 
@@ -32,34 +34,17 @@ class Article extends postModule.Post
         
 
 
-    summarize: =>        
-        summary = new Summary {
-            id: @_id.toString(),
-            @uid,
-            @title,
-            @createdAt,
-            @timestamp,        
-            @publishedAt,
-            @createdBy           
-        }
-        
+    summarize: (view = "standard") =>
+        switch view
+            when "standard"
+                return {
+                    type: if @cover then 'image-text' else 'text',
+                    image: @smallCover,
+                    @title,
+                    content: if @format is 'markdown' and @content then mdparser(@content) else 'Invalid format.'
+                }
 
     
-    class Summary extends BaseModel    
-        @_getMeta: ->
-            userModule = require('./user')
-            {
-                type: Summary,
-                fields: {
-                    id: 'string',
-                    uid: 'string',
-                    title: 'string',
-                    createdAt: 'number',
-                    timestamp: 'number',
-                    publishedAt: 'number',
-                    createdBy: userModule.User.Summary,
-                }
-            }
 
 
 exports.Article = Article

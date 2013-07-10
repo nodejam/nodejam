@@ -18,8 +18,6 @@
   postModule = require('./post');
 
   Article = (function(_super) {
-    var Summary, _ref;
-
     __extends(Article, _super);
 
     Article._getMeta = function() {
@@ -41,6 +39,21 @@
           summary: {
             type: 'string',
             required: 'false'
+          },
+          cover: {
+            type: 'string',
+            required: false
+          },
+          smallCover: {
+            type: 'string',
+            required: false,
+            validate: function() {
+              if (this.cover && !this.smallCover) {
+                return 'Missing small cover.';
+              } else {
+                return true;
+              }
+            }
           },
           content: {
             type: 'string',
@@ -68,53 +81,24 @@
       Article.__super__.constructor.apply(this, arguments);
     }
 
-    Article.prototype.summarize = function() {
-      var summary;
-
-      return summary = new Summary({
-        id: this._id.toString(),
-        uid: this.uid,
-        title: this.title,
-        createdAt: this.createdAt,
-        timestamp: this.timestamp,
-        publishedAt: this.publishedAt,
-        createdBy: this.createdBy
-      });
-    };
-
-    Summary = (function(_super1) {
-      __extends(Summary, _super1);
-
-      function Summary() {
-        _ref = Summary.__super__.constructor.apply(this, arguments);
-        return _ref;
+    Article.prototype.summarize = function(view) {
+      if (view == null) {
+        view = "standard";
       }
-
-      Summary._getMeta = function() {
-        var userModule;
-
-        userModule = require('./user');
-        return {
-          type: Summary,
-          fields: {
-            id: 'string',
-            uid: 'string',
-            title: 'string',
-            createdAt: 'number',
-            timestamp: 'number',
-            publishedAt: 'number',
-            createdBy: userModule.User.Summary
-          }
-        };
-      };
-
-      return Summary;
-
-    })(BaseModel);
+      switch (view) {
+        case "standard":
+          return {
+            type: this.cover ? 'image-text' : 'text',
+            image: this.smallCover,
+            title: this.title,
+            content: this.format === 'markdown' && this.content ? mdparser(this.content) : 'Invalid format.'
+          };
+      }
+    };
 
     return Article;
 
-  }).call(this, postModule.Post);
+  })(postModule.Post);
 
   exports.Article = Article;
 

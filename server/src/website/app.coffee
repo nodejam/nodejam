@@ -110,11 +110,9 @@ app.get '/:forum', findHandler('ui/forums', (c) -> c.index)
 app.use(app.router)
 
 #handle errors
-###
 app.use (err, req, res, next) ->
     utils.log err
     res.send(500, { error: err })
-###
 
 
 # handle 404
@@ -130,25 +128,26 @@ database.getDb (err, db) ->
         coll.ensureIndex { passkey: 1 }, ->
         coll.ensureIndex { accessToken: 1 }, ->
 
+    db.collection 'users', (_, coll) ->
+        coll.ensureIndex { 'username': 1, 'domain': 1 }, ->
+
     db.collection 'forums', (_, coll) ->
-        coll.ensureIndex { 'createdBy.id': 1 }, ->
-        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1 }, ->
-        coll.ensureIndex { 'stub': 1 }, ->
+        coll.ensureIndex { 'network': 1 }, ->
+        coll.ensureIndex { 'createdBy.id': 1, 'network': 1 }, ->
+        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1, 'network': 1 }, ->
+        coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
 
     db.collection 'posts', (_, coll) ->
-        coll.ensureIndex { uid: 1 }, ->
-        coll.ensureIndex { uid: 1, state: 1 }, ->
-        coll.ensureIndex { uid: -1, state: 1 }, ->
-        coll.ensureIndex { publishedAt: 1 }, ->
-        coll.ensureIndex { 'createdBy.id': 1 }, ->
-        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1 }, ->
+        coll.ensureIndex { state: 1, 'network': 1 }, ->
+        coll.ensureIndex { state: 1, publishedAt: 1, 'network': 1 }, ->
+        coll.ensureIndex { 'createdBy.id': 1, 'network': 1 }, ->
+        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1, 'network': 1 }, ->
         
     db.collection 'messages', (_, coll) ->
         coll.ensureIndex { userid: 1 }, ->
-        coll.ensureIndex { 'related.type': 1, 'related.id' }, ->
         
     db.collection 'tokens', (_, coll) ->
-        coll.ensureIndex { type: 1, key: 1 }, ->
+        coll.ensureIndex { key: 1 }, ->
 
     
 host = process.argv[2]

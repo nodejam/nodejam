@@ -26,7 +26,23 @@
       var _this = this;
 
       return this.attachUser(arguments, function() {
-        return res.render('home/index.hbs', {});
+        return models.Post.find({
+          tags: 'featured'
+        }, (function(cursor) {
+          return cursor.sort({
+            _id: -1
+          }).limit(12);
+        }), {}, function(err, posts) {
+          var post, _i, _len;
+
+          for (_i = 0, _len = posts.length; _i < _len; _i++) {
+            post = posts[_i];
+            post.summary = post.summarize();
+          }
+          return res.render('home/index.hbs', {
+            posts: posts
+          });
+        });
       });
     };
 
