@@ -5,10 +5,6 @@
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  console.log("Fora application started at " + (new Date));
-
-  console.log("NODE_ENV is " + process.env.NODE_ENV);
-
   express = require('express');
 
   conf = require('../conf');
@@ -28,6 +24,10 @@
   uiControllers = require('./controllers/ui');
 
   apiControllers = require('./controllers/api');
+
+  utils.log("Fora application started at " + (new Date));
+
+  utils.log("NODE_ENV is " + process.env.NODE_ENV);
 
   app = express();
 
@@ -188,7 +188,7 @@
 
   /*
   app.use (err, req, res, next) ->
-      console.log err
+      utils.log err
       res.send(500, { error: err })
   */
 

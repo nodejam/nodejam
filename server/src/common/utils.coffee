@@ -63,21 +63,25 @@ fixUrl = (url) ->
     else
         "http://#{url}"        
 
+
+log = (msg) ->
+    console.log msg
+    
         
 dumpError = (err) ->
     if err
         if typeof err is 'object'
             if err.message
-                console.log '\nError: ' + err.message
+                log '\nError: ' + err.message
         
         if err.stack
-            console.log('\nStacktrace:')
-            console.log('===========')
-            console.log(err.stack)
+            log('\nStacktrace:')
+            log('===========')
+            log(err.stack)
         else
-            console.log("Error: #{JSON.stringify(err)}")
+            log("Error: #{JSON.stringify(err)}")
     else
-        console.log 'Error: null or undefined.'
+        log 'Error: null or undefined.'
     
 root.clone = clone
 root.extend = extend
@@ -86,4 +90,5 @@ root.mergeObjects = mergeObjects
 root.mergeLinkedObjects = mergeLinkedObjects
 root.uniqueId = uniqueId
 root.fixUrl = fixUrl
+root.log = log
 root.dumpError = dumpError

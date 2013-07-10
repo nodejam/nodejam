@@ -298,12 +298,12 @@
             return fnSave();
           }
         } else {
-          console.log("Validation failed for object with id " + _this._id + " in collection " + meta.collection + ".");
+          utils.log("Validation failed for object with id " + _this._id + " in collection " + meta.collection + ".");
           for (_i = 0, _len = errors.length; _i < _len; _i++) {
             error = errors[_i];
-            console.log(error);
+            utils.log(error);
           }
-          console.log("Error generated at " + (Date().toString('yyyy-MM-dd')) + ".");
+          utils.log("Error generated at " + (Date().toString('yyyy-MM-dd')) + ".");
           return typeof cb === "function" ? cb(new AppError("Model failed validation.")) : void 0;
         }
       });

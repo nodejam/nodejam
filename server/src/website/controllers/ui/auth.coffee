@@ -24,7 +24,7 @@ class Auth extends controller.Controller
         
         oa.getOAuthRequestToken (error, oauth_token, oauth_token_secret, results) =>
             if error
-                console.log error
+                utils.log error
                 res.send "Error in authenticating"
             else
                 oauthProcessKey = utils.uniqueId(24)
@@ -69,10 +69,10 @@ class Auth extends controller.Controller
                     oauth.verifier = req.query.oauth_verifier
                     oa.getOAuthAccessToken oauth.token, oauth.token_secret, oauth.verifier, (error, accessToken, accessTokenSecret, results) =>
                         if error
-	                        console.log error
+	                        utils.log error
 	                        res.send "Could not connect to Twitter."
                         else
-                            console.log "Twitter: authenticated #{results.screen_name}"
+                            utils.log "Twitter: authenticated #{results.screen_name}"
                             
                             response = ''                                    
                             https.get "https://api.twitter.com/1/users/lookup.json?screen_name=#{results.screen_name}", (_res) =>
@@ -98,10 +98,10 @@ class Auth extends controller.Controller
                                                 </html>'
                                                         
                                     else
-                                        console.log response
+                                        utils.log response
                                         res.send "Invalid response."                            
                 else
-                    console.log "No token"
+                    utils.log "No token"
                     res.send "Could not connect to Twitter."
             else
                 next err                

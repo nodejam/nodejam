@@ -38,7 +38,7 @@
         var oauth, oauthProcessKey, token;
 
         if (error) {
-          console.log(error);
+          utils.log(error);
           return res.send("Error in authenticating");
         } else {
           oauthProcessKey = utils.uniqueId(24);
@@ -86,10 +86,10 @@
               var response;
 
               if (error) {
-                console.log(error);
+                utils.log(error);
                 return res.send("Could not connect to Twitter.");
               } else {
-                console.log("Twitter: authenticated " + results.screen_name);
+                utils.log("Twitter: authenticated " + results.screen_name);
                 response = '';
                 return https.get("https://api.twitter.com/1/users/lookup.json?screen_name=" + results.screen_name, function(_res) {
                   _res.on('data', function(d) {
@@ -117,7 +117,7 @@
                                                 </html>');
                       });
                     } else {
-                      console.log(response);
+                      utils.log(response);
                       return res.send("Invalid response.");
                     }
                   });
@@ -125,7 +125,7 @@
               }
             });
           } else {
-            console.log("No token");
+            utils.log("No token");
             return res.send("Could not connect to Twitter.");
           }
         } else {

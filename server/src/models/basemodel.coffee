@@ -194,10 +194,10 @@ class BaseModel
                 else
                     fnSave()        
             else
-                console.log "Validation failed for object with id #{@_id} in collection #{meta.collection}."
+                utils.log "Validation failed for object with id #{@_id} in collection #{meta.collection}."
                 for error in errors
-                    console.log error
-                console.log "Error generated at #{Date().toString('yyyy-MM-dd')}."
+                    utils.log error
+                utils.log "Error generated at #{Date().toString('yyyy-MM-dd')}."
                 cb? new AppError "Model failed validation."
 
 

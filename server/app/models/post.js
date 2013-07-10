@@ -26,6 +26,13 @@
       forumModule = require('./forum');
       return {
         type: Post,
+        typeConstructor: function(obj) {
+          if (obj.type === 'article') {
+            return new articleModule.Article(obj);
+          } else {
+            return new Post(obj);
+          }
+        },
         collection: 'posts',
         fields: {
           network: 'string',

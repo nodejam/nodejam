@@ -12,7 +12,7 @@ class Post extends BaseModel
         forumModule = require('./forum')
         {
             type: Post,
-            #typeConstructor: (obj) -> if obj.type is 'article' then new articleModule.Article(obj) else new Post(obj), 
+            typeConstructor: (obj) -> if obj.type is 'article' then new articleModule.Article(obj) else new Post(obj), 
             collection: 'posts',
             fields: {
                 network: 'string'

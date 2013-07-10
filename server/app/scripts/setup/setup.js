@@ -21,23 +21,23 @@
 
   database = new (require('../../common/database')).Database(conf.db);
 
-  console.log("Setup started at " + (new Date));
+  utils.log("Setup started at " + (new Date));
 
-  console.log("NODE_ENV is " + process.env.NODE_ENV);
+  utils.log("NODE_ENV is " + process.env.NODE_ENV);
 
-  console.log("Setup will connect to database " + conf.db.name + " on " + conf.db.host);
+  utils.log("Setup will connect to database " + conf.db.name + " on " + conf.db.host);
 
   HOST = 'local.foraproject.org';
 
   PORT = '80';
 
   if (process.env.NODE_ENV !== 'development') {
-    console.log('Setup can only be run in development.');
+    utils.log('Setup can only be run in development.');
     process.exit();
   }
 
   if (HOST !== 'local.foraproject.org') {
-    console.log('HOST should be local.');
+    utils.log('HOST should be local.');
     process.exit();
   }
 
@@ -47,21 +47,21 @@
     _globals = {};
     if (__indexOf.call(process.argv, '--delete') >= 0) {
       return database.getDb(function(err, db) {
-        console.log('Deleting main database.');
+        utils.log('Deleting main database.');
         return db.dropDatabase(function(err, result) {
-          console.log('Everything is gone now.');
+          utils.log('Everything is gone now.');
           return process.exit();
         });
       });
     } else if (__indexOf.call(process.argv, '--create') >= 0) {
-      console.log('This script will setup basic data. Calls the latest HTTP API.');
+      utils.log('This script will setup basic data. Calls the latest HTTP API.');
       _globals.sessions = {};
       createUser = function(user, cb) {
-        console.log("Creating " + user.username + "...");
+        utils.log("Creating " + user.username + "...");
         user.secret = conf.networks[0].adminkeys["default"];
         return doHttpRequest('/api/sessions', querystring.stringify(user), 'post', function(err, resp) {
           resp = JSON.parse(resp);
-          console.log("Created " + resp.username);
+          utils.log("Created " + resp.username);
           _globals.sessions[user.username] = resp;
           return cb();
         });
@@ -81,11 +81,11 @@
         var passkey;
 
         passkey = _globals.sessions[forum._createdBy].passkey;
-        console.log("Creating a new forum " + forum.name + " with passkey(" + passkey + ")....");
+        utils.log("Creating a new forum " + forum.name + " with passkey(" + passkey + ")....");
         delete forum._createdBy;
         return doHttpRequest("/api/forums?passkey=" + passkey, querystring.stringify(forum), 'post', function(err, resp) {
           resp = JSON.parse(resp);
-          console.log("Created " + resp.name);
+          utils.log("Created " + resp.name);
           return cb();
         });
       };
@@ -105,8 +105,8 @@
 
         passkey = _globals.sessions[article._createdBy].passkey;
         adminkey = _globals.sessions['jeswin'].passkey;
-        console.log("Creating a new article with passkey(" + passkey + ")....");
-        console.log("Creating " + article.title + "...");
+        utils.log("Creating a new article with passkey(" + passkey + ")....");
+        utils.log("Creating " + article.title + "...");
         article.content = fs.readFileSync(path.resolve(__dirname, "articles/" + article._content), 'utf-8');
         article.publish = true;
         forum = article._forum;
@@ -117,13 +117,13 @@
         delete article._meta;
         return doHttpRequest("/api/forums/" + forum + "?passkey=" + passkey, querystring.stringify(article), 'post', function(err, resp) {
           resp = JSON.parse(resp);
-          console.log("Created " + resp.title + " with id " + resp._id);
+          utils.log("Created " + resp.title + " with id " + resp._id);
           if (meta.split(',').indexOf('featured') !== -1) {
             return doHttpRequest("/api/admin/posts/" + resp._id + "?passkey=" + adminkey, querystring.stringify({
               tags: 'featured'
             }), 'put', function(err, resp) {
               resp = JSON.parse(resp);
-              console.log("Added featured tag to article " + resp.title + ".");
+              utils.log("Added featured tag to article " + resp.title + ".");
               return cb();
             });
           }
@@ -142,20 +142,20 @@
       }
       tasks = function() {
         return async.series(createUserTasks, function() {
-          console.log('Created users.');
+          utils.log('Created users.');
           return async.series(createForumTasks, function() {
-            console.log('Created forums.');
+            utils.log('Created forums.');
             return async.series(createArticleTasks, function() {
-              console.log('Created articles.');
-              return console.log('Setup complete.');
+              utils.log('Created articles.');
+              return utils.log('Setup complete.');
             });
           });
         });
       };
-      console.log('Setup will begin in 3 seconds.');
+      utils.log('Setup will begin in 3 seconds.');
       return setTimeout(tasks, 1000);
     } else {
-      console.log('Invalid option.');
+      utils.log('Invalid option.');
       return process.exit();
     }
   };
@@ -163,7 +163,7 @@
   doHttpRequest = function(url, data, method, cb) {
     var options, req, response;
 
-    console.log("HTTP " + (method.toUpperCase()) + " to " + url);
+    utils.log("HTTP " + (method.toUpperCase()) + " to " + url);
     options = {
       host: HOST,
       port: PORT,
@@ -184,7 +184,7 @@
         return response += chunk;
       });
       return res.on('end', function() {
-        console.log(response);
+        utils.log(response);
         return cb(null, response);
       });
     });
