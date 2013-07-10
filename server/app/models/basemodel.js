@@ -310,27 +310,34 @@
     };
 
     BaseModel.prototype.validate = function(cb) {
-      var meta,
+      var meta, _cb,
         _this = this;
 
+      _cb = function(err, errors) {
+        if (cb) {
+          return cb(err, errors);
+        } else {
+          return errors;
+        }
+      };
       meta = this.constructor.__getMeta__();
       if (!meta.useCustomValidationOnly) {
         return this.validateFields(meta.fields, function(err, errors) {
           if (meta.validate) {
             return meta.validate.call(_this, meta.fields, function(err, _errors) {
-              return cb(err, errors.concat(_errors));
+              return _cb(err, errors.concat(_errors));
             });
           } else {
-            return cb(err, errors);
+            return _cb(err, errors);
           }
         });
       } else {
         if (meta.validate != null) {
           return meta.validate.call(this, meta.fields, function(err, errors) {
-            return cb(err, errors);
+            return _cb(err, errors);
           });
         } else {
-          return cb(null, []);
+          return _cb(null, []);
         }
       }
     };

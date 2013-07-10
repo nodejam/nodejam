@@ -203,20 +203,23 @@ class BaseModel
 
     
     validate: (cb) =>
+        _cb = (err, errors) =>
+            if cb then cb(err, errors) else errors
+            
         meta = @constructor.__getMeta__()
         if not meta.useCustomValidationOnly
             @validateFields meta.fields, (err, errors) =>
                 if meta.validate
                     meta.validate.call @, meta.fields, (err, _errors) =>
-                        cb err, errors.concat _errors
+                        _cb err, errors.concat _errors
                 else
-                    cb err, errors
+                    _cb err, errors
         else
             if meta.validate?
                 meta.validate.call @, meta.fields, (err, errors) =>
-                    cb err, errors
+                    _cb err, errors
             else
-                cb null, []
+                _cb null, []
                         
         
 

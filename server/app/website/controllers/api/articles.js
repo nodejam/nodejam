@@ -45,28 +45,10 @@
       return article.save({
         user: req.user
       }, function(err, article) {
-        var item, message;
+        var message;
 
         if (!err) {
-          item = new models.ItemView({
-            forum: article.forum.stub,
-            forumType: 'article',
-            itemid: article._id.toString(),
-            createdBy: article.createdBy,
-            createdAt: article.createdAt,
-            state: article.state,
-            type: 'article',
-            data: article.createView('summary')
-          });
-          if (article.publishedAt) {
-            item.publishedAt = article.publishedAt;
-          }
-          item.save({
-            user: req.user
-          }, function() {
-            return res.send(article);
-          });
-          models.Article.refreshForumSnapshot(article, {}, function() {});
+          res.send(article);
           if (req.body.publish === 'true') {
             message = new models.Message({
               userid: '0',
@@ -120,23 +102,6 @@
                 var message;
 
                 if (!err) {
-                  models.ItemView.get({
-                    type: "article",
-                    forum: article.forum,
-                    itemid: article.id.toString()
-                  }, {}, function(err, item) {
-                    item.data = article.createView('summary');
-                    item.state = article.state;
-                    if (article.publishedAt) {
-                      item.publishedAt = article.publishedAt;
-                    }
-                    return item.save({
-                      user: req.user
-                    }, function() {
-                      return res.send(article);
-                    });
-                  });
-                  models.Article.refreshForumSnapshot(article, {}, function() {});
                   if (article.createdBy.id === req.user.id && !alreadyPublished && req.body.publish === 'true') {
                     message = new models.Message({
                       userid: '0',
@@ -181,14 +146,6 @@
           if (article) {
             if (article.createdBy.id === req.user.id || _this.isAdmin(req.user)) {
               return article.destroy({}, function(err, article) {
-                models.ItemView.get({
-                  type: "article",
-                  forum: article.forum,
-                  itemid: article.id.toString()
-                }, {}, function(err, item) {
-                  return item.destroy({}, function() {});
-                });
-                models.Article.refreshForumSnapshot(article, {}, function() {});
                 return res.send(article);
               });
             } else {

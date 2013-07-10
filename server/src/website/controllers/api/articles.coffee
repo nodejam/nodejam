@@ -22,25 +22,8 @@ class Articles extends Controller
         
         article.save { user: req.user }, (err, article) =>
             if not err
-                item = new models.ItemView {
-                    forum: article.forum.stub,
-                    forumType: 'article',
-                    itemid: article._id.toString(),                    
-                    createdBy: article.createdBy,
-                    createdAt: article.createdAt,
-                    state: article.state,
-                    type: 'article'
-                    data: article.createView('summary')
-                }
-                
-                if article.publishedAt
-                    item.publishedAt = article.publishedAt
-                
-                item.save { user: req.user }, =>
-                    res.send article
+                res.send article
                         
-                models.Article.refreshForumSnapshot article, {}, =>
-                
                 if req.body.publish is 'true'
                     message = new models.Message {
                         userid: '0',
@@ -71,20 +54,6 @@ class Articles extends Controller
                              
                         article.save { user: req.user }, _handleError (err, article) =>
                             if not err
-                                #Remove from Item View
-                                models.ItemView.get { type: "article", forum: article.forum, itemid: article.id.toString() }, {}, (err, item) =>
-                                    item.data = article.createView('summary')   
-                                    item.state = article.state
-
-                                    if article.publishedAt
-                                        item.publishedAt = article.publishedAt                                                 
-
-                                    item.save { user: req.user }, =>
-                                        res.send article
-                                        
-                                #Update stats on the forum
-                                models.Article.refreshForumSnapshot article, {}, =>
-
                                 if article.createdBy.id is req.user.id and not alreadyPublished and req.body.publish is 'true'
                                     message = new models.Message {
                                         userid: '0',
@@ -109,13 +78,6 @@ class Articles extends Controller
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
                         article.destroy {}, (err, article) => 
-                            #Remove from Item View
-                            models.ItemView.get { type: "article", forum: article.forum, itemid: article.id.toString() }, {}, (err, item) =>
-                                item.destroy {}, =>
-
-                            #Update stats on the forum
-                            models.Article.refreshForumSnapshot article, {}, =>                               
-
                             res.send article
                     else
                         res.send 'Access denied.'
