@@ -24,7 +24,6 @@
         type: User,
         collection: 'users',
         fields: {
-          network: 'string',
           domain: {
             type: 'string',
             validate: function() {
@@ -99,10 +98,9 @@
       };
     };
 
-    User.getOrCreateUser = function(userDetails, domain, network, accessToken, cb) {
+    User.getOrCreateUser = function(userDetails, domain, accessToken, cb) {
       return User._models.Session.get({
-        accessToken: accessToken,
-        network: network
+        accessToken: accessToken
       }, {}, function(err, session) {
         if (err) {
           return cb(err);
@@ -115,27 +113,24 @@
           }
           return User.get({
             domain: domain,
-            username: userDetails.username,
-            network: network
+            username: userDetails.username
           }, {}, function(err, user) {
-            var _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
+            var _ref, _ref1, _ref10, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
 
             if (user != null) {
               user.name = (_ref = userDetails.name) != null ? _ref : user.name;
               user.domainid = (_ref1 = userDetails.domainid) != null ? _ref1 : user.domainid;
-              user.network = (_ref2 = userDetails.network) != null ? _ref2 : user.network;
-              user.username = (_ref3 = userDetails.username) != null ? _ref3 : userDetails.domainid;
+              user.username = (_ref2 = userDetails.username) != null ? _ref2 : userDetails.domainid;
               user.domainidType = userDetails.username ? 'username' : 'domainid';
-              user.location = (_ref4 = userDetails.location) != null ? _ref4 : user.location;
-              user.picture = (_ref5 = userDetails.picture) != null ? _ref5 : user.picture;
-              user.thumbnail = (_ref6 = userDetails.thumbnail) != null ? _ref6 : user.thumbnail;
-              user.tile = (_ref7 = userDetails.tile) != null ? _ref7 : user.tile;
-              user.email = (_ref8 = userDetails.email) != null ? _ref8 : 'unknown@poe3.com';
+              user.location = (_ref3 = userDetails.location) != null ? _ref3 : user.location;
+              user.picture = (_ref4 = userDetails.picture) != null ? _ref4 : user.picture;
+              user.thumbnail = (_ref5 = userDetails.thumbnail) != null ? _ref5 : user.thumbnail;
+              user.tile = (_ref6 = userDetails.tile) != null ? _ref6 : user.tile;
+              user.email = (_ref7 = userDetails.email) != null ? _ref7 : 'unknown@poe3.com';
               user.lastLogin = Date.now();
               return user.save({}, function(err, u) {
                 if (!err) {
                   session.userid = u._id.toString();
-                  session.network = network;
                   return session.save({}, function(err, session) {
                     if (!err) {
                       return cb(null, u, session);
@@ -150,9 +145,8 @@
             } else {
               user = new User();
               user.domain = domain;
-              user.network = network;
               user.domainid = userDetails.domainid;
-              user.username = (_ref9 = userDetails.username) != null ? _ref9 : userDetails.domainid;
+              user.username = (_ref8 = userDetails.username) != null ? _ref8 : userDetails.domainid;
               user.domainidType = userDetails.username ? 'username' : 'domainid';
               if (domain === 'fb') {
                 user.facebookUsername = userDetails.username;
@@ -164,8 +158,8 @@
               user.location = userDetails.location;
               user.picture = userDetails.picture;
               user.thumbnail = userDetails.thumbnail;
-              user.tile = (_ref10 = userDetails.tile) != null ? _ref10 : '/images/collection-tile.png';
-              user.email = (_ref11 = userDetails.email) != null ? _ref11 : 'unknown@poe3.com';
+              user.tile = (_ref9 = userDetails.tile) != null ? _ref9 : '/images/collection-tile.png';
+              user.email = (_ref10 = userDetails.email) != null ? _ref10 : 'unknown@poe3.com';
               user.lastLogin = Date.now();
               user.preferences = {
                 canEmail: true
@@ -177,10 +171,8 @@
                 if (!err) {
                   userinfo = new User._models.UserInfo();
                   userinfo.userid = u._id.toString();
-                  userinfo.network = network;
                   return userinfo.save({}, function(err, _uinfo) {
                     if (!err) {
-                      session.network = network;
                       session.userid = u._id.toString();
                       return session.save({}, function(err, session) {
                         if (!err) {
@@ -272,8 +264,7 @@
         id: this._id.toString(),
         domain: this.domain,
         username: this.username,
-        name: this.name,
-        network: this.network
+        name: this.name
       });
     };
 
@@ -301,8 +292,7 @@
             }
           },
           username: 'string',
-          name: 'string',
-          network: 'string'
+          name: 'string'
         }
       };
     };

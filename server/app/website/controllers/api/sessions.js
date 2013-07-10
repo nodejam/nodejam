@@ -35,8 +35,8 @@
           path: '/me?' + querystring.stringify({
             fields: 'id,username,name,first_name,last_name,location,email',
             access_token: req.body.accessToken,
-            client_id: conf.authenticationTypes[req.network.stub].facebook.FACEBOOK_APP_ID,
-            client_secret: conf.authenticationTypes[req.network.stub].facebook.FACEBOOK_SECRET
+            client_id: conf.auth.facebook.FACEBOOK_APP_ID,
+            client_secret: conf.auth.facebook.FACEBOOK_SECRET
           })
         };
         return client.secureGraphRequest(options, function(err, userDetails) {
@@ -44,7 +44,7 @@
 
           _userDetails = _this.parseFBUserDetails(JSON.parse(userDetails));
           if (_userDetails.domainid && _userDetails.name) {
-            return models.User.getOrCreateUser(_userDetails, 'fb', req.network.stub, req.body.accessToken, function(err, user, session) {
+            return models.User.getOrCreateUser(_userDetails, 'fb', req.body.accessToken, function(err, user, session) {
               if (!err) {
                 res.contentType('json');
                 return res.send({
@@ -63,9 +63,9 @@
           }
         });
       } else if (req.body.domain === 'users') {
-        if (req.body.secret === req.network.adminkeys["default"]) {
+        if (req.body.secret === conf.auth.adminkeys["default"]) {
           accessToken = utils.uniqueId(24);
-          return models.User.getOrCreateUser(req.body, 'users', req.network.stub, accessToken, function(err, user, session) {
+          return models.User.getOrCreateUser(req.body, 'users', accessToken, function(err, user, session) {
             if (!err) {
               res.contentType('json');
               return res.send({

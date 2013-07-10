@@ -9,7 +9,6 @@ class Message extends BaseModel
             type: Message,
             collection: 'messages',
             fields: {
-                network: 'string',
                 userid: 'string',
                 type: { type: 'string', validate: -> ['message', 'global-notification', 'user-notification'].indexOf(@type) isnt -1 },
                 to: { useCustomValidationOnly:true, validate: -> if @type is 'user-notification' or @type is 'message' then @to.validate() },

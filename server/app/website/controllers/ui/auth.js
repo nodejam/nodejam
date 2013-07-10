@@ -33,7 +33,7 @@
       var oa,
         _this = this;
 
-      oa = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", conf.authenticationTypes[req.network.stub].twitter.TWITTER_CONSUMER_KEY, conf.authenticationTypes[req.network.stub].twitter.TWITTER_SECRET, "1.0", conf.authenticationTypes[req.network.stub].twitter.TWITTER_CALLBACK, "HMAC-SHA1");
+      oa = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", conf.authenticationTypes.twitter.TWITTER_CONSUMER_KEY, conf.authenticationTypes.twitter.TWITTER_SECRET, "1.0", conf.authenticationTypes.twitter.TWITTER_CALLBACK, "HMAC-SHA1");
       return oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
         var oauth, oauthProcessKey, token;
 
@@ -47,7 +47,6 @@
             token_secret: oauth_token_secret
           };
           token = new models.Token({
-            network: req.network.stub,
             type: 'oauth-process-key',
             key: oauthProcessKey,
             value: oauth
@@ -70,11 +69,10 @@
       var oa,
         _this = this;
 
-      oa = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", conf.authenticationTypes[req.network.stub].twitter.TWITTER_CONSUMER_KEY, conf.authenticationTypes[req.network.stub].twitter.TWITTER_SECRET, "1.0", conf.authenticationTypes[req.network.stub].twitter.TWITTER_CALLBACK, "HMAC-SHA1");
+      oa = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", conf.authenticationTypes.twitter.TWITTER_CONSUMER_KEY, conf.authenticationTypes.twitter.TWITTER_SECRET, "1.0", conf.authenticationTypes.twitter.TWITTER_CALLBACK, "HMAC-SHA1");
       return models.Token.get({
         type: 'oauth-process-key',
-        key: req.cookies.oauth_process_key,
-        network: req.network.stub
+        key: req.cookies.oauth_process_key
       }, {}, function(err, token) {
         var oauth;
 
@@ -101,7 +99,7 @@
                     resp = JSON.parse(response);
                     if (resp.length && (resp[0] != null)) {
                       userDetails = _this.parseTwitterUserDetails(resp[0]);
-                      return models.User.getOrCreateUser(userDetails, 'tw', req.network.stub, accessToken, function(err, _user, _session) {
+                      return models.User.getOrCreateUser(userDetails, 'tw', accessToken, function(err, _user, _session) {
                         res.clearCookie("oauth_process_key");
                         res.cookie("userid", _user._id.toString());
                         res.cookie("domain", "tw");

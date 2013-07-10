@@ -7,7 +7,7 @@ class Controller
 
     ensureSession: (args, fn) =>
         [req, res, next] = args 
-        @getUserWithPasskey (req.query.passkey ? req.cookies.passkey), req.network, (err, user) =>
+        @getUserWithPasskey (req.query.passkey ? req.cookies.passkey), (err, user) =>
             if user?.id and user?.domain and user?.username
                 req.user = user
                 fn()
@@ -18,15 +18,15 @@ class Controller
 
     attachUser: (args, fn) ->
         [req, res, next] = args
-        @getUserWithPasskey (req.query.passkey ? req.cookies.passkey), req.network, (err, user) =>
+        @getUserWithPasskey (req.query.passkey ? req.cookies.passkey), (err, user) =>
             req.user = user ? { id: 0 }
             fn()
 
 
 
-    getUserWithPasskey: (passkey, network, cb) ->
+    getUserWithPasskey: (passkey, cb) ->
         if passkey
-            models.Session.get { passkey, network: network.stub }, {}, (err, session) =>
+            models.Session.get { passkey }, {}, (err, session) =>
                 if not err
                     if session
                         models.User.getById session.userid, {}, (err, user) =>
@@ -42,12 +42,12 @@ class Controller
 
     
     isSameUser: (user1, user2) =>
-        user1.domain is user2.domain and user1.username is user2.username and user1.network is user2.network
+        user1.domain is user2.domain and user1.username is user2.username
 
 
 
-    isAdmin: (user, network) =>
-        (u for u in network.admins when u.username is user?.username and u.domain is user?.domain).length        
+    isAdmin: (user) =>
+        (u for u in conf.admins when u.username is user?.username and u.domain is user?.domain).length        
                 
                 
         

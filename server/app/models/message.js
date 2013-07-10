@@ -25,7 +25,6 @@
         type: Message,
         collection: 'messages',
         fields: {
-          network: 'string',
           userid: 'string',
           type: {
             type: 'string',

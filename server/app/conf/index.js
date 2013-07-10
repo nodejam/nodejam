@@ -31,14 +31,17 @@
   auth = {
     twitter: twitter,
     adminkeys: {
-      "default": 'RANDOM_STRING_HERE'
+      "default": 'gorilla^007~5'
     }
   };
 
   admins = [
     {
-      username: 'adminuser',
-      domain: 'tw'
+      id: '__',
+      domain: 'users',
+      username: 'jeswin',
+      name: 'Jeswin Kumar',
+      domainIdType: 'username'
     }
   ];
 
@@ -48,18 +51,6 @@
     domain: 'local.foraproject.org',
     templates: {
       home: 'welcome/index.hbs'
-    },
-    admins: [
-      {
-        id: '__',
-        domain: 'users',
-        username: 'jeswin',
-        name: 'Jeswin Kumar',
-        domainIdType: 'username'
-      }
-    ],
-    adminkeys: {
-      "default": 'gorilla^007~5'
     }
   });
 

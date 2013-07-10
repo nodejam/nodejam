@@ -11,7 +11,6 @@ class User extends BaseModel
             type: User,
             collection: 'users',
             fields: {
-                network: 'string',
                 domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
                 domainid: 'string',
                 username: 'string',
@@ -37,19 +36,18 @@ class User extends BaseModel
         
     
     #Called from controllers when a new session is created.
-    @getOrCreateUser: (userDetails, domain, network, accessToken, cb) =>
-        @_models.Session.get { accessToken, network }, {}, (err, session) =>
+    @getOrCreateUser: (userDetails, domain, accessToken, cb) =>
+        @_models.Session.get { accessToken }, {}, (err, session) =>
             if err
                 cb err
             else
                 session ?= new @_models.Session { passkey: utils.uniqueId(24), accessToken }
                     
-                User.get { domain, username: userDetails.username, network: network }, {}, (err, user) =>
+                User.get { domain, username: userDetails.username }, {}, (err, user) =>
                     if user?
                         #Update some details
                         user.name = userDetails.name ? user.name
                         user.domainid = userDetails.domainid ? user.domainid
-                        user.network = userDetails.network ? user.network
                         user.username = userDetails.username ? userDetails.domainid
                         user.domainidType = if userDetails.username then 'username' else 'domainid'
                         user.location = userDetails.location ? user.location
@@ -61,7 +59,6 @@ class User extends BaseModel
                         user.save {}, (err, u) =>
                             if not err
                                 session.userid = u._id.toString()
-                                session.network = network
                                 session.save {}, (err, session) =>
                                     if not err
                                         cb null, u, session
@@ -74,7 +71,6 @@ class User extends BaseModel
                         #User doesn't exist. create.
                         user = new User()
                         user.domain = domain
-                        user.network = network
                         user.domainid = userDetails.domainid
                         user.username = userDetails.username ? userDetails.domainid
                         user.domainidType = if userDetails.username then 'username' else 'domainid'
@@ -96,10 +92,8 @@ class User extends BaseModel
                             if not err
                                 userinfo = new @_models.UserInfo()
                                 userinfo.userid = u._id.toString()
-                                userinfo.network = network
                                 userinfo.save {}, (err, _uinfo) =>
                                     if not err
-                                        session.network = network
                                         session.userid = u._id.toString()
                                         session.save {}, (err, session) =>
                                             if not err
@@ -165,7 +159,6 @@ class User extends BaseModel
             domain: @domain
             username: @username
             name: @name
-            network: @network
         }
 
     
@@ -178,7 +171,6 @@ class Summary extends BaseModel
                 domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
                 username: 'string',
                 name: 'string',
-                network: 'string'
             }
         }
             

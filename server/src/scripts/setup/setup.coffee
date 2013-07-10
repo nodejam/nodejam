@@ -43,7 +43,7 @@ init = () ->
 
         createUser = (user, cb) ->
             utils.log "Creating #{user.username}..." 
-            user.secret = conf.networks[0].adminkeys.default
+            user.secret = conf.auth.adminkeys.default
             doHttpRequest '/api/sessions', querystring.stringify(user), 'post', (err, resp) ->   
                 resp = JSON.parse resp             
                 utils.log "Created #{resp.username}"

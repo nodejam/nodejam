@@ -32,7 +32,6 @@
         _this = this;
 
       article = new models.Article;
-      article.network = req.network.stub;
       article.createdBy = req.user;
       article.forum = forum.summarize();
       article.rating = 0;
@@ -50,7 +49,6 @@
 
         if (!err) {
           item = new models.ItemView({
-            network: req.network.stub,
             forum: article.forum.stub,
             forumType: 'article',
             itemid: article._id.toString(),
@@ -71,7 +69,6 @@
           models.Article.refreshForumSnapshot(article, {}, function() {});
           if (req.body.publish === 'true') {
             message = new models.Message({
-              network: req.network.stub,
               userid: '0',
               type: "global-notification",
               reason: 'published-article',
@@ -102,14 +99,13 @@
 
       _handleError = this.handleError(next);
       return models.Article.get({
-        uid: req.params.item,
-        network: req.network.stub
+        uid: req.params.item
       }, {}, function(err, article) {
         var alreadyPublished, _ref1;
 
         if (!err) {
           if (article) {
-            if (article.createdBy.id === req.user.id || _this.isAdmin(req.user, req.network)) {
+            if (article.createdBy.id === req.user.id || _this.isAdmin(req.user)) {
               alreadyPublished = article.state === 'published';
               if (!alreadyPublished && req.body.publish === 'true') {
                 if ((_ref1 = article.publishedAt) == null) {
@@ -143,7 +139,6 @@
                   models.Article.refreshForumSnapshot(article, {}, function() {});
                   if (article.createdBy.id === req.user.id && !alreadyPublished && req.body.publish === 'true') {
                     message = new models.Message({
-                      network: req.network.stub,
                       userid: '0',
                       type: "global-notification",
                       reason: 'published-article',
@@ -180,12 +175,11 @@
       var _this = this;
 
       return models.Article.get({
-        uid: req.params.item,
-        network: req.network.stub
+        uid: req.params.item
       }, {}, function(err, article) {
         if (!err) {
           if (article) {
-            if (article.createdBy.id === req.user.id || _this.isAdmin(req.user, req.network)) {
+            if (article.createdBy.id === req.user.id || _this.isAdmin(req.user)) {
               return article.destroy({}, function(err, article) {
                 models.ItemView.get({
                   type: "article",
@@ -216,8 +210,7 @@
       contentType = (_ref1 = (_ref2 = forum.settings) != null ? (_ref3 = _ref2.comments) != null ? _ref3.contentType : void 0 : void 0) != null ? _ref1 : 'text';
       if (contentType === 'text') {
         return models.Article.get({
-          uid: req.params.item,
-          network: req.network.stub
+          uid: req.params.item
         }, {}, function(err, article) {
           var comment;
 

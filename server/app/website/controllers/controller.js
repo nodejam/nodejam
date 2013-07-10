@@ -23,7 +23,7 @@
         _this = this;
 
       req = args[0], res = args[1], next = args[2];
-      return this.getUserWithPasskey((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey, req.network, function(err, user) {
+      return this.getUserWithPasskey((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey, function(err, user) {
         if ((user != null ? user.id : void 0) && (user != null ? user.domain : void 0) && (user != null ? user.username : void 0)) {
           req.user = user;
           return fn();
@@ -40,7 +40,7 @@
         _this = this;
 
       req = args[0], res = args[1], next = args[2];
-      return this.getUserWithPasskey((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey, req.network, function(err, user) {
+      return this.getUserWithPasskey((_ref = req.query.passkey) != null ? _ref : req.cookies.passkey, function(err, user) {
         req.user = user != null ? user : {
           id: 0
         };
@@ -48,13 +48,12 @@
       });
     };
 
-    Controller.prototype.getUserWithPasskey = function(passkey, network, cb) {
+    Controller.prototype.getUserWithPasskey = function(passkey, cb) {
       var _this = this;
 
       if (passkey) {
         return models.Session.get({
-          passkey: passkey,
-          network: network.stub
+          passkey: passkey
         }, {}, function(err, session) {
           if (!err) {
             if (session) {
@@ -75,16 +74,16 @@
     };
 
     Controller.prototype.isSameUser = function(user1, user2) {
-      return user1.domain === user2.domain && user1.username === user2.username && user1.network === user2.network;
+      return user1.domain === user2.domain && user1.username === user2.username;
     };
 
-    Controller.prototype.isAdmin = function(user, network) {
+    Controller.prototype.isAdmin = function(user) {
       var u;
 
       return ((function() {
         var _i, _len, _ref, _results;
 
-        _ref = network.admins;
+        _ref = conf.admins;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           u = _ref[_i];

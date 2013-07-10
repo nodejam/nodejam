@@ -58,7 +58,7 @@
       _globals.sessions = {};
       createUser = function(user, cb) {
         utils.log("Creating " + user.username + "...");
-        user.secret = conf.networks[0].adminkeys["default"];
+        user.secret = conf.auth.adminkeys["default"];
         return doHttpRequest('/api/sessions', querystring.stringify(user), 'post', function(err, resp) {
           resp = JSON.parse(resp);
           utils.log("Created " + resp.username);

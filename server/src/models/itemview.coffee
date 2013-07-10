@@ -9,7 +9,6 @@ class ItemView extends BaseModel
             type: ItemView,
             collection: 'itemviews',
             fields: {
-                network: 'string',
                 forum: 'string',
                 itemid: 'string',
                 type: 'string',

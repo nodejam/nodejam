@@ -34,13 +34,23 @@
           state: {
             type: 'string',
             validate: function() {
-              return ['draft', 'published'].indexOf(this.state);
+              return ['draft', 'published'].indexOf(this.state) !== -1;
             }
           },
           title: 'string',
           summary: {
             type: 'string',
             required: 'false'
+          },
+          content: {
+            type: 'string',
+            required: 'false'
+          },
+          format: {
+            type: 'string',
+            validate: function() {
+              return ['markdown'].indexOf(this.format) !== -1;
+            }
           },
           publishedAt: {
             type: 'number',
@@ -63,7 +73,6 @@
 
       return summary = new Summary({
         id: this._id.toString(),
-        network: this.network,
         uid: this.uid,
         title: this.title,
         createdAt: this.createdAt,
@@ -89,7 +98,6 @@
           type: Summary,
           fields: {
             id: 'string',
-            network: 'string',
             uid: 'string',
             title: 'string',
             createdAt: 'number',

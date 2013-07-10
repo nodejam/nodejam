@@ -7,9 +7,9 @@ Controller = require('../controller').Controller
 class Posts extends Controller
             
     #Admin Features
-    adminUpdate: (req, res, next) =>
+    admin_update: (req, res, next) =>
         @ensureSession [req, res, next], =>
-            if @isAdmin(req.user, req.network)
+            if @isAdmin(req.user)
                 models.Post.getById req.params.id, {}, (err, post) =>
                     if req.body.tags
                         for tag in req.body.tags.split(',') 

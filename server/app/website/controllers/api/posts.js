@@ -19,15 +19,15 @@
     __extends(Posts, _super);
 
     function Posts() {
-      this.adminUpdate = __bind(this.adminUpdate, this);      _ref = Posts.__super__.constructor.apply(this, arguments);
+      this.admin_update = __bind(this.admin_update, this);      _ref = Posts.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    Posts.prototype.adminUpdate = function(req, res, next) {
+    Posts.prototype.admin_update = function(req, res, next) {
       var _this = this;
 
       return this.ensureSession([req, res, next], function() {
-        if (_this.isAdmin(req.user, req.network)) {
+        if (_this.isAdmin(req.user)) {
           return models.Post.getById(req.params.id, {}, function(err, post) {
             var tag, _i, _len, _ref1;
 

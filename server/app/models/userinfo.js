@@ -23,7 +23,6 @@
         type: UserInfo,
         collection: 'userinfo',
         fields: {
-          network: 'string',
           userid: 'string',
           subscriptions: {
             type: 'array',

@@ -9,7 +9,6 @@ class Session extends BaseModel
             type: Session,
             collection: 'sessions',
             fields: {
-                network: 'string',
                 passkey: 'string',
                 accessToken: 'string',
                 userid: 'string',

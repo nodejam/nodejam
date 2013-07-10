@@ -15,7 +15,6 @@ class Post extends BaseModel
             typeConstructor: (obj) -> if obj.type is 'article' then new articleModule.Article(obj) else new Post(obj), 
             collection: 'posts',
             fields: {
-                network: 'string'
                 forum: { type: forumModule.Forum.Summary },
                 createdBy: { type: userModule.User.Summary, validate: -> @createdBy.validate() },
                 recommendations: { type: 'array', contents: userModule.User.Summary, validate: -> user.validate() for user in @recommendations },

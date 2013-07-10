@@ -77,7 +77,6 @@
               return res.send(forum);
             });
             message = new models.Message({
-              network: req.network.stub,
               userid: '0',
               type: "global-notification",
               reason: 'new-forum',
@@ -107,7 +106,7 @@
         }, {}, function(err, forum) {
           var _ref1;
 
-          if (req.user.id === forum.createdBy.id || _this.isAdmin(req.user, req.network)) {
+          if (req.user.id === forum.createdBy.id || _this.isAdmin(req.user)) {
             forum.description = req.body.description;
             forum.icon = req.body.icon;
             forum.iconThumbnail = req.body.iconThumbnail;
@@ -135,7 +134,7 @@
           stub: req.params.forum,
           network: req.network.stub
         }, {}, function(err, forum) {
-          if (_this.isAdmin(req.user, req.network)) {
+          if (_this.isAdmin(req.user)) {
             return forum.destroy({}, function() {
               return res.send("DELETED " + forum.stub + ".");
             });
@@ -171,8 +170,8 @@
       req = _arg[0], res = _arg[1], next = _arg[2];
       return this.ensureSession([req, res, next], function() {
         return models.Forum.get({
-          network: req.network.stub,
-          stub: req.params.forum
+          stub: req.params.forum,
+          network: req.network.stub
         }, {}, function(err, forum) {
           return getHandler(_this.getTypeSpecificController(req.body.type))(req, res, next, forum);
         });

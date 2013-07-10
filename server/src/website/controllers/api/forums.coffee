@@ -37,7 +37,6 @@ class Forums extends Controller
         
                     #Put a notification.
                     message = new models.Message {
-                        network: req.network.stub,
                         userid: '0',
                         type: "global-notification",
                         reason: 'new-forum',
@@ -51,7 +50,7 @@ class Forums extends Controller
     edit: (req, res, next) =>
         @ensureSession arguments, =>
             models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
-                if req.user.id is forum.createdBy.id or @isAdmin(req.user, req.network)
+                if req.user.id is forum.createdBy.id or @isAdmin(req.user)
                     forum.description = req.body.description
                     forum.icon = req.body.icon
                     forum.iconThumbnail = req.body.iconThumbnail 
@@ -70,7 +69,7 @@ class Forums extends Controller
     remove: (req, res, next) =>
         @ensureSession arguments, =>
             models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
-                if @isAdmin(req.user, req.network)
+                if @isAdmin(req.user)
                     forum.destroy {}, => res.send "DELETED #{forum.stub}."
                 else
                     next new AppError "Access denied.", 'ACCESS_DENIED'
@@ -91,7 +90,7 @@ class Forums extends Controller
                                     
     invokeTypeSpecificController: ([req, res, next], getHandler) =>   
         @ensureSession [req, res, next], =>
-            models.Forum.get { network: req.network.stub, stub: req.params.forum }, {}, (err, forum) =>
+            models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, (err, forum) =>
                 getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
 
 

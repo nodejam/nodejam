@@ -17,38 +17,29 @@ else
         TWITTER_CALLBACK: "YOUR_TWITTER_CB",
     }
 
-#Auth
-auth = {    
+auth = {
     twitter,
     adminkeys: { 
-        default: 'RANDOM_STRING_HERE'
+        default: 'gorilla^007~5'
     }
 }
 
-#Admins
-admins = [
-    { username: 'adminuser', domain: 'tw' },
+admins = [ 
+    {
+        id: '__',
+        domain: 'users',
+        username: 'jeswin',
+        name: 'Jeswin Kumar',
+        domainIdType: 'username'
+    }           
 ]
- 
+
 foraProject = new models.Network {
     name: 'Fora',
     stub: 'fora',
     domain: 'local.foraproject.org',
     templates: {
         home: 'welcome/index.hbs'
-    },
-    admins: [ 
-        {
-            id: '__',
-            domain: 'users',
-            username: 'jeswin',
-            name: 'Jeswin Kumar',
-            domainIdType: 'username'
-        }           
-    ],
-
-    adminkeys: { 
-        default: 'gorilla^007~5'
     }
 } 
     

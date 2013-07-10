@@ -8,7 +8,6 @@ class Articles extends Controller
             
     create: (req, res, next, forum) =>
         article = new models.Article
-        article.network = req.network.stub
         article.createdBy = req.user
         article.forum = forum.summarize()
         article.rating = 0
@@ -24,7 +23,6 @@ class Articles extends Controller
         article.save { user: req.user }, (err, article) =>
             if not err
                 item = new models.ItemView {
-                    network: req.network.stub,
                     forum: article.forum.stub,
                     forumType: 'article',
                     itemid: article._id.toString(),                    
@@ -45,7 +43,6 @@ class Articles extends Controller
                 
                 if req.body.publish is 'true'
                     message = new models.Message {
-                        network: req.network.stub,
                         userid: '0',
                         type: "global-notification",
                         reason: 'published-article',
@@ -60,10 +57,10 @@ class Articles extends Controller
 
     edit: (req, res, next, forum) =>
         _handleError = @handleError next  
-        models.Article.get { uid: req.params.item, network: req.network.stub }, {}, (err, article) =>
+        models.Article.get { uid: req.params.item }, {}, (err, article) =>
             if not err
                 if article
-                    if article.createdBy.id is req.user.id or @isAdmin(req.user, req.network)
+                    if article.createdBy.id is req.user.id or @isAdmin(req.user)
                         alreadyPublished = article.state is 'published'
 
                         if not alreadyPublished and req.body.publish is 'true'
@@ -90,7 +87,6 @@ class Articles extends Controller
 
                                 if article.createdBy.id is req.user.id and not alreadyPublished and req.body.publish is 'true'
                                     message = new models.Message {
-                                        network: req.network.stub,
                                         userid: '0',
                                         type: "global-notification",
                                         reason: 'published-article',
@@ -108,10 +104,10 @@ class Articles extends Controller
 
 
     remove: (req, res, next, forum) =>
-        models.Article.get { uid: req.params.item, network: req.network.stub }, {}, (err, article) =>
+        models.Article.get { uid: req.params.item }, {}, (err, article) =>
             if not err
                 if article
-                    if article.createdBy.id is req.user.id or @isAdmin(req.user, req.network)
+                    if article.createdBy.id is req.user.id or @isAdmin(req.user)
                         article.destroy {}, (err, article) => 
                             #Remove from Item View
                             models.ItemView.get { type: "article", forum: article.forum, itemid: article.id.toString() }, {}, (err, item) =>
@@ -133,7 +129,7 @@ class Articles extends Controller
     addComment: (req, res, next, forum) =>        
         contentType = forum.settings?.comments?.contentType ? 'text'
         if contentType is 'text'
-            models.Article.get { uid: req.params.item, network: req.network.stub }, {}, (err, article) =>
+            models.Article.get { uid: req.params.item }, {}, (err, article) =>
                 comment = new models.Comment()
                 comment.createdBy = req.user
                 comment.forum = forum.stub

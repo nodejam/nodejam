@@ -15,15 +15,15 @@ class Sessions extends controller.Controller
                 path: '/me?' + querystring.stringify { 
                     fields: 'id,username,name,first_name,last_name,location,email', 
                     access_token: req.body.accessToken, 
-                    client_id: conf.authenticationTypes[req.network.stub].facebook.FACEBOOK_APP_ID, 
-                    client_secret: conf.authenticationTypes[req.network.stub].facebook.FACEBOOK_SECRET 
+                    client_id: conf.auth.facebook.FACEBOOK_APP_ID, 
+                    client_secret: conf.auth.facebook.FACEBOOK_SECRET 
                 }
             }
             
             client.secureGraphRequest options, (err, userDetails) =>
                 _userDetails = @parseFBUserDetails(JSON.parse userDetails)
                 if _userDetails.domainid and _userDetails.name
-                    models.User.getOrCreateUser _userDetails, 'fb', req.network.stub, req.body.accessToken, (err, user, session) =>
+                    models.User.getOrCreateUser _userDetails, 'fb', req.body.accessToken, (err, user, session) =>
                         if not err
                             res.contentType 'json'
                             res.send { 
@@ -40,9 +40,9 @@ class Sessions extends controller.Controller
                     
                     
         else if req.body.domain is 'users'
-            if req.body.secret is req.network.adminkeys.default
+            if req.body.secret is conf.auth.adminkeys.default
                 accessToken = utils.uniqueId(24)
-                models.User.getOrCreateUser req.body, 'users', req.network.stub, accessToken, (err, user, session) =>
+                models.User.getOrCreateUser req.body, 'users', accessToken, (err, user, session) =>
                     if not err
                         res.contentType 'json'
                         res.send { userid: user._id, domain: 'users', username: user.username, domainidType: user.domainidType, name: user.name, passkey: session.passkey }

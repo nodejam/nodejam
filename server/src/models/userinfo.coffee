@@ -11,7 +11,6 @@ class UserInfo extends BaseModel
             type: UserInfo,
             collection: 'userinfo',
             fields: {
-                network: 'string',
                 userid: 'string',
                 subscriptions: { type: 'array', contents: Forum.Summary, validate: -> item.validate() for item in @subscriptions },
                 following: { type: 'array', contents: User.Summary, validate: -> item.validate() for item in @following },

@@ -11,9 +11,11 @@ class Article extends postModule.Post
         meta = {
             fields: {
                 stub: { type: 'string', required: false },
-                state: { type: 'string', validate: -> ['draft','published'].indexOf @state },
+                state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },
                 title: 'string',
                 summary: { type: 'string', required: 'false' },            
+                content: { type: 'string', required: 'false' },
+                format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 },
                 publishedAt: { 
                     type: 'number',
                     validate: -> @state is 'published' and not @publishedAt
@@ -33,7 +35,6 @@ class Article extends postModule.Post
     summarize: =>        
         summary = new Summary {
             id: @_id.toString(),
-            @network,
             @uid,
             @title,
             @createdAt,
@@ -51,7 +52,6 @@ class Article extends postModule.Post
                 type: Summary,
                 fields: {
                     id: 'string',
-                    network: 'string'
                     uid: 'string',
                     title: 'string',
                     createdAt: 'number',

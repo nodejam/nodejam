@@ -49,13 +49,11 @@ findHandler = (name, getHandler) ->
     controller = switch name.toLowerCase()        
         when 'ui/auth' then new uiControllers.Auth()
         when 'ui/users' then new uiControllers.Users()
-        when 'ui/networks' then new uiControllers.Networks()            
         when 'ui/home' then new uiControllers.Home()
         when 'ui/forums' then new uiControllers.Forums()
         when 'ui/dev_designs' then new uiControllers.Dev_Designs()
         when 'api/sessions' then new apiControllers.Sessions()
         when 'api/users' then new apiControllers.Users()
-        when 'api/networks' then new apiControllers.Networks()
         when 'api/forums' then new apiControllers.Forums()
         when 'api/posts' then new apiControllers.Posts()
         when 'api/articles' then new apiControllers.Articles()
@@ -100,7 +98,7 @@ app.post '/api/forums', findHandler('api/forums', (c) -> c.create)
 app.post '/api/forums/:forum', findHandler('api/forums', (c) -> c.createItem)
 
 #ADMIN
-app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.adminUpdate)
+app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.admin_update)
 
 # UI Routes
 # ---------

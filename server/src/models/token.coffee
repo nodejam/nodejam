@@ -9,7 +9,6 @@ class Token extends BaseModel
             type: Token,
             collection: 'tokens',
             fields: {
-                network: 'string',
                 type: 'string',
                 key: 'string',
                 value: 'string',

@@ -35,7 +35,6 @@
         },
         collection: 'posts',
         fields: {
-          network: 'string',
           forum: {
             type: forumModule.Forum.Summary
           },

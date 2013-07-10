@@ -25,7 +25,6 @@
         type: Comment,
         collection: 'comments',
         fields: {
-          network: 'string',
           forum: 'string',
           itemid: 'string',
           data: 'object',

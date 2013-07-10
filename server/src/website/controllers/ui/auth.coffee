@@ -15,10 +15,10 @@ class Auth extends controller.Controller
         oa = new OAuth(
 	        "https://api.twitter.com/oauth/request_token",
 	        "https://api.twitter.com/oauth/access_token",
-	        conf.authenticationTypes[req.network.stub].twitter.TWITTER_CONSUMER_KEY,
-	        conf.authenticationTypes[req.network.stub].twitter.TWITTER_SECRET,
+	        conf.authenticationTypes.twitter.TWITTER_CONSUMER_KEY,
+	        conf.authenticationTypes.twitter.TWITTER_SECRET,
 	        "1.0",
-	        conf.authenticationTypes[req.network.stub].twitter.TWITTER_CALLBACK,	
+	        conf.authenticationTypes.twitter.TWITTER_CALLBACK,	
 	        "HMAC-SHA1"
         )
         
@@ -31,7 +31,6 @@ class Auth extends controller.Controller
                 oauth = { token: oauth_token, token_secret: oauth_token_secret }
 
                 token = new models.Token {
-                    network: req.network.stub,
                     type: 'oauth-process-key',
                     key: oauthProcessKey,
                     value: oauth                    
@@ -56,13 +55,13 @@ class Auth extends controller.Controller
         oa = new OAuth(
 	        "https://api.twitter.com/oauth/request_token",
 	        "https://api.twitter.com/oauth/access_token",
-	        conf.authenticationTypes[req.network.stub].twitter.TWITTER_CONSUMER_KEY,
-	        conf.authenticationTypes[req.network.stub].twitter.TWITTER_SECRET,
+	        conf.authenticationTypes.twitter.TWITTER_CONSUMER_KEY,
+	        conf.authenticationTypes.twitter.TWITTER_SECRET,
 	        "1.0",
-	        conf.authenticationTypes[req.network.stub].twitter.TWITTER_CALLBACK,	
+	        conf.authenticationTypes.twitter.TWITTER_CALLBACK,	
 	        "HMAC-SHA1"
         )
-        models.Token.get { type: 'oauth-process-key', key: req.cookies.oauth_process_key, network: req.network.stub }, {}, (err, token) =>            
+        models.Token.get { type: 'oauth-process-key', key: req.cookies.oauth_process_key }, {}, (err, token) =>            
             if not err
                 if token
                     oauth = token.value
@@ -82,7 +81,7 @@ class Auth extends controller.Controller
                                     resp = JSON.parse response
                                     if resp.length and resp[0]?
                                         userDetails = @parseTwitterUserDetails resp[0]
-                                        models.User.getOrCreateUser userDetails, 'tw', req.network.stub, accessToken, (err, _user, _session) =>
+                                        models.User.getOrCreateUser userDetails, 'tw', accessToken, (err, _user, _session) =>
                                             res.clearCookie "oauth_process_key"
                                             res.cookie "userid", _user._id.toString()
                                             res.cookie "domain", "tw"

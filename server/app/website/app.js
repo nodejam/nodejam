@@ -80,8 +80,6 @@
           return new uiControllers.Auth();
         case 'ui/users':
           return new uiControllers.Users();
-        case 'ui/networks':
-          return new uiControllers.Networks();
         case 'ui/home':
           return new uiControllers.Home();
         case 'ui/forums':
@@ -92,8 +90,6 @@
           return new apiControllers.Sessions();
         case 'api/users':
           return new apiControllers.Users();
-        case 'api/networks':
-          return new apiControllers.Networks();
         case 'api/forums':
           return new apiControllers.Forums();
         case 'api/posts':
@@ -173,7 +169,7 @@
   }));
 
   app.put("/api/admin/posts/:id", findHandler('api/posts', function(c) {
-    return c.adminUpdate;
+    return c.admin_update;
   }));
 
   app.get('/', findHandler('ui/home', function(c) {
