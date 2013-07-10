@@ -23,7 +23,7 @@
     __extends(Article, _super);
 
     Article._getMeta = function() {
-      var fields, meta, parentMeta;
+      var meta;
 
       meta = {
         fields: {
@@ -50,8 +50,7 @@
           }
         }
       };
-      parentMeta = postModule.Post._getMeta();
-      return fields = parentMeta.fields;
+      return this.mergeMeta(meta, postModule.Post._getMeta());
     };
 
     function Article() {

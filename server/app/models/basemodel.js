@@ -113,6 +113,28 @@
       }
     };
 
+    BaseModel.mergeMeta = function(child, parent) {
+      var fields, k, meta, v, _ref, _results;
+
+      fields = utils.clone(parent.fields);
+      _ref = child.fields;
+      for (k in _ref) {
+        v = _ref[k];
+        fields[k] = v;
+      }
+      meta = utils.clone(parent);
+      _results = [];
+      for (k in child) {
+        v = child[k];
+        if (k !== 'fields') {
+          _results.push(child[k] = v);
+        } else {
+          _results.push(child.fields = fields);
+        }
+      }
+      return _results;
+    };
+
     BaseModel.__getMeta__ = function(model) {
       var e, meta, _ref;
 
