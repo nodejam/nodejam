@@ -42,18 +42,21 @@
   }
 
   init = function() {
-    var article, createArticle, createArticleTasks, createForum, createForumTasks, createUser, createUserTasks, forum, tasks, user, _fn, _fn1, _fn2, _globals, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+    var create, del, _globals;
 
     _globals = {};
-    if (__indexOf.call(process.argv, '--delete') >= 0) {
+    del = function(cb) {
       return database.getDb(function(err, db) {
         utils.log('Deleting main database.');
         return db.dropDatabase(function(err, result) {
           utils.log('Everything is gone now.');
-          return process.exit();
+          return cb();
         });
       });
-    } else if (__indexOf.call(process.argv, '--create') >= 0) {
+    };
+    create = function(cb) {
+      var article, createArticle, createArticleTasks, createForum, createForumTasks, createUser, createUserTasks, forum, tasks, user, _fn, _fn1, _fn2, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+
       utils.log('This script will setup basic data. Calls the latest HTTP API.');
       _globals.sessions = {};
       createUser = function(user, cb) {
@@ -120,7 +123,7 @@
           utils.log("Created " + resp.title + " with id " + resp._id);
           if (meta.split(',').indexOf('featured') !== -1) {
             return doHttpRequest("/api/admin/posts/" + resp._id + "?passkey=" + adminkey, querystring.stringify({
-              tags: 'featured'
+              meta: 'featured'
             }), 'put', function(err, resp) {
               resp = JSON.parse(resp);
               utils.log("Added featured tag to article " + resp.title + ".");
@@ -147,13 +150,29 @@
             utils.log('Created forums.');
             return async.series(createArticleTasks, function() {
               utils.log('Created articles.');
-              return utils.log('Setup complete.');
+              utils.log('Setup complete.');
+              return cb();
             });
           });
         });
       };
       utils.log('Setup will begin in 3 seconds.');
       return setTimeout(tasks, 1000);
+    };
+    if (__indexOf.call(process.argv, '--delete') >= 0) {
+      return del(function() {
+        return process.exit();
+      });
+    } else if (__indexOf.call(process.argv, '--create') >= 0) {
+      return create(function() {
+        return process.exit();
+      });
+    } else if (__indexOf.call(process.argv, '--recreate') >= 0) {
+      return del(function() {
+        return create(function() {
+          return process.exit();
+        });
+      });
     } else {
       utils.log('Invalid option.');
       return process.exit();

@@ -14,7 +14,6 @@ class User extends BaseModel
                 domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
                 domainid: 'string',
                 username: 'string',
-                domainidType: { type: 'string', validate: -> ['username', 'domainid'].indexOf(@domainidType) isnt -1 },
                 name: 'string',
                 location: 'string',
                 picture: 'string',
@@ -49,7 +48,6 @@ class User extends BaseModel
                         user.name = userDetails.name ? user.name
                         user.domainid = userDetails.domainid ? user.domainid
                         user.username = userDetails.username ? userDetails.domainid
-                        user.domainidType = if userDetails.username then 'username' else 'domainid'
                         user.location = userDetails.location ? user.location
                         user.picture = userDetails.picture ? user.picture
                         user.thumbnail = userDetails.thumbnail ? user.thumbnail
@@ -73,7 +71,6 @@ class User extends BaseModel
                         user.domain = domain
                         user.domainid = userDetails.domainid
                         user.username = userDetails.username ? userDetails.domainid
-                        user.domainidType = if userDetails.username then 'username' else 'domainid'
                         if domain is 'fb'
                             user.facebookUsername = userDetails.username
                         if domain is 'tw'

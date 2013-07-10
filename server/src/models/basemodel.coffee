@@ -65,9 +65,9 @@ class BaseModel
         meta = utils.clone(parent)
         for k,v of child
             if k isnt 'fields'
-                child[k] = v
+                meta[k] = v
             else
-                child.fields = fields
+                meta.fields = fields
         meta
                 
                 
@@ -94,34 +94,36 @@ class BaseModel
         
         
     @constructModel: (obj, meta) ->
-        if meta.initializer
-            meta.initializer obj
-        else
-            result = {}
-            for name, field of meta.fields
-                value = obj[name]
-                fieldDef = @getFullFieldDefinition field
-                if @isCustomClass fieldDef.type
-                    if value
-                        result[name] = @constructModel value, @__getMeta__(fieldDef.type)
-                else
-                    if value
-                        if fieldDef.type is 'array'
-                            arr = []
-                            contentType = @getFullFieldDefinition fieldDef.contents
-                            if @isCustomClass contentType
-                                for item in value
-                                    arr.push @constructModel item, @__getMeta__(contentType.type)
-                            else
-                                arr = value
-                            result[name] = arr
-                        else
-                            result[name] = value    
-            if obj._id
-                result._id = obj._id
-            if meta.typeConstructor
-                meta.typeConstructor result
+        if meta.customConstructor
+            meta.customConstructor obj
+        else            
+            #Check if this has a typeConstructor        
+            if meta.hasOwnProperty('typeConstructor') and (meta.type isnt @__getMeta__ meta.typeConstructor(obj).type)
+                @constructModel obj, @__getMeta__ meta.typeConstructor(obj)
             else
+                result = {}
+                for name, field of meta.fields
+                    value = obj[name]
+                    fieldDef = @getFullFieldDefinition field
+                    if @isCustomClass fieldDef.type
+                        if value
+                            result[name] = @constructModel value, @__getMeta__(fieldDef.type)
+                    else
+                        if value
+                            if fieldDef.type is 'array'
+                                arr = []
+                                contentType = @getFullFieldDefinition fieldDef.contents
+                                if @isCustomClass contentType
+                                    for item in value
+                                        arr.push @constructModel item, @__getMeta__(contentType.type)
+                                else
+                                    arr = value
+                                result[name] = arr
+                            else
+                                result[name] = value    
+                if obj._id
+                    result._id = obj._id
+
                 new meta.type result
      
                 

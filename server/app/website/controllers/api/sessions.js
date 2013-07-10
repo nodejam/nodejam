@@ -72,7 +72,6 @@
                 userid: user._id,
                 domain: 'users',
                 username: user.username,
-                domainidType: user.domainidType,
                 name: user.name,
                 passkey: session.passkey
               });

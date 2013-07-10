@@ -29,19 +29,25 @@
       return this.ensureSession([req, res, next], function() {
         if (_this.isAdmin(req.user)) {
           return models.Post.getById(req.params.id, {}, function(err, post) {
-            var tag, _i, _len, _ref1;
+            var meta, _i, _len, _ref1;
 
-            if (req.body.tags) {
-              _ref1 = req.body.tags.split(',');
-              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                tag = _ref1[_i];
-                if (post.tags.indexOf(tag) === -1) {
-                  post.tags.push(tag);
+            if (post) {
+              if (req.body.meta) {
+                _ref1 = req.body.meta.split(',');
+                for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                  meta = _ref1[_i];
+                  if (post.meta.indexOf(meta) === -1) {
+                    post.meta.push(meta);
+                  }
                 }
+                return post.save({}, function(err, post) {
+                  return res.send(post);
+                });
+              } else {
+                return next(new AppError("Missing meta.", 'MISSING_META'));
               }
-              return post.save({}, function(err, post) {
-                return res.send(post);
-              });
+            } else {
+              return next(new AppError("Post not found.", 'POST_NOT_FOUND'));
             }
           });
         } else {

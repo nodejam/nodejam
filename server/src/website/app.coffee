@@ -105,6 +105,8 @@ app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.admin_update)
 app.get '/', findHandler('ui/home', (c) -> c.index)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.index)
 
+#Register templates, helpers etc.
+require("./hbshelpers").register()
 
 # ERROR HANDLING
 app.use(app.router)
@@ -120,7 +122,6 @@ app.use (req, res, next) ->
     res.status 404
     res.render('404', { url: req.url });
     res.send(404, { error: 'HTTP 404. There is no water here.' })
-
 
 #Ensure indexes.
 database.getDb (err, db) ->

@@ -126,9 +126,9 @@
       for (k in child) {
         v = child[k];
         if (k !== 'fields') {
-          child[k] = v;
+          meta[k] = v;
         } else {
-          child.fields = fields;
+          meta.fields = fields;
         }
       }
       return meta;
@@ -170,45 +170,45 @@
     BaseModel.constructModel = function(obj, meta) {
       var arr, contentType, field, fieldDef, item, name, result, value, _i, _len, _ref;
 
-      if (meta.initializer) {
-        return meta.initializer(obj);
+      if (meta.customConstructor) {
+        return meta.customConstructor(obj);
       } else {
-        result = {};
-        _ref = meta.fields;
-        for (name in _ref) {
-          field = _ref[name];
-          value = obj[name];
-          fieldDef = this.getFullFieldDefinition(field);
-          if (this.isCustomClass(fieldDef.type)) {
-            if (value) {
-              result[name] = this.constructModel(value, this.__getMeta__(fieldDef.type));
-            }
-          } else {
-            if (value) {
-              if (fieldDef.type === 'array') {
-                arr = [];
-                contentType = this.getFullFieldDefinition(fieldDef.contents);
-                if (this.isCustomClass(contentType)) {
-                  for (_i = 0, _len = value.length; _i < _len; _i++) {
-                    item = value[_i];
-                    arr.push(this.constructModel(item, this.__getMeta__(contentType.type)));
+        if (meta.hasOwnProperty('typeConstructor') && (meta.type !== this.__getMeta__(meta.typeConstructor(obj).type))) {
+          return this.constructModel(obj, this.__getMeta__(meta.typeConstructor(obj)));
+        } else {
+          result = {};
+          _ref = meta.fields;
+          for (name in _ref) {
+            field = _ref[name];
+            value = obj[name];
+            fieldDef = this.getFullFieldDefinition(field);
+            if (this.isCustomClass(fieldDef.type)) {
+              if (value) {
+                result[name] = this.constructModel(value, this.__getMeta__(fieldDef.type));
+              }
+            } else {
+              if (value) {
+                if (fieldDef.type === 'array') {
+                  arr = [];
+                  contentType = this.getFullFieldDefinition(fieldDef.contents);
+                  if (this.isCustomClass(contentType)) {
+                    for (_i = 0, _len = value.length; _i < _len; _i++) {
+                      item = value[_i];
+                      arr.push(this.constructModel(item, this.__getMeta__(contentType.type)));
+                    }
+                  } else {
+                    arr = value;
                   }
+                  result[name] = arr;
                 } else {
-                  arr = value;
+                  result[name] = value;
                 }
-                result[name] = arr;
-              } else {
-                result[name] = value;
               }
             }
           }
-        }
-        if (obj._id) {
-          result._id = obj._id;
-        }
-        if (meta.typeConstructor) {
-          return meta.typeConstructor(result);
-        } else {
+          if (obj._id) {
+            result._id = obj._id;
+          }
           return new meta.type(result);
         }
       }

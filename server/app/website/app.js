@@ -180,6 +180,8 @@
     return c.index;
   }));
 
+  require("./hbshelpers").register();
+
   app.use(app.router);
 
   app.use(function(err, req, res, next) {

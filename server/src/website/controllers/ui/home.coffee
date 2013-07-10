@@ -12,9 +12,9 @@ class Home extends controller.Controller
     
     index: (req, res, next) =>
         @attachUser arguments, =>
-            models.Post.find { tags: 'featured' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, (err, posts) =>
+            models.Post.find { tags: 'featured' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, (err, posts) =>                
                 for post in posts
-                    post.summary = post.summarize()
+                    post.summary = post.summarize("concise")
                 res.render 'home/index.hbs', { posts }
 
 exports.Home = Home

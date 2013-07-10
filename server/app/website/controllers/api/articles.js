@@ -80,9 +80,7 @@
         _this = this;
 
       _handleError = this.handleError(next);
-      return models.Article.get({
-        uid: req.params.item
-      }, {}, function(err, article) {
+      return models.Article.getById(req.params.post, {}, function(err, article) {
         var alreadyPublished, _ref1;
 
         if (!err) {
@@ -139,9 +137,7 @@
     Articles.prototype.remove = function(req, res, next, forum) {
       var _this = this;
 
-      return models.Article.get({
-        uid: req.params.item
-      }, {}, function(err, article) {
+      return models.Article.getById(req.params.post, {}, function(err, article) {
         if (!err) {
           if (article) {
             if (article.createdBy.id === req.user.id || _this.isAdmin(req.user)) {
@@ -166,9 +162,7 @@
 
       contentType = (_ref1 = (_ref2 = forum.settings) != null ? (_ref3 = _ref2.comments) != null ? _ref3.contentType : void 0 : void 0) != null ? _ref1 : 'text';
       if (contentType === 'text') {
-        return models.Article.get({
-          uid: req.params.item
-        }, {}, function(err, article) {
+        return models.Article.getById(req.params.post, {}, function(err, article) {
           var comment;
 
           comment = new models.Comment();
@@ -186,28 +180,22 @@
     };
 
     Articles.prototype.parseBody = function(article, body) {
-      article.summary = {};
+      article.format = 'markdown';
       if (body.stub) {
         article.stub = body.stub.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/, '');
       }
       if (body.title) {
         article.title = body.title;
-        article.summary.title = article.title;
       }
       if (body.content) {
         article.content = body.content;
-        article.summary.text = article.content;
       }
       if (body.cover) {
         article.cover = body.cover;
         if (body.coverTitle) {
           article.coverTitle = body.coverTitle;
         }
-        return article.summary.image = body.smallCover;
-      } else {
-        article.cover = null;
-        article.coverTitle = null;
-        return article.summary.image = null;
+        return article.smallCover = body.smallCover;
       }
     };
 

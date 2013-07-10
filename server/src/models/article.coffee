@@ -8,27 +8,26 @@ postModule = require('./post')
 class Article extends postModule.Post
 
     @_getMeta: ->
+        userModule = require('./user')
         meta = {
             fields: {
                 stub: { type: 'string', required: false },
                 state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },
                 title: 'string',
-                summary: { type: 'string', required: 'false' },
                 cover: { type: 'string', required: false },
                 smallCover: { type: 'string', required: false, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
                 content: { type: 'string', required: 'false' },
                 format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 },
-                publishedAt: { 
-                    type: 'number',
-                    validate: -> @state is 'published' and not @publishedAt
-                }
+                rating: 'number',
+                recommendations: { type: 'array', contents: userModule.User.Summary, validate: -> user.validate() for user in @recommendations },                                
+                publishedAt: { type: 'number', required: false, validate: -> not (@state is 'published' and not @publishedAt) }
             }
         }
-        @mergeMeta meta, postModule.Post._getMeta()
+        meta = @mergeMeta meta, postModule.Post._getMeta()
         
         
         
-    constructor: ->
+    constructor: (params) ->
         @type = 'article'
         super
         
@@ -36,7 +35,7 @@ class Article extends postModule.Post
 
     summarize: (view = "standard") =>
         switch view
-            when "standard"
+            when "concise"
                 return {
                     type: if @cover then 'image-text' else 'text',
                     image: @smallCover,

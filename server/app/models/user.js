@@ -32,12 +32,6 @@
           },
           domainid: 'string',
           username: 'string',
-          domainidType: {
-            type: 'string',
-            validate: function() {
-              return ['username', 'domainid'].indexOf(this.domainidType) !== -1;
-            }
-          },
           name: 'string',
           location: 'string',
           picture: 'string',
@@ -121,7 +115,6 @@
               user.name = (_ref = userDetails.name) != null ? _ref : user.name;
               user.domainid = (_ref1 = userDetails.domainid) != null ? _ref1 : user.domainid;
               user.username = (_ref2 = userDetails.username) != null ? _ref2 : userDetails.domainid;
-              user.domainidType = userDetails.username ? 'username' : 'domainid';
               user.location = (_ref3 = userDetails.location) != null ? _ref3 : user.location;
               user.picture = (_ref4 = userDetails.picture) != null ? _ref4 : user.picture;
               user.thumbnail = (_ref5 = userDetails.thumbnail) != null ? _ref5 : user.thumbnail;
@@ -147,7 +140,6 @@
               user.domain = domain;
               user.domainid = userDetails.domainid;
               user.username = (_ref8 = userDetails.username) != null ? _ref8 : userDetails.domainid;
-              user.domainidType = userDetails.username ? 'username' : 'domainid';
               if (domain === 'fb') {
                 user.facebookUsername = userDetails.username;
               }

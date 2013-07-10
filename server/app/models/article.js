@@ -21,8 +21,9 @@
     __extends(Article, _super);
 
     Article._getMeta = function() {
-      var meta;
+      var meta, userModule;
 
+      userModule = require('./user');
       meta = {
         fields: {
           stub: {
@@ -36,10 +37,6 @@
             }
           },
           title: 'string',
-          summary: {
-            type: 'string',
-            required: 'false'
-          },
           cover: {
             type: 'string',
             required: false
@@ -65,18 +62,35 @@
               return ['markdown'].indexOf(this.format) !== -1;
             }
           },
+          rating: 'number',
+          recommendations: {
+            type: 'array',
+            contents: userModule.User.Summary,
+            validate: function() {
+              var user, _i, _len, _ref, _results;
+
+              _ref = this.recommendations;
+              _results = [];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                user = _ref[_i];
+                _results.push(user.validate());
+              }
+              return _results;
+            }
+          },
           publishedAt: {
             type: 'number',
+            required: false,
             validate: function() {
-              return this.state === 'published' && !this.publishedAt;
+              return !(this.state === 'published' && !this.publishedAt);
             }
           }
         }
       };
-      return this.mergeMeta(meta, postModule.Post._getMeta());
+      return meta = this.mergeMeta(meta, postModule.Post._getMeta());
     };
 
-    function Article() {
+    function Article(params) {
       this.summarize = __bind(this.summarize, this);      this.type = 'article';
       Article.__super__.constructor.apply(this, arguments);
     }
@@ -86,7 +100,7 @@
         view = "standard";
       }
       switch (view) {
-        case "standard":
+        case "concise":
           return {
             type: this.cover ? 'image-text' : 'text',
             image: this.smallCover,

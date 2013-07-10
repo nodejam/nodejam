@@ -27,15 +27,15 @@ if HOST isnt 'local.foraproject.org'
 
 init = () ->
     _globals = {}
-
-    if '--delete' in process.argv        
+    
+    del = (cb) ->
         database.getDb (err, db) ->
             utils.log 'Deleting main database.'
             db.dropDatabase (err, result) ->
                 utils.log 'Everything is gone now.'
-                process.exit()
+                cb()
 
-    else if '--create' in process.argv
+    create = (cb) ->
         utils.log 'This script will setup basic data. Calls the latest HTTP API.'
 
         #Create Users
@@ -95,7 +95,7 @@ init = () ->
                 resp = JSON.parse resp
                 utils.log "Created #{resp.title} with id #{resp._id}"
                 if meta.split(',').indexOf('featured') isnt -1
-                    doHttpRequest "/api/admin/posts/#{resp._id}?passkey=#{adminkey}", querystring.stringify({ tags: 'featured'}), 'put', (err, resp) ->                
+                    doHttpRequest "/api/admin/posts/#{resp._id}?passkey=#{adminkey}", querystring.stringify({ meta: 'featured'}), 'put', (err, resp) ->                
                         resp = JSON.parse resp
                         utils.log "Added featured tag to article #{resp.title}."
                         cb()
@@ -114,9 +114,17 @@ init = () ->
                     async.series createArticleTasks, ->
                         utils.log 'Created articles.'
                         utils.log 'Setup complete.'
+                        cb()
         
         utils.log 'Setup will begin in 3 seconds.'
         setTimeout tasks, 1000
+    
+    if '--delete' in process.argv        
+        del -> process.exit()
+    else if '--create' in process.argv
+        create -> process.exit()
+    else if '--recreate' in process.argv
+        del -> create -> process.exit()
     else
         utils.log 'Invalid option.'
         process.exit()  

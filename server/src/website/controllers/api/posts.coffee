@@ -11,12 +11,17 @@ class Posts extends Controller
         @ensureSession [req, res, next], =>
             if @isAdmin(req.user)
                 models.Post.getById req.params.id, {}, (err, post) =>
-                    if req.body.tags
-                        for tag in req.body.tags.split(',') 
-                            if post.tags.indexOf(tag) is -1
-                                post.tags.push tag 
-                        post.save {}, (err, post) =>
-                            res.send post
+                    if post
+                        if req.body.meta
+                            for meta in req.body.meta.split(',') 
+                                if post.meta.indexOf(meta) is -1
+                                    post.meta.push meta 
+                            post.save {}, (err, post) =>
+                                res.send post
+                        else
+                            next new AppError "Missing meta.", 'MISSING_META'       
+                    else
+                        next new AppError "Post not found.", 'POST_NOT_FOUND'   
             else
                 next new AppError "Access denied.", 'ACCESS_DENIED'   
             

@@ -45,7 +45,7 @@ class Sessions extends controller.Controller
                 models.User.getOrCreateUser req.body, 'users', accessToken, (err, user, session) =>
                     if not err
                         res.contentType 'json'
-                        res.send { userid: user._id, domain: 'users', username: user.username, domainidType: user.domainidType, name: user.name, passkey: session.passkey }
+                        res.send { userid: user._id, domain: 'users', username: user.username, name: user.name, passkey: session.passkey }
                     else
                         next err
             else

@@ -37,7 +37,7 @@
 
           for (_i = 0, _len = posts.length; _i < _len; _i++) {
             post = posts[_i];
-            post.summary = post.summarize();
+            post.summary = post.summarize("concise");
           }
           return res.render('home/index.hbs', {
             posts: posts

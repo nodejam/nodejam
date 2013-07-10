@@ -40,7 +40,7 @@ class Articles extends Controller
 
     edit: (req, res, next, forum) =>
         _handleError = @handleError next  
-        models.Article.get { uid: req.params.item }, {}, (err, article) =>
+        models.Article.getById req.params.post, {}, (err, article) =>
             if not err
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
@@ -73,7 +73,7 @@ class Articles extends Controller
 
 
     remove: (req, res, next, forum) =>
-        models.Article.get { uid: req.params.item }, {}, (err, article) =>
+        models.Article.getById req.params.post, {}, (err, article) =>
             if not err
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
@@ -91,7 +91,7 @@ class Articles extends Controller
     addComment: (req, res, next, forum) =>        
         contentType = forum.settings?.comments?.contentType ? 'text'
         if contentType is 'text'
-            models.Article.get { uid: req.params.item }, {}, (err, article) =>
+            models.Article.getById req.params.post, {}, (err, article) =>
                 comment = new models.Comment()
                 comment.createdBy = req.user
                 comment.forum = forum.stub
@@ -105,27 +105,21 @@ class Articles extends Controller
         
 
     parseBody: (article, body) =>
-        article.summary = {}
+        article.format = 'markdown'
 
         if body.stub
             article.stub = body.stub.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
 
         if body.title
             article.title = body.title
-            article.summary.title = article.title
 
         if body.content
             article.content = body.content
-            article.summary.text = article.content
 
         if body.cover
             article.cover = body.cover
             if body.coverTitle
                 article.coverTitle = body.coverTitle
-            article.summary.image = body.smallCover
-        else
-            article.cover = null
-            article.coverTitle = null
-            article.summary.image = null
+            article.smallCover = body.smallCover
     
 exports.Articles = Articles
