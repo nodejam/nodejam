@@ -59,7 +59,7 @@ class BaseModel
             
             
     @mergeMeta: (child, parent) ->
-        fields = utils.clone(parent.fields)
+        fields = utils.clone(parent.fields)        
         for k,v of child.fields
             fields[k] = v
         meta = utils.clone(parent)
@@ -68,6 +68,7 @@ class BaseModel
                 child[k] = v
             else
                 child.fields = fields
+        meta
                 
                 
     

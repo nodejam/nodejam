@@ -114,7 +114,7 @@
     };
 
     BaseModel.mergeMeta = function(child, parent) {
-      var fields, k, meta, v, _ref, _results;
+      var fields, k, meta, v, _ref;
 
       fields = utils.clone(parent.fields);
       _ref = child.fields;
@@ -123,16 +123,15 @@
         fields[k] = v;
       }
       meta = utils.clone(parent);
-      _results = [];
       for (k in child) {
         v = child[k];
         if (k !== 'fields') {
-          _results.push(child[k] = v);
+          child[k] = v;
         } else {
-          _results.push(child.fields = fields);
+          child.fields = fields;
         }
       }
-      return _results;
+      return meta;
     };
 
     BaseModel.__getMeta__ = function(model) {

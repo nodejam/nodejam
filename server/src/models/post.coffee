@@ -9,13 +9,14 @@ class Post extends BaseModel
     @_getMeta: ->
         articleModule = require('./article')
         userModule = require('./user')
+        forumModule = require('./forum')
         {
             type: Post,
             #typeConstructor: (obj) -> if obj.type is 'article' then new articleModule.Article(obj) else new Post(obj), 
             collection: 'posts',
             fields: {
                 network: 'string'
-                forum: 'string',
+                forum: { type: forumModule.Forum.Summary },
                 createdBy: { type: userModule.User.Summary, validate: -> @createdBy.validate() },
                 recommendations: { type: 'array', contents: userModule.User.Summary, validate: -> user.validate() for user in @recommendations },
                 meta: { type: 'array', contents: 'string' },

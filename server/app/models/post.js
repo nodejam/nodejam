@@ -19,16 +19,19 @@
     __extends(Post, _super);
 
     Post._getMeta = function() {
-      var articleModule, userModule;
+      var articleModule, forumModule, userModule;
 
       articleModule = require('./article');
       userModule = require('./user');
+      forumModule = require('./forum');
       return {
         type: Post,
         collection: 'posts',
         fields: {
           network: 'string',
-          forum: 'string',
+          forum: {
+            type: forumModule.Forum.Summary
+          },
           createdBy: {
             type: userModule.User.Summary,
             validate: function() {

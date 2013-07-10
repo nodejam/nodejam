@@ -46,7 +46,7 @@
           state: {
             type: 'string',
             validate: function() {
-              return ['new', 'draft', 'published'].indexOf(this.state);
+              return ['new', 'draft', 'published'].indexOf(this.state) !== -1;
             }
           },
           createdAt: {

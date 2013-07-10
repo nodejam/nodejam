@@ -12,7 +12,7 @@ class User extends BaseModel
             collection: 'users',
             fields: {
                 network: 'string',
-                domain: { type: 'string', validate: -> ['twitter', 'fb', 'fora'].indexOf(@domain) isnt -1 },
+                domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
                 domainid: 'string',
                 username: 'string',
                 domainidType: { type: 'string', validate: -> ['username', 'domainid'].indexOf(@domainidType) isnt -1 },
@@ -175,7 +175,7 @@ class Summary extends BaseModel
             type: Summary,
             fields: {
                 id: 'string',
-                domain: 'string',
+                domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
                 username: 'string',
                 name: 'string',
                 network: 'string'

@@ -19,12 +19,10 @@ class Forum extends BaseModel
                 createdBy: { type: userModule.User.Summary, validate: -> @createdBy.validate() },
                 moderators: {
                     type: 'array', 
-                    contents: userModule.User.Summary, 
+                    contents: type: userModule.User.Summary,
                     validate: -> 
                         if @moderators.length
                             m.validate() for m in @moderators
-                        else
-                            'moderators are missing.'
                 },
                 totalItems: 'number',
                 totalSubscribers: 'number',              

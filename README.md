@@ -88,10 +88,24 @@ server {
 }                         
 ```      
 
+
 /etc/hosts
 ----------
 For development set local.foraproject.org to localhost  
 You could use any other, but that's the path expected by the setup script.  
+
+
+Setup
+-----
+The setup scripts put some data in the database. So that we can play with the app.  
+It also helps in testing if the app is working fine. For the scripts to work, the web app must be running with the above config.  
+
+cd to fora/server  
+#create the database  
+node app/scripts/setup/setup.js --create  
+#delete the database  
+node app/scripts/setup/setup.js --delete  
+
 
 Mongodb Security
 ----------------

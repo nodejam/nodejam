@@ -41,7 +41,7 @@
                 _ref1 = this.authenticationTypes;
                 for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
                   type = _ref1[_i];
-                  if (['facebook', 'twitter', 'fora'].indexOf(type.name === -1)) {
+                  if (['facebook', 'twitter', 'users'].indexOf(type.name === -1)) {
                     errors.push("" + type.name + " is not a valid Authentication Type.");
                   }
                   if (type.name === 'twitter') {

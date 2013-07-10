@@ -28,7 +28,7 @@
           domain: {
             type: 'string',
             validate: function() {
-              return ['twitter', 'fb', 'fora'].indexOf(this.domain) !== -1;
+              return ['twitter', 'fb', 'users'].indexOf(this.domain) !== -1;
             }
           },
           domainid: 'string',
@@ -294,7 +294,12 @@
         type: Summary,
         fields: {
           id: 'string',
-          domain: 'string',
+          domain: {
+            type: 'string',
+            validate: function() {
+              return ['twitter', 'fb', 'users'].indexOf(this.domain) !== -1;
+            }
+          },
           username: 'string',
           name: 'string',
           network: 'string'

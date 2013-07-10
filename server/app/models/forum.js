@@ -38,20 +38,20 @@
           },
           moderators: {
             type: 'array',
-            contents: userModule.User.Summary,
-            validate: function() {
-              var m, _i, _len, _ref, _results;
+            contents: {
+              type: userModule.User.Summary,
+              validate: function() {
+                var m, _i, _len, _ref, _results;
 
-              if (this.moderators.length) {
-                _ref = this.moderators;
-                _results = [];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  m = _ref[_i];
-                  _results.push(m.validate());
+                if (this.moderators.length) {
+                  _ref = this.moderators;
+                  _results = [];
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    m = _ref[_i];
+                    _results.push(m.validate());
+                  }
+                  return _results;
                 }
-                return _results;
-              } else {
-                return 'moderators are missing.';
               }
             }
           },

@@ -21,7 +21,7 @@ class Network extends BaseModel
                         else
                             errors = []
                             for type in @authenticationTypes
-                                if ['facebook', 'twitter', 'fora'].indexOf type.name is -1 
+                                if ['facebook', 'twitter', 'users'].indexOf type.name is -1 
                                     errors.push "#{type.name} is not a valid Authentication Type."
                                 if type.name is 'twitter'
                                     if not type.params
