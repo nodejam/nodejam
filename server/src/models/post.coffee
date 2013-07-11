@@ -14,6 +14,7 @@ class Post extends BaseModel
         {
             type: Post,
             collection: 'posts',
+            discriminator: (obj) -> if obj.type is 'article' then models.Article, 
             fields: {
                 type: 'string',
                 forum: { type: forumModule.Forum.Summary },

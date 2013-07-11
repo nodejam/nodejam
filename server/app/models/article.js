@@ -25,9 +25,6 @@
 
       userModule = require('./user');
       meta = {
-        discriminator: function(obj) {
-          return obj.type === 'article';
-        },
         fields: {
           stub: {
             type: 'string',

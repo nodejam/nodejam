@@ -29,6 +29,11 @@
       return {
         type: Post,
         collection: 'posts',
+        discriminator: function(obj) {
+          if (obj.type === 'article') {
+            return models.Article;
+          }
+        },
         fields: {
           type: 'string',
           forum: {

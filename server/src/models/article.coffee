@@ -10,7 +10,6 @@ class Article extends postModule.Post
     @_getMeta: ->
         userModule = require('./user')
         meta = {
-            discriminator: (obj) -> obj.type is 'article', 
             fields: {
                 stub: { type: 'string', required: false },
                 state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },

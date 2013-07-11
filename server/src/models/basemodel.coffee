@@ -97,31 +97,34 @@ class BaseModel
     @constructModel: (obj, meta) ->
         if meta.customConstructor
             meta.customConstructor obj
-        else            
-            result = {}
-            for name, field of meta.fields
-                value = obj[name]
-                fieldDef = @getFullFieldDefinition field
-                if @isCustomClass fieldDef.type
-                    if value
-                        result[name] = @constructModel value, @__getMeta__(fieldDef.type)
-                else
-                    if value
-                        if fieldDef.type is 'array'
-                            arr = []
-                            contentType = @getFullFieldDefinition fieldDef.contents
-                            if @isCustomClass contentType
-                                for item in value
-                                    arr.push @constructModel item, @__getMeta__(contentType.type)
+        else           
+            if meta.hasOwnProperty('discriminator')
+                @constructModel obj, @__getMeta__(meta.discriminator(obj))
+            else
+                result = {}
+                for name, field of meta.fields
+                    value = obj[name]
+                    fieldDef = @getFullFieldDefinition field
+                    if @isCustomClass fieldDef.type
+                        if value
+                            result[name] = @constructModel value, @__getMeta__(fieldDef.type)
+                    else
+                        if value
+                            if fieldDef.type is 'array'
+                                arr = []
+                                contentType = @getFullFieldDefinition fieldDef.contents
+                                if @isCustomClass contentType
+                                    for item in value
+                                        arr.push @constructModel item, @__getMeta__(contentType.type)
+                                else
+                                    arr = value
+                                result[name] = arr
                             else
-                                arr = value
-                            result[name] = arr
-                        else
-                            result[name] = value    
-            if obj._id
-                result._id = obj._id
+                                result[name] = value    
+                if obj._id
+                    result._id = obj._id
 
-            new meta.type result
+                new meta.type result
      
                 
                 
