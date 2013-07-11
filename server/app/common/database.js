@@ -10,7 +10,6 @@
   Database = (function() {
     function Database(conf) {
       this.conf = conf;
-      this.ObjectId = __bind(this.ObjectId, this);
       this.incrementCounter = __bind(this.incrementCounter, this);
       this.remove = __bind(this.remove, this);
       this.findOne = __bind(this.findOne, this);
@@ -188,7 +187,7 @@
       });
     };
 
-    Database.prototype.ObjectId = function(id) {
+    Database.ObjectId = function(id) {
       if (id) {
         if (typeof id === "string") {
           return new Mongo.ObjectID(id);
@@ -202,7 +201,7 @@
 
     return Database;
 
-  })();
+  }).call(this);
 
   exports.Database = Database;
 

@@ -1,5 +1,6 @@
 conf = require '../../../conf'
-models = new (require '../../../models').Models(conf.db)
+db = new (require '../../../common/database').Database(conf.db)
+models = require '../../../models'
 utils = require '../../../common/utils'
 AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
@@ -20,7 +21,7 @@ class Articles extends Controller
         
         @parseBody article, req.body
         
-        article.save { user: req.user }, (err, article) =>
+        article.save { user: req.user }, db, (err, article) =>
             if not err
                 res.send article
                         
@@ -32,7 +33,7 @@ class Articles extends Controller
                         related: [ { type: 'user', id: req.user.id }, { type: 'forum', id: forum.stub } ],
                         data: { article }
                     }
-                    message.save {}, (err, msg) =>  
+                    message.save {}, db, (err, msg) =>  
             else
                 next err
             
@@ -40,7 +41,7 @@ class Articles extends Controller
 
     edit: (req, res, next, forum) =>
         _handleError = @handleError next  
-        models.Article.getById req.params.post, {}, (err, article) =>
+        models.Article.getById req.params.post, {}, db, (err, article) =>
             if not err
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
@@ -52,7 +53,7 @@ class Articles extends Controller
 
                         @parseBody article, req.body
                              
-                        article.save { user: req.user }, _handleError (err, article) =>
+                        article.save { user: req.user }, db, _handleError (err, article) =>
                             if not err
                                 if article.createdBy.id is req.user.id and not alreadyPublished and req.body.publish is 'true'
                                     message = new models.Message {
@@ -62,7 +63,7 @@ class Articles extends Controller
                                         related: [ { type: 'user', id: req.user.id }, { type: 'forum', id: forum.stub } ],
                                         data: { article }
                                     }
-                                    message.save {}, (err, msg) =>  
+                                    message.save {}, db, (err, msg) =>  
                     else
                         res.send 'Access denied.'
                 else
@@ -73,11 +74,11 @@ class Articles extends Controller
 
 
     remove: (req, res, next, forum) =>
-        models.Article.getById req.params.post, {}, (err, article) =>
+        models.Article.getById req.params.post, {}, db, (err, article) =>
             if not err
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
-                        article.destroy {}, (err, article) => 
+                        article.destroy {}, db, (err, article) => 
                             res.send article
                     else
                         res.send 'Access denied.'
@@ -91,13 +92,13 @@ class Articles extends Controller
     addComment: (req, res, next, forum) =>        
         contentType = forum.settings?.comments?.contentType ? 'text'
         if contentType is 'text'
-            models.Article.getById req.params.post, {}, (err, article) =>
+            models.Article.getById req.params.post, {}, db, (err, article) =>
                 comment = new models.Comment()
                 comment.createdBy = req.user
                 comment.forum = forum.stub
                 comment.itemid = article._id.toString()
                 comment.data = req.body.data
-                comment.save {}, (err, comment)=>
+                comment.save {}, db, (err, comment)=>
                     res.send comment
                 
         else

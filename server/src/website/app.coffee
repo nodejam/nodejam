@@ -1,15 +1,14 @@
 root = exports ? this
 
 express = require 'express'
-conf = require '../conf'
-models = new (require '../models').Models(conf.db)
-database = new (require '../common/database').Database(conf.db)
-AppError = require('../common/apperror').AppError
-utils = require '../common/utils'
-ApplicationCache = require('../common/cache').ApplicationCache
 validator = require('validator')
+
+conf = require '../conf'
+utils = require '../common/utils'
+db = new (require '../common/database').Database(conf.db)
 uiControllers = require './controllers/ui'
 apiControllers = require './controllers/api'
+AppError = require('../common/apperror').AppError
 
 utils.log "Fora application started at #{new Date}"
 utils.log "NODE_ENV is #{process.env.NODE_ENV}"
@@ -124,7 +123,7 @@ app.use (req, res, next) ->
     res.send(404, { error: 'HTTP 404. There is no water here.' })
 
 #Ensure indexes.
-database.getDb (err, db) ->
+db.getDb (err, db) ->
     db.collection 'sessions', (_, coll) ->
         coll.ensureIndex { passkey: 1 }, ->
         coll.ensureIndex { accessToken: 1 }, ->

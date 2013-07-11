@@ -1,3 +1,4 @@
+databaseModule = require('../common/database').Database
 utils = require('../common/utils')
 AppError = require('../common/apperror').AppError
 
@@ -5,53 +6,53 @@ class BaseModel
 
     constructor: (params) ->
         utils.extend(this, params)
-        meta = @constructor.__getMeta__()
+        meta = @constructor._getMeta()
         if @_id
-            @_id = meta.type._database.ObjectId(@_id)
+            @_id = databaseModule.ObjectId(@_id)
 
 
            
-    @get: (params, context, cb) ->
+    @get: (params, context, db, cb) ->
         meta = @__getMeta__()
-        @_database.findOne meta.collection, params, (err, result) =>
+        db.findOne meta.collection, params, (err, result) =>
             cb err, if result then @constructModel(result, meta)
 
 
 
-    @getAll: (params, context, cb) ->
+    @getAll: (params, context, db, cb) ->
         meta = @__getMeta__()
-        @_database.find meta.collection, params, (err, cursor) =>
+        db.find meta.collection, params, (err, cursor) =>
             cursor.toArray (err, items) =>
                 cb err, if items?.length then (@constructModel(item, meta) for item in items) else []
 
 
     
-    @find: (params, fnCursor, context, cb) ->
+    @find: (params, fnCursor, context, db, cb) ->
         meta = @__getMeta__()
-        @_database.find meta.collection, params, (err, cursor) =>
+        db.find meta.collection, params, (err, cursor) =>
             fnCursor cursor
             cursor.toArray (err, items) =>
                 cb err, if items?.length then (@constructModel(item, meta) for item in items) else []    
 
 
 
-    @getCursor: (params, context, cb) ->
+    @getCursor: (params, context, db, cb) ->
         meta = @__getMeta__()
-        @_database.find meta.collection, params, cb
+        db.find meta.collection, params, cb
 
 
            
-    @getById: (id, context, cb) ->
+    @getById: (id, context, db, cb) ->
         meta = @__getMeta__()
-        @_database.findOne meta.collection, { _id: @_database.ObjectId(id) }, (err, result) =>
+        db.findOne meta.collection, { _id: databaseModule.ObjectId(id) }, (err, result) =>
             cb err, if result then @constructModel(result, meta)
             
             
             
-    @destroyAll: (params, cb) ->
+    @destroyAll: (params, db, cb) ->
         meta = @__getMeta__()
         if meta.validateMultiRecordOperationParams(params)
-            @_database.remove meta.collection, params, (err) =>
+            db.remove meta.collection, params, (err) =>
                 cb?(err)
         else
             cb? new AppError "Call to destroyAll() must pass safety checks on params.", "SAFETY_CHECK_FAILED_IN_DESTROYALL"
@@ -97,34 +98,30 @@ class BaseModel
         if meta.customConstructor
             meta.customConstructor obj
         else            
-            #Check if this has a typeConstructor        
-            if meta.hasOwnProperty('typeConstructor') and (meta.type isnt @__getMeta__ meta.typeConstructor(obj).type)
-                @constructModel obj, @__getMeta__ meta.typeConstructor(obj)
-            else
-                result = {}
-                for name, field of meta.fields
-                    value = obj[name]
-                    fieldDef = @getFullFieldDefinition field
-                    if @isCustomClass fieldDef.type
-                        if value
-                            result[name] = @constructModel value, @__getMeta__(fieldDef.type)
-                    else
-                        if value
-                            if fieldDef.type is 'array'
-                                arr = []
-                                contentType = @getFullFieldDefinition fieldDef.contents
-                                if @isCustomClass contentType
-                                    for item in value
-                                        arr.push @constructModel item, @__getMeta__(contentType.type)
-                                else
-                                    arr = value
-                                result[name] = arr
+            result = {}
+            for name, field of meta.fields
+                value = obj[name]
+                fieldDef = @getFullFieldDefinition field
+                if @isCustomClass fieldDef.type
+                    if value
+                        result[name] = @constructModel value, @__getMeta__(fieldDef.type)
+                else
+                    if value
+                        if fieldDef.type is 'array'
+                            arr = []
+                            contentType = @getFullFieldDefinition fieldDef.contents
+                            if @isCustomClass contentType
+                                for item in value
+                                    arr.push @constructModel item, @__getMeta__(contentType.type)
                             else
-                                result[name] = value    
-                if obj._id
-                    result._id = obj._id
+                                arr = value
+                            result[name] = arr
+                        else
+                            result[name] = value    
+            if obj._id
+                result._id = obj._id
 
-                new meta.type result
+            new meta.type result
      
                 
                 
@@ -156,7 +153,7 @@ class BaseModel
         
         
     
-    save: (context, cb) =>
+    save: (context, db, cb) =>
         meta = @constructor.__getMeta__()
         
         for fieldName, def of meta.fields
@@ -179,16 +176,16 @@ class BaseModel
                             event = {}
                             event.type = meta.logging.onInsert
                             event.data = this
-                            @constructor._database.insert 'events', event, =>
+                            db.insert 'events', event, =>
                         
-                        @constructor._database.insert meta.collection, @, (err, r) =>
+                        db.insert meta.collection, @, (err, r) =>
                             cb? err, r
                     else
-                        @constructor._database.update meta.collection, { _id: @_id }, @, (err, r) =>
+                        db.update meta.collection, { _id: @_id }, @, (err, r) =>
                             cb? err, @
             
                 if @_id and meta.concurrency is 'optimistic'
-                    @constructor.getById @_id, context, (err, newPost) =>
+                    @constructor.getById @_id, context, db, (err, newPost) =>
                         if newPost._updateTimestamp is @_updateTimestamp
                             fnSave()
                         else
@@ -265,9 +262,9 @@ class BaseModel
         
 
     
-    destroy: (context, cb) =>
+    destroy: (context, db, cb) =>
         meta = @constructor.__getMeta__()
-        @constructor._database.remove meta.collection, { _id: @_id }, (err) =>
+        db.remove meta.collection, { _id: @_id }, (err) =>
             cb? err, @
 
 

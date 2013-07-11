@@ -1,5 +1,6 @@
 conf = require '../../conf'
-models = new (require '../../models').Models(conf.db)
+db = new (require '../../common/database').Database(conf.db)
+models = require '../../models'
 AppError = require('../../common/apperror').AppError
 
 
@@ -26,10 +27,10 @@ class Controller
 
     getUserWithPasskey: (passkey, cb) ->
         if passkey
-            models.Session.get { passkey }, {}, (err, session) =>
+            models.Session.get { passkey }, {}, db, (err, session) =>
                 if not err
                     if session
-                        models.User.getById session.userid, {}, (err, user) =>
+                        models.User.getById session.userid, {}, db, (err, user) =>
                             user = user?.summarize()
                             cb err, user
                     else

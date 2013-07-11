@@ -1,6 +1,5 @@
 controller = require('../controller')
 conf = require '../../../conf'
-models = new (require '../../../models').Models(conf.db)
 utils = require('../../../common/utils')
 AppError = require('../../../common/apperror').AppError
 

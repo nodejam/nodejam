@@ -1,5 +1,5 @@
-Models = require './'
 AppError = require('../common/apperror').AppError
+models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class UserInfo extends BaseModel
@@ -32,7 +32,7 @@ class UserInfo extends BaseModel
         
 
 
-    save: (context, cb) =>
+    save: (context, db, cb) =>
         super
 
     

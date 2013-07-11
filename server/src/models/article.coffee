@@ -2,7 +2,7 @@ async = require '../common/async'
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').markedb
-BaseModel = require('./basemodel').BaseModel
+models = require './'
 postModule = require('./post')
 
 class Article extends postModule.Post
@@ -10,6 +10,7 @@ class Article extends postModule.Post
     @_getMeta: ->
         userModule = require('./user')
         meta = {
+            discriminator: (obj) -> obj.type is 'article', 
             fields: {
                 stub: { type: 'string', required: false },
                 state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },

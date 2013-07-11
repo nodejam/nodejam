@@ -1,13 +1,12 @@
 https = require 'https'
-
-controller = require('../controller')
-conf = require '../../../conf'
-models = new (require '../../../models').Models(conf.db)
-utils = require '../../../common/utils'
-AppError = require('../../../common/apperror').AppError
-
 OAuth = require('oauth').OAuth
 
+utils = require '../../../common/utils'
+conf = require '../../../conf'
+models = require '../../../models'
+db = new (require '../../../common/database').Database(conf.db)
+AppError = require('../../../common/apperror').AppError
+controller = require('../controller')
 
 class Auth extends controller.Controller
     
@@ -36,7 +35,7 @@ class Auth extends controller.Controller
                     value: oauth                    
                 }        
     
-                token.save { user: req.user }, (err, token) =>
+                token.save { user: req.user }, db, (err, token) =>
                     if not err
                         res.cookie 'oauth_process_key', oauthProcessKey
                         res.send "
@@ -61,7 +60,7 @@ class Auth extends controller.Controller
 	        conf.authenticationTypes.twitter.TWITTER_CALLBACK,	
 	        "HMAC-SHA1"
         )
-        models.Token.get { type: 'oauth-process-key', key: req.cookies.oauth_process_key }, {}, (err, token) =>            
+        models.Token.get { type: 'oauth-process-key', key: req.cookies.oauth_process_key }, {}, db, (err, token) =>            
             if not err
                 if token
                     oauth = token.value
@@ -81,7 +80,7 @@ class Auth extends controller.Controller
                                     resp = JSON.parse response
                                     if resp.length and resp[0]?
                                         userDetails = @parseTwitterUserDetails resp[0]
-                                        models.User.getOrCreateUser userDetails, 'tw', accessToken, (err, _user, _session) =>
+                                        models.User.getOrCreateUser userDetails, 'tw', accessToken, {}, db, (err, _user, _session) =>
                                             res.clearCookie "oauth_process_key"
                                             res.cookie "userid", _user._id.toString()
                                             res.cookie "domain", "tw"

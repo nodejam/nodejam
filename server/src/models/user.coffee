@@ -1,6 +1,6 @@
 utils = require '../common/utils'
-Models = require './'
 AppError = require('../common/apperror').AppError
+models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class User extends BaseModel
@@ -35,14 +35,14 @@ class User extends BaseModel
         
     
     #Called from controllers when a new session is created.
-    @getOrCreateUser: (userDetails, domain, accessToken, cb) =>
-        @_models.Session.get { accessToken }, {}, (err, session) =>
+    @getOrCreateUser: (userDetails, domain, accessToken, context, db, cb) =>
+        models.Session.get { accessToken }, context, db, (err, session) =>
             if err
                 cb err
             else
-                session ?= new @_models.Session { passkey: utils.uniqueId(24), accessToken }
+                session ?= new models.Session { passkey: utils.uniqueId(24), accessToken }
                     
-                User.get { domain, username: userDetails.username }, {}, (err, user) =>
+                User.get { domain, username: userDetails.username }, context, db, (err, user) =>
                     if user?
                         #Update some details
                         user.name = userDetails.name ? user.name
@@ -54,10 +54,10 @@ class User extends BaseModel
                         user.tile = userDetails.tile ? user.tile
                         user.email = userDetails.email ? 'unknown@poe3.com'
                         user.lastLogin = Date.now()
-                        user.save {}, (err, u) =>
+                        user.save context, db, (err, u) =>
                             if not err
                                 session.userid = u._id.toString()
-                                session.save {}, (err, session) =>
+                                session.save context, db, (err, session) =>
                                     if not err
                                         cb null, u, session
                                     else
@@ -84,15 +84,15 @@ class User extends BaseModel
                         user.lastLogin = Date.now()
                         user.preferences = { canEmail: true }
                         user.createdAt = Date.now()
-                        user.save {}, (err, u) =>
+                        user.save context, db, (err, u) =>
                             #also create the userinfo
                             if not err
-                                userinfo = new @_models.UserInfo()
+                                userinfo = new models.UserInfo()
                                 userinfo.userid = u._id.toString()
-                                userinfo.save {}, (err, _uinfo) =>
+                                userinfo.save context, db, (err, _uinfo) =>
                                     if not err
                                         session.userid = u._id.toString()
-                                        session.save {}, (err, session) =>
+                                        session.save context, db, (err, session) =>
                                             if not err
                                                 cb null, u, session
                                             else
@@ -104,30 +104,10 @@ class User extends BaseModel
                                 
     
     
-    @getById: (id, context, cb) ->
-        super id, context, cb
-
-    
-
-    @getByUsername: (domain, username, context, cb) ->
-        User.get { domain, username }, context, (err, user) ->
+    @getByUsername: (domain, username, context, db, cb) ->
+        User.get { domain, username }, context, db, (err, user) ->
             cb null, user
 
-
-    
-    @validateSummary: (user) =>
-        errors = []
-        if not user
-            errors.push "Invalid user."
-        
-        required = ['id', 'domain', 'username', 'name']
-        for field in required
-            if not user[field]
-                errors.push "Invalid #{field}"
-                
-        errors
-        
-        
 
     constructor: (params) ->
         @about ?= ''
@@ -139,15 +119,10 @@ class User extends BaseModel
         @totalItemCount = 0
         super
 
-        
 
     getUrl: =>
         if @domain is 'tw' then "/@#{@username}" else "/#{@domain}/#{@username}"
 
-
-
-    save: (context, cb) =>
-        super
 
 
     summarize: =>        

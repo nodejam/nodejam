@@ -1,5 +1,6 @@
 conf = require '../../../conf'
-models = new (require '../../../models').Models(conf.db)
+db = new (require '../../../common/database').Database(conf.db)
+models = require '../../../models'
 utils = require '../../../common/utils'
 AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
@@ -10,16 +11,14 @@ class Posts extends Controller
     admin_update: (req, res, next) =>
         @ensureSession [req, res, next], =>
             if @isAdmin(req.user)
-                models.Post.getById req.params.id, {}, (err, post) =>
+                models.Post.getById req.params.id, {}, db, (err, post) =>
                     if post
                         if req.body.meta
                             for meta in req.body.meta.split(',') 
                                 if post.meta.indexOf(meta) is -1
                                     post.meta.push meta 
-                            post.save {}, (err, post) =>
-                                res.send post
-                        else
-                            next new AppError "Missing meta.", 'MISSING_META'       
+                        post.save {}, db, (err, post) =>
+                            res.send post
                     else
                         next new AppError "Post not found.", 'POST_NOT_FOUND'   
             else

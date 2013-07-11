@@ -1,5 +1,6 @@
 AppError = require('../common/apperror').AppError
 conf = require '../conf'
+models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class Network extends BaseModel

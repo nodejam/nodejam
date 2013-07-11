@@ -1,8 +1,9 @@
 async = require '../common/async'
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
-BaseModel = require('./basemodel').BaseModel
 mdparser = require('../common/markdownutil').marked
+models = require './'
+BaseModel = require('./basemodel').BaseModel
 
 class Post extends BaseModel
     
@@ -12,7 +13,6 @@ class Post extends BaseModel
         forumModule = require('./forum')
         {
             type: Post,
-            typeConstructor: (obj) -> if obj.type is 'article' then articleModule.Article, 
             collection: 'posts',
             fields: {
                 type: 'string',
@@ -31,14 +31,14 @@ class Post extends BaseModel
 
 
 
-    @search: (criteria, settings, context, cb) =>
+    @search: (criteria, settings, context, db, cb) =>
         limit = @getLimit settings.limit, 100, 1000
                 
         params = {}
         for k, v of criteria
             params[k] = v
         
-        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, cb        
+        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db, cb        
         
         
     
@@ -52,10 +52,10 @@ class Post extends BaseModel
         
         
     
-    save: (context, cb) =>
+    save: (context, db, cb) =>
         #If there is a stub, check if a post with the same stub already exists.
         if @stub
-            Post.get { @stub }, {}, (err, post) =>
+            Post.get { @stub }, {}, db, (err, post) =>
                 if not post
                     super
                 else

@@ -1,10 +1,10 @@
 https = require 'https'
-
-controller = require('../controller')
 conf = require '../../../conf'
-models = new (require '../../../models').Models(conf.db)
+db = new (require '../../../common/database').Database(conf.db)
+models = require '../../../models'
 utils = require('../../../common/utils')
 AppError = require('../../../common/apperror').AppError
+controller = require('../controller')
 
 class Sessions extends controller.Controller
     
@@ -23,7 +23,7 @@ class Sessions extends controller.Controller
             client.secureGraphRequest options, (err, userDetails) =>
                 _userDetails = @parseFBUserDetails(JSON.parse userDetails)
                 if _userDetails.domainid and _userDetails.name
-                    models.User.getOrCreateUser _userDetails, 'fb', req.body.accessToken, (err, user, session) =>
+                    models.User.getOrCreateUser _userDetails, 'fb', req.body.accessToken, {}, db, (err, user, session) =>
                         if not err
                             res.contentType 'json'
                             res.send { 
@@ -42,7 +42,7 @@ class Sessions extends controller.Controller
         else if req.body.domain is 'users'
             if req.body.secret is conf.auth.adminkeys.default
                 accessToken = utils.uniqueId(24)
-                models.User.getOrCreateUser req.body, 'users', accessToken, (err, user, session) =>
+                models.User.getOrCreateUser req.body, 'users', accessToken, {}, db, (err, user, session) =>
                     if not err
                         res.contentType 'json'
                         res.send { userid: user._id, domain: 'users', username: user.username, name: user.name, passkey: session.passkey }

@@ -94,7 +94,7 @@ class Database
                     
 
 
-    ObjectId: (id) =>
+    @ObjectId: (id) =>
         if id
             if typeof id is "string" then new Mongo.ObjectID(id) else id
         else

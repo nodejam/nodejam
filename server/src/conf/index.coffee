@@ -1,7 +1,8 @@
+models = require '../models'
+
 #Database
 if process.env.NODE_ENV is 'development'
     db = { name: 'fora-db-dev', host: '127.0.0.1', port: 27017 }
-    models = new (require '../models').Models(db)
     twitter = {
         TWITTER_CONSUMER_KEY: 'YOUR_TWITTER_KEY'
         TWITTER_SECRET: 'YOUR_TWITTER_SECRET',
@@ -10,7 +11,6 @@ if process.env.NODE_ENV is 'development'
 
 else
     db = { name: 'fora-db', host: '127.0.0.1', port: 27017 }        
-    models = new (require '../models').Models(db)
     twitter = {
         TWITTER_CONSUMER_KEY: 'YOUR_TWITTER_KEY'
         TWITTER_SECRET: 'YOUR_TWITTER_SECRET',

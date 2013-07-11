@@ -2,13 +2,14 @@
 (function() {
   var admins, auth, db, foraProject, models, networks, twitter;
 
+  models = require('../models');
+
   if (process.env.NODE_ENV === 'development') {
     db = {
       name: 'fora-db-dev',
       host: '127.0.0.1',
       port: 27017
     };
-    models = new (require('../models')).Models(db);
     twitter = {
       TWITTER_CONSUMER_KEY: 'YOUR_TWITTER_KEY',
       TWITTER_SECRET: 'YOUR_TWITTER_SECRET',
@@ -20,7 +21,6 @@
       host: '127.0.0.1',
       port: 27017
     };
-    models = new (require('../models')).Models(db);
     twitter = {
       TWITTER_CONSUMER_KEY: 'YOUR_TWITTER_KEY',
       TWITTER_SECRET: 'YOUR_TWITTER_SECRET',

@@ -1,5 +1,6 @@
 AppError = require('../common/apperror').AppError
 moment = require('../common/moment')
+models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class Message extends BaseModel
