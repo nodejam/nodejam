@@ -1,11 +1,9 @@
 AppError = require('../common/apperror').AppError
-models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class Forum extends BaseModel
         
-    @_getMeta: ->
-        userModule = require('./user')
+    @describeModel: ->
         {
             type: Forum,
             collection: 'forums',
@@ -17,10 +15,10 @@ class Forum extends BaseModel
                 icon: 'string',
                 iconThumbnail: 'string',
                 cover: { type: 'string', required: false },
-                createdBy: { type: userModule.User.Summary, validate: -> @createdBy.validate() },
+                createdBy: { type: @getModels().User.Summary, validate: -> @createdBy.validate() },
                 moderators: {
                     type: 'array', 
-                    contents: type: userModule.User.Summary,
+                    contents: type: @getModels().User.Summary,
                     validate: -> 
                         if @moderators.length
                             m.validate() for m in @moderators
@@ -45,11 +43,6 @@ class Forum extends BaseModel
         super
         
 
-    
-    save: (context, cb) =>
-        super
-
- 
         
     summarize: =>        
         summary = new Summary {
@@ -64,8 +57,7 @@ class Forum extends BaseModel
         
     
 class Summary extends BaseModel    
-    @_getMeta: ->
-        userModule = require('./user')
+    @describeModel: ->
         {
             type: Summary,
             fields: {
@@ -74,7 +66,7 @@ class Summary extends BaseModel
                 name: 'string',
                 stub: 'string',
                 type: 'string',
-                createdBy: userModule.User.Summary
+                createdBy: @getModels().User.Summary
             }
         }    
             

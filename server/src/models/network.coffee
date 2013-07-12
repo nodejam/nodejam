@@ -1,12 +1,10 @@
 AppError = require('../common/apperror').AppError
 conf = require '../conf'
-models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class Network extends BaseModel
 
-    @_getMeta: ->
-        User = require('./user').User
+    @describeModel: ->
         {
             type: Network,
             collection: 'networks',
@@ -39,7 +37,7 @@ class Network extends BaseModel
                 },
                 admins: {
                     type: 'array',
-                    contents: User.Summary,
+                    contents: @getModels().User.Summary,
                     validate: ->                    
                         if not @admins.length
                             errors.push 'admins are missing.'                        

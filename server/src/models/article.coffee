@@ -2,14 +2,12 @@ async = require '../common/async'
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').markedb
-models = require './'
 postModule = require('./post')
 
 class Article extends postModule.Post
 
-    @_getMeta: ->
-        userModule = require('./user')
-        meta = {
+    @describeModel: -> 
+        description = {
             fields: {
                 stub: { type: 'string', required: false },
                 state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },
@@ -19,11 +17,11 @@ class Article extends postModule.Post
                 content: { type: 'string', required: 'false' },
                 format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 },
                 rating: 'number',
-                recommendations: { type: 'array', contents: userModule.User.Summary, validate: -> user.validate() for user in @recommendations },                                
+                recommendations: { type: 'array', contents: @getModels().User.Summary, validate: -> user.validate() for user in @recommendations },                                
                 publishedAt: { type: 'number', required: false, validate: -> not (@state is 'published' and not @publishedAt) }
             }
         }
-        meta = @mergeMeta meta, postModule.Post._getMeta()
+        @mergeModelDescription description, @getModels().Post.describeModel()
         
         
         

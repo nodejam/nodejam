@@ -1,11 +1,10 @@
 AppError = require('../common/apperror').AppError
-models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class Session extends BaseModel
 
     
-    @_getMeta: ->
+    @describeModel: ->
         {
             type: Session,
             collection: 'sessions',

@@ -16,31 +16,28 @@
       this.validateFields = __bind(this.validateFields, this);
       this.validate = __bind(this.validate, this);
       this.save = __bind(this.save, this);
-      var meta;
-
-      utils.extend(this, params);
-      meta = this.constructor._getMeta();
+      this.getModels = __bind(this.getModels, this);      utils.extend(this, params);
       if (this._id) {
         this._id = databaseModule.ObjectId(this._id);
       }
     }
 
     BaseModel.get = function(params, context, db, cb) {
-      var meta,
+      var modelDescription,
         _this = this;
 
-      meta = this.__getMeta__();
-      return db.findOne(meta.collection, params, function(err, result) {
-        return cb(err, result ? _this.constructModel(result, meta) : void 0);
+      modelDescription = this.getModelDescription();
+      return db.findOne(modelDescription.collection, params, function(err, result) {
+        return cb(err, result ? _this.constructModel(result, modelDescription) : void 0);
       });
     };
 
     BaseModel.getAll = function(params, context, db, cb) {
-      var meta,
+      var modelDescription,
         _this = this;
 
-      meta = this.__getMeta__();
-      return db.find(meta.collection, params, function(err, cursor) {
+      modelDescription = this.getModelDescription();
+      return db.find(modelDescription.collection, params, function(err, cursor) {
         return cursor.toArray(function(err, items) {
           var item;
 
@@ -50,7 +47,7 @@
             _results = [];
             for (_i = 0, _len = items.length; _i < _len; _i++) {
               item = items[_i];
-              _results.push(this.constructModel(item, meta));
+              _results.push(this.constructModel(item, modelDescription));
             }
             return _results;
           }).call(_this) : []);
@@ -59,11 +56,11 @@
     };
 
     BaseModel.find = function(params, fnCursor, context, db, cb) {
-      var meta,
+      var modelDescription,
         _this = this;
 
-      meta = this.__getMeta__();
-      return db.find(meta.collection, params, function(err, cursor) {
+      modelDescription = this.getModelDescription();
+      return db.find(modelDescription.collection, params, function(err, cursor) {
         fnCursor(cursor);
         return cursor.toArray(function(err, items) {
           var item;
@@ -74,7 +71,7 @@
             _results = [];
             for (_i = 0, _len = items.length; _i < _len; _i++) {
               item = items[_i];
-              _results.push(this.constructModel(item, meta));
+              _results.push(this.constructModel(item, modelDescription));
             }
             return _results;
           }).call(_this) : []);
@@ -83,31 +80,31 @@
     };
 
     BaseModel.getCursor = function(params, context, db, cb) {
-      var meta;
+      var modelDescription;
 
-      meta = this.__getMeta__();
-      return db.find(meta.collection, params, cb);
+      modelDescription = this.getModelDescription();
+      return db.find(modelDescription.collection, params, cb);
     };
 
     BaseModel.getById = function(id, context, db, cb) {
-      var meta,
+      var modelDescription,
         _this = this;
 
-      meta = this.__getMeta__();
-      return db.findOne(meta.collection, {
+      modelDescription = this.getModelDescription();
+      return db.findOne(modelDescription.collection, {
         _id: databaseModule.ObjectId(id)
       }, function(err, result) {
-        return cb(err, result ? _this.constructModel(result, meta) : void 0);
+        return cb(err, result ? _this.constructModel(result, modelDescription) : void 0);
       });
     };
 
     BaseModel.destroyAll = function(params, db, cb) {
-      var meta,
+      var modelDescription,
         _this = this;
 
-      meta = this.__getMeta__();
-      if (meta.validateMultiRecordOperationParams(params)) {
-        return db.remove(meta.collection, params, function(err) {
+      modelDescription = this.getModelDescription();
+      if (modelDescription.validateMultiRecordOperationParams(params)) {
+        return db.remove(modelDescription.collection, params, function(err) {
           return typeof cb === "function" ? cb(err) : void 0;
         });
       } else {
@@ -115,8 +112,8 @@
       }
     };
 
-    BaseModel.mergeMeta = function(child, parent) {
-      var fields, k, meta, v, _ref;
+    BaseModel.mergeModelDescription = function(child, parent) {
+      var fields, k, modelDescription, v, _ref;
 
       fields = utils.clone(parent.fields);
       _ref = child.fields;
@@ -124,32 +121,32 @@
         v = _ref[k];
         fields[k] = v;
       }
-      meta = utils.clone(parent);
+      modelDescription = utils.clone(parent);
       for (k in child) {
         v = child[k];
         if (k !== 'fields') {
-          meta[k] = v;
+          modelDescription[k] = v;
         } else {
-          meta.fields = fields;
+          modelDescription.fields = fields;
         }
       }
-      return meta;
+      return modelDescription;
     };
 
-    BaseModel.__getMeta__ = function(model) {
-      var e, meta, _ref;
+    BaseModel.getModelDescription = function(model) {
+      var e, modelDescription, _ref;
 
       if (model == null) {
         model = this;
       }
       try {
-        meta = model._getMeta();
-        if ((_ref = meta.validateMultiRecordOperationParams) == null) {
-          meta.validateMultiRecordOperationParams = function(params) {
+        modelDescription = model.describeModel();
+        if ((_ref = modelDescription.validateMultiRecordOperationParams) == null) {
+          modelDescription.validateMultiRecordOperationParams = function(params) {
             return false;
           };
         }
-        return meta;
+        return modelDescription;
       } catch (_error) {
         e = _error;
         return utils.dumpError(e);
@@ -169,24 +166,24 @@
       return result;
     };
 
-    BaseModel.constructModel = function(obj, meta) {
+    BaseModel.constructModel = function(obj, modelDescription) {
       var arr, contentType, field, fieldDef, item, name, result, value, _i, _len, _ref;
 
-      if (meta.customConstructor) {
-        return meta.customConstructor(obj);
+      if (modelDescription.customConstructor) {
+        return modelDescription.customConstructor(obj);
       } else {
-        if (meta.hasOwnProperty('discriminator')) {
-          return this.constructModel(obj, this.__getMeta__(meta.discriminator(obj)));
+        if (modelDescription.hasOwnProperty('discriminator')) {
+          return this.constructModel(obj, this.getModelDescription(modelDescription.discriminator(obj)));
         } else {
           result = {};
-          _ref = meta.fields;
+          _ref = modelDescription.fields;
           for (name in _ref) {
             field = _ref[name];
             value = obj[name];
             fieldDef = this.getFullFieldDefinition(field);
             if (this.isCustomClass(fieldDef.type)) {
               if (value) {
-                result[name] = this.constructModel(value, this.__getMeta__(fieldDef.type));
+                result[name] = this.constructModel(value, this.getModelDescription(fieldDef.type));
               }
             } else {
               if (value) {
@@ -196,7 +193,7 @@
                   if (this.isCustomClass(contentType)) {
                     for (_i = 0, _len = value.length; _i < _len; _i++) {
                       item = value[_i];
-                      arr.push(this.constructModel(item, this.__getMeta__(contentType.type)));
+                      arr.push(this.constructModel(item, this.getModelDescription(contentType.type)));
                     }
                   } else {
                     arr = value;
@@ -211,7 +208,7 @@
           if (obj._id) {
             result._id = obj._id;
           }
-          return new meta.type(result);
+          return new modelDescription.type(result);
         }
       }
     };
@@ -241,12 +238,29 @@
       return fieldDef;
     };
 
+    BaseModel.getModels = function(path) {
+      if (path == null) {
+        path = './';
+      }
+      if (!BaseModel.__models) {
+        BaseModel.__models = require(path);
+      }
+      return BaseModel.__models;
+    };
+
+    BaseModel.prototype.getModels = function(path) {
+      if (path == null) {
+        path = './';
+      }
+      return this.constructor.getModels(path);
+    };
+
     BaseModel.prototype.save = function(context, db, cb) {
-      var def, fieldName, meta, _ref,
+      var def, fieldName, modelDescription, _ref,
         _this = this;
 
-      meta = this.constructor.__getMeta__();
-      _ref = meta.fields;
+      modelDescription = this.constructor.getModelDescription();
+      _ref = modelDescription.fields;
       for (fieldName in _ref) {
         def = _ref[fieldName];
         if (def.autoGenerated) {
@@ -269,26 +283,26 @@
             var event, _ref1;
 
             _this._updateTimestamp = Date.now();
-            _this._shard = meta.generateShard != null ? meta.generateShard(_this) : "1";
+            _this._shard = modelDescription.generateShard != null ? modelDescription.generateShard(_this) : "1";
             if (_this._id == null) {
-              if ((_ref1 = meta.logging) != null ? _ref1.isLogged : void 0) {
+              if ((_ref1 = modelDescription.logging) != null ? _ref1.isLogged : void 0) {
                 event = {};
-                event.type = meta.logging.onInsert;
+                event.type = modelDescription.logging.onInsert;
                 event.data = _this;
                 db.insert('events', event, function() {});
               }
-              return db.insert(meta.collection, _this, function(err, r) {
+              return db.insert(modelDescription.collection, _this, function(err, r) {
                 return typeof cb === "function" ? cb(err, r) : void 0;
               });
             } else {
-              return db.update(meta.collection, {
+              return db.update(modelDescription.collection, {
                 _id: _this._id
               }, _this, function(err, r) {
                 return typeof cb === "function" ? cb(err, _this) : void 0;
               });
             }
           };
-          if (_this._id && meta.concurrency === 'optimistic') {
+          if (_this._id && modelDescription.concurrency === 'optimistic') {
             return _this.constructor.getById(_this._id, context, db, function(err, newPost) {
               if (newPost._updateTimestamp === _this._updateTimestamp) {
                 return fnSave();
@@ -300,7 +314,7 @@
             return fnSave();
           }
         } else {
-          utils.log("Validation failed for object with id " + _this._id + " in collection " + meta.collection + ".");
+          utils.log("Validation failed for object with id " + _this._id + " in collection " + modelDescription.collection + ".");
           for (_i = 0, _len = errors.length; _i < _len; _i++) {
             error = errors[_i];
             utils.log(error);
@@ -312,7 +326,7 @@
     };
 
     BaseModel.prototype.validate = function(cb) {
-      var meta, _cb,
+      var modelDescription, _cb,
         _this = this;
 
       _cb = function(err, errors) {
@@ -322,11 +336,11 @@
           return errors;
         }
       };
-      meta = this.constructor.__getMeta__();
-      if (!meta.useCustomValidationOnly) {
-        return this.validateFields(meta.fields, function(err, errors) {
-          if (meta.validate) {
-            return meta.validate.call(_this, meta.fields, function(err, _errors) {
+      modelDescription = this.constructor.getModelDescription();
+      if (!modelDescription.useCustomValidationOnly) {
+        return this.validateFields(modelDescription.fields, function(err, errors) {
+          if (modelDescription.validate) {
+            return modelDescription.validate.call(_this, modelDescription.fields, function(err, _errors) {
               return _cb(err, errors.concat(_errors));
             });
           } else {
@@ -334,8 +348,8 @@
           }
         });
       } else {
-        if (meta.validate != null) {
-          return meta.validate.call(this, meta.fields, function(err, errors) {
+        if (modelDescription.validate != null) {
+          return modelDescription.validate.call(this, modelDescription.fields, function(err, errors) {
             return _cb(err, errors);
           });
         } else {
@@ -390,11 +404,11 @@
     };
 
     BaseModel.prototype.destroy = function(context, db, cb) {
-      var meta,
+      var modelDescription,
         _this = this;
 
-      meta = this.constructor.__getMeta__();
-      return db.remove(meta.collection, {
+      modelDescription = this.constructor.getModelDescription();
+      return db.remove(modelDescription.collection, {
         _id: this._id
       }, function(err) {
         return typeof cb === "function" ? cb(err, _this) : void 0;
@@ -432,7 +446,7 @@
 
     return BaseModel;
 
-  })();
+  }).call(this);
 
   exports.BaseModel = BaseModel;
 

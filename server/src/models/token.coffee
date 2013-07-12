@@ -1,11 +1,10 @@
 Models = require './'
 AppError = require('../common/apperror').AppError
-models = require './'
 BaseModel = require('./basemodel').BaseModel
 
 class Token extends BaseModel
 
-    @_getMeta: ->
+    @describeModel: ->
         {
             type: Token,
             collection: 'tokens',
