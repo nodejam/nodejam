@@ -59,15 +59,14 @@ class BaseModel
             
             
     @mergeModelDescription: (child, parent) ->
-        fields = utils.clone(parent.fields)        
+        fields = utils.clone(parent.fields)   
         for k,v of child.fields
             fields[k] = v
         modelDescription = utils.clone(parent)
         for k,v of child
             if k isnt 'fields'
                 modelDescription[k] = v
-            else
-                modelDescription.fields = fields
+        modelDescription.fields = fields
         modelDescription
                 
                 
@@ -112,7 +111,7 @@ class BaseModel
                             if fieldDef.type is 'array'
                                 arr = []
                                 contentType = @getFullFieldDefinition fieldDef.contents
-                                if @isCustomClass contentType
+                                if @isCustomClass contentType.type
                                     for item in value
                                         arr.push @constructModel item, @getModelDescription(contentType.type)
                                 else

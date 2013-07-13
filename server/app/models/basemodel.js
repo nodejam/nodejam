@@ -116,10 +116,9 @@
         v = child[k];
         if (k !== 'fields') {
           modelDescription[k] = v;
-        } else {
-          modelDescription.fields = fields;
         }
       }
+      modelDescription.fields = fields;
       return modelDescription;
     };
 
@@ -177,7 +176,7 @@
                 if (fieldDef.type === 'array') {
                   arr = [];
                   contentType = this.getFullFieldDefinition(fieldDef.contents);
-                  if (this.isCustomClass(contentType)) {
+                  if (this.isCustomClass(contentType.type)) {
                     for (_i = 0, _len = value.length; _i < _len; _i++) {
                       item = value[_i];
                       arr.push(this.constructModel(item, this.getModelDescription(contentType.type)));

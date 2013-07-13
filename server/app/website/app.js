@@ -171,6 +171,10 @@
     return c.index;
   }));
 
+  app.get('/:forum/:id', findHandler('ui/forums', function(c) {
+    return c.viewItem;
+  }));
+
   require("./hbshelpers").register();
 
   app.use(app.router);

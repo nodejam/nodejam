@@ -103,6 +103,7 @@ app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.admin_update)
 # ---------
 app.get '/', findHandler('ui/home', (c) -> c.index)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.index)
+app.get '/:forum/:id', findHandler('ui/forums', (c) -> c.viewItem)
 
 #Register templates, helpers etc.
 require("./hbshelpers").register()

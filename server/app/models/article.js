@@ -11,7 +11,7 @@
 
   AppError = require('../common/apperror').AppError;
 
-  mdparser = require('../common/markdownutil').markedb;
+  mdparser = require('../common/markdownutil').marked;
 
   postModule = require('./post');
 
@@ -19,8 +19,10 @@
     __extends(Article, _super);
 
     Article.describeModel = function() {
-      var description;
+      var description, models;
+      models = this.getModels();
       description = {
+        type: Article,
         fields: {
           stub: {
             type: 'string',
@@ -61,7 +63,7 @@
           rating: 'number',
           recommendations: {
             type: 'array',
-            contents: this.getModels().User.Summary,
+            contents: models.User.Summary,
             validate: function() {
               var user, _i, _len, _ref, _results;
               _ref = this.recommendations;
@@ -82,7 +84,7 @@
           }
         }
       };
-      return this.mergeModelDescription(description, this.getModels().Post.describeModel());
+      return this.mergeModelDescription(description, models.Post.describeModel());
     };
 
     function Article(params) {

@@ -19,23 +19,24 @@
     __extends(Post, _super);
 
     Post.describeModel = function() {
-      var forumModule;
+      var forumModule, models;
+      models = this.getModels();
       forumModule = require('./forum');
       return {
         type: Post,
         collection: 'posts',
         discriminator: function(obj) {
           if (obj.type === 'article') {
-            return Post.getModels().Article;
+            return models.Article;
           }
         },
         fields: {
           type: 'string',
           forum: {
-            type: this.getModels().Forum.Summary
+            type: models.Forum.Summary
           },
           createdBy: {
-            type: this.getModels().User.Summary,
+            type: models.User.Summary,
             validate: function() {
               return this.createdBy.validate();
             }
