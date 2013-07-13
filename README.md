@@ -1,4 +1,4 @@
-fora is licensed under the GPL3 license.
+    fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
 Install instructions (Ubuntu 13.04)
@@ -40,52 +40,37 @@ nginx configuration file
 ------------------------
 
 ```
-#This redirects non-www to www urls
-server {
-    server_name example.com;
-    rewrite ^(.*) http://www.example.com$1 permanent;
-}
-
 server {
     listen 80;
-    server_name www.example.com;
+    server_name local.foraproject.org;
     client_max_body_size 20M;
 
     location /pub {
-        alias /path/to/fora/server/www-user;
+        alias /home/jeswin/Desktop/repos/fora/server/www-user;
     }
 
     location /css {
-        alias /path/to/fora/server/app/www/css;
-    }
-
-    location /html {
-        alias /path/to/fora/server/app/www/html;
+        alias /home/jeswin/Desktop/repos/fora/server/app/www/css;
     }
 
     location /images {
-        alias /path/to/fora/server/app/www/images;
+        alias /home/jeswin/Desktop/repos/fora/server/app/www/images;
     }
 
     location /js {
-        alias /path/to/fora/server/app/www/js;
+        alias /home/jeswin/Desktop/repos/fora/server/app/www/js;
     }
 
     location /lib {
-        alias /path/to/fora/server/app/www/lib;
-    }
-
-    location /templates {
-        alias /path/to/fora/server/app/www/templates;
+        alias /home/jeswin/Desktop/repos/fora/server/app/www/lib;
     }
 
     location / {
         proxy_pass http://localhost:9000;
-        #root /path/to/fora/server/app/www;
-        #try_files $uri /index.html;
-        #index index.html;
+        proxy_set_header Host $host;
     }
-}                         
+}
+                       
 ```      
 
 
