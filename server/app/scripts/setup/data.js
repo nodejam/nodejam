@@ -256,7 +256,7 @@
     smallCover: 'http://upload.wikimedia.org/wikipedia/commons/d/da/Claude_Monet,_Saint-Georges_majeur_au_cr%C3%A9puscule.jpg',
     _forum: 'raw-nerve',
     _createdBy: 'aaronsw',
-    _meta: 'featured'
+    _meta: 'pick'
   };
 
   takeAStepBack = {

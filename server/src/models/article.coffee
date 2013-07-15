@@ -37,10 +37,12 @@ class Article extends postModule.Post
         switch view
             when "concise"
                 return {
-                    type: if @cover then 'image-text' else 'text',
                     image: @smallCover,
                     @title,
-                    content: if @format is 'markdown' and @content then mdparser(@content) else 'Invalid format.'
+                    content: if @format is 'markdown' and @content then mdparser(@content) else 'Invalid format.',
+                    @createdBy,
+                    @forum,
+                    @_id
                 }
 
     

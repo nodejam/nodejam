@@ -100,10 +100,12 @@
       switch (view) {
         case "concise":
           return {
-            type: this.cover ? 'image-text' : 'text',
             image: this.smallCover,
             title: this.title,
-            content: this.format === 'markdown' && this.content ? mdparser(this.content) : 'Invalid format.'
+            content: this.format === 'markdown' && this.content ? mdparser(this.content) : 'Invalid format.',
+            createdBy: this.createdBy,
+            forum: this.forum,
+            _id: this._id
           };
       }
     };

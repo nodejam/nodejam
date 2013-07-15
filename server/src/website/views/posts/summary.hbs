@@ -1,29 +1,16 @@
-{{compare type "image-text"}}
-    <li class="{{type}}-item-type with-image" data-url="/{{collections.0.stub}}/{{uid}}">
-        <div class="image" style="background-image:url({{summary.image}})">
-        </div>
-        <div class="text-content">
-            <h2><a href="/{{collections.0.stub}}/{{uid}}">{{summary.title}}</a></h2>
-            <div class="content">
-                {{{summary.text}}}
-            </div>
-        </div>
-        <p class="source">
-            <img src="{{createdBy.thumbnail}}" alt="{{createdBy.name}}" /><a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a> in <a href="/{{collections.0.stub}}">{{collections.0.name}}</a>
-        </p>
-    </li>
-{{/compare}}
-{{compare type "text"}}
-    <li class="{{type}}-item-type just-text" data-url="/{{collections.0.stub}}/{{uid}}">
-        <div class="text-content">
-            <h2><a href="/{{collections.0.stub}}/{{uid}}">{{summary.title}}</a></h2>
-            <div class="content">
-                {{{summary.text}}}
-            </div>
+<li class="{{view}}" data-url="/{{forum.stub}}/{{_id}}">
+    {{#if image}} 
+    <div class="image" style="background-image:url({{image}})"></div>
+    {{/if}}
+    <div class="content-wrap">
+        <h2><a href="/{{forum.stub}}/{{_id}}">{{title}}</a></h2>
+        <div class="content">
+            {{{content}}}
         </div>
         <p class="source">
-            <img src="{{createdBy.thumbnail}}" alt="{{createdBy.name}}" /><a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a> in <a href="/{{collections.0.stub}}">{{collections.0.name}}</a>
+            <img src="{{createdBy.id}}" alt="{{createdBy.name}}" />
+            <a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a> in <a href="/{{forum.stub}}">{{forum.name}}</a>
         </p>
-    </li>
-{{/compare}}
+    </div>
+</li>
 

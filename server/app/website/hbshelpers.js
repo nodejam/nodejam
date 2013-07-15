@@ -17,7 +17,7 @@
         return "/" + user.domain + "/" + user.username + "/feed";
       }
     });
-    hbs.registerHelper('compare', function(v1, v2, options) {
+    hbs.registerHelper('equals', function(v1, v2, options) {
       if (v1 === v2) {
         return options.fn(this);
       } else {

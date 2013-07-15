@@ -115,17 +115,22 @@
         delete article._content;
         delete article._meta;
         return doHttpRequest("/api/forums/" + forum + "?passkey=" + passkey, querystring.stringify(article), 'post', function(err, resp) {
+          var metaTag, _k, _len2, _ref2, _results;
           resp = JSON.parse(resp);
           utils.log("Created " + resp.title + " with id " + resp._id);
-          if (meta.split(',').indexOf('featured') !== -1) {
-            return doHttpRequest("/api/admin/posts/" + resp._id + "?passkey=" + adminkey, querystring.stringify({
-              meta: 'featured'
+          _ref2 = meta.split(',');
+          _results = [];
+          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+            metaTag = _ref2[_k];
+            _results.push(doHttpRequest("/api/admin/posts/" + resp._id + "?passkey=" + adminkey, querystring.stringify({
+              meta: metaTag
             }), 'put', function(err, resp) {
               resp = JSON.parse(resp);
-              utils.log("Added featured tag to article " + resp.title + ".");
+              utils.log("Added " + metaTag + " tag to article " + resp.title + ".");
               return cb();
-            });
+            }));
           }
+          return _results;
         });
       };
       createArticleTasks = [];

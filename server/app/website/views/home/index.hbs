@@ -2,10 +2,27 @@
     view = new Lappd.Views.Home.IndexView()
 </script>
 <div class="page-content">
-    <ul class="post-summaries">
-        {{#if posts}}
-            {{> postSummary this}}
-        {{/if}}
+    <ul class="nav">
+        <li class="selected">
+            Posts
+        </li>
+        <li class="selected">
+            <a href="/forums">Forums</a>
+        </li>            
     </ul>
+    {{#if editorsChoices}}
+        <ul class="posts">
+        {{#each editorsChoices}}
+            {{> postSummary summary}}
+        {{/each}}
+        </ul>
+    {{/if}}
+    {{#if featured}}
+        <ul class="posts">
+        {{#each featured}}
+            {{> postSummary summary}}
+        {{/each}}
+        </ul>
+    {{/if}}
 </div>
 

@@ -5,7 +5,7 @@ exports.register = ->
     hbs.registerHelper 'userUrl', (user) -> if user.domain is 'tw' then "/@#{user.username}" else "/#{user.domain}/#{user.username}"
     hbs.registerHelper 'userFeedUrl', (user) -> if user.domain is 'tw' then "/@#{user.username}/feed" else "/#{user.domain}/#{user.username}/feed"
 
-    hbs.registerHelper 'compare', (v1, v2, options) ->
+    hbs.registerHelper 'equals', (v1, v2, options) ->
         if v1 is v2
             options.fn(this)
         else        

@@ -94,11 +94,12 @@ init = () ->
             doHttpRequest "/api/forums/#{forum}?passkey=#{passkey}", querystring.stringify(article), 'post', (err, resp) ->                
                 resp = JSON.parse resp
                 utils.log "Created #{resp.title} with id #{resp._id}"
-                if meta.split(',').indexOf('featured') isnt -1
-                    doHttpRequest "/api/admin/posts/#{resp._id}?passkey=#{adminkey}", querystring.stringify({ meta: 'featured'}), 'put', (err, resp) ->                
+                for metaTag in meta.split(',')
+                    doHttpRequest "/api/admin/posts/#{resp._id}?passkey=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put', (err, resp) ->                
                         resp = JSON.parse resp
-                        utils.log "Added featured tag to article #{resp.title}."
+                        utils.log "Added #{metaTag} tag to article #{resp.title}."
                         cb()
+
                 
         createArticleTasks = []
         for article in data.articles

@@ -1,79 +1,14 @@
-/* FONTS */
-.fontBase { font-family: 'Open Sans', sans-serif; }
-.fontContent { font-family: 'PT Serif', serif; }
-.fontContentHeading { font-family: 'PT Serif', serif; }
-.fontAlt { font-family: 'Oswald', sans-serif; }
+@import "base.less";
 
-@fontSizeLarge: 16px;
-@fontSize: 14px;
-@fontSizeSmall: 12px;
-@fontSizeTiny: 11px; 
-
-/* COLORS */
-
-@colorText: #333;
-@colorDimText: lighten(@colorText, 30%);
-@colorLink: #003;
-@colorLinkHover: lighten(@colorLink, 30%);
-
-@colorNegative: #600;
-@colorDarkNegative: darken(@colorNegative, 10%);
-@colorPositive: #060;
-@colorDarkPositive: darken(@colorPositive, 10%);
-
-@colorLight: #eee;
-@colorLighter: lighten(@colorLight, 2%);
-@colorLightest: #fff;
-@colorDark: #333;
-@colorDarker: darken(@colorDark, 20%);
-@colorDarkest: #000;
-@colorNeutral: #999;
-
-.control (@fg, @bg) { color: @fg; background-color: @bg; border: none; border-bottom: 1px solid darken(@bg, 10%); border-right: 1px solid darken(@bg, 10%); }
-
-/* BORDERS */
-.rounded { border-radius: 2px; }
-
-
-/* TAGS */
-body { .fontBase; color: @colorText; margin: 0; }
-
-em { font-style: italic; font-weight: normal }
-strong { font-weight: bold }
-
-/* LINKS */
-a, a:visited, a:hover, span.anchor, span.anchor:hover { color: @colorLink; text-decoration: none; cursor: pointer }
-    a:hover, span.anchor:hover { text-decoration: underline; color: @colorLinkHover }
-        a:hover i { text-decoration: none }
-    a img { border: none }
-
-/* FORM CONTROLS */
-input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff); .rounded; padding: 7px 4px; margin: 2px 0 2px 0; }
-    input[type="checkbox"] { margin-right: 4px; }
-    input[type="file"] { padding: 0; border: none }
-
-label.alert-required { color: @colorNegative; }
-label.alert-required:after { content: '*' }
-
-button { .fontBase; .control(@colorText, @colorLighter); .rounded; padding: 9px 14px 9px 14px; margin: 0 2px 0 0; font-size: 11px; 
-         font-weight: bold; text-transform: uppercase; cursor: pointer; }    
-
-    button i { padding-right: 6px; }        
-    button.textless i { padding-right: 0; }
-
-    button.positive, .form button.positive { .control(#fff, @colorPositive) }
-    button.negative, .form button.negative { .control(#fff, @colorNegative) }
 
 .action { font-size: @fontSize; }
     .action.positive { color: @colorPositive }
     .action.negative { color: @colorNegative }
 
-/* LIST */
-ul { margin:0; padding: 0 }
-li { list-style: none }
 
 /* By default, scr-tiny is hidden and will be show only on tiny screens */
 .scr-tiny { display: none }
+
 
 /* HEADER and LOGO */
 .header {
@@ -84,379 +19,86 @@ li { list-style: none }
     }    
 }
 
-/* PAGES */
-@import "scrsz-min.less" screen and (max-width: 639px);
-@import "scrsz-small.less" screen and (min-width: 640px) and (max-width: 959px);
-@import "scrsz-med.less" screen and (min-width: 960px) and (max-width: 1199px);
-@import "scrsz-large.less" screen and (min-width: 1200px) and (max-width: 1599px);
-@import "scrsz-max.less" screen and (min-width: 1600px);
-
-.cover-page {
-    .cover { position: fixed; top: 0; right: 0; margin-top: 0; background-position: center; background-size: cover; }
+/* NAVIGATION BARS */
+.nav { 
+    @fontBase; font-size: @fontSizeSmall; font-weight: bold; text-transform: uppercase; color: @colorNeutral;
+    li { 
+        float: left; padding-right: 12px; 
+        &.selected { color: @colorDark }
+        a { 
+            color: @colorNeutral; text-decoration: underline;
+            &:hover { color: @colorDark }
+        }
+    }
 }
 
+
+.container { 
+    text-align: center; margin-top: 14px;
+    .content-wrap { 
+        text-align: left; margin: auto;
+    }
+}
+
+/* PAGES */
 .std-page {
-    .cover { display: none }    
+}
+
+.cover-page {
+    .cover { height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center }
+    @media(min-width: 1600px) {
+        .cover { width: 400px }
+        .container { 
+            margin-right: 400px;
+            .content-wrap { 
+                width: 1200px;
+            }
+        }
+    }
+}
+
+/* COLUMNS */
+/*
+.container(@wmax, @rmargin) {
+    @width: @wmax - @rmargin - 100;
+    @colWidth: 300;
+    @colSpacing: 20;
+    @numCols: floor((@width + @colSpacing)/(@colWidth + @colSpacing), 0);
+    @margins: floor(floor(@width - ((@numCols * @colWidth) + ((@numCols - 1) * @colSpacing)))/2);
+    margin-left: @margins + 0px;
+    margin-right: @margins + @rmargin + 0px;
+}
+*/
+
+/* POSTS */
+ul.posts {    
+    clear: both; padding: 12px 0 36px 0; 
+    li {
+        float: left;
+        height: 400px;
+        overflow: hidden;
+        .fontContent;
+
+        @media(min-width: 1600px) {
+            width: 380px;
+            margin-right: 20px;    
+        }        
+
+        &.wide {            
+            width: 100%; height: 360px;
+            .image { width: 220px; height: 360px; margin-right: 20px; float: left; background-size: cover; background-position: 0 8px; background-repeat: no-repeat }
+            .content-wrap { 
+                float: left; margin-right: 20px; height: 360px; width: 500px; 
+                .content {
+                    max-height: 200px; overflow:hidden   
+                }
+            }
+        }
+        
+        h2 { margin: 0 0 12px 0 }
+        p { margin: 0 0 12px 0 }
+    }
 }
 
 /* HOME */
-.welcome-page {        
-    ul.sections {
-        .fontContent; background: white; height: 1000px; opacity: 0.8;
-        
-        h1 { font-size: 52px; margin: 0 0 12px 0; color: green }
-        h2 { font-size: 32px; margin: 0 0 8px 0 }
-        p { font-size: 20px; margin: 0 0 24px 0 }
-    }
-}
 
-
-
-
-.cover-pic { 
-    width: 100%; position: absolute; left: 0; background: @colorDark; background-size: 100%; background-repeat: no-repeat; 
-    .icon { border: 3px solid @colorLight; border-radius: 100%; cursor: pointer; background-size: 100%; background-position: center; }
-    h1 { width: 400px; margin: auto; text-align: center; color: @colorLightest; text-shadow: 2px 2px 2px @colorDarkest; .fontContentHeading }
-    p { width: 400px; margin: auto; text-align: center; color: @colorLightest; text-shadow: 1px 1px 2px @colorDarkest; .fontContent; }
-    .edit { 
-        font-weight: normal; font-size: 11px; padding: 0px 4px 2px 4px; background: @colorLight; border-radius: 2px; text-decoration: none;
-        text-shadow: none; color: @colorDarkest; opacity: 0.5; position: absolute; margin-left: 6px; cursor: pointer; &:hover { opacity: 1 }
-    }
-    .options { font-weight: bold; font-size: @fontSizeSmall; margin-top: 8px; a { color: @colorLightest } }
-}
-.brand-alt, .account-options { opacity: 0.3; &:hover { opacity: 1 } }        
-
-/* NAVIGATION BAR */
-.nav { 
-    float: left; clear: both; font-size: @fontSizeSmall; font-weight: bold; height: 34px; margin: 12px 12px 4px 0; color: @colorDark; background: @colorLighter;
-    
-    a { 
-        display: block; min-width: 72px; max-width: 120px; color: #666; padding: 9px 0;
-        &:hover { color: @colorDarkest }
-    }
-    
-    li { 
-        padding: 0 12px; float: left; margin: 0; min-width: 72px; max-width: 120px; text-align: center;
-        &.text { padding: 9px 12px; color: @colorLightest }
-        &.small { 
-            min-width: 0; padding: 0 4px; width: 32px; 
-            a { 
-                min-width: 0; width: 32px;        
-                i { font-size: 16px; }
-            }
-        }
-        &.active { 
-            background: @colorNeutral;
-            a { color: @colorLightest }
-        }
-        &.section-name { width: 200px; text-align: left; padding: 9px 0 7px 12px; text-transform: uppercase }
-        &:hover { 
-            background: @colorDark; color: @colorLight;
-            a  { color: @colorLightest }
-        }
-    }            
-}
-    
-        
-/* PAGE OPTIONS */        
-.page-options { 
-    float: right; margin: -38px 20px 0 0; 
-    li { 
-        padding: 0; float: right;
-        &.link { 
-            font-size: @fontSizeSmall; margin-top: 9px; font-weight: bold; color: #666;
-            
-            a { 
-                color: #666; padding: 9px 16px 9px 16px;
-                &:hover { background: #f6f6f6; color: @colorDarkest }
-            }
-        }
-        
-        button.positive { background: #f6f6f6; color: green; border-right: 1px solid #f6f6f6; border-bottom: 1px solid #f6f6f6; border-radius: 0 }
-        button.positive:hover { background: #eee; color: green }
-    }
-}
-.std-page .page-options { margin-right: 8px; }           
-
-.page-content { clear: both; margin: 4px auto 32px auto }
-
-@boxWidth: 350px;
-@boxPadding: 12px;
-@boxMargin: 10px;
-
-.standard-box (@height, @width, @padding, @bg) {
-    height: @height; width: @width; min-width: @width; padding: @padding; margin: @boxMargin ((2 * @boxMargin) - 1) @boxMargin 0; float: left; background: @bg;
-    border-bottom: 1px solid @colorLight; border-right: 1px solid @colorLight; border-radius: 3px; 
-    &:hover { background: @colorLighter; border-bottom: 1px solid @colorLighter; border-right: 1px solid @colorLighter; }
-}
-
-/* COLLECTIONS */
-ul.collections { 
-    margin: 0 auto; padding: 0;
-    
-    > li {
-        .standard-box(300px, @boxWidth, 0, @colorLighter);        
-        text-align: center; font-size: @fontSizeSmall;
-    }
-}
-
-
-/* COLLECTION ITEMS */
-ul.collection-items { 
-    margin: 0 auto; padding: 0;
-    
-    > li { 
-        .standard-box(396px, @boxWidth - (2*@boxPadding), @boxPadding, @colorLighter);
-        .fontContent;
-
-        font-size: @fontSizeLarge;
-
-        .source { 
-            border-top: 1px solid #ddd; margin: 8px 0 0 0; padding: 10px 0 0 0; font-size: 12px;
-            
-            img { width: 24px; height: 24px; border-radius: 12px; margin-right: 4px; float: left; margin-top: -3px }
-            .collection { font-weight: bold }
-        }
-                   
-        &.message { 
-            background: @colorLightest; color: #999; cursor: pointer;
-            
-            p { 
-                font-size: 24px; padding-top: 152px; text-align: center;
-                i { font-size: 48px; }
-            }
-        }
-    }
-}
-
-/* TIMELINE */
-ul.timeline.messages li { 
-    clear: both; padding: 12px; font-size: 12px;
-    
-    .profile-pic { 
-        float: left; display: block; border-radius: 100%; border: 3px solid @colorLightest;
-        height: 32px; width: 32px; background-repeat: no-repeat; background-size: 100%; margin-right: 6px; 
-    }
-    
-    p { 
-        float: left; margin-top: 8px; color: gray;
-        .when { font-style: italic }
-    }
-}
-
-@fourColWidth: (@boxWidth + (3*(@boxMargin + @boxWidth)));
-@threeColWidth: (@boxWidth + (2*(@boxMargin + @boxWidth)));
-
-@media (min-width: @fourColWidth) 
-{    
-    .container.std-page { width: 1480px; }
-    .container.std-page .nav { width: 1460px }
-    
-    .cover-page .cover-pic { height: 320px }
-    .cover-page .nav { margin-top: 340px; }
-}
-
-@media (min-width: @threeColWidth) and (max-width: 400px)
-{
-    .container.std-page { width: 1110px; }
-    .container.std-page .nav { width: 1090px }
-    
-    .cover-page .cover-pic { height: 320px }
-    .cover-page .nav { margin-top: 340px; }
-}
-
-@media screen and (min-width: @threeColWidth)
-{    
-    .brand-alt { position: absolute; left: 16px; top: 12px; }
-        .brand-alt img { width: 48px; height: 48px;  }
-    .account-options { position: absolute; left: 16px; top: 65px }
-        .account-options img { width: 48px; }
-        
-    .cover-page .cover-pic h1 { font-size: 22px }
-    .cover-page .cover-pic .description { font-size: 14px }
-}
-
-@media screen and (min-width: 1150px) and (max-width: 1299px)
-{   
-    .container.std-page { width: 1110px; }
-    .container.std-page .nav { width: 1090px }
-
-    .cover-page .cover-pic { height: 320px }
-    .cover-page .nav { margin-top: 340px; }
-}
-
-@media screen and (min-width: 1150px)
-{
-    .cover-page .cover-pic .icon { height: 96px; width: 96px; margin: 64px auto 4px auto; }
-}
-
-@media screen and (min-width: 1150px)
-{
-    .container.std-page { width: 940px; }
-    .container.std-page .nav { width: 940px }
-}
-
-@media screen and (max-width: 1299px)
-{
-    /* Move the icons to the top */
-    .mainbar { height: 56px; border-bottom: 1px solid #eee; position: absolute; width: 100%; left: 0px; top: 0px }
-    
-    .brand-alt { position: absolute; float: left; left: 12px; top: 0; width: 40px; margin: 8px 0 0 0 }
-        .brand-alt img { height: 40px; width: 40px; }
-        
-    .account-options { position: absolute; float: left; left: 52px; top: 0; width: 40px; margin: 8px 0 0 4px; }
-        .account-options img { width: 40px; height: 40px; }
-        .account-options a.login-link { margin-left: 8px }
-
-        .account-options ul { width: 200px; }
-            .account-options li { float: left; margin-right: 4px }
-
-    .cover-page .cover-pic h1 { font-size: 20px }
-    .cover-page .cover-pic .description { font-size: 12px }
-    .cover-page .mainbar { border: none }
-    
-    ul.nav { margin-top: 68px; }
-    
-    .signin-options { margin-left: 12px }
-}
-
-@media screen and (min-width: 760px) and (max-width: 1149px)
-{   
-    .container.std-page { width: 740px; }
-    .container.std-page .nav { width: 720px }
-
-    .container.std-page { width: 740px; }
-    .container.std-page .nav { width: 740px }
-
-    .cover-page .cover-pic { height: 268px }
-        .cover-page .cover-pic .icon { height: 80px; width: 80px; margin: 48px auto 4px auto; }
-    .cover-page .nav { margin-top: 288px; }
-}
-
-@media screen and (max-width: 759px)
-{
-    .scr-normal { display: none }
-    .scr-tiny { display: block }
-    
-    .container.std-page.unminimizable { width: 460px; }
-    .container.std-page.unminimizable .nav { width: 460px }
-
-    .page-options { margin-right: 0 ; margin-top: -82px }
-            
-    .cover-page .cover-pic { height: 240px }
-        .cover-page .cover-pic .icon { height: 80px; width: 80px; margin: 32px auto 4px auto; }
-
-    .nav { margin-top: 48px }
-        .cover-page .nav { margin-top: 296px; }  
-    
-    h1.text-page-heading { margin-left: 12px; }    
-    ul.timeline.messages { margin-left: 12px; }    
-        ul.timeline.messages li p { width: 250px; margin-top: 2px }
-}
-
-@media screen and (min-width: 460px) and (max-width: 759px)
-{
-    .container.std-page { width: 460px }
-    .container.std-page .nav { width: 460px }
-
-    .container.std-page { width: 460px; }
-    .container.std-page .nav { width: 460px }
-}
-
-@media screen and (max-width: 459px)
-{
-    .container.std-page { width: 350px }
-    .container.std-page .nav { width: 350px }
-
-    .container.std-page { width: 350px; }
-    .container.std-page .nav { width: 350px }    
-}
-
-
-
-h2.user-name { 
-    margin-top: 12px; font-size: 20px;
-    img { float: left; width:32px; margin-right: 8px }
-}
-
-h1.text-page-heading { margin: 12px 0 4px 0; font-size: 28px; .fontContent }
-
-.signin-options { 
-    font-size: 12px;
-    i { margin-right: 3px; color: gray }
-    a { 
-        color: gray;
-        &:hover { color: @colorDarkest }
-    }
-}
-
-/* EDIT COLLECTION PAGE */
-.create-collection-page .collection-icon-preview p { float: left; margin: 0 4px 0 0; height: 80px; width: 80px; background-size: 80px; border-radius: 100%; border: 3px solid #aaa; }
-.create-collection-page .collection-icon-preview a.reset { float: left; margin: 0 0 0 8px }
-
-.create-collection-page .cover-pic-preview p { float: left; margin: 0 4px 0 0; height: 100px; width: 320px; background-size: 320px; border: 3px solid #aaa; }
-.create-collection-page .cover-pic-preview a.reset { float: left; margin: 0 0 0 8px }
-
-/* EDIT USER PAGE */
-.edit-user-page h2.user-name { margin: 12px 0 22px 0 }
-    .edit-user-page h2.user-name img { border: 3px solid #ccc; border-radius: 100% }
-
-/* POST SETTINGS PAGE */
-.post-options-page .parent-collections { margin-bottom: 12px; }
-    .post-options-page .parent-collections li { clear: both }
-    .post-options-page .parent-collections li div.image { height: 48px; width: 48px; margin: 4px 0 8px 12px; border: 3px solid #eee; border-radius: 100%; cursor: pointer;
-                background-size: 100%; background-position: center; box-shadow: 2px 1px 2px #ccc; float: left }
-    .post-options-page .parent-collections li p { float: left; margin: 12px 0 0 12px; font-weight: bold }
-        .post-options-page .parent-collections li p .options { font-size: 12px; color: gray; font-weight: normal }
-.post-options-page .add-to-collection { padding-top: 20px; }
-    .post-options-page .add-to-collection p { font-size: 12px; color: gray }
-    .post-options-page .add-to-collection p input { color: @colorDarkest }
-    .post-options-page .add-to-collection p button { color: green }
-.post-options-page .delete-post { margin-top: 24px; padding: 12px 0; border-top: 1px solid #ccc }    
-    .post-options-page .delete-post .delete-text { font-size: 12px; }
-        .post-options-page .delete-post .delete-text a { color: #600 }
-
-
-/* Bang JS! */
-.bangjs-editor-toolbar { font-family: 'PT Serif', serif; }
-.bangjs-editable .image-upload-box { font-family: 'Open Sans', sans-serif }
-
-
-/*
-    The two column layout called 'Egypt'
-*/
-.egypt-2-col { }
-    /* Sidebar */
-    .egypt-2-col .sidebar { }        
-    
-    /* Content Section */
-    .egypt-2-col > .content { float: left; margin-top: 16px; margin-right: 40px; }
-
-
-@media screen and (min-width: 1000px)
-{
-    .egypt-2-col { width: 940px }
-        .egypt-2-col > .content { width: 640px; margin-bottom: 120px }           
-        .egypt-2-col .sidebar { float: left; font-size: 14px; margin-top: 92px; width: 240px; }
-}
-
-@media screen and (min-width: 760px) and (max-width: 999px)
-{
-    .egypt-2-col { width: 640px }
-        .egypt-2-col > .content { width: 640px;  }           
-        .egypt-2-col .sidebar { float: left; font-size: 14px; margin-top: 12px; width: 640px; margin-bottom: 80px; }
-}
-
-@media screen and (min-width: 460px) and (max-width: 759px)
-{
-    .egypt-2-col { width: 440px }
-        .egypt-2-col > .content { width: 440px; }           
-        .egypt-2-col .sidebar { float: left; font-size: 14px; margin-top: 12px; width: 440px; margin-bottom: 80px; }
-}
-
-@media screen and (max-width: 459px)
-{
-     .egypt-2-col { width: 350px }
-        .egypt-2-col > .content { width: 350px; }           
-        .egypt-2-col .sidebar { float: left; font-size: 14px; margin-top: 12px; width: 350px; margin-bottom: 80px; }
-}

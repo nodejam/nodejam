@@ -28,19 +28,57 @@
       var _this = this;
       return this.attachUser(arguments, function() {
         return models.Post.find({
-          meta: 'featured'
+          meta: 'pick'
         }, (function(cursor) {
           return cursor.sort({
             _id: -1
-          }).limit(12);
-        }), {}, db, function(err, posts) {
+          }).limit(1);
+        }), {}, db, function(err, editorsChoices) {
           var post, _i, _len;
-          for (_i = 0, _len = posts.length; _i < _len; _i++) {
-            post = posts[_i];
+          for (_i = 0, _len = editorsChoices.length; _i < _len; _i++) {
+            post = editorsChoices[_i];
             post.summary = post.summarize("concise");
+            post.summary.view = "wide";
           }
-          return res.render('home/index.hbs', {
-            posts: posts
+          return models.Post.find({
+            meta: 'featured'
+          }, (function(cursor) {
+            return cursor.sort({
+              _id: -1
+            }).limit(12);
+          }), {}, db, function(err, featured) {
+            var f, x, _j, _len1;
+            featured = (function() {
+              var _j, _len1, _results;
+              _results = [];
+              for (_j = 0, _len1 = featured.length; _j < _len1; _j++) {
+                f = featured[_j];
+                if (((function() {
+                  var _k, _len2, _results1;
+                  _results1 = [];
+                  for (_k = 0, _len2 = editorsChoices.length; _k < _len2; _k++) {
+                    x = editorsChoices[_k];
+                    _results1.push(x._id);
+                  }
+                  return _results1;
+                })()).indexOf(f._id) === -1) {
+                  _results.push(f);
+                }
+              }
+              return _results;
+            })();
+            for (_j = 0, _len1 = featured.length; _j < _len1; _j++) {
+              post = featured[_j];
+              post.summary = post.summarize("concise");
+              post.summary.view = "standard";
+            }
+            return res.render('home/index.hbs', {
+              editorsChoices: editorsChoices,
+              featured: featured,
+              pageName: 'home-page',
+              pageType: 'cover-page',
+              cover: 'http://blogs-images.forbes.com/singularity/files/2013/01/Aaron_Swartz.jpg'
+            });
           });
         });
       });

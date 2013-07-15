@@ -13,7 +13,7 @@
     <link href="/css/css/toggle-switch.css" rel="stylesheet" media="screen" />
     <link href="/css/main.css" rel="stylesheet" media="screen" />
     
-    <!-- JS -->
+    <!-- other JS -->
     <script src="/js/lib/jquery-min.js"></script>
     <script src="/js/lib/angular-min.js"></script>    
 
@@ -33,86 +33,28 @@
              
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
   </head>
-  <body class="{{pageName}} {{#if coverPage}}cover-page{{else}}std-page{{/if}}">
+  <body class="{{pageName}} {{pageType}}">
+
+    <!-- header -->
     <div class="header">
         <div class="logo">
             Fora
         </div>
     </div>
 
-    {{#if coverPage}}
-    {{#if coverPicture}}
-    <div class="cover" style="background-image:url({{coverPicture}})">
+    <!-- cover -->
+    {{#equals pageType "cover-page"}}
+    <div class="cover" style="background-image:url({{cover}})">
     {{coverContent}}
     </div>
-    {{else}}
-    <div class="cover">
-    {{coverContent}}
-    </div>
-    {{/if}}
-    {{/if}}
+    {{/equals}}
 
+    <!-- content -->
     <div class="container">
-        {{{body}}}
-    </div>
-        <!--
-        {{#if coverPage}}
-            {{#if coverPage.image}}
-                <div class="cover-pic" style="background-image:url({{coverPage.image}})">
-                    <div class="icon" data-url="/{{stub}}" style="background-image:url({{coverPage.icon}})">
-                    </div>
-                    <h1>{{coverPage.name}}</h1>
-                    <p class="description">{{coverPage.description}}</p>
-                    {{#if coverPage.options}}
-                        {{{coverPage.options}}}
-                    {{/if}}
-                </div>
-            {{else}}
-                <div class="cover-pic tile" style="background-image:url({{coverPage.tile}})">
-                    <div class="icon" data-url="/{{stub}}" style="background-image:url({{coverPage.icon}})">
-                    </div>
-                    <h1>{{coverPage.name}}</h1>
-                    <p class="description">{{coverPage.description}}</p>
-                    {{#if coverPage.options}}
-                        {{{coverPage.options}}}
-                    {{/if}}                    
-                </div>
-            {{/if}}            
-        {{/if}}
-        
-        <div class="mainbar">            
-            <p class="brand-alt">        
-                <a href="/">
-                    <img src="/images/logo-square.png" alt="logo" />
-                </a>
-            </p>
-
-            <div class="account-options">
-            {{#if user}}
-                <a class="settings" href="{{userFeedUrl user}}"><img src="{{user.picture}}" alt="Settings" /></a>
-            {{else}}            
-                <ul class="signin-options">
-                    <li><i class="icon-twitter"></i><a class="twitter" href="/auth/twitter">login</a></li>
-                    <li><a class="facebook" href="#"><img src="/images/facebook.png" alt="Facebook sign in" /></a></li>
-                </ul>            
-            {{/if}}
-            </div>     
+        <div class="content-wrap">
+            {{{body}}}
         </div>
-
-        {{#if navLinks}}
-        <ul class="nav">
-            {{{navLinks}}}
-        </ul>
-        {{/if}}
-
-        {{#if pageOptions}}
-        <ul class="page-options">
-            {{{pageOptions}}}
-        </ul>
-        {{/if}}
-
-        <div style="clear:both"></div>
-        -->
     </div>
+
   </body>
-</html>
+</html>     

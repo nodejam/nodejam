@@ -1,0 +1,71 @@
+/* FONTS */
+.fontBase { font-family: 'Open Sans', sans-serif; }
+.fontContent { font-family: 'PT Serif', serif; }
+.fontContentHeading { font-family: 'PT Serif', serif; }
+.fontAlt { font-family: 'Oswald', sans-serif; }
+
+@fontSizeLarge: 16px;
+@fontSize: 14px;
+@fontSizeSmall: 12px;
+@fontSizeTiny: 11px; 
+
+/* COLORS */
+
+@colorText: #333;
+@colorDimText: lighten(@colorText, 30%);
+@colorLink: #003;
+@colorLinkHover: lighten(@colorLink, 30%);
+
+@colorNegative: #600;
+@colorDarkNegative: darken(@colorNegative, 10%);
+@colorPositive: #060;
+@colorDarkPositive: darken(@colorPositive, 10%);
+
+@colorLight: #eee;
+@colorLighter: lighten(@colorLight, 2%);
+@colorLightest: #fff;
+@colorDark: #333;
+@colorDarker: darken(@colorDark, 20%);
+@colorDarkest: #000;
+@colorNeutral: #999;
+
+.control (@fg, @bg) { color: @fg; background-color: @bg; border: none; border-bottom: 1px solid darken(@bg, 10%); border-right: 1px solid darken(@bg, 10%); }
+
+/* BORDERS */
+.rounded { border-radius: 2px; }
+
+
+/* TAGS */
+body { .fontBase; color: @colorText; margin: 0; }
+
+em { font-style: italic; font-weight: normal }
+strong { font-weight: bold }
+
+/* LINKS */
+a, a:visited, a:hover, span.anchor, span.anchor:hover { color: @colorLink; text-decoration: none; cursor: pointer }
+    a:hover, span.anchor:hover { text-decoration: underline; color: @colorLinkHover }
+        a:hover i { text-decoration: none }
+    a img { border: none }
+
+/* FORM CONTROLS */
+input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff); .rounded; padding: 7px 4px; margin: 2px 0 2px 0; }
+    input[type="checkbox"] { margin-right: 4px; }
+    input[type="file"] { padding: 0; border: none }
+
+label.alert-required { color: @colorNegative; }
+label.alert-required:after { content: '*' }
+
+button { .fontBase; .control(@colorText, @colorLighter); .rounded; padding: 9px 14px 9px 14px; margin: 0 2px 0 0; font-size: 11px; 
+         font-weight: bold; text-transform: uppercase; cursor: pointer; }    
+
+    button i { padding-right: 6px; }        
+    button.textless i { padding-right: 0; }
+
+    button.positive, .form button.positive { .control(#fff, @colorPositive) }
+    button.negative, .form button.negative { .control(#fff, @colorNegative) }
+    
+
+/* LIST */
+ul { margin:0; padding: 0 }
+li { list-style: none }    
+
