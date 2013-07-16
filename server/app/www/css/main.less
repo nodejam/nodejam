@@ -15,7 +15,7 @@
 .header {
     .logo {
         .fontAlt; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 20px; background: #ddd; color: white; float: left; 
-        text-transform: uppercase; position: absolute; top: 16px; left: 16px; 
+        text-transform: uppercase; position: absolute; top: 6px; left: 6px; 
         &:hover { background: #333; }
     }    
 }
@@ -35,7 +35,7 @@
 
 
 .container { 
-    text-align: center; margin-top: 14px;
+    text-align: center; margin-top: 18px;
     .page-wrap { 
         text-align: left; margin: auto;
     }
@@ -47,7 +47,7 @@
 
 .cover-page {
     .cover { height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center }
-    @media (min-width: 1720px) {
+    @media (min-width: 1780px) {
         .cover { width: 420px }
         .container { 
             margin-right: 420px;
@@ -57,7 +57,7 @@
         }
     }
 
-    @media (min-width: 1600px) and (max-width: 1719px) {
+    @media (min-width: 1600px) and (max-width: 1779px) {
         .cover { width: 360px }
         .container { 
             margin-right: 360px;
@@ -87,7 +87,8 @@ ul.posts {
     .fontContent; clear: both; padding: 24px 0 0 0; 
 
     li {
-        float: left; height: 400px; padding-bottom: 20px; overflow: hidden; margin-right: 20px;    
+        float: left; height: 400px; padding-bottom: 20px; overflow: hidden; margin-right: 40px;    
+        .image { height: 160px; background-size: cover; background-position: center; background-repeat: no-repeat }
         .content-wrap { 
             height: 400px; 
             .content { 
@@ -105,29 +106,39 @@ ul.posts {
 
             }
             .source {
-                font-size: 14px;
+                font-size: 14px; margin-top: -8px;
                 img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 4px 4px 0 0 }
                 .text { float: left; }
                 .activity { .fontBase; float: left; margin-left: 12px; color: @colorNeutral; font-size: 12px;  font-weight: bold; padding-top: 4px; }
             }                
         }
         
-        @media (min-width: 1720px) { 
-            width: 380px; 
+        .image + .content-wrap .content { max-height: 168px }
+        
+        @media (min-width: 1780px) { 
+            width: 360px; 
+            .image { width: 100%; margin-bottom: 12px; }
             .content-wrap { 
-                width: 380px;
-                .overlay { width: 380px }
-                .text { width: 240px }
+                .content { font-size: 16px; }
+                .overlay { width: 360px }
+                .source {
+                    .text { width: 220px }
+                }
             }
+            h2 { font-size: 22px; }
         }
         
-        @media (min-width: 1600px) and (max-width: 1719px) { 
-            width: 320px; 
+        @media (min-width: 1600px) and (max-width: 1779px) { 
+            width: 300px; 
+            .image { width: 100%; margin-bottom: 12px; }
             .content-wrap { 
-                width: 320px;
-                .overlay { width: 320px }                    
-                .text { width: 180px }
+                .content { font-size: 14px; }
+                .overlay { width: 300px }
+                .source {
+                    .text { width: 160px }
+                }
             }
+            h2 { font-size: 22px; }
         }
         
         &.wide {            
@@ -139,9 +150,10 @@ ul.posts {
                 .overlay { width: 500px }
                 .text { width: 360px }
             }
+            h2 { font-size: 28px; }
         }
         
-        h2 { margin: 0 0 12px 0 }
+        h2 { margin: 0 0 8px 0; line-height: 1.1em }
         p { margin: 0 0 12px 0 }
     }
 }

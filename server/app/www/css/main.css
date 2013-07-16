@@ -152,8 +152,8 @@ li {
   float: left;
   text-transform: uppercase;
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 6px;
+  left: 6px;
 }
 .header .logo:hover {
   background: #333;
@@ -182,7 +182,7 @@ li {
 }
 .container {
   text-align: center;
-  margin-top: 14px;
+  margin-top: 18px;
 }
 .container .page-wrap {
   text-align: left;
@@ -197,7 +197,7 @@ li {
   background-size: cover;
   background-position: center;
 }
-@media (min-width: 1720px) {
+@media (min-width: 1780px) {
   .cover-page .cover {
     width: 420px;
   }
@@ -208,7 +208,7 @@ li {
     width: 1200px;
   }
 }
-@media (min-width: 1600px) and (max-width: 1719px) {
+@media (min-width: 1600px) and (max-width: 1779px) {
   .cover-page .cover {
     width: 360px;
   }
@@ -242,7 +242,13 @@ ul.posts li {
   height: 400px;
   padding-bottom: 20px;
   overflow: hidden;
-  margin-right: 20px;
+  margin-right: 40px;
+}
+ul.posts li .image {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 ul.posts li .content-wrap {
   height: 400px;
@@ -280,6 +286,7 @@ ul.posts li .content-wrap .overlay {
 }
 ul.posts li .content-wrap .source {
   font-size: 14px;
+  margin-top: -8px;
 }
 ul.posts li .content-wrap .source img {
   float: left;
@@ -300,32 +307,49 @@ ul.posts li .content-wrap .source .activity {
   font-weight: bold;
   padding-top: 4px;
 }
-@media (min-width: 1720px) {
+ul.posts li .image + .content-wrap .content {
+  max-height: 168px;
+}
+@media (min-width: 1780px) {
   ul.posts li {
-    width: 380px;
+    width: 360px;
   }
-  ul.posts li .content-wrap {
-    width: 380px;
+  ul.posts li .image {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  ul.posts li .content-wrap .content {
+    font-size: 16px;
   }
   ul.posts li .content-wrap .overlay {
-    width: 380px;
+    width: 360px;
   }
-  ul.posts li .content-wrap .text {
-    width: 240px;
+  ul.posts li .content-wrap .source .text {
+    width: 220px;
+  }
+  ul.posts li h2 {
+    font-size: 22px;
   }
 }
-@media (min-width: 1600px) and (max-width: 1719px) {
+@media (min-width: 1600px) and (max-width: 1779px) {
   ul.posts li {
-    width: 320px;
+    width: 300px;
   }
-  ul.posts li .content-wrap {
-    width: 320px;
+  ul.posts li .image {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  ul.posts li .content-wrap .content {
+    font-size: 14px;
   }
   ul.posts li .content-wrap .overlay {
-    width: 320px;
+    width: 300px;
   }
-  ul.posts li .content-wrap .text {
-    width: 180px;
+  ul.posts li .content-wrap .source .text {
+    width: 160px;
+  }
+  ul.posts li h2 {
+    font-size: 22px;
   }
 }
 ul.posts li.wide {
@@ -356,8 +380,12 @@ ul.posts li.wide .content-wrap .overlay {
 ul.posts li.wide .content-wrap .text {
   width: 360px;
 }
+ul.posts li.wide h2 {
+  font-size: 28px;
+}
 ul.posts li h2 {
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
+  line-height: 1.1em;
 }
 ul.posts li p {
   margin: 0 0 12px 0;
