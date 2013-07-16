@@ -184,7 +184,7 @@ li {
   text-align: center;
   margin-top: 14px;
 }
-.container .content-wrap {
+.container .page-wrap {
   text-align: left;
   margin: auto;
 }
@@ -204,7 +204,7 @@ li {
   .cover-page .container {
     margin-right: 420px;
   }
-  .cover-page .container .content-wrap {
+  .cover-page .container .page-wrap {
     width: 1200px;
   }
 }
@@ -215,7 +215,7 @@ li {
   .cover-page .container {
     margin-right: 360px;
   }
-  .cover-page .container .content-wrap {
+  .cover-page .container .page-wrap {
     width: 1020px;
   }
 }
@@ -239,7 +239,7 @@ ul.posts {
 }
 ul.posts li {
   float: left;
-  height: 440px;
+  height: 400px;
   padding-bottom: 20px;
   overflow: hidden;
   margin-right: 20px;
@@ -250,8 +250,33 @@ ul.posts li .content-wrap {
 ul.posts li .content-wrap .content {
   max-height: 340px;
   overflow: hidden;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #eeeeee;
+  margin-bottom: 8px;
+}
+ul.posts li .content-wrap .overlay {
+  position: absolute;
+  height: 48px;
+  margin-top: -56px;
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  /* FF3.6+ */
+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, #ffffff));
+  /* Chrome,Safari4+ */
+
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  /* IE10+ */
+
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  /* W3C */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#ffffff', GradientType=0);
+  /* IE6-9 */
+
 }
 ul.posts li .content-wrap .source {
   font-size: 14px;
@@ -261,23 +286,46 @@ ul.posts li .content-wrap .source img {
   width: 32px;
   height: 32px;
   border-radius: 100%;
-  margin: -3px 4px 0 0;
+  margin: 4px 4px 0 0;
+}
+ul.posts li .content-wrap .source .text {
+  float: left;
 }
 ul.posts li .content-wrap .source .activity {
   font-family: 'Open Sans', sans-serif;
+  float: left;
   margin-left: 12px;
   color: #999999;
   font-size: 12px;
   font-weight: bold;
+  padding-top: 4px;
 }
 @media (min-width: 1720px) {
   ul.posts li {
     width: 380px;
   }
+  ul.posts li .content-wrap {
+    width: 380px;
+  }
+  ul.posts li .content-wrap .overlay {
+    width: 380px;
+  }
+  ul.posts li .content-wrap .text {
+    width: 240px;
+  }
 }
 @media (min-width: 1600px) and (max-width: 1719px) {
   ul.posts li {
     width: 320px;
+  }
+  ul.posts li .content-wrap {
+    width: 320px;
+  }
+  ul.posts li .content-wrap .overlay {
+    width: 320px;
+  }
+  ul.posts li .content-wrap .text {
+    width: 180px;
   }
 }
 ul.posts li.wide {
@@ -301,6 +349,12 @@ ul.posts li.wide .content-wrap {
 }
 ul.posts li.wide .content-wrap .content {
   max-height: 200px;
+}
+ul.posts li.wide .content-wrap .overlay {
+  width: 500px;
+}
+ul.posts li.wide .content-wrap .text {
+  width: 360px;
 }
 ul.posts li h2 {
   margin: 0 0 12px 0;

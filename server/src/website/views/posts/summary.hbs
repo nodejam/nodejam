@@ -3,13 +3,17 @@
     <div class="image" style="background-image:url({{image}})"></div>
     {{/if}}
     <div class="content-wrap">
-        <h2><a href="/{{forum.stub}}/{{_id}}">{{title}}</a></h2>
         <div class="content">
+            <h2><a href="/{{forum.stub}}/{{_id}}">{{title}}</a></h2>
             {{{content}}}
         </div>
+        <div class="overlay"></div>
         <p class="source">
             <img src="{{createdBy.assetPath}}/{{createdBy.domain}}-{{createdBy.username}}_t.jpg" alt="{{createdBy.name}}" />
-            <a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a><span class="light-text"> in </span><a href="/{{forum.stub}}">{{forum.name}}</a>            
+            <span class="text">
+                <a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a><span class="light-text"><br />
+                in </span><a href="/{{forum.stub}}">{{forum.name}}</a>
+            </span>
             <span class="activity"><i class="icon-comment"></i> 93 : <i class="icon-thumbs-up-alt"></i> 10k</span>
         </p>
     </div>
