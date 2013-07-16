@@ -35,14 +35,14 @@ a:visited,
 a:hover,
 span.anchor,
 span.anchor:hover {
-  color: #000033;
+  color: #483d8b;
   text-decoration: none;
   cursor: pointer;
 }
 a:hover,
 span.anchor:hover {
   text-decoration: underline;
-  color: #0000cc;
+  color: #9b92cf;
 }
 a:hover i {
   text-decoration: none;
@@ -123,6 +123,9 @@ ul {
 li {
   list-style: none;
 }
+.light-text {
+  color: #999999;
+}
 .action {
   font-size: 14px;
 }
@@ -194,15 +197,26 @@ li {
   background-size: cover;
   background-position: center;
 }
-@media (min-width: 1600px) {
+@media (min-width: 1720px) {
   .cover-page .cover {
-    width: 400px;
+    width: 420px;
   }
   .cover-page .container {
-    margin-right: 400px;
+    margin-right: 420px;
   }
   .cover-page .container .content-wrap {
     width: 1200px;
+  }
+}
+@media (min-width: 1600px) and (max-width: 1719px) {
+  .cover-page .cover {
+    width: 360px;
+  }
+  .cover-page .container {
+    margin-right: 360px;
+  }
+  .cover-page .container .content-wrap {
+    width: 1020px;
   }
 }
 /* COLUMNS */
@@ -219,28 +233,60 @@ li {
 */
 /* POSTS */
 ul.posts {
+  font-family: 'PT Serif', serif;
   clear: both;
-  padding: 12px 0 36px 0;
+  padding: 24px 0 0 0;
 }
 ul.posts li {
   float: left;
-  height: 400px;
+  height: 440px;
+  padding-bottom: 20px;
   overflow: hidden;
-  font-family: 'PT Serif', serif;
+  margin-right: 20px;
 }
-@media (min-width: 1600px) {
+ul.posts li .content-wrap {
+  height: 400px;
+}
+ul.posts li .content-wrap .content {
+  max-height: 340px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eeeeee;
+}
+ul.posts li .content-wrap .source {
+  font-size: 14px;
+}
+ul.posts li .content-wrap .source img {
+  float: left;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  margin: -3px 4px 0 0;
+}
+ul.posts li .content-wrap .source .activity {
+  font-family: 'Open Sans', sans-serif;
+  margin-left: 12px;
+  color: #999999;
+  font-size: 12px;
+  font-weight: bold;
+}
+@media (min-width: 1720px) {
   ul.posts li {
     width: 380px;
-    margin-right: 20px;
+  }
+}
+@media (min-width: 1600px) and (max-width: 1719px) {
+  ul.posts li {
+    width: 320px;
   }
 }
 ul.posts li.wide {
   width: 100%;
-  height: 360px;
+  height: 280px;
 }
 ul.posts li.wide .image {
   width: 220px;
-  height: 360px;
+  height: 280px;
   margin-right: 20px;
   float: left;
   background-size: cover;
@@ -250,12 +296,11 @@ ul.posts li.wide .image {
 ul.posts li.wide .content-wrap {
   float: left;
   margin-right: 20px;
-  height: 360px;
+  height: 280px;
   width: 500px;
 }
 ul.posts li.wide .content-wrap .content {
   max-height: 200px;
-  overflow: hidden;
 }
 ul.posts li h2 {
   margin: 0 0 12px 0;

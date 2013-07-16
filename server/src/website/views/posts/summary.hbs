@@ -8,8 +8,9 @@
             {{{content}}}
         </div>
         <p class="source">
-            <img src="{{createdBy.id}}" alt="{{createdBy.name}}" />
-            <a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a> in <a href="/{{forum.stub}}">{{forum.name}}</a>
+            <img src="{{createdBy.assetPath}}/{{createdBy.domain}}-{{createdBy.username}}_t.jpg" alt="{{createdBy.name}}" />
+            <a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a><span class="light-text"> in </span><a href="/{{forum.stub}}">{{forum.name}}</a>            
+            <span class="activity"><i class="icon-comment"></i> 93 : <i class="icon-thumbs-up-alt"></i> 10k</span>
         </p>
     </div>
 </li>

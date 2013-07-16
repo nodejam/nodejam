@@ -130,12 +130,11 @@
     };
 
     Auth.prototype.parseTwitterUserDetails = function(userDetails) {
-      var _ref1, _ref2, _ref3;
+      var _ref1, _ref2;
       return {
-        domainid: (_ref1 = userDetails.id) != null ? _ref1 : '',
         username: userDetails.screen_name,
-        name: (_ref2 = userDetails.name) != null ? _ref2 : userDetails.screen_name,
-        location: (_ref3 = userDetails.location) != null ? _ref3 : '',
+        name: (_ref1 = userDetails.name) != null ? _ref1 : userDetails.screen_name,
+        location: (_ref2 = userDetails.location) != null ? _ref2 : '',
         email: "twitteruser@poe3.com",
         picture: "https://api.twitter.com/1/users/profile_image?screen_name=" + userDetails.screen_name + "&size=original",
         thumbnail: "https://api.twitter.com/1/users/profile_image?screen_name=" + userDetails.screen_name + "&size=bigger",

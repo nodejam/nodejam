@@ -10,7 +10,6 @@ class User extends BaseModel
             collection: 'users',
             fields: {
                 domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
-                domainid: 'string',
                 username: 'string',
                 name: 'string',
                 location: 'string',
@@ -19,6 +18,7 @@ class User extends BaseModel
                 email: 'string',
                 accessToken: { type: 'string', required: false },
                 lastLogin: 'number',
+                assetPath: 'string',
                 following: { type: 'array', contents: @getModels().User.Summary, validate: -> x.validate() for x in @following },
                 subscriptions: { type: 'array', contents: @getModels().Forum.Summary, validate: -> x.validate() for x in @subscriptions },            
                 about: { type: 'string', required: false },
@@ -44,8 +44,7 @@ class User extends BaseModel
                     if user?
                         #Update some details
                         user.name = userDetails.name ? user.name
-                        user.domainid = userDetails.domainid ? user.domainid
-                        user.username = userDetails.username ? userDetails.domainid
+                        user.username = userDetails.username
                         user.location = userDetails.location ? user.location
                         user.picture = userDetails.picture ? user.picture
                         user.thumbnail = userDetails.thumbnail ? user.thumbnail
@@ -67,11 +66,10 @@ class User extends BaseModel
                         #User doesn't exist. create.
                         user = new User()
                         user.domain = domain
-                        user.domainid = userDetails.domainid
-                        user.username = userDetails.username ? userDetails.domainid
+                        user.username = userDetails.username
                         if domain is 'fb'
                             user.facebookUsername = userDetails.username
-                        if domain is 'tw'
+                        if domain is 'twitter'
                             user.twitterUsername = userDetails.username
                         user.name = userDetails.name
                         user.location = userDetails.location
@@ -81,7 +79,9 @@ class User extends BaseModel
                         user.email = userDetails.email ? 'unknown@poe3.com'
                         user.lastLogin = Date.now()
                         user.preferences = { canEmail: true }
-                        user.createdAt = Date.now()
+                        createdAt = new Date()
+                        user.createdAt = createdAt.getTime()                                                                        
+                        user.assetPath = "/pub/assetpaths/#{createdAt.getFullYear()}-#{createdAt.getMonth()+1}-#{createdAt.getDate()}"
                         user.save context, db, (err, u) =>
                             #also create the userinfo
                             if not err
@@ -128,7 +128,8 @@ class User extends BaseModel
             id: @_id.toString()
             domain: @domain
             username: @username
-            name: @name
+            name: @name,
+            @assetPath
         }
 
     
@@ -141,6 +142,7 @@ class Summary extends BaseModel
                 domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
                 username: 'string',
                 name: 'string',
+                assetPath: 'string'
             }
         }
             

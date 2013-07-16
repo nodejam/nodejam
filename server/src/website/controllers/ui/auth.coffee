@@ -108,7 +108,6 @@ class Auth extends controller.Controller
 
     parseTwitterUserDetails: (userDetails) =>
         {
-            domainid: userDetails.id ? '',
             username: userDetails.screen_name,
             name: userDetails.name ? userDetails.screen_name,
             location: userDetails.location ? '',

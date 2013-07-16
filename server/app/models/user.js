@@ -25,7 +25,6 @@
               return ['twitter', 'fb', 'users'].indexOf(this.domain) !== -1;
             }
           },
-          domainid: 'string',
           username: 'string',
           name: 'string',
           location: 'string',
@@ -37,6 +36,7 @@
             required: false
           },
           lastLogin: 'number',
+          assetPath: 'string',
           following: {
             type: 'array',
             contents: this.getModels().User.Summary,
@@ -102,16 +102,15 @@
             domain: domain,
             username: userDetails.username
           }, context, db, function(err, user) {
-            var _ref, _ref1, _ref10, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
+            var createdAt, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
             if (user != null) {
               user.name = (_ref = userDetails.name) != null ? _ref : user.name;
-              user.domainid = (_ref1 = userDetails.domainid) != null ? _ref1 : user.domainid;
-              user.username = (_ref2 = userDetails.username) != null ? _ref2 : userDetails.domainid;
-              user.location = (_ref3 = userDetails.location) != null ? _ref3 : user.location;
-              user.picture = (_ref4 = userDetails.picture) != null ? _ref4 : user.picture;
-              user.thumbnail = (_ref5 = userDetails.thumbnail) != null ? _ref5 : user.thumbnail;
-              user.tile = (_ref6 = userDetails.tile) != null ? _ref6 : user.tile;
-              user.email = (_ref7 = userDetails.email) != null ? _ref7 : 'unknown@poe3.com';
+              user.username = userDetails.username;
+              user.location = (_ref1 = userDetails.location) != null ? _ref1 : user.location;
+              user.picture = (_ref2 = userDetails.picture) != null ? _ref2 : user.picture;
+              user.thumbnail = (_ref3 = userDetails.thumbnail) != null ? _ref3 : user.thumbnail;
+              user.tile = (_ref4 = userDetails.tile) != null ? _ref4 : user.tile;
+              user.email = (_ref5 = userDetails.email) != null ? _ref5 : 'unknown@poe3.com';
               user.lastLogin = Date.now();
               return user.save(context, db, function(err, u) {
                 if (!err) {
@@ -130,25 +129,26 @@
             } else {
               user = new User();
               user.domain = domain;
-              user.domainid = userDetails.domainid;
-              user.username = (_ref8 = userDetails.username) != null ? _ref8 : userDetails.domainid;
+              user.username = userDetails.username;
               if (domain === 'fb') {
                 user.facebookUsername = userDetails.username;
               }
-              if (domain === 'tw') {
+              if (domain === 'twitter') {
                 user.twitterUsername = userDetails.username;
               }
               user.name = userDetails.name;
               user.location = userDetails.location;
               user.picture = userDetails.picture;
               user.thumbnail = userDetails.thumbnail;
-              user.tile = (_ref9 = userDetails.tile) != null ? _ref9 : '/images/collection-tile.png';
-              user.email = (_ref10 = userDetails.email) != null ? _ref10 : 'unknown@poe3.com';
+              user.tile = (_ref6 = userDetails.tile) != null ? _ref6 : '/images/collection-tile.png';
+              user.email = (_ref7 = userDetails.email) != null ? _ref7 : 'unknown@poe3.com';
               user.lastLogin = Date.now();
               user.preferences = {
                 canEmail: true
               };
-              user.createdAt = Date.now();
+              createdAt = new Date();
+              user.createdAt = createdAt.getTime();
+              user.assetPath = "/pub/assetpaths/" + (createdAt.getFullYear()) + "-" + (createdAt.getMonth() + 1) + "-" + (createdAt.getDate());
               return user.save(context, db, function(err, u) {
                 var userinfo;
                 if (!err) {
@@ -219,7 +219,8 @@
         id: this._id.toString(),
         domain: this.domain,
         username: this.username,
-        name: this.name
+        name: this.name,
+        assetPath: this.assetPath
       });
     };
 
@@ -247,7 +248,8 @@
             }
           },
           username: 'string',
-          name: 'string'
+          name: 'string',
+          assetPath: 'string'
         }
       };
     };

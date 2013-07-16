@@ -2,6 +2,8 @@ node_modules
 backups/*
 !backups/placeholder
 !backups/backup.sh
+server/www-user/assetpaths/*
+!server/www-user/assetpaths/placeholder
 server/www-user/images/*
 !server/www-user/images/placeholder
 server/www-user/thumbnails/*

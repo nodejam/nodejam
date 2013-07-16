@@ -1,5 +1,6 @@
 @import "base.less";
 
+.light-text { color: @colorNeutral }
 
 .action { font-size: @fontSize; }
     .action.positive { color: @colorPositive }
@@ -46,15 +47,26 @@
 
 .cover-page {
     .cover { height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center }
-    @media(min-width: 1600px) {
-        .cover { width: 400px }
+    @media (min-width: 1720px) {
+        .cover { width: 420px }
         .container { 
-            margin-right: 400px;
+            margin-right: 420px;
             .content-wrap { 
                 width: 1200px;
             }
         }
     }
+
+    @media (min-width: 1600px) and (max-width: 1719px) {
+        .cover { width: 360px }
+        .container { 
+            margin-right: 360px;
+            .content-wrap { 
+                width: 1020px;
+            }
+        }
+    }
+
 }
 
 /* COLUMNS */
@@ -72,26 +84,29 @@
 
 /* POSTS */
 ul.posts {    
-    clear: both; padding: 12px 0 36px 0; 
+    .fontContent; clear: both; padding: 24px 0 0 0; 
+
     li {
-        float: left;
-        height: 400px;
-        overflow: hidden;
-        .fontContent;
-
-        @media(min-width: 1600px) {
-            width: 380px;
-            margin-right: 20px;    
-        }        
-
+        float: left; height: 440px; padding-bottom: 20px; overflow: hidden; margin-right: 20px;    
+        .content-wrap { 
+            height: 400px; 
+            .content { max-height: 340px; overflow: hidden; margin-bottom: 12px; border-bottom: 1px solid @colorLight }
+                .source {
+                    font-size: 14px;
+                    img { float: left; width:32px; height: 32px; border-radius: 100%; margin: -3px 4px 0 0 }
+                    .activity { .fontBase; margin-left: 12px; color: @colorNeutral; font-size: 12px;  font-weight: bold; }
+                }                
+        }
+        
+        @media (min-width: 1720px) { width: 380px; }
+        @media (min-width: 1600px) and (max-width: 1719px) { width: 320px; }
+        
         &.wide {            
-            width: 100%; height: 360px;
-            .image { width: 220px; height: 360px; margin-right: 20px; float: left; background-size: cover; background-position: 0 8px; background-repeat: no-repeat }
+            width: 100%; height: 280px;
+            .image { width: 220px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-position: 0 8px; background-repeat: no-repeat }
             .content-wrap { 
-                float: left; margin-right: 20px; height: 360px; width: 500px; 
-                .content {
-                    max-height: 200px; overflow:hidden   
-                }
+                float: left; margin-right: 20px; height: 280px; width: 500px; 
+                .content { max-height: 200px; }
             }
         }
         

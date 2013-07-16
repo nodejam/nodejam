@@ -1,14 +1,12 @@
 #Users
-
 tributeToAaron = {
     username: 'aaronsw', 
     name: 'Aaron Swartz Tribute', 
     location: 'Brooklyn, NYC',
     domain: 'users',
-    domainid: 'aaronsw',
     email: 'me@aaronsw.com',
-    picture: 'http://i1.sndcdn.com/artworks-000039832777-og5thh-crop.jpg?86be403',
-    thumbnail: 'http://i1.sndcdn.com/artworks-000039832777-og5thh-crop.jpg?86be403',
+    picture: '/images/site/user.jpg',
+    thumbnail: '/images/site/user.jpg'
 }
 
 jeswin = {
@@ -16,10 +14,9 @@ jeswin = {
     name: 'Jeswin', 
     location: 'Bangalore, India',
     domain: 'users',
-    domainid: 'jeswin',
     email: 'jeswinpk@agilehead.com',
     picture: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.96.gif?r=3',
-    thumbnail: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.40.gif?r=3',
+    thumbnail: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.40.gif?r=3'
 }
 
 ebin = {
@@ -27,10 +24,9 @@ ebin = {
     name: 'Ebin John', 
     location: 'Bangalore, India',
     domain: 'users',
-    domainid: 'ebin',
     email: 'ebin.john@outlook.com',
     picture: 'https://lh4.googleusercontent.com/-SyoIfkRItqE/AAAAAAAAAAI/AAAAAAAAAw0/nxHk4Nqrpm8/s120-c/photo.jpg',
-    thumbnail: 'https://lh4.googleusercontent.com/-SyoIfkRItqE/AAAAAAAAAAI/AAAAAAAAAw0/nxHk4Nqrpm8/s120-c/photo.jpg',
+    thumbnail: 'https://lh4.googleusercontent.com/-SyoIfkRItqE/AAAAAAAAAAI/AAAAAAAAAw0/nxHk4Nqrpm8/s120-c/photo.jpg'
 }
 
 anupk7 = {
@@ -38,7 +34,6 @@ anupk7 = {
     name: 'Anup Kesavan', 
     location: 'Bangalore, India',
     domain: 'users',
-    domainid: 'anupk7',
     email: 'anupk7@gmail.com',
     picture: 'http://m.c.lnkd.licdn.com/mpr/pub/image-JLwJ9fTJBTv3Ur9xL18X4Ph00ExD3ZziHjwE4tuK0R2-tCRVJLwEuu6J0rLm3Zhhd9sr/anup-kesavan-ponnarassery.jpg',
     thumbnail: 'http://m.c.lnkd.licdn.com/mpr/pub/image-JLwJ9fTJBTv3Ur9xL18X4Ph00ExD3ZziHjwE4tuK0R2-tCRVJLwEuu6J0rLm3Zhhd9sr/anup-kesavan-ponnarassery.jpg',
@@ -252,8 +247,8 @@ optimalBiases = {
     title: 'Optimal biases',
     type: "article",
     _content: 'optimal-biases.md',
-    cover: 'http://upload.wikimedia.org/wikipedia/commons/d/da/Claude_Monet,_Saint-Georges_majeur_au_cr%C3%A9puscule.jpg',
-    smallCover: 'http://upload.wikimedia.org/wikipedia/commons/d/da/Claude_Monet,_Saint-Georges_majeur_au_cr%C3%A9puscule.jpg',
+    cover: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
+    smallCover: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
     _forum: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'pick'
