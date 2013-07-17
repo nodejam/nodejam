@@ -22,7 +22,7 @@
         collection: 'comments',
         fields: {
           forum: 'string',
-          itemid: 'string',
+          postid: 'string',
           data: 'object',
           createdBy: {
             type: this.getModels().User.Summary,
