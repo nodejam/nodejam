@@ -190,6 +190,7 @@
     function User(params) {
       this.summarize = __bind(this.summarize, this);
       this.getUrl = __bind(this.getUrl, this);
+      User.__super__.constructor.apply(this, arguments);
       if (this.about == null) {
         this.about = '';
       }
@@ -199,11 +200,18 @@
       if (this.preferences == null) {
         this.preferences = {};
       }
-      this.following = [];
-      this.followerCount = [];
-      this.subscriptions = [];
-      this.totalItemCount = 0;
-      User.__super__.constructor.apply(this, arguments);
+      if (this.following == null) {
+        this.following = [];
+      }
+      if (this.followerCount == null) {
+        this.followerCount = [];
+      }
+      if (this.subscriptions == null) {
+        this.subscriptions = [];
+      }
+      if (this.totalItemCount == null) {
+        this.totalItemCount = 0;
+      }
     }
 
     User.prototype.getUrl = function() {

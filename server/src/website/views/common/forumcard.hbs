@@ -1,0 +1,16 @@
+<li class="{{view}}" data-url="/{{stub}}">
+    <div class="item-wrap">
+        <div class="image" style="background-image:url({{image}})"></div>
+        <div class="content-wrap">
+            <h2>{{name}}</h2>
+            <div class="content">
+                {{#each snapshot.posts}}                
+                    <h2><a href="/{{forum.stub}}/{{id}}">{{title}}</a></h2>
+                {{/each}}
+                {{{content}}}
+            </div>
+            <div class="overlay"></div>
+        </div>
+    </div>
+</li>
+

@@ -1,26 +1,29 @@
 <script>
-    view = new Lappd.Views.Home.IndexView()
+    view = new Lappd.Views.Home.Index()
 </script>
 <div class="columns-wrap">
     <ul class="nav">
         <li class="selected">
             Posts
         </li>
-        <li class="selected">
+        <li>
             <a href="/forums">Forums</a>
         </li>            
+        <li>
+            <a href="/people">People</a>
+        </li>            
     </ul>
-    {{#if editorsChoices}}
+    {{#if editorsPicks}}
         <ul class="cards">
-        {{#each editorsChoices}}
-            {{> postSummary summary}}
+        {{#each editorsPicks}}
+            {{> postcard summary}}
         {{/each}}
         </ul>
     {{/if}}
     {{#if featured}}
         <ul class="cards">
         {{#each featured}}
-            {{> postSummary summary}}
+            {{> postcard summary}}
         {{/each}}
         </ul>
     {{/if}}

@@ -28,20 +28,22 @@
       var _this = this;
       return this.attachUser(arguments, function() {
         return models.Post.find({
-          meta: 'pick'
+          meta: 'pick',
+          'forum.network': req.network.stub
         }, (function(cursor) {
           return cursor.sort({
             _id: -1
           }).limit(1);
-        }), {}, db, function(err, editorsChoices) {
+        }), {}, db, function(err, editorsPicks) {
           var post, _i, _len;
-          for (_i = 0, _len = editorsChoices.length; _i < _len; _i++) {
-            post = editorsChoices[_i];
-            post.summary = post.summarize("concise");
+          for (_i = 0, _len = editorsPicks.length; _i < _len; _i++) {
+            post = editorsPicks[_i];
+            post.summary = post.getView("card");
             post.summary.view = "wide";
           }
           return models.Post.find({
-            meta: 'featured'
+            meta: 'featured',
+            'forum.network': req.network.stub
           }, (function(cursor) {
             return cursor.sort({
               _id: -1
@@ -56,8 +58,8 @@
                 if (((function() {
                   var _k, _len2, _results1;
                   _results1 = [];
-                  for (_k = 0, _len2 = editorsChoices.length; _k < _len2; _k++) {
-                    x = editorsChoices[_k];
+                  for (_k = 0, _len2 = editorsPicks.length; _k < _len2; _k++) {
+                    x = editorsPicks[_k];
                     _results1.push(x._id);
                   }
                   return _results1;
@@ -69,15 +71,15 @@
             })();
             for (_j = 0, _len1 = featured.length; _j < _len1; _j++) {
               post = featured[_j];
-              post.summary = post.summarize("concise");
+              post.summary = post.getView("card");
               post.summary.view = "standard";
             }
             return res.render('home/index.hbs', {
-              editorsChoices: editorsChoices,
+              editorsPicks: editorsPicks,
               featured: featured,
               pageName: 'home-page',
               pageType: 'cover-page',
-              cover: 'http://blogs-images.forbes.com/singularity/files/2013/01/Aaron_Swartz.jpg'
+              cover: '/pub/images/cover.jpg'
             });
           });
         });

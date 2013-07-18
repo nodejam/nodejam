@@ -108,14 +108,14 @@ class User extends BaseModel
 
 
     constructor: (params) ->
+        super
         @about ?= ''
         @karma ?= 1
         @preferences ?= {}
-        @following = []
-        @followerCount = []
-        @subscriptions = []
-        @totalItemCount = 0
-        super
+        @following ?= []
+        @followerCount ?= []
+        @subscriptions ?= []
+        @totalItemCount ?= 0
 
 
     getUrl: =>

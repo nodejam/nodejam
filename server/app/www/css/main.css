@@ -173,16 +173,24 @@ li {
 .page-sections-mixin .nav li {
   float: left;
   padding-right: 12px;
+  color: #999999;
 }
 .page-sections-mixin .nav li.selected {
   color: #333333;
 }
 .page-sections-mixin .nav li a {
-  color: #999999;
   text-decoration: underline;
+  color: #999999;
 }
 .page-sections-mixin .nav li a:hover {
   color: #333333;
+}
+.page-sections-mixin .nav li i {
+  font-size: 14px;
+  text-decoration: none;
+}
+.page-sections-mixin .nav.alt {
+  float: right;
 }
 .page-sections-mixin .container {
   text-align: center;
@@ -232,16 +240,24 @@ li {
 .tiny-page-mixin .nav li {
   float: left;
   padding-right: 12px;
+  color: #999999;
 }
 .tiny-page-mixin .nav li.selected {
   color: #333333;
 }
 .tiny-page-mixin .nav li a {
-  color: #999999;
   text-decoration: underline;
+  color: #999999;
 }
 .tiny-page-mixin .nav li a:hover {
   color: #333333;
+}
+.tiny-page-mixin .nav li i {
+  font-size: 14px;
+  text-decoration: none;
+}
+.tiny-page-mixin .nav.alt {
+  float: right;
 }
 .tiny-page-mixin .container {
   text-align: center;
@@ -295,16 +311,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -335,7 +359,10 @@ li {
     width: 1200px;
   }
   .cover-page .container .columns-wrap .nav {
-    margin-left: 20px;
+    margin: 0 0 0 20px;
+  }
+  .cover-page .container .columns-wrap .nav.alt {
+    margin: 0 20px 0 0;
   }
   /* POSTS */
   ul.cards {
@@ -365,6 +392,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -494,16 +522,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -534,7 +570,10 @@ li {
     width: 1020px;
   }
   .cover-page .container .columns-wrap .nav {
-    margin-left: 20px;
+    margin: 0 0 0 20px;
+  }
+  .cover-page .container .columns-wrap .nav.alt {
+    margin: 0 20px 0 0;
   }
   /* POSTS */
   ul.cards {
@@ -564,6 +603,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -693,16 +733,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -733,7 +781,10 @@ li {
     width: 936px;
   }
   .cover-page .container .columns-wrap .nav {
-    margin-left: 16px;
+    margin: 0 0 0 16px;
+  }
+  .cover-page .container .columns-wrap .nav.alt {
+    margin: 0 16px 0 0;
   }
   /* POSTS */
   ul.cards {
@@ -763,6 +814,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -892,16 +944,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -955,6 +1015,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -1084,16 +1145,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -1147,6 +1216,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -1276,16 +1346,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -1339,6 +1417,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -1468,16 +1547,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -1531,6 +1618,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -1660,16 +1748,24 @@ li {
   .nav li {
     float: left;
     padding-right: 12px;
+    color: #999999;
   }
   .nav li.selected {
     color: #333333;
   }
   .nav li a {
-    color: #999999;
     text-decoration: underline;
+    color: #999999;
   }
   .nav li a:hover {
     color: #333333;
+  }
+  .nav li i {
+    font-size: 14px;
+    text-decoration: none;
+  }
+  .nav.alt {
+    float: right;
   }
   .container {
     text-align: center;
@@ -1721,6 +1817,7 @@ li {
     height: 400px;
   }
   ul.cards li .content-wrap .content {
+    min-height: 120px;
     max-height: 340px;
     overflow: hidden;
     margin-bottom: 8px;

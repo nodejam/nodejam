@@ -24,17 +24,6 @@
       description = {
         type: Article,
         fields: {
-          stub: {
-            type: 'string',
-            required: false
-          },
-          state: {
-            type: 'string',
-            validate: function() {
-              return ['draft', 'published'].indexOf(this.state) !== -1;
-            }
-          },
-          title: 'string',
           cover: {
             type: 'string',
             required: false
@@ -59,28 +48,6 @@
             validate: function() {
               return ['markdown'].indexOf(this.format) !== -1;
             }
-          },
-          rating: 'number',
-          recommendations: {
-            type: 'array',
-            contents: models.User.Summary,
-            validate: function() {
-              var user, _i, _len, _ref, _results;
-              _ref = this.recommendations;
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                user = _ref[_i];
-                _results.push(user.validate());
-              }
-              return _results;
-            }
-          },
-          publishedAt: {
-            type: 'number',
-            required: false,
-            validate: function() {
-              return !(this.state === 'published' && !this.publishedAt);
-            }
           }
         }
       };
@@ -88,24 +55,33 @@
     };
 
     function Article(params) {
-      this.summarize = __bind(this.summarize, this);
-      this.type = 'article';
+      this.getView = __bind(this.getView, this);
       Article.__super__.constructor.apply(this, arguments);
+      if (this.type == null) {
+        this.type = 'article';
+      }
     }
 
-    Article.prototype.summarize = function(view) {
-      if (view == null) {
-        view = "standard";
+    Article.prototype.getView = function(name) {
+      if (name == null) {
+        name = "standard";
       }
-      switch (view) {
-        case "concise":
+      switch (name) {
+        case "snapshot":
+          return {
+            image: this.smallCover,
+            title: this.title,
+            createdBy: this.createdBy,
+            id: this._id.toString()
+          };
+        case "card":
           return {
             image: this.smallCover,
             title: this.title,
             content: this.format === 'markdown' && this.content ? mdparser(this.content) : 'Invalid format.',
             createdBy: this.createdBy,
             forum: this.forum,
-            _id: this._id
+            id: this._id.toString()
           };
       }
     };

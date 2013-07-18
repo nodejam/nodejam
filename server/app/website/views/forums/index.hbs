@@ -1,18 +1,24 @@
-<ul class="sections">
-    <li>
-        <h2>
-            Design Principles
-        </h2>
-        <p>
-            Beef meatloaf pig, prosciutto frankfurter pastrami corned beef pork leberkas chuck. Spare ribs t-bone beef
-            ribs short ribs, prosciutto ham hock jerky. Strip steak pork short loin short ribs cow ball tip, biltong
-            turducken fatback. Jowl boudin pork chop, tenderloin t-bone pig corned beef brisket tongue. Pork loin cow
-            short ribs pork shoulder, venison pancetta strip steak drumstick. Pork loin jerky brisket beef doner sirloin
-            pork belly chicken turducken salami swine corned beef.
-        </p>
-        <p>
-            <span class="author">By Jeswin Kumar</span>
-        </p>
-    </li>
-</ul>
+<script>
+    view = new Lappd.Views.Forums.Index()
+</script>
+<div class="columns-wrap">
+    <ul class="nav">
+        <li>
+            <a href="/">Posts</a>
+        </li>
+        <li class="selected">
+            Forums
+        </li>            
+        <li>
+            <a href="/people">People</a>
+        </li>            
+    </ul>
+    {{#if featured}}
+        <ul class="cards">
+        {{#each featured}}
+            {{> forumcard summary}}
+        {{/each}}
+        </ul>
+    {{/if}}
+</div>
 

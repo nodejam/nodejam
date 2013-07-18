@@ -102,6 +102,7 @@ class BaseModel
                 result = {}
                 for name, field of modelDescription.fields
                     value = obj[name]
+                    
                     fieldDef = @getFullFieldDefinition field
                     if @isCustomClass fieldDef.type
                         if value
@@ -119,6 +120,7 @@ class BaseModel
                                 result[name] = arr
                             else
                                 result[name] = value    
+                
                 if obj._id
                     result._id = obj._id
 

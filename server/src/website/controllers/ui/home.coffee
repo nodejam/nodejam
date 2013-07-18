@@ -13,15 +13,28 @@ class Home extends controller.Controller
     
     index: (req, res, next) =>
         @attachUser arguments, =>
-            models.Post.find { meta: 'pick' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 1), {}, db, (err, editorsChoices) =>
-                for post in editorsChoices
-                    post.summary = post.summarize("concise")
+            models.Post.find { meta: 'pick', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 1), {}, db, (err, editorsPicks) =>
+
+                for post in editorsPicks
+                    post.summary = post.getView("card")
                     post.summary.view = "wide"
-                models.Post.find { meta: 'featured' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db, (err, featured) =>    
-                    featured = (f for f in featured when (x._id for x in editorsChoices).indexOf(f._id) is -1)
+
+                models.Post.find { meta: 'featured', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db, (err, featured) =>    
+
+                    featured = (f for f in featured when (x._id for x in editorsPicks).indexOf(f._id) is -1)
+
                     for post in featured
-                        post.summary = post.summarize("concise")
+                        post.summary = post.getView("card")
                         post.summary.view = "standard"
-                    res.render 'home/index.hbs', { editorsChoices, featured, pageName: 'home-page', pageType: 'cover-page', cover: 'http://blogs-images.forbes.com/singularity/files/2013/01/Aaron_Swartz.jpg' }
+
+                    res.render 'home/index.hbs', { 
+                        editorsPicks, 
+                        featured, 
+                        pageName: 'home-page', 
+                        pageType: 'cover-page', 
+                        cover: '/pub/images/cover.jpg'
+                    }
+
+
 
 exports.Home = Home

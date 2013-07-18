@@ -24,14 +24,17 @@
     .nav {         
         @fontBase; font-size: @fontSizeSmall; font-weight: bold; text-transform: uppercase; color: @colorNeutral;
         li { 
-            float: left; padding-right: 12px; 
+            float: left; padding-right: 12px; color: @colorNeutral; 
             &.selected { color: @colorDark }
             a { 
-                color: @colorNeutral; text-decoration: underline;
-                &:hover { color: @colorDark }
+                text-decoration: underline; color: @colorNeutral; 
+                &:hover { color: @colorDark }                
             }
+            i { font-size: 14px; text-decoration: none }
         }
+        &.alt { float: right; }
     }
+
 
     .container { 
         text-align: center; margin-top: 18px;
@@ -65,7 +68,10 @@
             margin-right: @coverWidth + 0px;
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
-                .nav { margin-left: (@colSpacing / 2) + 0px }
+                .nav { 
+                    margin: 0 0 0 (@colSpacing / 2) + 0px;
+                    &.alt { margin: 0 (@colSpacing / 2) + 0px 0 0 }
+                }
             }
         }
     }    
@@ -144,7 +150,7 @@
             .content-wrap { 
                 height: 400px; 
                 .content { 
-                    max-height: 340px; overflow: hidden; margin-bottom: 8px; 
+                    min-height: 120px; max-height: 340px; overflow: hidden; margin-bottom: 8px; 
                     font-size: @colTextSize + 0px;
                 }
                 
@@ -201,7 +207,6 @@
 
 
 /* .*-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
-
 @media (min-width: 1760px) { 
     .large-page-mixin(1760; 3; 360; 40);    
     .cards-mixin(360; 40; 22; 16; 220; 500);

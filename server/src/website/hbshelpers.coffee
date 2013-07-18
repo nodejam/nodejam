@@ -24,6 +24,8 @@ exports.register = ->
 
     #Templates
     fs = require('fs')
-    postSummary = fs.readFileSync(__dirname + '/views/posts/summary.hbs', 'utf8');
-    hbs.registerPartial('postSummary', postSummary); 
+    postcard = fs.readFileSync(__dirname + '/views/common/postcard.hbs', 'utf8');
+    hbs.registerPartial('postcard', postcard); 
+    forumcard = fs.readFileSync(__dirname + '/views/common/forumcard.hbs', 'utf8');
+    hbs.registerPartial('forumcard', forumcard); 
 

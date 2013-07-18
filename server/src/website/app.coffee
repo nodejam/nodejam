@@ -102,8 +102,9 @@ app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.admin_update)
 # UI Routes
 # ---------
 app.get '/', findHandler('ui/home', (c) -> c.index)
-app.get '/:forum', findHandler('ui/forums', (c) -> c.index)
-app.get '/:forum/:id', findHandler('ui/forums', (c) -> c.viewItem)
+app.get '/forums', findHandler('ui/forums', (c) -> c.index)
+app.get '/:forum', findHandler('ui/forums', (c) -> c.forum)
+app.get '/:forum/:id', findHandler('ui/forums', (c) -> c.post)
 
 #Register templates, helpers etc.
 require("./hbshelpers").register()
@@ -139,10 +140,12 @@ db.getDb (err, db) ->
         coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
 
     db.collection 'posts', (_, coll) ->
-        coll.ensureIndex { state: 1, 'network': 1 }, ->
-        coll.ensureIndex { state: 1, publishedAt: 1, 'network': 1 }, ->
-        coll.ensureIndex { 'createdBy.id': 1, 'network': 1 }, ->
-        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1, 'network': 1 }, ->
+        coll.ensureIndex { state: 1, 'forum.stub': 1 }, ->
+        coll.ensureIndex { state: 1, 'forum.id': 1 }, ->
+        coll.ensureIndex { state: 1, publishedAt: 1, 'forum.stub': 1 }, ->
+        coll.ensureIndex { state: 1, publishedAt: 1, 'forum.id': 1 }, ->
+        coll.ensureIndex { 'createdBy.id': 1 }, ->
+        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1 }, ->
         
     db.collection 'messages', (_, coll) ->
         coll.ensureIndex { userid: 1 }, ->

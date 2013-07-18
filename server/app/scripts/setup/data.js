@@ -58,8 +58,8 @@
   movies = {
     name: 'Modern Cinema',
     description: 'Movies that won\'t make any sense. Not now, not ever.',
-    icon: 'http://canasiantimes.com/wp-content/uploads/2013/01/TKL180cm.jpg',
-    iconThumbnail: 'http://canasiantimes.com/wp-content/uploads/2013/01/TKL180cm.jpg',
+    icon: 'http://i1.sndcdn.com/artworks-000036685995-6mjzlt-crop.jpg?3265a2d',
+    iconThumbnail: 'http://i1.sndcdn.com/artworks-000036685995-6mjzlt-crop.jpg?3265a2d',
     cover: 'http://theredlist.fr/media/database/muses/couples/hollywood/paulette_godard_charlie_chaplin/017_paulette_godard_charlie_chaplin_theredlist.jpg',
     permission: 'public',
     type: 'post',
@@ -104,8 +104,8 @@
   travel = {
     name: 'Travel',
     description: 'Let\'s go.',
-    icon: 'http://farm9.staticflickr.com/8511/8462042254_23a8ac6f5d_b.jpg',
-    iconThumbnail: 'http://farm9.staticflickr.com/8511/8462042254_23a8ac6f5d_b.jpg',
+    icon: 'http://farm4.staticflickr.com/3016/3008866354_7481cc3f70_z.jpg',
+    iconThumbnail: 'http://farm4.staticflickr.com/3016/3008866354_7481cc3f70_z.jpg',
     permission: 'public',
     type: 'post',
     category: 'travel',
@@ -114,9 +114,9 @@
 
   computers = {
     name: 'Computers',
-    description: 'Good world of pixels.',
-    icon: 'http://images.apple.com/imac/images/hero.png',
-    iconThumbnail: 'http://images.apple.com/imac/images/hero.png',
+    description: 'Garbage in. Garbage out.',
+    icon: 'http://cdn-static.zdnet.com/i/r/story/70/00/016684/apple-wwdc-mac-pro-0596610x488-610x488.jpg?hash=MTZjLGH0AT&upscale=1',
+    iconThumbnail: 'http://cdn-static.zdnet.com/i/r/story/70/00/016684/apple-wwdc-mac-pro-0596610x488-610x488.jpg?hash=MTZjLGH0AT&upscale=1',
     permission: 'public',
     type: 'post',
     category: 'technology',
@@ -126,8 +126,8 @@
   theGreatMasters = {
     name: 'Great Masters',
     description: 'Paintings from the great masters.',
-    icon: 'http://images.apple.com/imac/images/hero.png',
-    iconThumbnail: 'http://images.apple.com/imac/images/hero.png',
+    icon: 'http://www.claude-monet.com/images/paintings/impression-sunrise.jpg',
+    iconThumbnail: 'http://www.claude-monet.com/images/paintings/impression-sunrise.jpg',
     permission: 'public',
     type: 'post',
     category: 'art',

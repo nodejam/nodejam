@@ -167,12 +167,16 @@
     return c.index;
   }));
 
-  app.get('/:forum', findHandler('ui/forums', function(c) {
+  app.get('/forums', findHandler('ui/forums', function(c) {
     return c.index;
   }));
 
+  app.get('/:forum', findHandler('ui/forums', function(c) {
+    return c.forum;
+  }));
+
   app.get('/:forum/:id', findHandler('ui/forums', function(c) {
-    return c.viewItem;
+    return c.post;
   }));
 
   require("./hbshelpers").register();
@@ -232,21 +236,28 @@
     db.collection('posts', function(_, coll) {
       coll.ensureIndex({
         state: 1,
-        'network': 1
+        'forum.stub': 1
+      }, function() {});
+      coll.ensureIndex({
+        state: 1,
+        'forum.id': 1
       }, function() {});
       coll.ensureIndex({
         state: 1,
         publishedAt: 1,
-        'network': 1
+        'forum.stub': 1
       }, function() {});
       coll.ensureIndex({
-        'createdBy.id': 1,
-        'network': 1
+        state: 1,
+        publishedAt: 1,
+        'forum.id': 1
+      }, function() {});
+      coll.ensureIndex({
+        'createdBy.id': 1
       }, function() {});
       return coll.ensureIndex({
         'createdBy.username': 1,
-        'createdBy.domain': 1,
-        'network': 1
+        'createdBy.domain': 1
       }, function() {});
     });
     db.collection('messages', function(_, coll) {
