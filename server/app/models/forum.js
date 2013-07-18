@@ -139,7 +139,7 @@
       }, (function(cursor) {
         return cursor.sort({
           _id: -1
-        }).limit(5);
+        }).limit(10);
       }), {}, db, function(err, posts) {
         var p;
         _this.snapshot = {

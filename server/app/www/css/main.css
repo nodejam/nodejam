@@ -370,17 +370,18 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
     margin: 0 20px;
     width: 360px;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -388,20 +389,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 16px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 360px;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     /* FF3.6+ */
@@ -425,7 +423,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -434,34 +432,61 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
-  ul.cards li.wide {
+  ul.cards > li.wide {
     width: 740px;
     height: 280px;
   }
-  ul.cards li.wide .image {
+  ul.cards > li.wide .image {
     width: 220px;
     height: 280px;
     margin-right: 20px;
@@ -470,21 +495,21 @@ li {
     background-position: 0 8px;
     background-repeat: no-repeat;
   }
-  ul.cards li.wide .content-wrap {
+  ul.cards > li.wide .content-wrap {
     float: left;
     height: 280px;
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .content {
+  ul.cards > li.wide .content-wrap .content {
     max-height: 200px;
   }
-  ul.cards li.wide .content-wrap .overlay {
+  ul.cards > li.wide .content-wrap .overlay {
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .source .text {
+  ul.cards > li.wide .content-wrap .source .text {
     width: 340;
   }
-  ul.cards li.wide h2 {
+  ul.cards > li.wide h2 {
     font-size: 28px;
   }
 }
@@ -578,17 +603,18 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
     margin: 0 20px;
     width: 300px;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -596,20 +622,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 14px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 300px;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     /* FF3.6+ */
@@ -633,7 +656,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -642,34 +665,61 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
-  ul.cards li.wide {
+  ul.cards > li.wide {
     width: 740px;
     height: 280px;
   }
-  ul.cards li.wide .image {
+  ul.cards > li.wide .image {
     width: 220px;
     height: 280px;
     margin-right: 20px;
@@ -678,21 +728,21 @@ li {
     background-position: 0 8px;
     background-repeat: no-repeat;
   }
-  ul.cards li.wide .content-wrap {
+  ul.cards > li.wide .content-wrap {
     float: left;
     height: 280px;
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .content {
+  ul.cards > li.wide .content-wrap .content {
     max-height: 200px;
   }
-  ul.cards li.wide .content-wrap .overlay {
+  ul.cards > li.wide .content-wrap .overlay {
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .source .text {
+  ul.cards > li.wide .content-wrap .source .text {
     width: 340;
   }
-  ul.cards li.wide h2 {
+  ul.cards > li.wide h2 {
     font-size: 28px;
   }
 }
@@ -786,17 +836,18 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
     margin: 0 16px;
     width: 280px;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -804,20 +855,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 14px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 280px;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     /* FF3.6+ */
@@ -841,7 +889,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -850,34 +898,61 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
-  ul.cards li.wide {
+  ul.cards > li.wide {
     width: 740px;
     height: 280px;
   }
-  ul.cards li.wide .image {
+  ul.cards > li.wide .image {
     width: 220px;
     height: 280px;
     margin-right: 20px;
@@ -886,21 +961,21 @@ li {
     background-position: 0 8px;
     background-repeat: no-repeat;
   }
-  ul.cards li.wide .content-wrap {
+  ul.cards > li.wide .content-wrap {
     float: left;
     height: 280px;
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .content {
+  ul.cards > li.wide .content-wrap .content {
     max-height: 200px;
   }
-  ul.cards li.wide .content-wrap .overlay {
+  ul.cards > li.wide .content-wrap .overlay {
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .source .text {
+  ul.cards > li.wide .content-wrap .source .text {
     width: 340;
   }
-  ul.cards li.wide h2 {
+  ul.cards > li.wide h2 {
     font-size: 28px;
   }
 }
@@ -984,17 +1059,18 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
     margin: 0 20px;
     width: 300px;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -1002,20 +1078,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 14px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 300px;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     /* FF3.6+ */
@@ -1039,7 +1112,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -1048,34 +1121,61 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
-  ul.cards li.wide {
+  ul.cards > li.wide {
     width: 740px;
     height: 280px;
   }
-  ul.cards li.wide .image {
+  ul.cards > li.wide .image {
     width: 220px;
     height: 280px;
     margin-right: 20px;
@@ -1084,21 +1184,21 @@ li {
     background-position: 0 8px;
     background-repeat: no-repeat;
   }
-  ul.cards li.wide .content-wrap {
+  ul.cards > li.wide .content-wrap {
     float: left;
     height: 280px;
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .content {
+  ul.cards > li.wide .content-wrap .content {
     max-height: 200px;
   }
-  ul.cards li.wide .content-wrap .overlay {
+  ul.cards > li.wide .content-wrap .overlay {
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .source .text {
+  ul.cards > li.wide .content-wrap .source .text {
     width: 340;
   }
-  ul.cards li.wide h2 {
+  ul.cards > li.wide h2 {
     font-size: 28px;
   }
 }
@@ -1182,17 +1282,18 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
     margin: 0 16px;
     width: 292px;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -1200,20 +1301,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 14px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 292px;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     /* FF3.6+ */
@@ -1237,7 +1335,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -1246,34 +1344,61 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
-  ul.cards li.wide {
+  ul.cards > li.wide {
     width: 740px;
     height: 280px;
   }
-  ul.cards li.wide .image {
+  ul.cards > li.wide .image {
     width: 220px;
     height: 280px;
     margin-right: 20px;
@@ -1282,21 +1407,21 @@ li {
     background-position: 0 8px;
     background-repeat: no-repeat;
   }
-  ul.cards li.wide .content-wrap {
+  ul.cards > li.wide .content-wrap {
     float: left;
     height: 280px;
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .content {
+  ul.cards > li.wide .content-wrap .content {
     max-height: 200px;
   }
-  ul.cards li.wide .content-wrap .overlay {
+  ul.cards > li.wide .content-wrap .overlay {
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .source .text {
+  ul.cards > li.wide .content-wrap .source .text {
     width: 340;
   }
-  ul.cards li.wide h2 {
+  ul.cards > li.wide h2 {
     font-size: 28px;
   }
 }
@@ -1380,17 +1505,18 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
     margin: 0 16px;
     width: 280px;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -1398,20 +1524,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 14px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 280px;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     /* FF3.6+ */
@@ -1435,7 +1558,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -1444,34 +1567,61 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
-  ul.cards li.wide {
+  ul.cards > li.wide {
     width: 740px;
     height: 280px;
   }
-  ul.cards li.wide .image {
+  ul.cards > li.wide .image {
     width: 220px;
     height: 280px;
     margin-right: 20px;
@@ -1480,21 +1630,21 @@ li {
     background-position: 0 8px;
     background-repeat: no-repeat;
   }
-  ul.cards li.wide .content-wrap {
+  ul.cards > li.wide .content-wrap {
     float: left;
     height: 280px;
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .content {
+  ul.cards > li.wide .content-wrap .content {
     max-height: 200px;
   }
-  ul.cards li.wide .content-wrap .overlay {
+  ul.cards > li.wide .content-wrap .overlay {
     width: 500px;
   }
-  ul.cards li.wide .content-wrap .source .text {
+  ul.cards > li.wide .content-wrap .source .text {
     width: 340;
   }
-  ul.cards li.wide h2 {
+  ul.cards > li.wide h2 {
     font-size: 28px;
   }
 }
@@ -1578,17 +1728,18 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
     margin: 0 16px;
     width: 300px;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -1596,20 +1747,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 14px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 300px;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
     /* FF3.6+ */
@@ -1633,7 +1781,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -1642,34 +1790,61 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
-  ul.cards li.wide {
+  ul.cards > li.wide {
     width: 620px;
     height: 280px;
   }
-  ul.cards li.wide .image {
+  ul.cards > li.wide .image {
     width: 220px;
     height: 280px;
     margin-right: 20px;
@@ -1678,21 +1853,21 @@ li {
     background-position: 0 8px;
     background-repeat: no-repeat;
   }
-  ul.cards li.wide .content-wrap {
+  ul.cards > li.wide .content-wrap {
     float: left;
     height: 280px;
     width: 380px;
   }
-  ul.cards li.wide .content-wrap .content {
+  ul.cards > li.wide .content-wrap .content {
     max-height: 200px;
   }
-  ul.cards li.wide .content-wrap .overlay {
+  ul.cards > li.wide .content-wrap .overlay {
     width: 380px;
   }
-  ul.cards li.wide .content-wrap .source .text {
+  ul.cards > li.wide .content-wrap .source .text {
     width: 220;
   }
-  ul.cards li.wide h2 {
+  ul.cards > li.wide h2 {
     font-size: 28px;
   }
 }
@@ -1773,18 +1948,19 @@ li {
     clear: both;
     padding: 24px 0 0 0;
   }
-  ul.cards li {
+  ul.cards > li {
     float: left;
-    height: 400px;
     padding-bottom: 20px;
     overflow: hidden;
+    /* Alternate layout */
+  
     /* wide column is only needed if width isn't in percetage. */
   
   }
-  ul.cards li .item-wrap {
+  ul.cards > li .item-wrap {
     padding: 0 32px;
   }
-  ul.cards li .image {
+  ul.cards > li .image {
     height: 160px;
     background-size: cover;
     background-position: center;
@@ -1792,20 +1968,17 @@ li {
     width: 100%;
     margin-bottom: 12px;
   }
-  ul.cards li .content-wrap {
-    height: 400px;
-  }
-  ul.cards li .content-wrap .content {
-    min-height: 120px;
-    max-height: 340px;
-    overflow: hidden;
+  ul.cards > li .content-wrap .content {
     margin-bottom: 8px;
+    height: 360px;
+    overflow: hidden;
     font-size: 14px;
   }
-  ul.cards li .content-wrap .overlay {
+  ul.cards > li .content-wrap .overlay {
     position: absolute;
     height: 48px;
     margin-top: -56px;
+    pointer-events: none;
     width: 100%;
     left: 0;
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
@@ -1830,7 +2003,7 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .activity {
+  ul.cards > li .content-wrap .activity {
     font-family: 'Open Sans', sans-serif;
     float: right;
     color: #999999;
@@ -1839,27 +2012,54 @@ li {
     line-height: 1.3em;
     padding-right: 4px;
   }
-  ul.cards li .content-wrap .links {
+  ul.cards > li .content-wrap p.links {
     font-size: 14px;
     line-height: 1.2em;
     display: block;
   }
-  ul.cards li .content-wrap .links img {
+  ul.cards > li .content-wrap p.links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
     margin: 0 4px 0 0;
   }
-  ul.cards li .image + .content-wrap .content {
-    max-height: 168px;
+  ul.cards > li .content-wrap p.links .text {
+    display: block;
+    margin-left: 40px;
   }
-  ul.cards li h2 {
+  ul.cards > li .content-wrap ul.links li {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+    padding-bottom: 8px;
+  }
+  ul.cards > li .content-wrap ul.links li img {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin: 0 4px 0 0;
+  }
+  ul.cards > li .content-wrap ul.links li .text {
+    display: block;
+    margin-left: 40px;
+  }
+  ul.cards > li .image + .content-wrap .content {
+    max-height: 188px;
+  }
+  ul.cards > li.alt .image {
+    height: 100px;
+  }
+  ul.cards > li.alt .image + .content-wrap .content {
+    max-height: 248px;
+  }
+  ul.cards > li h2 {
     margin: 0 0 8px 0;
     line-height: 1.1em;
     font-size: 22px;
   }
-  ul.cards li p {
+  ul.cards > li p {
     margin: 0 0 12px 0;
   }
 }

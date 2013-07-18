@@ -74,7 +74,7 @@ class Forum extends BaseModel
         
         
     refreshSnapshot: (context, db, cb) =>
-        @getModels().Post.find { 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 5), {}, db, (err, posts) =>
+        @getModels().Post.find { 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), {}, db, (err, posts) =>
             @snapshot = { posts: p.getView("snapshot") for p in posts }
             if posts.length
                 @lastPost = posts[0].publishedAt

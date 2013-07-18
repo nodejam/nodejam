@@ -1,25 +1,24 @@
-<li class="{{view}}" data-url="/{{stub}}">
+<li class="{{view}} alt" data-url="/{{stub}}">
     <div class="item-wrap">
         <div class="image" style="background-image:url({{image}})"></div>
         <div class="content-wrap">
             <h2>{{name}}</h2>
             <div class="content">        
+                {{#if snapshot.posts}}                
+                <ul class="links">
                 {{#each snapshot.posts}}                
-                <span class="activity">
-                    <i class="icon-comment"></i> 93<br />
-                    <i class="icon-thumbs-up-alt"></i> 10k
-                </span>
-                <div class="links">
-                    <img src="{{createdBy.assetPath}}/{{createdBy.domain}}-{{createdBy.username}}_t.jpg" alt="{{createdBy.name}}" />
-                    <span class="text">
-                        <a href="/{{forum}}/{{id}}">{{title}}</a><br />
-                        <span class="light-text">by </span>
-                        <a href="{{userUrl createdBy}}">{{createdBy.name}}</a>
-                    </span>
-                </div>
+                    <li>
+                        <img src="{{createdBy.assetPath}}/{{createdBy.domain}}-{{createdBy.username}}_t.jpg" alt="{{createdBy.name}}" />
+                        <span class="text">
+                            <a href="/{{forum}}/{{id}}">{{title}}</a><br />
+                            <span class="light-text">{{createdBy.name}}</span>
+                        </span>
+                    </li>
                 {{/each}}
-                <div class="overlay"></div>
+                </ul>
+                {{/if}}
             </div>
+            <div class="overlay"></div>
         </div>
     </div>
 </li>

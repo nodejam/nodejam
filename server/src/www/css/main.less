@@ -131,7 +131,7 @@
     ul.cards {
         .fontContent; clear: both; padding: 24px 0 0 0; 
 
-        li {
+        > li {
             .column-size() when not (ispercentage(@colWidth)) {
                 margin: 0 ((@colSpacing / 2) + 0px);
                 width: @colWidth + 0px;
@@ -141,27 +141,26 @@
                 .item-wrap { padding: 0 (@colSpacing + 0px) }
             }
         
-            float: left; height: 400px; padding-bottom: 20px; overflow: hidden; 
+            float: left; padding-bottom: 20px; overflow: hidden; 
             .column-size();
             .image { 
                 height: 160px; background-size: cover; background-position: center; background-repeat: no-repeat;
                 width: 100%; margin-bottom: 12px;
             }
             .content-wrap { 
-                height: 400px; 
                 .content { 
-                    min-height: 120px; max-height: 340px; overflow: hidden; margin-bottom: 8px;
+                    margin-bottom: 8px; height: 360px; overflow: hidden;
                     font-size: @colTextSize + 0px;
                 }
                 
                 .overlay {
+                    position:absolute; height: 48px; margin-top: -56px; pointer-events: none;
                     .overlay-size() when not (ispercentage(@colWidth)) {
                         width: @colWidth + 0px;
                     }
                     .overlay-size() when (ispercentage(@colWidth)) {
                         width: 100%; left: 0;
                     }
-                    position:absolute; height: 48px; margin-top: -56px;
                     .overlay-size();
                     background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
                     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
@@ -172,14 +171,27 @@
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
                 }
                 .activity { .fontBase; float: right; color: @colorNeutral; font-size: 12px;  font-weight: bold; line-height: 1.3em; padding-right: 4px; }
-                .links {
+                p.links {
                     font-size: 14px; line-height: 1.2em; display: block;
                     img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
-                    .text { }
+                    .text { display: block; margin-left: 40px; }
+                }
+                ul.links {
+                    li {
+                        font-size: 14px; line-height: 1.2em; display: block; padding-bottom: 8px;
+                        img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
+                        .text { display: block; margin-left: 40px; }
+                    }
                 }
             }
             
-            .image + .content-wrap .content { max-height: 168px }
+            .image + .content-wrap .content { max-height: 188px }
+
+            /* Alternate layout */
+            &.alt {
+                .image { height: 100px; }
+                .image + .content-wrap .content { max-height: 248px }
+            }
             
             h2 { margin: 0 0 8px 0; line-height: 1.1em; font-size: @colHeaderSize + 0px; }            
             p { margin: 0 0 12px 0 }
