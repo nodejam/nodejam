@@ -86,9 +86,9 @@ The setup scripts put some data in the database. So that we can play with the ap
 It also helps in testing if the app is working fine. For the scripts to work, the web app must be running with the above config.  
 
 cd to fora/server  
-#create the database  
+\#create the database  
 node app/scripts/setup/setup.js --create  
-#delete the database  
+\#delete the database  
 node app/scripts/setup/setup.js --delete  
 
 
