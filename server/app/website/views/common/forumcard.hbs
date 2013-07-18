@@ -3,13 +3,23 @@
         <div class="image" style="background-image:url({{image}})"></div>
         <div class="content-wrap">
             <h2>{{name}}</h2>
-            <div class="content">
+            <div class="content">        
                 {{#each snapshot.posts}}                
-                    <h2><a href="/{{forum.stub}}/{{id}}">{{title}}</a></h2>
+                <span class="activity">
+                    <i class="icon-comment"></i> 93<br />
+                    <i class="icon-thumbs-up-alt"></i> 10k
+                </span>
+                <div class="links">
+                    <img src="{{createdBy.assetPath}}/{{createdBy.domain}}-{{createdBy.username}}_t.jpg" alt="{{createdBy.name}}" />
+                    <span class="text">
+                        <a href="/{{forum}}/{{id}}">{{title}}</a><br />
+                        <span class="light-text">by </span>
+                        <a href="{{userUrl createdBy}}">{{createdBy.name}}</a>
+                    </span>
+                </div>
                 {{/each}}
-                {{{content}}}
+                <div class="overlay"></div>
             </div>
-            <div class="overlay"></div>
         </div>
     </div>
 </li>

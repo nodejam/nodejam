@@ -1,13 +1,14 @@
-controller = require('../controller')
+controller = require '../controller'
 conf = require '../../../conf'
 db = new (require '../../../common/database').Database(conf.db)
 models = require '../../../models'
-utils = require('../../../common/utils')
+utils = require '../../../common/utils'
 AppError = require('../../../common/apperror').AppError
 
 class Forums extends controller.Controller
 
     constructor: ->
+
     
     
     index: (req, res, next) =>

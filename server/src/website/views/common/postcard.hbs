@@ -9,13 +9,16 @@
                 {{{content}}}
             </div>
             <div class="overlay"></div>
-            <p class="source">
+            <span class="activity">
+                <i class="icon-comment"></i> 93<br />
+                <i class="icon-thumbs-up-alt"></i> 10k
+            </span>
+            <p class="links">
                 <img src="{{createdBy.assetPath}}/{{createdBy.domain}}-{{createdBy.username}}_t.jpg" alt="{{createdBy.name}}" />
                 <span class="text">
-                    <a href="{{userUrl createdBy}}" class="author">{{createdBy.name}}</a><span class="light-text"><br />
+                    <a href="{{userUrl createdBy}}">{{createdBy.name}}</a><span class="light-text"><br />
                     in </span><a href="/{{forum.stub}}">{{forum.name}}</a>
                 </span>
-                <span class="activity"><i class="icon-comment"></i> 93 : <i class="icon-thumbs-up-alt"></i> 10k</span>
             </p>
         </div>
     </div>

@@ -425,29 +425,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
@@ -636,29 +633,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
@@ -847,29 +841,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
@@ -1048,29 +1039,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
@@ -1249,29 +1237,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
@@ -1450,29 +1435,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
@@ -1651,29 +1633,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
@@ -1851,29 +1830,26 @@ li {
     /* IE6-9 */
   
   }
-  ul.cards li .content-wrap .source {
-    font-size: 14px;
-    margin-top: -8px;
+  ul.cards li .content-wrap .activity {
+    font-family: 'Open Sans', sans-serif;
+    float: right;
+    color: #999999;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.3em;
+    padding-right: 4px;
   }
-  ul.cards li .content-wrap .source img {
+  ul.cards li .content-wrap .links {
+    font-size: 14px;
+    line-height: 1.2em;
+    display: block;
+  }
+  ul.cards li .content-wrap .links img {
     float: left;
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    margin: 4px 4px 0 0;
-  }
-  ul.cards li .content-wrap .source .text {
-    float: left;
-    width: 156px;
-  }
-  ul.cards li .content-wrap .source .activity {
-    font-family: 'Open Sans', sans-serif;
-    float: left;
-    margin-left: 12px;
-    color: #999999;
-    font-size: 12px;
-    font-weight: bold;
-    padding-top: 4px;
+    margin: 0 4px 0 0;
   }
   ul.cards li .image + .content-wrap .content {
     max-height: 168px;
