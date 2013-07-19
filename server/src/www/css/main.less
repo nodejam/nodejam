@@ -22,7 +22,7 @@
 
     /* NAVIGATION BARS */
     .nav {         
-        @fontBase; font-size: @fontSizeSmall; font-weight: bold; text-transform: uppercase; color: @colorNeutral;
+        height: 24px; @fontBase; font-size: @fontSizeSmall; font-weight: bold; text-transform: uppercase; color: @colorNeutral;
         li { 
             float: left; padding-right: 12px; color: @colorNeutral; 
             &.selected { color: @colorDark }
@@ -45,6 +45,8 @@
             text-align: left; margin: auto;
         }
     }
+    
+    .content-area { .fontContent; clear: both; margin-top: 20px; }
 
 }
 
@@ -68,10 +70,7 @@
             margin-right: @coverWidth + 0px;
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
-                .nav { 
-                    margin: 0 0 0 (@colSpacing / 2) + 0px;
-                    &.alt { margin: 0 (@colSpacing / 2) + 0px 0 0 }
-                }
+                padding: 0 0 0 (@colSpacing / 2) + 0px;
             }
         }
     }    
@@ -96,7 +95,7 @@
         .container {
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
-                .nav { margin-left: (@colSpacing / 2) + 0px }
+                padding: 0 0 0 (@colSpacing / 2) + 0px;
             }
         }        
     }
@@ -129,20 +128,30 @@
     
     /* POSTS */
     ul.cards {
-        .fontContent; clear: both; padding: 24px 0 0 0; 
+        clear: both; float: left; margin: -32px 0 32px -(@colSpacing / 2) + 0px; 
 
         > li {
+            float: left; overflow: hidden; 
+
             .column-size() when not (ispercentage(@colWidth)) {
-                margin: 0 ((@colSpacing / 2) + 0px);
-                width: @colWidth + 0px;
+                margin: 32px ((@colSpacing / 2) + 0px) 0 ((@colSpacing / 2) + 0px);
+                width: @colWidth + 0px; 
             }
 
             .column-size() when (ispercentage(@colWidth)) {                                
                 .item-wrap { padding: 0 (@colSpacing + 0px) }
-            }
-        
-            float: left; padding-bottom: 20px; overflow: hidden; 
+            }        
             .column-size();
+
+            &.alt { 
+                background-color: @colorLighter;            
+                width: @colWidth - 1px; border-right: 1px solid @colorLight; border-bottom: 1px solid @colorLight; 
+                .overlay { margin-left: -12px; }
+                .content-wrap {
+                    padding: 0 12px;
+                }
+            }
+
             .image { 
                 height: 160px; background-size: cover; background-position: center; background-repeat: no-repeat;
                 width: 100%; margin-bottom: 12px;
@@ -199,8 +208,8 @@
             /* wide column is only needed if width isn't in percetage. */
             .wide-column() when not (ispercentage(@colWidth)) {
                 &.wide {            
-                    width: @wideColImageWidth + @wideColWidth + 20px; height: 280px;
-                    .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-position: 0 8px; background-repeat: no-repeat }
+                    width: @wideColImageWidth + @wideColWidth + 60px; height: 280px;
+                    .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
                     .content-wrap { 
                         float: left; height: 280px; width: @wideColWidth + 0px; 
                         .content { max-height: 200px; }

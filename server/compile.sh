@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ $NODE_ENV == "development" ]
 then
     if [ "$1" != "--nodel" ]; then

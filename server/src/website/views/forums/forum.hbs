@@ -1,0 +1,24 @@
+<script>
+    view = new Lappd.Views.Home.Index()
+</script>
+<div class="columns-wrap">
+    <ul class="nav">
+        <li class="selected">
+            Posts
+        </li>
+        <li>
+            <a href="/forums">Forums</a>
+        </li>            
+    </ul>
+    <div class="content-area">    
+        <h1>{{forum.name}}</h1>
+        {{#if posts}}
+            <ul class="cards">
+            {{#each posts}}
+                {{> postcard summary}}
+            {{/each}}
+            </ul>
+        {{/if}}
+    </div>
+</div>
+

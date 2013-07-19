@@ -54,12 +54,32 @@
     Forums.prototype.forum = function(req, res, next) {
       var _this = this;
       return this.attachUser(arguments, function() {
-        return res.render('forums/index.hbs', {
-          editorsChoices: editorsChoices,
-          featured: featured,
-          pageName: 'home-page',
-          pageType: 'cover-page',
-          cover: 'http://blogs-images.forbes.com/singularity/files/2013/01/Aaron_Swartz.jpg'
+        return models.Forum.get({
+          stub: req.params.forum,
+          network: req.network.stub
+        }, {}, db, function(err, forum) {
+          return models.Post.find({
+            'forum.stub': req.params.forum,
+            'forum.network': req.network.stub
+          }, (function(cursor) {
+            return cursor.sort({
+              _id: -1
+            }).limit(12);
+          }), {}, db, function(err, posts) {
+            var post, _i, _len, _ref;
+            for (_i = 0, _len = posts.length; _i < _len; _i++) {
+              post = posts[_i];
+              post.summary = post.getView("card");
+              post.summary.view = "standard";
+            }
+            return res.render('forums/forum.hbs', {
+              forum: forum,
+              posts: posts,
+              pageName: 'forum-page',
+              pageType: 'cover-page',
+              cover: (_ref = _this.cover) != null ? _ref : '/pub/images/cover.jpg'
+            });
+          });
         });
       });
     };

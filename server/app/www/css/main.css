@@ -81,10 +81,10 @@ label.alert-required:after {
 button {
   font-family: 'Open Sans', sans-serif;
   color: #333333;
-  background-color: #f3f3f3;
+  background-color: #f6f6f6;
   border: none;
-  border-bottom: 1px solid #dadada;
-  border-right: 1px solid #dadada;
+  border-bottom: 1px solid #dcdcdc;
+  border-right: 1px solid #dcdcdc;
   border-radius: 2px;
   padding: 9px 14px 9px 14px;
   margin: 0 2px 0 0;
@@ -164,6 +164,7 @@ li {
   background: #333;
 }
 .page-sections-mixin .nav {
+  height: 24px;
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
@@ -204,6 +205,11 @@ li {
   text-align: left;
   margin: auto;
 }
+.page-sections-mixin .content-area {
+  font-family: 'PT Serif', serif;
+  clear: both;
+  margin-top: 20px;
+}
 .tiny-page-mixin {
   /* HEADER and LOGO */
 
@@ -231,6 +237,7 @@ li {
   background: #333;
 }
 .tiny-page-mixin .nav {
+  height: 24px;
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
@@ -271,6 +278,11 @@ li {
   text-align: left;
   margin: auto;
 }
+.tiny-page-mixin .content-area {
+  font-family: 'PT Serif', serif;
+  clear: both;
+  margin-top: 20px;
+}
 .tiny-page-mixin .cover-page .cover {
   background-size: cover;
   background-position: center;
@@ -302,6 +314,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -342,6 +355,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     height: 100%;
@@ -357,29 +375,35 @@ li {
   }
   .cover-page .container .columns-wrap {
     width: 1200px;
-  }
-  .cover-page .container .columns-wrap .nav {
-    margin: 0 0 0 20px;
-  }
-  .cover-page .container .columns-wrap .nav.alt {
-    margin: 0 20px 0 0;
+    padding: 0 0 0 20px;
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -20px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
-    margin: 0 20px;
+    margin: 32px 20px 0 20px;
     width: 360px;
     /* Alternate layout */
   
     /* wide column is only needed if width isn't in percetage. */
   
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 359px;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
@@ -483,7 +507,7 @@ li {
     margin: 0 0 12px 0;
   }
   ul.cards > li.wide {
-    width: 740px;
+    width: 780px;
     height: 280px;
   }
   ul.cards > li.wide .image {
@@ -492,7 +516,6 @@ li {
     margin-right: 20px;
     float: left;
     background-size: cover;
-    background-position: 0 8px;
     background-repeat: no-repeat;
   }
   ul.cards > li.wide .content-wrap {
@@ -535,6 +558,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -575,6 +599,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     height: 100%;
@@ -590,29 +619,35 @@ li {
   }
   .cover-page .container .columns-wrap {
     width: 1020px;
-  }
-  .cover-page .container .columns-wrap .nav {
-    margin: 0 0 0 20px;
-  }
-  .cover-page .container .columns-wrap .nav.alt {
-    margin: 0 20px 0 0;
+    padding: 0 0 0 20px;
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -20px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
-    margin: 0 20px;
+    margin: 32px 20px 0 20px;
     width: 300px;
     /* Alternate layout */
   
     /* wide column is only needed if width isn't in percetage. */
   
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 299px;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
@@ -716,7 +751,7 @@ li {
     margin: 0 0 12px 0;
   }
   ul.cards > li.wide {
-    width: 740px;
+    width: 780px;
     height: 280px;
   }
   ul.cards > li.wide .image {
@@ -725,7 +760,6 @@ li {
     margin-right: 20px;
     float: left;
     background-size: cover;
-    background-position: 0 8px;
     background-repeat: no-repeat;
   }
   ul.cards > li.wide .content-wrap {
@@ -768,6 +802,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -808,6 +843,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     height: 100%;
@@ -823,29 +863,35 @@ li {
   }
   .cover-page .container .columns-wrap {
     width: 936px;
-  }
-  .cover-page .container .columns-wrap .nav {
-    margin: 0 0 0 16px;
-  }
-  .cover-page .container .columns-wrap .nav.alt {
-    margin: 0 16px 0 0;
+    padding: 0 0 0 16px;
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -16px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
-    margin: 0 16px;
+    margin: 32px 16px 0 16px;
     width: 280px;
     /* Alternate layout */
   
     /* wide column is only needed if width isn't in percetage. */
   
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 279px;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
@@ -949,7 +995,7 @@ li {
     margin: 0 0 12px 0;
   }
   ul.cards > li.wide {
-    width: 740px;
+    width: 780px;
     height: 280px;
   }
   ul.cards > li.wide .image {
@@ -958,7 +1004,6 @@ li {
     margin-right: 20px;
     float: left;
     background-size: cover;
-    background-position: 0 8px;
     background-repeat: no-repeat;
   }
   ul.cards > li.wide .content-wrap {
@@ -1001,6 +1046,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -1041,6 +1087,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -1049,26 +1100,35 @@ li {
   }
   .cover-page .container .columns-wrap {
     width: 1020px;
-  }
-  .cover-page .container .columns-wrap .nav {
-    margin-left: 20px;
+    padding: 0 0 0 20px;
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -20px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
-    margin: 0 20px;
+    margin: 32px 20px 0 20px;
     width: 300px;
     /* Alternate layout */
   
     /* wide column is only needed if width isn't in percetage. */
   
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 299px;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
@@ -1172,7 +1232,7 @@ li {
     margin: 0 0 12px 0;
   }
   ul.cards > li.wide {
-    width: 740px;
+    width: 780px;
     height: 280px;
   }
   ul.cards > li.wide .image {
@@ -1181,7 +1241,6 @@ li {
     margin-right: 20px;
     float: left;
     background-size: cover;
-    background-position: 0 8px;
     background-repeat: no-repeat;
   }
   ul.cards > li.wide .content-wrap {
@@ -1224,6 +1283,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -1264,6 +1324,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -1272,26 +1337,35 @@ li {
   }
   .cover-page .container .columns-wrap {
     width: 972px;
-  }
-  .cover-page .container .columns-wrap .nav {
-    margin-left: 16px;
+    padding: 0 0 0 16px;
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -16px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
-    margin: 0 16px;
+    margin: 32px 16px 0 16px;
     width: 292px;
     /* Alternate layout */
   
     /* wide column is only needed if width isn't in percetage. */
   
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 291px;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
@@ -1395,7 +1469,7 @@ li {
     margin: 0 0 12px 0;
   }
   ul.cards > li.wide {
-    width: 740px;
+    width: 780px;
     height: 280px;
   }
   ul.cards > li.wide .image {
@@ -1404,7 +1478,6 @@ li {
     margin-right: 20px;
     float: left;
     background-size: cover;
-    background-position: 0 8px;
     background-repeat: no-repeat;
   }
   ul.cards > li.wide .content-wrap {
@@ -1447,6 +1520,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -1487,6 +1561,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -1495,26 +1574,35 @@ li {
   }
   .cover-page .container .columns-wrap {
     width: 936px;
-  }
-  .cover-page .container .columns-wrap .nav {
-    margin-left: 16px;
+    padding: 0 0 0 16px;
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -16px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
-    margin: 0 16px;
+    margin: 32px 16px 0 16px;
     width: 280px;
     /* Alternate layout */
   
     /* wide column is only needed if width isn't in percetage. */
   
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 279px;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
@@ -1618,7 +1706,7 @@ li {
     margin: 0 0 12px 0;
   }
   ul.cards > li.wide {
-    width: 740px;
+    width: 780px;
     height: 280px;
   }
   ul.cards > li.wide .image {
@@ -1627,7 +1715,6 @@ li {
     margin-right: 20px;
     float: left;
     background-size: cover;
-    background-position: 0 8px;
     background-repeat: no-repeat;
   }
   ul.cards > li.wide .content-wrap {
@@ -1670,6 +1757,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -1710,6 +1798,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -1718,26 +1811,35 @@ li {
   }
   .cover-page .container .columns-wrap {
     width: 664px;
-  }
-  .cover-page .container .columns-wrap .nav {
-    margin-left: 16px;
+    padding: 0 0 0 16px;
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -16px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
-    margin: 0 16px;
+    margin: 32px 16px 0 16px;
     width: 300px;
     /* Alternate layout */
   
     /* wide column is only needed if width isn't in percetage. */
   
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 299px;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
@@ -1841,7 +1943,7 @@ li {
     margin: 0 0 12px 0;
   }
   ul.cards > li.wide {
-    width: 620px;
+    width: 660px;
     height: 280px;
   }
   ul.cards > li.wide .image {
@@ -1850,7 +1952,6 @@ li {
     margin-right: 20px;
     float: left;
     background-size: cover;
-    background-position: 0 8px;
     background-repeat: no-repeat;
   }
   ul.cards > li.wide .content-wrap {
@@ -1893,6 +1994,7 @@ li {
   }
   /* NAVIGATION BARS */
   .nav {
+    height: 24px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
@@ -1933,6 +2035,11 @@ li {
     text-align: left;
     margin: auto;
   }
+  .content-area {
+    font-family: 'PT Serif', serif;
+    clear: both;
+    margin-top: 20px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -1944,13 +2051,12 @@ li {
   }
   /* POSTS */
   ul.cards {
-    font-family: 'PT Serif', serif;
     clear: both;
-    padding: 24px 0 0 0;
+    float: left;
+    margin: -32px 0 32px -16px;
   }
   ul.cards > li {
     float: left;
-    padding-bottom: 20px;
     overflow: hidden;
     /* Alternate layout */
   
@@ -1959,6 +2065,18 @@ li {
   }
   ul.cards > li .item-wrap {
     padding: 0 32px;
+  }
+  ul.cards > li.alt {
+    background-color: #f6f6f6;
+    width: 99%;
+    border-right: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+  }
+  ul.cards > li.alt .overlay {
+    margin-left: -12px;
+  }
+  ul.cards > li.alt .content-wrap {
+    padding: 0 12px;
   }
   ul.cards > li .image {
     height: 160px;
