@@ -12,6 +12,9 @@
     </ul>
     <div class="content-area">    
         <div class="item text">
+            {{#if article.cover}} 
+            <img class="cover" src="{{article.cover}}" alt="{{article.coverTitle}}" />
+            {{/if}}
             <h1>{{article.title}}</h1>
             <div class="content">
                 {{{article.formattedContent}}}
