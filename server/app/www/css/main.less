@@ -55,6 +55,9 @@
 
 .large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
+    
+    .small-page-element, .tiny-page-element { display: none }
+    .large-page-element { display: block }
 
     .cover-page {
         @coverWidth: (@unit * 9);
@@ -74,12 +77,16 @@
 }
 
 .large-std-page-mixin () {
+
+    .small-page-element, .tiny-page-element { display: none }
+    .large-page-element { display: block }
+
     .std-page {
         .page-wrap {
             width: 980px; margin: auto; padding: 0;            
             .single-item-mixin (640, 280, 28, 18);
             .item { 
-                float: left; margin-right: 60px;
+                float: left; margin-right: 60px; 
                 .cover { width: 640px; margin-bottom: 20px; }
                 &.text { 
                     p { line-height: 1.3em }
@@ -99,6 +106,9 @@
 
 .small-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
+    
+    .large-page-element, .tiny-page-element { display: none }
+    .small-page-element { display: block }
 
     .cover-page {
         @coverHeight: 300;
@@ -117,12 +127,17 @@
 }
 
 .small-std-page-mixin () {
+
+    .large-page-element, .tiny-page-element { display: none }
+    .small-page-element { display: block }
+
     .std-page {
         .page-wrap {
-            width: 680px; margin: auto; padding: 0;            
+            width: 640px; margin: auto; padding: 0;            
             .single-item-mixin (640, 640, 28, 18);
             .item { 
-                .cover { width: 640px; margin-bottom: 20px; }
+                .cover { width: 640px; }
+                .desc-styles-mixin(14);
                 &.text { 
                     p { line-height: 1.3em }
                 }
@@ -155,7 +170,6 @@
 }
 
 .tiny-std-page-mixin {
-    /* PAGES */
     .std-page {
     }
 }
@@ -217,17 +231,8 @@
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
                 }
                 .activity { .fontBase; float: right; color: @colorNeutral; font-size: 12px;  font-weight: bold; line-height: 1.3em; padding-right: 4px; }
-                p.links {
-                    font-size: 14px; line-height: 1.2em; display: block;
-                    img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
-                    .text { display: block; margin-left: 40px; }
-                }
-                ul.links {
-                    li {
-                        font-size: 14px; line-height: 1.2em; display: block; padding-bottom: 8px;
-                        .text { display: block; }
-                    }
-                }
+
+                .desc-styles-mixin(14);
             }
             
             .image + .content-wrap .content { max-height: 188px }
@@ -258,6 +263,23 @@
                 }                        
             }                      
             .wide-column();  
+        }
+    }
+}
+
+.desc-styles-mixin (@fontSize) {
+    .iconic-desc {
+        font-size: @fontSize + 0px; line-height: 1.2em; display: block;
+        img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
+        .text { display: block; margin-left: 40px; }
+        
+    &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
+    }
+
+    ul.desc-text {
+        li {
+            font-size: @fontSize + 0px; line-height: 1.2em; display: block; padding-bottom: 8px;
+            .text { display: block; }
         }
     }
 }
