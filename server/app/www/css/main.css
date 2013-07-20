@@ -223,15 +223,20 @@ li {
 .page-sections-mixin .content-area > h1 {
   margin-top: -12px;
 }
-.tiny-page-mixin {
-  /* HEADER and LOGO */
-
-  /* NAVIGATION BARS */
-
+.tiny-cover-page-mixin .cover-page .cover {
+  background-size: cover;
+  background-position: center;
+  height: 240px;
+}
+.tiny-cover-page-mixin .cover-page .container .columns-wrap {
+  width: 100%;
+}
+.tiny-std-page-mixin {
   /* PAGES */
 
 }
-.tiny-page-mixin .header .logo {
+/* HEADER and LOGO */
+.header .logo {
   font-family: 'Oswald', sans-serif;
   padding: 6px 10px 6px 2px;
   cursor: pointer;
@@ -246,10 +251,11 @@ li {
   top: 6px;
   left: 6px;
 }
-.tiny-page-mixin .header .logo:hover {
+.header .logo:hover {
   background: #333;
 }
-.tiny-page-mixin .nav {
+/* NAVIGATION BARS */
+.nav {
   height: 24px;
   font-size: 12px;
   font-weight: bold;
@@ -257,175 +263,50 @@ li {
   color: #999999;
 }
 @font Base;
-.tiny-page-mixin .nav li {
+.nav li {
   float: left;
   padding-right: 12px;
   color: #999999;
 }
-.tiny-page-mixin .nav li.selected {
+.nav li.selected {
   color: #333333;
 }
-.tiny-page-mixin .nav li a {
+.nav li a {
   text-decoration: underline;
   color: #999999;
 }
-.tiny-page-mixin .nav li a:hover {
+.nav li a:hover {
   color: #333333;
 }
-.tiny-page-mixin .nav li i {
+.nav li i {
   font-size: 14px;
   text-decoration: none;
 }
-.tiny-page-mixin .nav.alt {
+.nav.alt {
   float: right;
 }
-.tiny-page-mixin .container {
+.container {
   text-align: center;
   margin-top: 18px;
 }
-.tiny-page-mixin .container .page-wrap {
+.container .page-wrap {
   text-align: left;
   margin: auto;
 }
-.tiny-page-mixin .container .columns-wrap {
+.container .columns-wrap {
   text-align: left;
   margin: auto;
 }
-.tiny-page-mixin .content-area {
+.content-area {
   font-family: 'PT Serif', serif;
   clear: both;
   margin-top: 20px;
 }
-.tiny-page-mixin .content-area > h1 {
+.content-area > h1 {
   margin-top: -12px;
 }
-.tiny-page-mixin .cover-page .cover {
-  background-size: cover;
-  background-position: center;
-  height: 240px;
-}
-.tiny-page-mixin .cover-page .container .columns-wrap {
-  width: 100%;
-}
-/* .*-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
+/* .*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
 @media (min-width: 1760px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
-  .std-page .page-wrap {
-    width: 980px;
-    margin: auto;
-    padding: 0;
-  }
-  .std-page .page-wrap .item {
-    width: 640px;
-    margin: auto;
-  }
-  .std-page .page-wrap .item h1 {
-    font-size: 28px;
-  }
-  .std-page .page-wrap .item .content {
-    font-size: 18px;
-  }
-  .std-page .page-wrap .item .content .wider {
-    width: 680px;
-  }
-  .std-page .page-wrap .sidebar {
-    width: 280px;
-  }
-  .std-page .page-wrap .item {
-    float: left;
-    margin-right: 60px;
-  }
-  .std-page .page-wrap .item .cover {
-    width: 640px;
-    margin-bottom: 20px;
-  }
-  .std-page .page-wrap .item.text p {
-    line-height: 1.3em;
-  }
-  .std-page .page-wrap .sidebar {
-    float: left;
-  }
-  .std-page .page-wrap .sidebar .header {
-    margin-top: 32px;
-  }
-  .std-page .page-wrap .sidebar .header img {
-    width: 120px;
-    border-radius: 100%;
-  }
-  .std-page .page-wrap .sidebar .header h2 {
-    margin: 6px 0;
-    font-size: 18px;
-  }
   .cover-page .cover {
     height: 100%;
     position: fixed;
@@ -594,123 +475,6 @@ li {
   }
 }
 @media (min-width: 1600px) and (max-width: 1759px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
-  .std-page .page-wrap {
-    width: 980px;
-    margin: auto;
-    padding: 0;
-  }
-  .std-page .page-wrap .item {
-    width: 640px;
-    margin: auto;
-  }
-  .std-page .page-wrap .item h1 {
-    font-size: 28px;
-  }
-  .std-page .page-wrap .item .content {
-    font-size: 18px;
-  }
-  .std-page .page-wrap .item .content .wider {
-    width: 680px;
-  }
-  .std-page .page-wrap .sidebar {
-    width: 280px;
-  }
-  .std-page .page-wrap .item {
-    float: left;
-    margin-right: 60px;
-  }
-  .std-page .page-wrap .item .cover {
-    width: 640px;
-    margin-bottom: 20px;
-  }
-  .std-page .page-wrap .item.text p {
-    line-height: 1.3em;
-  }
-  .std-page .page-wrap .sidebar {
-    float: left;
-  }
-  .std-page .page-wrap .sidebar .header {
-    margin-top: 32px;
-  }
-  .std-page .page-wrap .sidebar .header img {
-    width: 120px;
-    border-radius: 100%;
-  }
-  .std-page .page-wrap .sidebar .header h2 {
-    margin: 6px 0;
-    font-size: 18px;
-  }
   .cover-page .cover {
     height: 100%;
     position: fixed;
@@ -879,123 +643,6 @@ li {
   }
 }
 @media (min-width: 1320px) and (max-width: 1599px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
-  .std-page .page-wrap {
-    width: 980px;
-    margin: auto;
-    padding: 0;
-  }
-  .std-page .page-wrap .item {
-    width: 640px;
-    margin: auto;
-  }
-  .std-page .page-wrap .item h1 {
-    font-size: 28px;
-  }
-  .std-page .page-wrap .item .content {
-    font-size: 18px;
-  }
-  .std-page .page-wrap .item .content .wider {
-    width: 680px;
-  }
-  .std-page .page-wrap .sidebar {
-    width: 280px;
-  }
-  .std-page .page-wrap .item {
-    float: left;
-    margin-right: 60px;
-  }
-  .std-page .page-wrap .item .cover {
-    width: 640px;
-    margin-bottom: 20px;
-  }
-  .std-page .page-wrap .item.text p {
-    line-height: 1.3em;
-  }
-  .std-page .page-wrap .sidebar {
-    float: left;
-  }
-  .std-page .page-wrap .sidebar .header {
-    margin-top: 32px;
-  }
-  .std-page .page-wrap .sidebar .header img {
-    width: 120px;
-    border-radius: 100%;
-  }
-  .std-page .page-wrap .sidebar .header h2 {
-    margin: 6px 0;
-    font-size: 18px;
-  }
   .cover-page .cover {
     height: 100%;
     position: fixed;
@@ -1164,77 +811,6 @@ li {
   }
 }
 @media (min-width: 1200px) and (max-width: 1319px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
   .cover-page .cover {
     background-size: cover;
     background-position: center;
@@ -1395,78 +971,55 @@ li {
     font-size: 28px;
   }
 }
+@media (min-width: 1200px) {
+  .std-page .page-wrap {
+    width: 980px;
+    margin: auto;
+    padding: 0;
+  }
+  .std-page .page-wrap .item {
+    width: 640px;
+    margin: auto;
+  }
+  .std-page .page-wrap .item h1 {
+    font-size: 28px;
+  }
+  .std-page .page-wrap .item .content {
+    font-size: 18px;
+  }
+  .std-page .page-wrap .item .content .wider {
+    width: 680px;
+  }
+  .std-page .page-wrap .sidebar {
+    width: 280px;
+  }
+  .std-page .page-wrap .item {
+    float: left;
+    margin-right: 60px;
+  }
+  .std-page .page-wrap .item .cover {
+    width: 640px;
+    margin-bottom: 20px;
+  }
+  .std-page .page-wrap .item.text p {
+    line-height: 1.3em;
+  }
+  .std-page .page-wrap .sidebar {
+    float: left;
+  }
+  .std-page .page-wrap .sidebar .header {
+    margin-top: 32px;
+  }
+  .std-page .page-wrap .sidebar .header img {
+    width: 120px;
+    border-radius: 100%;
+  }
+  .std-page .page-wrap .sidebar .header h2 {
+    margin: 6px 0;
+    font-size: 18px;
+  }
+}
 @media (min-width: 1024px) and (max-width: 1199px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
   .cover-page .cover {
     background-size: cover;
     background-position: center;
@@ -1628,77 +1181,6 @@ li {
   }
 }
 @media (min-width: 960px) and (max-width: 1023px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
   .cover-page .cover {
     background-size: cover;
     background-position: center;
@@ -1860,77 +1342,6 @@ li {
   }
 }
 @media (min-width: 720px) and (max-width: 959px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
   .cover-page .cover {
     background-size: cover;
     background-position: center;
@@ -2091,78 +1502,45 @@ li {
     font-size: 28px;
   }
 }
+@media (min-width: 720px) and (max-width: 1199px) {
+  .std-page .page-wrap {
+    width: 680px;
+    margin: auto;
+    padding: 0;
+  }
+  .std-page .page-wrap .item {
+    width: 640px;
+    margin: auto;
+  }
+  .std-page .page-wrap .item h1 {
+    font-size: 28px;
+  }
+  .std-page .page-wrap .item .content {
+    font-size: 18px;
+  }
+  .std-page .page-wrap .item .content .wider {
+    width: 680px;
+  }
+  .std-page .page-wrap .sidebar {
+    width: 640px;
+  }
+  .std-page .page-wrap .item .cover {
+    width: 640px;
+    margin-bottom: 20px;
+  }
+  .std-page .page-wrap .item.text p {
+    line-height: 1.3em;
+  }
+  .std-page .page-wrap .sidebar .header img {
+    width: 120px;
+    border-radius: 100%;
+  }
+  .std-page .page-wrap .sidebar .header h2 {
+    margin: 6px 0;
+    font-size: 18px;
+  }
+}
 @media (max-width: 719px) {
-  /* HEADER and LOGO */
-  .header .logo {
-    font-family: 'Oswald', sans-serif;
-    padding: 6px 10px 6px 2px;
-    cursor: pointer;
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    background: #ddd;
-    color: white;
-    float: left;
-    text-transform: uppercase;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-  }
-  .header .logo:hover {
-    background: #333;
-  }
-  /* NAVIGATION BARS */
-  .nav {
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #999999;
-  }
-  @font Base;
-  .nav li {
-    float: left;
-    padding-right: 12px;
-    color: #999999;
-  }
-  .nav li.selected {
-    color: #333333;
-  }
-  .nav li a {
-    text-decoration: underline;
-    color: #999999;
-  }
-  .nav li a:hover {
-    color: #333333;
-  }
-  .nav li i {
-    font-size: 14px;
-    text-decoration: none;
-  }
-  .nav.alt {
-    float: right;
-  }
-  .container {
-    text-align: center;
-    margin-top: 18px;
-  }
-  .container .page-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .container .columns-wrap {
-    text-align: left;
-    margin: auto;
-  }
-  .content-area {
-    font-family: 'PT Serif', serif;
-    clear: both;
-    margin-top: 20px;
-  }
-  .content-area > h1 {
-    margin-top: -12px;
-  }
-  /* PAGES */
   .cover-page .cover {
     background-size: cover;
     background-position: center;

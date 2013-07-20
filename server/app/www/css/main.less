@@ -53,12 +53,27 @@
 
 }
 
-.large-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
+.large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
 
-    .page-sections-mixin;        
-    
-    /* PAGES */
+    .cover-page {
+        @coverWidth: (@unit * 9);
+        .cover { 
+            height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center; 
+            width: @coverWidth + 0px;
+        }
+        
+        .container {
+            margin-right: @coverWidth + 0px;
+            .columns-wrap {
+                width: (@colCount * (@colWidth + @colSpacing)) + 0px;
+                padding: 0 0 0 (@colSpacing / 2) + 0px;
+            }
+        }
+    }    
+}
+
+.large-std-page-mixin () {
     .std-page {
         .page-wrap {
             width: 980px; margin: auto; padding: 0;            
@@ -80,32 +95,10 @@
             }
         }
     }
-
-    .cover-page {
-        @coverWidth: (@unit * 9);
-        .cover { 
-            height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center; 
-            width: @coverWidth + 0px;
-        }
-        
-        .container {
-            margin-right: @coverWidth + 0px;
-            .columns-wrap {
-                width: (@colCount * (@colWidth + @colSpacing)) + 0px;
-                padding: 0 0 0 (@colSpacing / 2) + 0px;
-            }
-        }
-    }    
 }
 
-.small-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
+.small-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
-
-    .page-sections-mixin;
-    
-    /* PAGES */
-    .std-page {
-    }
 
     .cover-page {
         @coverHeight: 300;
@@ -123,14 +116,29 @@
     }
 }
 
-.tiny-page-mixin {
-
-    .page-sections-mixin;
-    
-    /* PAGES */
+.small-std-page-mixin () {
     .std-page {
+        .page-wrap {
+            width: 680px; margin: auto; padding: 0;            
+            .single-item-mixin (640, 640, 28, 18);
+            .item { 
+                .cover { width: 640px; margin-bottom: 20px; }
+                &.text { 
+                    p { line-height: 1.3em }
+                }
+            }
+            .sidebar { 
+                .header { 
+                    img { width: 120px; border-radius: 100% }
+                    h2 { margin: 6px 0; font-size: 18px; }
+                }
+            }
+        }    
     }
+}
 
+
+.tiny-cover-page-mixin {
     .cover-page {
         @coverHeight: 240;
         .cover { 
@@ -145,6 +153,13 @@
         }        
     }
 }
+
+.tiny-std-page-mixin {
+    /* PAGES */
+    .std-page {
+    }
+}
+
 
 .cards-mixin (@colWidth; @colSpacing; @colHeaderSize; @colTextSize; @wideColImageWidth; @wideColWidth) {
     
@@ -262,45 +277,54 @@
     }
 }
 
+.page-sections-mixin;
 
-/* .*-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
+/* .*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
 @media (min-width: 1760px) { 
-    .large-page-mixin(1760; 3; 360; 40);    
+    .large-cover-page-mixin(1760; 3; 360; 40);    
     .cards-mixin(360; 40; 22; 16; 220; 500);
 }
 
 @media (min-width: 1600px) and (max-width: 1759px) { 
-    .large-page-mixin(1600; 3; 300; 40);
+    .large-cover-page-mixin(1600; 3; 300; 40);
     .cards-mixin(300; 40; 22; 14; 220; 500);
 }
 
 @media (min-width: 1320px) and (max-width: 1599px) { 
-    .large-page-mixin(1320; 3; 280; 32);
+    .large-cover-page-mixin(1320; 3; 280; 32);
     .cards-mixin(280; 32; 22; 14; 220; 500);
 }
 
 @media (min-width: 1200px) and (max-width: 1319px) { 
-    .small-page-mixin(1200; 3; 300; 40);
+    .small-cover-page-mixin(1200; 3; 300; 40);
     .cards-mixin(300; 40; 22; 14; 220; 500);
 }
 
+@media (min-width: 1200px) { 
+    .large-std-page-mixin();
+}
+
 @media (min-width: 1024px) and (max-width: 1199px) { 
-    .small-page-mixin(1024; 3; 292; 32);
+    .small-cover-page-mixin(1024; 3; 292; 32);
     .cards-mixin(292; 32; 22; 14; 220; 500);
 }
 
 @media (min-width: 960px) and (max-width: 1023px) { 
-    .small-page-mixin(960; 3; 280; 32);
+    .small-cover-page-mixin(960; 3; 280; 32);
     .cards-mixin(280; 32; 22; 14; 220; 500);
 }
 
 @media (min-width: 720px) and (max-width: 959px) { 
-    .small-page-mixin(720; 2; 300; 32);
+    .small-cover-page-mixin(720; 2; 300; 32);
     .cards-mixin(300; 32; 22; 14; 220; 380);
 }
 
+@media (min-width: 720px) and (max-width: 1199px) { 
+    .small-std-page-mixin();
+}
+
 @media (max-width: 719px) { 
-    .tiny-page-mixin;
+    .tiny-cover-page-mixin;
     .cards-mixin(100%; 32; 22; 14; 220; 380);
 }
 
