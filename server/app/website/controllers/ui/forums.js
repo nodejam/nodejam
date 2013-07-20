@@ -110,7 +110,9 @@
           'forum.id': forum._id.toString(),
           _id: database.ObjectId(req.params.id)
         }, {}, db, function(err, post) {
-          return getHandler(_this.getTypeSpecificController(post.type))(req, res, next, post, forum);
+          return models.User.getById(post.createdBy.id, {}, db, function(err, user) {
+            return getHandler(_this.getTypeSpecificController(post.type))(req, res, next, post, user, forum);
+          });
         });
       });
     };

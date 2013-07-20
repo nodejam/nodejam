@@ -49,6 +49,7 @@ class User extends BaseModel
                         user.picture = userDetails.picture ? user.picture
                         user.thumbnail = userDetails.thumbnail ? user.thumbnail
                         user.tile = userDetails.tile ? user.tile
+                        user.about = userDetails.about
                         user.email = userDetails.email ? 'unknown@poe3.com'
                         user.lastLogin = Date.now()
                         user.save context, db, (err, u) =>
@@ -79,6 +80,7 @@ class User extends BaseModel
                         user.email = userDetails.email ? 'unknown@poe3.com'
                         user.lastLogin = Date.now()
                         user.preferences = { canEmail: true }
+                        user.about = userDetails.about
                         createdAt = new Date()
                         user.createdAt = createdAt.getTime()                                                                        
                         user.assetPath = "/pub/assetpaths/#{createdAt.getFullYear()}-#{createdAt.getMonth()+1}-#{createdAt.getDate()}"

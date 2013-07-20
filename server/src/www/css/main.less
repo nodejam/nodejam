@@ -60,6 +60,24 @@
     
     /* PAGES */
     .std-page {
+        .page-wrap {
+            width: 980px; margin: auto; padding: 0;            
+            .single-item-mixin (640, 280, 28, 18);
+            .item { 
+                float: left; margin-right: 60px;
+                &.text { 
+                    p { line-height: 1.3em }
+                }
+            }
+            .sidebar { 
+                float: left; 
+                .header { 
+                    margin-top: 32px;
+                    img { width: 120px; border-radius: 100% }
+                    h2 { margin: 6px 0; font-size: 18px; }
+                }
+            }
+        }
     }
 
     .cover-page {
@@ -89,7 +107,7 @@
     }
 
     .cover-page {
-        @coverHeight: 320;
+        @coverHeight: 300;
         .cover { 
             background-size: cover; background-position: center; 
             height: @coverHeight + 0px;
@@ -191,8 +209,7 @@
                 ul.links {
                     li {
                         font-size: 14px; line-height: 1.2em; display: block; padding-bottom: 8px;
-                        img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
-                        .text { display: block; margin-left: 40px; }
+                        .text { display: block; }
                     }
                 }
             }
@@ -226,6 +243,21 @@
             }                      
             .wide-column();  
         }
+    }
+}
+
+.single-item-mixin (@width, @sidebarWidth, @headingSize, @contentSize) {
+    .item {
+        width: @width + 0px; margin: auto; 
+        h1 { font-size: @headingSize + 0px }
+        .content { 
+            font-size: @contentSize + 0px;
+            .wider { width: @width + 40px; }
+        }
+    }
+    
+    .sidebar {
+        width: @sidebarWidth + 0px;
     }
 }
 

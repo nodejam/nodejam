@@ -7,10 +7,12 @@ AppError = require('../../../common/apperror').AppError
 
 class Articles extends controller.Controller
 
-    item: (req, res, next, article, forum) =>
-        article.formattedContent = article.formatContent()
+    item: (req, res, next, article, user, forum) =>
+        article.formattedContent = article.formatContent()        
         res.render 'articles/item.hbs', { 
             article,
+            user,
+            forum,
             pageName: 'article-page', 
             pageType: 'std-page', 
         }

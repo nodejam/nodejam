@@ -9,7 +9,8 @@
     domain: 'users',
     email: 'me@aaronsw.com',
     picture: '/images/site/user.jpg',
-    thumbnail: '/images/site/user.jpg'
+    thumbnail: '/images/site/user.jpg',
+    about: 'Aaron Hillel Swartz was an American computer programmer, writer, political organizer and Internet activist. Swartz was involved in the development of RSS, Creative Commons, web.py and Reddit.'
   };
 
   jeswin = {
@@ -19,7 +20,8 @@
     domain: 'users',
     email: 'jeswinpk@agilehead.com',
     picture: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.96.gif?r=3',
-    thumbnail: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.40.gif?r=3'
+    thumbnail: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.40.gif?r=3',
+    about: 'Founder of Poetry(poe3.com). Proud sponsor of the RedBull F1 team by way of drinking too many cans.'
   };
 
   ebin = {

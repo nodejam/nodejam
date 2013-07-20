@@ -1,18 +1,30 @@
 <script>
     view = new Fora.Views.Articles.Item()
 </script>
-<div class="columns-wrap">
+<div class="page-wrap">
     <ul class="nav">
         <li>
             <a href="/">Posts</a>
         </li>
         <li class="selected">
-            Forums
+            <a href="/forums">Forums</a>
         </li>            
     </ul>
     <div class="content-area">    
-        <div class="post">
-            {{{article.formattedContent}}}
+        <div class="item text">
+            <h1>{{article.title}}</h1>
+            <div class="content">
+                {{{article.formattedContent}}}
+            </div>
+        </div>
+        <div class="sidebar">            
+            <div class="header">
+                <img src="{{user.assetPath}}/{{user.domain}}-{{user.username}}_t.jpg" alt="{{user.name}}" />
+                <h2>{{user.name}}</h2>
+            </div>
+            <p>
+                {{user.about}}
+            </p>
         </div>
     </div>
 </div>

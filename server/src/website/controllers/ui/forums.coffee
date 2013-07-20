@@ -57,7 +57,8 @@ class Forums extends Controller
     invokeTypeSpecificController: (req, res, next, getHandler) =>   
         models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, db, (err, forum) =>
             models.Post.get { 'forum.id': forum._id.toString(),  _id: database.ObjectId(req.params.id) }, {}, db, (err, post) =>
-                getHandler(@getTypeSpecificController(post.type)) req, res, next, post, forum
+                models.User.getById post.createdBy.id, {}, db, (err, user) =>
+                    getHandler(@getTypeSpecificController(post.type)) req, res, next, post, user, forum
 
 
 

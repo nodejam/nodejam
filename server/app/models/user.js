@@ -110,6 +110,7 @@
               user.picture = (_ref2 = userDetails.picture) != null ? _ref2 : user.picture;
               user.thumbnail = (_ref3 = userDetails.thumbnail) != null ? _ref3 : user.thumbnail;
               user.tile = (_ref4 = userDetails.tile) != null ? _ref4 : user.tile;
+              user.about = userDetails.about;
               user.email = (_ref5 = userDetails.email) != null ? _ref5 : 'unknown@poe3.com';
               user.lastLogin = Date.now();
               return user.save(context, db, function(err, u) {
@@ -146,6 +147,7 @@
               user.preferences = {
                 canEmail: true
               };
+              user.about = userDetails.about;
               createdAt = new Date();
               user.createdAt = createdAt.getTime();
               user.assetPath = "/pub/assetpaths/" + (createdAt.getFullYear()) + "-" + (createdAt.getMonth() + 1) + "-" + (createdAt.getDate());

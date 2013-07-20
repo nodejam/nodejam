@@ -26,10 +26,12 @@
       return _ref;
     }
 
-    Articles.prototype.item = function(req, res, next, article, forum) {
+    Articles.prototype.item = function(req, res, next, article, user, forum) {
       article.formattedContent = article.formatContent();
       return res.render('articles/item.hbs', {
         article: article,
+        user: user,
+        forum: forum,
         pageName: 'article-page',
         pageType: 'std-page'
       });
