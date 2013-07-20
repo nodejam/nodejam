@@ -36,9 +36,9 @@
       }
     });
     fs = require('fs');
-    postcard = fs.readFileSync(__dirname + '/views/common/postcard.hbs', 'utf8');
+    postcard = fs.readFileSync(__dirname + '/views/posts/postcard.hbs', 'utf8');
     hbs.registerPartial('postcard', postcard);
-    forumcard = fs.readFileSync(__dirname + '/views/common/forumcard.hbs', 'utf8');
+    forumcard = fs.readFileSync(__dirname + '/views/forums/forumcard.hbs', 'utf8');
     return hbs.registerPartial('forumcard', forumcard);
   };
 

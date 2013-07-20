@@ -143,34 +143,39 @@
     };
 
     Forums.prototype.createItem = function(req, res, next) {
-      return this.invokeTypeSpecificController(arguments, function(c) {
-        return c.create;
+      var _this = this;
+      return this.ensureSession(arguments, function() {
+        return _this.invokeTypeSpecificController(req, res, next, function(c) {
+          return c.create;
+        });
       });
     };
 
     Forums.prototype.editItem = function(req, res, next) {
-      return this.invokeTypeSpecificController(arguments, function(c) {
-        return c.edit;
+      var _this = this;
+      return this.ensureSession(arguments, function() {
+        return _this.invokeTypeSpecificController(req, res, next, function(c) {
+          return c.edit;
+        });
       });
     };
 
     Forums.prototype.removeItem = function(req, res, next) {
-      return this.invokeTypeSpecificController(arguments, function(c) {
-        return c.remove;
+      var _this = this;
+      return this.ensureSession(arguments, function() {
+        return _this.invokeTypeSpecificController(req, res, next, function(c) {
+          return c.remove;
+        });
       });
     };
 
-    Forums.prototype.invokeTypeSpecificController = function(_arg, getHandler) {
-      var next, req, res,
-        _this = this;
-      req = _arg[0], res = _arg[1], next = _arg[2];
-      return this.ensureSession([req, res, next], function() {
-        return models.Forum.get({
-          stub: req.params.forum,
-          network: req.network.stub
-        }, {}, db, function(err, forum) {
-          return getHandler(_this.getTypeSpecificController(req.body.type))(req, res, next, forum);
-        });
+    Forums.prototype.invokeTypeSpecificController = function(req, res, next, getHandler) {
+      var _this = this;
+      return models.Forum.get({
+        stub: req.params.forum,
+        network: req.network.stub
+      }, {}, db, function(err, forum) {
+        return getHandler(_this.getTypeSpecificController(req.body.type))(req, res, next, forum);
       });
     };
 

@@ -55,6 +55,7 @@
     };
 
     function Article(params) {
+      this.formatContent = __bind(this.formatContent, this);
       this.getView = __bind(this.getView, this);
       Article.__super__.constructor.apply(this, arguments);
       if (this.type == null) {
@@ -78,11 +79,21 @@
           return {
             image: this.smallCover,
             title: this.title,
-            content: this.format === 'markdown' && this.content ? mdparser(this.content) : 'Invalid format.',
+            content: this.formatContent(),
             createdBy: this.createdBy,
             forum: this.forum,
             id: this._id.toString()
           };
+      }
+    };
+
+    Article.prototype.formatContent = function() {
+      if (this.format === 'markdown') {
+        if (this.content) {
+          return mdparser(this.content);
+        }
+      } else {
+        return 'Invalid format.';
       }
     };
 

@@ -1,11 +1,14 @@
-controller = require '../controller'
 conf = require '../../../conf'
-db = new (require '../../../common/database').Database(conf.db)
+database = (require '../../../common/database').Database
+db = new database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
 AppError = require('../../../common/apperror').AppError
+Controller = require('../controller').Controller
+controllers = require './'
 
-class Forums extends controller.Controller
+
+class Forums extends Controller
 
     constructor: ->
 
@@ -27,7 +30,7 @@ class Forums extends controller.Controller
             
     
     
-    forum: (req, res, next) =>
+    item: (req, res, next) =>
         @attachUser arguments, =>
             models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, db, (err, forum) =>
                 models.Post.find { 'forum.stub': req.params.forum, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db, (err, posts) =>
@@ -35,13 +38,33 @@ class Forums extends controller.Controller
                             post.summary = post.getView("card")
                             post.summary.view = "standard"
 
-                    res.render 'forums/forum.hbs', { 
+                    res.render 'forums/item.hbs', { 
                         forum,
                         posts, 
                         pageName: 'forum-page', 
                         pageType: 'cover-page', 
                         cover: @cover ? '/pub/images/cover.jpg'
                     }
+    
+    
+    
+    post: (req, res, next) =>
+        @attachUser arguments, =>
+            @invokeTypeSpecificController req, res, next, (c) -> c.item
+        
+
+
+    invokeTypeSpecificController: (req, res, next, getHandler) =>   
+        models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, db, (err, forum) =>
+            models.Post.get { 'forum.id': forum._id.toString(),  _id: database.ObjectId(req.params.id) }, {}, db, (err, post) =>
+                getHandler(@getTypeSpecificController(post.type)) req, res, next, post, forum
+
+
+
+    getTypeSpecificController: (type) =>
+        switch type
+            when 'article'
+                return new controllers.Articles()        
 
 
 exports.Forums = Forums

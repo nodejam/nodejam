@@ -78,21 +78,23 @@ class Forums extends Controller
 
 
     createItem: (req, res, next) =>
-        @invokeTypeSpecificController arguments, (c) -> c.create
+        @ensureSession arguments, =>
+            @invokeTypeSpecificController req, res, next, (c) -> c.create
 
 
     editItem: (req, res, next) =>
-        @invokeTypeSpecificController arguments, (c) -> c.edit
+        @ensureSession arguments, =>
+            @invokeTypeSpecificController req, res, next, (c) -> c.edit
 
                 
     removeItem: (req, res, next) =>
-        @invokeTypeSpecificController arguments, (c) -> c.remove
+        @ensureSession arguments, =>
+            @invokeTypeSpecificController req, res, next, (c) -> c.remove
             
                                     
-    invokeTypeSpecificController: ([req, res, next], getHandler) =>   
-        @ensureSession [req, res, next], =>
-            models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, db, (err, forum) =>
-                getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
+    invokeTypeSpecificController: (req, res, next, getHandler) =>   
+        models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, db, (err, forum) =>
+            getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
 
 
     getTypeSpecificController: (type) =>

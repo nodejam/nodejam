@@ -172,7 +172,7 @@
   }));
 
   app.get('/:forum', findHandler('ui/forums', function(c) {
-    return c.forum;
+    return c.item;
   }));
 
   app.get('/:forum/:id', findHandler('ui/forums', function(c) {

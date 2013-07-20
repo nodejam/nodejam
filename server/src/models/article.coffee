@@ -40,11 +40,19 @@ class Article extends postModule.Post
                 {
                     image: @smallCover,
                     @title,
-                    content: if @format is 'markdown' and @content then mdparser(@content) else 'Invalid format.',
+                    content: @formatContent(),
                     @createdBy,
                     @forum,
                     id: @_id.toString()
                 }
+
+    
+    
+    formatContent: =>   
+        if @format is 'markdown'
+            if @content then mdparser(@content) 
+        else
+            'Invalid format.'
 
 
 exports.Article = Article

@@ -3,7 +3,7 @@ modules = {
     home: 'Home',
     forums: 'Forums',
     users: 'Users',
-    dev_designs: 'Dev_Designs'
+    articles: 'Articles',
 }
 
 for k,v of modules

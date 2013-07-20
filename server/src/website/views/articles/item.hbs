@@ -1,5 +1,5 @@
 <script>
-    view = new Fora.Views.Forums.Index()
+    view = new Fora.Views.Articles.Item()
 </script>
 <div class="columns-wrap">
     <ul class="nav">
@@ -11,13 +11,9 @@
         </li>            
     </ul>
     <div class="content-area">    
-    {{#if featured}}
-        <ul class="cards">
-        {{#each featured}}
-            {{> forumcard summary}}
-        {{/each}}
-        </ul>
-    {{/if}}
+        <div class="post">
+            {{{article.formattedContent}}}
+        </div>
     </div>
 </div>
 

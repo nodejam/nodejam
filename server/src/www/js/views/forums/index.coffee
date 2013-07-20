@@ -20,4 +20,4 @@ class Index extends Fora.Views.BaseView
         false  
         
                           
-window.Fora.Views.Home.Index = Index
+window.Fora.Views.Forums.Index = Index
