@@ -210,6 +210,9 @@ li {
   clear: both;
   margin-top: 20px;
 }
+.page-sections-mixin .content-area > h1 {
+  margin-top: -12px;
+}
 .tiny-page-mixin {
   /* HEADER and LOGO */
 
@@ -282,6 +285,9 @@ li {
   font-family: 'PT Serif', serif;
   clear: both;
   margin-top: 20px;
+}
+.tiny-page-mixin .content-area > h1 {
+  margin-top: -12px;
 }
 .tiny-page-mixin .cover-page .cover {
   background-size: cover;
@@ -359,6 +365,9 @@ li {
     font-family: 'PT Serif', serif;
     clear: both;
     margin-top: 20px;
+  }
+  .content-area > h1 {
+    margin-top: -12px;
   }
   /* PAGES */
   .cover-page .cover {
@@ -604,6 +613,9 @@ li {
     clear: both;
     margin-top: 20px;
   }
+  .content-area > h1 {
+    margin-top: -12px;
+  }
   /* PAGES */
   .cover-page .cover {
     height: 100%;
@@ -847,6 +859,9 @@ li {
     font-family: 'PT Serif', serif;
     clear: both;
     margin-top: 20px;
+  }
+  .content-area > h1 {
+    margin-top: -12px;
   }
   /* PAGES */
   .cover-page .cover {
@@ -1092,6 +1107,9 @@ li {
     clear: both;
     margin-top: 20px;
   }
+  .content-area > h1 {
+    margin-top: -12px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -1328,6 +1346,9 @@ li {
     font-family: 'PT Serif', serif;
     clear: both;
     margin-top: 20px;
+  }
+  .content-area > h1 {
+    margin-top: -12px;
   }
   /* PAGES */
   .cover-page .cover {
@@ -1566,6 +1587,9 @@ li {
     clear: both;
     margin-top: 20px;
   }
+  .content-area > h1 {
+    margin-top: -12px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -1803,6 +1827,9 @@ li {
     clear: both;
     margin-top: 20px;
   }
+  .content-area > h1 {
+    margin-top: -12px;
+  }
   /* PAGES */
   .cover-page .cover {
     background-size: cover;
@@ -2039,6 +2066,9 @@ li {
     font-family: 'PT Serif', serif;
     clear: both;
     margin-top: 20px;
+  }
+  .content-area > h1 {
+    margin-top: -12px;
   }
   /* PAGES */
   .cover-page .cover {
