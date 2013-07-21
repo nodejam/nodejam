@@ -1,14 +1,16 @@
 node_modules
+
+*~
+
 backups/*
+!backups/placeholder
+!backups/backup.sh
 
 server/src/conf/index.coffee
 server/app/conf/index.js
 
 server/src/website/views/_custom/*
 !server/src/website/views/_custom/placeholder
-
-!backups/placeholder
-!backups/backup.sh
 
 server/www-user/assetpaths/*
 !server/www-user/assetpaths/placeholder
