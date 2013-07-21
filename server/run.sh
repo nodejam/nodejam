@@ -14,6 +14,7 @@ if [ "$1" == "--trace" ]; then
     killall node
     node app.js localhost 9000 &
 else
+    forever stopall
     forever start app.js localhost 9000
 fi
 cd ..
