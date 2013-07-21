@@ -9,7 +9,7 @@ class Articles extends controller.Controller
 
     item: (req, res, next, article, user, forum) =>
         article.formattedContent = article.formatContent()        
-        res.render 'articles/item.hbs', { 
+        res.render req.network.views.articles.item, { 
             article,
             user,
             forum,

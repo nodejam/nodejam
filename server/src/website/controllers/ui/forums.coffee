@@ -21,7 +21,7 @@ class Forums extends Controller
                     forum.summary = forum.getView("card")
                     forum.summary.view = "standard"
                 
-                res.render 'forums/index.hbs', { 
+                res.render req.network.views.forums.index, { 
                     featured, 
                     pageName: 'forums-page', 
                     pageType: 'cover-page', 
@@ -38,7 +38,7 @@ class Forums extends Controller
                             post.summary = post.getView("card")
                             post.summary.view = "standard"
 
-                    res.render 'forums/item.hbs', { 
+                    res.render req.network.views.forums.item, { 
                         forum,
                         posts, 
                         pageName: 'forum-page', 

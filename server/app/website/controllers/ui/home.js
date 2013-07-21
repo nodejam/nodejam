@@ -74,7 +74,7 @@
               post.summary = post.getView("card");
               post.summary.view = "standard";
             }
-            return res.render('home/index.hbs', {
+            return res.render(req.network.views.home.index, {
               editorsPicks: editorsPicks,
               featured: featured,
               pageName: 'home-page',

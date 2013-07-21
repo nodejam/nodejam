@@ -28,7 +28,7 @@
 
     Articles.prototype.item = function(req, res, next, article, user, forum) {
       article.formattedContent = article.formatContent();
-      return res.render('articles/item.hbs', {
+      return res.render(req.network.views.articles.item, {
         article: article,
         user: user,
         forum: forum,

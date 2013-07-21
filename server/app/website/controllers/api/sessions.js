@@ -66,6 +66,7 @@
       } else if (req.body.domain === 'users') {
         if (req.body.secret === conf.auth.adminkeys["default"]) {
           accessToken = utils.uniqueId(24);
+          req.body.createdVia = 'internal';
           return models.User.getOrCreateUser(req.body, 'users', accessToken, {}, db, function(err, user, session) {
             if (!err) {
               res.contentType('json');

@@ -30,7 +30,7 @@ class App
         
     getUserUrl: =>
         user = @getUser()
-        if user.domain is 'tw'
+        if user.domain is 'twitter'
             return "@#{user.username}"
         else
             return "#{user.domain}/#{user.username}"

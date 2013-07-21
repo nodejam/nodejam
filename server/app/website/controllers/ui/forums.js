@@ -48,7 +48,7 @@
             forum.summary = forum.getView("card");
             forum.summary.view = "standard";
           }
-          return res.render('forums/index.hbs', {
+          return res.render(req.network.views.forums.index, {
             featured: featured,
             pageName: 'forums-page',
             pageType: 'cover-page',
@@ -79,7 +79,7 @@
               post.summary = post.getView("card");
               post.summary.view = "standard";
             }
-            return res.render('forums/item.hbs', {
+            return res.render(req.network.views.forums.item, {
               forum: forum,
               posts: posts,
               pageName: 'forum-page',

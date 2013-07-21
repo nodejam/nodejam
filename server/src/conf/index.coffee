@@ -34,10 +34,28 @@ admins = [
     }           
 ]
 
+defaultViews =   {
+    home: {
+        index: 'home/index.hbs',
+    },
+    forums: {
+        index: 'forums/index.hbs',
+        item: 'forums/item.hbs',
+        forumcard: '/views/forums/forumcard.hbs',
+    },
+    posts: {
+        postcard: '/views/posts/postcard.hbs',
+    },
+    articles: {
+        item: 'articles/item.hbs',        
+    },
+}
+
 foraProject = new models.Network {
     name: 'Fora',
     stub: 'fora',
     domain: 'local.foraproject.org',
+    views: defaultViews,
     templates: {
         home: 'welcome/index.hbs'
     }
@@ -49,5 +67,6 @@ module.exports = {
     db,
     auth,
     admins,
+    defaultViews,
     networks
 }

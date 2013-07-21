@@ -42,6 +42,7 @@ class Sessions extends controller.Controller
         else if req.body.domain is 'users'
             if req.body.secret is conf.auth.adminkeys.default
                 accessToken = utils.uniqueId(24)
+                req.body.createdVia = 'internal' 
                 models.User.getOrCreateUser req.body, 'users', accessToken, {}, db, (err, user, session) =>
                     if not err
                         res.contentType 'json'

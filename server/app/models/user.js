@@ -25,6 +25,12 @@
               return ['twitter', 'fb', 'users'].indexOf(this.domain) !== -1;
             }
           },
+          createdVia: {
+            type: 'string',
+            validate: function() {
+              return ['public', 'internal'].indexOf(this.createdVia) !== -1;
+            }
+          },
           username: 'string',
           name: 'string',
           location: 'string',
@@ -102,16 +108,15 @@
             domain: domain,
             username: userDetails.username
           }, context, db, function(err, user) {
-            var createdAt, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
+            var createdAt, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8;
             if (user != null) {
               user.name = (_ref = userDetails.name) != null ? _ref : user.name;
-              user.username = userDetails.username;
               user.location = (_ref1 = userDetails.location) != null ? _ref1 : user.location;
               user.picture = (_ref2 = userDetails.picture) != null ? _ref2 : user.picture;
               user.thumbnail = (_ref3 = userDetails.thumbnail) != null ? _ref3 : user.thumbnail;
               user.tile = (_ref4 = userDetails.tile) != null ? _ref4 : user.tile;
               user.about = userDetails.about;
-              user.email = (_ref5 = userDetails.email) != null ? _ref5 : 'unknown@poe3.com';
+              user.email = (_ref5 = userDetails.email) != null ? _ref5 : 'unknown@foraproject.org';
               user.lastLogin = Date.now();
               return user.save(context, db, function(err, u) {
                 if (!err) {
@@ -131,6 +136,12 @@
               user = new User();
               user.domain = domain;
               user.username = userDetails.username;
+              user.createdVia = (_ref6 = userDetails.createdVia) != null ? _ref6 : 'public';
+              if (user.createdVia === 'internal') {
+                if (userDetails.assetPath) {
+                  user.assetPath = userDetails.assetPath;
+                }
+              }
               if (domain === 'fb') {
                 user.facebookUsername = userDetails.username;
               }
@@ -141,8 +152,8 @@
               user.location = userDetails.location;
               user.picture = userDetails.picture;
               user.thumbnail = userDetails.thumbnail;
-              user.tile = (_ref6 = userDetails.tile) != null ? _ref6 : '/images/collection-tile.png';
-              user.email = (_ref7 = userDetails.email) != null ? _ref7 : 'unknown@poe3.com';
+              user.tile = (_ref7 = userDetails.tile) != null ? _ref7 : '/images/collection-tile.png';
+              user.email = (_ref8 = userDetails.email) != null ? _ref8 : 'unknown@foraproject.org';
               user.lastLogin = Date.now();
               user.preferences = {
                 canEmail: true
@@ -150,7 +161,11 @@
               user.about = userDetails.about;
               createdAt = new Date();
               user.createdAt = createdAt.getTime();
-              user.assetPath = "/pub/assetpaths/" + (createdAt.getFullYear()) + "-" + (createdAt.getMonth() + 1) + "-" + (createdAt.getDate());
+              if (user.createdVia === 'internal' && userDetails.assetPath) {
+                user.assetPath = userDetails.assetPath;
+              } else {
+                user.assetPath = "/pub/assetpaths/" + (createdAt.getFullYear()) + "-" + (createdAt.getMonth() + 1) + "-" + (createdAt.getDate());
+              }
               return user.save(context, db, function(err, u) {
                 var userinfo;
                 if (!err) {
@@ -217,7 +232,7 @@
     }
 
     User.prototype.getUrl = function() {
-      if (this.domain === 'tw') {
+      if (this.domain === 'twitter') {
         return "/@" + this.username;
       } else {
         return "/" + this.domain + "/" + this.username;

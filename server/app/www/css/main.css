@@ -1613,6 +1613,7 @@ li {
   }
   .std-page .page-wrap .item .cover {
     width: 640px;
+    margin-bottom: 20px;
   }
   .std-page .page-wrap .item .iconic-desc {
     font-size: 14px;

@@ -45,7 +45,7 @@
     App.prototype.getUserUrl = function() {
       var user;
       user = this.getUser();
-      if (user.domain === 'tw') {
+      if (user.domain === 'twitter') {
         return "@" + user.username;
       } else {
         return "" + user.domain + "/" + user.username;

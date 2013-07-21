@@ -27,7 +27,7 @@ class Home extends controller.Controller
                         post.summary = post.getView("card")
                         post.summary.view = "standard"
 
-                    res.render 'home/index.hbs', { 
+                    res.render req.network.views.home.index, { 
                         editorsPicks, 
                         featured, 
                         pageName: 'home-page', 

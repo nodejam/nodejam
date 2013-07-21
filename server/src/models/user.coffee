@@ -10,6 +10,7 @@ class User extends BaseModel
             collection: 'users',
             fields: {
                 domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
+                createdVia: { type: 'string', validate: -> ['public', 'internal'].indexOf(@createdVia) isnt -1 },
                 username: 'string',
                 name: 'string',
                 location: 'string',
@@ -44,13 +45,12 @@ class User extends BaseModel
                     if user?
                         #Update some details
                         user.name = userDetails.name ? user.name
-                        user.username = userDetails.username
                         user.location = userDetails.location ? user.location
                         user.picture = userDetails.picture ? user.picture
                         user.thumbnail = userDetails.thumbnail ? user.thumbnail
                         user.tile = userDetails.tile ? user.tile
                         user.about = userDetails.about
-                        user.email = userDetails.email ? 'unknown@poe3.com'
+                        user.email = userDetails.email ? 'unknown@foraproject.org'
                         user.lastLogin = Date.now()
                         user.save context, db, (err, u) =>
                             if not err
@@ -68,6 +68,10 @@ class User extends BaseModel
                         user = new User()
                         user.domain = domain
                         user.username = userDetails.username
+                        user.createdVia = userDetails.createdVia ? 'public'      
+                        if user.createdVia is 'internal'
+                            if userDetails.assetPath
+                                user.assetPath = userDetails.assetPath    
                         if domain is 'fb'
                             user.facebookUsername = userDetails.username
                         if domain is 'twitter'
@@ -77,13 +81,19 @@ class User extends BaseModel
                         user.picture = userDetails.picture
                         user.thumbnail = userDetails.thumbnail
                         user.tile = userDetails.tile ? '/images/collection-tile.png'
-                        user.email = userDetails.email ? 'unknown@poe3.com'
+                        user.email = userDetails.email ? 'unknown@foraproject.org'
                         user.lastLogin = Date.now()
                         user.preferences = { canEmail: true }
                         user.about = userDetails.about
                         createdAt = new Date()
                         user.createdAt = createdAt.getTime()                                                                        
-                        user.assetPath = "/pub/assetpaths/#{createdAt.getFullYear()}-#{createdAt.getMonth()+1}-#{createdAt.getDate()}"
+
+                        #Allow dev scripts to set assetPath for initial set of users, so that it stays the same.
+                        if user.createdVia is 'internal' and userDetails.assetPath
+                            user.assetPath = userDetails.assetPath    
+                        else
+                            user.assetPath = "/pub/assetpaths/#{createdAt.getFullYear()}-#{createdAt.getMonth()+1}-#{createdAt.getDate()}"
+
                         user.save context, db, (err, u) =>
                             #also create the userinfo
                             if not err
@@ -121,7 +131,7 @@ class User extends BaseModel
 
 
     getUrl: =>
-        if @domain is 'tw' then "/@#{@username}" else "/#{@domain}/#{@username}"
+        if @domain is 'twitter' then "/@#{@username}" else "/#{@domain}/#{@username}"
 
 
 

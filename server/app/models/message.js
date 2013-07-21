@@ -77,7 +77,7 @@
                   subject: {
                     thumbnail: user.thumbnail,
                     name: user.name,
-                    link: user.domain === 'tw' ? "/@" + user.username : "/" + user.domain + "/" + user.username
+                    link: user.domain === 'twitter' ? "/@" + user.username : "/" + user.domain + "/" + user.username
                   },
                   verb: "added a new forum",
                   object: {
@@ -93,7 +93,7 @@
                   subject: {
                     thumbnail: user.thumbnail,
                     name: user.name,
-                    link: user.domain === 'tw' ? "/@" + user.username : "/" + user.domain + "/" + user.username
+                    link: user.domain === 'twitter' ? "/@" + user.username : "/" + user.domain + "/" + user.username
                   },
                   verb: "published",
                   object: {

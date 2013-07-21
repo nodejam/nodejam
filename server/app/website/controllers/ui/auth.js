@@ -96,10 +96,10 @@
                     resp = JSON.parse(response);
                     if (resp.length && (resp[0] != null)) {
                       userDetails = _this.parseTwitterUserDetails(resp[0]);
-                      return models.User.getOrCreateUser(userDetails, 'tw', accessToken, {}, db, function(err, _user, _session) {
+                      return models.User.getOrCreateUser(userDetails, 'twitter', accessToken, {}, db, function(err, _user, _session) {
                         res.clearCookie("oauth_process_key");
                         res.cookie("userid", _user._id.toString());
-                        res.cookie("domain", "tw");
+                        res.cookie("domain", "twitter");
                         res.cookie("username", _user.username);
                         res.cookie("fullName", _user.name);
                         res.cookie("passkey", _session.passkey);

@@ -2,8 +2,8 @@
 exports.register = ->
     hbs = require('hbs')
 
-    hbs.registerHelper 'userUrl', (user) -> if user.domain is 'tw' then "/@#{user.username}" else "/#{user.domain}/#{user.username}"
-    hbs.registerHelper 'userFeedUrl', (user) -> if user.domain is 'tw' then "/@#{user.username}/feed" else "/#{user.domain}/#{user.username}/feed"
+    hbs.registerHelper 'userUrl', (user) -> if user.domain is 'twitter' then "/@#{user.username}" else "/#{user.domain}/#{user.username}"
+    hbs.registerHelper 'userFeedUrl', (user) -> if user.domain is 'twitter' then "/@#{user.username}/feed" else "/#{user.domain}/#{user.username}/feed"
 
     hbs.registerHelper 'equals', (v1, v2, options) ->
         if v1 is v2
@@ -24,8 +24,9 @@ exports.register = ->
 
     #Templates
     fs = require('fs')
-    postcard = fs.readFileSync(__dirname + '/views/posts/postcard.hbs', 'utf8');
+    conf = require('../conf')    
+    postcard = fs.readFileSync(__dirname + conf.defaultViews.posts.postcard, 'utf8');
     hbs.registerPartial('postcard', postcard); 
-    forumcard = fs.readFileSync(__dirname + '/views/forums/forumcard.hbs', 'utf8');
+    forumcard = fs.readFileSync(__dirname + conf.defaultViews.forums.forumcard, 'utf8');
     hbs.registerPartial('forumcard', forumcard); 
 

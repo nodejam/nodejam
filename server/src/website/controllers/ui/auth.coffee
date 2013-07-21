@@ -80,10 +80,10 @@ class Auth extends controller.Controller
                                     resp = JSON.parse response
                                     if resp.length and resp[0]?
                                         userDetails = @parseTwitterUserDetails resp[0]
-                                        models.User.getOrCreateUser userDetails, 'tw', accessToken, {}, db, (err, _user, _session) =>
+                                        models.User.getOrCreateUser userDetails, 'twitter', accessToken, {}, db, (err, _user, _session) =>
                                             res.clearCookie "oauth_process_key"
                                             res.cookie "userid", _user._id.toString()
-                                            res.cookie "domain", "tw"
+                                            res.cookie "domain", "twitter"
                                             res.cookie "username", _user.username
                                             res.cookie "fullName", _user.name
                                             res.cookie "passkey", _session.passkey

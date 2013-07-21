@@ -10,6 +10,7 @@
     email: 'me@aaronsw.com',
     picture: '/images/site/user.jpg',
     thumbnail: '/images/site/user.jpg',
+    assetPath: '/pub/assetpaths/1970-1-1',
     about: 'Aaron Hillel Swartz was an American computer programmer, writer, political organizer and Internet activist. Swartz was involved in the development of RSS, Creative Commons, web.py and Reddit.'
   };
 
