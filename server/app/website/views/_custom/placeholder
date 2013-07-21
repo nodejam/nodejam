@@ -1,4 +1,0 @@
-Place all custom views in this folder.
-
-Recommended convention:
-views/_custom/{network-stub-goes-here}/{controller}/{view}
