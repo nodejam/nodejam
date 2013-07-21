@@ -46,6 +46,7 @@
   ];
 
   defaultViews = {
+    defaultLayout: 'layouts/default',
     home: {
       index: 'home/index.hbs'
     },

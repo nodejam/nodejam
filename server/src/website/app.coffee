@@ -23,7 +23,7 @@ app.use(express.limit('6mb'));
 
 
 app.set("view engine", "hbs");
-app.set('view options', { layout: 'layouts/default' })
+app.set('view options', { layout: conf.defaultViews.defaultLayout })
 
 #static file handlers.
 #app.use('/', express.static(__dirname + '/public/root'))

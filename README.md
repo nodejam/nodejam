@@ -1,4 +1,4 @@
-    fora is licensed under the GPL3 license.
+fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
 Install instructions (Ubuntu 13.04)
@@ -73,6 +73,11 @@ server {
                        
 ```      
 
+Edit the config
+---------------
+Copy server/src/conf/index.coffee.sample to server/src/conf/index.coffee
+Edit it if necessary. Not required for development setup.
+
 
 /etc/hosts
 ----------
@@ -90,6 +95,8 @@ cd to fora/server
 node app/scripts/setup/setup.js --create  
 \#delete the database  
 node app/scripts/setup/setup.js --delete  
+\#recreate the database  
+node app/scripts/setup/setup.js --recreate  
 
 
 Mongodb Security
@@ -98,13 +105,19 @@ Edit /etc/mongodb.conf
 bind_ip = 127.0.0.1  
 port = MONGODB_PORT  
 
-Notes
------
-Because the path the node modules was changed, this is also required to be run (as root):  
+
+NODE_ENV
+--------
+To run the setup script, this must be set to 'development'.
+This is done so that you don't accidentally destroy the production database.
+
+
+NODE_PATH
+---------
+Because the path the node modules was changed, make this change in .bashrc  
+export NODE_PATH="/usr/local/lib/node_modules"
+
+Otherwise, you could run this as root:  
 rm /usr/local/lib/node  
 ln -s /usr/local/lib/node_modules /usr/local/lib/node  
-Or: in .bashrc  
-export NODE_PATH="/usr/local/lib/node_modules"  
-
-
 

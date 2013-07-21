@@ -37,7 +37,7 @@
   app.set("view engine", "hbs");
 
   app.set('view options', {
-    layout: 'layouts/default'
+    layout: conf.defaultViews.defaultLayout
   });
 
   app.use('/public', express["static"](__dirname + '/public'));
