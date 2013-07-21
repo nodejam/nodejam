@@ -10,8 +10,10 @@ server/src/website/views/_custom/*
 !server/src/website/views/_custom/placeholder
 
 server/www-user/assetpaths/*
+!server/www-user/assetpaths/default
 !server/www-user/assetpaths/placeholder
 server/www-user/images/*
+!server/www-user/images/cover.jpg
 !server/www-user/images/placeholder
 server/www-user/thumbnails/*
 !server/www-user/thumbnails/placeholder
