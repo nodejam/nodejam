@@ -73,12 +73,6 @@ server {
                        
 ```      
 
-Edit the config
----------------
-Copy server/src/conf/index.coffee.sample to server/src/conf/index.coffee
-Edit it if necessary. Not required for development setup.
-
-
 /etc/hosts
 ----------
 For development set local.foraproject.org to localhost  
