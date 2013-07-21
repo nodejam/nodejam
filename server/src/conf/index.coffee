@@ -57,9 +57,6 @@ foraProject = new models.Network {
     stub: 'fora',
     domain: 'local.foraproject.org',
     views: defaultViews,
-    templates: {
-        home: 'welcome/index.hbs'
-    }
 } 
     
 networks = [foraProject]
