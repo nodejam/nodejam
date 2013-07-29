@@ -155,8 +155,7 @@
 }
 
 
-.tiny-cover-page-mixin {
-
+.tiny-cover-page-mixin (@width) {
     .cover-page {
         @coverHeight: 240;
         .cover { 
@@ -166,7 +165,15 @@
 
         .container {
             .columns-wrap {
-                padding: 0 32px;
+
+                .widths() when not (ispercentage(@width)) {
+                    width: @width + 0px; margin: auto;
+                }
+                .widths() when (ispercentage(@width)) {
+                    padding: 0 32px;
+                }        
+                
+                .widths();
             }
         }        
     }
@@ -389,19 +396,21 @@
 }
 
 @media (max-width: 719px) { 
-    .tiny-cover-page-mixin;
     .cards-mixin(100%; 32; 22; 14; 220; 380);
 }
 
 @media (min-width: 640px) and (max-width: 719px) { 
+    .tiny-cover-page-mixin(440);
     .tiny-std-page-mixin(24, 18);    
 }
 
 @media (min-width: 480px) and (max-width: 639px) { 
+    .tiny-cover-page-mixin(400);
     .tiny-std-page-mixin(20, 16);    
 }
 
 @media (max-width: 479px) { 
+    .tiny-cover-page-mixin(100%);
     .tiny-std-page-mixin(18, 14);    
 }
 
