@@ -47,7 +47,7 @@
     }
     
     .content-area { 
-        .fontContent; clear: both; margin-top: 20px; 
+        .fontContent; clear: both; margin-top: 12px;
         > h1 { margin-top: -12px }    
     }
 
@@ -84,10 +84,10 @@
     .std-page {
         .page-wrap {
             width: 980px; margin: auto; padding: 0;            
-            .single-item-mixin (640, 280, 28, 18);
+            .single-item-mixin (640px, 280px, 28, 18);
             .item { 
                 float: left; margin-right: 60px; 
-                .cover { width: 640px; margin-bottom: 20px; }
+                .cover { width: 100%; margin-bottom: 20px; }
                 &.text { 
                     p { line-height: 1.3em }
                 }
@@ -126,17 +126,17 @@
     }
 }
 
-.small-std-page-mixin () {
+.small-std-page-mixin (@width, @sidebarWidth, @headingSize, @contentSize) {
 
     .large-page-element, .tiny-page-element { display: none }
     .small-page-element { display: block }
 
     .std-page {
         .page-wrap {
-            width: 640px; margin: auto; padding: 0;            
-            .single-item-mixin (640, 640, 28, 18);
+            width: @width + 0px; margin: auto; padding: 0;            
+            .single-item-mixin (100%, 100%, @headingSize, @contentSize);
             .item { 
-                .cover { width: 640px; margin-bottom: 20px; }
+                .cover { width: 100%; margin-bottom: 20px; }
 
                 .desc-styles-mixin(14);
 
@@ -156,6 +156,7 @@
 
 
 .tiny-cover-page-mixin {
+
     .cover-page {
         @coverHeight: 240;
         .cover { 
@@ -165,14 +166,40 @@
 
         .container {
             .columns-wrap {
-                width: 100%;
+                padding: 0 32px;
             }
         }        
     }
 }
 
-.tiny-std-page-mixin {
+.tiny-std-page-mixin (@headingSize, @contentSize) {
+    .large-page-element, .small-page-element { display: none }
+    .tiny-page-element { display: block }
+
     .std-page {
+        .page-wrap {
+            margin: auto 32px; padding: 0;            
+            .single-item-mixin (100%, 100%, @headingSize, @contentSize);
+            .nav { margin-left: 40px; }
+            .content-area {
+                margin-top: 28px;
+                .item { 
+                    .cover { width: 100%; margin-bottom: 20px; }
+
+                    .desc-styles-mixin(14);
+
+                    &.text { 
+                        p { line-height: 1.3em }
+                    }
+                }
+                .sidebar { 
+                    .header { 
+                        img { width: 120px; border-radius: 100% }
+                        h2 { margin: 6px 0; font-size: 18px; }
+                    }
+                }
+            }
+        }    
     }
 }
 
@@ -181,7 +208,16 @@
     
     /* POSTS */
     ul.cards {
-        clear: both; float: left; margin: -32px 0 32px -(@colSpacing / 2) + 0px; 
+        clear: both; float: left;
+        
+        .margins() when not (ispercentage(@colWidth)) {
+            margin: -32px 0 32px -(@colSpacing / 2) + 0px; 
+        }
+        .margins() when (ispercentage(@colWidth)) {
+            margin: 0;
+        }        
+        
+        .margins();
 
         > li {
             float: left; overflow: hidden; 
@@ -192,8 +228,9 @@
             }
 
             .column-size() when (ispercentage(@colWidth)) {                                
-                .item-wrap { padding: 0 (@colSpacing + 0px) }
+                margin-bottom: 32px;
             }        
+            
             .column-size();
 
             &.alt { 
@@ -288,7 +325,7 @@
 
 .single-item-mixin (@width, @sidebarWidth, @headingSize, @contentSize) {
     .item {
-        width: @width + 0px; margin: auto; 
+        width: @width; margin: auto; 
         h1 { font-size: @headingSize + 0px }
         .content { 
             font-size: @contentSize + 0px;
@@ -297,7 +334,7 @@
     }
     
     .sidebar {
-        width: @sidebarWidth + 0px;
+        width: @sidebarWidth;
     }
 }
 
@@ -338,18 +375,34 @@
     .cards-mixin(280; 32; 22; 14; 220; 500);
 }
 
+@media (min-width: 960px) and (max-width: 1199px) { 
+    .small-std-page-mixin(640, 640, 28, 18);
+}
+
 @media (min-width: 720px) and (max-width: 959px) { 
     .small-cover-page-mixin(720; 2; 300; 32);
     .cards-mixin(300; 32; 22; 14; 220; 380);
 }
 
-@media (min-width: 720px) and (max-width: 1199px) { 
-    .small-std-page-mixin();
+@media (min-width: 720px) and (max-width: 959px) { 
+    .small-std-page-mixin(600, 600, 28, 18);
 }
 
 @media (max-width: 719px) { 
     .tiny-cover-page-mixin;
     .cards-mixin(100%; 32; 22; 14; 220; 380);
+}
+
+@media (min-width: 640px) and (max-width: 719px) { 
+    .tiny-std-page-mixin(24, 18);    
+}
+
+@media (min-width: 480px) and (max-width: 639px) { 
+    .tiny-std-page-mixin(20, 16);    
+}
+
+@media (max-width: 479px) { 
+    .tiny-std-page-mixin(18, 14);    
 }
 
 /* HOME */
