@@ -80,7 +80,7 @@
         }
         
         .container {
-            margin-right: @coverWidth + 0px; margin-top: 72px;
+            margin-right: @coverWidth + 0px; margin-top: 22px;
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
                 padding: 0 0 0 (@colSpacing / 2) + 0px;
@@ -95,7 +95,7 @@
 
     .std-page {
         .container {
-            margin-top: 72px;
+            margin-top: 22px;
 
             .page-wrap {
                 width: 980px; margin: auto; padding: 0;            
@@ -211,9 +211,7 @@
             .page-wrap {
                 margin: auto 32px; padding: 0;            
                 .single-item-mixin (100%, 100%);
-                .nav { margin-left: 40px; }
                 .content-area {
-                    margin-top: 28px;
                     .item { 
                         .cover { width: 100%; margin-bottom: 20px; }
                         .desc-styles-mixin;
@@ -383,12 +381,12 @@
     .cards-mixin(300; 40; 22; 14; 220; 500);
 }
 
-@media (min-width: 1320px) and (max-width: 1599px) { 
-    .large-cover-page-mixin(1320; 3; 280; 32);
+@media (min-width: 1380px) and (max-width: 1599px) { 
+    .large-cover-page-mixin(1380; 3; 280; 32);
     .cards-mixin(280; 32; 22; 14; 220; 500);
 }
 
-@media (min-width: 1200px) and (max-width: 1319px) { 
+@media (min-width: 1200px) and (max-width: 1379px) { 
     .small-cover-page-mixin(1200; 3; 300; 40);
     .cards-mixin(300; 40; 22; 14; 220; 500);
 }
