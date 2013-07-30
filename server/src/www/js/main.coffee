@@ -17,6 +17,9 @@ class App
         $(document).clickHandler '.logo', =>
             $('.site-options').show()
             false
+
+        $(document).bindNew 'click', '.cover', =>
+            $('.site-options').hide()
             
         $(document).bindNew 'click', '.container', =>
             $('.site-options').hide()
