@@ -1,4 +1,4 @@
-window.Lappd = {
+window.Fora = {
     Views: {
         Home: {},
         Collections: {},
@@ -14,6 +14,13 @@ class App
 
 
     init: =>
+        $(document).clickHandler '.logo', =>
+            $('.site-options').show()
+            false
+            
+        $(document).bindNew 'click', '.container', =>
+            $('.site-options').hide()
+        
         $(document).clickHandler '.account-options .logout', =>
             @logout()
 
@@ -70,14 +77,14 @@ window.app = new App
 
 
 #Utility functions
-window.Lappd.uniqueId = (length = 16) ->
+window.Fora.uniqueId = (length = 16) ->
   id = ""
   id += Math.random().toString(36).substr(2) while id.length < length
   id.substr 0, length
 
 
 # Utility Functions
-window.Lappd.apiUrl = (url, params = {}, options = { api: 'v1'}) ->
+window.Fora.apiUrl = (url, params = {}, options = { api: 'v1'}) ->
     if /^\//.test(url)
         url = url.substring(1)
     passkey = app.getUser().passkey

@@ -2,42 +2,56 @@
 
 .light-text { color: @colorNeutral }
 
-.action { font-size: @fontSize; }
-    .action.positive { color: @colorPositive }
-    .action.negative { color: @colorNegative }
+.action { 
+    &.positive { color: @colorPositive }
+    &.negative { color: @colorNegative }
+}
 
 
 /* By default, scr-tiny is hidden and will be show only on tiny screens */
 .scr-tiny { display: none }
 
-.page-sections-mixin {
+.page-sections-mixin (@fontSize) {
     /* HEADER and LOGO */
     .header {
         .logo {
-            .fontAlt; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 20px; background: #ddd; color: white; float: left; 
+            .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #ddd; color: white; float: left; 
             text-transform: uppercase; position: absolute; top: 6px; left: 6px; 
             &:hover { background: #333; }
         }    
     }
+    
+    .site-options {
+        background: @colorDark; opacity: 0.95; width: 220px; height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 2000;
+        ul {
+            padding-top: 12px; font-size: 12px; font-weight: bold; color: @colorLight;
+            li {                
+                a { 
+                    i { margin-right: 12px; }
+                    display: block; padding: 10px; border-bottom: 1px solid #444; padding-left: 32px; color: @colorLight 
+                }
+            }
+        }
+    }
 
     /* NAVIGATION BARS */
     .nav {         
-        height: 24px; @fontBase; font-size: @fontSizeSmall; font-weight: bold; text-transform: uppercase; color: @colorNeutral;
+        height: 24px; @fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral;
         li { 
             float: left; padding-right: 12px; color: @colorNeutral; 
             &.selected { color: @colorDark }
             a { 
-                text-decoration: underline; color: @colorNeutral; 
-                &:hover { color: @colorDark }                
+                text-decoration: underline; color: @colorLink; 
+                &:hover { color: @colorDark }
             }
-            i { font-size: 14px; text-decoration: none }
+            i { text-decoration: none }
         }
         &.alt { float: right; }
     }
 
-
     .container { 
         text-align: center; margin-top: 18px;
+        font-size: @fontSize + 0px;
         .page-wrap { 
             text-align: left; margin: auto;
         }
@@ -50,12 +64,11 @@
         .fontContent; clear: both; margin-top: 12px;
         > h1 { margin-top: -12px }    
     }
-
 }
 
 .large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
-    
+
     .small-page-element, .tiny-page-element { display: none }
     .large-page-element { display: block }
 
@@ -77,14 +90,13 @@
 }
 
 .large-std-page-mixin () {
-
     .small-page-element, .tiny-page-element { display: none }
     .large-page-element { display: block }
 
     .std-page {
         .page-wrap {
             width: 980px; margin: auto; padding: 0;            
-            .single-item-mixin (640px, 280px, 28, 18);
+            .single-item-mixin (640px, 280px);
             .item { 
                 float: left; margin-right: 60px; 
                 .cover { width: 100%; margin-bottom: 20px; }
@@ -97,7 +109,7 @@
                 .header { 
                     margin-top: 32px;
                     img { width: 120px; border-radius: 100% }
-                    h2 { margin: 6px 0; font-size: 18px; }
+                    h2 { margin: 6px 0; }
                 }
             }
         }
@@ -126,19 +138,18 @@
     }
 }
 
-.small-std-page-mixin (@width, @sidebarWidth, @headingSize, @contentSize) {
-
+.small-std-page-mixin (@width, @sidebarWidth) {
     .large-page-element, .tiny-page-element { display: none }
     .small-page-element { display: block }
 
     .std-page {
         .page-wrap {
             width: @width + 0px; margin: auto; padding: 0;            
-            .single-item-mixin (100%, 100%, @headingSize, @contentSize);
+            .single-item-mixin (100%, 100%);
             .item { 
                 .cover { width: 100%; margin-bottom: 20px; }
 
-                .desc-styles-mixin(14);
+                .desc-styles-mixin;
 
                 &.text { 
                     &.text { .content-text-mixin; }
@@ -147,7 +158,7 @@
             .sidebar { 
                 .header { 
                     img { width: 120px; border-radius: 100% }
-                    h2 { margin: 6px 0; font-size: 18px; }
+                    h2 { margin: 6px 0; }
                 }
             }
         }    
@@ -178,26 +189,26 @@
     }
 }
 
-.tiny-std-page-mixin (@headingSize, @contentSize) {
+.tiny-std-page-mixin {
     .large-page-element, .small-page-element { display: none }
     .tiny-page-element { display: block }
 
     .std-page {
         .page-wrap {
             margin: auto 32px; padding: 0;            
-            .single-item-mixin (100%, 100%, @headingSize, @contentSize);
+            .single-item-mixin (100%, 100%);
             .nav { margin-left: 40px; }
             .content-area {
                 margin-top: 28px;
                 .item { 
                     .cover { width: 100%; margin-bottom: 20px; }
-                    .desc-styles-mixin(14);
+                    .desc-styles-mixin;
                     &.text { .content-text-mixin; }
                 }
                 .sidebar { 
                     .header { 
                         img { width: 120px; border-radius: 100% }
-                        h2 { margin: 6px 0; font-size: 18px; }
+                        h2 { margin: 6px 0; }
                     }
                 }
             }
@@ -254,8 +265,7 @@
             }
             .content-wrap { 
                 .content { 
-                    margin-bottom: 8px; height: 360px; overflow: hidden;
-                    font-size: @colTextSize + 0px;
+                    margin-bottom: 8px; height: 360px; overflow: hidden;               
                 }
                 
                 .overlay {
@@ -275,9 +285,9 @@
                     background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
                 }
-                .activity { .fontBase; float: right; color: @colorNeutral; font-size: 12px;  font-weight: bold; line-height: 1.3em; padding-right: 4px; }
+                .activity { .fontBase; font-size: 0.75em; float: right; color: @colorNeutral; font-weight: bold; line-height: 1.3em; padding-right: 4px; }
 
-                .desc-styles-mixin(14);
+                .desc-styles-mixin;
             }
             
             .image + .content-wrap .content { max-height: 188px }
@@ -288,7 +298,7 @@
                 .image + .content-wrap .content { max-height: 248px }
             }
             
-            h2 { margin: 0 0 8px 0; line-height: 1.1em; font-size: @colHeaderSize + 0px; }            
+            h2 { margin: 0 0 8px 0; line-height: 1.1em; }            
             p { margin: 0 0 12px 0 }
             
             /* wide column is only needed if width isn't in percetage. */
@@ -298,13 +308,15 @@
                     .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
                     .content-wrap { 
                         float: left; height: 280px; width: @wideColWidth + 0px; 
-                        .content { max-height: 200px; }
+                        .content { 
+                            max-height: 200px; 
+                            h2 { font-size: 1.7em }
+                        }
                         .overlay { width: @wideColWidth + 0px }
                         .source {
                             .text { width: (@wideColWidth - 160) }
                         }
                     }
-                    h2 { font-size: 28px; }
                 }                        
             }                      
             .wide-column();  
@@ -312,9 +324,9 @@
     }
 }
 
-.desc-styles-mixin (@fontSize) {
+.desc-styles-mixin {
     .iconic-desc {
-        font-size: @fontSize + 0px; line-height: 1.2em; display: block;
+        line-height: 1.2em; display: block; font-size: 0.9em;
         img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
         .text { display: block; margin-left: 40px; }
         
@@ -322,29 +334,28 @@
     }
 
     ul.desc-text {
+        font-size: 0.9em;
         li {
-            font-size: @fontSize + 0px; line-height: 1.2em; display: block; padding-bottom: 8px;
+            line-height: 1.2em; display: block; padding-bottom: 8px;
             .text { display: block; }
         }
     }
 }
 
-.single-item-mixin (@width, @sidebarWidth, @headingSize, @contentSize) {
+.single-item-mixin (@width, @sidebarWidth) {
     .item {
         width: @width; margin: auto; 
-        h1 { font-size: @headingSize + 0px }
         .content { 
-            font-size: @contentSize + 0px;
+            font-size: 1.1em;
             .wider { width: @width + 40px; }
         }
     }
     
     .sidebar {
+        font-size: 0.9em;
         width: @sidebarWidth;
     }
 }
-
-.page-sections-mixin;
 
 /* .*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
 @media (min-width: 1760px) { 
@@ -369,6 +380,7 @@
 
 @media (min-width: 1200px) { 
     .large-std-page-mixin();
+    .page-sections-mixin(16);
 }
 
 @media (min-width: 1024px) and (max-width: 1199px) { 
@@ -382,7 +394,7 @@
 }
 
 @media (min-width: 960px) and (max-width: 1199px) { 
-    .small-std-page-mixin(640, 640, 28, 18);
+    .small-std-page-mixin(640, 640);
 }
 
 @media (min-width: 720px) and (max-width: 959px) { 
@@ -391,24 +403,32 @@
 }
 
 @media (min-width: 720px) and (max-width: 959px) { 
-    .small-std-page-mixin(600, 600, 28, 18);
+    .small-std-page-mixin(600, 600);
+}
+
+@media (min-width: 720px) and (max-width: 1199px) { 
+    .page-sections-mixin(16);
+}
+
+@media (max-width: 719px) { 
+    .page-sections-mixin(15);
 }
 
 @media (min-width: 580px) and (max-width: 719px) { 
     .tiny-cover-page-mixin(540);
-    .tiny-std-page-mixin(24, 16);    
+    .tiny-std-page-mixin();    
     .cards-mixin(100%; 32; 22; 16; 220; 380);
 }
 
 @media (min-width: 480px) and (max-width: 579px) { 
+    .tiny-std-page-mixin();    
     .tiny-cover-page-mixin(440);
-    .tiny-std-page-mixin(20, 16);    
     .cards-mixin(100%; 32; 22; 16; 220; 380);
 }
 
 @media (max-width: 479px) { 
+    .tiny-std-page-mixin();    
     .tiny-cover-page-mixin(100%);
-    .tiny-std-page-mixin(18, 14);    
     .cards-mixin(100%; 32; 22; 14; 220; 380);
 }
 

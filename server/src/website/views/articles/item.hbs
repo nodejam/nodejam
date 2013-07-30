@@ -2,14 +2,6 @@
     view = new Fora.Views.Articles.Item()
 </script>
 <div class="page-wrap">
-    <ul class="nav">
-        <li>
-            <a href="/">Posts</a>
-        </li>
-        <li class="selected">
-            <a href="/forums">Forums</a>
-        </li>            
-    </ul>
     <div class="content-area">    
         <div class="item text">
             {{#if article.cover}} 
@@ -20,7 +12,7 @@
                 <img src="{{user.assetPath}}/{{user.domain}}-{{user.username}}_t.jpg" alt="{{user.name}}" />
                 <span class="text">
                     <a href="{{userUrl user}}">{{user.name}}</a><br />
-                    <span class="light-text">Yesterday</span>
+                    <span class="light-text">Posted yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
                 </span>                
             </div>
             <div class="content">
@@ -34,6 +26,9 @@
             </div>
             <p>
                 {{user.about}}
+            </p>
+            <p>
+                <span class="light-text">Posted yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>                
             </p>
         </div>          
     </div>

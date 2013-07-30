@@ -6,18 +6,17 @@ class Index extends Fora.Views.BaseView
 
         
     attachEvents: =>
-        $('.collection-items li a').click ->
+        $('.collection-items li a').clickHandler ->
             window.location.href = $(@).attr 'href'
             false
             
-        $('.collection-items li').click @gotoPost
+        $('.collection-items li').clickHandler @gotoPost
 
 
     
     gotoPost: ->
         url = $(this).data('url')
         window.location.href = url
-        false  
         
                           
 window.Fora.Views.Forums.Index = Index
