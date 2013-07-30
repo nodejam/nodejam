@@ -16,17 +16,13 @@ class App
     init: =>
         $(document).clickHandler '.logo', =>
             $('.site-options').show()
-            false
 
-        $(document).bindNew 'click', '.cover', =>
+        $(document).bindNew 'click touch', '.cover', =>
             $('.site-options').hide()
             
-        $(document).bindNew 'click', '.container', =>
+        $(document).bindNew 'click touch', '.container', =>
             $('.site-options').hide()
         
-        $(document).clickHandler '.account-options .logout', =>
-            @logout()
-
 
     getUser: =>
         {
@@ -122,8 +118,8 @@ $.fn.clickHandler = (selector, fn) ->
     _fn = ->
         fn.apply this, arguments
         false
-    $(this).off 'click', selector
-    $(this).on 'click', selector, _fn
+    $(this).off 'click touch', selector
+    $(this).on 'click touch', selector, _fn
     
 $.fn._hide = () ->
     $(this).removeClass 'visible'
