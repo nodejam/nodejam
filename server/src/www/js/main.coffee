@@ -15,10 +15,11 @@ class App
 
     init: =>
         $(document).clickHandler '.logo', =>
-            $('.logo').show()        
+            $('.logo').hide()        
             $('.site-options').show()
 
         $(document).bindNew 'click touch', '.site-options .transparent-overlay', =>
+            $('.logo').show()        
             $('.site-options').hide()
             
         
