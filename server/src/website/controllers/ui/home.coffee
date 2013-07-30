@@ -36,5 +36,12 @@ class Home extends controller.Controller
                     }
 
 
+    login: (req, res, next) =>
+        res.render req.network.views.home.login, { 
+            pageName: 'login-page', 
+            pageType: 'std-page', 
+        }
+
+
 
 exports.Home = Home

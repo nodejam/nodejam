@@ -11,18 +11,24 @@
 /* By default, scr-tiny is hidden and will be show only on tiny screens */
 .scr-tiny { display: none }
 
-.page-sections-mixin (@fontSize) {
+.page-sections-base-mixin (@fontSize) {
+    .container { 
+        font-size: @fontSize + 0px;
+    }
+}
+
+.page-sections-mixin {
     /* HEADER and LOGO */
     .header {
         .logo {
-            .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #ddd; color: white; float: left; 
+            .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left; 
             text-transform: uppercase; position: absolute; top: 6px; left: 6px; 
             &:hover { background: #333; }
         }    
     }
     
     .site-options {
-        height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 2000; box-shadow: 4px 0 4px black;
+        height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 99; box-shadow: 4px 0 4px black;
                             
         ul {
             background: @colorDark; opacity: 0.95; width: 220px; height: 100%;
@@ -56,7 +62,6 @@
 
     .container { 
         text-align: center; 
-        font-size: @fontSize + 0px;
         .page-wrap { 
             text-align: left; margin: auto;
         }
@@ -398,7 +403,8 @@
 
 @media (min-width: 1200px) { 
     .large-std-page-mixin();
-    .page-sections-mixin(16);
+    .page-sections-base-mixin(16);
+    .page-sections-mixin;
 }
 
 @media (min-width: 1024px) and (max-width: 1199px) { 
@@ -425,11 +431,13 @@
 }
 
 @media (min-width: 720px) and (max-width: 1199px) { 
-    .page-sections-mixin(16);
+    .page-sections-base-mixin(16);
+    .page-sections-mixin;
 }
 
 @media (max-width: 719px) { 
-    .page-sections-mixin(15);
+    .page-sections-base-mixin(15);
+    .page-sections-mixin;
 }
 
 @media (min-width: 580px) and (max-width: 719px) { 
@@ -450,5 +458,30 @@
     .cards-mixin(100%; 32; 22; 14; 220; 380);
 }
 
-/* HOME */
+/* LOGIN PAGE */
+.login-page {
+    .page-wrap {
+        .section {
+            padding: 16px 32px 32px 32px; background: @colorLighter;
+            h2 { clear: both; margin: 0 }
+            ul {
+                font-size: 12px; font-weight: bold;
+                li { 
+                    float: left; width: 96px; text-align: center; margin: 12px 12px 0 0; padding: 12px; background: white;
+                    i { 
+                        font-size: 40px; 
+                        &.icon-twitter { color: #9ae4e8 }
+                        &.icon-facebook { color: #3b5998 }
+                        &.icon-google-plus { color: #d34836 }
+                    }
+                }
+            }    
+            h4 { padding-top: 32px; clear: both }
+        }
+    }
+}
+
+
+
+
 

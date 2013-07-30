@@ -38,6 +38,7 @@ defaultViews =   {
     defaultLayout: 'layouts/default',
     home: {
         index: 'home/index.hbs',
+        login: 'home/login.hbs',        
     },
     forums: {
         index: 'forums/index.hbs',

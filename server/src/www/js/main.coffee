@@ -1,9 +1,10 @@
 window.Fora = {
     Views: {
         Home: {},
-        Collections: {},
+        Forums: {},
         Users: {},
-        Posts: {}
+        Posts: {},
+        Articles: {}
     }
 }
 
@@ -14,6 +15,17 @@ class App
 
 
     init: =>
+        @attachHandlers()
+
+        user = @getUser()
+        if user
+            $('.site-options .account').html "<a href=\"#{@getUserUrl()}\"><i class=\"icon-user\"></i>#{user.username}</a>"
+        else
+            $('.site-options .account').html "<a class=\"login\" href=\"/login\"><i class=\"icon-signin\"></i>Login</a>"
+
+
+            
+    attachHandlers: =>
         $(document).clickHandler '.logo', =>
             $('.logo').hide()        
             $('.site-options').show()
@@ -21,17 +33,22 @@ class App
         $(document).bindNew 'click touch', '.site-options .transparent-overlay', =>
             $('.logo').show()        
             $('.site-options').hide()
-            
-        
+                    
+        $(document).clickHandler '.site-options .account .login', =>
+            $('.login-popup').leanModal()
+                    
+                
 
     getUser: =>
-        {
-            id: $.cookie('userid'),
-            domain: $.cookie('domain'),
-            username: $.cookie('username'),
-            name: $.cookie('fullName'),
-            passkey: $.cookie('passkey')
-        }
+        if $.cookie('userid')
+            {
+                id: $.cookie('userid'),
+                domain: $.cookie('domain'),
+                username: $.cookie('username'),
+                name: $.cookie('fullName'),
+                passkey: $.cookie('passkey')
+            }
+              
         
         
     getUserUrl: =>

@@ -102,6 +102,7 @@ app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.admin_update)
 # UI Routes
 # ---------
 app.get '/', findHandler('ui/home', (c) -> c.index)
+app.get '/login', findHandler('ui/home', (c) -> c.login)
 app.get '/forums', findHandler('ui/forums', (c) -> c.index)
 app.get '/users/:id', findHandler('ui/users', (c) -> c.item)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.item)

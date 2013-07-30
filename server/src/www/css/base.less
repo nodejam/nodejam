@@ -21,15 +21,18 @@
 @colorPositive: #060;
 @colorDarkPositive: darken(@colorPositive, 10%);
 
-@colorLight: #eee;
-@colorLighter: lighten(@colorLight, 3%);
+@colorLight: #ccc;
+@colorLighter: #f6f6f6;
 @colorLightest: #fff;
-@colorDark: #333;
-@colorDarker: darken(@colorDark, 20%);
-@colorDarkest: #000;
 @colorNeutral: #999;
+@colorDark: #333;
+@colorDarker: #666;
+@colorDarkest: #000;
 
-.control (@fg, @bg) { color: @fg; background-color: @bg; border: none; border-bottom: 1px solid darken(@bg, 10%); border-right: 1px solid darken(@bg, 10%); }
+.control (@fg, @bg) { 
+    color: @fg; background-color: @bg; border-top: 1px solid darken(@bg, 5%); border-right: 1px solid darken(@bg, 20%);     
+    border-bottom: 1px solid darken(@bg, 20%); border-left: 1px solid darken(@bg, 5%);
+}
 
 /* BORDERS */
 .rounded { border-radius: 2px; }
@@ -48,7 +51,7 @@ a, a:visited, a:hover, span.anchor, span.anchor:hover { color: @colorLink; text-
     a img { border: none }
 
 /* FORM CONTROLS */
-input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff); .rounded; padding: 7px 4px; margin: 2px 0 2px 0; }
+input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff); .rounded; padding: 6px 4px 8px 4px; margin: 2px 0 2px 0; }
     input[type="checkbox"] { margin-right: 4px; }
     input[type="file"] { padding: 0; border: none }
 
@@ -68,7 +71,7 @@ button { .fontBase; .control(@colorText, @colorLighter); .rounded; padding: 9px 
 /* LIST */
 ul { margin: 0; padding: 0 }
 p { margin:0 0 1em 0; padding: 0 }
-h1, h2, h3 { margin:0 0 0.6em 0; padding: 0 }
+h1, h2, h3, h4 { margin:0 0 0.6em 0; padding: 0 }
 h1 { font-size: 1.8em }
 h2 { font-size: 1.4em }
 li { list-style: none }    
