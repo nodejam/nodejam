@@ -22,8 +22,10 @@
     }
     
     .site-options {
-        background: @colorDark; opacity: 0.95; width: 220px; height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 2000;
+        height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 2000;
+                            
         ul {
+            background: @colorDark; opacity: 0.95; width: 220px; height: 100%;
             padding-top: 12px; font-size: 12px; font-weight: bold; color: @colorLight;
             li {                
                 a { 
@@ -31,6 +33,9 @@
                     display: block; padding: 10px; border-bottom: 1px solid #444; padding-left: 32px; color: @colorLight 
                 }
             }
+        }
+        .transparent-overlay {
+            position: fixed; margin-left: 220px; height: 100%; top: 0; left: 0; width: 100%; cursor: pointer;
         }
     }
 

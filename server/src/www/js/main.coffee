@@ -15,13 +15,12 @@ class App
 
     init: =>
         $(document).clickHandler '.logo', =>
+            $('.logo').show()        
             $('.site-options').show()
 
-        $(document).bindNew 'click touch', '.cover', =>
+        $(document).bindNew 'click touch', '.site-options .transparent-overlay', =>
             $('.site-options').hide()
             
-        $(document).bindNew 'click touch', '.container', =>
-            $('.site-options').hide()
         
 
     getUser: =>

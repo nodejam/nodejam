@@ -1,7 +1,7 @@
 class BaseView
 
     constructor: (options = {}) ->         
-        @instanceid = Lappd.uniqueId()     
+        @instanceid = Fora.uniqueId()     
         @href = window.location.href
         $(document).ready @attachEvents
         
