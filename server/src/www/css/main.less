@@ -36,7 +36,7 @@
 
     /* NAVIGATION BARS */
     .nav {         
-        height: 24px; @fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; margin-top: -14px;
+        height: 24px; @fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; margin-bottom: 16px;
         li { 
             float: left; padding-right: 12px; color: @colorNeutral; 
             &.selected { color: @colorDark }
@@ -50,7 +50,7 @@
     }
 
     .container { 
-        text-align: center; margin-top: 32px;
+        text-align: center; 
         font-size: @fontSize + 0px;
         .page-wrap { 
             text-align: left; margin: auto;
@@ -80,7 +80,7 @@
         }
         
         .container {
-            margin-right: @coverWidth + 0px;
+            margin-right: @coverWidth + 0px; margin-top: 72px;
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
                 padding: 0 0 0 (@colSpacing / 2) + 0px;
@@ -94,22 +94,26 @@
     .large-page-element { display: block }
 
     .std-page {
-        .page-wrap {
-            width: 980px; margin: auto; padding: 0;            
-            .single-item-mixin (640px, 280px);
-            .item { 
-                float: left; margin-right: 60px; 
-                .cover { width: 100%; margin-bottom: 20px; }
-                &.text { 
-                    &.text { .content-text-mixin; }
+        .container {
+            margin-top: 72px;
+
+            .page-wrap {
+                width: 980px; margin: auto; padding: 0;            
+                .single-item-mixin (640px, 280px);
+                .item { 
+                    float: left; margin-right: 60px; 
+                    .cover { width: 100%; margin-bottom: 20px; }
+                    &.text { 
+                        &.text { .content-text-mixin; }
+                    }
                 }
-            }
-            .sidebar { 
-                float: left; 
-                .header { 
-                    margin-top: 32px;
-                    img { width: 120px; border-radius: 100% }
-                    h2 { margin: 6px 0; }
+                .sidebar { 
+                    float: left; 
+                    .header { 
+                        margin-top: 32px;
+                        img { width: 120px; border-radius: 100% }
+                        h2 { margin: 6px 0; }
+                    }
                 }
             }
         }
@@ -130,6 +134,8 @@
         }
 
         .container {
+            margin-top: 24px;
+
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
                 padding: 0 0 0 (@colSpacing / 2) + 0px;
@@ -143,25 +149,29 @@
     .small-page-element { display: block }
 
     .std-page {
-        .page-wrap {
-            width: @width + 0px; margin: auto; padding: 0;            
-            .single-item-mixin (100%, 100%);
-            .item { 
-                .cover { width: 100%; margin-bottom: 20px; }
+        .container {
+            margin-top: 24px;
 
-                .desc-styles-mixin;
+            .page-wrap {
+                width: @width + 0px; margin: auto; padding: 0;            
+                .single-item-mixin (100%, 100%);
+                .item { 
+                    .cover { width: 100%; margin-bottom: 20px; }
 
-                &.text { 
-                    &.text { .content-text-mixin; }
+                    .desc-styles-mixin;
+
+                    &.text { 
+                        &.text { .content-text-mixin; }
+                    }
                 }
-            }
-            .sidebar { 
-                .header { 
-                    img { width: 120px; border-radius: 100% }
-                    h2 { margin: 6px 0; }
+                .sidebar { 
+                    .header { 
+                        img { width: 120px; border-radius: 100% }
+                        h2 { margin: 6px 0; }
+                    }
                 }
-            }
-        }    
+            }    
+        }
     }
 }
 
@@ -175,8 +185,9 @@
         }
 
         .container {
-            .columns-wrap {
+            margin-top: 24px;
 
+            .columns-wrap {
                 .widths() when not (ispercentage(@width)) {
                     width: @width + 0px; margin: auto;
                 }
@@ -194,25 +205,29 @@
     .tiny-page-element { display: block }
 
     .std-page {
-        .page-wrap {
-            margin: auto 32px; padding: 0;            
-            .single-item-mixin (100%, 100%);
-            .nav { margin-left: 40px; }
-            .content-area {
-                margin-top: 28px;
-                .item { 
-                    .cover { width: 100%; margin-bottom: 20px; }
-                    .desc-styles-mixin;
-                    &.text { .content-text-mixin; }
-                }
-                .sidebar { 
-                    .header { 
-                        img { width: 120px; border-radius: 100% }
-                        h2 { margin: 6px 0; }
+        .container {
+            margin-top: 24px;
+
+            .page-wrap {
+                margin: auto 32px; padding: 0;            
+                .single-item-mixin (100%, 100%);
+                .nav { margin-left: 40px; }
+                .content-area {
+                    margin-top: 28px;
+                    .item { 
+                        .cover { width: 100%; margin-bottom: 20px; }
+                        .desc-styles-mixin;
+                        &.text { .content-text-mixin; }
+                    }
+                    .sidebar { 
+                        .header { 
+                            img { width: 120px; border-radius: 100% }
+                            h2 { margin: 6px 0; }
+                        }
                     }
                 }
-            }
-        }    
+            }    
+        }
     }
 }
 
