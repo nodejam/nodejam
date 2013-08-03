@@ -1,8 +1,17 @@
 Mongo = require 'mongodb'
 utils = require './utils'
+defer = require('./deferred').defer
 
 class Database
     constructor: (@conf) ->
+
+
+    _defer: (deferred, err, result) =>
+        if err
+            deferred.reject err
+        else
+            deferred.resolve result
+        
 
 
     getDb: (cb) =>
@@ -12,7 +21,7 @@ class Database
                 cb err, @db
         else
             cb null, @db
-        
+
 
 
     execute: (task) =>
@@ -24,74 +33,107 @@ class Database
 
 
 
-    insert: (collectionName, document, cb) =>
+    insert: (collectionName, document) =>
+        deferred = defer()
+
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 collection.insert document, { safe: true }, (e, r) =>
-                    cb? e, r?[0]
+                    @_defer deferred, err, r?[0]
                     completionCallback(e)
 
+        deferred.promise
+        
+        
 
+    update: (collectionName, params, document) =>
+        deferred = defer()
 
-    update: (collectionName, params, document, cb) =>
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 collection.update params, document, { safe: true, multi: false }, (e, r) =>
-                    cb? e, r
+                    @_defer deferred, err, r?[0]
                     completionCallback(e)
 
+        deferred.promise
 
 
-    updateAll: (collectionName, params, document, cb) =>
+
+    updateAll: (collectionName, params, document) =>
+        deferred = defer()
+
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 collection.update params, document, { safe: true, multi: true }, (e, r) =>
-                    cb? e, r
+                    @_defer deferred, e, r?[0]
                     completionCallback(e)
 
+        deferred.promise
 
 
-    find: (collectionName, query, cb) =>
+
+    find: (collectionName, query) =>
+        deferred = defer()
+
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 cursor = collection.find query
-                cb? err, cursor
+                @_defer deferred, err, cursor
                 completionCallback(err)
                 
+        deferred.promise
 
 
-    findWithOptions: (collectionName, query, options, cb) =>
+
+    findWithOptions: (collectionName, query, options) =>
+        deferred = defer()
+
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 cursor = collection.find(query, options)
-                cb? err, cursor
+                @_defer deferred, err, cursor
                 completionCallback(err)
 
-
-
-    findOne: (collectionName, query, cb) =>     
-        @find collectionName, query, (err, cursor) =>
-            cursor.nextObject (err, item) =>
-                cb? err, item
+        deferred.promise
 
 
 
-    remove: (collectionName, params, cb) =>
+    findOne: (collectionName, query) =>     
+        deferred = defer()
+
+        @find(collectionName, query)
+            .then (cursor) =>
+                cursor.nextObject (err, item) =>
+                    @_defer deferred, err, item
+
+        deferred.promise
+
+
+
+    remove: (collectionName, params) =>
+        deferred = defer()
+
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 collection.remove params, { safe:true }, (e, r) ->
-                    cb? e, r
+                    @_defer deferred, e, r
                     completionCallback(e)
                     
+        deferred.promise
+
 
                     
-    incrementCounter: (key, cb) =>
+    incrementCounter: (key) =>
+        deferred = defer()
+
         @execute (db, completionCallback) =>
             db.collection '_counters', (err, collection) =>
                 collection.findAndModify { key: key }, {}, { $inc: { value: 1 } }, {}, (e, kvp) => 
-                    cb? e, kvp.value
+                    @_defer deferred, e, kvp.value
                     completionCallback(e)
                     
+        deferred.promise
+
 
 
     @ObjectId: (id) =>

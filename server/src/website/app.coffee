@@ -117,7 +117,7 @@ app.use(app.router)
 
 #handle errors
 app.use (err, req, res, next) ->
-    utils.log err
+    utils.dumpError err
     res.send(500, { error: err })
 
 

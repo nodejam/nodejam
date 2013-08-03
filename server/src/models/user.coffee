@@ -2,6 +2,7 @@ bcrypt = require('bcrypt')
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
+defer = require('../common/deferred').defer
 
 class User extends BaseModel
 
@@ -34,58 +35,63 @@ class User extends BaseModel
 
    
     #Called from controllers when a new session is created.
-    @create: (userDetails, authInfo, context, db, cb) ->
+    @create: (userDetails, authInfo, context, db) ->
         switch authInfo.type
             when 'builtin'
-                @createBuiltinUser userDetails, authInfo, context, db, cb
+                @createBuiltinUser userDetails, authInfo, context, db
             when 'twitter'
-                @createOrUpdateTwitterUser userDetails, authInfo, context, db, cb
+                @createOrUpdateTwitterUser userDetails, authInfo, context, db
             #when 'facebook'
             
 
             
-    @createBuiltinUser: (userDetails, password, context, db, cb) ->
-        @getModels().Credentials.get { username: userDetails.username }, context, db, (err, credentials) =>         
-            if not credentials
-                user = new User
-                bcrypt.genSalt 10, (err, salt) =>
-                    bcrypt.hash password, salt, (err, hash) =>
-                        credentials = new Credentials {
-                            username: userDetails.username,
-                            token: utils.uniqueId(24), 
-                            builtin: { encryption: 'bcrypt', hash }
-                        }
-                        @updateUser user, userDetails                        
-                        user.save context, db, (err, user) =>                            
-                            credentials.userid = user._id.toString()
-                            credentials.save context, db, (err, credentials) =>
-                                cb null, user, credentials.token
-            else
-                cb new AppError "User #{userDetails.username} already exists.", "USER_ALREADY_EXISTS"
+    @createBuiltinUser: (userDetails, password, context, db) ->
+        deferred = defer()
+        @getModels().Credentials.get({ username: userDetails.username }, context, db)
+            .then (credentials) =>
+                if not credentials
+                    user = new User { username: userDetails.username }                    
+                    bcrypt.genSalt 10, (err, salt) =>
+                        bcrypt.hash password, salt, (err, hash) =>
+                            credentials = new (@getModels().Credentials) {
+                                username: userDetails.username,
+                                token: utils.uniqueId(24), 
+                                builtin: { encryption: 'bcrypt', hash }
+                            }
+                            user.updateFrom userDetails                        
+                            user.save(context, db)
+                                .then (user) =>            
+                                    credentials.userid = user._id.toString()
+                                    credentials.save(context, db)
+                                        .then (credentials) =>
+                                            deferred.resolve { user, token: credentials.token }
+                else
+                    deferred.reject new AppError "User #{userDetails.username} already exists.", "USER_ALREADY_EXISTS"
+        deferred.promise
 
 
   
     #Todo. Token Expiry.   
-    @authenticateBuiltinUser: (username, password, context, db, cb) ->
-        @getModels().Credentials.get { username }, context, db, (err, credentials) =>
-            if credentials.builtin
-                bcrypt.compare password, credentials.builtin.hash, (err, res) ->
-                    if res
-                        User.get { username }, context, db, (err, user) =>
-                            if err
-                                cb err
-                            else
-                                cb null, user, credentials.token
-                    else
-                        cb null, false
-             else
-                cb new AppError "User #{username} does not have an account.", "MISSING_CREDENTIAL_TYPE"
-                
+    @authenticateBuiltinUser: (username, password, context, db) ->
+        deferred = defer()
+        @getModels().Credentials.get({ username }, context, db)
+            .then (credentials) =>
+                if credentials.builtin
+                    bcrypt.compare password, credentials.builtin.hash, (err, res) ->
+                        if res
+                            User.get({ username }, context, db)
+                                .then (user) =>
+                                    deferred.resolve { user, token: credentials.token }
+                        else
+                            deferred.resolve {}
+                 else
+                    deferred.reject new AppError "User #{username} does not have an account.", "MISSING_CREDENTIAL_TYPE"
+        deferred.promise             
+        
                                                         
     
-    @getByUsername: (username, context, db, cb) ->
-        User.get { username }, context, db, (err, user) ->
-            cb null, user
+    @getByUsername: (username, context, db) ->
+        User.get({ username }, context, db)
 
 
 
@@ -106,15 +112,17 @@ class User extends BaseModel
 
 
 
-    save: (context, db, cb) =>
+    save: (context, db) =>
         if not @_id
-            super context, db, (err, user) =>
-                cb err, user
-                userinfo = new (@getModels().UserInfo) {
-                    userid: user._id.toString(),
-                    username: user.username                        
-                }            
-                userinfo.save context, db
+            super(context, db)
+                .then (user) =>               
+                    userinfo = new (@getModels().UserInfo) {
+                        userid: user._id.toString(),
+                        username: user.username                        
+                    }  
+                    userinfo.save(context, db)
+                        .then =>
+                            user
         else
             super        
             

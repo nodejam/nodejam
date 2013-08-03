@@ -110,13 +110,15 @@ init = () ->
         tasks = ->
             async.series createUserTasks, ->
                 utils.log 'Created users.'
+                ###
                 async.series createForumTasks, ->
                     utils.log 'Created forums.'
                     async.series createArticleTasks, ->
                         utils.log 'Created articles.'
                         utils.log 'Setup complete.'
                         cb()
-        
+                ###
+                
         utils.log 'Setup will begin in 3 seconds.'
         setTimeout tasks, 1000
     
