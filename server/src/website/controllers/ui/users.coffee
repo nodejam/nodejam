@@ -16,17 +16,18 @@ class Users extends Controller
     
     item: (req, res, next) =>
         @attachUser arguments, =>
-            models.Forum.find { 'createdBy.username': req.params.id, network: req.network.stub }, ((cursor) -> cursor.sort({ lastPost: -1 }).limit 12), {}, db, (err, featured) =>
-                for forum in featured
-                    forum.summary = forum.getView("card")
-                    forum.summary.view = "standard"
-                
-                res.render req.network.views.forums.index, { 
-                    featured, 
-                    pageName: 'forums-page', 
-                    pageType: 'cover-page', 
-                    cover: '/pub/images/cover.jpg'
-                }
+            models.Forum.find({ 'createdBy.username': req.params.id, network: req.network.stub }, ((cursor) -> cursor.sort({ lastPost: -1 }).limit 12), {}, db)
+                .then (featured) =>
+                    for forum in featured
+                        forum.summary = forum.getView("card")
+                        forum.summary.view = "standard"
+                    
+                    res.render req.network.views.forums.index, { 
+                        featured, 
+                        pageName: 'forums-page', 
+                        pageType: 'cover-page', 
+                        cover: '/pub/images/cover.jpg'
+                    }
 
 
 

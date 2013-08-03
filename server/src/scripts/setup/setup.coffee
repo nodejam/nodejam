@@ -75,7 +75,7 @@ init = () ->
             
         createArticle = (article, cb) ->
             token = _globals.sessions[article._createdBy].token
-            adminkey = _globals.sessions['aaronsw'].token
+            adminkey = _globals.sessions['jeswin'].token
             
             utils.log "Creating a new article with token(#{token})...."
             utils.log "Creating #{article.title}..."
@@ -110,14 +110,12 @@ init = () ->
         tasks = ->
             async.series createUserTasks, ->
                 utils.log 'Created users.'
-                ###
                 async.series createForumTasks, ->
                     utils.log 'Created forums.'
                     async.series createArticleTasks, ->
                         utils.log 'Created articles.'
                         utils.log 'Setup complete.'
                         cb()
-                ###
                 
         utils.log 'Setup will begin in 3 seconds.'
         setTimeout tasks, 1000

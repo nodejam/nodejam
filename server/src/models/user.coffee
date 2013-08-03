@@ -35,10 +35,10 @@ class User extends BaseModel
 
    
     #Called from controllers when a new session is created.
-    @create: (userDetails, authInfo, context, db) ->
+    @createOrUpdate: (userDetails, authInfo, context, db) ->
         switch authInfo.type
             when 'builtin'
-                @createBuiltinUser userDetails, authInfo, context, db
+                @createBuiltinUser userDetails, authInfo.password, context, db
             when 'twitter'
                 @createOrUpdateTwitterUser userDetails, authInfo, context, db
             #when 'facebook'
@@ -70,6 +70,38 @@ class User extends BaseModel
         deferred.promise
 
 
+
+    @createOrUpdateTwitterUser: (userDetails, authInfo, context, db) ->
+        deferred = defer()
+        @getModels().Credentials.get({ twitter: userDetails.username }, context, db)
+            .then (credentials) =>
+                if not credentials
+                    user = new User { username: userDetails.username }                    
+                    credentials = new (@getModels().Credentials) {
+                        username: userDetails.username,
+                        token: utils.uniqueId(24), 
+                        twitter: { username: authInfo.username }
+                    }            
+
+                    user.updateFrom userDetails                        
+
+                    user.save(context, db)
+                        .then (user) =>            
+                            credentials.userid = user._id.toString()
+                            credentials.save(context, db)
+                                .then (credentials) =>
+                                    deferred.resolve { user, token: credentials.token }
+
+                else
+                    @getModels().User.get({ username: credentials.username }, context, db)
+                        .then (user) =>
+                            user.updateFrom userDetails
+                            user.save(context, db)
+                                .then (user) =>
+                                    deferred.resolve { user, token: credentials.token }
+        deferred.promise
+
+
   
     #Todo. Token Expiry.   
     @authenticateBuiltinUser: (username, password, context, db) ->
@@ -88,6 +120,13 @@ class User extends BaseModel
                     deferred.reject new AppError "User #{username} does not have an account.", "MISSING_CREDENTIAL_TYPE"
         deferred.promise             
         
+
+
+    @getUserWithToken: (token, context, db) ->
+        @getModels().Credentials.get({ token }, context, db)
+            .then (credentials) =>
+                User.get({ username: credentials.username }, context, db)
+
                                                         
     
     @getByUsername: (username, context, db) ->

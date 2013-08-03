@@ -3,6 +3,7 @@ utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').marked
 postModule = require('./post')
+defer = require('../common/deferred').defer
 
 class Article extends postModule.Post
 

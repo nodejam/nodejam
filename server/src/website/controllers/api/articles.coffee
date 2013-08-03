@@ -21,8 +21,8 @@ class Articles extends Controller
         
         @parseBody article, req.body
         
-        article.save { user: req.user }, db, (err, article) =>
-            if not err
+        article.save({ user: req.user }, db)
+            .then (article) =>
                 res.send article
                         
                 if req.body.publish is 'true'
@@ -33,16 +33,13 @@ class Articles extends Controller
                         related: [ { type: 'user', id: req.user.id }, { type: 'forum', id: forum.stub } ],
                         data: { article }
                     }
-                    message.save {}, db, (err, msg) =>  
-            else
-                next err
+                    message.save({ user: req.user }, db)
             
                                 
 
     edit: (req, res, next, forum) =>
-        _handleError = @handleError next  
-        models.Article.getById req.params.post, {}, db, (err, article) =>
-            if not err
+        models.Article.getById(req.params.post, { user: req.user }, db)
+            .then (article) =>
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
                         alreadyPublished = article.state is 'published'
@@ -53,8 +50,8 @@ class Articles extends Controller
 
                         @parseBody article, req.body
                              
-                        article.save { user: req.user }, db, _handleError (err, article) =>
-                            if not err
+                        article.save({ user: req.user }, db)
+                            .then (article) =>
                                 if article.createdBy.id is req.user.id and not alreadyPublished and req.body.publish is 'true'
                                     message = new models.Message {
                                         userid: '0',
@@ -63,47 +60,47 @@ class Articles extends Controller
                                         related: [ { type: 'user', id: req.user.id }, { type: 'forum', id: forum.stub } ],
                                         data: { article }
                                     }
-                                    message.save {}, db, (err, msg) =>  
+                                    message.save({ user: req.user }, db)
                     else
                         res.send 'Access denied.'
                 else
                     res.send 'Invalid article.'
-            else
-                next err                    
     
 
 
     remove: (req, res, next, forum) =>
-        models.Article.getById req.params.post, {}, db, (err, article) =>
-            if not err
+        models.Article.getById(req.params.post, { user: req.user }, db)
+            .then (article) =>
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
-                        article.destroy {}, db, (err, article) => 
-                            res.send article
+                        article.destroy({ user: req.user }, db)
+                            .then (article) => 
+                                res.send article
                     else
                         res.send 'Access denied.'
                 else
                     res.send "Invalid article."
-            else
-                next err        
-        
+    
         
     
     addComment: (req, res, next, forum) =>        
         contentType = forum.settings?.comments?.contentType ? 'text'
         if contentType is 'text'
-            models.Article.getById req.params.post, {}, db, (err, article) =>
-                comment = new models.Comment()
-                comment.createdBy = req.user
-                comment.forum = forum.stub
-                comment.itemid = article._id.toString()
-                comment.data = req.body.data
-                comment.save {}, db, (err, comment)=>
-                    res.send comment
+            models.Article.getById(req.params.post, { user: req.user }, db)
+                .then (article) =>
+                    comment = new models.Comment()
+                    comment.createdBy = req.user
+                    comment.forum = forum.stub
+                    comment.itemid = article._id.toString()
+                    comment.data = req.body.data
+                    comment.save({ user: req.user }, db)
+                        .then (comment) =>
+                            res.send comment
                 
         else
             next new AppError 'Unsupported Comment Type', 'UNSUPPORTED_COMMENT_TYPE'
         
+
 
     parseBody: (article, body) =>
         article.format = 'markdown'

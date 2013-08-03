@@ -9,7 +9,7 @@ controller = require('../controller')
 class Users extends controller.Controller
     
     create: (req, res, next) =>
-        switch req.body.credentials_0_type
+        switch req.body.credentials_type
             when 'builtin'
                 @createBuiltinUser req, res, next
             when 'twitter'
@@ -22,16 +22,21 @@ class Users extends controller.Controller
     createBuiltinUser: (req, res, next) =>
         if req.body.secret is conf.auth.adminkeys.default
             req.body.createdVia = 'internal' 
-            models.User.create(req.body, { type: 'builtin' }, {}, db)
+            models.User.createOrUpdate(req.body, { type: 'builtin', password: req.body.credentials_password }, { user: req.user }, db)
                 .then (result) =>
-                    console.log 'got here...'
-                    console.log JSON.stringify result
                     res.contentType 'json'
                     res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
         else
             next new AppError 'Access denied', 'ACCESS_DENIED'
         
-                    
+
+
+    createTwitterUser: (req, res, next) =>
+        models.User.createOrUpdate(req.body, { type: 'twitter', username: req.body.credentials_username, accessToken: req.body.credentials_accessToken }, { user: req.user }, db)
+            .then (result) =>
+                res.contentType 'json'
+                res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
+
 
     ###
     createFacebookUser: (req, res, next) =>

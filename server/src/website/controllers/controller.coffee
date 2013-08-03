@@ -2,44 +2,41 @@ conf = require '../../conf'
 db = new (require '../../common/database').Database(conf.db)
 models = require '../../models'
 AppError = require('../../common/apperror').AppError
-
+defer = require('../../common/deferred').defer
 
 class Controller        
 
     ensureSession: (args, fn) =>
         [req, res, next] = args 
-        @getUserWithtoken (req.query.token ? req.cookies.token), (err, user) =>
-            if user?.id and user?.username
-                req.user = user
-                fn()
-            else
-                res.send { error: 'NO_SESSION' }
+        @getUserWithtoken(req.query.token ? req.cookies.token)
+            .then (user) =>                
+                if user?.id and user?.username
+                    req.user = user
+                    fn()
+                else
+                    res.send { error: 'NO_SESSION' }
 
 
 
     attachUser: (args, fn) ->
         [req, res, next] = args
-        @getUserWithtoken (req.query.token ? req.cookies.token), (err, user) =>
-            req.user = user ? { id: 0 }
-            fn()
+        @getUserWithtoken(req.query.token ? req.cookies.token)
+            .then (user) =>
+                req.user = user ? { id: 0 }
+                fn()
 
 
 
-    getUserWithtoken: (token, cb) ->
+    getUserWithtoken: (token) ->
+        deferred = defer()
         if token
-            models.Session.get { token }, {}, db, (err, session) =>
-                if not err
-                    if session
-                        models.User.getById session.userid, {}, db, (err, user) =>
-                            user = user?.summarize()
-                            cb err, user
-                    else
-                        cb()
-                else
-                    cb err
+            models.User.getUserWithToken(token, {}, db)
+                .then (user) =>
+                    deferred.resolve user.summarize()
         else                
-            cb()
-
+            deferred.resolve()
+        deferred.promise
+        
 
     
     isAdmin: (user) =>

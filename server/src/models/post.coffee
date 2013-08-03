@@ -3,6 +3,7 @@ utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').marked
 BaseModel = require('./basemodel').BaseModel
+defer = require('../common/deferred').defer
 
 class Post extends BaseModel
     
@@ -35,14 +36,14 @@ class Post extends BaseModel
 
 
 
-    @search: (criteria, settings, context, db, cb) =>
+    @search: (criteria, settings, context, db) =>
         limit = @getLimit settings.limit, 100, 1000
                 
         params = {}
         for k, v of criteria
             params[k] = v
         
-        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db, cb        
+        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
         
         
     
@@ -56,22 +57,33 @@ class Post extends BaseModel
         
         
     
-    save: (context, db, cb) =>        
+    save: (context, db) =>        
+        deferred = defer()
+        
         onSave = =>
             if @state is 'published'
-                @getModels().Forum.getById @forum.id, {}, db, (err, forum) =>
-                    forum.refreshSnapshot {}, db, =>
+                @getModels().Forum.getById(@forum.id, context, db)
+                    .then (forum) =>
+                        forum.refreshSnapshot(context, db)
+
         #If there is a stub, check if a post with the same stub already exists.
         if @stub
-            Post.get { @stub }, {}, db, (err, post) =>
-                if not post
-                    onSave()
-                    super
-                else
-                    cb new AppError "Stub already exists", "STUB_EXISTS"
+            Post.get({ @stub }, context, db)
+                .then (post) =>
+                    if post._id.toString() isnt @_id?.toString()
+                        deferred.reject new AppError "Stub already exists", "STUB_EXISTS"
+                    else
+                        super
+                            .then (post) =>
+                                deferred.resolve post                        
+                                onSave()
+
         else
-            onSave()
             super
-            
+                .then (post) =>
+                    deferred.resolve post
+                    onSave()
+                    
+        deferred.promise
             
 exports.Post = Post

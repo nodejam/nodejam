@@ -16,35 +16,38 @@ class Forums extends Controller
     
     index: (req, res, next) =>
         @attachUser arguments, =>
-            models.Forum.find { network: req.network.stub }, ((cursor) -> cursor.sort({ lastPost: -1 }).limit 12), {}, db, (err, featured) =>
-                for forum in featured
-                    forum.summary = forum.getView("card")
-                    forum.summary.view = "standard"
-                
-                res.render req.network.views.forums.index, { 
-                    featured, 
-                    pageName: 'forums-page', 
-                    pageType: 'cover-page', 
-                    cover: '/pub/images/cover.jpg'
-                }
+            models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ lastPost: -1 }).limit 12), {}, db)
+                .then (featured) =>
+                    for forum in featured
+                        forum.summary = forum.getView("card")
+                        forum.summary.view = "standard"
+                    
+                    res.render req.network.views.forums.index, { 
+                        featured, 
+                        pageName: 'forums-page', 
+                        pageType: 'cover-page', 
+                        cover: '/pub/images/cover.jpg'
+                    }
             
     
     
     item: (req, res, next) =>
         @attachUser arguments, =>
-            models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, db, (err, forum) =>
-                models.Post.find { 'forum.stub': req.params.forum, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db, (err, posts) =>
-                    for post in posts
-                            post.summary = post.getView("card")
-                            post.summary.view = "standard"
+            models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
+                .then (forum) =>
+                    models.Post.find({ 'forum.stub': req.params.forum, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
+                        .then (posts) =>
+                            for post in posts
+                                    post.summary = post.getView("card")
+                                    post.summary.view = "standard"
 
-                    res.render req.network.views.forums.item, { 
-                        forum,
-                        posts, 
-                        pageName: 'forum-page', 
-                        pageType: 'cover-page', 
-                        cover: @cover ? '/pub/images/cover.jpg'
-                    }
+                            res.render req.network.views.forums.item, { 
+                                forum,
+                                posts, 
+                                pageName: 'forum-page', 
+                                pageType: 'cover-page', 
+                                cover: @cover ? '/pub/images/cover.jpg'
+                            }
     
     
     
@@ -55,10 +58,13 @@ class Forums extends Controller
 
 
     invokeTypeSpecificController: (req, res, next, getHandler) =>   
-        models.Forum.get { stub: req.params.forum, network: req.network.stub }, {}, db, (err, forum) =>
-            models.Post.get { 'forum.id': forum._id.toString(),  _id: database.ObjectId(req.params.id) }, {}, db, (err, post) =>
-                models.User.getById post.createdBy.id, {}, db, (err, user) =>
-                    getHandler(@getTypeSpecificController(post.type)) req, res, next, post, user, forum
+        models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
+            .then (forum) =>
+                models.Post.get({ 'forum.id': forum._id.toString(), _id: database.ObjectId(req.params.id) }, {}, db)
+                    .then (post) =>
+                        models.User.getById(post.createdBy.id, {}, db)
+                            .then (user) =>
+                                getHandler(@getTypeSpecificController(post.type)) req, res, next, post, user, forum
 
 
 

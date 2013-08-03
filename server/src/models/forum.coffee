@@ -71,14 +71,16 @@ class Forum extends BaseModel
                     @snapshot,
                     image: @icon
                 }
+                
         
         
-    refreshSnapshot: (context, db, cb) =>
-        @getModels().Post.find { 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), {}, db, (err, posts) =>
-            @snapshot = { posts: p.getView("snapshot") for p in posts }
-            if posts.length
-                @lastPost = posts[0].publishedAt
-            @save context, db, cb
+    refreshSnapshot: (context, db) =>
+        @getModels().Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
+            .then (posts) =>
+                @snapshot = { posts: p.getView("snapshot") for p in posts }
+                if posts.length
+                    @lastPost = posts[0].publishedAt
+                @save(context, db)
             
             
     

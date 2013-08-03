@@ -185,7 +185,7 @@ class BaseModel
         
         
     
-    save: (context, db) =>
+    save: (context, db) =>    
         deferred = defer()
 
         modelDescription = @constructor.getModelDescription()
@@ -206,7 +206,7 @@ class BaseModel
             fnSave = =>
                 @_updateTimestamp = Date.now()                
                 @_shard = if modelDescription.generateShard? then modelDescription.generateShard(@) else "1"
-                
+
                 if not @_id?
                     if modelDescription.logging?.isLogged
                         event = {}
@@ -219,8 +219,8 @@ class BaseModel
                             deferred.resolve item
                 else
                     db.update(modelDescription.collection, { _id: @_id }, @)
-                        .then (item) =>
-                            deferred.resolve item
+                        .then (recordsAffected) =>
+                            deferred.resolve recordsAffected
         
             if @_id and modelDescription.concurrency is 'optimistic'
                 @constructor.getById(@_id, context, db)
@@ -249,12 +249,14 @@ class BaseModel
         if not modelDescription.useCustomValidationOnly
             errors = @validateFields modelDescription.fields
             if modelDescription.validate
-                errors.concat modelDescription.validate.call(@, modelDescription.fields)
+                customValidationResults = modelDescription.validate.call @, modelDescription.fields
+                if customValidationResults?.length then errors.concat customValidationResults else []
             else
                 errors
         else
             if modelDescription.validate
-                modelDescription.validate.call @, modelDescription.fields
+                customValidationResults = modelDescription.validate.call @, modelDescription.fields
+                if customValidationResults?.length then customValidationResults else []
             else
                 []
                         
@@ -292,8 +294,9 @@ class BaseModel
                             errors.push "#{fieldName} is #{JSON.stringify value}"
                             errors.push "#{fieldName} should be a #{fieldDef.type}."
 
-        if def.validate            
+        if value and def.validate            
             BaseModel.addError(errors, fieldName, def.validate.call @)
+            
         errors            
         
 
@@ -318,7 +321,6 @@ class BaseModel
                     else
                         list.push error
             return list
-
         if error
             list.push error
             return list

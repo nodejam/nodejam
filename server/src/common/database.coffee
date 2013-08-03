@@ -39,7 +39,7 @@ class Database
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 collection.insert document, { safe: true }, (e, r) =>
-                    @_defer deferred, err, r?[0]
+                    @_defer deferred, e, r?[0]
                     completionCallback(e)
 
         deferred.promise
@@ -52,7 +52,7 @@ class Database
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 collection.update params, document, { safe: true, multi: false }, (e, r) =>
-                    @_defer deferred, err, r?[0]
+                    @_defer deferred, err, r
                     completionCallback(e)
 
         deferred.promise
@@ -65,7 +65,7 @@ class Database
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
                 collection.update params, document, { safe: true, multi: true }, (e, r) =>
-                    @_defer deferred, e, r?[0]
+                    @_defer deferred, e, r
                     completionCallback(e)
 
         deferred.promise

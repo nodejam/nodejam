@@ -11,16 +11,18 @@ class Posts extends Controller
     admin_update: (req, res, next) =>
         @ensureSession [req, res, next], =>
             if @isAdmin(req.user)
-                models.Post.getById req.params.id, {}, db, (err, post) =>
-                    if post
-                        if req.body.meta
-                            for meta in req.body.meta.split(',') 
-                                if post.meta.indexOf(meta) is -1
-                                    post.meta.push meta 
-                        post.save {}, db, (err, post) =>
-                            res.send post
-                    else
-                        next new AppError "Post not found.", 'POST_NOT_FOUND'   
+                models.Post.getById(req.params.id, { user: req.user }, db)
+                    .then (post) =>
+                        if post 
+                            if req.body.meta
+                                for meta in req.body.meta.split(',') 
+                                    if post.meta.indexOf(meta) is -1
+                                        post.meta.push meta
+                                post.save({ user: req.user }, db)                                    
+                                    .then =>
+                                        res.send post
+                        else
+                            next new AppError "Post not found.", 'POST_NOT_FOUND'   
             else
                 next new AppError "Access denied.", 'ACCESS_DENIED'   
             
