@@ -9,6 +9,7 @@ class UserInfo extends BaseModel
             collection: 'userinfo',
             fields: {
                 userid: 'string',
+                username: 'string',
                 subscriptions: { type: 'array', contents: @getModels().Forum.Summary, validate: -> item.validate() for item in @subscriptions },
                 following: { type: 'array', contents: @getModels().User.Summary, validate: -> item.validate() for item in @following },
                 lastMessageAccessTime: { type: 'number', required: false },

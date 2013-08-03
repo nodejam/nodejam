@@ -1,5 +1,5 @@
 modules = {
-    sessions: 'Sessions',
+    users: 'Users',
     forums: 'Forums',
     posts: 'Posts',
     articles: 'Articles',

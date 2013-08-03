@@ -27,10 +27,8 @@ auth = {
 admins = [ 
     {
         id: '__',
-        domain: 'users',
         username: 'jeswin',
         name: 'Jeswin Kumar',
-        domainIdType: 'username'
     }           
 ]
 

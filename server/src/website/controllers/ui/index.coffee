@@ -1,5 +1,5 @@
 modules = {
-    auth: 'Auth',
+    twitterauth: 'TwitterAuth',
     home: 'Home',
     forums: 'Forums',
     users: 'Users',

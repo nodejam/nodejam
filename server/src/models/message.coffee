@@ -36,7 +36,7 @@ class Message extends BaseModel
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
-                                    link: if user.domain is 'twitter' then "/@#{user.username}" else "/#{user.domain}/#{user.username}"
+                                    link: "/users/#{user.username}"
                                 },
                                 verb: "added a new forum",
                                 object: {
@@ -52,7 +52,7 @@ class Message extends BaseModel
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
-                                    link: if user.domain is 'twitter' then "/@#{user.username}" else "/#{user.domain}/#{user.username}"
+                                    link: "/users/#{user.username}"
                                 },
                                 verb: "published",
                                 object: {

@@ -35,6 +35,8 @@ npm install oauth
 npm install forever  
 npm install marked  
 npm install less  
+npm install bcrypt
+npm install q
 
 nginx configuration file
 ------------------------

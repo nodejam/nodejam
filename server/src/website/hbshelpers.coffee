@@ -2,9 +2,6 @@
 exports.register = ->
     hbs = require('hbs')
 
-    hbs.registerHelper 'userUrl', (user) -> if user.domain is 'twitter' then "/@#{user.username}" else "/#{user.domain}/#{user.username}"
-    hbs.registerHelper 'userFeedUrl', (user) -> if user.domain is 'twitter' then "/@#{user.username}/feed" else "/#{user.domain}/#{user.username}/feed"
-
     hbs.registerHelper 'equals', (v1, v2, options) ->
         if v1 is v2
             options.fn(this)

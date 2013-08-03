@@ -46,7 +46,7 @@ app.use (req,res,next) =>
 
 findHandler = (name, getHandler) ->
     controller = switch name.toLowerCase()        
-        when 'ui/auth' then new uiControllers.Auth()
+        when 'ui/twitterauth' then new uiControllers.TwitterAuth()
         when 'ui/users' then new uiControllers.Users()
         when 'ui/home' then new uiControllers.Home()
         when 'ui/forums' then new uiControllers.Forums()
@@ -88,9 +88,10 @@ handleDomainUrls = (domain, fnHandler) ->
 # API Routes
 # ----------
 # AUTH
-app.get '/auth/twitter', findHandler('ui/auth', (c) -> c.twitter)
-app.get '/auth/twitter/callback', findHandler('ui/auth', (c) -> c.twitterCallback)
-app.post '/api/sessions', findHandler('api/sessions', (c) -> c.create)
+app.get '/auth/twitter', findHandler('ui/twitterauth', (c) -> c.twitter)
+app.get '/auth/twitter/callback', findHandler('ui/twitterauth', (c) -> c.twitterCallback)
+app.post '/api/users', findHandler('api/users', (c) -> c.create)
+app.post '/api/login', findHandler('api/users', (c) -> c.login)
 
 # FORUMS and POSTS
 app.post '/api/forums', findHandler('api/forums', (c) -> c.create)
@@ -133,12 +134,12 @@ db.getDb (err, db) ->
         coll.ensureIndex { accessToken: 1 }, ->
 
     db.collection 'users', (_, coll) ->
-        coll.ensureIndex { 'username': 1, 'domain': 1 }, ->
+        coll.ensureIndex { 'username': 1 }, ->
 
     db.collection 'forums', (_, coll) ->
         coll.ensureIndex { 'network': 1 }, ->
         coll.ensureIndex { 'createdBy.id': 1, 'network': 1 }, ->
-        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1, 'network': 1 }, ->
+        coll.ensureIndex { 'createdBy.username': 1, 'network': 1 }, ->
         coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
 
     db.collection 'posts', (_, coll) ->
@@ -147,7 +148,7 @@ db.getDb (err, db) ->
         coll.ensureIndex { state: 1, publishedAt: 1, 'forum.stub': 1 }, ->
         coll.ensureIndex { state: 1, publishedAt: 1, 'forum.id': 1 }, ->
         coll.ensureIndex { 'createdBy.id': 1 }, ->
-        coll.ensureIndex { 'createdBy.username': 1, 'createdBy.domain': 1 }, ->
+        coll.ensureIndex { 'createdBy.username': 1 }, ->
         
     db.collection 'messages', (_, coll) ->
         coll.ensureIndex { userid: 1 }, ->

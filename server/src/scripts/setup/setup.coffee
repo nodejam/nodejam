@@ -44,7 +44,7 @@ init = () ->
         createUser = (user, cb) ->
             utils.log "Creating #{user.username}..." 
             user.secret = conf.auth.adminkeys.default
-            doHttpRequest '/api/sessions', querystring.stringify(user), 'post', (err, resp) ->   
+            doHttpRequest '/api/users', querystring.stringify(user), 'post', (err, resp) ->   
                 resp = JSON.parse resp             
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
@@ -57,12 +57,12 @@ init = () ->
                     createUser user, cb
                     
         createForum = (forum, cb) ->
-            passkey = _globals.sessions[forum._createdBy].passkey
-            utils.log "Creating a new forum #{forum.name} with passkey(#{passkey})...."
+            token = _globals.sessions[forum._createdBy].token
+            utils.log "Creating a new forum #{forum.name} with token(#{token})...."
             
             delete forum._createdBy
             
-            doHttpRequest "/api/forums?passkey=#{passkey}", querystring.stringify(forum), 'post', (err, resp) ->                
+            doHttpRequest "/api/forums?token=#{token}", querystring.stringify(forum), 'post', (err, resp) ->                
                 resp = JSON.parse resp            
                 utils.log "Created #{resp.name}"
                 cb()
@@ -74,10 +74,10 @@ init = () ->
                     createForum forum, cb
             
         createArticle = (article, cb) ->
-            passkey = _globals.sessions[article._createdBy].passkey
-            adminkey = _globals.sessions['jeswin'].passkey
+            token = _globals.sessions[article._createdBy].token
+            adminkey = _globals.sessions['aaronsw'].token
             
-            utils.log "Creating a new article with passkey(#{passkey})...."
+            utils.log "Creating a new article with token(#{token})...."
             utils.log "Creating #{article.title}..."
             
             article.content = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
@@ -91,11 +91,11 @@ init = () ->
             delete article._content
             delete article._meta
             
-            doHttpRequest "/api/forums/#{forum}?passkey=#{passkey}", querystring.stringify(article), 'post', (err, resp) ->                
+            doHttpRequest "/api/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post', (err, resp) ->                
                 resp = JSON.parse resp
                 utils.log "Created #{resp.title} with id #{resp._id}"
                 for metaTag in meta.split(',')
-                    doHttpRequest "/api/admin/posts/#{resp._id}?passkey=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put', (err, resp) ->                
+                    doHttpRequest "/api/admin/posts/#{resp._id}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put', (err, resp) ->                
                         resp = JSON.parse resp
                         utils.log "Added #{metaTag} tag to article #{resp.title}."
                         cb()

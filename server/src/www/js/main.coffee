@@ -14,6 +14,7 @@ class App
         $(document).ready @init
 
 
+
     init: =>
         @attachHandlers()
 
@@ -22,6 +23,7 @@ class App
             $('.site-options .account').html "<a href=\"#{@getUserUrl()}\"><i class=\"icon-user\"></i>#{user.username}</a>"
         else
             $('.site-options .account').html "<a class=\"login\" href=\"/login\"><i class=\"icon-signin\"></i>Login</a>"
+
 
 
             
@@ -43,33 +45,31 @@ class App
         if $.cookie('userid')
             {
                 id: $.cookie('userid'),
-                domain: $.cookie('domain'),
                 username: $.cookie('username'),
                 name: $.cookie('fullName'),
-                passkey: $.cookie('passkey')
+                token: $.cookie('token')
             }
               
         
         
     getUserUrl: =>
         user = @getUser()
-        if user.domain is 'twitter'
-            return "@#{user.username}"
-        else
-            return "#{user.domain}/#{user.username}"
+        "/users/#{user.username}"
+
         
         
     isLoggedInUser: (user) => 
-        (user.domain is @getUser().domain) and (user.username is @getUser().username)
+        user.username is @getUser().username
            
+
 
     login: (resp) =>
         options = {}
         $.cookie 'userid', resp.userid, options
-        $.cookie 'domain', resp.domain, options
         $.cookie 'username', resp.username, options
         $.cookie 'fullName', resp.name, options
-        $.cookie 'passkey', resp.passkey, options
+        $.cookie 'token', resp.token, options
+
 
 
     logout: =>
@@ -77,12 +77,13 @@ class App
         $('.account-options .signin').html '<i class="icon-twitter"></i><a href="/auth/twitter">Sign in</a>'
         
 
+
     clearCookies: =>
         $.removeCookie('userid')
-        $.removeCookie('domain')
         $.removeCookie('username')
         $.removeCookie('fullName')
-        $.removeCookie('passkey')    
+        $.removeCookie('token')    
+        
         
         
     loadScript: (src) =>
@@ -103,9 +104,9 @@ window.Fora.uniqueId = (length = 16) ->
 window.Fora.apiUrl = (url, params = {}, options = { api: 'v1'}) ->
     if /^\//.test(url)
         url = url.substring(1)
-    passkey = app.getUser().passkey
-    if passkey
-        params.passkey = passkey
+    token = app.getUser().token
+    if token
+        params.token = token
     if Object.keys(params).length > 0
         paramArray = []    
         for key, val of params

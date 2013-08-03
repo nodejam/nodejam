@@ -1,3 +1,4 @@
+bcrypt = require('bcrypt')
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
@@ -9,8 +10,6 @@ class User extends BaseModel
             type: User,
             collection: 'users',
             fields: {
-                domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
-                createdVia: { type: 'string', validate: -> ['public', 'internal'].indexOf(@createdVia) isnt -1 },
                 username: 'string',
                 name: 'string',
                 location: 'string',
@@ -31,92 +30,63 @@ class User extends BaseModel
                 onInsert: 'NEW_USER'
             }
         }
-        
-    
+       
+
+   
     #Called from controllers when a new session is created.
-    @getOrCreateUser: (userDetails, domain, accessToken, context, db, cb) =>
-        @getModels().Session.get { accessToken }, context, db, (err, session) =>
-            if err
-                cb err
+    @create: (userDetails, authInfo, context, db, cb) ->
+        switch authInfo.type
+            when 'builtin'
+                @createBuiltinUser userDetails, authInfo, context, db, cb
+            when 'twitter'
+                @createOrUpdateTwitterUser userDetails, authInfo, context, db, cb
+            #when 'facebook'
+            
+
+            
+    @createBuiltinUser: (userDetails, password, context, db, cb) ->
+        @getModels().Credentials.get { username: userDetails.username }, context, db, (err, credentials) =>         
+            if not credentials
+                user = new User
+                bcrypt.genSalt 10, (err, salt) =>
+                    bcrypt.hash password, salt, (err, hash) =>
+                        credentials = new Credentials {
+                            username: userDetails.username,
+                            token: utils.uniqueId(24), 
+                            builtin: { encryption: 'bcrypt', hash }
+                        }
+                        @updateUser user, userDetails                        
+                        user.save context, db, (err, user) =>                            
+                            credentials.userid = user._id.toString()
+                            credentials.save context, db, (err, credentials) =>
+                                cb null, user, credentials.token
             else
-                session ?= new (@getModels().Session) { passkey: utils.uniqueId(24), accessToken }
-                    
-                User.get { domain, username: userDetails.username }, context, db, (err, user) =>
-                    if user?
-                        #Update some details
-                        user.name = userDetails.name ? user.name
-                        user.location = userDetails.location ? user.location
-                        user.picture = userDetails.picture ? user.picture
-                        user.thumbnail = userDetails.thumbnail ? user.thumbnail
-                        user.tile = userDetails.tile ? user.tile
-                        user.about = userDetails.about
-                        user.email = userDetails.email ? 'unknown@foraproject.org'
-                        user.lastLogin = Date.now()
-                        user.save context, db, (err, u) =>
-                            if not err
-                                session.userid = u._id.toString()
-                                session.save context, db, (err, session) =>
-                                    if not err
-                                        cb null, u, session
-                                    else
-                                        cb err
-                            else
-                                cb err
-                        
-                    else                            
-                        #User doesn't exist. create.
-                        user = new User()
-                        user.domain = domain
-                        user.username = userDetails.username
-                        user.createdVia = userDetails.createdVia ? 'public'      
-                        if user.createdVia is 'internal'
-                            if userDetails.assetPath
-                                user.assetPath = userDetails.assetPath    
-                        if domain is 'fb'
-                            user.facebookUsername = userDetails.username
-                        if domain is 'twitter'
-                            user.twitterUsername = userDetails.username
-                        user.name = userDetails.name
-                        user.location = userDetails.location
-                        user.picture = userDetails.picture
-                        user.thumbnail = userDetails.thumbnail
-                        user.tile = userDetails.tile ? '/images/collection-tile.png'
-                        user.email = userDetails.email ? 'unknown@foraproject.org'
-                        user.lastLogin = Date.now()
-                        user.preferences = { canEmail: true }
-                        user.about = userDetails.about
-                        createdAt = new Date()
-                        user.createdAt = createdAt.getTime()                                                                        
+                cb new AppError "User #{userDetails.username} already exists.", "USER_ALREADY_EXISTS"
 
-                        #Allow dev scripts to set assetPath for initial set of users, so that it stays the same.
-                        if user.createdVia is 'internal' and userDetails.assetPath
-                            user.assetPath = userDetails.assetPath    
-                        else
-                            user.assetPath = "/pub/assetpaths/#{createdAt.getFullYear()}-#{createdAt.getMonth()+1}-#{createdAt.getDate()}"
 
-                        user.save context, db, (err, u) =>
-                            #also create the userinfo
-                            if not err
-                                userinfo = new (@getModels().UserInfo)
-                                userinfo.userid = u._id.toString()
-                                userinfo.save context, db, (err, _uinfo) =>
-                                    if not err
-                                        session.userid = u._id.toString()
-                                        session.save context, db, (err, session) =>
-                                            if not err
-                                                cb null, u, session
-                                            else
-                                                cb err
-                                    else
-                                        cb err
-                            else
+  
+    #Todo. Token Expiry.   
+    @authenticateBuiltinUser: (username, password, context, db, cb) ->
+        @getModels().Credentials.get { username }, context, db, (err, credentials) =>
+            if credentials.builtin
+                bcrypt.compare password, credentials.builtin.hash, (err, res) ->
+                    if res
+                        User.get { username }, context, db, (err, user) =>
+                            if err
                                 cb err
-                                
+                            else
+                                cb null, user, credentials.token
+                    else
+                        cb null, false
+             else
+                cb new AppError "User #{username} does not have an account.", "MISSING_CREDENTIAL_TYPE"
+                
+                                                        
     
-    
-    @getByUsername: (domain, username, context, db, cb) ->
-        User.get { domain, username }, context, db, (err, user) ->
+    @getByUsername: (username, context, db, cb) ->
+        User.get { username }, context, db, (err, user) ->
             cb null, user
+
 
 
     constructor: (params) ->
@@ -130,15 +100,49 @@ class User extends BaseModel
         @totalItemCount ?= 0
 
 
+
     getUrl: =>
-        if @domain is 'twitter' then "/@#{@username}" else "/#{@domain}/#{@username}"
+        "/users/@#{username}"
+
+
+
+    save: (context, db, cb) =>
+        if not @_id
+            super context, db, (err, user) =>
+                cb err, user
+                userinfo = new (@getModels().UserInfo) {
+                    userid: user._id.toString(),
+                    username: user.username                        
+                }            
+                userinfo.save context, db
+        else
+            super        
+            
+            
+            
+    updateFrom: (userDetails) =>
+        @name = userDetails.name
+        @location = userDetails.location
+        @picture = userDetails.picture
+        @thumbnail = userDetails.thumbnail
+        @tile = userDetails.tile ? '/images/collection-tile.png'
+        @email = userDetails.email ? 'unknown@foraproject.org'
+        @lastLogin = Date.now()
+        @preferences = { canEmail: true }
+        @about = userDetails.about
+
+        #Allow dev scripts to set assetPath for initial set of users, so that it stays the same.
+        if userDetails.createdVia is 'internal' and userDetails.assetPath
+            @assetPath = userDetails.assetPath    
+        else
+            createdAt = new Date
+            @assetPath = "/pub/assetpaths/#{createdAt.getFullYear()}-#{createdAt.getMonth()+1}-#{createdAt.getDate()}"        
 
 
 
     summarize: =>        
        new Summary {
             id: @_id.toString()
-            domain: @domain
             username: @username
             name: @name,
             @assetPath
@@ -151,7 +155,6 @@ class Summary extends BaseModel
             type: Summary,
             fields: {
                 id: 'string',
-                domain: { type: 'string', validate: -> ['twitter', 'fb', 'users'].indexOf(@domain) isnt -1 },
                 username: 'string',
                 name: 'string',
                 assetPath: 'string'
