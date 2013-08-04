@@ -64,10 +64,10 @@ class Forum extends BaseModel
             when 'card'
                 {
                     id: @_id.toString()
-                    network: @network,
-                    name: @name,
-                    stub: @stub,
-                    createdBy: @createdBy,
+                    @network,
+                    @name,
+                    @stub,
+                    @createdBy,
                     @snapshot,
                     image: @icon
                 }
