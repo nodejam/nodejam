@@ -10,10 +10,6 @@ controllers = require './'
 
 class Forums extends Controller
 
-    constructor: ->
-
-    
-    
     index: (req, res, next) =>
         @attachUser arguments, =>
             models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ lastPost: -1 }).limit 12), {}, db)
@@ -60,7 +56,7 @@ class Forums extends Controller
     invokeTypeSpecificController: (req, res, next, getHandler) =>   
         models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
             .then (forum) =>
-                models.Post.get({ 'forum.id': forum._id.toString(), _id: database.ObjectId(req.params.id) }, {}, db)
+                models.Post.get({ 'forum.id': forum._id.toString(), stub: (req.params.stub) }, {}, db)
                     .then (post) =>
                         models.User.getById(post.createdBy.id, {}, db)
                             .then (user) =>

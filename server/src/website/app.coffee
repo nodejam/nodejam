@@ -107,7 +107,7 @@ app.get '/login', findHandler('ui/home', (c) -> c.login)
 app.get '/forums', findHandler('ui/forums', (c) -> c.index)
 app.get '/users/:id', findHandler('ui/users', (c) -> c.item)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.item)
-app.get '/:forum/:id', findHandler('ui/forums', (c) -> c.post)
+app.get '/:forum/:stub', findHandler('ui/forums', (c) -> c.post)
 
 #Register templates, helpers etc.
 require("./hbshelpers").register()

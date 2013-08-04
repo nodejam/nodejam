@@ -68,7 +68,7 @@ class User extends BaseModel
                 else
                     deferred.reject new AppError "User #{userDetails.username} already exists.", "USER_ALREADY_EXISTS"
         deferred.promise
-
+       
 
 
     @createOrUpdateTwitterUser: (userDetails, authInfo, context, db) ->

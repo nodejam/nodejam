@@ -19,7 +19,7 @@ class Post extends BaseModel
                 forum: { type: models.Forum.Summary },
                 createdBy: { type: models.User.Summary, validate: -> @createdBy.validate() },
                 meta: { type: 'array', contents: 'string' },
-                stub: { type: 'string', required: false },
+                stub: { type: 'string' },
                 state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },
                 title: 'string',
                 recommendations: { type: 'array', contents: models.User.Summary, validate: -> user.validate() for user in @recommendations },                                
@@ -58,32 +58,31 @@ class Post extends BaseModel
         
     
     save: (context, db) =>        
-        deferred = defer()
-        
-        onSave = =>
+        refreshSnapshot = =>
             if @state is 'published'
                 @getModels().Forum.getById(@forum.id, context, db)
                     .then (forum) =>
                         forum.refreshSnapshot(context, db)
 
-        #If there is a stub, check if a post with the same stub already exists.
-        if @stub
-            Post.get({ @stub }, context, db)
-                .then (post) =>
-                    if post._id.toString() isnt @_id?.toString()
-                        deferred.reject new AppError "Stub already exists", "STUB_EXISTS"
+        #Make sure we aren't overwriting another post with the same stub in the same forum.
+        Post.get({ @stub, 'forum.id': @forum.id }, context, db)
+            .then (post) =>
+                if post and (post._id.toString() isnt @_id?.toString()) #Same post?
+                    if @_id
+                        #We prefix the id so that sameness goes away                    
+                        @stub = @_id?.toString() + "-" + @stub
                     else
-                        super
-                            .then (post) =>
-                                deferred.resolve post                        
-                                onSave()
-
-        else
-            super
-                .then (post) =>
-                    deferred.resolve post
-                    onSave()
-                    
-        deferred.promise
+                        #No id yet. So, we'll do this once the post gets saved and gets an id.
+                        stub = @stub
+                        @stub = undefined
+                super(context, db)
+                    .then (post) =>
+                        if stub
+                            refreshSnapshot()
+                            post.stub = post._id.toString() + "-" + stub
+                            post.save(context, db)
+                        else
+                            refreshSnapshot()
+                            post
             
 exports.Post = Post

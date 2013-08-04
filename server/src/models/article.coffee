@@ -35,7 +35,8 @@ class Article extends postModule.Post
                     image: @smallCover,
                     @title,
                     @createdBy,
-                    id: @_id.toString()
+                    id: @_id.toString(),
+                    @stub
                 } 
             when "card"
                 {
@@ -44,7 +45,8 @@ class Article extends postModule.Post
                     content: @formatContent(),
                     @createdBy,
                     @forum,
-                    id: @_id.toString()
+                    id: @_id.toString(),
+                    @stub
                 }
 
     

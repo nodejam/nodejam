@@ -104,15 +104,10 @@ class Articles extends Controller
 
     parseBody: (article, body) =>
         article.format = 'markdown'
-
-        if body.stub
-            article.stub = body.stub.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
-
-        if body.title
-            article.title = body.title
-
-        if body.content
-            article.content = body.content
+        
+        article.title = body.title
+        article.stub = body.title.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
+        article.content = body.content
 
         if body.cover
             article.cover = body.cover
