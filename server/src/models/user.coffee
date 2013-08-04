@@ -1,8 +1,9 @@
-bcrypt = require('bcrypt')
+
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
 defer = require('../common/deferred').defer
+hasher = require('../common/hasher').hasher
 
 class User extends BaseModel
 
@@ -44,31 +45,34 @@ class User extends BaseModel
             #when 'facebook'
             
 
-            
     @createBuiltinUser: (userDetails, password, context, db) ->
         deferred = defer()
         @getModels().Credentials.get({ username: userDetails.username }, context, db)
             .then (credentials) =>
                 if not credentials
                     user = new User { username: userDetails.username }                    
-                    bcrypt.genSalt 10, (err, salt) =>
-                        bcrypt.hash password, salt, (err, hash) =>
-                            credentials = new (@getModels().Credentials) {
-                                username: userDetails.username,
-                                token: utils.uniqueId(24), 
-                                builtin: { encryption: 'bcrypt', hash }
-                            }
-                            user.updateFrom userDetails                        
-                            user.save(context, db)
-                                .then (user) =>            
-                                    credentials.userid = user._id.toString()
-                                    credentials.save(context, db)
-                                        .then (credentials) =>
-                                            deferred.resolve { user, token: credentials.token }
+
+                    hasher { plaintext: password }, (err, result) =>
+                        # Save as hex strings
+                        salt = result.salt.toString 'hex'
+                        hash = result.key.toString 'hex'
+
+                        credentials = new (@getModels().Credentials) {
+                            username: userDetails.username,
+                            token: utils.uniqueId(24), 
+                            builtin: { method: 'PBKDF2', hash, salt }
+                        }
+
+                        user.updateFrom userDetails                        
+                        user.save(context, db)
+                            .then (user) =>            
+                                credentials.userid = user._id.toString()
+                                credentials.save(context, db)
+                                    .then (credentials) =>
+                                        deferred.resolve { user, token: credentials.token }
                 else
                     deferred.reject new AppError "User #{userDetails.username} already exists.", "USER_ALREADY_EXISTS"
         deferred.promise
-       
 
 
     @createOrUpdateTwitterUser: (userDetails, authInfo, context, db) ->

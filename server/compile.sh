@@ -21,11 +21,11 @@ if [ "$1" == "--debug" ] || [ "$1" == "--trace" ]; then
 echo "Running LESS.."
     lessc app/www/css/main.less app/www/css/main.css
     echo Running packaging script\/debug ...
-    node app/scripts/deploy/package.js $1
+    node --harmony app/scripts/deploy/package.js $1
     cp src/website/views/layouts/default-debug.hbs app/website/views/layouts/default.hbs
 else
 echo "Running LESS.."
     lessc app/www/css/main.less app/www/css/main.css
     echo Running packaging script\/production ...
-    node app/scripts/deploy/package.js $1
+    node --harmony app/scripts/deploy/package.js $1
 fi    
