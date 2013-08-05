@@ -1,8 +1,7 @@
-
 utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
-defer = require('../common/deferred').defer
+Q = require('../common/q')
 hasher = require('../common/hasher').hasher
 
 class User extends BaseModel
@@ -44,92 +43,82 @@ class User extends BaseModel
                 @createOrUpdateTwitterUser userDetails, authInfo, context, db
             #when 'facebook'
             
+            
 
     @createBuiltinUser: (userDetails, password, context, db) ->
-        deferred = defer()
-        @getModels().Credentials.get({ username: userDetails.username }, context, db)
-            .then (credentials) =>
-                if not credentials
-                    user = new User { username: userDetails.username }                    
+        (Q.async =>
+            credentials = yield @getModels().Credentials.get({ username: userDetails.username }, context, db)
 
-                    hasher { plaintext: password }, (err, result) =>
-                        # Save as hex strings
-                        salt = result.salt.toString 'hex'
-                        hash = result.key.toString 'hex'
+            if not credentials
+                user = new User { username: userDetails.username }
+                result = yield Q.nfcall(hasher, { plaintext: password })
+                # Save as hex strings
+                salt = result.salt.toString 'hex'
+                hash = result.key.toString 'hex'
 
-                        credentials = new (@getModels().Credentials) {
-                            username: userDetails.username,
-                            token: utils.uniqueId(24), 
-                            builtin: { method: 'PBKDF2', hash, salt }
-                        }
+                credentials = new (@getModels().Credentials) {
+                    username: userDetails.username,
+                    token: utils.uniqueId(24), 
+                    builtin: { method: 'PBKDF2', hash, salt }
+                }
+                
+                user.updateFrom userDetails                        
+                user = yield user.save(context, db)
+                credentials.userid = user._id.toString()
+                credentials = yield credentials.save(context, db)
+                
+                { user, token: credentials.token })()
 
-                        user.updateFrom userDetails                        
-                        user.save(context, db)
-                            .then (user) =>            
-                                credentials.userid = user._id.toString()
-                                credentials.save(context, db)
-                                    .then (credentials) =>
-                                        deferred.resolve { user, token: credentials.token }
-                else
-                    deferred.reject new AppError "User #{userDetails.username} already exists.", "USER_ALREADY_EXISTS"
-        deferred.promise
-
+    
 
     @createOrUpdateTwitterUser: (userDetails, authInfo, context, db) ->
-        deferred = defer()
-        @getModels().Credentials.get({ twitter: userDetails.username }, context, db)
-            .then (credentials) =>
-                if not credentials
-                    user = new User { username: userDetails.username }                    
-                    credentials = new (@getModels().Credentials) {
-                        username: userDetails.username,
-                        token: utils.uniqueId(24), 
-                        twitter: { username: authInfo.username }
-                    }            
+        (Q.async =>
+            credentials = yield @getModels().Credentials.get({ twitter: userDetails.username }, context, db)
+        
+            if not credentials
+                user = new User { username: userDetails.username }                    
+        
+                credentials = new (@getModels().Credentials) {
+                    username: userDetails.username,
+                    token: utils.uniqueId(24), 
+                    twitter: { username: authInfo.username }
+                }            
 
-                    user.updateFrom userDetails                        
+                user.updateFrom userDetails                        
 
-                    user.save(context, db)
-                        .then (user) =>            
-                            credentials.userid = user._id.toString()
-                            credentials.save(context, db)
-                                .then (credentials) =>
-                                    deferred.resolve { user, token: credentials.token }
+                user = yield user.save(context, db)                
+                credentials.userid = user._id.toString()
+                credentials = yield credentials.save(context, db)
+                
+                { user, token: credentials.token }
 
-                else
-                    @getModels().User.get({ username: credentials.username }, context, db)
-                        .then (user) =>
-                            user.updateFrom userDetails
-                            user.save(context, db)
-                                .then (user) =>
-                                    deferred.resolve { user, token: credentials.token }
-        deferred.promise
+            else
+                user = yield @getModels().User.get({ username: credentials.username }, context, db)                
+                user.updateFrom userDetails
+                user = yield user.save(context, db)
+                { user, token: credentials.token })()
 
 
   
     #Todo. Token Expiry.   
     @authenticateBuiltinUser: (username, password, context, db) ->
-        deferred = defer()
-        @getModels().Credentials.get({ username }, context, db)
-            .then (credentials) =>
-                if credentials.builtin
-                    bcrypt.compare password, credentials.builtin.hash, (err, res) ->
-                        if res
-                            User.get({ username }, context, db)
-                                .then (user) =>
-                                    deferred.resolve { user, token: credentials.token }
-                        else
-                            deferred.resolve {}
-                 else
-                    deferred.reject new AppError "User #{username} does not have an account.", "MISSING_CREDENTIAL_TYPE"
-        deferred.promise             
+        (Q.async =>
+            credentials = yield @getModels().Credentials.get({ username }, context, db)
+            if credentials.builtin
+                salt = new Buffer credentials.builtin.salt, 'hex'
+                result = yield Q.nfcall hasher, {plaintext: password, salt}
+                if credentials.hash is result.key.toString 'hex'
+                    user = yield User.get({ username }, context, db)
+                    { user, token: credentials.token }
+            else
+                throw new new AppError "User #{username} does not have an account.", "MISSING_CREDENTIAL_TYPE")()
         
 
 
     @getUserWithToken: (token, context, db) ->
-        @getModels().Credentials.get({ token }, context, db)
-            .then (credentials) =>
-                User.get({ username: credentials.username }, context, db)
+        (Q.async =>
+            credentials = yield @getModels().Credentials.get({ token }, context, db)
+            yield User.get({ username: credentials.username }, context, db))()
 
                                                         
     

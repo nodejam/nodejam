@@ -1,7 +1,7 @@
 databaseModule = require('../common/database').Database
 utils = require('../common/utils')
 AppError = require('../common/apperror').AppError
-defer = require('../common/deferred').defer
+Q = require('../common/q')
 
 class BaseModel
 
@@ -24,7 +24,7 @@ class BaseModel
         modelDescription = @getModelDescription()
         db.find(modelDescription.collection, params)
             .then (cursor) =>
-                deferred = defer()
+                deferred = Q.defer()
                 
                 cursor.toArray (err, items) =>
                     if err
@@ -40,7 +40,7 @@ class BaseModel
         modelDescription = @getModelDescription()
         db.find(modelDescription.collection, params)
             .then (cursor) =>
-                deferred = defer()
+                deferred = Q.defer()
 
                 fnCursor cursor
                 cursor.toArray (err, items) =>
@@ -72,7 +72,7 @@ class BaseModel
         if modelDescription.validateMultiRecordOperationParams(params)
             db.remove(modelDescription.collection, params)
         else
-            defer().reject new AppError "Call to destroyAll() must pass safety checks on params.", "SAFETY_CHECK_FAILED_IN_DESTROYALL"
+            Q.defer().reject new AppError "Call to destroyAll() must pass safety checks on params.", "SAFETY_CHECK_FAILED_IN_DESTROYALL"
 
             
             
@@ -186,7 +186,7 @@ class BaseModel
         
     
     save: (context, db) =>    
-        deferred = defer()
+        deferred = Q.defer()
 
         modelDescription = @constructor.getModelDescription()
 

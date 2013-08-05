@@ -1,6 +1,6 @@
 Mongo = require 'mongodb'
 utils = require './utils'
-defer = require('./deferred').defer
+Q = require('./q')
 
 class Database
     constructor: (@conf) ->
@@ -34,7 +34,7 @@ class Database
 
 
     insert: (collectionName, document) =>
-        deferred = defer()
+        deferred = Q.defer()
 
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
@@ -47,7 +47,7 @@ class Database
         
 
     update: (collectionName, params, document) =>
-        deferred = defer()
+        deferred = Q.defer()
 
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
@@ -60,7 +60,7 @@ class Database
 
 
     updateAll: (collectionName, params, document) =>
-        deferred = defer()
+        deferred = Q.defer()
 
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
@@ -73,7 +73,7 @@ class Database
 
 
     find: (collectionName, query) =>
-        deferred = defer()
+        deferred = Q.defer()
 
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
@@ -86,7 +86,7 @@ class Database
 
 
     findWithOptions: (collectionName, query, options) =>
-        deferred = defer()
+        deferred = Q.defer()
 
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
@@ -99,7 +99,7 @@ class Database
 
 
     findOne: (collectionName, query) =>     
-        deferred = defer()
+        deferred = Q.defer()
 
         @find(collectionName, query)
             .then (cursor) =>
@@ -111,7 +111,7 @@ class Database
 
 
     remove: (collectionName, params) =>
-        deferred = defer()
+        deferred = Q.defer()
 
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
@@ -124,7 +124,7 @@ class Database
 
                     
     incrementCounter: (key) =>
-        deferred = defer()
+        deferred = Q.defer()
 
         @execute (db, completionCallback) =>
             db.collection '_counters', (err, collection) =>

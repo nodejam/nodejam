@@ -3,7 +3,6 @@ utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').marked
 BaseModel = require('./basemodel').BaseModel
-defer = require('../common/deferred').defer
 
 class Post extends BaseModel
     
