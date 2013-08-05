@@ -31,9 +31,9 @@ init = () ->
     
     del = ->
         (Q.async ->
-            db = yield Q.nfcall(database.getDb)
             utils.log 'Deleting main database.'
-            result = yield db.dropDatabase()
+            db = yield Q.nfcall database.getDb
+            result = yield Q.ninvoke(db, "dropDatabase")
             utils.log 'Everything is gone now.')()
 
     create = -> 
@@ -93,22 +93,20 @@ init = () ->
 
 
     if '--delete' in process.argv        
-        del().then -> 
-            process.exit()
+        (Q.async ->
+            yield del()
+            process.exit())()
+
     else if '--create' in process.argv
-        utils.log 'Setup will begin in 3 seconds.'
-        fnCreate = ->
-            create().then -> 
-                process.exit()
-        setTimeout fnCreate, 1000
+        (Q.async ->
+            yield create()
+            process.exit())()
 
     else if '--recreate' in process.argv
-        fnCreate = ->
-            create().then -> 
-                process.exit()
-        del().then -> 
-            utils.log 'Setup will begin in 3 seconds.'
-            setTimeout fnCreate, 1000
+        (Q.async ->
+            yield del()
+            yield create()
+            process.exit())()
     else
         utils.log 'Invalid option.'
         process.exit()  
@@ -140,5 +138,5 @@ doHttpRequest = (url, data, method, cb) ->
         req.write(data)
 
     req.end()        
-
+    
 init()
