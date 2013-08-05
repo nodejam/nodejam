@@ -1,5 +1,6 @@
 AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
+Q = require('../common/q')
 
 class Forum extends BaseModel
         
@@ -75,12 +76,12 @@ class Forum extends BaseModel
         
         
     refreshSnapshot: (context, db) =>
-        @getModels().Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
-            .then (posts) =>
-                @snapshot = { posts: p.getView("snapshot") for p in posts }
-                if posts.length
-                    @lastPost = posts[0].publishedAt
-                @save(context, db)
+        (Q.async =>
+            posts = yield @getModels().Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
+            @snapshot = { posts: p.getView("snapshot") for p in posts }
+            if posts.length
+                @lastPost = posts[0].publishedAt
+            yield @save(context, db))()
             
             
     

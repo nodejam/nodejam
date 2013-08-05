@@ -3,6 +3,7 @@ utils = require '../common/utils'
 AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').marked
 BaseModel = require('./basemodel').BaseModel
+Q = require('../common/q')
 
 class Post extends BaseModel
     
@@ -57,31 +58,29 @@ class Post extends BaseModel
         
     
     save: (context, db) =>        
-        refreshSnapshot = =>
+        (Q.async =>        
+            #Make sure we aren't overwriting another post with the same stub in the same forum.
+            post = yield Post.get({ @stub, 'forum.id': @forum.id }, context, db)    
+            if post and (post._id.toString() isnt @_id?.toString()) #Same post?
+                if @_id
+                    #We prefix the id so that sameness goes away                    
+                    @stub = @_id?.toString() + "-" + @stub
+                else
+                    #No id yet. So, we'll do this once the post gets saved and gets an id.
+                    stub = @stub
+                    @stub = undefined
+            post = yield super(context, db)
+            if stub
+                post.stub = post._id.toString() + "-" + stub
+                post = yield post.save(context, db)
+
             if @state is 'published'
                 @getModels().Forum.getById(@forum.id, context, db)
                     .then (forum) =>
                         forum.refreshSnapshot(context, db)
+            
+            return post)()
 
-        #Make sure we aren't overwriting another post with the same stub in the same forum.
-        Post.get({ @stub, 'forum.id': @forum.id }, context, db)
-            .then (post) =>
-                if post and (post._id.toString() isnt @_id?.toString()) #Same post?
-                    if @_id
-                        #We prefix the id so that sameness goes away                    
-                        @stub = @_id?.toString() + "-" + @stub
-                    else
-                        #No id yet. So, we'll do this once the post gets saved and gets an id.
-                        stub = @stub
-                        @stub = undefined
-                super(context, db)
-                    .then (post) =>
-                        if stub
-                            refreshSnapshot()
-                            post.stub = post._id.toString() + "-" + stub
-                            post.save(context, db)
-                        else
-                            refreshSnapshot()
-                            post
+        
             
 exports.Post = Post

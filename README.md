@@ -1,6 +1,16 @@
 fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
+IMPORTANT
+=========
+We have decided to use es6 generators available via node --harmony
+- The yield keyword *significantly* improves readability and maintainability
+  So much so that the risk is worth taking.
+- You will have to get node 0.11+ for this work
+- This requires support in coffee-script for the yield keyword  
+  Support has not landed yet. So pull our modified CS compiler from https://github.com/jeswin/coffee-script  
+
+
 Install instructions (Ubuntu 13.04)
 ===================================
 Note: This should also work on earlier versions of Ubuntu.
@@ -35,7 +45,6 @@ npm install oauth
 npm install forever  
 npm install marked  
 npm install less  
-npm install q
 
 nginx configuration file
 ------------------------
@@ -87,11 +96,11 @@ It also helps in testing if the app is working fine. For the scripts to work, th
 
 cd to fora/server  
 \#create the database  
-node app/scripts/setup/setup.js --create  
+node --harmony app/scripts/setup/setup.js --create  
 \#delete the database  
-node app/scripts/setup/setup.js --delete  
+node --harmony app/scripts/setup/setup.js --delete  
 \#recreate the database  
-node app/scripts/setup/setup.js --recreate  
+node --harmony app/scripts/setup/setup.js --recreate  
 
 
 Mongodb Security
