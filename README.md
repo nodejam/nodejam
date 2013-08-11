@@ -36,7 +36,8 @@ configure
 make
 sudo make install
 ```
-    
+
+Install everything else    
 ```
 sudo apt-get install nginx  
 sudo apt-get install git  
