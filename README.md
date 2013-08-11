@@ -105,20 +105,22 @@ The setup scripts put some data in the database. So that we can play with the ap
 It also helps in testing if the app is working fine. For the scripts to work, the web app must be running with the above config.  
 
 cd to fora/server  
+```
 \#create the database  
 node --harmony app/scripts/setup/setup.js --create  
 \#delete the database  
 node --harmony app/scripts/setup/setup.js --delete  
 \#recreate the database  
 node --harmony app/scripts/setup/setup.js --recreate  
-
+```
 
 Mongodb Security
 ----------------
 Edit /etc/mongodb.conf  
+```
 bind_ip = 127.0.0.1  
 port = MONGODB_PORT  
-
+```
 
 NODE_ENV
 --------
@@ -129,9 +131,13 @@ This is done so that you don't accidentally destroy the production database.
 NODE_PATH
 ---------
 Because the path the node modules was changed, make this change in .bashrc  
+```
 export NODE_PATH="/usr/local/lib/node_modules"
+```
 
 Otherwise, you could run this as root:  
+```
 rm /usr/local/lib/node  
 ln -s /usr/local/lib/node_modules /usr/local/lib/node  
+```
 
