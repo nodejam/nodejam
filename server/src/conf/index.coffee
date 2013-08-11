@@ -54,7 +54,7 @@ defaultViews =   {
 foraProject = new models.Network {
     name: 'Fora',
     stub: 'fora',
-    domains: ['local.foraproject.org'],
+    domains: ['local.foraproject.org', 'www.local.foraproject.org'],
     views: defaultViews,
 } 
     

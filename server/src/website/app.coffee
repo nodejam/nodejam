@@ -72,11 +72,8 @@ findHandler = (name, getHandler) ->
         
 
 getNetwork = (hostName) ->    
-    hostNames = hostName.split('.')
-    if hostNames[0] is 'www'
-        hostNames = hostNames[0].shift()
-    hostName = hostNames.join('.')
-    (n for n in conf.networks when n.domains.indexOf(hostName) isnt -1)[0]
+    matches = (n for n in conf.networks when n.domains.indexOf(hostName) isnt -1)
+    if matches.length then matches[0]
         
     
 
