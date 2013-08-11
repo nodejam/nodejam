@@ -10,6 +10,14 @@ We have decided to use es6 generators available via node --harmony
 - This requires support in coffee-script for the yield keyword  
   Support has not landed yet. So pull our modified CS compiler from https://github.com/jeswin/coffee-script  
 
+Steps to build CS
+=================
+git clone https://github.com/jeswin/coffee-script  
+npm install mkdirp  
+npm install jison  
+cake build:parser  
+cake build  
+sudo cake install  
 
 Install instructions (Ubuntu 13.04)
 ===================================

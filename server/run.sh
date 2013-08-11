@@ -15,6 +15,6 @@ if [ "$1" == "--trace" ]; then
     node --harmony app.js localhost 9000 &
 else
     forever stopall
-    forever start --harmony app.js localhost 9000
+    forever start -c node\ --harmony app.js localhost 9000
 fi
 cd ..
