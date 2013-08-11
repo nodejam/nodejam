@@ -2,7 +2,7 @@ fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
 IMPORTANT
-=========
+---------
 We have decided to use es6 generators available via node --harmony
 - The yield keyword *significantly* improves readability and maintainability
   So much so that the risk is worth taking.
@@ -11,13 +11,15 @@ We have decided to use es6 generators available via node --harmony
   Support has not landed yet. So pull our modified CS compiler from https://github.com/jeswin/coffee-script  
 
 Steps to build CS
-=================
+-----------------
+```
 git clone https://github.com/jeswin/coffee-script  
 npm install mkdirp  
 npm install jison  
 cake build:parser  
 cake build  
 sudo cake install  
+```
 
 Install instructions (Ubuntu 13.04)
 ===================================
