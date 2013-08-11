@@ -109,11 +109,11 @@ It also helps in testing if the app is working fine. For the scripts to work, th
 
 cd to fora/server  
 ```
-\#create the database  
+#create the database  
 node --harmony app/scripts/setup/setup.js --create  
-\#delete the database  
+#delete the database  
 node --harmony app/scripts/setup/setup.js --delete  
-\#recreate the database  
+#recreate the database  
 node --harmony app/scripts/setup/setup.js --recreate  
 ```
 
