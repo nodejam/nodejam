@@ -76,7 +76,7 @@ getNetwork = (hostName) ->
     if hostNames[0] is 'www'
         hostNames = hostNames[0].shift()
     hostName = hostNames.join('.')
-    (n for n in conf.networks when n.domain is hostName)[0]
+    (n for n in conf.networks when n.domains.indexOf(hostName) isnt -1)[0]
         
     
 
