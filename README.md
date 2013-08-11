@@ -25,18 +25,19 @@ Install instructions (Ubuntu 13.04)
 ===================================
 Note: This should also work on earlier versions of Ubuntu.
 
-sudo apt-get install build-essential  
-    - To build node.js from source.  
-    - node.js packaged with the distro is often outdated.  
-    
-sudo apt-get build-dep nodejs  
-    
-Install node.js  
-    - Download source tarball from nodejs.org  
-    - configure  
-    - make  
-    - sudo make install  
+Build node from source, since the bundled node is often outdated.
+Download source tarball from nodejs.org
 
+```
+sudo apt-get install build-essential  
+sudo apt-get build-dep nodejs  
+cd to/node/source-code/directory/
+configure
+make
+sudo make install
+```
+    
+```
 sudo apt-get install nginx  
 sudo apt-get install git  
 sudo apt-get install mongodb  
@@ -55,6 +56,7 @@ npm install oauth
 npm install forever  
 npm install marked  
 npm install less  
+```
 
 nginx configuration file
 ------------------------
