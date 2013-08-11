@@ -38,10 +38,11 @@ app.use (req,res,next) =>
         if inputs
             for key, val of inputs
                 val = inputs[key]
-                if not /-html$/.test key
-                    val = val.replace '<', '&lt;'
-                    val = val.replace '>', '&gt;'                    
-                inputs[key] = validator.sanitize(val).xss()
+                if typeof(val) is 'string'
+                    if not /-html$/.test key
+                        val = val.replace '<', '&lt;'
+                        val = val.replace '>', '&gt;'                    
+                    inputs[key] = validator.sanitize(val).xss()
     next()
 
 findHandler = (name, getHandler) ->
