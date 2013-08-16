@@ -12,9 +12,15 @@ We have decided to use es6 generators available via node --harmony
 
 Steps to build CS
 -----------------
+You will need coffee-script installed to compile the latest version so
+```
+sudo npm install -g coffee-script  
+```
+then
+
 ```
 git clone https://github.com/jeswin/coffee-script  
-npm install mkdirp  
+sudo npm install -g mkdirp  
 npm install jison  
 cake build:parser  
 cake build  
@@ -54,9 +60,9 @@ npm install gm
 npm install mongo-express  
 npm install node-minify  
 npm install oauth  
-npm install forever  
+sudo npm install -g forever  
 npm install marked  
-npm install less  
+sudo npm install -g less  
 ```
 
 nginx configuration file
