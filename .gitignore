@@ -6,6 +6,9 @@ backups/*
 !backups/placeholder
 !backups/backup.sh
 
+temp/*
+!temp/placeholder
+
 server/app
 
 server/src/website/views/_custom/*

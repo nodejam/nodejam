@@ -7,19 +7,19 @@ if process.argv.length > 2
 
 if opt isnt '--debug' and opt isnt '--trace'
 
-    utils.log "Minifying CSS..."
+    utils.log "Minifying JS and CSS..."
     
     c = new compressor.minify {
         #type: 'no-compress',
         type: 'sqwish',
         buffer: 1000 * 1024,
-        tempPath: 'tmp',
+        tempPath: '../temp',
         fileIn: [
             'app/www/lib/font-awesome/css/font-awesome.css',
             'app/www/css/HINT.css',
             'app/www/css/toggle-switch.css'
         ],
-        fileOut: 'app/www/js/lib.css',
+        fileOut: 'app/www/css/lib.css',
         callback: (err) -> 
             if err
                 utils.log(err)
@@ -31,11 +31,11 @@ if opt isnt '--debug' and opt isnt '--trace'
         #type: 'no-compress',
         type: 'sqwish',
         buffer: 1000 * 1024,
-        tempPath: 'tmp',
+        tempPath: '../temp',
         fileIn: [
             'app/www/css/main.css'
         ],
-        fileOut: 'app/www/js/fora.css',
+        fileOut: 'app/www/css/fora.css',
         callback: (err) -> 
             if err
                 utils.log(err)
@@ -43,14 +43,11 @@ if opt isnt '--debug' and opt isnt '--trace'
                 utils.log 'Created fora.css'
     }    
 
-
-    utils.log "Minifying JS..."
-
     #Already minified.
     c = new compressor.minify {
         type: 'no-compress',
         buffer: 1000 * 1024,
-        tempPath: 'tmp',
+        tempPath: '../temp',
         fileIn: [
             'app/www/js/lib/jquery-min.js', 
             'app/www/js/lib/angular-min.js'
@@ -67,7 +64,7 @@ if opt isnt '--debug' and opt isnt '--trace'
         #type: 'no-compress',
         type: 'uglifyjs',
         buffer: 1000 * 1024,
-        tempPath: 'tmp',
+        tempPath: '../temp',
         fileIn: [
             'app/www/js/lib/jquery-cookie.js',
             'app/www/lib/bangjs/reMarked.js',            
@@ -86,7 +83,7 @@ if opt isnt '--debug' and opt isnt '--trace'
     c = new compressor.minify {
         type: 'uglifyjs',
         buffer: 1000 * 1024,
-        tempPath: 'tmp',
+        tempPath: '../temp',
         fileIn: [
         ],
         fileOut: 'app/www/js/fora.js',

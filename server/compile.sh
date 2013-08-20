@@ -18,14 +18,14 @@ rm -rf _temp
 coffee -o app/ -c src/
 
 if [ "$1" == "--debug" ] || [ "$1" == "--trace" ]; then
-echo "Running LESS.."
+    echo "Running LESS.."
     lessc app/www/css/main.less app/www/css/main.css
-    echo Running packaging script\/debug ...
+    echo Running packaging script - debug\/trace ...
     node --harmony app/scripts/deploy/package.js $1
     cp src/website/views/layouts/default-debug.hbs app/website/views/layouts/default.hbs
 else
-echo "Running LESS.."
+    echo "Running LESS.."
     lessc app/www/css/main.less app/www/css/main.css
-    echo Running packaging script\/production ...
+    echo Running packaging script - production ...
     node --harmony app/scripts/deploy/package.js $1
 fi    

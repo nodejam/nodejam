@@ -34,6 +34,7 @@ class Home extends controller.Controller
                                 pageType: 'cover-page', 
                                 cover: '/pub/images/cover.jpg'
                             }
+                            
 
 
     login: (req, res, next) =>
