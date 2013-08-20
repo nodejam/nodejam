@@ -16,14 +16,13 @@ class App
 
 
     init: =>
-        @attachHandlers()
-
         user = @getUser()
         if user
             $('.site-options .account').html "<a href=\"#{@getUserUrl()}\"><i class=\"icon-user\"></i>#{user.username}</a>"
         else
-            $('.site-options .account').html "<a class=\"login\" href=\"/login\"><i class=\"icon-signin\"></i>Login</a>"
+            $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"icon-signin\"></i>Login</a>"
 
+        @attachHandlers()
 
 
             
@@ -36,10 +35,44 @@ class App
             $('.logo').show()        
             $('.site-options').hide()
                     
-        $(document).clickHandler '.site-options .account .login', =>
-            $('.login-popup').leanModal()
+        $(document).clickHandler '.site-options .account .login', @login
                     
+
+
+    login: =>
+        $('body').append '
+            <div id="login-box">
+                <ul>
+                    <li><i class="icon-twitter"></i> <a class="twitter" href="#">Sign in with Twitter</a></li>
+                </ul>
+            </div>'
+            
+        $('#login-box').leanModal()
                 
+
+
+    onLogin: (resp) =>
+        options = {}
+        $.cookie 'userid', resp.userid, options
+        $.cookie 'username', resp.username, options
+        $.cookie 'fullName', resp.name, options
+        $.cookie 'token', resp.token, options
+
+
+
+    logout: =>
+        @clearCookies()
+        $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"icon-signin\"></i>Login</a>"
+        
+
+
+    clearCookies: =>
+        $.removeCookie('userid')
+        $.removeCookie('username')
+        $.removeCookie('fullName')
+        $.removeCookie('token')    
+
+
 
     getUser: =>
         if $.cookie('userid')
@@ -61,28 +94,6 @@ class App
     isLoggedInUser: (user) => 
         user.username is @getUser().username
            
-
-
-    login: (resp) =>
-        options = {}
-        $.cookie 'userid', resp.userid, options
-        $.cookie 'username', resp.username, options
-        $.cookie 'fullName', resp.name, options
-        $.cookie 'token', resp.token, options
-
-
-
-    logout: =>
-        @clearCookies()
-        $('.account-options .signin').html '<i class="icon-twitter"></i><a href="/auth/twitter">Sign in</a>'
-        
-
-
-    clearCookies: =>
-        $.removeCookie('userid')
-        $.removeCookie('username')
-        $.removeCookie('fullName')
-        $.removeCookie('token')    
         
         
         

@@ -460,30 +460,24 @@
     .cards-mixin(100%; 32; 22; 14; 220; 380);
 }
 
-/* LOGIN PAGE */
-.login-page {
-    .page-wrap {
-        .section {
-            padding: 16px 32px 32px 32px; background: @colorLighter;
-            h2 { clear: both; margin: 0 }
-            ul {
-                font-size: 12px; font-weight: bold;
-                li { 
-                    float: left; width: 96px; text-align: center; margin: 12px 12px 0 0; padding: 12px; background: white;
-                    i { 
-                        font-size: 40px; 
-                        &.icon-twitter { color: #9ae4e8 }
-                        &.icon-facebook { color: #3b5998 }
-                        &.icon-google-plus { color: #d34836 }
-                    }
-                }
-            }    
-            h4 { padding-top: 32px; clear: both }
+/* LOGIN SECTION */
+#login-box {
+    .rounded; padding: 16px 32px; background: @colorLighter; width: 320px; text-align: center;
+    h2 { clear: both; margin: 0 }
+    li {
+        font-size: 24px;
+        i { 
+            float: left; font-size: 48px;            
+            &.icon-twitter { color: #00aced }
+            &.icon-facebook { color: #3b5998 }
+            &.icon-google-plus { color: #d34836 }    
+        }
+        a { 
+            float: left; margin: 6px 0 0 12px;
+            &.twitter { color: #477 }
         }
     }
 }
 
-
-
-
-
+/* LEAN MODAL - Thanks to http://leanmodal.finelysliced.com.au/ */
+#lean_overlay { position: fixed; z-index:100; top: 0px; left: 0px; height:100%; width:100%; background: #000; display: none; }

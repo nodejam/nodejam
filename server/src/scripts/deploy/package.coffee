@@ -67,6 +67,7 @@ if opt isnt '--debug' and opt isnt '--trace'
         tempPath: '../temp',
         fileIn: [
             'app/www/js/lib/jquery-cookie.js',
+            'app/www/js/lib/jquery.modal.js',
             'app/www/lib/bangjs/reMarked.js',            
             'app/www/lib/bangjs/jquery-drags.js',                  
             'app/www/lib/bangjs/bangjs.js',

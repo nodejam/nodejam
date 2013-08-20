@@ -1,6 +1,13 @@
 class BaseView
 
-    login: =>
+    constructor: ->
+        $(document).ready @attachEvents
         
+        
+    
+    attachEvents: =>
+
+
+            
             
 window.Fora.Views.BaseView = BaseView
