@@ -13,7 +13,7 @@ if opt isnt '--debug' and opt isnt '--trace'
         #type: 'no-compress',
         type: 'sqwish',
         buffer: 1000 * 1024,
-        tempPath: '../temp',
+        tempPath: '../temp/',
         fileIn: [
             'app/www/lib/font-awesome/css/font-awesome.css',
             'app/www/css/HINT.css',
@@ -31,7 +31,7 @@ if opt isnt '--debug' and opt isnt '--trace'
         #type: 'no-compress',
         type: 'sqwish',
         buffer: 1000 * 1024,
-        tempPath: '../temp',
+        tempPath: '../temp/',
         fileIn: [
             'app/www/css/main.css'
         ],
@@ -47,7 +47,7 @@ if opt isnt '--debug' and opt isnt '--trace'
     c = new compressor.minify {
         type: 'no-compress',
         buffer: 1000 * 1024,
-        tempPath: '../temp',
+        tempPath: '../temp/',
         fileIn: [
             'app/www/js/lib/jquery-min.js', 
             'app/www/js/lib/angular-min.js'
@@ -64,7 +64,7 @@ if opt isnt '--debug' and opt isnt '--trace'
         #type: 'no-compress',
         type: 'uglifyjs',
         buffer: 1000 * 1024,
-        tempPath: '../temp',
+        tempPath: '../temp/',
         fileIn: [
             'app/www/js/lib/jquery-cookie.js',
             'app/www/js/lib/jquery.modal.js',
@@ -84,7 +84,7 @@ if opt isnt '--debug' and opt isnt '--trace'
     c = new compressor.minify {
         type: 'uglifyjs',
         buffer: 1000 * 1024,
-        tempPath: '../temp',
+        tempPath: '../temp/',
         fileIn: [
         ],
         fileOut: 'app/www/js/fora.js',

@@ -5,14 +5,16 @@ utils = require '../../../common/utils'
 AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
 controllers = require './'
+Q = require('../../../common/q')
 
 class Forums extends Controller
     
     create: (req, res, next) =>
         @ensureSession arguments, =>
             stub = req.body.name.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
-            models.Forum.get({ network: req.network.stub, $or: [{ stub }, { name: req.body.name }] }, { user: req.user }, db)
-                .then (forum) =>
+            (Q.async =>
+                try
+                    forum = yield models.Forum.get({ network: req.network.stub, $or: [{ stub }, { name: req.body.name }] }, { user: req.user }, db)
                     if forum
                         res.send 'A forum with the same name exists.'
                     else
@@ -34,9 +36,8 @@ class Forums extends Controller
                             enable: if req.body.comments_enable then Boolean(req.body.comments_enable) else true
                             showByDefault: if req.body.comments_showByDefault then Boolean(req.body.comments_showByDefault) else true
                         }
-                        forum.save({ user: req.user }, db)
-                            .then (forum) =>
-                                res.send forum
+                        forum = yield forum.save({ user: req.user }, db)
+                        res.send forum
             
                         #Put a notification.
                         message = new models.Message {
@@ -47,13 +48,16 @@ class Forums extends Controller
                             data: { forum }
                         }
                         message.save({ user: req.user }, db)
-                                
+                catch e
+                    next e)()                            
+
 
                 
     edit: (req, res, next) =>
         @ensureSession arguments, =>
-            models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
-                .then (forum) =>
+            (Q.async =>
+                try
+                    forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
                     if req.user.id is forum.createdBy.id or @isAdmin(req.user)
                         forum.description = req.body.description
                         forum.icon = req.body.icon
@@ -63,24 +67,27 @@ class Forums extends Controller
                         else
                             forum.cover = ''
                         forum.tile = req.body.tile ? '/images/forum-tile.png'                                        
-                        forum.save({ user: req.user }, db)
-                            .then (forum) =>            
-                                res.send forum                
+                        forum = yield forum.save({ user: req.user }, db)
+                        res.send forum
                     else
                         next new AppError "Access denied.", 'ACCESS_DENIED'
+                catch e
+                    next e)()
                     
           
                     
     remove: (req, res, next) =>
         @ensureSession arguments, =>
-            models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
-                .then (forum) =>
+            (Q.async =>
+                try
+                    forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
                     if @isAdmin(req.user)
-                        forum.destroy({ user: req.user }, db)
-                            .then =>
-                                res.send "DELETED #{forum.stub}."
+                        yield forum.destroy({ user: req.user }, db)
+                        res.send "DELETED #{forum.stub}."
                     else
                         next new AppError "Access denied.", 'ACCESS_DENIED'
+                catch e
+                    next e)()
 
 
 
@@ -103,9 +110,12 @@ class Forums extends Controller
                                    
                                     
     invokeTypeSpecificController: (req, res, next, getHandler) =>   
-        models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
-            .then (forum) =>
+        (Q.async =>
+            try
+                forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
                 getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
+            catch e
+                next e)()
 
 
 

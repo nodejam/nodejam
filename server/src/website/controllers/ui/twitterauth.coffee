@@ -1,27 +1,26 @@
 https = require 'https'
 OAuth = require('oauth').OAuth
+Q = require('../../../common/q')
 
 utils = require '../../../common/utils'
 conf = require '../../../conf'
 models = require '../../../models'
 db = new (require '../../../common/database').Database(conf.db)
 AppError = require('../../../common/apperror').AppError
-controller = require('../controller')
+controller = require '../controller'
 
 
-###
-    This is mostly for twitter authentication.
-###
 class TwitterAuth extends controller.Controller
     
     twitter: (req, res, text) =>
+
         oa = new OAuth(
 	        "https://api.twitter.com/oauth/request_token",
 	        "https://api.twitter.com/oauth/access_token",
-	        conf.authenticationTypes.twitter.TWITTER_CONSUMER_KEY,
-	        conf.authenticationTypes.twitter.TWITTER_SECRET,
+	        conf.auth.twitter.TWITTER_CONSUMER_KEY,
+	        conf.auth.twitter.TWITTER_CONSUMER_SECRET,
 	        "1.0",
-	        conf.authenticationTypes.twitter.TWITTER_CALLBACK,	
+	        conf.auth.twitter.TWITTER_CALLBACK,	
 	        "HMAC-SHA1"
         )
         
@@ -38,9 +37,10 @@ class TwitterAuth extends controller.Controller
                     key: oauthProcessKey,
                     value: oauth                    
                 }        
-    
-                token.save { user: req.user }, db, (err, token) =>
-                    if not err
+                
+                (Q.async =>               
+                    try
+                        token = yield token.save { user: req.user }, db
                         res.cookie 'oauth_process_key', oauthProcessKey
                         res.send "
                             <html>
@@ -49,9 +49,9 @@ class TwitterAuth extends controller.Controller
                                 </script>
                                 <body></body>
                             </html>"
-                    else
-                        next err
-            
+                    catch e
+                        next e)()
+
 
     
     twitterCallback: (req, res, next) =>
@@ -59,7 +59,7 @@ class TwitterAuth extends controller.Controller
 	        "https://api.twitter.com/oauth/request_token",
 	        "https://api.twitter.com/oauth/access_token",
 	        conf.authenticationTypes.twitter.TWITTER_CONSUMER_KEY,
-	        conf.authenticationTypes.twitter.TWITTER_SECRET,
+	        conf.authenticationTypes.twitter.TWITTER_CONSUMER_SECRET,
 	        "1.0",
 	        conf.authenticationTypes.twitter.TWITTER_CALLBACK,	
 	        "HMAC-SHA1"

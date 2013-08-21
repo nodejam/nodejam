@@ -5,6 +5,7 @@ models = require '../../../models'
 utils = require('../../../common/utils')
 AppError = require('../../../common/apperror').AppError
 controller = require('../controller')
+Q = require('../../../common/q')
 
 class Users extends controller.Controller
     
@@ -22,20 +23,26 @@ class Users extends controller.Controller
     createBuiltinUser: (req, res, next) =>
         if req.body.secret is conf.auth.adminkeys.default
             req.body.createdVia = 'internal' 
-            models.User.createOrUpdate(req.body, { type: 'builtin', password: req.body.credentials_password }, { user: req.user }, db)
-                .then (result) =>
+            (Q.async =>
+                try
+                    result = yield models.User.createOrUpdate(req.body, { type: 'builtin', password: req.body.credentials_password }, { user: req.user }, db)
                     res.contentType 'json'
                     res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
+                catch e
+                    next e)()
         else
             next new AppError 'Access denied', 'ACCESS_DENIED'
         
 
 
     createTwitterUser: (req, res, next) =>
-        models.User.createOrUpdate(req.body, { type: 'twitter', username: req.body.credentials_username, accessToken: req.body.credentials_accessToken }, { user: req.user }, db)
-            .then (result) =>
+        (Q.async =>
+            try
+                result = yield models.User.createOrUpdate(req.body, { type: 'twitter', username: req.body.credentials_username, accessToken: req.body.credentials_accessToken }, { user: req.user }, db)
                 res.contentType 'json'
                 res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
+            catch e
+                next e)()
 
 
     ###
@@ -60,6 +67,17 @@ class Users extends controller.Controller
                     picture: "http://graph.facebook.com/#{userDetails.id}/picture?type=large",
                     thumbnail: "http://graph.facebook.com/#{userDetails.id}/picture"
                 }    
+                
+                
+    parseFBUserDetails: (userDetails) =>
+        {
+            username: userDetails.username ? userDetails.id,
+            name: userDetails.name,
+            location: userDetails.location,
+            email: userDetails.email,
+            picture: "http://graph.facebook.com/#{userDetails.id}/picture?type=large",
+            thumbnail: "http://graph.facebook.com/#{userDetails.id}/picture"
+        }                
     ###
 
 exports.Users = Users

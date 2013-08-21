@@ -43,7 +43,7 @@ class App
         $('body').append '
             <div id="login-box">
                 <ul>
-                    <li><i class="icon-twitter"></i> <a class="twitter" href="#">Sign in with Twitter</a></li>
+                    <li><i class="icon-twitter"></i> <a class="twitter" href="/auth/twitter">Sign in with Twitter</a></li>
                 </ul>
             </div>'
             

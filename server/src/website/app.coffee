@@ -87,7 +87,7 @@ handleDomainUrls = (domain, fnHandler) ->
 # ----------
 # AUTH
 app.get '/auth/twitter', findHandler('ui/twitterauth', (c) -> c.twitter)
-app.get '/auth/twitter/callback', findHandler('ui/twitterauth', (c) -> c.twitterCallback)
+app.get '/auth/twittercallback', findHandler('ui/twitterauth', (c) -> c.twitterCallback)
 app.post '/api/users', findHandler('api/users', (c) -> c.create)
 app.post '/api/login', findHandler('api/users', (c) -> c.login)
 

@@ -4,6 +4,7 @@ models = require '../../../models'
 utils = require '../../../common/utils'
 AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
+Q = require('../../../common/q')
 
 class Articles extends Controller
             
@@ -21,8 +22,9 @@ class Articles extends Controller
         
         @parseBody article, req.body
         
-        article.save({ user: req.user }, db)
-            .then (article) =>
+        (Q.async =>
+            try
+                article = yield article.save({ user: req.user }, db)
                 res.send article
                         
                 if req.body.publish is 'true'
@@ -34,12 +36,14 @@ class Articles extends Controller
                         data: { article }
                     }
                     message.save({ user: req.user }, db)
+        )()
             
                                 
 
     edit: (req, res, next, forum) =>
-        models.Article.getById(req.params.post, { user: req.user }, db)
-            .then (article) =>
+        (Q.async =>
+            try
+                article = yield models.Article.getById(req.params.post, { user: req.user }, db)
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
                         alreadyPublished = article.state is 'published'
@@ -49,54 +53,58 @@ class Articles extends Controller
                             article.state = 'published'
 
                         @parseBody article, req.body
-                             
-                        article.save({ user: req.user }, db)
-                            .then (article) =>
-                                if article.createdBy.id is req.user.id and not alreadyPublished and req.body.publish is 'true'
-                                    message = new models.Message {
-                                        userid: '0',
-                                        type: "global-notification",
-                                        reason: 'published-article',
-                                        related: [ { type: 'user', id: req.user.id }, { type: 'forum', id: forum.stub } ],
-                                        data: { article }
-                                    }
-                                    message.save({ user: req.user }, db)
+                
+                        article = yield article.save({ user: req.user }, db)
+                        if article.createdBy.id is req.user.id and not alreadyPublished and req.body.publish is 'true'
+                            message = new models.Message {
+                                userid: '0',
+                                type: "global-notification",
+                                reason: 'published-article',
+                                related: [ { type: 'user', id: req.user.id }, { type: 'forum', id: forum.stub } ],
+                                data: { article }
+                            }
+                            message.save({ user: req.user }, db)
                     else
                         res.send 'Access denied.'
                 else
                     res.send 'Invalid article.'
-    
+            catch e
+                next e)()    
+                
 
 
     remove: (req, res, next, forum) =>
-        models.Article.getById(req.params.post, { user: req.user }, db)
-            .then (article) =>
+        (Q.async =>
+            try
+                article = yield models.Article.getById(req.params.post, { user: req.user }, db)
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
-                        article.destroy({ user: req.user }, db)
-                            .then (article) => 
-                                res.send article
+                        article = yield article.destroy({ user: req.user }, db)
+                        res.send article
                     else
                         res.send 'Access denied.'
                 else
                     res.send "Invalid article."
-    
+            catch e
+                next e)()    
+                
         
     
     addComment: (req, res, next, forum) =>        
         contentType = forum.settings?.comments?.contentType ? 'text'
         if contentType is 'text'
-            models.Article.getById(req.params.post, { user: req.user }, db)
-                .then (article) =>
+            (Q.async =>
+                try
+                    article = yield models.Article.getById(req.params.post, { user: req.user }, db)
                     comment = new models.Comment()
                     comment.createdBy = req.user
                     comment.forum = forum.stub
                     comment.itemid = article._id.toString()
                     comment.data = req.body.data
-                    comment.save({ user: req.user }, db)
-                        .then (comment) =>
-                            res.send comment
-                
+                    comment = yield comment.save({ user: req.user }, db)
+                    res.send comment
+                catch e
+                    next e)()                
         else
             next new AppError 'Unsupported Comment Type', 'UNSUPPORTED_COMMENT_TYPE'
         
