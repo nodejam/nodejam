@@ -3,19 +3,16 @@ models = require '../models'
 #Database
 if process.env.NODE_ENV is 'development'
     db = { name: 'fora-db-dev', host: '127.0.0.1', port: 27017 }
-    twitter = {
-        TWITTER_CONSUMER_KEY: 'YOUR_TWITTER_KEY'
-        TWITTER_SECRET: 'YOUR_TWITTER_SECRET',
-        TWITTER_CALLBACK: "YOUR_TWITTER_CB",
-    }
-
+    twitterCB = "YOUR_TWITTER_CB_URL"
 else
     db = { name: 'fora-db', host: '127.0.0.1', port: 27017 }        
-    twitter = {
-        TWITTER_CONSUMER_KEY: 'YOUR_TWITTER_KEY'
-        TWITTER_SECRET: 'YOUR_TWITTER_SECRET',
-        TWITTER_CALLBACK: "YOUR_TWITTER_CB",
-    }
+    twitterCB = "http://local.foraproject.org/auth/twitterCallback"
+
+twitter = {
+    TWITTER_CONSUMER_KEY: process.env.FORA_TWITTER_CONSUMER_KEY,
+    TWITTER_SECRET: process.env.FORA_TWITTER_CONSUMER_SECRET,
+    TWITTER_CALLBACK: twitterCB
+}
 
 auth = {
     twitter,

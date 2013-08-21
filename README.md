@@ -131,20 +131,14 @@ bind_ip = 127.0.0.1
 port = MONGODB_PORT  
 ```
 
-NODE_ENV
---------
-To run the setup script, this must be set to 'development'.
-This is done so that you don't accidentally destroy the production database.
-
-
-NODE_PATH
----------
+ENVIRONMENT VARIABLES (export in .bashrc)
+-----------------------------------------
+- FORA_TWITTER_CONSUMER_KEY and FORA_TWITTER_CONSUMER_SECRET for Twitter Authentication.  
+- export NODE_ENV=development for development environment. This is done so that you don't accidentally destroy the production database.  
+- export NODE_PATH=\"/usr/local/lib/node_modules\"  
 Because the path the node modules was changed, make this change in .bashrc  
-```
-export NODE_PATH="/usr/local/lib/node_modules"
-```
 
-Otherwise, you could run this as root:  
+Instead of setting NODE_PATH, you could also do:
 ```
 rm /usr/local/lib/node  
 ln -s /usr/local/lib/node_modules /usr/local/lib/node  
