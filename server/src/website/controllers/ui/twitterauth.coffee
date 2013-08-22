@@ -13,7 +13,6 @@ controller = require '../controller'
 class TwitterAuth extends controller.Controller
     
     twitter: (req, res, text) =>
-
         oa = new OAuth(
 	        "https://api.twitter.com/oauth/request_token",
 	        "https://api.twitter.com/oauth/access_token",
@@ -51,21 +50,22 @@ class TwitterAuth extends controller.Controller
                             </html>"
                     catch e
                         next e)()
-
+                        
 
     
     twitterCallback: (req, res, next) =>
         oa = new OAuth(
 	        "https://api.twitter.com/oauth/request_token",
 	        "https://api.twitter.com/oauth/access_token",
-	        conf.authenticationTypes.twitter.TWITTER_CONSUMER_KEY,
-	        conf.authenticationTypes.twitter.TWITTER_CONSUMER_SECRET,
+	        conf.auth.twitter.TWITTER_CONSUMER_KEY,
+	        conf.auth.twitter.TWITTER_CONSUMER_SECRET,
 	        "1.0",
-	        conf.authenticationTypes.twitter.TWITTER_CALLBACK,	
+	        conf.auth.twitter.TWITTER_CALLBACK,	
 	        "HMAC-SHA1"
         )
-        models.Token.get { type: 'oauth-process-key', key: req.cookies.oauth_process_key }, {}, db, (err, token) =>            
-            if not err
+        (Q.async =>               
+            try
+                token = yield models.Token.get { type: 'oauth-process-key', key: req.cookies.oauth_process_key }, {}, db
                 if token
                     oauth = token.value
                     oauth.verifier = req.query.oauth_verifier
@@ -76,7 +76,8 @@ class TwitterAuth extends controller.Controller
                         else
                             utils.log "Twitter: authenticated #{results.screen_name}"
                             
-                            response = ''                                    
+                            response = ''            
+                            
                             https.get "https://api.twitter.com/1/users/lookup.json?screen_name=#{results.screen_name}", (_res) =>
                                 _res.on 'data', (d) =>
                                     response += d                                    
@@ -84,6 +85,14 @@ class TwitterAuth extends controller.Controller
                                     resp = JSON.parse response
                                     if resp.length and resp[0]?
                                         userDetails = @parseTwitterUserDetails resp[0]
+                                        res.send '
+                                            <html>
+                                                <script type="text/javascript">
+                                                    window.location.href = "/";
+                                                </script>
+                                                <body></body>
+                                            </html>'
+                                        ###
                                         models.User.getOrCreateUser userDetails, {}, db, (err, user, token) =>
                                             res.clearCookie "oauth_process_key"
                                             res.cookie "userid", user._id.toString()
@@ -97,15 +106,15 @@ class TwitterAuth extends controller.Controller
                                                     </script>
                                                     <body></body>
                                                 </html>'
-                                                        
+                                       ###             
                                     else
                                         utils.log response
                                         res.send "Invalid response."                            
                 else
                     utils.log "No token"
                     res.send "Could not connect to Twitter."
-            else
-                next err                
+            catch e
+                next e)()               
                 
 
 
