@@ -249,8 +249,8 @@ class BaseModel
         if not modelDescription.useCustomValidationOnly
             errors = @validateFields modelDescription.fields
             if modelDescription.validate
-                customValidationResults = modelDescription.validate.call @, modelDescription.fields
-                if customValidationResults?.length then errors.concat customValidationResults else []
+                customValidationResults = modelDescription.validate.call @, modelDescription.fields                    
+                if customValidationResults?.length then errors.concat customValidationResults else errors
             else
                 errors
         else

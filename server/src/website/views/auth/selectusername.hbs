@@ -2,9 +2,18 @@
 <div class="page-wrap small">
     <div class="section">
         <form class="standard" method="POST" action="/auth/selectusername?token={{token}}">
-            <h2>Choose a username...</h2>            
+            <h2>A few more details...</h2>            
             <p>
-                <input name="username" type="text" placeholder="username" value={{username}} />
+                Username<br />
+                <input name="username" type="text" placeholder="username" value="{{username}}" />
+            </p>
+            <p>
+                Name<br />
+                <input name="name" type="text" placeholder="{{name}}" value="{{name}}" />
+            </p>
+            <p>
+                Email<br />
+                <input name="email" type="text" placeholder="you@example.com" value="{{email}}" />
             </p>
             <p>            
             <button>Create Account</button>

@@ -42,7 +42,7 @@ class User extends BaseModel
 
             if not user
                 user = new User { username: userDetails.username }
-                user.updateFrom userDetails                        
+                user.updateFrom userDetails
                 user = yield user.save context, db
                 
                 #Also create a userinfo
@@ -60,12 +60,12 @@ class User extends BaseModel
 
                 switch authInfo.type
                     when 'builtin'
-                        result = yield Q.nfcall(hasher, { plaintext: authInfo.password })
+                        result = yield Q.nfcall(hasher, { plaintext: authInfo.value.password })
                         salt = result.salt.toString 'hex'
                         hash = result.key.toString 'hex'
                         credentials.builtin = { method: 'PBKDF2', username, hash, salt }
                     when 'twitter'
-                        credentials.twitter = authInfo
+                        credentials.twitter = authInfo.value
                 
                 credentials = yield credentials.save context, db                
                 { success: true, user, token: credentials.token }            

@@ -66,7 +66,10 @@ class Auth extends controller.Controller
                                     data = JSON.parse data
                                     if data.length and data[0]?
                                         userDetails = @parseTwitterUserDetails data[0]
-                                        credentials = { twitter: { id: userDetails.id, username: userDetails.username, accessToken: token.value.accessToken, accessTokenSecret: token.value.accessTokenSecret } }
+                                        credentials = { 
+                                            type: 'twitter', 
+                                            value: { id: userDetails.id, username: userDetails.username, accessToken: token.value.token, accessTokenSecret: token.value.token_secret }
+                                        }
                                         _token = new models.Token {
                                             type: 'twitter-tokens',
                                             key: utils.uniqueId(24),
@@ -90,29 +93,36 @@ class Auth extends controller.Controller
             
 
     selectUsernameForm: (req, res, next) =>
-        models.Token.get({ key: req.query.token }, {}, db)
-            .then (token) =>
-                res.render req.network.views.auth.selectusername, { 
-                    username: token.value.userDetails.username,
-                    pageName: 'select-username-page', 
-                    pageType: 'std-page', 
-                    token: token.key
-                }
+        (Q.async =>
+            token = yield models.Token.get({ key: req.query.token }, {}, db)
+            res.render req.network.views.auth.selectusername, { 
+                username: token.value.userDetails.username,
+                name: token.value.userDetails.name,
+                pageName: 'select-username-page', 
+                pageType: 'std-page', 
+                token: token.key
+            }
+        )()
 
 
 
     selectUsername: (req, res, next) =>
-        models.Token.get({ token: req.query.token }, {}, db)
-            .then (token) =>
-                token.destroy {}, db
-                models.User.createOrUpdateTwitterUser(userDetails, credentials,  {}, db)
-                    .then (result) =>
-                        res.clearCookie "twitter_oauth_process_key"
-                        res.cookie "userid", result.user._id.toString()
-                        res.cookie "username", result.user.username
-                        res.cookie "fullName", result.user.name
-                        res.cookie "passkey", result.token
-                        res.redirect "/"
+        (Q.async =>
+            token = yield models.Token.get({ key: req.query.token }, {}, db)     
+            token.value.userDetails.username = req.body.username
+            token.value.userDetails.name = req.body.name
+            token.value.userDetails.email = req.body.email
+            result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
+            if result.success
+                res.clearCookie "twitter_oauth_process_key"
+                res.cookie "userid", result.user._id.toString()
+                res.cookie "username", result.user.username
+                res.cookie "fullName", result.user.name
+                res.cookie "token", result.token
+                res.redirect "/"
+            else
+                next new AppError "Could not save user.", "SOME_ERROR"
+            token.destroy {}, db)()
             
 
     
