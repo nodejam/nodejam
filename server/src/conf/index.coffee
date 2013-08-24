@@ -3,7 +3,7 @@ models = require '../models'
 #Database
 if process.env.NODE_ENV is 'development'
     db = { name: 'fora-db-dev', host: '127.0.0.1', port: 27017 }
-    twitterCB = "http://local.foraproject.org/auth/twittercallback"
+    twitterCB = "http://local.foraproject.org/auth/twitter/callback"
 else
     db = { name: 'fora-db', host: '127.0.0.1', port: 27017 }        
     twitterCB = "YOUR_TWITTER_CB_URL"
@@ -31,6 +31,9 @@ admins = [
 
 defaultViews =   {
     defaultLayout: 'layouts/default',
+    auth: {
+        selectusername: 'auth/selectusername'
+    },
     home: {
         index: 'home/index.hbs',
         login: 'home/login.hbs',        

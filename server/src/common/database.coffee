@@ -115,7 +115,7 @@ class Database
 
         @execute (db, completionCallback) =>
             db.collection collectionName, (err, collection) =>
-                collection.remove params, { safe:true }, (e, r) ->
+                collection.remove params, { safe:true }, (e, r) =>
                     @_defer deferred, e, r
                     completionCallback(e)
                     

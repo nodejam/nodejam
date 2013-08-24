@@ -20,6 +20,5 @@ class Token extends BaseModel
             }
         }
         
-
     
 exports.Token = Token

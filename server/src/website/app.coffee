@@ -47,7 +47,7 @@ app.use (req,res,next) =>
 
 findHandler = (name, getHandler) ->
     controller = switch name.toLowerCase()        
-        when 'ui/twitterauth' then new uiControllers.TwitterAuth()
+        when 'ui/auth' then new uiControllers.Auth()
         when 'ui/users' then new uiControllers.Users()
         when 'ui/home' then new uiControllers.Home()
         when 'ui/forums' then new uiControllers.Forums()
@@ -85,9 +85,6 @@ handleDomainUrls = (domain, fnHandler) ->
 
 # API Routes
 # ----------
-# AUTH
-app.get '/auth/twitter', findHandler('ui/twitterauth', (c) -> c.twitter)
-app.get '/auth/twittercallback', findHandler('ui/twitterauth', (c) -> c.twitterCallback)
 app.post '/api/users', findHandler('api/users', (c) -> c.create)
 app.post '/api/login', findHandler('api/users', (c) -> c.login)
 
@@ -102,6 +99,13 @@ app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.admin_update)
 # ---------
 app.get '/', findHandler('ui/home', (c) -> c.index)
 app.get '/login', findHandler('ui/home', (c) -> c.login)
+
+# AUTH
+app.get '/auth/twitter', findHandler('ui/auth', (c) -> c.twitter)
+app.get '/auth/twitter/callback', findHandler('ui/auth', (c) -> c.twitterCallback)
+app.get '/auth/selectusername', findHandler('ui/auth', (c) -> c.selectUsernameForm)
+app.post '/auth/selectusername', findHandler('ui/auth', (c) -> c.selectUsername)
+
 app.get '/forums', findHandler('ui/forums', (c) -> c.index)
 app.get '/users/:id', findHandler('ui/users', (c) -> c.item)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.item)

@@ -82,7 +82,6 @@ init = () ->
                 utils.log "Created #{resp.title} with id #{resp._id}"
                 
                 for metaTag in meta.split(',')
-                    console.log "META->" + metaTag
                     resp = yield Q.nfcall doHttpRequest, "/api/admin/posts/#{resp._id}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'        
                     resp = JSON.parse resp
                     utils.log "Added #{metaTag} tag to article #{resp.title}."

@@ -34,91 +34,45 @@ class User extends BaseModel
        
 
    
-    #Called from controllers when a new session is created.
-    @createOrUpdate: (userDetails, authInfo, context, db) ->
-        switch authInfo.type
-            when 'builtin'
-                @createBuiltinUser userDetails, authInfo.password, context, db
-            when 'twitter'
-                @createOrUpdateTwitterUser userDetails, authInfo, context, db
-            #when 'facebook'
-            
-            
-
-    @createBuiltinUser: (userDetails, password, context, db) ->
+    @create: (userDetails, authInfo, context, db) ->
         (Q.async =>
-            credentials = yield @getModels().Credentials.get({ username: userDetails.username }, context, db)
+            #We can't create a new user with an existing username.
+            username = userDetails.username
+            user = yield User.get { username }, context, db
 
-            if not credentials
+            if not user
                 user = new User { username: userDetails.username }
-                result = yield Q.nfcall(hasher, { plaintext: password })
-                # Save as hex strings
-                salt = result.salt.toString 'hex'
-                hash = result.key.toString 'hex'
-
-                credentials = new (@getModels().Credentials) {
-                    username: userDetails.username,
-                    token: utils.uniqueId(24), 
-                    builtin: { method: 'PBKDF2', hash, salt }
+                user.updateFrom userDetails                        
+                user = yield user.save context, db
+                
+                #Also create a userinfo
+                userinfo = new (@getModels().UserInfo) {
+                    userid: user._id.toString(),
+                    username: user.username
                 }
+                userinfo = yield userinfo.save context, db
                 
-                user.updateFrom userDetails                        
-                user = yield user.save(context, db)
-                credentials.userid = user._id.toString()
-                credentials = yield credentials.save(context, db)
-                
-                { user, token: credentials.token })()
-
-    
-
-    @createOrUpdateTwitterUser: (userDetails, authInfo, context, db) ->
-        (Q.async =>
-            credentials = yield @getModels().Credentials.get({ twitter: userDetails.username }, context, db)
-        
-            if not credentials
-                user = new User { username: userDetails.username }                    
-        
                 credentials = new (@getModels().Credentials) {
-                    username: userDetails.username,
-                    token: utils.uniqueId(24), 
-                    twitter: { username: authInfo.username }
-                }            
+                    userid: user._id.toString(),
+                    username,
+                    token: utils.uniqueId(24)                    
+                }
 
-                user.updateFrom userDetails                        
-
-                user = yield user.save(context, db)                
-                credentials.userid = user._id.toString()
-                credentials = yield credentials.save(context, db)
+                switch authInfo.type
+                    when 'builtin'
+                        result = yield Q.nfcall(hasher, { plaintext: authInfo.password })
+                        salt = result.salt.toString 'hex'
+                        hash = result.key.toString 'hex'
+                        credentials.builtin = { method: 'PBKDF2', username, hash, salt }
+                    when 'twitter'
+                        credentials.twitter = authInfo
                 
-                { user, token: credentials.token }
-
+                credentials = yield credentials.save context, db                
+                { success: true, user, token: credentials.token }            
             else
-                user = yield @getModels().User.get({ username: credentials.username }, context, db)                
-                user.updateFrom userDetails
-                user = yield user.save(context, db)
-                { user, token: credentials.token })()
-
-
-  
-    #Todo. Token Expiry.   
-    @authenticateBuiltinUser: (username, password, context, db) ->
-        (Q.async =>
-            credentials = yield @getModels().Credentials.get({ username }, context, db)
-            if credentials.builtin
-                salt = new Buffer credentials.builtin.salt, 'hex'
-                result = yield Q.nfcall hasher, {plaintext: password, salt}
-                if credentials.hash is result.key.toString 'hex'
-                    user = yield User.get({ username }, context, db)
-                    { user, token: credentials.token }
-            else
-                throw new new AppError "User #{username} does not have an account.", "MISSING_CREDENTIAL_TYPE")()
-        
-
-
-    @getUserWithToken: (token, context, db) ->
-        (Q.async =>
-            credentials = yield @getModels().Credentials.get({ token }, context, db)
-            yield User.get({ username: credentials.username }, context, db))()
+                { success: false, error: new AppError "User already exists", "USER_EXISTS" }
+        )()
+            
 
                                                         
     

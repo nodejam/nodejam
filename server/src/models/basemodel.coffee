@@ -16,8 +16,8 @@ class BaseModel
         modelDescription = @getModelDescription()
         db.findOne(modelDescription.collection, params)
             .then (result) =>
-                if result then @constructModel result, modelDescription
-
+                if result then @constructModel(result, modelDescription)
+                
 
 
     @getAll: (params, context, db) ->
@@ -143,7 +143,7 @@ class BaseModel
                     result._id = obj._id
 
                 new modelDescription.type result
-     
+                
                 
                 
     @isCustomClass: (type) ->

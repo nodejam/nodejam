@@ -8,6 +8,8 @@
 }
 
 
+.full-background { position: fixed; margin-top: 0; height: 100%; width: 100%; background-color: #ccc; background-size: cover; background-position: center; background-repeat: no-repeat; top: 0; z-index: -1 }
+
 /* By default, scr-tiny is hidden and will be show only on tiny screens */
 .scr-tiny { display: none }
 
@@ -45,7 +47,6 @@
         }
     }
 
-    /* NAVIGATION BARS */
     .nav {         
         height: 24px; @fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; margin-bottom: 16px;
         li { 
@@ -73,6 +74,13 @@
     .content-area { 
         .fontContent; clear: both; margin-top: 12px;
         > h1 { margin-top: -12px }    
+    }
+}
+
+/* The standard Form */
+.form-standard-mixin (@padding) {
+    form.standard {
+        .rounded; padding: @padding; background: #f6f6f6;
     }
 }
 
@@ -125,7 +133,8 @@
                         img { width: 120px; border-radius: 100% }
                         h2 { margin: 6px 0; }
                     }
-                }
+                }                                
+                .form-standard-mixin(24px 32px 32px 32px);
             }
         }
     }
@@ -182,7 +191,9 @@
                         h2 { margin: 6px 0; }
                     }
                 }
-            }    
+            }
+            
+            .form-standard-mixin(24px 32px 32px 32px);
         }
     }
 }
@@ -235,9 +246,10 @@
                             h2 { margin: 6px 0; }
                         }
                     }
-                }
-            }    
-        }
+                }                
+                .form-standard-mixin(12px 16px 16px 16px);
+            }
+        }        
     }
 }
 

@@ -60,9 +60,9 @@ if opt isnt '--debug' and opt isnt '--trace'
                 utils.log 'Created lib-base.js'
     }    
     
+    #type: 'uglifyjs', Using no compress until errors are resolved in uglify due to node 0.11
     c = new compressor.minify {
-        #type: 'no-compress',
-        type: 'uglifyjs',
+        type: 'no-compress',
         buffer: 1000 * 1024,
         tempPath: '../temp/',
         fileIn: [
@@ -82,7 +82,7 @@ if opt isnt '--debug' and opt isnt '--trace'
     }    
     
     c = new compressor.minify {
-        type: 'uglifyjs',
+        type: 'no-compress',
         buffer: 1000 * 1024,
         tempPath: '../temp/',
         fileIn: [
@@ -93,7 +93,7 @@ if opt isnt '--debug' and opt isnt '--trace'
                 utils.log(err)
             else
                 utils.log 'Created fora.js'
-    }    
+    }
 else
     utils.log "Skipped minify in debug mode."            
 

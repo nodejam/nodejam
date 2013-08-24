@@ -24,8 +24,8 @@ class Users extends controller.Controller
         if req.body.secret is conf.auth.adminkeys.default
             req.body.createdVia = 'internal' 
             (Q.async =>
-                try
-                    result = yield models.User.createOrUpdate(req.body, { type: 'builtin', password: req.body.credentials_password }, { user: req.user }, db)
+                try                    
+                    result = yield models.User.create(req.body, { type: 'builtin', password: req.body.credentials_password }, { user: req.user }, db)
                     res.contentType 'json'
                     res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
                 catch e
@@ -38,7 +38,7 @@ class Users extends controller.Controller
     createTwitterUser: (req, res, next) =>
         (Q.async =>
             try
-                result = yield models.User.createOrUpdate(req.body, { type: 'twitter', username: req.body.credentials_username, accessToken: req.body.credentials_accessToken }, { user: req.user }, db)
+                result = yield models.User.create(req.body, { type: 'twitter', id: req.body.credentials_id, username: req.body.credentials_username, accessToken: req.body.credentials_accessToken }, { user: req.user }, db)
                 res.contentType 'json'
                 res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
             catch e

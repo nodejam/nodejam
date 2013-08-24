@@ -2,40 +2,41 @@ conf = require '../../conf'
 db = new (require '../../common/database').Database(conf.db)
 models = require '../../models'
 AppError = require('../../common/apperror').AppError
-defer = require('../../common/q').defer
+Q = require('../../common/q')
 
 class Controller        
 
     ensureSession: (args, fn) =>
         [req, res, next] = args 
-        @getUserWithtoken(req.query.token ? req.cookies.token)
-            .then (user) =>                
-                if user?.id and user?.username
-                    req.user = user
-                    fn()
-                else
-                    res.send { error: 'NO_SESSION' }
-
-
-
-    attachUser: (args, fn) ->
-        [req, res, next] = args
-        @getUserWithtoken(req.query.token ? req.cookies.token)
-            .then (user) =>
-                req.user = user ? { id: 0 }
+        (Q.async =>
+            user = yield @getUserWithToken(req.query.token ? req.cookies.token)
+            if user
+                req.user = user
                 fn()
+            else
+                res.send { error: 'NO_SESSION' }
+        )()
 
 
 
-    getUserWithtoken: (token) ->
-        deferred = defer()
-        if token
-            models.User.getUserWithToken(token, {}, db)
-                .then (user) =>
-                    deferred.resolve user.summarize()
-        else                
-            deferred.resolve()
-        deferred.promise
+    attachUser: (args, fn) =>
+        [req, res, next] = args
+        (Q.async =>
+            user = yield @getUserWithToken(req.query.token ? req.cookies.token)
+            req.user = user
+            fn()
+        )()
+
+
+
+    getUserWithToken: (token) =>
+        (Q.async => 
+            if token
+                credentials = yield models.Credentials.get({ token }, {}, db)
+                user = yield credentials.getUser({}, db)
+                user?.summarize()                
+            else
+                null)()
         
 
     

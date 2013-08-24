@@ -22,16 +22,17 @@
 @colorDarkPositive: darken(@colorPositive, 10%);
 
 @colorLight: #ccc;
-@colorLighter: #eee;
-@colorLightest: #fff;
+@colorLighter: #ddd;
+@colorUltraLight: #eee;
+@colorLightest: #eee;
 @colorNeutral: #999;
 @colorDark: #333;
 @colorDarker: #666;
 @colorDarkest: #000;
 
-.control (@fg, @bg) { 
-    color: @fg; background-color: @bg; border-top: 1px solid darken(@bg, 5%); border-right: 1px solid darken(@bg, 20%);     
-    border-bottom: 1px solid darken(@bg, 20%); border-left: 1px solid darken(@bg, 5%);
+.control (@fg, @bg, @borderHighLight, @borderShadow) { 
+    color: @fg; background-color: @bg; border-top: 1px solid darken(@bg, @borderHighLight); border-right: 1px solid darken(@bg, @borderShadow);     
+    border-bottom: 1px solid darken(@bg, @borderShadow); border-left: 1px solid darken(@bg, @borderHighLight);
 }
 
 /* BORDERS */
@@ -50,22 +51,22 @@ a, a:visited, a:hover, span.anchor, span.anchor:hover { color: @colorLink; text-
     a img { border: none }
 
 /* FORM CONTROLS */
-input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff); .rounded; padding: 6px 4px 8px 4px; margin: 2px 0 2px 0; }
+input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
     input[type="checkbox"] { margin-right: 4px; }
     input[type="file"] { padding: 0; border: none }
 
 label.alert-required { color: @colorNegative; }
 label.alert-required:after { content: '*' }
 
-button { .fontBase; .control(@colorText, @colorLighter); .rounded; padding: 9px 14px 9px 14px; margin: 0 2px 0 0; font-size: 11px; 
-         font-weight: bold; text-transform: uppercase; cursor: pointer; }    
+button { .fontBase; .control(@colorText, @colorLighter, 5%, 25%); .rounded; padding: 11px 14px 11px 14px; margin: 0 2px 0 0; font-size: 11px; 
+         font-weight: bold; text-transform: uppercase; cursor: pointer;     
 
-    button i { padding-right: 6px; }        
-    button.textless i { padding-right: 0; }
+    i { padding-right: 6px; }        
+    .textless i { padding-right: 0; }
 
-    button.positive, .form button.positive { .control(#fff, @colorPositive) }
-    button.negative, .form button.negative { .control(#fff, @colorNegative) }
-    
+    .positive { .control(#fff, @colorPositive, 5%, 25%) }
+    .negative { .control(#fff, @colorNegative, 5%, 25%) }
+}
 
 /* LIST */
 ul { margin: 0; padding: 0 }
