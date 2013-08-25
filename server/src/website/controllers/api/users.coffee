@@ -15,8 +15,6 @@ class Users extends controller.Controller
                 @createBuiltinUser req, res, next
             when 'twitter'
                 @createTwitterUser req, res, next
-            when 'facebook'
-                @createFacebookUser req, res, next
 
 
 
@@ -40,7 +38,15 @@ class Users extends controller.Controller
             try
                 result = yield models.User.create(
                     req.body, 
-                    { type: 'twitter', value: { id: req.body.credentials_id, username: req.body.credentials_username, accessToken: req.body.credentials_accessToken, accessTokenSecret: req.body.credentials_accessTokenSecret } }, 
+                    { 
+                        type: 'twitter', 
+                        value: { 
+                            id: req.body.credentials_id, 
+                            username: req.body.credentials_username, 
+                            accessToken: req.body.credentials_accessToken, 
+                            accessTokenSecret: req.body.credentials_accessTokenSecret 
+                        } 
+                    }, 
                     { user: req.user }, 
                     db
                 )
@@ -50,39 +56,35 @@ class Users extends controller.Controller
                 next e)()
 
 
-    ###
-    createFacebookUser: (req, res, next) =>
-        if req.body.credentials_0_type is 'facebook'
-            client = new FaceBookClient()            
-            options = {
-                path: '/me?' + querystring.stringify { 
-                    fields: 'id,username,name,first_name,last_name,location,email', 
-                    access_token: req.body.accessToken, 
-                    client_id: conf.auth.facebook.FACEBOOK_APP_ID, 
-                    client_secret: conf.auth.facebook.FACEBOOK_SECRET 
-                }
-            }
-            
-            client.secureGraphRequest options, (err, userDetails) =>
-                _userDetails = {
-                    username: userDetails.username ? userDetails.id,
-                    name: userDetails.name,
-                    location: userDetails.location,
-                    email: userDetails.email,
-                    picture: "http://graph.facebook.com/#{userDetails.id}/picture?type=large",
-                    thumbnail: "http://graph.facebook.com/#{userDetails.id}/picture"
-                }    
-                
-                
-    parseFBUserDetails: (userDetails) =>
-        {
-            username: userDetails.username ? userDetails.id,
-            name: userDetails.name,
-            location: userDetails.location,
-            email: userDetails.email,
-            picture: "http://graph.facebook.com/#{userDetails.id}/picture?type=large",
-            thumbnail: "http://graph.facebook.com/#{userDetails.id}/picture"
-        }                
-    ###
+
+    item: (req, res, next) =>
+        (Q.async =>
+            user = yield models.User.get { username: req.query.username }, {}, db
+            if user
+                res.send user.summarize()
+            else
+                res.send ''
+        )()
+        
+
+
+    selectUsername: (req, res, next) =>
+        (Q.async =>
+            token = yield models.Token.get({ key: req.query.token }, {}, db)     
+            token.value.userDetails.username = req.body.username
+            token.value.userDetails.name = req.body.name
+            token.value.userDetails.email = req.body.email
+            result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
+            if result.success
+                res.clearCookie "twitter_oauth_process_key"
+                res.cookie "userid", result.user._id.toString()
+                res.cookie "username", result.user.username
+                res.cookie "fullName", result.user.name
+                res.cookie "token", result.token
+                res.redirect "/"
+            else
+                next new AppError "Could not save user.", "SOME_ERROR"
+            token.destroy {}, db)()
+
 
 exports.Users = Users

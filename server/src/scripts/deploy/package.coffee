@@ -86,6 +86,8 @@ if opt isnt '--debug' and opt isnt '--trace'
         buffer: 1000 * 1024,
         tempPath: '../temp/',
         fileIn: [
+            'app/www/js/views/baseview.js',
+            'app/www/js/views/users/selectusername.js'
         ],
         fileOut: 'app/www/js/fora.js',
         callback: (err) -> 

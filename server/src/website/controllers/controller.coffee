@@ -41,7 +41,7 @@ class Controller
 
     
     isAdmin: (user) =>
-        (u for u in conf.admins when u.username is user?.username).length        
+        (u for u in conf.admins when u is user?.username).length        
                 
                 
         

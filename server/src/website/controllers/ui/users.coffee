@@ -11,26 +11,16 @@ Q = require('../../../common/q')
 
 class Users extends Controller
 
-    item: (req, res, next) =>
-        @attachUser arguments, =>
-            (Q.async =>
-                try
-                    forums = yield models.Forum.find({ 'createdBy.username': req.params.id, network: req.network.stub }, ((cursor) -> cursor.sort({ lastPost: -1 }).limit 12), {}, db)
-                    for forum in forums
-                        posts = yield models.Post.find({ 'forum.stub.id': forum.id, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
-                        for post in posts
-                                post.summary = post.getView("card")
-                                post.summary.view = "standard"
-
-                        res.render req.network.views.forums.item, { 
-                            forum,
-                            posts, 
-                            pageName: 'forum-page', 
-                            pageType: 'cover-page', 
-                            cover: @cover ? '/pub/images/cover.jpg'
-                            }
-                catch e
-                    next e)()                                
-
+    selectUsernameForm: (req, res, next) =>
+        (Q.async =>
+            token = yield models.Token.get({ key: req.query.token }, {}, db)
+            res.render req.network.views.users.selectusername, { 
+                username: token.value.userDetails.username,
+                name: token.value.userDetails.name,
+                pageName: 'select-username-page', 
+                pageType: 'std-page', 
+                token: token.key
+            }
+        )()
                                 
 exports.Users = Users

@@ -86,7 +86,8 @@ handleDomainUrls = (domain, fnHandler) ->
 # API Routes
 # ----------
 app.post '/api/users', findHandler('api/users', (c) -> c.create)
-app.post '/api/login', findHandler('api/users', (c) -> c.login)
+app.get '/api/users/:username', findHandler('api/users', (c) -> c.item)
+app.post '/api/users/selectusername', findHandler('api/users', (c) -> c.selectUsername)
 
 # FORUMS and POSTS
 app.post '/api/forums', findHandler('api/forums', (c) -> c.create)
@@ -103,11 +104,10 @@ app.get '/login', findHandler('ui/home', (c) -> c.login)
 # AUTH
 app.get '/auth/twitter', findHandler('ui/auth', (c) -> c.twitter)
 app.get '/auth/twitter/callback', findHandler('ui/auth', (c) -> c.twitterCallback)
-app.get '/auth/selectusername', findHandler('ui/auth', (c) -> c.selectUsernameForm)
-app.post '/auth/selectusername', findHandler('ui/auth', (c) -> c.selectUsername)
 
 app.get '/forums', findHandler('ui/forums', (c) -> c.index)
-app.get '/users/:id', findHandler('ui/users', (c) -> c.item)
+app.get '/users/selectusername', findHandler('ui/users', (c) -> c.selectUsernameForm)
+app.get '/users/:username', findHandler('ui/users', (c) -> c.item)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.item)
 app.get '/:forum/:stub', findHandler('ui/forums', (c) -> c.post)
 

@@ -92,19 +92,20 @@
         
         input, textarea { width: @inputBaseWidth }
         label, input, button, textarea { margin-left: @spacing }                
-        
-        fieldset {
-            border: none; margin: 0 0 (@spacing/1.5) 0; padding: 0; 
-            legend { 
-                font-size: 1.2em; margin-bottom: (@spacing/1.5); font-weight: bold; padding-left: @spacing;
-                padding-left: @spacing; border-bottom: 1px solid @colorLight; box-shadow: 0px 2px 0 @colorLighter; display: block; box-sizing: border-box; width: 100%; padding-bottom: (@spacing/4);
-            }
-            &.single-col {
+
+        &.single-col {
+            fieldset {
+                border: none; margin: 0 0 (@spacing/1.5) 0; padding: 0; 
+                legend { 
+                    font-size: 1.2em; margin-bottom: (@spacing/1.5); font-weight: bold; padding-left: @spacing;
+                    padding-left: @spacing; border-bottom: 1px solid @colorLight; box-shadow: 0px 2px 0 @colorLighter; display: block; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; padding-bottom: (@spacing/4);
+                }
                 label {
-                    font-size: 0.9em; font-weight: bold; display: block;
+                    font-size: 0.8em; font-weight: bold; display: block;
                 }
                 input {
                     margin-bottom: 12px; display: block;
+                    &:last-child { margin-bottom: 0 }
                 }
             }
         }
@@ -242,7 +243,7 @@
                     width: @width + 0px; margin: auto;
                 }
                 .widths() when (ispercentage(@width)) {
-                    padding: 0 32px;
+                    padding: 0 12px;
                 }                        
                 .widths();
             }
@@ -259,7 +260,8 @@
             margin-top: 72px;
 
             .page-wrap {
-                margin: auto 32px; padding: 0;            
+                margin: auto 12px; padding: 0;  
+                &.small { width: 300px; margin: auto }          
                 .single-item-mixin (100%, 100%);
                 .content-area {
                     .item { 
@@ -274,7 +276,7 @@
                         }
                     }
                 }                
-                .form-standard-mixin(16px, 180px);
+                .form-standard-mixin(24px, 220px);
             }
         }        
     }
