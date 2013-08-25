@@ -33,12 +33,20 @@
         height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 99; box-shadow: 4px 0 4px black;
                             
         ul {
-            background: @colorDark; opacity: 0.95; width: 220px; height: 100%;
+            background: @colorDarker; opacity: 0.96; width: 220px; height: 100%; 
             padding-top: 12px; font-size: 12px; font-weight: bold; color: @colorLight;
             li {                
+                border-bottom: 1px solid @colorDarkerBorder; clear: both; display: table; width: 100%;
                 a { 
-                    i { margin-right: 12px; }
-                    display: block; padding: 10px; border-bottom: 1px solid #444; padding-left: 32px; color: @colorLight 
+                    display: block; padding: 10px 4px 10px 20px; color: @colorLight; float: left; min-width: 120px;
+                    i { 
+                        margin-right: 12px; 
+                    }
+                    &:hover { color: white }
+                    &.right { 
+                        float: right; padding: 10px 24px 10px 16px; margin: 0; min-width: 0;
+                        i { margin: 0 }
+                    }   
                 }
             }
         }
@@ -78,9 +86,28 @@
 }
 
 /* The standard Form */
-.form-standard-mixin (@padding) {
+.form-standard-mixin (@spacing, @inputBaseWidth) {
     form.standard {
-        .rounded; padding: @padding; background: #f6f6f6;
+        .rounded; background: #f6f6f6; padding: (@spacing/2) 0 @spacing 0;
+        
+        input, textarea { width: @inputBaseWidth }
+        label, input, button, textarea { margin-left: @spacing }                
+        
+        fieldset {
+            border: none; margin: 0 0 (@spacing/1.5) 0; padding: 0; 
+            legend { 
+                font-size: 1.2em; margin-bottom: (@spacing/1.5); font-weight: bold; padding-left: @spacing;
+                padding-left: @spacing; border-bottom: 1px solid @colorLight; box-shadow: 0px 2px 0 @colorLighter; display: block; box-sizing: border-box; width: 100%; padding-bottom: (@spacing/4);
+            }
+            &.single-col {
+                label {
+                    font-size: 0.9em; font-weight: bold; display: block;
+                }
+                input {
+                    margin-bottom: 12px; display: block;
+                }
+            }
+        }
     }
 }
 
@@ -134,7 +161,7 @@
                         h2 { margin: 6px 0; }
                     }
                 }                                
-                .form-standard-mixin(24px 32px 32px 32px);
+                .form-standard-mixin(32px, 240px);
             }
         }
     }
@@ -193,7 +220,7 @@
                 }
             }
             
-            .form-standard-mixin(24px 32px 32px 32px);
+            .form-standard-mixin(32px, 220px);
         }
     }
 }
@@ -247,7 +274,7 @@
                         }
                     }
                 }                
-                .form-standard-mixin(12px 16px 16px 16px);
+                .form-standard-mixin(16px, 180px);
             }
         }        
     }

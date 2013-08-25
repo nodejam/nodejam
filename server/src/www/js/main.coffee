@@ -18,7 +18,7 @@ class App
     init: =>
         user = @getUser()
         if user
-            $('.site-options .account').html "<a href=\"#{@getUserUrl()}\"><i class=\"icon-user\"></i>#{user.username}</a>"
+            $('.site-options .account').html "<a href=\"#{@getUserUrl()}\"><i class=\"icon-user\"></i>#{user.username}</a><a href=\"#\" class=\"right logout\"><i class=\"icon-signout\"></i></a>"
         else
             $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"icon-signin\"></i>Login</a>"
 
@@ -36,6 +36,7 @@ class App
             $('.site-options').hide()
                     
         $(document).clickHandler '.site-options .account .login', @login
+        $(document).clickHandler '.site-options .account .logout', @logout
                     
 
 
