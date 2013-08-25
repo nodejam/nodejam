@@ -33,8 +33,11 @@ class Controller
         (Q.async => 
             if token
                 credentials = yield models.Credentials.get({ token }, {}, db)
-                user = yield credentials.getUser({}, db)
-                user?.summarize()                
+                if credentials
+                    user = yield credentials.getUser({}, db)
+                    user?.summarize()                
+                else
+                    null
             else
                 null)()
         

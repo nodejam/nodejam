@@ -4,8 +4,11 @@ BaseModel = require('./basemodel').BaseModel
 Q = require('../common/q')
 hasher = require('../common/hasher').hasher
 
-class User extends BaseModel
+emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
+class User extends BaseModel
+    
+    
     @describeModel: ->
         {
             type: User,
@@ -16,7 +19,7 @@ class User extends BaseModel
                 location: 'string',
                 picture: 'string',
                 thumbnail: 'string',
-                email: 'string',
+                email: { type: 'string', validate: -> emailRegex.test(@email) },
                 accessToken: { type: 'string', required: false },
                 lastLogin: 'number',
                 assetPath: 'string',

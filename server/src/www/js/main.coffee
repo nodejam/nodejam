@@ -52,15 +52,6 @@ class App
                 
 
 
-    onLogin: (resp) =>
-        options = {}
-        $.cookie 'userid', resp.userid, options
-        $.cookie 'username', resp.username, options
-        $.cookie 'fullName', resp.name, options
-        $.cookie 'token', resp.token, options
-
-
-
     logout: =>
         @clearCookies()
         $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"icon-signin\"></i>Login</a>"
@@ -71,6 +62,7 @@ class App
         $.removeCookie('userid')
         $.removeCookie('username')
         $.removeCookie('fullName')
+        $.removeCookie('assetPath')    
         $.removeCookie('token')    
 
 
@@ -81,6 +73,7 @@ class App
                 id: $.cookie('userid'),
                 username: $.cookie('username'),
                 name: $.cookie('fullName'),
+                assetPath: $.cookie('assetPath'),
                 token: $.cookie('token')
             }
               

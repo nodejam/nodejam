@@ -11,7 +11,7 @@ class Validator
         if options.form
             @parseForm options.form
             
-        @emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        @emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 
     parseForm: (form) =>
@@ -90,9 +90,9 @@ class Validator
         if @processed is @validations.length
             errors = (_v for _v in @validations when _v.error)
             if errors.length
-                @completionCb errors.length
                 #focus on the first error.            
                 errors[0].element.focus()
+            @completionCb errors.length == 0, errors
             
         
 window.Fora.Views.Validator = Validator

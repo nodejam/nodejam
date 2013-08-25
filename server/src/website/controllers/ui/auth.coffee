@@ -58,32 +58,44 @@ class Auth extends controller.Controller
                             utils.log error
                             res.send "Could not connect to Twitter."
                         else
-                            utils.log "Twitter: authenticated #{results.screen_name}"
-                            oa.get "https://api.twitter.com/1.1/users/lookup.json?screen_name=#{results.screen_name}",
-                                accessToken,
-                                accessTokenSecret,
-                                (e, data, _res) =>
-                                    data = JSON.parse data
-                                    if data.length and data[0]?
-                                        userDetails = @parseTwitterUserDetails data[0]
-                                        credentials = { 
-                                            type: 'twitter', 
-                                            value: { id: userDetails.id, username: userDetails.username, accessToken: token.value.token, accessTokenSecret: token.value.token_secret }
-                                        }
-                                        _token = new models.Token {
-                                            type: 'twitter-tokens',
-                                            key: utils.uniqueId(24),
-                                            value: { userDetails, credentials }
-                                        }                                        
-                                        _token.save({}, db)
-                                            .then (_token) =>
-                                                res.redirect "/users/selectusername?token=#{_token.key}"
-
-                                        token.destroy {}, db #We don't need this token anymore.
+                            #See if we already have a user for this twitter user
+                            models.Credentials.get({ "twitter.id": results.user_id }, {}, db)
+                                .then (credentials) =>
+                                    if credentials
+                                        credentials.getUser({}, db)
+                                            .then (user) =>
+                                                res.cookie "userid", user._id.toString()
+                                                res.cookie "username", user.username
+                                                res.cookie "fullName", user.name
+                                                res.cookie "assetPath", user.assetPath
+                                                res.cookie "token", credentials.token
+                                                res.redirect "/"
                                     else
-                                        utils.log JSON.stringify data
-                                        res.send "Invalid response."                            
-                                        token.destroy {}, db #We don't need this token anymore.
+                                        oa.get "https://api.twitter.com/1.1/users/lookup.json?screen_name=#{results.screen_name}",
+                                            accessToken,
+                                            accessTokenSecret,
+                                            (e, data, _res) =>
+                                                data = JSON.parse data
+                                                if data.length and data[0]?
+                                                    userDetails = @parseTwitterUserDetails data[0]
+                                                    credentials = { 
+                                                        type: 'twitter', 
+                                                        value: { id: userDetails.id, username: userDetails.username, accessToken: token.value.token, accessTokenSecret: token.value.token_secret }
+                                                    }
+                                                    _token = new models.Token {
+                                                        type: 'twitter-tokens',
+                                                        key: utils.uniqueId(24),
+                                                        value: { userDetails, credentials }
+                                                    }                                        
+                                                    _token.save({}, db)
+                                                        .then (_token) =>
+                                                            res.redirect "/users/selectusername?token=#{_token.key}"
+
+                                                    token.destroy {}, db #We don't need this token anymore.
+                                                else
+                                                    utils.log JSON.stringify data
+                                                    res.send "Invalid response."                            
+                                                    token.destroy {}, db #We don't need this token anymore.
 
                                     
                 else
@@ -94,7 +106,7 @@ class Auth extends controller.Controller
     
     parseTwitterUserDetails: (userDetails) =>
         {
-            id: userDetails.id ? '',
+            id: userDetails.id.toString(),
             username: userDetails.screen_name,
             name: userDetails.name ? userDetails.screen_name,
             location: userDetails.location ? '',

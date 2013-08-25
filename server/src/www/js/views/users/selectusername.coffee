@@ -11,8 +11,10 @@ class SelectUsername extends window.Fora.Views.BaseView
 
 
     onSubmit: (e) =>
-        e.preventDefault()
-        @validate (result) =>
+        @validate (valid) =>
+            if valid
+                $('form.select-username').off 'submit'
+                $('form.select-username').submit()
         false
         
     
