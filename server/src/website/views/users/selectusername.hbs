@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    var page = new Fora.Views.SelectUsername();
+</script>
+<div class="full-background" style="background-image:url(/pub/images/cover-experience.jpg)"></div>
+<div class="page-wrap small">
+    <div class="section">
+        <form class="select-username standard single-col" method="POST" action="/users/selectusername?token={{token}}">
+            <fieldset>
+                <legend>A few more details...</legend>
+                <label for="username">Username</label>
+                <input name="username" id="username" type="text" data-validation="required,userExists()" placeholder="username" value="{{username}}" />
+                <label for="name">Name</label>
+                <input name="name" id="name" type="text" data-validation="required" placeholder="{{name}}" value="{{name}}" />
+                <label for="email">Email</label>
+                <input name="email" id="email" type="text" data-validation="required,email" placeholder="you@example.com" value="{{email}}" />
+            </fieldset>
+            <button>Create Account</button>
+        </form>    
+        <div class="clear:both"></div>
+    </div>
+</div>

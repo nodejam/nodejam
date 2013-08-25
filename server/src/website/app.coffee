@@ -86,8 +86,8 @@ handleDomainUrls = (domain, fnHandler) ->
 # API Routes
 # ----------
 app.post '/api/users', findHandler('api/users', (c) -> c.create)
-app.get '/api/users/:username', findHandler('api/users', (c) -> c.item)
 app.post '/api/users/selectusername', findHandler('api/users', (c) -> c.selectUsername)
+app.get '/api/users/:username', findHandler('api/users', (c) -> c.item)
 
 # FORUMS and POSTS
 app.post '/api/forums', findHandler('api/forums', (c) -> c.create)

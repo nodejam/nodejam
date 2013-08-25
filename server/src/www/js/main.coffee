@@ -131,31 +131,30 @@ window.Fora.apiUrl = (url, params = {}, options = { api: 'v1'}) ->
                 
     "/api/#{options.api}/#{url}"
 
+#Avoid caching in jQuery
+$.ajaxSetup({
+    cache: false
+})
 
 #Some extensions to jQuery
 $.fn.bindNew = (eventName, p1, p2) ->
+    fn = p2 ? p1
     if not p2?
-        fn = p1
         $(this).off eventName
         $(this).on eventName, fn    
     else
-        selector = p1
-        fn = p2
-        $(this).off eventName, selector
-        $(this).on eventName, selector, fn
+        $(this).off eventName, p1
+        $(this).on eventName, p2, fn
 
-$.fn.clickHandler = (selector, fn) ->
+$.fn.clickHandler = (p1, p2) ->
+    fn = p2 ? p1
     _fn = ->
         fn.apply this, arguments
         false
-    $(this).off 'click touch', selector
-    $(this).on 'click touch', selector, _fn
-    
-$.fn._hide = () ->
-    $(this).removeClass 'visible'
-    $(this).addClass 'hidden'
-    
-$.fn._show = () ->
-    $(this).removeClass 'hidden'
-    $(this).addClass 'visible'
-    
+    if not p2?
+        $(this).off 'click touch'
+        $(this).on 'click touch', _fn
+    else
+        $(this).off 'click touch', p1
+        $(this).on 'click touch', p1, _fn
+        

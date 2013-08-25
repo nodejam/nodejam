@@ -3,7 +3,6 @@ class BaseView
     constructor: ->
         $(document).ready @attachEvents
         
-        
     
     attachEvents: =>
 

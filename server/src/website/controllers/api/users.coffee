@@ -59,7 +59,7 @@ class Users extends controller.Controller
 
     item: (req, res, next) =>
         (Q.async =>
-            user = yield models.User.get { username: req.query.username }, {}, db
+            user = yield models.User.get { username: req.params.username }, {}, db
             if user
                 res.send user.summarize()
             else
