@@ -60,9 +60,10 @@ npm install gm
 npm install mongo-express  
 npm install node-minify  
 npm install oauth  
-sudo npm install -g forever  
+npm install forever  
 npm install marked  
-sudo npm install -g less  
+npm install less  
+npm install optimist
 ```
 
 nginx configuration file
