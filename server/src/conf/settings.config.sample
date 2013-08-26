@@ -1,0 +1,27 @@
+/* Rename this file to settings.config */
+{
+    "app": {
+        "host": "localhost",
+        "port": 9000
+    },
+    "db": { 
+        "name": "fora-dev-db", 
+        "host": "127.0.0.1", 
+        "port": 27017 
+    },
+    
+    "auth": {
+        "twitter": {
+            "TWITTER_CONSUMER_KEY": "YOUR_TWITTER_KEY",
+            "TWITTER_CONSUMER_SECRET": "YOUR_LITTLE_SECRET",
+            "TWITTER_CALLBACK": "TWITTER_CALLBACK"
+        },
+        "adminkeys": { 
+            "default": "Th3B@DGor1ll@@5"
+        }
+    },
+    
+    "admins": ["jeswin"],
+    
+    "defaultNetwork": "fora"
+}

@@ -1,0 +1,11 @@
+/* Rename this file to fora.config */
+{
+    "name": "Fora",
+    "stub": "fora",
+    "domains": ["local.foraproject.org", "www.local.foraproject.org"],
+    "templates": {
+        "layouts": {
+            "default": "layouts/default"
+        }
+    }
+}
