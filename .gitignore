@@ -14,6 +14,10 @@ server/app
 server/src/website/views/_custom/*
 !server/src/website/views/_custom/placeholder
 
+server/src/conf/*
+!server/src/conf/index.conf
+!server/src/conf/*.sample
+
 server/www-user/assetpaths/*
 !server/www-user/assetpaths/default
 !server/www-user/assetpaths/placeholder

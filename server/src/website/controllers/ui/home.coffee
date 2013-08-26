@@ -28,7 +28,7 @@ class Home extends controller.Controller
                         post.summary = post.getView("card")
                         post.summary.view = "standard"
 
-                    res.render req.network.views.home.index, { 
+                    res.render req.network.getView('home', 'index'), { 
                         editorsPicks, 
                         featured, 
                         pageName: 'home-page', 
@@ -41,7 +41,7 @@ class Home extends controller.Controller
 
 
     login: (req, res, next) =>
-        res.render req.network.views.home.login, { 
+        res.render req.network.getView('home', 'login'), { 
             pageName: 'login-page', 
             pageType: 'std-page', 
         }

@@ -1,8 +1,8 @@
 root = exports ? this
 
+path = require 'path'
 express = require 'express'
-validator = require('validator')
-
+validator = require 'validator'
 conf = require '../conf'
 utils = require '../common/utils'
 db = new (require '../common/database').Database(conf.db)
@@ -21,15 +21,11 @@ app.use express.bodyParser({
 })
 app.use(express.limit('6mb'));
 
-
 app.set("view engine", "hbs");
-app.set('view options', { layout: conf.defaultViews.defaultLayout })
+app.set('view options', { layout: conf.templates.layouts.default })
 
 #static file handlers.
-#app.use('/', express.static(__dirname + '/public/root'))
-app.use('/public', express.static(__dirname + '/public'))
-app.use(express.favicon());
-
+app.use express.favicon()
 app.use express.cookieParser()
 
 #check for cross site scripting
@@ -159,7 +155,7 @@ db.getDb (err, db) ->
         coll.ensureIndex { key: 1 }, ->
 
     
-host = process.argv[2]
-port = process.argv[3]
+host = conf.app.host
+port = conf.app.port
            
 app.listen(port)

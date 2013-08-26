@@ -14,7 +14,7 @@ class Users extends Controller
     selectUsernameForm: (req, res, next) =>
         (Q.async =>
             token = yield models.Token.get({ key: req.query.token }, {}, db)
-            res.render req.network.views.users.selectusername, { 
+            res.render req.network.getView('users', 'selectusername'), { 
                 username: token.value.userDetails.username,
                 name: token.value.userDetails.name,
                 pageName: 'select-username-page', 

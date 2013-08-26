@@ -48,7 +48,7 @@ class App
                 </ul>
             </div>'
             
-        $('#login-box').leanModal()
+        $('#login-box').leanModal { onClose: => $('#login-box').remove() }
                 
 
 

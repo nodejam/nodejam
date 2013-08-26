@@ -11,9 +11,9 @@ cd app/website
 if [ "$1" == "--trace" ]; then
     echo Killing node if it is running..
     killall node
-    node --harmony app.js localhost 9000 &
+    node --harmony app.js &
 else
     forever stopall
-    forever start -c "node --harmony" app.js localhost 9000
+    forever start -c "node --harmony" app.js
 fi
 cd ..

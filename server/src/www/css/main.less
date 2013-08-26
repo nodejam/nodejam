@@ -424,6 +424,25 @@
     }
 }
 
+.login-box-mixin (@width, @spacing, @fontSize) {
+    #login-box {
+        .rounded; padding: @spacing (2 * @spacing); background: @colorLighter; width: @width; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; 
+        h2 { clear: both; margin: 0 }
+        li {
+            font-size: @fontSize; clear: both; height: (@fontSize * 2.3);
+            i { 
+                float: left; font-size: (@fontSize * 2);
+                &.icon-twitter { color: #00aced }
+                &.icon-facebook { color: #3b5998 }
+                &.icon-google-plus { color: #d34836 }    
+            }
+            a { 
+                float: left; margin: 6px 0 0 12px;
+                &.twitter { color: #00aced }
+            }
+        }
+    }
+}
 /* .*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
 @media (min-width: 1760px) { 
     .large-cover-page-mixin(1760; 3; 360; 40);    
@@ -479,9 +498,14 @@
     .page-sections-mixin;
 }
 
+@media (min-width: 720px) { 
+    .login-box-mixin(400px, 16px, 24px)
+}
+
 @media (max-width: 719px) { 
     .page-sections-base-mixin(15);
     .page-sections-mixin;
+    .login-box-mixin(280px, 8px, 16px)
 }
 
 @media (min-width: 580px) and (max-width: 719px) { 
@@ -496,29 +520,11 @@
     .cards-mixin(100%; 32; 22; 16; 220; 380);
 }
 
+
 @media (max-width: 479px) { 
     .tiny-std-page-mixin();    
     .tiny-cover-page-mixin(100%);
     .cards-mixin(100%; 32; 22; 14; 220; 380);
-}
-
-/* LOGIN SECTION */
-#login-box {
-    .rounded; padding: 16px 32px; background: @colorLighter; width: 320px; text-align: center;
-    h2 { clear: both; margin: 0 }
-    li {
-        font-size: 24px;
-        i { 
-            float: left; font-size: 48px;            
-            &.icon-twitter { color: #00aced }
-            &.icon-facebook { color: #3b5998 }
-            &.icon-google-plus { color: #d34836 }    
-        }
-        a { 
-            float: left; margin: 6px 0 0 12px;
-            &.twitter { color: #00aced }
-        }
-    }
 }
 
 /* LEAN MODAL - Thanks to http://leanmodal.finelysliced.com.au/ */

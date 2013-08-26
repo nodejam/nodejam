@@ -20,10 +20,11 @@ exports.register = ->
             "Unsupported comment type."
 
     #Templates
-    fs = require('fs')
-    conf = require('../conf')    
-    postcard = fs.readFileSync(__dirname + conf.defaultViews.posts.postcard, 'utf8');
-    hbs.registerPartial('postcard', postcard); 
-    forumcard = fs.readFileSync(__dirname + conf.defaultViews.forums.forumcard, 'utf8');
-    hbs.registerPartial('forumcard', forumcard); 
+    fs = require 'fs'
+    path = require 'path'
+    conf = require '../conf'
+    postcard = fs.readFileSync path.join(__dirname, conf.templates.views.posts.postcard), 'utf8'
+    hbs.registerPartial 'postcard', postcard
+    forumcard = fs.readFileSync path.join(__dirname, conf.templates.views.forums.forumcard), 'utf8'
+    hbs.registerPartial 'forumcard', forumcard
 

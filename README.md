@@ -108,6 +108,13 @@ For development set local.foraproject.org to localhost
 You could use any other, but that's the path expected by the setup script.  
 
 
+Configuration
+-------------
+Copy src/conf/settings.conf.sample to src/conf/settings.conf
+Copy (or rename) src/conf/fora.conf.sample to src/conf/fora.conf.conf
+Edit these values.
+
+
 Setup
 -----
 The setup scripts put some data in the database. So that we can play with the app.  
@@ -133,25 +140,9 @@ port = MONGODB_PORT
 
 ENVIRONMENT VARIABLES (export in .bashrc)
 -----------------------------------------
-See /src/conf/index.coffee for how they are used. 
 ```
 export NODE_ENV=development #Use 'production' otherwise.
-export FORA_TWITTER_CONSUMER_KEY=your_consumer_key
-export FORA_TWITTER_CONSUMER_SECRET=your_consumer_secret
-export FORA_TWITTER_CALLBACK=http://local.foraproject.org/auth/twitter/callback
-export FORA_DB_NAME=fora-dev-db
-export FORA_DB_HOST=127.0.0.1
-export FORA_DB_PORT=27017
-export FORA_DEFAULT_ADMIN_KEY=admin_password
-export FORA_ADMIN_USERNAME=your_user_name
-export FORA_DOMAIN_HOST=local.foraproject.org
-export FORA_DOMAIN_NAME=Fora
-export FORA_DOMAIN_STUB=fora
-```
-
-Because the path the node modules was changed, make this change in .bashrc  
-```
-export NODE_PATH=\"/usr/local/lib/node_modules\"
+export NODE_PATH=\"/usr/local/lib/node_modules\" #Because the path the node modules was changed, make this change in .bashrc  
 ```
 
 Instead of setting NODE_PATH, you could also do:
