@@ -13,18 +13,13 @@ database = new (require '../../common/database').Database(conf.db)
 utils.log "Setup started at #{new Date}"
 utils.log "NODE_ENV is #{process.env.NODE_ENV}"
 utils.log "Setup will connect to database #{conf.db.name} on #{conf.db.host}"
+argv = require('optimist').argv
 
-HOST = 'local.foraproject.org'
-PORT = '80'
 
-if process.env.NODE_ENV isnt 'development'
-    utils.log 'Setup can only be run in development.'
-    process.exit()
-    
-if HOST isnt 'local.foraproject.org'
-    utils.log 'HOST should be local.'
-    process.exit()
-    
+HOST = argv.host ? 'local.foraproject.org'
+PORT = if argv.port then parseInt(argv.port) else 80
+
+console.log "Setup will connect to #{HOST}:#{PORT}"
 
 init = () ->
     _globals = {}
@@ -90,18 +85,17 @@ init = () ->
             return)()
 
 
-
-    if '--delete' in process.argv        
+    if argv.delete
         (Q.async ->
             yield del()
             process.exit())()
 
-    else if '--create' in process.argv
+    else if argv.create
         (Q.async ->
             yield create()
             process.exit())()
 
-    else if '--recreate' in process.argv
+    else if argv.recreate
         (Q.async ->
             yield del()
             yield create()
