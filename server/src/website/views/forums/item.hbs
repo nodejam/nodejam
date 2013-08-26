@@ -1,13 +1,24 @@
 <div class="columns-wrap">
     <div class="content-area">    
         <h1>{{forum.name}}</h1>
+        <ul class="nav">
+            <li class="selected">
+                Recommended
+            </li>
+            <li>
+                <a href="/{{forum.stub}}/latest">Upcoming</a>
+            </li>            
+            <li>
+                <a href="/{{forum.stub}}/people">People</a>
+            </li>            
+        </ul>
         {{#if posts}}
             <ul class="cards">
             {{#each posts}}
                 {{> postcard summary}}
             {{/each}}
             </ul>
-        {{/if}}
+        {{/if}}   
     </div>
 </div>
 
