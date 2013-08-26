@@ -110,8 +110,8 @@ You could use any other, but that's the path expected by the setup script.
 
 Configuration
 -------------
-Copy src/conf/settings.conf.sample to src/conf/settings.conf
-Copy (or rename) src/conf/fora.conf.sample to src/conf/fora.conf.conf
+Copy src/conf/settings.conf.sample to src/conf/settings.conf  
+Copy (or rename) src/conf/fora.conf.sample to src/conf/fora.conf.conf  
 Edit these values.
 
 
