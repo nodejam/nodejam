@@ -97,7 +97,7 @@ class User extends BaseModel
 
 
     getUrl: =>
-        "/users/@#{username}"
+        "/~#{@username}"
 
 
 

@@ -36,7 +36,7 @@ class Forums extends Controller
             (Q.async =>
                 try
                     forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
-                    post = yield models.Post.find({ 'forum.stub': req.params.forum, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
+                    posts = yield models.Post.find({ 'forum.stub': req.params.forum, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
                     for post in posts
                             post.summary = post.getView("card")
                             post.summary.view = "standard"

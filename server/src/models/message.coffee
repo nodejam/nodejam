@@ -36,7 +36,7 @@ class Message extends BaseModel
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
-                                    link: "/users/#{user.username}"
+                                    link: "/~#{user.username}"
                                 },
                                 verb: "added a new forum",
                                 object: {
@@ -52,7 +52,7 @@ class Message extends BaseModel
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
-                                    link: "/users/#{user.username}"
+                                    link: "/~#{user.username}"
                                 },
                                 verb: "published",
                                 object: {

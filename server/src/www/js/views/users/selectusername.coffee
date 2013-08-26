@@ -30,7 +30,7 @@ class SelectUsername extends window.Fora.Views.BaseView
         
 
     userExists: (cb) =>
-        $.get "/api/users/#{$('#username').val()}", (data) =>
+        $.get "/api/~#{$('#username').val()}", (data) =>
             cb if data then "Not available" else true
         
             

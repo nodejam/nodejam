@@ -81,7 +81,7 @@ class App
         
     getUserUrl: =>
         user = @getUser()
-        "/users/#{user.username}"
+        "/~#{user.username}"
 
         
         
