@@ -23,6 +23,7 @@ server/www-user/assetpaths/*
 !server/www-user/assetpaths/placeholder
 server/www-user/images/*
 !server/www-user/images/cover.jpg
+!server/www-user/images/cover-experience.jpg
 !server/www-user/images/placeholder
 server/www-user/thumbnails/*
 !server/www-user/thumbnails/placeholder
