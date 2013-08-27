@@ -6,6 +6,7 @@
         <div class="content-wrap">
             <div class="content">
                 <h2><a href="/{{forum.stub}}/{{stub}}">{{title}}</a></h2>
+                <p class="subheading">in <a href="/{{forum.stub}}">{{forum.name}}</a></p>
                 {{{content}}}
             </div>
             <div class="overlay"></div>
@@ -13,11 +14,10 @@
                 <i class="icon-comment"></i> 93<br />
                 <i class="icon-thumbs-up-alt"></i> 10k
             </span>
-            <p class="iconic-desc">
+            <p class="iconic-text">
                 <img src="{{createdBy.assetPath}}/{{createdBy.username}}_t.jpg" alt="{{createdBy.name}}" />
                 <span class="text">
-                    <a href="/~{{createdBy.username}}">{{createdBy.name}}</a><br />
-                    <span class="light-text">in </span><a href="/{{forum.stub}}">{{forum.name}}</a>
+                    <a href="/~{{createdBy.username}}">{{createdBy.name}}</a><br />                    
                 </span>
             </p>
         </div>

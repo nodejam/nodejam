@@ -229,8 +229,8 @@ fixTheMachine = {
     title: 'Lean into the pain',
     type: "article",
     _content: 'lean-into-the-pain.md',
-    cover: 'http://www.woodstock.com/images/spot1.jpg',
-    smallCover: 'http://www.woodstock.com/images/spot1.jpg',
+    cover: 'http://farm4.staticflickr.com/3808/9311339474_ec6db28a45_c.jpg',
+    smallCover: 'http://farm4.staticflickr.com/3808/9311339474_ec6db28a45_c.jpg',
     _forum: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'

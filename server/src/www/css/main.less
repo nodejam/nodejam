@@ -366,7 +366,11 @@
                 .image + .content-wrap .content { max-height: 248px }
             }
             
-            h2 { margin: 0 0 8px 0; line-height: 1.1em; }            
+            h2 { margin: 0 0 8px 0; line-height: 1.1em; }      
+            .subheading { 
+                font-style: italic; margin: 0 0 8px 0; color: @colorNeutral;
+                a { color: @colorNeutral }
+            }
             p { margin: 0 0 12px 0 }
             
             /* wide column is only needed if width isn't in percetage. */
@@ -393,18 +397,26 @@
 }
 
 .desc-styles-mixin {
-    .iconic-desc {
-        line-height: 1.2em; display: block; font-size: 0.9em;
+    .iconic-text {
+        display: block; font-size: 0.9em;
         img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
-        .text { display: block; margin-left: 40px; }
+        .text { display: block; padding-top: 4px; margin-left: 40px; }
         
-    &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
+        &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
+    }
+
+    .iconic-desc {
+        line-height: 1.4em; display: block; font-size: 0.9em; height: 40px;
+        img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
+        .text { display: block; float: left; margin-left: 4px; }
+        
+        &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
     }
 
     ul.desc-text {
         font-size: 0.9em;
         li {
-            line-height: 1.2em; display: block; padding-bottom: 8px;
+            line-height: 1.4em; display: block; padding-bottom: 8px;
             .text { display: block; }
         }
     }
@@ -414,7 +426,7 @@
     .item {
         width: @width; margin: auto; 
         .content { 
-            font-size: 1.1em;
+            font-size: 1.1em; clear: both;
             .wider { width: @width + 40px; }
         }
     }
