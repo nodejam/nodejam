@@ -1,6 +1,15 @@
 <div class="columns-wrap">
     <div class="content-area">    
         <h1>{{forum.name}}</h1>
+        <div class="content-section-group">
+            <div class="content-section normal">
+                {{{about}}}
+                <p class="italicize">
+                    Public Forum. Since May, 2011. <br />
+                    <span class="light-text">by</span> <a href="/~{{createdBy.username}}">{{forum.createdBy.name}}</a>
+                </p>
+            </div>
+        </div>
         <ul class="nav">
             <li class="selected">
                 Recommended

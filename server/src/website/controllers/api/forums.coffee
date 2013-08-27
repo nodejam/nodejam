@@ -26,6 +26,7 @@ class Forums extends Controller
                         forum.category = req.body.category
                         forum.icon = req.body.icon
                         forum.iconThumbnail = req.body.iconThumbnail
+                        forum.about = req.body.about
                         if req.body.cover             
                             forum.cover = req.body.cover
                         forum.stub = stub

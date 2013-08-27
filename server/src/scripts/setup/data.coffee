@@ -87,6 +87,7 @@ rawNerve = {
     permission: 'public',
     type: 'post',
     category: 'life',
+    _about: 'raw-nerve.md',
     _createdBy: 'aaronsw'  
 }
 

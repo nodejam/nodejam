@@ -71,6 +71,7 @@
         &.alt { float: right; }
     }
 
+
     .container { 
         text-align: center; 
         .page-wrap { 
@@ -79,12 +80,30 @@
         .columns-wrap { 
             text-align: left; margin: auto;
         }
+        .columns-wrap, .page-wrap {
+            /* Generic sections. */
+            .content-section-group {
+                margin-bottom: 24px;
+                .content-section {
+                    float: left; margin-right: 24px;
+                }
+                &:after { content: ""; display: block; clear: both; }
+            }
+            .content-section {
+                &.normal { min-width: 240px; max-width: 480px; }
+                &.small { min-width: 240px; max-width: 320px }
+            }
+            .desc-styles-mixin;
+        }
     }
     
     .content-area { 
         .fontContent; clear: both; margin-top: 12px;
         > h1 { margin-top: -12px }    
     }
+
+    .italicize { font-style: italic }
+
 }
 
 /* The standard Form */
@@ -114,6 +133,12 @@
     }
 }
 
+/*
+    There are three main page mixins, based on size.
+    a) Large: 1200px
+    b) Small: 720px
+    c) Tiny: less than 720px   
+*/
 .large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
 
@@ -209,8 +234,6 @@
                 .item { 
                     .cover { width: 100%; margin-bottom: 20px; }
 
-                    .desc-styles-mixin;
-
                     &.text { 
                         &.text { .content-text-mixin; }
                     }
@@ -227,7 +250,6 @@
         }
     }
 }
-
 
 .tiny-cover-page-mixin (@width) {
     .cover-page {
@@ -268,7 +290,6 @@
                 .content-area {
                     .item { 
                         .cover { width: 100%; margin-bottom: 20px; }
-                        .desc-styles-mixin;
                         &.text { .content-text-mixin; }
                     }
                     .sidebar { 
@@ -284,11 +305,13 @@
     }
 }
 
+
 .content-text-mixin {
     p { line-height: 1.4em; margin-bottom: 1.4em }
 }
 
 
+/* Card view. Where we should boxes on a page, with variable column count based on screen size. */
 .cards-mixin (@colWidth; @colSpacing; @colHeaderSize; @colTextSize; @wideColImageWidth; @wideColWidth) {
     
     /* POSTS */
@@ -354,8 +377,6 @@
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
                 }
                 .activity { .fontBase; font-size: 0.75em; float: right; color: @colorNeutral; font-weight: bold; line-height: 1.3em; padding-right: 4px; }
-
-                .desc-styles-mixin;
             }
             
             .image + .content-wrap .content { max-height: 188px }
@@ -396,6 +417,7 @@
     }
 }
 
+/* These are for icon + title combos, or just titles. Such as thumbnail and author */
 .desc-styles-mixin {
     .iconic-text {
         display: block; font-size: 0.9em;
@@ -422,6 +444,7 @@
     }
 }
 
+/* A page with just content. */
 .single-item-mixin (@width, @sidebarWidth) {
     .item {
         width: @width; margin: auto; 
@@ -437,6 +460,7 @@
     }
 }
 
+/* Dynamically created login */
 .login-box-mixin (@width, @spacing, @fontSize) {
     #login-box {
         .rounded; padding: @spacing (2 * @spacing); background: @colorLighter; width: @width; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; 
@@ -456,6 +480,7 @@
         }
     }
 }
+
 /* .*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
 @media (min-width: 1760px) { 
     .large-cover-page-mixin(1760; 3; 360; 40);    

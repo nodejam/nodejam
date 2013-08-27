@@ -7,6 +7,7 @@ AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
 controllers = require './'
 Q = require('../../../common/q')
+mdparser = require('../../../common/markdownutil').marked
 
 
 class Forums extends Controller
@@ -36,6 +37,7 @@ class Forums extends Controller
             (Q.async =>
                 try
                     forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
+                    about = if forum.about then mdparser forum.about
                     posts = yield models.Post.find({ 'forum.stub': req.params.forum, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
                     for post in posts
                             post.summary = post.getView("card")
@@ -43,10 +45,11 @@ class Forums extends Controller
 
                     res.render req.network.getView('forums', 'item'), { 
                         forum,
+                        about,
                         posts, 
                         pageName: 'forum-page', 
                         pageType: 'cover-page', 
-                        cover: @cover ? '/pub/images/cover.jpg'
+                        cover: forum.cover ? '/pub/images/cover.jpg'
                     }
                 catch e
                     next e)()
