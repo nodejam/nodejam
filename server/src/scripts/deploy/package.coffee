@@ -15,7 +15,22 @@ if opt isnt '--debug' and opt isnt '--trace'
         buffer: 1000 * 1024,
         tempPath: '../temp/',
         fileIn: [
-            'app/www/lib/font-awesome/css/font-awesome.css',
+            'src/www/lib/font-awesome/css/font-awesome.css',
+        ],
+        fileOut: 'app/www/lib/font-awesome/css/font-awesome.css',
+        callback: (err) -> 
+            if err
+                utils.log(err)
+            else
+                utils.log 'Created font-awesome.css'
+    }
+    
+    c = new compressor.minify {
+        #type: 'no-compress',
+        type: 'sqwish',
+        buffer: 1000 * 1024,
+        tempPath: '../temp/',
+        fileIn: [
             'app/www/css/HINT.css',
             'app/www/css/toggle-switch.css'
         ],
@@ -25,7 +40,7 @@ if opt isnt '--debug' and opt isnt '--trace'
                 utils.log(err)
             else
                 utils.log 'Created lib.css'
-    }    
+    }
     
     c = new compressor.minify {
         #type: 'no-compress',
