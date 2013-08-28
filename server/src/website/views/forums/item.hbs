@@ -1,6 +1,7 @@
 <div class="columns-wrap">
     <div class="content-area">    
         <h1>{{forum.name}}</h1>
+        {{#if forum.settings.about.opened}}
         <div class="content-section-group">
             <div class="content-section normal">
                 {{{about}}}
@@ -10,17 +11,30 @@
                 </p>
             </div>
         </div>
-        <ul class="nav">
-            <li class="selected">
-                Recommended
-            </li>
-            <li>
-                <a href="/{{forum.stub}}/latest">Upcoming</a>
-            </li>            
-            <li>
-                <a href="/{{forum.stub}}/people">People</a>
-            </li>            
-        </ul>
+        {{/if}}
+        <div class="nav">
+            <ul>
+                <li class="selected">
+                    Recommended
+                </li>
+                <li>
+                    <a href="/{{forum.stub}}/latest">Upcoming</a>
+                </li>            
+                <li>
+                    <a href="/{{forum.stub}}/people">People</a>
+                </li>          
+                {{#unless forum.settings.about.opened}}
+                <li>
+                    <a href="/{{forum.stub}}/about">About</a>
+                </li>          
+                {{/unless}}
+            </ul>
+            <ul class="alt buttons">
+                <li>
+                    <a href="#" class="positive"><i class="icon-plus"></i>New Post</a>
+                </li>
+            </ul>
+        </div>
         {{#if posts}}
             <ul class="cards">
             {{#each posts}}

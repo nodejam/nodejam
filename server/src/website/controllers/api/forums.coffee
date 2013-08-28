@@ -33,9 +33,12 @@ class Forums extends Controller
                         forum.createdBy = req.user
                         forum.moderators.push req.user
                         forum.createdAt = Date.now()
+                        forum.settings.about = {
+                            opened: if req.body.settings_about_opened then Boolean(req.body.settings_about_opened) else false
+                        }
                         forum.settings.comments = {
-                            enable: if req.body.comments_enable then Boolean(req.body.comments_enable) else true
-                            showByDefault: if req.body.comments_showByDefault then Boolean(req.body.comments_showByDefault) else true
+                            enable: if req.body.settings_comments_enable then Boolean(req.body.settings_comments_enable) else true
+                            opened: if req.body.settings_comments_opened then Boolean(req.body.settings_comments_opened) else true
                         }
                         forum = yield forum.save({ user: req.user }, db)
                         res.send forum

@@ -65,16 +65,16 @@
     .nav {         
         height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; clear: both;
         border-bottom: 1px solid @colorLight; box-shadow: 0 2px 0 @colorUltraLight;
-        li { 
-            float: left; padding-right: 12px; color: @colorNeutral; 
-            &.selected { color: @colorDark }
-            a { 
-                text-decoration: underline; color: @colorLink; 
-                &:hover { color: @colorDark }
+        ul {
+            float: left; 
+            li { 
+                float: left; padding-right: 12px; color: @colorNeutral; 
+                &.selected { color: @colorDark }
+                a { text-decoration: underline; }
+                i { text-decoration: none }
             }
-            i { text-decoration: none }
+            &.alt { float: right; }
         }
-        &.alt { float: right; }
     }
 
 
@@ -391,7 +391,7 @@
                     background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
                 }
-                .activity { .fontBase; font-size: 0.75em; float: right; color: @colorNeutral; font-weight: bold; line-height: 1.3em; padding-right: 4px; }
+                .activity { .fontBase; font-size: 0.75em; float: right; color: @colorNeutral; font-weight: bold; line-height: 1.3em; margin-top: 4px; padding-right: 4px; }
             }
             
             .image + .content-wrap .content { max-height: 188px }

@@ -46,10 +46,13 @@ em { font-style: italic; font-weight: normal }
 strong { font-weight: bold }
 
 /* LINKS */
-a, a:visited, a:hover, span.anchor, span.anchor:hover { color: @colorLink; text-decoration: none; cursor: pointer }
-    a:hover, span.anchor:hover { text-decoration: underline; color: @colorLinkHover }
-        a:hover i { text-decoration: none }
-    a img { border: none }
+a, a:hover, a:visited {  
+    color: @colorLinkHover; text-decoration: underline; 
+    i { text-decoration: none; margin-right: 6px; }        
+    img { border: none }
+    &.positive { color: @colorPositive }
+    &.negative { color: @colorNegative }
+}
 
 /* FORM CONTROLS */
 input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
@@ -59,14 +62,16 @@ input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, 
 label.alert-required { color: @colorNegative; }
 label.alert-required:after { content: '*' }
 
-button { .fontBase; .control(@colorText, @colorLighter, 5%, 25%); .rounded; padding: 11px 14px 11px 14px; margin: 0 2px 0 0; font-size: 11px; 
-         font-weight: bold; text-transform: uppercase; cursor: pointer;     
+button { 
+    .fontBase; .control(@colorText, @colorLighter, 5%, 25%); .rounded; 
+    padding: 11px 14px 11px 14px; margin: 0 2px 0 0; font-size: 11px;
+    font-weight: bold; text-transform: uppercase; cursor: pointer;     
 
     i { padding-right: 6px; }        
-    .textless i { padding-right: 0; }
+    &.textless i { padding-right: 0; }
 
-    .positive { .control(#fff, @colorPositive, 5%, 25%) }
-    .negative { .control(#fff, @colorNegative, 5%, 25%) }
+    &.positive { .control(#fff, @colorPositive, 0, 2%) }
+    &.negative { .control(#fff, @colorNegative, 0, 2%) }
 }
 
 /* LIST */
