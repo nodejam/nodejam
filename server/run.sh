@@ -13,7 +13,6 @@ if [ "$1" == "--trace" ]; then
     killall node
     node --harmony app.js &
 else
-    forever stopall
     forever start -c "node --harmony" app.js
 fi
 cd ..

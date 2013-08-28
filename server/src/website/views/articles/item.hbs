@@ -5,12 +5,14 @@
             <img class="cover" src="{{article.cover}}" alt="{{article.coverTitle}}" />
             {{/if}}
             <h1>{{article.title}}</h1>
-            <div class="iconic-desc sub-heading small-page-element tiny-page-element">            
-                <img src="{{user.assetPath}}/{{user.username}}_t.jpg" alt="{{user.name}}" />
-                <span class="text">
-                    <a href="/~{{user.username}}">{{user.name}}</a><br />
-                    <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
-                </span>                
+            <div class="small-page-element tiny-page-element">
+                <div class="iconic-desc sub-heading">            
+                    <img src="{{user.assetPath}}/{{user.username}}_t.jpg" alt="{{user.name}}" />
+                    <span class="text">
+                        <a href="/~{{user.username}}">{{user.name}}</a><br />
+                        <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
+                    </span>                
+                </div>
             </div>
             <div class="content">
                 {{{article.formattedContent}}}

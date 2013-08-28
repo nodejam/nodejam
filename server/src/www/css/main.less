@@ -1,6 +1,5 @@
 @import "base.less";
 
-.light-text { color: @colorNeutral }
 .error { color: Red }
 
 .action { 
@@ -20,8 +19,15 @@
     }
 }
 
+.light-text-mixin  { 
+    .light-text {
+        color: @colorNeutral; font-style: italic;
+        a { color: @colorDark }
+    }
+}
+
+/* Common for all pages */
 .page-sections-mixin {
-    /* HEADER and LOGO */
     .header {
         .logo {
             .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left; 
@@ -139,14 +145,18 @@
     b) Small: 720px
     c) Tiny: less than 720px   
 */
+.large-page-mixin {
+    .small-page-element, .tiny-page-element { display: none }
+    .large-page-element { display: block !important }
+    .light-text-mixin;
+}
+
 .large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
 
-    .small-page-element, .tiny-page-element { display: none }
-    .large-page-element { display: block }
-
     .cover-page {
         @coverWidth: (@unit * 9);
+        .large-page-mixin;    
         .cover { 
             height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center; 
             width: @coverWidth + 0px;
@@ -163,10 +173,8 @@
 }
 
 .large-std-page-mixin () {
-    .small-page-element, .tiny-page-element { display: none }
-    .large-page-element { display: block }
-
     .std-page {
+        .large-page-mixin;
         .container {
             margin-top: 22px;
 
@@ -195,13 +203,17 @@
     }
 }
 
+.small-page-mixin {
+    .large-page-element, .tiny-page-element { display: none }
+    .small-page-element { display: block !important }
+    .light-text-mixin;
+}
+
 .small-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
     
-    .large-page-element, .tiny-page-element { display: none }
-    .small-page-element { display: block }
-
     .cover-page {
+        .small-page-mixin;
         @coverHeight: 260;
         .cover { 
             background-size: cover; background-position: center; 
@@ -220,10 +232,8 @@
 }
 
 .small-std-page-mixin (@width, @sidebarWidth) {
-    .large-page-element, .tiny-page-element { display: none }
-    .small-page-element { display: block }
-
     .std-page {
+        .small-page-mixin;
         .container {
             margin-top: 72px;
 
@@ -251,8 +261,15 @@
     }
 }
 
+.tiny-page-mixin {
+    .large-page-element, .small-page-element { display: none }
+    .tiny-page-element { display: block !important }
+    .light-text-mixin;
+}
+
 .tiny-cover-page-mixin (@width) {
     .cover-page {
+        .tiny-page-mixin;
         @coverHeight: 200;
         .cover { 
             background-size: cover; background-position: center; 
@@ -276,10 +293,8 @@
 }
 
 .tiny-std-page-mixin {
-    .large-page-element, .small-page-element { display: none }
-    .tiny-page-element { display: block }
-
     .std-page {
+        .tiny-page-mixin;
         .container {
             margin-top: 72px;
 
@@ -342,8 +357,8 @@
             .column-size();
 
             &.alt { 
-                background-color: @colorLighter;            
-                width: @colWidth - 1px; border-right: 1px solid @colorLight; border-bottom: 1px solid @colorLight; 
+                background-color: @colorUltraLight;            
+                width: @colWidth - 1px; border-right: 1px solid @colorLighter; border-bottom: 1px solid @colorLighter; 
                 .overlay { margin-left: -12px; }
                 .content-wrap {
                     padding: 0 12px;
@@ -419,28 +434,17 @@
 
 /* These are for icon + title combos, or just titles. Such as thumbnail and author */
 .desc-styles-mixin {
-    .iconic-text {
-        display: block; font-size: 0.9em;
-        img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
-        .text { display: block; padding-top: 4px; margin-left: 40px; }
-        
-        &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
-    }
-
     .iconic-desc {
-        line-height: 1.4em; display: block; font-size: 0.9em; height: 40px;
-        img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 0 4px 0 0 }
+        line-height: 1.5em; display: block; font-size: 0.9em; height: 40px;
+        img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 1px 4px 0 0 }
         .text { display: block; float: left; margin-left: 4px; }
         
         &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
     }
 
-    ul.desc-text {
-        font-size: 0.9em;
-        li {
-            line-height: 1.4em; display: block; padding-bottom: 8px;
-            .text { display: block; }
-        }
+    .desc-text {
+        font-size: 0.9em; line-height: 1.5em; 
+        li { display: block; padding-bottom: 8px; }
     }
 }
 
