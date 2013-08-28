@@ -13,8 +13,8 @@
 
 @colorText: #333;
 @colorDimText: lighten(@colorText, 30%);
-@colorLink: darkslateblue;
-@colorLinkHover: lighten(@colorLink, 30%);
+@colorLink: #559;
+@colorLinkHover: darken(@colorLink, 20%);
 
 @colorNegative: #600;
 @colorDarkNegative: darken(@colorNegative, 10%);
@@ -46,12 +46,14 @@ em { font-style: italic; font-weight: normal }
 strong { font-weight: bold }
 
 /* LINKS */
-a, a:hover, a:visited {  
-    color: @colorLinkHover; text-decoration: underline; 
+a {  
+    color: @colorLink; text-decoration: none; 
+    &:hover { color: @colorLinkHover; text-decoration: underline; }
     i { text-decoration: none; margin-right: 6px; }        
     img { border: none }
-    &.positive { color: @colorPositive }
-    &.negative { color: @colorNegative }
+    &.positive:hover, &.positive { color: @colorPositive }
+    &.negative:hover, &.negative { color: @colorNegative }
+
 }
 
 /* FORM CONTROLS */
