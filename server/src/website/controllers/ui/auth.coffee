@@ -6,7 +6,6 @@ utils = require '../../../common/utils'
 conf = require '../../../conf'
 models = require '../../../models'
 db = new (require '../../../common/database').Database(conf.db)
-AppError = require('../../../common/apperror').AppError
 controller = require '../controller'
 
 OAuth = require('oauth').OAuth

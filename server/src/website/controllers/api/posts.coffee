@@ -2,7 +2,6 @@ conf = require '../../../conf'
 db = new (require '../../../common/database').Database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
-AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
 Q = require('../../../common/q')
 
@@ -23,10 +22,10 @@ class Posts extends Controller
                                 yield post.save({ user: req.user }, db)                                    
                             res.send post
                         else
-                            next new AppError "Post not found.", 'POST_NOT_FOUND'   
+                            next new Error "Post not found"
                     catch e
                         next e)()
             else
-                next new AppError "Access denied.", 'ACCESS_DENIED'   
+                next new Error "Access denied"
             
 exports.Posts = Posts

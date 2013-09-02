@@ -1,9 +1,48 @@
-AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
 Q = require('../common/q')
 
 class Forum extends BaseModel
+
+    class Settings extends BaseModel
+        @describeModel: ->
+            {
+                type: Settings,
+                fields: {
+                    about: { 
+                        type: 'object', 
+                        fields: { opened: { type: 'boolean', required: false } },
+                        required: false
+                    },
+                    comments: {
+                        type: 'object',
+                        required: false,
+                        fields: {
+                            enabled: { type: 'boolean', required: false },
+                            opened: { type: 'boolean', required: false }
+                        }
+                    }
+                }
+            }    
+            
+            
         
+    class Summary extends BaseModel    
+        @describeModel: ->
+            {
+                type: Summary,
+                fields: {
+                    id: 'string',
+                    network: 'string',
+                    name: 'string',
+                    stub: 'string',
+                    createdBy: @getModels().User.Summary
+                }
+            }    
+    
+    @Settings: Settings
+        
+    @Summary: Summary
+    
     @describeModel: ->
         {
             type: Forum,
@@ -13,11 +52,18 @@ class Forum extends BaseModel
                 name: 'string',
                 stub: 'string',
                 about: { type: 'string', required: false }, 
-                settings: 'object',
+                settings: { type: Settings, validate: -> @settings.validate() },
                 icon: 'string',
                 iconThumbnail: 'string',
                 cover: { type: 'string', required: false },
                 createdBy: { type: @getModels().User.Summary, validate: -> @createdBy.validate() },
+                admins: {
+                    type: 'array', 
+                    contents: type: @getModels().User.Summary,
+                    validate: -> 
+                        if @admins.length
+                            m.validate() for m in @admins
+                },
                 moderators: {
                     type: 'array', 
                     contents: type: @getModels().User.Summary,
@@ -73,6 +119,21 @@ class Forum extends BaseModel
                     image: @icon
                 }
                 
+
+    canWrite: (user) =>
+        (Q.async =>
+            #If admin or moderator, you can write without needing membership.
+            if (u for u in @admins when u.id is user.id)
+                return true
+            if (u for u in @moderators when u.id is user.id)
+                return true
+            
+            membership = yield @getModels().Membership.get { 'forum.id': @_id.toString() , 'user.id': user.id }, context, db
+            @snapshot = { posts: p.getView("snapshot") for p in posts }
+            if posts.length
+                @lastPost = posts[0].publishedAt
+            yield @save(context, db))()
+        
         
         
     refreshSnapshot: (context, db) =>
@@ -83,21 +144,5 @@ class Forum extends BaseModel
                 @lastPost = posts[0].publishedAt
             yield @save(context, db))()
             
-            
     
-class Summary extends BaseModel    
-    @describeModel: ->
-        {
-            type: Summary,
-            fields: {
-                id: 'string',
-                network: 'string',
-                name: 'string',
-                stub: 'string',
-                type: 'string',
-                createdBy: @getModels().User.Summary
-            }
-        }    
-            
-Forum.Summary = Summary
 exports.Forum = Forum

@@ -1,4 +1,3 @@
-AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
 
 class Comment extends BaseModel

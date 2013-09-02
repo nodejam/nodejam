@@ -3,7 +3,6 @@ conf = require '../../../conf'
 db = new (require '../../../common/database').Database(conf.db)
 models = require '../../../models'
 utils = require('../../../common/utils')
-AppError = require('../../../common/apperror').AppError
 Q = require('../../../common/q')
 
 

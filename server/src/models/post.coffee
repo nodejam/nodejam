@@ -1,6 +1,5 @@
 async = require '../common/async'
 utils = require '../common/utils'
-AppError = require('../common/apperror').AppError
 mdparser = require('../common/markdownutil').marked
 BaseModel = require('./basemodel').BaseModel
 Q = require('../common/q')

@@ -2,7 +2,6 @@ conf = require '../../../conf'
 db = new (require '../../../common/database').Database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
-AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
 Q = require('../../../common/q')
 
@@ -106,7 +105,7 @@ class Articles extends Controller
                 catch e
                     next e)()                
         else
-            next new AppError 'Unsupported Comment Type', 'UNSUPPORTED_COMMENT_TYPE'
+            next new Error 'Unsupported Comment Type'
         
 
 

@@ -2,7 +2,6 @@ conf = require '../../../conf'
 db = new (require '../../../common/database').Database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
-AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
 controllers = require './'
 Q = require('../../../common/q')
@@ -33,13 +32,18 @@ class Forums extends Controller
                         forum.createdBy = req.user
                         forum.moderators.push req.user
                         forum.createdAt = Date.now()
+                        forum.settings = new models.Forum.Settings 
+                        
                         forum.settings.about = {
-                            opened: if req.body.settings_about_opened then Boolean(req.body.settings_about_opened) else false
-                        }
+                            opened: if req.body.settings_about_opened is "true" then true
+                        }                        
                         forum.settings.comments = {
-                            enable: if req.body.settings_comments_enable then Boolean(req.body.settings_comments_enable) else true
-                            opened: if req.body.settings_comments_opened then Boolean(req.body.settings_comments_opened) else true
+                            enabled: if req.body.settings_comments_enable is "false" then false
+                            opened: if req.body.settings_comments_opened is "false" then false
                         }
+                        
+                        forum.admins = [req.user]
+                        
                         forum = yield forum.save({ user: req.user }, db)
                         res.send forum
             
@@ -74,7 +78,7 @@ class Forums extends Controller
                         forum = yield forum.save({ user: req.user }, db)
                         res.send forum
                     else
-                        next new AppError "Access denied.", 'ACCESS_DENIED'
+                        next new Error "Access denied"
                 catch e
                     next e)()
                     
@@ -89,7 +93,7 @@ class Forums extends Controller
                         yield forum.destroy({ user: req.user }, db)
                         res.send "DELETED #{forum.stub}."
                     else
-                        next new AppError "Access denied.", 'ACCESS_DENIED'
+                        next new Error "Access denied"
                 catch e
                     next e)()
 

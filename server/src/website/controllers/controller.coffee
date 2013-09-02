@@ -1,7 +1,6 @@
 conf = require '../../conf'
 db = new (require '../../common/database').Database(conf.db)
 models = require '../../models'
-AppError = require('../../common/apperror').AppError
 Q = require('../../common/q')
 
 class Controller        

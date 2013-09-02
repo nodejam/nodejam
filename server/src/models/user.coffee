@@ -1,5 +1,4 @@
 utils = require '../common/utils'
-AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
 Q = require('../common/q')
 hasher = require('../common/hasher').hasher
@@ -73,7 +72,7 @@ class User extends BaseModel
                 credentials = yield credentials.save context, db                
                 { success: true, user, token: credentials.token }            
             else
-                { success: false, error: new AppError "User already exists", "USER_EXISTS" }
+                { success: false, error: new Error "User already exists" }
         )()
             
 

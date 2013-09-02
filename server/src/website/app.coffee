@@ -8,7 +8,6 @@ utils = require '../common/utils'
 db = new (require '../common/database').Database(conf.db)
 uiControllers = require './controllers/ui'
 apiControllers = require './controllers/api'
-AppError = require('../common/apperror').AppError
 
 utils.log "Fora application started at #{new Date}"
 utils.log "NODE_ENV is #{process.env.NODE_ENV}"
@@ -64,7 +63,7 @@ findHandler = (name, getHandler) ->
             req.network = network
             handler(req, res, next)
         else            
-            next new AppError 'Invalid Network', 'INVALID_NETWORK'
+            next new Error 'Invalid Network'
         
 
 getNetwork = (hostName) ->    

@@ -70,18 +70,11 @@ log = (msg) ->
         
 dumpError = (err) ->
     if err
-        if typeof err is 'object'
-            if err.message
-                log '\nError: ' + err.message
-        
-        if err.stack
-            log('\nStacktrace:')
-            log('===========')
-            log(err.stack)
-        else
-            log("Error: #{JSON.stringify(err)}")
+        log err.stack ? 'There is no stack trace.'
+        if err.details
+            log err.details
     else
-        log 'Error: null or undefined.'
+        log 'Error is null or undefined.'
     
 root.clone = clone
 root.extend = extend

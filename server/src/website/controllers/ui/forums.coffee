@@ -3,7 +3,6 @@ database = (require '../../../common/database').Database
 db = new database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
-AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
 controllers = require './'
 Q = require('../../../common/q')
@@ -43,10 +42,14 @@ class Forums extends Controller
                             post.summary = post.getView("card")
                             post.summary.view = "standard"
 
+                    if req.user
+                        options = {}
+                        
                     res.render req.network.getView('forums', 'item'), { 
                         forum,
                         about,
                         posts, 
+                        options,
                         pageName: 'forum-page', 
                         pageType: 'cover-page', 
                         cover: forum.cover ? '/pub/images/cover.jpg'

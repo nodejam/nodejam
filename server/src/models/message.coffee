@@ -1,4 +1,3 @@
-AppError = require('../common/apperror').AppError
 moment = require('../common/moment')
 BaseModel = require('./basemodel').BaseModel
 

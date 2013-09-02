@@ -1,4 +1,3 @@
-AppError = require('../common/apperror').AppError
 conf = require '../conf'
 BaseModel = require('./basemodel').BaseModel
 

@@ -3,7 +3,6 @@ conf = require '../../../conf'
 db = new (require '../../../common/database').Database(conf.db)
 models = require '../../../models'
 utils = require('../../../common/utils')
-AppError = require('../../../common/apperror').AppError
 controller = require('../controller')
 Q = require('../../../common/q')
 
@@ -29,7 +28,7 @@ class Users extends controller.Controller
                 catch e
                     next e)()
         else
-            next new AppError 'Access denied', 'ACCESS_DENIED'
+            next new Error 'Access denied'
         
 
 

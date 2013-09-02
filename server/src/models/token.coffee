@@ -1,5 +1,4 @@
 Models = require './'
-AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
 
 class Token extends BaseModel

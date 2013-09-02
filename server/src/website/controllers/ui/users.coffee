@@ -3,7 +3,6 @@ database = (require '../../../common/database').Database
 db = new database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
-AppError = require('../../../common/apperror').AppError
 Controller = require('../controller').Controller
 controllers = require './'
 Q = require('../../../common/q')
@@ -41,7 +40,7 @@ class Users extends Controller
                 res.cookie "token", result.token
                 res.redirect "/"
             else
-                next new AppError "Could not save user.", "SOME_ERROR"
+                next new Error "Could not save user"
             token.destroy {}, db)()        
                                 
 exports.Users = Users

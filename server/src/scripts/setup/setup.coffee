@@ -19,7 +19,7 @@ argv = require('optimist').argv
 HOST = argv.host ? 'local.foraproject.org'
 PORT = if argv.port then parseInt(argv.port) else 80
 
-console.log "Setup will connect to #{HOST}:#{PORT}"
+utils.log "Setup will connect to #{HOST}:#{PORT}"
 
 init = () ->
     _globals = {}

@@ -1,4 +1,3 @@
-AppError = require('../common/apperror').AppError
 BaseModel = require('./basemodel').BaseModel
 Q = require('../common/q')
 
@@ -37,9 +36,9 @@ class Credentials extends BaseModel
                 if credentials.hash is result.key.toString 'hex'
                     { success: true, token: credentials.token }
                 else
-                    { success: false, error: new AppError("Invalid username or password", "INVALID_USERNAME_OR_PASSWORD") }
+                    { success: false, error: new Error "Invalid username or password" }
             else
-                { success: false, error: new AppError("Invalid username or password", "INVALID_USERNAME_OR_PASSWORD") }
+                { success: false, error: new Error "Invalid username or password" }
         )()
         
 
