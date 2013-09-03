@@ -64,6 +64,7 @@ npm install forever
 npm install marked  
 npm install less  
 npm install optimist
+npm install functional-node
 ```
 
 nginx configuration file

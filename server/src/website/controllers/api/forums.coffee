@@ -30,7 +30,6 @@ class Forums extends Controller
                             forum.cover = req.body.cover
                         forum.stub = stub
                         forum.createdBy = req.user
-                        forum.moderators.push req.user
                         forum.createdAt = Date.now()
                         forum.settings = new models.Forum.Settings 
                         
@@ -41,8 +40,6 @@ class Forums extends Controller
                             enabled: if req.body.settings_comments_enable is "false" then false
                             opened: if req.body.settings_comments_opened is "false" then false
                         }
-                        
-                        forum.admins = [req.user]
                         
                         forum = yield forum.save({ user: req.user }, db)
                         res.send forum

@@ -282,7 +282,7 @@ class BaseModel
                             errors.push "#{fieldName} is #{JSON.stringify value}"
                             errors.push "#{fieldName} should be a #{fieldDef.type}."
 
-                    if BaseModel.isCustomClass(fieldDef.type)
+                    if BaseModel.isCustomClass(fieldDef.type) and value.validate()
                         errors = errors.concat value.validate()
                     else
                         #We should also check for objects inside object. (ie, do we have fields inside the fieldDef?)

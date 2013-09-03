@@ -8,7 +8,8 @@ modules = {
     message: 'Message',
     network: 'Network',
     comment: 'Comment',
-    article: 'Article'
+    article: 'Article',
+    membership: 'Membership'
 }
 
 for k, v of modules
