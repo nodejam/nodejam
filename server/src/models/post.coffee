@@ -10,7 +10,7 @@ class Post extends BaseModel
         models = @getModels()
         forumModule = require('./forum')
         {
-            type: Post,
+            type: @,
             collection: 'posts',
             discriminator: (obj) -> if obj.type is 'article' then models.Article,
             fields: {

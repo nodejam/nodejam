@@ -6,13 +6,8 @@ class Forum extends BaseModel
     class Settings extends BaseModel
         @describeModel: ->
             {
-                type: Settings,
+                type: @,
                 fields: {
-                    about: { 
-                        type: 'object', 
-                        fields: { opened: { type: 'boolean', required: false } },
-                        required: false
-                    },
                     comments: {
                         type: 'object',
                         required: false,
@@ -29,7 +24,7 @@ class Forum extends BaseModel
     class Summary extends BaseModel    
         @describeModel: ->
             {
-                type: Summary,
+                type: @,
                 fields: {
                     id: 'string',
                     network: 'string',
@@ -43,13 +38,13 @@ class Forum extends BaseModel
             
     @describeModel: ->
         {
-            type: Forum,
+            type: @,
             collection: 'forums',
             fields: {
                 network: 'string',
                 name: 'string',
                 stub: 'string',
-                about: { type: 'string', required: false }, 
+                message: { type: 'string', required: false },
                 settings: { type: Settings },
                 icon: 'string',
                 iconThumbnail: 'string',
@@ -194,7 +189,6 @@ class Forum extends BaseModel
             admin: check 'admin'
         }
             
-        
 
         
     refreshSnapshot: (context, db) =>

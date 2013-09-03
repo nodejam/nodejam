@@ -9,7 +9,7 @@ class Article extends postModule.Post
     @describeModel: -> 
         models = @getModels()
         description = {
-            type: Article,
+            type: @,
             fields: {
                 cover: { type: 'string', required: false },
                 smallCover: { type: 'string', required: false, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },

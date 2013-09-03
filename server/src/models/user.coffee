@@ -10,7 +10,7 @@ class User extends BaseModel
     
     @describeModel: ->
         {
-            type: User,
+            type: @,
             collection: 'users',
             fields: {
                 username: 'string',
@@ -148,7 +148,7 @@ class User extends BaseModel
 class Summary extends BaseModel    
     @describeModel: ->
         {
-            type: Summary,
+            type: @,
             fields: {
                 id: 'string',
                 username: 'string',

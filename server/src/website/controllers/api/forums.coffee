@@ -33,9 +33,6 @@ class Forums extends Controller
                         forum.createdAt = Date.now()
                         forum.settings = new models.Forum.Settings 
                         
-                        forum.settings.about = {
-                            opened: if req.body.settings_about_opened is "true" then true
-                        }                        
                         forum.settings.comments = {
                             enabled: if req.body.settings_comments_enable is "false" then false
                             opened: if req.body.settings_comments_opened is "false" then false

@@ -4,7 +4,7 @@ class UserInfo extends BaseModel
 
     @describeModel: ->
         {
-            type: UserInfo,
+            type: @,
             collection: 'userinfo',
             fields: {
                 userid: 'string',

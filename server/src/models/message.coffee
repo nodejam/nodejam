@@ -5,7 +5,7 @@ class Message extends BaseModel
     
     @describeModel: ->
         {
-            type: Message,
+            type: @,
             collection: 'messages',
             fields: {
                 userid: 'string',

@@ -5,7 +5,7 @@ class Credentials extends BaseModel
     
     @describeModel: ->
         {
-            type: Credentials,
+            type: @,
             collection: 'credentials',
             fields: {
                 userid: 'string',

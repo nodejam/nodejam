@@ -5,7 +5,7 @@ class Token extends BaseModel
 
     @describeModel: ->
         {
-            type: Token,
+            type: @,
             collection: 'tokens',
             fields: {
                 type: 'string',

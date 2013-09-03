@@ -4,7 +4,7 @@ class Comment extends BaseModel
 
     @describeModel: ->
         {
-            type: Comment,
+            type: @,
             collection: 'comments',
             fields: {
                 forum: 'string',

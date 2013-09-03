@@ -5,7 +5,7 @@ class Network extends BaseModel
 
     @describeModel: ->
         {
-            type: Network,
+            type: @,
             collection: 'networks',
             fields: {
                 name: 'string',
