@@ -49,8 +49,11 @@ init = () ->
                 token = _globals.sessions[forum._createdBy].token
                 utils.log "Creating a new forum #{forum.name} with token(#{token})...."
                 delete forum._createdBy
+                if forum._message
+                    forum.message = fs.readFileSync path.resolve(__dirname, "forums/#{forum._message}"), 'utf-8'                    
+                delete forum._message
                 if forum._about
-                    forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'    
+                    forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'                    
                 delete forum._about
                 resp = yield Q.nfcall doHttpRequest, "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
                 resp = JSON.parse resp            

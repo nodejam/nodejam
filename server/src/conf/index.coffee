@@ -15,7 +15,8 @@ templates =   {
         forums: {
             index: 'forums/index.hbs',
             item: 'forums/item.hbs',
-            forumcard: '/views/forums/forumcard.hbs',
+            about: 'forums/about.hbs',
+            forumcard: '/views/forums/forumcard.hbs'
         },
         posts: {
             postcard: '/views/posts/postcard.hbs',

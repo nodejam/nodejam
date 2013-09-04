@@ -37,8 +37,10 @@ class Forums extends Controller
                 try
                     forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
                     message = yield forum.getField 'message'
+
                     if message
                         message = mdparser message
+                        
                     posts = yield forum.getPosts(12, { _id: -1 })
                     for post in posts
                             post.summary = post.getView("card")
@@ -67,9 +69,27 @@ class Forums extends Controller
         
 
 
+    about: (req, res, next) =>
+        @attachUser arguments, =>
+            (Q.async =>
+                try                
+                    forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)                    
+                    about = yield forum.getField 'about'
+                    res.render req.network.getView('forums', 'about'), {
+                        forum,
+                        about: if about then mdparser(about),
+                        pageName: 'forum-about-page', 
+                        pageType: 'cover-page', 
+                        cover: forum.cover ? '/pub/images/cover.jpg'
+                    }
+                catch e
+                    next e)()
+                    
+
+
     invokeTypeSpecificController: (req, res, next, getHandler) =>   
         (Q.async =>
-            try
+            try                
                 forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
                 post = yield models.Post.get({ 'forum.id': forum._id.toString(), stub: (req.params.stub) }, {}, db)
                 user = yield models.User.getById(post.createdBy.id, {}, db)

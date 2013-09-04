@@ -14,9 +14,6 @@ class Network extends DatabaseAppModel
                 templates: 'any',
                 defaultTemplates: 'any'
             }
-            logging: {
-                isLogged: true,
-            }
         }
 
 

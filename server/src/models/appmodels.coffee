@@ -47,18 +47,16 @@ class ExtensibleAppModel extends DatabaseAppModel
         
 
     getField: (name, context, db) =>
-        context ?= @__context
-        db ?= @__db
+        { context, db } = @getContext context, db
         (Q.async =>
             extendedField = yield @getModels().ExtendedField.get { type: "#{getModelDescription @}.#{name}", key: @_id.toString() }, context, db
-            extendedField.value
+            extendedField?.value
         )()        
     
 
 
     saveField: (name, value, context, db) =>
-        context ?= @__context
-        db ?= @__db
+        { context, db } = @getContext context, db
         (Q.async =>
             extendedField = yield @getModels().ExtendedField.get { type: "#{getModelDescription @}.#{name}", key: @_id.toString() }, context, db
             extendedField ?= new (@getModels().ExtendedField) {
@@ -72,11 +70,10 @@ class ExtensibleAppModel extends DatabaseAppModel
         
     
     deleteField: (name, context, db) =>
-        context ?= @__context
-        db ?= @__db
+        { context, db } = @getContext context, db
         (Q.async =>
             extendedField = yield @getModels().ExtendedField.get { type: "#{getModelDescription @}.#{name}", key: @_id.toString() }, context, db
-            yield extendedField.destroy context, db
+            yield extendedField?.destroy context, db
         )()    
         
         

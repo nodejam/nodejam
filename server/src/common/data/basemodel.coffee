@@ -26,6 +26,7 @@ class BaseModel
             modelDescription = model.describeModel()
             modelDescription.validateMultiRecordOperationParams ?= (params) -> 
                 false
+            modelDescription.concurrency ?= 'optimistic'
             modelDescription
         catch e
             utils.dumpError e

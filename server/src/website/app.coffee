@@ -104,6 +104,7 @@ app.get '/users/selectusername', findHandler('ui/users', (c) -> c.selectUsername
 app.post '/users/selectusername', findHandler('ui/users', (c) -> c.selectUsername)
 app.get '/~:username', findHandler('ui/users', (c) -> c.item)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.item)
+app.get '/:forum/about', findHandler('ui/forums', (c) -> c.about)
 app.get '/:forum/:stub', findHandler('ui/forums', (c) -> c.post)
 
 #Register templates, helpers etc.

@@ -21,9 +21,6 @@ class Credentials extends DatabaseAppModel
             validate: (fields) ->
                 if not @builtin and not @twitter and not @facebook
                     ['At least one credential must me specified.']
-            logging: {
-                isLogged: false
-            }
         }    
 
 

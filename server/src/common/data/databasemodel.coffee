@@ -51,7 +51,9 @@ class DatabaseModel extends BaseModel
 
     @getCursor: (params, context, db) ->
         modelDescription = @getModelDescription()
-        db.find modelDescription.collection, params
+        (Q.async =>
+            yield db.find modelDescription.collection, params
+        )()
 
 
            
@@ -82,6 +84,8 @@ class DatabaseModel extends BaseModel
                 model.__context = context
             if db
                 model.__db = db
+            if not context or not db
+                throw new Error "Invalid context or db"
         model
         
         
@@ -127,7 +131,7 @@ class DatabaseModel extends BaseModel
                 
                 if obj._id
                     result._id = obj._id
-
+                
                 return attachContextAndDb(new modelDescription.type(result), context, db)
                 
         
@@ -164,19 +168,25 @@ class DatabaseModel extends BaseModel
                 @__updateTimestamp = Date.now()                
                 @__shard = if modelDescription.generateShard? then modelDescription.generateShard(@) else "1"
 
-                result = if not @_id?
-                            if modelDescription.logging?.isLogged
-                                event = {}
-                                event.type = modelDescription.logging.onInsert
-                                event.data = this
-                                db.insert('events', event)
-                            
-                            yield db.insert(modelDescription.collection, @)
-                        else
-                            yield db.update(modelDescription.collection, { _id: @_id }, @)        
-
-                DatabaseModel.constructModel(result, modelDescription, context, db)
-
+                if not @_id?
+                    if modelDescription.logging?.onInsert
+                        event = {
+                            type: modelDescription.logging.onInsert,
+                            data: @
+                        }
+                        db.insert('events', event)                            
+                    result = yield db.insert(modelDescription.collection, @)
+                    return DatabaseModel.constructModel(result, modelDescription, context, db)
+                else
+                    if modelDescription.logging?.onUpdate
+                        event = {
+                            type: modelDescription.logging.onUpdate,
+                            data: @
+                        }
+                        db.insert('events', event)
+                    attachContextAndDb @, context, db
+                    return @
+                                    
             else
                 if @_id
                     msg = "Invalid record with id #{@_id} in #{modelDescription.collection}.\n"

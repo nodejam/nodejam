@@ -40,7 +40,12 @@ class Forums extends Controller
                         }
                         
                         forum = yield forum.save { user: req.user }, db
+
+                        yield forum.addMembership req.user.id, ['admin']
                         
+                        if req.body.message
+                            yield forum.saveField 'message', req.body.message
+
                         if req.body.about
                             yield forum.saveField 'about', req.body.about
                         

@@ -1,5 +1,34 @@
-<p class="italicize">
-    Public Forum. Since May, 2011. <br />
-    <span class="light-text">by</span> <a href="/~{{createdBy.username}}">{{forum.createdBy.name}}</a>
-</p>
+<div class="columns-wrap">
+    <div class="content-area">    
+        <h1>{{forum.name}}</h1>
+        <div class="nav alt">
+            <ul>
+                <li>
+                    <a href="/{{forum.stub}}">Recommended</a>
+                </li>
+                <li>
+                    <a href="/{{forum.stub}}/latest">Upcoming</a>
+                </li>            
+                <li class="selected">
+                    About
+                </li>          
+            </ul>
+        </div>
+        {{#if about}}
+        <div class="content-section-group">
+            <div class="content-section normal">
+                {{{about}}}
+                <p class="italicize">    
+                    Public Forum. Since May, 2011. <br />
+                    <span class="light-text">by</span> <a href="/~{{createdBy.username}}">{{forum.createdBy.name}}</a>
+                </p>        
+            </div>
+            <div class="content-section normal">
+                
+            </div>            
+        </div>
+        {{/if}}
+    </div>
+</div>
+
 
