@@ -19,7 +19,7 @@ class Posts extends Controller
                                 for meta in req.body.meta.split(',') 
                                     if post.meta.indexOf(meta) is -1
                                         post.meta.push meta
-                                yield post.save({ user: req.user }, db)                                    
+                                yield post.save()
                             res.send post
                         else
                             next new Error "Post not found"

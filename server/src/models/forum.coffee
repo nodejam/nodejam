@@ -91,7 +91,8 @@ class Forum extends ExtensibleAppModel
             logging: {
                 isLogged: true,
                 onInsert: 'NEW_FORUM'
-            }
+            },
+            extendedFieldPrefix: 'Forum'
         }
         
 
@@ -192,27 +193,22 @@ class Forum extends ExtensibleAppModel
             
 
 
-    loadAbout: (context, db) =>
+    getPosts: (limit, sort, context, db) =>
+        { context, db } = @getContext context, db
         (Q.async =>
-            yield @getModels().Attachment.get { type: 'Forum.about', key: @_id.toString() }, context, db
+            yield @getModels().Post.find({ 'forum.stub': @stub, 'forum.network': @network }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
         )()
         
         
-    
-    loadMessage: (context, db) =>
-        (Q.async =>
-            yield @getModels().Attachment.get { type: 'Forum.message', key: @_id.toString() }, context, db
-        )()
-        
-
         
     refreshSnapshot: (context, db) =>
+        { context, db } = @getContext context, db
         (Q.async =>
             posts = yield @getModels().Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
             @snapshot = { posts: p.getView("snapshot") for p in posts }
             if posts.length
                 @lastPost = posts[0].publishedAt
-            yield @save(context, db))()
+            yield @save context, db)()
             
     
 exports.Forum = Forum

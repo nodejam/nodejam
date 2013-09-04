@@ -10,6 +10,7 @@ class Forums extends Controller
     
     create: (req, res, next) =>
         @ensureSession arguments, =>
+            
             stub = req.body.name.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
             (Q.async =>
                 try
@@ -31,17 +32,17 @@ class Forums extends Controller
                         
                         forum.createdBy = req.user
                         forum.createdAt = Date.now()
-                        forum.settings = new models.Forum.Settings 
+                        forum.settings = new models.Forum.Settings
                         
                         forum.settings.comments = {
                             enabled: if req.body.settings_comments_enable is "false" then false
                             opened: if req.body.settings_comments_opened is "false" then false
                         }
                         
-                        forum = yield forum.save({ user: req.user }, db)
+                        forum = yield forum.save { user: req.user }, db
                         
                         if req.body.about
-                            forum.saveField 'about', req.body.about, { user: req.user }, db
+                            yield forum.saveField 'about', req.body.about
                         
                         res.send forum
             
@@ -53,7 +54,7 @@ class Forums extends Controller
                             related: [ { type: 'user', id: req.user.id } ],
                             data: { forum }
                         }
-                        message.save({ user: req.user }, db)
+                        message.save { user: req.user }, db
                 catch e
                     next e)()                            
 

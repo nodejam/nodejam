@@ -15,6 +15,7 @@ class AppModel extends BaseModel
         @constructor.getModels path
             
 
+
 class DatabaseAppModel extends DatabaseModel
 
     @getModels: (path = './') =>
@@ -26,39 +27,59 @@ class DatabaseAppModel extends DatabaseModel
         
     getModels: (path = './') =>
         @constructor.getModels path      
+
+
+
+    bindContext: (@__context, @__db) =>
+
+
+
+    getContext: (context, db) =>
+        { context: context ? @__context, db: db ? @__db }
         
+
 
 class ExtensibleAppModel extends DatabaseAppModel
 
-    getFieldPrefix = =>
-        @constructor.getModelDescription().fieldPrefix
-            
+    getModelDescription = (obj) =>
+        obj.constructor.getModelDescription().extendedFieldPrefix
+        
         
 
     getField: (name, context, db) =>
+        context ?= @__context
+        db ?= @__db
         (Q.async =>
-            attachment = yield @getModels().Attachment.get { type: "#{getFieldPrefix()}.#{name}", key: @_id.toString() }, context, db
-            attachment.value
+            extendedField = yield @getModels().ExtendedField.get { type: "#{getModelDescription @}.#{name}", key: @_id.toString() }, context, db
+            extendedField.value
         )()        
     
 
 
     saveField: (name, value, context, db) =>
+        context ?= @__context
+        db ?= @__db
         (Q.async =>
-            attachment = yield @getModels().Attachment.get { type: "#{getFieldPrefix()}.#{name}", key: @_id.toString() }, context, db
-            attachment.value = value
-            yield attachment.save context, db
+            extendedField = yield @getModels().ExtendedField.get { type: "#{getModelDescription @}.#{name}", key: @_id.toString() }, context, db
+            extendedField ?= new (@getModels().ExtendedField) {
+                type: "#{getModelDescription @}.#{name}",
+                key: @_id.toString()
+            }
+            extendedField.value = value
+            yield extendedField.save context, db
         )()        
 
         
     
     deleteField: (name, context, db) =>
+        context ?= @__context
+        db ?= @__db
         (Q.async =>
-            attachment = yield @getModels().Attachment.get { type: "#{getFieldPrefix()}.#{name}", key: @_id.toString() }, context, db
-            yield attachment.destroy context, db
-        )()        
-
-    
+            extendedField = yield @getModels().ExtendedField.get { type: "#{getModelDescription @}.#{name}", key: @_id.toString() }, context, db
+            yield extendedField.destroy context, db
+        )()    
+        
+        
 exports.AppModel = AppModel
 exports.DatabaseAppModel = DatabaseAppModel
 exports.ExtensibleAppModel = ExtensibleAppModel

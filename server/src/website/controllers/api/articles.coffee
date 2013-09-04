@@ -55,7 +55,7 @@ class Articles extends Controller
 
                         @parseBody article, req.body
                 
-                        article = yield article.save({ user: req.user }, db)
+                        article = yield article.save()
                         if article.createdBy.id is req.user.id and not alreadyPublished and req.body.publish is 'true'
                             message = new models.Message {
                                 userid: '0',
@@ -80,7 +80,7 @@ class Articles extends Controller
                 article = yield models.Article.getById(req.params.post, { user: req.user }, db)
                 if article
                     if article.createdBy.id is req.user.id or @isAdmin(req.user)
-                        article = yield article.destroy({ user: req.user }, db)
+                        article = yield article.destroy()
                         res.send article
                     else
                         res.send 'Access denied.'

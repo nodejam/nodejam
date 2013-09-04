@@ -63,9 +63,10 @@ class Post extends DatabaseAppModel
         @rating ?= 1
         @createdAt ?= Date.now()
         
-        
     
-    save: (context, db) =>        
+    
+    save: (context, db) =>
+        { context, db } = @getContext context, db
         (Q.async =>        
             #Make sure we aren't overwriting another post with the same stub in the same forum.
             post = yield Post.get({ @stub, 'forum.id': @forum.id }, context, db)    
@@ -80,12 +81,11 @@ class Post extends DatabaseAppModel
             post = yield super(context, db)
             if stub
                 post.stub = post._id.toString() + "-" + stub
-                post = yield post.save(context, db)
+                post = yield post.save()
 
             if @state is 'published'
-                @getModels().Forum.getById(@forum.id, context, db)
-                    .then (forum) =>
-                        forum.refreshSnapshot(context, db)
+                forum = yield @getModels().Forum.getById(@forum.id, context, db)
+                forum.refreshSnapshot()
             
             return post)()
 

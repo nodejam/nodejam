@@ -10,9 +10,10 @@ modules = {
     comment: 'Comment',
     article: 'Article',
     membership: 'Membership',
-    attachment: 'Attachment'
+    extendedfield: 'ExtendedField',
 }
 
 for k, v of modules
     exports[v] = require("./#{k}")[v]
 
+exports.DbContext = require('./appmodels').DbContext
