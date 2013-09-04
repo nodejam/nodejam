@@ -1,6 +1,6 @@
-BaseModel = require('./basemodel').BaseModel
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
 
-class UserInfo extends BaseModel
+class UserInfo extends DatabaseAppModel
 
     @describeModel: ->
         {

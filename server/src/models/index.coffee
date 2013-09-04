@@ -9,7 +9,8 @@ modules = {
     network: 'Network',
     comment: 'Comment',
     article: 'Article',
-    membership: 'Membership'
+    membership: 'Membership',
+    attachment: 'Attachment'
 }
 
 for k, v of modules

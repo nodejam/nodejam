@@ -5,7 +5,7 @@ express = require 'express'
 validator = require 'validator'
 conf = require '../conf'
 utils = require '../common/utils'
-db = new (require '../common/database').Database(conf.db)
+db = new (require '../common/data/database').Database(conf.db)
 uiControllers = require './controllers/ui'
 apiControllers = require './controllers/api'
 
@@ -116,6 +116,7 @@ app.use(app.router)
 app.use (err, req, res, next) ->
     utils.dumpError err
     res.send(500, { error: err })
+    process.exit()
 
 
 # handle 404

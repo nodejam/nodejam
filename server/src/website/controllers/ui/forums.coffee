@@ -1,12 +1,12 @@
 conf = require '../../../conf'
-database = (require '../../../common/database').Database
+database = (require '../../../common/data/database').Database
 db = new database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
 Controller = require('../controller').Controller
 controllers = require './'
 Q = require('../../../common/q')
-mdparser = require('../../../common/markdownutil').marked
+mdparser = require('../../../common/lib/markdownutil').marked
 
 
 class Forums extends Controller
@@ -36,7 +36,9 @@ class Forums extends Controller
             (Q.async =>
                 try
                     forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
-                    message = if forum.message then mdparser forum.message
+                    message = yield forum.getMessage {}, db
+                    if message
+                        message = mdparser message
                     posts = yield models.Post.find({ 'forum.stub': req.params.forum, 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
                     for post in posts
                             post.summary = post.getView("card")

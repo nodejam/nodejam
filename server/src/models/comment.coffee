@@ -1,6 +1,6 @@
-BaseModel = require('./basemodel').BaseModel
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
 
-class Comment extends BaseModel
+class Comment extends DatabaseAppModel
 
     @describeModel: ->
         {

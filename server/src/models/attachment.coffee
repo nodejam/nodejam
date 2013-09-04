@@ -1,6 +1,6 @@
 DatabaseAppModel = require('./appmodels').DatabaseAppModel
 
-class Token extends DatabaseAppModel
+class Attachment extends DatabaseAppModel
 
     @describeModel: ->
         {
@@ -17,6 +17,6 @@ class Token extends DatabaseAppModel
                 isLogged: false,
             }
         }
-        
     
-exports.Token = Token
+    
+exports.Attachment = Attachment

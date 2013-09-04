@@ -1,5 +1,5 @@
 conf = require '../../../conf'
-db = new (require '../../../common/database').Database(conf.db)
+db = new (require '../../../common/data/database').Database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
 Controller = require('../controller').Controller
@@ -35,6 +35,8 @@ class Articles extends Controller
                         data: { article }
                     }
                     message.save({ user: req.user }, db)
+            catch e
+                next e
         )()
             
                                 

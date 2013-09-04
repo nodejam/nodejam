@@ -1,5 +1,5 @@
 conf = require '../../conf'
-db = new (require '../../common/database').Database(conf.db)
+db = new (require '../../common/data/database').Database(conf.db)
 models = require '../../models'
 Q = require('../../common/q')
 
@@ -9,7 +9,7 @@ class Controller
         [req, res, next] = args 
         (Q.async =>
             user = yield @getUserWithToken(req.query.token ? req.cookies.token)
-            if user
+            if user.id
                 req.user = user
                 fn()
             else

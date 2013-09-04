@@ -1,7 +1,7 @@
 conf = require '../conf'
-BaseModel = require('./basemodel').BaseModel
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
 
-class Network extends BaseModel
+class Network extends DatabaseAppModel
 
     @describeModel: ->
         {

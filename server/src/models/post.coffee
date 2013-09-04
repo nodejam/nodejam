@@ -1,10 +1,9 @@
-async = require '../common/async'
 utils = require '../common/utils'
-mdparser = require('../common/markdownutil').marked
-BaseModel = require('./basemodel').BaseModel
+mdparser = require('../common/lib/markdownutil').marked
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
 Q = require('../common/q')
 
-class Post extends BaseModel
+class Post extends DatabaseAppModel
     
     @describeModel: ->
         models = @getModels()
@@ -44,7 +43,17 @@ class Post extends BaseModel
         
         Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
         
+
         
+    @getLimit: (limit, _default, max) ->
+        result = _default
+        if limit
+            result = limit
+            if result > max
+                result = max
+        result    
+
+
     
     constructor: (params) ->
         super

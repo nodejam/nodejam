@@ -5,7 +5,7 @@ Q = require('../../../common/q')
 utils = require '../../../common/utils'
 conf = require '../../../conf'
 models = require '../../../models'
-db = new (require '../../../common/database').Database(conf.db)
+db = new (require '../../../common/data/database').Database(conf.db)
 controller = require '../controller'
 
 OAuth = require('oauth').OAuth

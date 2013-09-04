@@ -1,7 +1,8 @@
-BaseModel = require('./basemodel').BaseModel
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
 Q = require('../common/q')
+hasher = require('../common/lib/hasher').hasher
 
-class Credentials extends BaseModel
+class Credentials extends DatabaseAppModel
     
     @describeModel: ->
         {

@@ -1,9 +1,11 @@
-BaseModel = require('./basemodel').BaseModel
+AppModel = require('./appmodels').AppModel
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
+ExtensibleAppModel = require('./appmodels').ExtensibleAppModel
 Q = require('../common/q')
 
-class Forum extends BaseModel
+class Forum extends ExtensibleAppModel
 
-    class Settings extends BaseModel
+    class Settings extends AppModel
         @describeModel: ->
             {
                 type: @,
@@ -21,7 +23,7 @@ class Forum extends BaseModel
             
     @Settings: Settings            
         
-    class Summary extends BaseModel    
+    class Summary extends AppModel    
         @describeModel: ->
             {
                 type: @,
@@ -44,7 +46,6 @@ class Forum extends BaseModel
                 network: 'string',
                 name: 'string',
                 stub: 'string',
-                message: { type: 'string', required: false },
                 settings: { type: Settings },
                 icon: 'string',
                 iconThumbnail: 'string',
@@ -132,9 +133,9 @@ class Forum extends BaseModel
                 
 
 
-    hasPermission: (permissionName, userid) =>
+    hasPermission: (permissionName, userid, context, db) =>
         (Q.async =>
-            membership = yield @getModels().Membership.get { forumid: @_id.toString(), userid: userid }
+            membership = yield @getModels().Membership.get { forumid: @_id.toString(), userid: userid }, context, db
             permissions = getPermissions membership.roles
             permissions[permissionName]
         )()
@@ -189,6 +190,20 @@ class Forum extends BaseModel
             admin: check 'admin'
         }
             
+
+
+    loadAbout: (context, db) =>
+        (Q.async =>
+            yield @getModels().Attachment.get { type: 'Forum.about', key: @_id.toString() }, context, db
+        )()
+        
+        
+    
+    loadMessage: (context, db) =>
+        (Q.async =>
+            yield @getModels().Attachment.get { type: 'Forum.message', key: @_id.toString() }, context, db
+        )()
+        
 
         
     refreshSnapshot: (context, db) =>

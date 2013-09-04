@@ -1,5 +1,5 @@
 conf = require '../../../conf'
-db = new (require '../../../common/database').Database(conf.db)
+db = new (require '../../../common/data/database').Database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
 Controller = require('../controller').Controller
@@ -25,10 +25,10 @@ class Forums extends Controller
                         forum.category = req.body.category
                         forum.icon = req.body.icon
                         forum.iconThumbnail = req.body.iconThumbnail
-                        forum.about = req.body.about
                         if req.body.cover             
                             forum.cover = req.body.cover
                         forum.stub = stub
+                        
                         forum.createdBy = req.user
                         forum.createdAt = Date.now()
                         forum.settings = new models.Forum.Settings 
@@ -39,6 +39,10 @@ class Forums extends Controller
                         }
                         
                         forum = yield forum.save({ user: req.user }, db)
+                        
+                        if req.body.about
+                            forum.saveField 'about', req.body.about, { user: req.user }, db
+                        
                         res.send forum
             
                         #Put a notification.

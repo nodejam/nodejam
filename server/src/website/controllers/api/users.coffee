@@ -1,6 +1,6 @@
 https = require 'https'
 conf = require '../../../conf'
-db = new (require '../../../common/database').Database(conf.db)
+db = new (require '../../../common/data/database').Database(conf.db)
 models = require '../../../models'
 utils = require('../../../common/utils')
 controller = require('../controller')

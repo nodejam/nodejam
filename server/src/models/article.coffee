@@ -1,6 +1,4 @@
-async = require '../common/async'
-utils = require '../common/utils'
-mdparser = require('../common/markdownutil').marked
+mdparser = require('../common/lib/markdownutil').marked
 postModule = require('./post')
 Q = require('../common/q')
 

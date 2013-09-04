@@ -1,7 +1,7 @@
-moment = require('../common/moment')
-BaseModel = require('./basemodel').BaseModel
+moment = require('../common/lib/moment')
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
 
-class Message extends BaseModel
+class Message extends DatabaseAppModel
     
     @describeModel: ->
         {

@@ -1,12 +1,26 @@
 utils = require '../common/utils'
-BaseModel = require('./basemodel').BaseModel
+AppModel = require('./appmodels').AppModel
+DatabaseAppModel = require('./appmodels').DatabaseAppModel
 Q = require('../common/q')
-hasher = require('../common/hasher').hasher
+hasher = require('../common/lib/hasher').hasher
 
 emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-class User extends BaseModel
+class User extends DatabaseAppModel
+
+    class Summary extends AppModel    
+        @describeModel: ->
+            {
+                type: @,
+                fields: {
+                    id: 'string',
+                    username: 'string',
+                    name: 'string',
+                    assetPath: 'string'
+                }
+            }    
     
+    @Summary: Summary
     
     @describeModel: ->
         {
@@ -136,26 +150,13 @@ class User extends BaseModel
 
 
 
-    summarize: =>        
-       new Summary {
+    summarize: =>
+        new Summary {
             id: @_id.toString()
             username: @username
             name: @name,
             @assetPath
         }
-
+        
     
-class Summary extends BaseModel    
-    @describeModel: ->
-        {
-            type: @,
-            fields: {
-                id: 'string',
-                username: 'string',
-                name: 'string',
-                assetPath: 'string'
-            }
-        }
-            
-User.Summary = Summary                
 exports.User = User
