@@ -19,16 +19,18 @@ class Forums extends Controller
                         res.send 'A forum with the same name exists.'
                     else
                         forum = new models.Forum
+                        forum.stub = stub
                         forum.network = req.network.stub
-                        forum.type = req.body.type
                         forum.name = req.body.name
+                        forum.type = req.body.type ? 'public'
                         forum.description = req.body.description
                         forum.category = req.body.category
                         forum.icon = req.body.icon
                         forum.iconThumbnail = req.body.iconThumbnail
+
                         if req.body.cover             
                             forum.cover = req.body.cover
-                        forum.stub = stub
+
                         
                         forum.createdBy = req.user
                         forum.createdAt = Date.now()

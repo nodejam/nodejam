@@ -27,89 +27,101 @@
 }
 
 /* Common for all pages */
-.page-sections-mixin {
-    .header {
-        .logo {
-            .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left; 
-            text-transform: uppercase; position: absolute; top: 6px; left: 6px; 
-            &:hover { background: #333; }
-        }    
-    }
-    
-    .site-options {
-        height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 99; box-shadow: 4px 0 4px black;
-                            
-        ul {
-            background: @colorDarker; opacity: 0.96; width: 220px; height: 100%; 
-            padding-top: 12px; font-size: 12px; font-weight: bold; color: @colorLight;
-            li {                
-                border-bottom: 1px solid @colorDarkerBorder; clear: both; display: table; width: 100%;
-                a { 
-                    display: block; padding: 10px 4px 10px 20px; color: @colorLight; float: left; min-width: 120px;
-                    i { 
-                        margin-right: 12px; 
-                    }
-                    &:hover { color: white }
-                    &.right { 
-                        float: right; padding: 10px 24px 10px 16px; margin: 0; min-width: 0;
-                        i { margin: 0 }
-                    }   
+.header {
+    .logo {
+        .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left; 
+        text-transform: uppercase; position: absolute; top: 6px; left: 6px; 
+        &:hover { background: #333; }
+    }    
+}
+
+.site-options {
+    height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 99; box-shadow: 4px 0 4px black;
+                        
+    ul {
+        background: @colorDarker; opacity: 0.96; width: 220px; height: 100%; 
+        padding-top: 12px; font-size: 12px; font-weight: bold; color: @colorLight;
+        li {                
+            border-bottom: 1px solid @colorDarkerBorder; clear: both; display: table; width: 100%;
+            a { 
+                display: block; padding: 10px 4px 10px 20px; color: @colorLight; float: left; min-width: 120px;
+                i { 
+                    margin-right: 12px; 
                 }
+                &:hover { color: white }
+                &.right { 
+                    float: right; padding: 10px 24px 10px 16px; margin: 0; min-width: 0;
+                    i { margin: 0 }
+                }   
             }
-        }
-        .transparent-overlay {
-            position: fixed; margin-left: 220px; height: 100%; top: 0; left: 0; width: 100%; cursor: pointer;
         }
     }
-
-    .nav {         
-        height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; clear: both;
-        border-bottom: 1px solid @colorLight; box-shadow: 0 2px 0 @colorUltraLight;
-        ul {
-            float: left; 
-            li { 
-                float: left; padding-right: 12px; color: @colorNeutral; 
-                &.selected { color: @colorDark }
-                a { text-decoration: underline; }
-                i { text-decoration: none }
-            }
-            &.alt { float: right; }
-        }
+    .transparent-overlay {
+        position: fixed; margin-left: 220px; height: 100%; top: 0; left: 0; width: 100%; cursor: pointer;
     }
+}
 
+.nav {         
+    height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; clear: both;
+    border-bottom: 1px solid @colorLight; box-shadow: 0 2px 0 @colorUltraLight;
+    ul {
+        float: left; 
+        li { 
+            float: left; padding-right: 12px; color: @colorNeutral; 
+            &.selected { color: @colorDark }
+            a { text-decoration: underline; }
+            i { text-decoration: none }
+        }
+        &.alt { float: right; }
+    }
+}
 
-    .container { 
-        text-align: center; 
-        .page-wrap { 
-            text-align: left; margin: auto;
-        }
-        .columns-wrap { 
-            text-align: left; margin: auto;
-        }
-        .columns-wrap, .page-wrap {
-            /* Generic sections. */
-            .content-section-group {
-                margin-bottom: 24px;
-                .content-section {
-                    float: left; margin-right: 24px;
-                }
-                &:after { content: ""; display: block; clear: both; }
-            }
-            .content-section {
+.container { 
+    text-align: center; 
+    .page-wrap { 
+        text-align: left; margin: auto;
+    }
+    .columns-wrap { 
+        text-align: left; margin: auto;
+    }
+    .columns-wrap, .page-wrap {
+        /* Generic sections. */
+        .content-sections {
+            margin-bottom: 24px;
+            > div {
+                float: left; margin-right: 24px;
                 &.normal { min-width: 240px; max-width: 480px; }
                 &.small { min-width: 240px; max-width: 320px }
             }
-            .desc-styles-mixin;
+            &:after { content: ""; display: block; clear: both; }
         }
+        .desc-styles-mixin;
     }
-    
-    .content-area { 
-        .fontContent; clear: both; margin-top: 12px;
-        > h1 { margin-top: -12px }    
+}
+
+.content-area { 
+    .fontContent; clear: both; margin-top: 12px;
+    > h1 { margin-top: -12px }    
+}
+
+.italicize { font-style: italic }
+
+/* Dashboard Style Widgets */
+.dashboard-widgets {
+    > div {
+        float: left; .rounded; background: @colorUltraLight; color: white;
+        p {
+            line-height: 0.6em; margin: 0;
+            &.large-text { font-size: 32px; font-weight: bold; text-align: center }
+            .subtext { font-size: 12px; font-weight: bold; text-transform: uppercase }
+        }     
+        &.full { width: 80%; padding: 20px 8% 12px 8%; margin: 0 4% 20px 0 }
+        &.half { width: 40%; padding: 20px 4% 12px 4%; margin: 0 2% 20px 0 }
+        &.cg1 { background-color: @colorGroup1 }
+        &.cg2 { background-color: @colorGroup2 }
+        &.cg3 { background-color: @colorGroup3 }
+        &.cg4 { background-color: @colorGroup4 }               
     }
-
-    .italicize { font-style: italic }
-
 }
 
 /* The standard Form */
@@ -514,7 +526,6 @@
 @media (min-width: 1200px) { 
     .large-std-page-mixin();
     .page-sections-base-mixin(16);
-    .page-sections-mixin;
 }
 
 @media (min-width: 1024px) and (max-width: 1199px) { /* todo: think about this over again. sidebar is 15px on webkit */
@@ -542,7 +553,6 @@
 
 @media (min-width: 720px) and (max-width: 1199px) { 
     .page-sections-base-mixin(16);
-    .page-sections-mixin;
 }
 
 @media (min-width: 720px) { 
@@ -551,7 +561,6 @@
 
 @media (max-width: 719px) { 
     .page-sections-base-mixin(15);
-    .page-sections-mixin;
     .login-box-mixin(280px, 8px, 16px)
 }
 
@@ -573,6 +582,7 @@
     .tiny-cover-page-mixin(100%);
     .cards-mixin(100%; 32; 22; 14; 220; 380);
 }
+
 
 /* LEAN MODAL - Thanks to http://leanmodal.finelysliced.com.au/ */
 #lean_overlay { position: fixed; z-index:100; top: 0px; left: 0px; height:100%; width:100%; background: #000; display: none; }

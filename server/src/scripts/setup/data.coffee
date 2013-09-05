@@ -61,7 +61,7 @@ poetry = {
     icon: 'https://twimg0-a.akamaihd.net/profile_images/2926658252/11c12e7e2f293194c95c6a5ba3f4d707.jpeg',
     iconThumbnail: 'https://twimg0-a.akamaihd.net/profile_images/2926658252/11c12e7e2f293194c95c6a5ba3f4d707.jpeg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'literature',
     _createdBy: 'aaronsw'  
 }
@@ -73,7 +73,7 @@ movies = {
     iconThumbnail: 'http://i1.sndcdn.com/artworks-000036685995-6mjzlt-crop.jpg?3265a2d',
     cover: 'http://theredlist.fr/media/database/muses/couples/hollywood/paulette_godard_charlie_chaplin/017_paulette_godard_charlie_chaplin_theredlist.jpg',
     permission: 'public',    
-    type: 'post',
+    type: 'public',
     category: 'movies',
     _createdBy: 'aaronsw'      
 }
@@ -85,7 +85,7 @@ rawNerve = {
     iconThumbnail: 'http://images.scroll.com.tr/2013/01/Aaron-Swartz.jpg',
     cover: 'http://farm9.staticflickr.com/8384/8462699292_1f68a9cd3e_b.jpg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'life',
     _about: 'about-raw-nerve.md',
     _message: 'message-raw-nerve.md',
@@ -98,7 +98,7 @@ itsMyLife = {
     icon: 'https://twimg0-a.akamaihd.net/profile_images/2371312033/image.jpg',
     iconThumbnail: 'https://twimg0-a.akamaihd.net/profile_images/2371312033/image.jpg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'life',
     _createdBy: 'aaronsw'  
 }
@@ -109,7 +109,7 @@ makingStuff =  {
     icon: 'http://cdnimg.visualizeus.com/thumbs/aa/06/colors,colours,costume,derro,fancy,dress,festival-aa06d899eec02dec6f84cb017ea3bf80_h.jpg',
     iconThumbnail: 'http://cdnimg.visualizeus.com/thumbs/aa/06/colors,colours,costume,derro,fancy,dress,festival-aa06d899eec02dec6f84cb017ea3bf80_h.jpg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'life',
     _createdBy: 'aaronsw'  
 }
@@ -120,7 +120,7 @@ travel = {
     icon: 'http://farm4.staticflickr.com/3016/3008866354_7481cc3f70_z.jpg',
     iconThumbnail: 'http://farm4.staticflickr.com/3016/3008866354_7481cc3f70_z.jpg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'travel',
     _createdBy: 'aaronsw'  
 }
@@ -131,7 +131,7 @@ computers = {
     icon: 'http://cdn-static.zdnet.com/i/r/story/70/00/016684/apple-wwdc-mac-pro-0596610x488-610x488.jpg?hash=MTZjLGH0AT&upscale=1',
     iconThumbnail: 'http://cdn-static.zdnet.com/i/r/story/70/00/016684/apple-wwdc-mac-pro-0596610x488-610x488.jpg?hash=MTZjLGH0AT&upscale=1',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'technology',
     _createdBy: 'aaronsw'  
 }
@@ -142,7 +142,7 @@ theGreatMasters = {
     icon: 'http://www.claude-monet.com/images/paintings/impression-sunrise.jpg',
     iconThumbnail: 'http://www.claude-monet.com/images/paintings/impression-sunrise.jpg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'art',
     _createdBy: 'aaronsw'  
 }
@@ -153,7 +153,7 @@ streetFood = {
     icon: 'http://shecookshecleans.files.wordpress.com/2011/07/korean-chic-skewers.jpg?w=500',
     iconThumbnail: 'http://shecookshecleans.files.wordpress.com/2011/07/korean-chic-skewers.jpg?w=500',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'food-and-drinks'
     _createdBy: 'aaronsw'  
 }
@@ -164,7 +164,7 @@ guzzlers = {
     icon: 'http://media.tumblr.com/tumblr_mdlnc6eBsm1qd0jy3.jpg',
     iconThumbnail: 'http://media.tumblr.com/tumblr_mdlnc6eBsm1qd0jy3.jpg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'food-and-drinks'
     _createdBy: 'aaronsw'  
 }
@@ -175,7 +175,7 @@ earlyMornings = {
     icon: 'http://www.minigallery.co.uk/Erica_Kirkpatrick/images/20120426093259079_l/large/Misty_Pond_Landscape_42.jpg',
     iconThumbnail: 'http://www.minigallery.co.uk/Erica_Kirkpatrick/images/20120426093259079_l/large/Misty_Pond_Landscape_42.jpg',
     permission: 'public',
-    type: 'post',
+    type: 'public',
     category: 'life',
     _createdBy: 'aaronsw'  
 }

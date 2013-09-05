@@ -74,15 +74,20 @@ class Forums extends Controller
             (Q.async =>
                 try                
                     forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)        
-                    leaders = yield forum.getMembership(['admin','moderator'])
-                    others = yield forum.getMembership(['member'])
                     about = yield forum.getField 'about'
+
+                    #We query admins and mods seperately since the fetch limits the records returned per call
+                    leaders = yield forum.getMemberships(['admin','moderator'])
+                    admins = leaders.filter (u) -> u.roles.indexOf('admin') isnt -1
+                    moderators = leaders.filter (u) -> u.roles.indexOf('moderator') isnt -1 and u.roles.indexOf('admin') is -1
+                    members = (yield forum.getMemberships ['member']).filter (u) -> u.roles.indexOf('admin') is -1 and u.roles.indexOf('moderator') is -1
+                    
                     res.render req.network.getView('forums', 'about'), {
                         forum,
                         about: if about then mdparser(about),
-                        admins: (l for l in leaders when l.roles.indexOf('admin') isnt -1),
-                        moderators: (l for l in leaders when l.roles.indexOf('moderator') isnt -1 and l.roles.indexOf('admin') is -1),
-                        members: (u for u in others when u.roles.indexOf('admin') is -1 and u.roles.indexOf('moderator') is -1),
+                        admins,
+                        moderators,
+                        members,
                         pageName: 'forum-about-page', 
                         pageType: 'cover-page', 
                         cover: forum.cover ? '/pub/images/cover.jpg'

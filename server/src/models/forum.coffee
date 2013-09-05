@@ -46,15 +46,21 @@ class Forum extends ExtensibleAppModel
                 network: 'string',
                 name: 'string',
                 stub: 'string',
+                type: { type: 'string', validate: -> ['public', 'protected', 'private'].indexOf(@type) isnt -1 },
                 settings: { type: Settings },
                 icon: 'string',
                 iconThumbnail: 'string',
                 cover: { type: 'string', required: false },
                 createdBy: { type: @getModels().User.Summary },
                 snapshot: 'object',
-                totalPosts: 'number',
-                totalMembers: 'number',
-                lastPost: 'number', 
+                stats: {
+                    type: 'object',
+                    fields: {
+                        posts: 'number',
+                        members: 'number',
+                        lastPost: 'number'
+                    }
+                },
                 permissions: {
                     type: 'object',
                     fields: {
@@ -91,21 +97,24 @@ class Forum extends ExtensibleAppModel
             logging: {
                     onInsert: 'NEW_FORUM'
             },
-            extendedFieldPrefix: 'Forum'
+            extendedFieldPrefix: 'Forum',
+            trackChanges: true
         }
         
-
-
-    constructor: (params) ->
-        super
-        @totalPosts ?= 0
-        @totalMembers ?= 0
-        @settings ?= {}
-        @snapshot ?= { posts: [] }
-        @lastPost ?= 0
-        @permissions = {}                
-
         
+        
+    save: (context, db) =>        
+        if not @_id
+            @stats ?= {
+                posts: 0,
+                members: 1,
+                lastPost: 0
+            }
+            @snapshot ?= { posts: [] }
+            @permissions = {}                            
+        super
+
+
         
     summarize: =>        
         summary = new Summary {
@@ -130,9 +139,9 @@ class Forum extends ExtensibleAppModel
                     @snapshot,
                     image: @icon
                 }
-                
 
 
+    
     hasPermission: (permissionName, userid, context, db) =>
         (Q.async =>
             membership = yield @getModels().Membership.get { forumid: @_id.toString(), userid }, context, db
@@ -202,6 +211,7 @@ class Forum extends ExtensibleAppModel
     
     addMembership: (user, roles, context, db) =>
         { context, db } = @getContext context, db
+        
         (Q.async =>
             membership = yield @getModels().Membership.get { 'forum.id': @_id.toString(), 'user.id': user.id }, context, db
             if not membership
@@ -212,7 +222,7 @@ class Forum extends ExtensibleAppModel
             membership.roles = roles
             yield membership.save context, db   
             cursor = yield @getModels().Membership.getCursor { 'forum.id': @_id.toString() }, context, db
-            @totalMembers = yield Q.nfcall cursor.count.bind(cursor)
+            @stats.members = yield Q.nfcall cursor.count.bind(cursor)
             yield @save()
         )()
                 
@@ -232,7 +242,7 @@ class Forum extends ExtensibleAppModel
             posts = yield @getModels().Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
             @snapshot = { posts: p.getView("snapshot") for p in posts }
             if posts.length
-                @lastPost = posts[0].publishedAt
+                @stats.lastPost = posts[0].publishedAt
             yield @save context, db)()
             
     
