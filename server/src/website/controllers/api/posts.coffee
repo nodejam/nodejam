@@ -16,10 +16,7 @@ class Posts extends Controller
                         post = yield models.Post.getById(req.params.id, { user: req.user }, db)
                         if post 
                             if req.body.meta
-                                for meta in req.body.meta.split(',') 
-                                    if post.meta.indexOf(meta) is -1
-                                        post.meta.push meta
-                                yield post.save()
+                                post = yield post.addMetaList req.body.meta.split(',')
                             res.send post
                         else
                             next new Error "Post not found"

@@ -41,7 +41,7 @@ class Forums extends Controller
                         
                         forum = yield forum.save { user: req.user }, db
 
-                        yield forum.addMembership req.user.id, ['admin']
+                        yield forum.addMembership req.user, ['admin']
                         
                         if req.body.message
                             yield forum.saveField 'message', req.body.message
@@ -94,7 +94,7 @@ class Forums extends Controller
                 try
                     forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
                     if @isAdmin(req.user)
-                        yield forum.destroy({ user: req.user }, db)
+                        yield forum.destroy()
                         res.send "DELETED #{forum.stub}."
                     else
                         next new Error "Access denied"

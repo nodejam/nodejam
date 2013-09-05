@@ -200,22 +200,30 @@ class Forum extends ExtensibleAppModel
         
 
     
-    addMembership: (userid, roles, context, db) =>
+    addMembership: (user, roles, context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            membership = yield @getModels().Membership.get { forumid: @_id.toString(), userid }, context, db
+            membership = yield @getModels().Membership.get { 'forum.id': @_id.toString(), 'user.id': user.id }, context, db
             if not membership
                 membership = new (@getModels().Membership) {
-                    forumid: @_id.toString(),
-                    userid: userid
+                    forum: @summarize(),
+                    user: user
                 }
             membership.roles = roles
             yield membership.save context, db   
-            cursor = yield @getModels().Membership.getCursor { forumid: @_id.toString() }, context, db
+            cursor = yield @getModels().Membership.getCursor { 'forum.id': @_id.toString() }, context, db
             @totalMembers = yield Q.nfcall cursor.count.bind(cursor)
             yield @save()
         )()
                 
+                
+                
+    getMemberships: (roles, context, db) =>
+        { context, db } = @getContext context, db
+        (Q.async =>
+            yield @getModels().Membership.find { 'forum.id': @_id.toString(), roles: { $in: roles } }, ((cursor) -> cursor.sort({ id: -1 }).limit 200), context, db
+        )()        
+        
                 
             
     refreshSnapshot: (context, db) =>

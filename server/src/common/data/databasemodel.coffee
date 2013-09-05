@@ -184,6 +184,7 @@ class DatabaseModel extends BaseModel
                             data: @
                         }
                         db.insert('events', event)
+                    yield db.update(modelDescription.collection, { @_id }, @)    
                     attachContextAndDb @, context, db
                     return @
                                     

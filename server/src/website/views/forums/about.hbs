@@ -24,7 +24,15 @@
                 </p>        
             </div>
             <div class="content-section normal">
-                
+                {{#if admins}}                
+                <ul class="admins">
+                    {{#each admins}}
+                    <li>
+                        {{name}}
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
             </div>            
         </div>
         {{/if}}

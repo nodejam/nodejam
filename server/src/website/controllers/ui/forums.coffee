@@ -73,11 +73,16 @@ class Forums extends Controller
         @attachUser arguments, =>
             (Q.async =>
                 try                
-                    forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)                    
+                    forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)        
+                    leaders = yield forum.getMembership(['admin','moderator'])
+                    others = yield forum.getMembership(['member'])
                     about = yield forum.getField 'about'
                     res.render req.network.getView('forums', 'about'), {
                         forum,
                         about: if about then mdparser(about),
+                        admins: (l for l in leaders when l.roles.indexOf('admin') isnt -1),
+                        moderators: (l for l in leaders when l.roles.indexOf('moderator') isnt -1 and l.roles.indexOf('admin') is -1),
+                        members: (u for u in others when u.roles.indexOf('admin') is -1 and u.roles.indexOf('moderator') is -1),
                         pageName: 'forum-about-page', 
                         pageType: 'cover-page', 
                         cover: forum.cover ? '/pub/images/cover.jpg'

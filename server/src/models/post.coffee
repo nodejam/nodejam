@@ -63,6 +63,22 @@ class Post extends DatabaseAppModel
         
     
     
+    addMetaList: (metaList) =>
+        (Q.async =>
+            @meta = @meta.concat (m for m in metaList when @meta.indexOf(m) is -1)
+            yield @save()
+        )()
+        
+
+
+    removeMetaList: (metaList) =>
+        (Q.async =>
+            @meta = (m for m in @meta when metaList.indexOf(m) is -1)
+            yield @save()
+        )()
+
+        
+    
     save: (context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>        
