@@ -7,6 +7,17 @@ clone = (obj) ->
     new __Clone
     
 
+deepCloneObject = (obj) ->
+    if (obj is null) or (typeof(obj) isnt 'object')
+        obj
+    else
+        temp = {}
+
+        for key, value of obj
+            temp[key] = deepCloneObject(value)
+        temp
+    
+
 extend = (target, source) ->
     for key, val of source
         if not target[key]?
@@ -77,6 +88,7 @@ dumpError = (err) ->
         log 'Error is null or undefined.'
     
 root.clone = clone
+root.deepCloneObject = deepCloneObject
 root.extend = extend
 root.isComposite = isComposite         
 root.mergeObjects = mergeObjects

@@ -56,8 +56,14 @@ init = () ->
                     forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'                    
                 delete forum._about
                 resp = yield Q.nfcall doHttpRequest, "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
-                resp = JSON.parse resp            
-                utils.log "Created #{resp.name}"
+                forumJson = JSON.parse resp
+                utils.log "Created #{forumJson.name}"
+                
+                for u, uToken of _globals.sessions
+                    if uToken.token isnt token
+                        resp = yield Q.nfcall doHttpRequest, "/api/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
+                        resp = JSON.parse resp
+                        utils.log "#{u} joined #{forum.name}"
             
             for article in data.articles                    
                 token = _globals.sessions[article._createdBy].token

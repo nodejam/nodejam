@@ -1,5 +1,20 @@
 <div class="columns-wrap">
     <div class="content-area">    
+    <div class="nav alt">
+        <ul>
+            <li class="selected">
+                Recommended
+            </li>
+            <li>
+                <a href="/{{forum.stub}}/about">Latest</a>
+            </li>          
+        </ul>
+        <ul class="alt buttons">
+            <li>
+                <a href="#" class="positive"><i class="icon-plus"></i>New Forum</a>
+            </li>
+        </ul>
+    </div>
     {{#if featured}}
         <ul class="cards">
         {{#each featured}}

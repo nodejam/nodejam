@@ -15,7 +15,7 @@ class Forums extends Controller
         @attachUser arguments, =>
             (Q.async =>
                 try
-                    featured = yield models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ lastPost: -1 }).limit 12), {}, db)
+                    featured = yield models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ 'stats.lastPost': -1 }).limit 12), {}, db)
                     for forum in featured
                         forum.summary = forum.getView("card")
                         forum.summary.view = "standard"

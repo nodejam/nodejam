@@ -9,8 +9,7 @@ Q = require('../../../common/q')
 class Forums extends Controller
     
     create: (req, res, next) =>
-        @ensureSession arguments, =>
-            
+        @ensureSession arguments, =>            
             stub = req.body.name.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
             (Q.async =>
                 try
@@ -43,7 +42,7 @@ class Forums extends Controller
                         
                         forum = yield forum.save { user: req.user }, db
 
-                        yield forum.addMembership req.user, ['admin']
+                        yield forum.addRole req.user, 'admin'
                         
                         if req.body.message
                             yield forum.saveField 'message', req.body.message
@@ -81,7 +80,7 @@ class Forums extends Controller
                         else
                             forum.cover = ''
                         forum.tile = req.body.tile ? '/images/forum-tile.png'                                        
-                        forum = yield forum.save({ user: req.user }, db)
+                        forum = yield forum.save()
                         res.send forum
                     else
                         next new Error "Access denied"
@@ -97,13 +96,25 @@ class Forums extends Controller
                     forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
                     if @isAdmin(req.user)
                         yield forum.destroy()
-                        res.send "DELETED #{forum.stub}."
+                        res.send { success: true }
                     else
                         next new Error "Access denied"
                 catch e
                     next e)()
 
 
+
+    join: (req, res, next) =>
+        @ensureSession arguments, =>
+            (Q.async =>
+                try
+                    forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
+                    yield forum.join req.user
+                    res.send { success: true }
+                catch 
+                    next e)()
+        
+        
 
     createItem: (req, res, next) =>
         @ensureSession arguments, =>

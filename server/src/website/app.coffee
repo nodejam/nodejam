@@ -81,10 +81,11 @@ handleDomainUrls = (domain, fnHandler) ->
 # API Routes
 # ----------
 app.post '/api/users', findHandler('api/users', (c) -> c.create)
-app.get '/api/~:username', findHandler('api/users', (c) -> c.item)
+app.get '/api/users/:username', findHandler('api/users', (c) -> c.item)
 
 # FORUMS and POSTS
 app.post '/api/forums', findHandler('api/forums', (c) -> c.create)
+app.post '/api/forums/:forum/members', findHandler('api/forums', (c) -> c.join)
 app.post '/api/forums/:forum', findHandler('api/forums', (c) -> c.createItem)
 
 #ADMIN

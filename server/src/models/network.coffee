@@ -1,20 +1,20 @@
 conf = require '../conf'
-DatabaseAppModel = require('./appmodels').DatabaseAppModel
+DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+models = require('./')
 
-class Network extends DatabaseAppModel
+class Network extends DatabaseModel
 
-    @describeModel: ->
-        {
-            type: @,
-            collection: 'networks',
-            fields: {
-                name: 'string',
-                stub: 'string',
-                domains: { type: 'array', contents: 'string' },
-                templates: 'any',
-                defaultTemplates: 'any'
-            }
+    @describeModel: {
+        type: @,
+        collection: 'networks',
+        fields: {
+            name: 'string',
+            stub: 'string',
+            domains: { type: 'array', contentType: 'string' },
+            templates: 'any',
+            defaultTemplates: 'any'
         }
+    }
 
 
 

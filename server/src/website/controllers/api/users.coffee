@@ -41,7 +41,7 @@ class Users extends controller.Controller
                         type: 'twitter', 
                         value: { 
                             id: req.body.credentials_id, 
-                            username: req.body.credentials_username, 
+                            username: req.body.credentials_username,    
                             accessToken: req.body.credentials_accessToken, 
                             accessTokenSecret: req.body.credentials_accessTokenSecret 
                         } 

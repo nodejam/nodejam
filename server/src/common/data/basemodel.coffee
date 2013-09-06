@@ -23,7 +23,7 @@ class BaseModel
     
     @getModelDescription: (model = @) ->
         try
-            modelDescription = model.describeModel()
+            modelDescription = if typeof model.describeModel is "function" then model.describeModel() else model.describeModel
             modelDescription.validateMultiRecordOperationParams ?= (params) -> 
                 false
             modelDescription.concurrency ?= 'optimistic'
@@ -60,7 +60,10 @@ class BaseModel
 
         fieldDef.required ?= true
         fieldDef.type ?= ''
-        
+            
+        fieldDef._type = fieldDef.type ? fieldDef.getType()
+        if fieldDef._type is 'array'
+            fieldDef._contentType = fieldDef.contentType ? fieldDef.getContentType()
         fieldDef
 
 
@@ -108,17 +111,17 @@ class BaseModel
             
             #Check types.       
             if value
-                if fieldDef.type is 'array'
+                if fieldDef._type is 'array'
                     for item in value                        
-                        BaseModel.addError errors, fieldName, BaseModel.validateField.call(@, item, "[#{fieldName} item]", fieldDef.contents)
+                        BaseModel.addError errors, fieldName, BaseModel.validateField.call(@, item, "[#{fieldName} item]", fieldDef._contentType)
                 else
                     #If it is a custom class or a primitive
-                    if fieldDef.type isnt ''                        
-                        if (BaseModel.isCustomClass(fieldDef.type) and not (value instanceof fieldDef.type)) or (not BaseModel.isCustomClass(fieldDef.type) and typeof(value) isnt fieldDef.type)
+                    if fieldDef._type isnt ''                        
+                        if (BaseModel.isCustomClass(fieldDef._type) and not (value instanceof fieldDef._type)) or (not BaseModel.isCustomClass(fieldDef._type) and typeof(value) isnt fieldDef._type)
                             errors.push "#{fieldName} is #{JSON.stringify value}"
-                            errors.push "#{fieldName} should be a #{fieldDef.type}."
+                            errors.push "#{fieldName} should be a #{fieldDef._type}."
 
-                    if BaseModel.isCustomClass(fieldDef.type) and value.validate
+                    if BaseModel.isCustomClass(fieldDef._type) and value.validate
                         errors = errors.concat value.validate()
                     else
                         #We should also check for objects inside object. (ie, do we have fields inside the fieldDef?)

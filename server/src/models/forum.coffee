@@ -1,105 +1,84 @@
-AppModel = require('./appmodels').AppModel
-DatabaseAppModel = require('./appmodels').DatabaseAppModel
-ExtensibleAppModel = require('./appmodels').ExtensibleAppModel
+BaseModel = require('../common/data/basemodel').BaseModel
+DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+ExtensibleModel = require('../common/data/extensiblemodel').ExtensibleModel
+ExtendedField = require('../common/data/extensiblemodel').ExtendedField
 Q = require('../common/q')
+models = require('./')
 
-class Forum extends ExtensibleAppModel
+class Forum extends ExtensibleModel
 
-    class Settings extends AppModel
-        @describeModel: ->
-            {
-                type: @,
-                fields: {
-                    comments: {
-                        type: 'object',
-                        required: false,
-                        fields: {
-                            enabled: { type: 'boolean', required: false },
-                            opened: { type: 'boolean', required: false }
-                        }
+    class Settings extends BaseModel
+        @describeModel: {
+            type: @,
+            fields: {
+                comments: {
+                    type: 'object',
+                    required: false,
+                    fields: {
+                        enabled: { type: 'boolean', required: false },
+                        opened: { type: 'boolean', required: false }
                     }
                 }
-            }    
+            }
+        }    
             
     @Settings: Settings            
         
-    class Summary extends AppModel    
-        @describeModel: ->
-            {
-                type: @,
-                fields: {
-                    id: 'string',
-                    network: 'string',
-                    name: 'string',
-                    stub: 'string',
-                    createdBy: @getModels().User.Summary
-                }
-            }    
-            
-    @Summary: Summary
-            
-    @describeModel: ->
-        {
+    class Summary extends BaseModel    
+        @describeModel: {
             type: @,
-            collection: 'forums',
             fields: {
+                id: 'string',
                 network: 'string',
                 name: 'string',
                 stub: 'string',
-                type: { type: 'string', validate: -> ['public', 'protected', 'private'].indexOf(@type) isnt -1 },
-                settings: { type: Settings },
-                icon: 'string',
-                iconThumbnail: 'string',
-                cover: { type: 'string', required: false },
-                createdBy: { type: @getModels().User.Summary },
-                snapshot: 'object',
-                stats: {
-                    type: 'object',
-                    fields: {
-                        posts: 'number',
-                        members: 'number',
-                        lastPost: 'number'
-                    }
-                },
-                permissions: {
-                    type: 'object',
-                    fields: {
-                        moderator: {
-                            type: 'object',
-                            fields: {
-                                write: { type: 'boolean', required: false }
-                            },
-                            required: false
-                        },
-                        member: {
-                            type: 'object',
-                            fields: {
-                                write: { type: 'boolean', required: false },
-                                read: { type: 'boolean', required: false }
-                                comment: { type: 'boolean', required: false }
-                            },
-                            required: false
-                        },
-                        everyone: {
-                            type: 'object',
-                            fields: {
-                                write: { type: 'boolean', required: false },
-                                read: { type: 'boolean', required: false }
-                                comment: { type: 'boolean', required: false }
-                            },
-                            required: false
-                        }
-                    }
+                createdBy: models.User.Summary
+            }
+        }    
+            
+    @Summary: Summary
+            
+            
+    class ExtendedForumField extends ExtendedField
+    
+        @describeModel: @mergeModelDescription { 
+            type: @, 
+            collection: 'forumfields' 
+        }, ExtendedField.describeModel
+        
+            
+    @describeModel: {
+        type: @,
+        collection: 'forums',
+        fields: {
+            network: 'string',
+            name: 'string',
+            stub: 'string',
+            type: { type: 'string', validate: -> ['public', 'protected', 'private'].indexOf(@type) isnt -1 },
+            settings: { type: Settings },
+            icon: 'string',
+            iconThumbnail: 'string',
+            cover: { type: 'string', required: false },
+            createdBy: { type: models.User.Summary },
+            snapshot: 'object',
+            stats: {
+                type: 'object',
+                fields: {
+                    posts: 'number',
+                    members: 'number',
+                    lastPost: 'number'
                 }
-                createdAt: { autoGenerated: true, event: 'created' },
-                updatedAt: { autoGenerated: true, event: 'updated' }
             },
-            logging: {
-                    onInsert: 'NEW_FORUM'
-            },
-            extendedFieldPrefix: 'Forum',
-            trackChanges: true
-        }
+            createdAt: { autoGenerated: true, event: 'created' },
+            updatedAt: { autoGenerated: true, event: 'updated' }
+        },
+        logging: {
+                onInsert: 'NEW_FORUM'
+        },
+        extendedFieldPrefix: 'Forum',
+        extendedFieldType: ExtendedForumField,
+        trackChanges: true
+    }
         
         
         
@@ -111,7 +90,7 @@ class Forum extends ExtensibleAppModel
                 lastPost: 0
             }
             @snapshot ?= { posts: [] }
-            @permissions = {}                            
+        
         super
 
 
@@ -141,97 +120,60 @@ class Forum extends ExtensibleAppModel
                 }
 
 
-    
-    hasPermission: (permissionName, userid, context, db) =>
+
+    join: (user, token, context, db) => 
+        { context, db } = @getContext context, db
         (Q.async =>
-            membership = yield @getModels().Membership.get { forumid: @_id.toString(), userid }, context, db
-            permissions = getPermissions membership.roles
-            permissions[permissionName]
+            if @type is 'public'
+                yield @addRole user, 'member', context, db
+            else
+                throw new Error "Access denied"
         )()
-
-
-    
-    getPermissions: (roles) =>
-        perms = []
-        for role in roles
-            perms.push switch role
-                when 'admin'
-                    {
-                        write: true,
-                        read: true,
-                        comment: true,
-                        moderate: true,
-                        admin: true
-                    }
-                when 'moderator'
-                    {
-                        write: @permissions.moderator?.write ? true,
-                        read: true,
-                        comment: true,
-                        moderate: true,
-                        admin: false
-                    }
-                when 'member'
-                    {
-                        write: @permissions.member?.write ? true,
-                        read: @permissions.member?.read ? true,
-                        comment: @permissions.member?.comment ? true,
-                        moderate: false,
-                        admin: false
-                    }
-                when 'everyone'
-                    {
-                        write: @permissions.everyone?.write ? false,
-                        read: @permissions.everyone?.read ? true,
-                        comment: @permissions.everyone?.comment ? false,
-                        moderate: false,
-                        admin: false
-                    }
-
-        check = (name) ->
-            (p for p in perms when p[name] is true).length > 0
-
-        {
-            write: check 'write',
-            read: check 'read',
-            comment: check 'comment',
-            moderate: check 'moderate',
-            admin: check 'admin'
-        }
-            
-
+        
+        
 
     getPosts: (limit, sort, context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            yield @getModels().Post.find({ 'forum.stub': @stub, 'forum.network': @network }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+            yield models.Post.find({ 'forum.stub': @stub, 'forum.network': @network }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
         )()
         
 
     
-    addMembership: (user, roles, context, db) =>
+    addRole: (user, role, context, db) =>
         { context, db } = @getContext context, db
         
         (Q.async =>
-            membership = yield @getModels().Membership.get { 'forum.id': @_id.toString(), 'user.id': user.id }, context, db
+            membership = yield models.Membership.get { 'forum.id': @_id.toString(), 'user.id': user.id }, context, db
             if not membership
-                membership = new (@getModels().Membership) {
+                membership = new (models.Membership) {
                     forum: @summarize(),
-                    user: user
+                    user: user,
+                    roles: [role]
                 }
-            membership.roles = roles
+            else
+                if membership.roles.indexOf(role) is -1 
+                    membership.roles.push role
             yield membership.save context, db   
-            cursor = yield @getModels().Membership.getCursor { 'forum.id': @_id.toString() }, context, db
-            @stats.members = yield Q.nfcall cursor.count.bind(cursor)
-            yield @save()
         )()
                 
+
+
+    removeRole: (user, role, context, db) =>
+        { context, db } = @getContext context, db
+        
+        (Q.async =>
+            membership = yield models.Membership.get { 'forum.id': @_id.toString(), 'user.id': user.id }, context, db
+            membership.roles = (r for r in membership.roles when r isnt role)
+            yield if membership.roles.length then membership.save() else membership.destroy()
+        )()
                 
-                
+    
+                                
     getMemberships: (roles, context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            yield @getModels().Membership.find { 'forum.id': @_id.toString(), roles: { $in: roles } }, ((cursor) -> cursor.sort({ id: -1 }).limit 200), context, db
+            yield models.Membership.find { 'forum.id': @_id.toString(), roles: { $in: roles } }, ((cursor) -> cursor.sort({ id: -1 }).limit 200), context, db
         )()        
         
                 
@@ -239,7 +181,7 @@ class Forum extends ExtensibleAppModel
     refreshSnapshot: (context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            posts = yield @getModels().Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
+            posts = yield models.Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
             @snapshot = { posts: p.getView("snapshot") for p in posts }
             if posts.length
                 @stats.lastPost = posts[0].publishedAt

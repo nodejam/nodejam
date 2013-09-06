@@ -1,12 +1,11 @@
 mdparser = require('../common/lib/markdownutil').marked
 postModule = require('./post')
 Q = require('../common/q')
+models = require('./')
 
 class Article extends postModule.Post
 
-    @describeModel: -> 
-        models = @getModels()
-        description = {
+    @describeModel: @mergeModelDescription {
             type: @,
             fields: {
                 cover: { type: 'string', required: false },
@@ -14,8 +13,7 @@ class Article extends postModule.Post
                 content: { type: 'string', required: 'false' },
                 format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 },                
             }
-        }
-        @mergeModelDescription description, models.Post.describeModel()
+        }, models.Post.describeModel
         
         
         
