@@ -1,7 +1,7 @@
 databaseModule = require('./database').Database
 utils = require('../utils')
 BaseModel = require('./basemodel').BaseModel
-ValidationError = require('./basemodel').ValidationError
+typeUtil = require('./typeutil')
 Q = require('../q')
 
 class DatabaseModel extends BaseModel
@@ -69,7 +69,7 @@ class DatabaseModel extends BaseModel
     @destroyAll: (params, db) ->
         modelDescription = @getModelDescription()
         (Q.async =>            
-            if modelDescription.validateMultiRecordOperationParams(params)
+            if modelDescription.canDestroyAll?(params)
                 yield db.remove(modelDescription.collection, params)
             else
                 throw new Error "Call to destroyAll must pass safety checks on params."
@@ -122,16 +122,16 @@ class DatabaseModel extends BaseModel
                 for name, field of modelDescription.fields
                     value = obj[name]
                     
-                    fieldDef = @getFullFieldDefinition field
-                    if @isCustomClass fieldDef.type
+                    fieldDef = typeUtil.getTypeDefinition field
+                    if typeUtil.isUserDefinedType fieldDef.type
                         if value
                             result[name] = @constructModelImpl value, @getModelDescription(fieldDef.type), context, db
                     else
                         if value
                             if fieldDef.type is 'array'
                                 arr = []
-                                contentType = @getFullFieldDefinition fieldDef.contents
-                                if @isCustomClass contentType.type
+                                contentType = typeUtil.getTypeDefinition fieldDef.contents
+                                if typeUtil.isUserDefinedType contentType.type
                                     for item in value
                                         arr.push @constructModelImpl item, @getModelDescription(contentType.type), context, db
                                 else
@@ -169,7 +169,7 @@ class DatabaseModel extends BaseModel
 
             if not errors.length
 
-                if @_id and modelDescription.concurrency is 'optimistic'
+                if @_id and (modelDescription.concurrency is 'optimistic' or not modelDescription.concurrency)
                     _item = yield @constructor.getById(@_id, context, db)
                     if _item.__updateTimestamp isnt @__updateTimestamp
                         throw new Error "Update timestamp mismatch. Was #{_item.__updateTimestamp} in saved, #{@__updateTimestamp} in new."
@@ -200,15 +200,17 @@ class DatabaseModel extends BaseModel
                 return result                                    
             else
                 if @_id
-                    msg = "Invalid record with id #{@_id} in #{modelDescription.collection}.\n"
+                    details = "Invalid record with id #{@_id} in #{modelDescription.collection}.\n"
                 else
-                    msg = "Validation failed while creating a new record in #{modelDescription.collection}.\n"
+                    details = "Validation failed while creating a new record in #{modelDescription.collection}.\n"
                 
-                msg += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}\n"
+                details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}\n"
                 for e in errors
-                    msg += e + "\n"
-
-                throw new ValidationError 'Model failed validation', msg
+                    details += e + "\n"
+                
+                error = new Error('Model failed validation')
+                error.details = details                
+                throw error
         )()
 
     
@@ -224,6 +226,49 @@ class DatabaseModel extends BaseModel
 
 
 
+    getExtendedField = (obj, name, context, db) ->
+        { context, db } = obj.getContext context, db
+        desc = obj.constructor.getModelDescription()
+        fieldName = if desc.extendedFieldPrefix then "#{desc.extendedFieldPrefix}.#{name}" else name
+        (Q.async =>
+            yield desc.extendedFieldType.get { type: fieldName, key: obj._id.toString() }, context, db
+        )()        
+        
+
+
+    getField: (name, context, db) =>
+        (Q.async =>
+            (yield getExtendedField @, name, context, db).value
+        )()        
+
+
+
+    saveField: (name, value, context, db) =>
+        { context, db } = @getContext context, db
+
+        desc = @constructor.getModelDescription()
+        fieldName = if desc.extendedFieldPrefix then "#{desc.extendedFieldPrefix}.#{name}" else name
+        
+        (Q.async =>
+            extendedField = yield getExtendedField @, name, context, db
+            extendedField ?= new desc.extendedFieldType {
+                type: fieldName,
+                key: @_id.toString()
+            }
+            extendedField.value = value
+            yield extendedField.save context, db
+        )()        
+
+    
+    
+    deleteField: (name, context, db) =>
+        (Q.async =>
+            extendedField = yield getExtendedField @, name, context, db
+            yield extendedField?.destroy()
+        )()      
+
+
+
     bindContext: (@__context, @__db) =>
 
 
@@ -232,5 +277,21 @@ class DatabaseModel extends BaseModel
         { context: context ? @__context, db: db ? @__db }
 
 
+
+class ExtendedField extends DatabaseModel
+    @describeModel: {
+        type: @,
+        fields: {
+            type: 'string',
+            key: 'string',
+            value: '',
+            createdAt: { autoGenerated: true, event: 'created' },
+            updatedAt: { autoGenerated: true, event: 'updated' }
+        },
+    }
+
+
+
+exports.ExtendedField = ExtendedField
 exports.DatabaseModel = DatabaseModel
 

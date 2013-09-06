@@ -13,6 +13,9 @@ class Network extends DatabaseModel
             domains: { type: 'array', contentType: 'string' },
             templates: 'any',
             defaultTemplates: 'any'
+        },
+        logging: {
+            onInsert: 'NEW_USER'
         }
     }
 
