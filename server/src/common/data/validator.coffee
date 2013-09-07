@@ -27,7 +27,7 @@ class Validator
         errors = []
 
         if not def.useCustomValidationOnly                
-            fieldDef = typeUtil.getTypeDefinition(def)
+            fieldDef = typeUtil.getFullTypeDefinition(def)
 
             if fieldDef.required and not value?
                 errors.push "#{fieldName} is #{JSON.stringify value}"

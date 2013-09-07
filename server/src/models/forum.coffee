@@ -7,7 +7,7 @@ models = require('./')
 class Forum extends DatabaseModel
 
     class Settings extends BaseModel
-        @describeModel: {
+        @describeType: {
             type: @,
             fields: {
                 comments: {
@@ -24,7 +24,7 @@ class Forum extends DatabaseModel
     @Settings: Settings            
         
     class Summary extends BaseModel    
-        @describeModel: {
+        @describeType: {
             type: @,
             fields: {
                 id: 'string',
@@ -40,13 +40,13 @@ class Forum extends DatabaseModel
             
     class ExtendedForumField extends ExtendedField
     
-        @describeModel: @mergeModelDescription { 
+        @describeType: @mergeModelDescription { 
             type: @, 
             collection: 'extendedfields' 
-        }, ExtendedField.describeModel
+        }, ExtendedField.describeType
         
             
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'forums',
         fields: {

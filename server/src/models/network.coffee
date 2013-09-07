@@ -4,7 +4,7 @@ models = require('./')
 
 class Network extends DatabaseModel
 
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'networks',
         fields: {

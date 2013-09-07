@@ -4,7 +4,7 @@ models = require('./')
 
 class Message extends DatabaseModel
     
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'messages',
         fields: {

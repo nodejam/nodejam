@@ -5,7 +5,7 @@ models = require('./')
 
 class Credentials extends DatabaseModel
     
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'credentials',
         fields: {

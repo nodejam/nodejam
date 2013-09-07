@@ -10,7 +10,7 @@ emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((
 class User extends DatabaseModel
 
     class Summary extends BaseModel    
-        @describeModel: {
+        @describeType: {
             type: @,
             fields: {
                 id: 'string',
@@ -22,7 +22,7 @@ class User extends DatabaseModel
     
     @Summary: Summary
     
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'users',
         fields: {

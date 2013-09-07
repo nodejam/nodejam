@@ -3,7 +3,7 @@ models = require('./')
 
 class Comment extends DatabaseModel
 
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'comments',
         fields: {

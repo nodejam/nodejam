@@ -3,7 +3,7 @@ models = require('./')
 
 class Token extends DatabaseModel
 
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'tokens',
         fields: {

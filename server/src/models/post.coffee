@@ -6,7 +6,7 @@ Q = require('../common/q')
 
 class Post extends DatabaseModel
     
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'posts',
         discriminator: (obj) -> if obj.type is 'article' then models.Article,

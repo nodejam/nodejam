@@ -3,7 +3,7 @@ models = require('./')
 
 class UserInfo extends DatabaseModel
 
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'userinfo',
         fields: {

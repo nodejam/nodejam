@@ -2,7 +2,7 @@ isUserDefinedType = (type) ->
     ['string', 'number', 'boolean', 'object', 'array', ''].indexOf(type) is -1   
     
 
-getTypeDefinition = (def) ->
+getFullTypeDefinition = (def) ->
     #Convert short hands to full definitions.
     #eg: 'string' means { type: 'string', required: true }
     if typeof(def) isnt "object"
@@ -27,5 +27,5 @@ getTypeDefinition = (def) ->
     
     
 exports.isUserDefinedType = isUserDefinedType
-exports.getTypeDefinition = getTypeDefinition
+exports.getFullTypeDefinition = getFullTypeDefinition
 

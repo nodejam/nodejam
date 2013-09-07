@@ -2,7 +2,7 @@ DatabaseModel = require('../common/data/databasemodel').DatabaseModel
 
 class DataType extends DatabaseModel
     
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'datatypes',
         fields: {

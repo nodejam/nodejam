@@ -22,8 +22,8 @@ class BaseModel
                 
                 
     
-    @getModelDescription: (model = @) ->
-        if typeof model.describeModel is "function" then model.describeModel() else model.describeModel
+    @getTypeDefinition: (model = @) ->
+        if typeof model.describeType is "function" then model.describeType() else model.describeType
         
     
     
@@ -37,10 +37,15 @@ class BaseModel
         
     
     
-    validate: (modelDescription = @constructor.getModelDescription()) ->
+    validate: (modelDescription = @getTypeDefinition()) ->
         Validator.validate @, modelDescription
             
+
+
+    getTypeDefinition: =>
+        @constructor.getTypeDefinition()
             
+    
     
     toJSON: ->
         result = {}

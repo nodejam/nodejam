@@ -4,7 +4,7 @@ Q = require('../common/q')
 
 class Membership extends DatabaseModel
     
-    @describeModel: {
+    @describeType: {
         type: @,
         collection: 'memberships',
         fields: {

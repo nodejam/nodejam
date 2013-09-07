@@ -5,7 +5,7 @@ models = require('./')
 
 class Article extends postModule.Post
 
-    @describeModel: @mergeModelDescription {
+    @describeType: @mergeModelDescription {
             type: @,
             fields: {
                 cover: { type: 'string', required: false },
@@ -13,7 +13,7 @@ class Article extends postModule.Post
                 content: { type: 'string', required: 'false' },
                 format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 },                
             }
-        }, models.Post.describeModel
+        }, models.Post.describeType
         
         
         
