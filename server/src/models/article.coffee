@@ -6,7 +6,7 @@ models = require('./')
 
 class Article extends postModule.Post
 
-    @describeType: utils.cloneAndExtend {
+    @describeType: @mergeTypeDefinition {
             type: @,
             fields: {
                 cover: { type: 'string', required: false },

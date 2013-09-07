@@ -16,18 +16,12 @@ deepCloneObject = (obj) ->
         temp
     
 
-extend = (target, source) ->
+extend = (target, source, fnCanCopy) ->
     for key, val of source
-        if not target[key]?
+        if (not target.hasOwnProperty(key)) and ((not fnCanCopy) or fnCanCopy(key))
             target[key] = val
     target
     
-
-cloneAndExtend = (target, parent) ->
-    result = clone(parent)
-    extend result, target
-    result
-
 
 uniqueId = (length=16) ->
   id = ""
@@ -57,7 +51,6 @@ dumpError = (err) ->
 exports.clone = clone
 exports.deepCloneObject = deepCloneObject
 exports.extend = extend
-exports.cloneAndExtend = cloneAndExtend
 exports.uniqueId = uniqueId
 exports.fixUrl = fixUrl
 exports.log = log

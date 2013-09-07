@@ -92,6 +92,9 @@ class DatabaseModel extends BaseModel
 
 
     @constructModel: (obj, modelDescription, context, db) ->
+        if modelDescription.discriminator
+            modelDescription = @getTypeDefinition(modelDescription.discriminator obj)
+            
         result = @constructModelImpl(obj, modelDescription, context, db)
 
         if modelDescription.trackChanges
@@ -115,37 +118,34 @@ class DatabaseModel extends BaseModel
         if modelDescription.customConstructor
             makeResult obj, ((o) -> modelDescription.customConstructor o), context, db
         else           
-            if modelDescription.hasOwnProperty('discriminator')
-                @constructModelImpl(obj, @getTypeDefinition(modelDescription.discriminator obj), context, db)
-            else
-                result = {}
-                for name, field of modelDescription.fields
-                    value = obj[name]
-                    
-                    fieldDef = typeUtil.getFullTypeDefinition field
-                    if typeUtil.isUserDefinedType fieldDef.type
-                        if value
-                            result[name] = @constructModelImpl value, @getTypeDefinition(fieldDef.type), context, db
-                    else
-                        if value
-                            if fieldDef.type is 'array'
-                                arr = []
-                                contentType = typeUtil.getFullTypeDefinition fieldDef.contents
-                                if typeUtil.isUserDefinedType contentType.type
-                                    for item in value
-                                        arr.push @constructModelImpl item, @getTypeDefinition(contentType.type), context, db
-                                else
-                                    arr = value
-                                result[name] = arr
+            result = {}
+            for name, field of modelDescription.fields
+                value = obj[name]
+                
+                fieldDef = typeUtil.getFullTypeDefinition field
+                if typeUtil.isUserDefinedType fieldDef.type
+                    if value
+                        result[name] = @constructModel value, @getTypeDefinition(fieldDef.type), context, db
+                else
+                    if value
+                        if fieldDef.type is 'array'
+                            arr = []
+                            contentType = typeUtil.getFullTypeDefinition fieldDef.contents
+                            if typeUtil.isUserDefinedType contentType.type
+                                for item in value
+                                    arr.push @constructModel item, @getTypeDefinition(contentType.type), context, db
                             else
-                                result[name] = value    
-                
-                if obj._id
-                    result._id = obj._id
+                                arr = value
+                            result[name] = arr
+                        else
+                            result[name] = value    
+            
+            if obj._id
+                result._id = obj._id
 
-                makeResult result, ((o) -> new modelDescription.type o), context, db                
+            makeResult result, ((o) -> new modelDescription.type o), context, db                
                 
-        
+    
     
     save: (context, db) =>
         (Q.async =>

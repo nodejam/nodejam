@@ -15,8 +15,9 @@ class Post extends DatabaseModel
             forum: { type: models.Forum.Summary },
             createdBy: { type: models.User.Summary },
             meta: { type: 'array', contentType: 'string' },
-            stub: { type: 'string' },
+            tags: { type: 'array', contentType: 'string' },
             state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },
+            stub: { type: 'string' },
             title: { type: 'string', required: false },
             recommendations: { type: 'array', contentType: models.User.Summary },                                
             publishedAt: { type: 'number', required: false, validate: -> not (@state is 'published' and not @publishedAt) },
@@ -27,7 +28,6 @@ class Post extends DatabaseModel
             onInsert: 'NEW_POST'
         }
     }
-
 
 
     @search: (criteria, settings, context, db) =>
@@ -81,20 +81,24 @@ class Post extends DatabaseModel
         { context, db } = @getContext context, db
         (Q.async =>        
             #Make sure we aren't overwriting another post with the same stub in the same forum.
-            post = yield Post.get({ @stub, 'forum.id': @forum.id }, context, db)    
-            if post and (post._id.toString() isnt @_id?.toString()) #Same post?
-                if @_id
-                    #We prefix the id so that sameness goes away                    
-                    @stub = @_id?.toString() + "-" + @stub
-                else
-                    #No id yet. So, we'll do this once the post gets saved and gets an id.
-                    stub = @stub
-                    @stub = undefined
-            post = yield super(context, db)
-            if stub
-                post.stub = post._id.toString() + "-" + stub
-                post = yield post.save()
-
+            if @stub
+                post = yield Post.get({ @stub, 'forum.id': @forum.id }, context, db)    
+                if post and (post._id.toString() isnt @_id?.toString()) #Same post?
+                    if @_id
+                        #We prefix the id so that sameness goes away                    
+                        @stub = @_id?.toString() + "-" + @stub
+                    else
+                        #No id yet. So, we'll do this once the post gets saved and gets an id.
+                        stub = @stub
+                        @stub = undefined
+                post = yield super(context, db)
+                if stub
+                    post.stub = post._id.toString() + "-" + stub
+                    post = yield post.save()
+            else
+                @stub = @_id.toString()
+                post = yield super(context, db)
+                
             if @state is 'published'
                 forum = yield models.Forum.getById(@forum.id, context, db)
                 forum.refreshSnapshot()

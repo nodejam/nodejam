@@ -24,6 +24,17 @@ class BaseModel
         
     
     
+    @mergeTypeDefinition: (child, parent) ->
+        result = {}
+        utils.extend result, child
+        utils.extend result, parent, (n) -> n isnt 'fields'
+        result.fields ?= {}
+        if parent.fields
+            utils.extend result.fields, parent.fields 
+        result
+        
+
+    
     validate: (modelDescription = @getTypeDefinition()) ->
         Validator.validate @, modelDescription
             

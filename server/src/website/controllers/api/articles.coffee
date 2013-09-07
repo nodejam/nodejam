@@ -22,8 +22,8 @@ class Articles extends Controller
         @parseBody article, req.body
         
         (Q.async =>
-            try
-                article = yield article.save({ user: req.user }, db)
+            try                
+                article = yield forum.addPost article
                 res.send article
                         
                 if req.body.publish is 'true'

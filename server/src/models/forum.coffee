@@ -41,7 +41,7 @@ class Forum extends DatabaseModel
             
     class ExtendedForumField extends ExtendedField
     
-        @describeType: utils.cloneAndExtend { 
+        @describeType: @mergeTypeDefinition { 
             type: @, 
             collection: 'extendedfields' 
         }, ExtendedField.describeType
@@ -131,6 +131,14 @@ class Forum extends DatabaseModel
         )()
         
         
+        
+    addPost: (post, context, db) =>
+        { context, db } = @getContext context, db
+        (Q.async =>
+            yield post.save context, db
+        )()
+        
+
 
     getPosts: (limit, sort, context, db) =>
         { context, db } = @getContext context, db
