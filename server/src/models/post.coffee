@@ -9,7 +9,7 @@ class Post extends DatabaseModel
     @describeType: {
         type: @,
         collection: 'posts',
-        discriminator: (obj) -> if obj.type is 'article' then models.Article,
+        discriminator: (obj) -> if obj.type is 'article' then models.Article else Post
         fields: {
             type: 'string',
             forum: { type: models.Forum.Summary },

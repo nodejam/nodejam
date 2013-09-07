@@ -1,6 +1,7 @@
 BaseModel = require('../common/data/basemodel').BaseModel
 DatabaseModel = require('../common/data/databasemodel').DatabaseModel
 ExtendedField = require('../common/data/databasemodel').ExtendedField
+utils = require('../common/utils')
 Q = require('../common/q')
 models = require('./')
 
@@ -40,12 +41,12 @@ class Forum extends DatabaseModel
             
     class ExtendedForumField extends ExtendedField
     
-        @describeType: @mergeModelDescription { 
+        @describeType: utils.cloneAndExtend { 
             type: @, 
             collection: 'extendedfields' 
         }, ExtendedField.describeType
         
-            
+                
     @describeType: {
         type: @,
         collection: 'forums',
