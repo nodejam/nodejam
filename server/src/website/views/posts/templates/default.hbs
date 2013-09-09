@@ -1,7 +1,7 @@
 <div class="page-wrap">
     <div class="content-area">    
         <div class="item text">
-            {{#each fields}}
+            {{#each sections}}
 
             {{#equals type 'cover'}}
             <img class="cover" src="{{../../post/cover}}" alt="{{../post/coverTitle}}" />            
@@ -23,7 +23,7 @@
 
             {{#equals type 'content'}}
             <div class="content">
-                {{{value}}}
+                {{{contents}}}
             </div>
             {{/equals}}
 

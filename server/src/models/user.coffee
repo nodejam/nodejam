@@ -29,8 +29,6 @@ class User extends DatabaseModel
             username: 'string',
             name: 'string',
             location: 'string',
-            picture: 'string',
-            thumbnail: 'string',
             email: { type: 'string', validate: -> emailRegex.test(@email) },
             accessToken: { type: 'string', required: false },
             lastLogin: 'number',
@@ -53,6 +51,8 @@ class User extends DatabaseModel
             #We can't create a new user with an existing username.
             username = userDetails.username
             user = yield User.get { username }, context, db
+            
+            #We have to download the profile pic.
 
             if not user
                 user = new User { username: userDetails.username }
@@ -131,9 +131,6 @@ class User extends DatabaseModel
     updateFrom: (userDetails) =>
         @name = userDetails.name
         @location = userDetails.location
-        @picture = userDetails.picture
-        @thumbnail = userDetails.thumbnail
-        @tile = userDetails.tile ? '/images/collection-tile.png'
         @email = userDetails.email ? 'unknown@foraproject.org'
         @lastLogin = Date.now()
         @preferences = { canEmail: true }

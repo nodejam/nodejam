@@ -76,7 +76,7 @@ class Auth extends controller.Controller
                                             (e, data, _res) =>
                                                 data = JSON.parse data
                                                 if data.length and data[0]?
-                                                    userDetails = @parseTwitterUserDetails data[0]
+                                                    userDetails = @parseTwitterUserDetails data[0]                                                    
                                                     credentials = { 
                                                         type: 'twitter', 
                                                         value: { id: userDetails.id, username: userDetails.username, accessToken: token.value.token, accessTokenSecret: token.value.token_secret }
@@ -109,9 +109,8 @@ class Auth extends controller.Controller
             username: userDetails.screen_name,
             name: userDetails.name ? userDetails.screen_name,
             location: userDetails.location ? '',
-            email: "twitteruser@poe3.com",
-            picture: userDetails.profile_image_url,
-            thumbnail: userDetails.profile_image_url
+            email: "unknown@example.com",
+            picture: userDetails.profile_image_url.replace '_normal', '_large'
         }                
             
 

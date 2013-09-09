@@ -25,7 +25,7 @@ class Article extends postModule.Post
 
     @templateInfo: {
         default: {
-            fields: [
+            sections: [
                 'cover', 
                 'title', 
                 'subtitle', 

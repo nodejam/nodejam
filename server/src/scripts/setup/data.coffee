@@ -18,7 +18,7 @@ jeswin = {
     name: 'Jeswin', 
     location: 'Bangalore, India',
     credentials_type: 'twitter',
-    credentials_id: '666',
+    credentials_id: '15833712',
     credentials_username: 'jeswin',
     credentials_accessToken: 'invalid_token',
     credentials_accessTokenSecret: 'invalid_token_secret',
@@ -280,7 +280,18 @@ takeAStepBack = {
     _meta: 'featured'
 }
 
-articles = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack]
+flightOfTheIcarus = {
+    title: 'Flight of the Icarus',
+    type: "article",
+    _content: 'flight-of-the-icarus.md',
+    cover: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
+    smallCover: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
+    _forum: 'raw-nerve',
+    _createdBy: 'jeswin',
+    _meta: 'featured'
+}
+
+articles = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus]
 
 exports.users = users
 exports.forums = forums
