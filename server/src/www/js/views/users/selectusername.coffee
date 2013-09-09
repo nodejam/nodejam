@@ -34,4 +34,4 @@ class SelectUsername extends window.Fora.Views.BaseView
             cb if data then "Not available" else true
         
             
-window.Fora.Views.SelectUsername = SelectUsername
+window.Fora.Views.Users.SelectUsername = SelectUsername

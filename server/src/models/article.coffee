@@ -8,20 +8,39 @@ class Article extends postModule.Post
 
     @describeType: @mergeTypeDefinition {
             type: @,
+            name: 'article',
+            description: 'Article',
             fields: {
-                cover: { type: 'string', required: false },
+                title: 'string !required',
+                subtitle: 'string !required',
+                synopsis: 'string !required',
+                cover: 'string !required',
                 smallCover: { type: 'string', required: false, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
-                content: { type: 'string', required: 'false' },
-                format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 },                
+                content: 'string !required',
+                format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 }
             }
         }, models.Post.describeType
 
         
-        
+
+    @templateInfo: {
+        default: {
+            fields: [
+                'cover', 
+                'title', 
+                'subtitle', 
+                'synopsis',
+                'content'
+            ]
+        }
+    }
+
+
+
     constructor: (params) ->
         super
         @type ?= 'article'
-        
+
 
 
     getView: (name = "standard") =>

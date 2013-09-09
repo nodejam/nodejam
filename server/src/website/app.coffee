@@ -46,12 +46,10 @@ findHandler = (name, getHandler) ->
         when 'ui/users' then new uiControllers.Users()
         when 'ui/home' then new uiControllers.Home()
         when 'ui/forums' then new uiControllers.Forums()
-        when 'ui/dev_designs' then new uiControllers.Dev_Designs()
-        when 'api/sessions' then new apiControllers.Sessions()
+        when 'ui/posts' then new uiControllers.Posts()
         when 'api/users' then new apiControllers.Users()
         when 'api/forums' then new apiControllers.Forums()
         when 'api/posts' then new apiControllers.Posts()
-        when 'api/articles' then new apiControllers.Articles()
         when 'api/files/images' then new apiControllers.Images()
         else throw new Error "Cannot find controller #{name}."
 
@@ -86,7 +84,7 @@ app.get '/api/users/:username', findHandler('api/users', (c) -> c.item)
 # FORUMS and POSTS
 app.post '/api/forums', findHandler('api/forums', (c) -> c.create)
 app.post '/api/forums/:forum/members', findHandler('api/forums', (c) -> c.join)
-app.post '/api/forums/:forum', findHandler('api/forums', (c) -> c.createItem)
+app.post '/api/forums/:forum', findHandler('api/posts', (c) -> c.create)
 
 #ADMIN
 app.put "/api/admin/posts/:id", findHandler('api/posts', (c) -> c.admin_update)
@@ -105,8 +103,9 @@ app.get '/users/selectusername', findHandler('ui/users', (c) -> c.selectUsername
 app.post '/users/selectusername', findHandler('ui/users', (c) -> c.selectUsername)
 app.get '/~:username', findHandler('ui/users', (c) -> c.item)
 app.get '/:forum', findHandler('ui/forums', (c) -> c.item)
+app.get '/:forum/new', findHandler('ui/forums', (c) -> c.createForm)
 app.get '/:forum/about', findHandler('ui/forums', (c) -> c.about)
-app.get '/:forum/:stub', findHandler('ui/forums', (c) -> c.post)
+app.get '/:forum/:stub', findHandler('ui/posts', (c) -> c.item)
 
 #Register templates, helpers etc.
 require("./hbshelpers").register()

@@ -4,7 +4,6 @@ db = new database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
 Controller = require('../controller').Controller
-controllers = require './'
 Q = require('../../../common/q')
 mdparser = require('../../../common/lib/markdownutil').marked
 
@@ -46,14 +45,19 @@ class Forums extends Controller
                             post.summary = post.getView("card")
                             post.summary.view = "standard"
 
+                    options = {}
                     if req.user
-                        options = {}
-                        
+                        membership = yield models.Membership.get { 'forum.id': forum._id.toString(), 'user.id': req.user.id }, {}, db
+                        if membership
+                            options.isMember = true
+                            options.primaryPostType =  then forum.postTypes[0]
+                            
                     res.render req.network.getView('forums', 'item'), { 
                         forum,
                         message,
                         posts, 
                         options,
+                        user: req.user,
                         pageName: 'forum-page', 
                         pageType: 'cover-page', 
                         cover: forum.cover ? '/pub/images/cover.jpg'
@@ -61,12 +65,6 @@ class Forums extends Controller
                 catch e
                     next e)()
 
-    
-    
-    post: (req, res, next) =>
-        @attachUser arguments, =>
-            @invokeTypeSpecificController req, res, next, (c) -> c.item
-        
 
 
     about: (req, res, next) =>
@@ -95,24 +93,5 @@ class Forums extends Controller
                 catch e
                     next e)()
                     
-
-
-    invokeTypeSpecificController: (req, res, next, getHandler) =>   
-        (Q.async =>
-            try                
-                forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, {}, db)
-                post = yield models.Post.get({ 'forum.id': forum._id.toString(), stub: (req.params.stub) }, {}, db)
-                user = yield models.User.getById(post.createdBy.id, {}, db)
-                getHandler(@getTypeSpecificController(post.type)) req, res, next, post, user, forum
-            catch e
-                next e)()
-
-
-
-    getTypeSpecificController: (type) =>
-        switch type
-            when 'article'
-                return new controllers.Articles()        
-
 
 exports.Forums = Forums

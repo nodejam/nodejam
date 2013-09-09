@@ -3,7 +3,6 @@ db = new (require '../../../common/data/database').Database(conf.db)
 models = require '../../../models'
 utils = require '../../../common/utils'
 Controller = require('../controller').Controller
-controllers = require './'
 Q = require('../../../common/q')
 
 class Forums extends Controller
@@ -25,12 +24,9 @@ class Forums extends Controller
                         forum.description = req.body.description
                         forum.category = req.body.category
                         forum.icon = req.body.icon
-                        forum.iconThumbnail = req.body.iconThumbnail
-
-                        if req.body.cover             
-                            forum.cover = req.body.cover
-
-                        
+                        forum.iconThumbnail = req.body.iconThumbnail                                                
+                        forum.postTypes = if req.body.postTypes then req.body.postTypes.split(',') else ['Article']
+                        forum.cover = req.body.cover
                         forum.createdBy = req.user
                         forum.createdAt = Date.now()
                         forum.settings = new models.Forum.Settings
@@ -113,42 +109,6 @@ class Forums extends Controller
                     res.send { success: true }
                 catch 
                     next e)()
-        
-        
-
-    createItem: (req, res, next) =>
-        @ensureSession arguments, =>
-            @invokeTypeSpecificController req, res, next, (c) -> c.create
-
-
-
-    editItem: (req, res, next) =>
-        @ensureSession arguments, =>
-            @invokeTypeSpecificController req, res, next, (c) -> c.edit
-
-
-                
-    removeItem: (req, res, next) =>
-        @ensureSession arguments, =>
-            @invokeTypeSpecificController req, res, next, (c) -> c.remove
-            
-                                   
-                                    
-    invokeTypeSpecificController: (req, res, next, getHandler) =>   
-        (Q.async =>
-            try
-                forum = yield models.Forum.get({ stub: req.params.forum, network: req.network.stub }, { user: req.user }, db)
-                getHandler(@getTypeSpecificController(req.body.type)) req, res, next, forum
-            catch e
-                next e)()
-
-
-
-    getTypeSpecificController: (type) =>
-        switch type
-            when 'article'
-                return new controllers.Articles()
-                        
                         
 
                 

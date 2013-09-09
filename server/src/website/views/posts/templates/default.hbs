@@ -1,22 +1,33 @@
 <div class="page-wrap">
     <div class="content-area">    
         <div class="item text">
-            {{#if article.cover}} 
-            <img class="cover" src="{{article.cover}}" alt="{{article.coverTitle}}" />
-            {{/if}}
-            <h1>{{article.title}}</h1>
+            {{#each fields}}
+
+            {{#equals type 'cover'}}
+            <img class="cover" src="{{../../post/cover}}" alt="{{../post/coverTitle}}" />            
+            {{/equals}}
+
+            {{#equals type 'title'}}
+            <h1>{{../../post.title}}</h1>
+
             <div class="small-page-element tiny-page-element">
                 <div class="iconic-desc sub-heading">            
-                    <img src="{{user.assetPath}}/{{user.username}}_t.jpg" alt="{{user.name}}" />
+                    <img src="{{../../user.assetPath}}/{{../../user.username}}_t.jpg" alt="{{../../user.name}}" />
                     <span class="text">
-                        <a href="/~{{user.username}}">{{user.name}}</a><br />
-                        <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
+                        <a href="/~{{../../user.username}}">{{../../user.name}}</a><br />
+                        <span class="light-text">Yesterday in <a href="/{{../../forum.stub}}">{{../../forum.name}}</a></span>
                     </span>                
                 </div>
             </div>
+            {{/equals}}
+
+            {{#equals type 'content'}}
             <div class="content">
-                {{{article.formattedContent}}}
-            </div>          
+                {{{value}}}
+            </div>
+            {{/equals}}
+
+            {{/each}}
         </div>
         <div class="sidebar large-page-element">            
             <div class="header">

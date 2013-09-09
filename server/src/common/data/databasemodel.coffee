@@ -130,7 +130,7 @@ class DatabaseModel extends BaseModel
                     if value
                         if fieldDef.type is 'array'
                             arr = []
-                            contentType = typeUtil.getFullTypeDefinition fieldDef.contents
+                            contentType = typeUtil.getFullTypeDefinition fieldDef.contentType
                             if typeUtil.isUserDefinedType contentType.type
                                 for item in value
                                     arr.push @constructModel item, @getTypeDefinition(contentType.type), context, db

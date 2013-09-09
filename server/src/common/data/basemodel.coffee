@@ -43,7 +43,7 @@ class BaseModel
     getTypeDefinition: =>
         @constructor.getTypeDefinition()
             
-    
+
     
     toJSON: ->
         result = {}

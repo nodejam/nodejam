@@ -1,9 +1,9 @@
 modules = {
     auth: 'Auth',
+    users: 'Users',
     home: 'Home',
     forums: 'Forums',
-    users: 'Users',
-    articles: 'Articles',
+    posts: 'Posts'
 }
 
 for k,v of modules

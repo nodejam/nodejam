@@ -74,43 +74,6 @@ class Articles extends Controller
                 
 
 
-    remove: (req, res, next, forum) =>
-        (Q.async =>
-            try
-                article = yield models.Article.getById(req.params.post, { user: req.user }, db)
-                if article
-                    if article.createdBy.id is req.user.id or @isAdmin(req.user)
-                        article = yield article.destroy()
-                        res.send article
-                    else
-                        res.send 'Access denied.'
-                else
-                    res.send "Invalid article."
-            catch e
-                next e)()    
-                
-        
-    
-    addComment: (req, res, next, forum) =>        
-        contentType = forum.settings?.comments?.contentType ? 'text'
-        if contentType is 'text'
-            (Q.async =>
-                try
-                    article = yield models.Article.getById(req.params.post, { user: req.user }, db)
-                    comment = new models.Comment()
-                    comment.createdBy = req.user
-                    comment.forum = forum.stub
-                    comment.itemid = article._id.toString()
-                    comment.data = req.body.data
-                    comment = yield comment.save({ user: req.user }, db)
-                    res.send comment
-                catch e
-                    next e)()                
-        else
-            next new Error 'Unsupported Comment Type'
-        
-
-
     parseBody: (article, body) =>
         article.format = 'markdown'
         

@@ -55,6 +55,7 @@ class Forum extends DatabaseModel
             name: 'string',
             stub: 'string',
             type: { type: 'string', validate: -> ['public', 'protected', 'private'].indexOf(@type) isnt -1 },
+            postTypes: { type: 'array', contentType: 'string' },
             settings: { type: Settings },
             icon: 'string',
             iconThumbnail: 'string',

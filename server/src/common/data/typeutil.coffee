@@ -5,10 +5,11 @@ isUserDefinedType = (type) ->
 getFullTypeDefinition = (def) ->
     #Convert short hands to full definitions.
     #eg: 'string' means { type: 'string', required: true }
-    if typeof(def) isnt "object"
+    if typeof(def) is 'string'
+        defString = def.split ' '        
         fieldDef = {
-            type: def,
-            required: true
+            type: defString[0],
+            required: defString.indexOf('!required') is -1
         }
     else 
         fieldDef = def
