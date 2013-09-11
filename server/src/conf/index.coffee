@@ -20,9 +20,9 @@ templates =   {
         },
         posts: {
             postcard: '/views/posts/postcard.hbs',
-        },
-        templates: {
-            default: 'posts/templates/default.hbs',        
+        }
+        postTypes: {
+            article: 'postTypes/article.hbs'
         }
     }
 }
@@ -41,8 +41,9 @@ for file in files
         else
             contents.defaultTemplates = templates
             networks.push new models.Network(contents)
-        
-    
+
+
+
 module.exports = {
     app: settings.app,
     db: settings.db,

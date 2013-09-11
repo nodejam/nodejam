@@ -26,9 +26,9 @@ class Network extends DatabaseModel
         @templates.layouts?[name] ? @defaultTemplates.layouts[name]
 
         
-        
-    getView: (controller, view) =>
-        @templates.views?[controller]?[view] ? @defaultTemplates.views[controller][view]
+            
+    getView: (namespace, view) =>
+            @templates.views?[namespace]?[view] ? @defaultTemplates.views[namespace][view]
             
 
 exports.Network = Network

@@ -21,20 +21,6 @@ class Article extends postModule.Post
             }
         }, models.Post.describeType
 
-        
-
-    @templateInfo: {
-        default: {
-            sections: [
-                'cover', 
-                'title', 
-                'subtitle', 
-                'synopsis',
-                'content'
-            ]
-        }
-    }
-
 
 
     constructor: (params) ->
