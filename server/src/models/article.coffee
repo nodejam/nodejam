@@ -11,13 +11,13 @@ class Article extends postModule.Post
             name: 'article',
             description: 'Article',
             fields: {
-                title: 'string !required',
-                subtitle: 'string !required',
-                synopsis: 'string !required',
-                cover: 'string !required',
-                smallCover: { type: 'string', required: false, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
-                content: 'string !required',
-                format: { type: 'string', validate: -> ['markdown'].indexOf(@format) isnt -1 }
+                title: { type: 'string', required: false, maxLength: 200 }
+                subtitle: { type: 'string', required: false, maxLength: 200 },
+                synopsis: { type: 'string', required: false, maxLength: 2000 },
+                cover: { type: 'string', required: false, maxLength: 200 },
+                smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
+                content: { type: 'string', required: false, maxLength: 100000 },
+                format: { type: 'string', $in: ['markdown'] }
             }
         }, models.Post.describeType
 

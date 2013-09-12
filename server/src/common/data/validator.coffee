@@ -45,12 +45,20 @@ class Validator
                             errors.push "#{fieldName} is #{JSON.stringify value}"
                             errors.push "#{fieldName} should be a #{fieldDef._type}."
 
-                    if typeUtil.isUserDefinedType(fieldDef._type) and value.validate
-                        errors = errors.concat value.validate()
-                    else
-                        #We should also check for objects inside object. (ie, do we have fields inside the fieldDef?)
-                        if fieldDef.fields
-                            errors =  errors.concat @validate value, fieldDef
+                        if fieldDef.type is 'string'
+                            if fieldDef.maxLength and fieldDef.maxLength < value.length
+                                errors.push "#{fieldName} should be a longer than #{fieldDef.maxLength}."
+
+                            if fieldDef.$in
+                                if fieldDef.$in.indexOf(value) is -1
+                                    errors.push "#{fieldName} must be one of #{JSON.stringify(fieldDef.$in)}."
+
+                        if typeUtil.isUserDefinedType(fieldDef._type) and value.validate
+                            errors = errors.concat value.validate()
+                        else
+                            #We should also check for objects inside object. (ie, do we have fields inside the fieldDef?)
+                            if fieldDef.fields
+                                errors =  errors.concat @validate value, fieldDef
         
         if value and fieldDef.validate
             @addError errors, fieldName, fieldDef.validate.call obj

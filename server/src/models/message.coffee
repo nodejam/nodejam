@@ -9,7 +9,7 @@ class Message extends DatabaseModel
         collection: 'messages',
         fields: {
             userid: 'string',
-            type: { type: 'string', validate: -> ['message', 'global-notification', 'user-notification'].indexOf(@type) isnt -1 },
+            type: { type: 'string', $in: ['message', 'global-notification', 'user-notification'] },
             to: { useCustomValidationOnly: true, validate: -> if @type is 'user-notification' or @type is 'message' then @to.validate() },
             from: { useCustomValidationOnly: true, validate: -> if @type is 'message' then @from.validate() },
             data: 'object',

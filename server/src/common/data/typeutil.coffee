@@ -24,7 +24,10 @@ getFullTypeDefinition = (def) ->
     fieldDef._type = fieldDef.type ? fieldDef.getType()
     if fieldDef._type is 'array'
         fieldDef._contentType = fieldDef.contentType ? fieldDef.getContentType()
+    
     fieldDef    
+    
+    
     
     
 exports.isUserDefinedType = isUserDefinedType

@@ -54,7 +54,7 @@ class Forum extends DatabaseModel
             network: 'string',
             name: 'string',
             stub: 'string',
-            type: { type: 'string', validate: -> ['public', 'protected', 'private'].indexOf(@type) isnt -1 },
+            type: { type: 'string', $in: ['public', 'protected', 'private'] },
             postTypes: { type: 'array', contentType: 'string' },
             settings: { type: Settings },
             icon: 'string',

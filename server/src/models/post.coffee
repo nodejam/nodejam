@@ -16,7 +16,7 @@ class Post extends DatabaseModel
             createdBy: { type: models.User.Summary },
             meta: { type: 'array', contentType: 'string' },
             tags: { type: 'array', contentType: 'string' },
-            state: { type: 'string', validate: -> ['draft','published'].indexOf(@state) isnt -1 },
+            state: { type: 'string', $in: ['draft','published'] },
             stub: { type: 'string' },
             recommendations: { type: 'array', contentType: models.User.Summary },
             publishedAt: { type: 'number', required: false, validate: -> not (@state is 'published' and not @publishedAt) },
