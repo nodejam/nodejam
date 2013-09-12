@@ -21,8 +21,8 @@ templates =   {
         posts: {
             postcard: '/views/posts/postcard.hbs',
         }
-        postTypes: {
-            article: 'postTypes/article.hbs'
+        posttypes: {
+            article: 'posttypes/article.hbs'
         }
     }
 }

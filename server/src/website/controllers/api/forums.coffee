@@ -25,7 +25,7 @@ class Forums extends Controller
                         forum.category = req.body.category
                         forum.icon = req.body.icon
                         forum.iconThumbnail = req.body.iconThumbnail                                                
-                        forum.postTypes = if req.body.postTypes then req.body.postTypes.split(',') else ['Article']
+                        forum.postTypes = if req.body.postTypes then req.body.postTypes.split(',') else ['article']
                         forum.cover = req.body.cover
                         forum.createdBy = req.user
                         forum.createdAt = Date.now()

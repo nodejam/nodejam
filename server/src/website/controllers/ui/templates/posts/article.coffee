@@ -1,13 +1,15 @@
 mdparser = require('../../../../../common/lib/markdownutil').marked
 
 class Article
-    render: (req, res, next, forum, post, user) =>
-        res.render req.network.getView('postTypes', 'article'), { 
-            post,
-            user,
-            forum,
-            postJson: JSON.stringify(post),
-            content: mdparser(post.content),
+    render: (req, res, next, params) =>
+        res.render req.network.getView('posttypes', 'article'), { 
+            post: params.post,
+            author: params.author,
+            user: params.user,
+            forum: params.forum,
+            editable: params.editable,
+            postJson: JSON.stringify(params.post),
+            content: mdparser(params.post.content),
             pageName: 'post-page', 
             pageType: 'std-page', 
         }
