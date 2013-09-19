@@ -1,7 +1,9 @@
 {
     "app": {
-        "host": "localhost",
-        "port": 9000
+        "websiteHost": "localhost",
+        "websitePort": 10981,
+        "apiHost": "localhost",
+        "apiPort": 10982
     },
     "db": { 
         "name": "fora-dev-db", 

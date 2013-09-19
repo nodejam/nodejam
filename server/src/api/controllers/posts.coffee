@@ -1,10 +1,10 @@
-conf = require '../../../conf'
-db = new (require '../../../common/data/database').Database(conf.db)
-models = require '../../../models'
-utils = require '../../../common/utils'
-Controller = require('../controller').Controller
+conf = require '../../conf'
+db = new (require '../../common/data/database').Database(conf.db)
+models = require '../../models'
+utils = require '../../common/utils'
+Controller = require('./controller').Controller
 controllers = require './'
-Q = require('../../../common/q')
+Q = require('../../common/q')
 
 class Posts extends Controller
 

@@ -112,29 +112,13 @@ class User extends DatabaseModel
 
 
 
-    save: (context, db) =>
-        if not @_id
-            super(context, db)
-                .then (user) =>               
-                    userinfo = new (models.UserInfo) {
-                        userid: user._id.toString(),
-                        username: user.username                        
-                    }  
-                    userinfo.save(context, db)
-                        .then =>
-                            user
-        else
-            super        
-            
-            
-            
     updateFrom: (userDetails) =>
         @name = userDetails.name
         @location = userDetails.location
         @email = userDetails.email ? 'unknown@foraproject.org'
         @lastLogin = Date.now()
-        @preferences = { canEmail: true }
-        @about = userDetails.about
+        @preferences ?= { canEmail: true }
+        @about ?= userDetails.about
 
         #Allow dev scripts to set assetPath for initial set of users, so that it stays the same.
         if userDetails.createdVia is 'internal' and userDetails.assetPath

@@ -1,4 +1,4 @@
-mdparser = require('../../../../../common/lib/markdownutil').marked
+mdparser = require('../../../../common/lib/markdownutil').marked
 
 class Article
     render: (req, res, next, params) =>

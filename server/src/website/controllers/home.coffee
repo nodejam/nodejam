@@ -1,9 +1,9 @@
-controller = require('../controller')
-conf = require '../../../conf'
-db = new (require '../../../common/data/database').Database(conf.db)
-models = require '../../../models'
-utils = require('../../../common/utils')
-Q = require('../../../common/q')
+controller = require('./controller')
+conf = require '../../conf'
+db = new (require '../../common/data/database').Database(conf.db)
+models = require '../../models'
+utils = require('../../common/utils')
+Q = require('../../common/q')
 
 
 class Home extends controller.Controller

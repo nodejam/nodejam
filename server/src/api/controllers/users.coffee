@@ -1,10 +1,10 @@
 https = require 'https'
-conf = require '../../../conf'
-db = new (require '../../../common/data/database').Database(conf.db)
-models = require '../../../models'
-utils = require('../../../common/utils')
-controller = require('../controller')
-Q = require('../../../common/q')
+conf = require '../../conf'
+db = new (require '../../common/data/database').Database(conf.db)
+models = require '../../models'
+utils = require('../../common/utils')
+controller = require('./controller')
+Q = require('../../common/q')
 
 class Users extends controller.Controller
     

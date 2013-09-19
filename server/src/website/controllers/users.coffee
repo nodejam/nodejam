@@ -1,11 +1,11 @@
-conf = require '../../../conf'
-database = (require '../../../common/data/database').Database
+conf = require '../../conf'
+database = (require '../../common/data/database').Database
 db = new database(conf.db)
-models = require '../../../models'
-utils = require '../../../common/utils'
-Controller = require('../controller').Controller
+models = require '../../models'
+utils = require '../../common/utils'
+Controller = require('./controller').Controller
 controllers = require './'
-Q = require('../../../common/q')
+Q = require('../../common/q')
 
 
 class Users extends Controller

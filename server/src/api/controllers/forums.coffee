@@ -1,9 +1,9 @@
-conf = require '../../../conf'
-db = new (require '../../../common/data/database').Database(conf.db)
-models = require '../../../models'
-utils = require '../../../common/utils'
-Controller = require('../controller').Controller
-Q = require('../../../common/q')
+conf = require '../../conf'
+db = new (require '../../common/data/database').Database(conf.db)
+models = require '../../models'
+utils = require '../../common/utils'
+Controller = require('./controller').Controller
+Q = require('../../common/q')
 
 class Forums extends Controller
     

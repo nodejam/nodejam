@@ -1,12 +1,13 @@
 https = require 'https'
-OAuth = require('oauth').OAuth
-Q = require('../../../common/q')
-
-utils = require '../../../common/utils'
-conf = require '../../../conf'
-models = require '../../../models'
-db = new (require '../../../common/data/database').Database(conf.db)
-controller = require '../controller'
+path = require 'path'
+vOAuth = require('oauth').OAuth
+Q = require('../../common/q')
+utils = require '../../common/utils'
+netutils = require '../../common/netutils'
+conf = require '../../conf'
+models = require '../../models'
+db = new (require '../../common/data/database').Database(conf.db)
+controller = require './controller'
 
 OAuth = require('oauth').OAuth
 oa = new OAuth(
@@ -57,44 +58,51 @@ class Auth extends controller.Controller
                             utils.log error
                             res.send "Could not connect to Twitter."
                         else
+                            getDetails = (cb) =>
+                                oa.get "https://api.twitter.com/1.1/users/lookup.json?screen_name=#{results.screen_name}",
+                                    accessToken,
+                                    accessTokenSecret,
+                                    (e, data, _res) =>
+                                        cb e, JSON.parse data               
+                        
                             #See if we already have a user for this twitter user
                             models.Credentials.get({ "twitter.id": results.user_id }, {}, db)
                                 .then (credentials) =>
                                     if credentials
                                         credentials.getUser({}, db)
                                             .then (user) =>
+                                                getDetails (e, data) =>
+                                                    if data.length and data[0]?                                            
+                                                        fileName = path.join user.assetPath, user.username
+                                                        netutils.download @getUserPath(fileName), @parseTwitterUserDetails(data[0]).pictureUrl
                                                 res.cookie "userid", user._id.toString()
                                                 res.cookie "username", user.username
                                                 res.cookie "fullName", user.name
                                                 res.cookie "assetPath", user.assetPath
                                                 res.cookie "token", credentials.token
-                                                res.redirect "/"
+                                                res.redirect "/"                                                
                                     else
-                                        oa.get "https://api.twitter.com/1.1/users/lookup.json?screen_name=#{results.screen_name}",
-                                            accessToken,
-                                            accessTokenSecret,
-                                            (e, data, _res) =>
-                                                data = JSON.parse data
-                                                if data.length and data[0]?
-                                                    userDetails = @parseTwitterUserDetails data[0]                                                    
-                                                    credentials = { 
-                                                        type: 'twitter', 
-                                                        value: { id: userDetails.id, username: userDetails.username, accessToken: token.value.token, accessTokenSecret: token.value.token_secret }
-                                                    }
-                                                    _token = new models.Token {
-                                                        type: 'twitter-tokens',
-                                                        key: utils.uniqueId(24),
-                                                        value: { userDetails, credentials }
-                                                    }                                        
-                                                    _token.save({}, db)
-                                                        .then (_token) =>
-                                                            res.redirect "/users/selectusername?token=#{_token.key}"
+                                        getDetails (e, data) =>
+                                            if data.length and data[0]?
+                                                userDetails = @parseTwitterUserDetails data[0]                                                    
+                                                credentials = { 
+                                                    type: 'twitter', 
+                                                    value: { id: userDetails.id, username: userDetails.username, accessToken: token.value.token, accessTokenSecret: token.value.token_secret }
+                                                }
+                                                _token = new models.Token {
+                                                    type: 'twitter-tokens',
+                                                    key: utils.uniqueId(24),
+                                                    value: { userDetails, credentials }
+                                                }                                        
+                                                _token.save({}, db)
+                                                    .then (_token) =>
+                                                        res.redirect "/users/selectusername?token=#{_token.key}"
 
-                                                    token.destroy {}, db #We don't need this token anymore.
-                                                else
-                                                    utils.log JSON.stringify data
-                                                    res.send "Invalid response."                            
-                                                    token.destroy {}, db #We don't need this token anymore.
+                                                token.destroy {}, db #We don't need this token anymore.
+                                            else
+                                                utils.log JSON.stringify data
+                                                res.send "Invalid response."                            
+                                                token.destroy {}, db #We don't need this token anymore.
 
                                     
                 else
@@ -110,7 +118,7 @@ class Auth extends controller.Controller
             name: userDetails.name ? userDetails.screen_name,
             location: userDetails.location ? '',
             email: "unknown@example.com",
-            picture: userDetails.profile_image_url.replace '_normal', '_large'
+            pictureUrl: userDetails.profile_image_url.replace '_normal', '_large'
         }                
             
 
