@@ -1,9 +1,10 @@
 utils = require '../common/utils'
 BaseModel = require('../common/data/basemodel').BaseModel
 DatabaseModel = require('../common/data/databasemodel').DatabaseModel
-Q = require('../common/q')
+fsutils = require '../common/fsutils'
+Q = require '../common/q'
 hasher = require('../common/lib/hasher').hasher
-models = require('./')
+models = require './'
 
 emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -118,14 +119,15 @@ class User extends DatabaseModel
         @email = userDetails.email ? 'unknown@foraproject.org'
         @lastLogin = Date.now()
         @preferences ?= { canEmail: true }
-        @about ?= userDetails.about
+        if userDetails.about
+            @about = userDetails.about
 
         #Allow dev scripts to set assetPath for initial set of users, so that it stays the same.
         if userDetails.createdVia is 'internal' and userDetails.assetPath
             @assetPath = userDetails.assetPath    
         else
-            createdAt = new Date
-            @assetPath = "/pub/assetpaths/#{createdAt.getFullYear()}-#{createdAt.getMonth()+1}-#{createdAt.getDate()}"        
+            dateDir = fsutils.getDateFormattedDir Date.now()
+            @assetPath = "/pub/assetpaths/#{dateDir}"
 
 
 

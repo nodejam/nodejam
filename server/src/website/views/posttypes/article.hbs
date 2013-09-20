@@ -23,16 +23,16 @@
             </div>
         </div>
         <div class="sidebar large-page-element">            
-            <div class="header">
+            <div class="header iconic-section">
                 <img src="{{author.assetPath}}/{{author.username}}.jpg" alt="{{author.name}}" />
                 <h2>{{author.name}}</h2>
-            </div>
-            <p>
-                {{author.about}}
-            </p>
-            <p>
-                <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>                
-            </p>
+                <p>
+                    {{author.about}}
+                </p>
+                <p>
+                    <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>                
+                </p>                    
+            </div>            
             <p>
                 {{#if editable}}
                 <button class="positive">Edit Post</button>

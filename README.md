@@ -70,6 +70,8 @@ npm install functional-node
 nginx configuration file
 ------------------------
 
+Make sure you change /path/to/fora to wherever you checked out the code.  
+
 ```
 server {
     listen 80;
@@ -77,31 +79,35 @@ server {
     client_max_body_size 20M;
 
     location /pub {
-        alias /home/jeswin/Desktop/repos/fora/server/www-user;
+        alias /path/to/fora/server/www-user;
     }
 
     location /css {
-        alias /home/jeswin/Desktop/repos/fora/server/app/www/css;
+        alias /path/to/fora/server/app/www/css;
     }
 
     location /images {
-        alias /home/jeswin/Desktop/repos/fora/server/app/www/images;
+        alias /path/to/fora/server/app/www/images;
     }
 
     location /js {
-        alias /home/jeswin/Desktop/repos/fora/server/app/www/js;
+        alias /path/to/fora/server/app/www/js;
     }
 
     location /lib {
-        alias /home/jeswin/Desktop/repos/fora/server/app/www/lib;
+        alias /path/to/fora/server/app/www/lib;
     }
 
     location / {
-        proxy_pass http://localhost:9000;
-        proxy_set_header Host $host;
+        proxy_pass http://localhost:10981;
+        proxy_set_header   Host         $host;
     }
-}
-                       
+
+    location /api {
+        proxy_pass http://localhost:10982;
+        proxy_set_header   Host         $host;
+    }
+}                       
 ```      
 
 /etc/hosts
@@ -114,12 +120,17 @@ Configuration
 -------------
 Copy src/conf/settings.conf.sample to src/conf/settings.conf  
 Copy (or rename) src/conf/fora.conf.sample to src/conf/fora.conf  
-Edit these values.
+Edit these files if needed.
 
 
 Setup
 -----
-The setup scripts put some data in the database. So that we can play with the app.  
+node --harmony app/scripts/init/index.js
+
+
+Setup a Test Database
+---------------------
+The setup scripts put some data in the database, so that we can play with the app.  
 It also helps in testing if the app is working fine. For the scripts to work, the web app must be running with the above config.  
 
 cd to fora/server  

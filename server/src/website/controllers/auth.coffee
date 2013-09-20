@@ -1,9 +1,11 @@
 https = require 'https'
 path = require 'path'
+gm = require 'gm'
 vOAuth = require('oauth').OAuth
 Q = require('../../common/q')
 utils = require '../../common/utils'
 netutils = require '../../common/netutils'
+fsutils = require '../../common/fsutils'
 conf = require '../../conf'
 models = require '../../models'
 db = new (require '../../common/data/database').Database(conf.db)
@@ -71,10 +73,19 @@ class Auth extends controller.Controller
                                     if credentials
                                         credentials.getUser({}, db)
                                             .then (user) =>
+                                            
+                                                #Save profile pic
                                                 getDetails (e, data) =>
                                                     if data.length and data[0]?                                            
                                                         fileName = path.join user.assetPath, user.username
-                                                        netutils.download @getUserPath(fileName), @parseTwitterUserDetails(data[0]).pictureUrl
+                                                        netutils.downloadImage(@parseTwitterUserDetails(data[0]).pictureUrl)
+                                                            .then (filePath) =>
+                                                                picPath = fsutils.getAssetFilePath user.assetPath, "#{user.username}.jpg"
+                                                                console.log "Resizing to " + picPath
+                                                                gm(filePath).resize(128, 128).write picPath, (err) ->
+                                                                    if err
+                                                                        utils.log(err)                                                                        
+                                                        
                                                 res.cookie "userid", user._id.toString()
                                                 res.cookie "username", user.username
                                                 res.cookie "fullName", user.name
@@ -118,8 +129,8 @@ class Auth extends controller.Controller
             name: userDetails.name ? userDetails.screen_name,
             location: userDetails.location ? '',
             email: "unknown@example.com",
-            pictureUrl: userDetails.profile_image_url.replace '_normal', '_large'
-        }                
+            pictureUrl: userDetails.profile_image_url.replace '_normal', ''
+        }
             
 
 exports.Auth = Auth

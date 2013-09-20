@@ -1,7 +1,20 @@
 conf = require '../../conf'
 db = new (require '../../common/data/database').Database(conf.db)
 utils = require '../../common/utils'
+fs = require 'fs'
+path = require 'path'
+fsutils = require '../../common/fsutils'
 
+#create assetPaths for a whole year.
+today = Date.now()
+for i in [0..365] by 1
+    do (i) ->
+        newPath = path.join fsutils.assetBasePath, fsutils.getDateFormattedDir(today + (i * 86400000))
+        fs.exists newPath, (exists) ->
+            if not exists
+                fs.mkdir newPath, ->
+                console.log "Created #{newPath}"
+    
 #Ensure indexes.
 db.getDb (err, db) ->
     db.collection 'sessions', (_, coll) ->
@@ -31,4 +44,4 @@ db.getDb (err, db) ->
     db.collection 'tokens', (_, coll) ->
         coll.ensureIndex { key: 1 }, ->
 
-setTimeout (-> process.exit()), 3000
+setTimeout (-> process.exit()), 5000
