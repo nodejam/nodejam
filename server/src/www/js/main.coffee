@@ -4,8 +4,9 @@ window.Fora = {
         Forums: {},
         Users: {},
         Posts: {},
-        Articles: {}
-    }
+        PostTypes: {},
+    },
+    Editors: {}
 }
 
 class App

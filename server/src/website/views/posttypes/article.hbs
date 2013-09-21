@@ -1,12 +1,14 @@
 <script type="text/javascript">
-    new Fora.Views.PostTypes.Article({{postJson}});
+    new Fora.Views.PostTypes.Article({{{postJson}}});
 </script>
 <div class="page-wrap">
     <div class="content-area">    
         <div class="item text">
-            <img class="cover" src="{{post.cover}}" alt="{{post.coverTitle}}" />            
-
-            <h1>{{post.title}}</h1>
+            {{#if post.cover}}
+            <img class="cover" src="{{post.cover}}" alt="{{post.coverTitle}}" {{#if editable}} data-editor="type:image"{{/if}} />            
+            {{/if}}
+            
+            <h1{{#if editable}} data-editor="type:text"{{/if}}>{{post.title}}</h1>
 
             <div class="small-page-element tiny-page-element">
                 <div class="iconic-desc sub-heading">            
@@ -14,15 +16,15 @@
                     <span class="text">
                         <a href="/~{{author.username}}">{{author.name}}</a><br />
                         <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
-                    </span>                
+                    </span>
                 </div>
             </div>
 
-            <div class="content">
+            <div class="content"{{#if editable}} data-editor="type:text"{{/if}}>
                 {{{content}}}
             </div>
         </div>
-        <div class="sidebar large-page-element">            
+        <div class="sidebar large-page-element">
             <div class="header iconic-section">
                 <img src="{{author.assetPath}}/{{author.username}}.jpg" alt="{{author.name}}" />
                 <h2>{{author.name}}</h2>
@@ -35,8 +37,8 @@
             </div>            
             <p>
                 {{#if editable}}
-                <button class="positive">Edit Post</button>
-                <button><i class="icon-cog"></i>Settings</button>
+                <button class="edit positive">Edit Post</button>
+                <button><i class="settings icon-cog"></i>Settings</button>
                 {{/if}}
             </p>
         </div>          

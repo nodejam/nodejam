@@ -1,0 +1,1 @@
+﻿CKEDITOR.plugins.setLang("image2","en",{alt:"Alternative Text",captioned:"Captioned image",lockRatio:"Lock Ratio",menu:"Image Properties",resetSize:"Reset Size",resizer:"Click and drag to resize",title:"Image Properties",urlMissing:"Image source URL is missing."});

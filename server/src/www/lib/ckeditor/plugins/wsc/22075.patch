@@ -1,0 +1,84 @@
+From c35ac0b352a2f9991abd9bf647f22ca05945c923 Mon Sep 17 00:00:00 2001
+From: eugene <egnedko@gmail.com>
+Date: Wed, 4 Sep 2013 15:11:29 +0300
+Subject: [PATCH] xss
+
+---
+ dialogs/tmp.html | 23 +++++------------------
+ dialogs/wsc.js   |  4 +---
+ 2 files changed, 6 insertions(+), 21 deletions(-)
+
+diff --git a/dialogs/tmp.html b/dialogs/tmp.html
+index 2f3e976..e610fd1 100644
+--- a/dialogs/tmp.html
++++ b/dialogs/tmp.html
+@@ -72,18 +72,11 @@
+ 			var manageMessageTmp = new ManagerPostMessage;
+ 
+ 			
+-				var appString = 'lf/23/unpacked_js/spell.js';
+-				var toolsString = 'lf/23/js/tools.js';
+-
+-				var parseUrl = function(){
+-					var serverUrl = window.location.hash.replace( /^#server=/, '' );
+-					return serverUrl;
+-				};
+-
+-				var url_version = function() {
+-					var frameNumber = window.location.hash.match( /\?.*$/ )[0].replace( /^\?/, '' );
+-					return frameNumber;
+-				};
++				var appString = (function(){
++					var spell = parent.CKEDITOR.config.wsc.DefaultParams.scriptPath;
++					var serverUrl = parent.CKEDITOR.config.wsc.DefaultParams.serviceHost;
++					return serverUrl + spell;
++				})();
+ 
+ 				function loadScript(src, callback) {
+ 				    var scriptTag = document.createElement("script");
+@@ -112,11 +105,6 @@
+ 
+ 
+ 				window.onload = function(){
+-					
+-					toolsString = parseUrl() + toolsString;
+-					
+-					appString = parseUrl() + appString;
+-
+ 					 loadScript(appString, function(){
+ 						manageMessageTmp.send({
+ 							'id': 'iframeOnload',
+@@ -124,7 +112,6 @@
+ 						});
+ 					});
+ 				}
+-
+ 			})(this);
+ 		</script>
+ 	</body>
+diff --git a/dialogs/wsc.js b/dialogs/wsc.js
+index 34311e1..73584aa 100644
+--- a/dialogs/wsc.js
++++ b/dialogs/wsc.js
+@@ -210,7 +210,7 @@
+ 	var nameNode, selectNode, frameId;
+ 
+ 	NS.framesetHtml = function(tab) {
+-		var str = '<iframe src="' + NS.templatePath + NS.serverLocation +'" id=' + NS.iframeNumber + '_' + tab + ' frameborder="0" allowtransparency="1" style="width:100%;border: 1px solid #AEB3B9;overflow: auto;background:#fff; border-radius: 3px;"></iframe>';
++		var str = '<iframe src="' + NS.templatePath + '" id=' + NS.iframeNumber + '_' + tab + ' frameborder="0" allowtransparency="1" style="width:100%;border: 1px solid #AEB3B9;overflow: auto;background:#fff; border-radius: 3px;"></iframe>';
+ 		return str;
+ 	};
+ 
+@@ -1012,9 +1012,7 @@ CKEDITOR.dialog.add('checkspell', function(editor) {
+ 
+ 				NS.pluginPath = CKEDITOR.getUrl(editor.plugins.wsc.path);
+ 				NS.iframeNumber = NS.TextAreaNumber;
+-				NS.serverLocation = '#server=' + NS.serverLocationHash;
+ 				NS.templatePath = NS.pluginPath + 'dialogs/tmp.html';
+-				
+ 				NS.LangComparer.setDefaulLangCode( NS.defaultLanguage );
+ 				NS.currentLang = editor.config.wsc_lang || NS.LangComparer.getSPLangCode( editor.langCode );
+ 				NS.selectingLang = NS.currentLang;
+-- 
+1.8.3.msysgit.0
+
