@@ -1,0 +1,49 @@
+{
+  "name": "fora-project",
+  "preferGlobal": true,
+  "version": "0.1.0",
+  "author": "Jeswin Kumar<jeswinpk@agilehead.com>",
+  "description": "Simple forums.",
+  "contributors": [ 
+    {
+      "name": "Jeswin Kumar",
+      "email": "jeswinpk@agilehead.com"
+    } 
+  ],
+  "scripts": {
+    "start": "node ./bin/http-server",
+    "test": "vows --spec --isolate",
+    "predeploy": "echo This will be run before deploying the app",
+    "postdeploy": "echo This will be run after deploying the app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeswin/fora.git"
+  },
+  "keywords": [
+    "forums"
+  ],
+  "dependencies" : {
+    "express": "*",  
+    "mongodb": "*",
+    "validator": "*",
+    "sanitizer": "*",  
+    "hbs": "*",
+    "fs-extra": "*",
+    "gm": "*",
+    "mongo-express": "*",
+    "node-minify": "*",
+    "oauth": "*",
+    "forever": "*",  
+    "marked": "*",
+    "less": "*",
+    "optimist": "*",
+    "forever": "*"
+  },
+  "analyze": false,
+  "license": "GPL3",
+  "engines": {
+    "node": ">=0.11.5"
+  }
+}
+

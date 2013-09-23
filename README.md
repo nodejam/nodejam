@@ -1,131 +1,116 @@
 fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
-IMPORTANT
----------
-We have decided to use es6 generators available via node --harmony
-- The yield keyword *significantly* improves readability and maintainability
-  So much so that the risk is worth taking.
-- You will have to get node 0.11+ for this work
-- This requires support in coffee-script for the yield keyword  
-  Support has not landed yet. So pull our modified CS compiler from https://github.com/jeswin/coffee-script  
 
-Steps to build CS
------------------
-You will need coffee-script installed to compile the latest version so
-```
-sudo npm install -g coffee-script  
-```
-then
+Installation for Ubuntu 13.04
+=============================
+If you are using Ubuntu, you just need to run the following scripts (in order):
+- ./install-dependencies.sh
+- ./configure.sh --host <domain_name>
+- ./setup.sh
 
-```
-git clone https://github.com/jeswin/coffee-script  
-sudo npm install -g mkdirp  
-npm install jison  
-cake build:parser  
-cake build  
-sudo cake install  
-```
+For advanced usage and other operating systems (BSD/*nix), install these manually.
 
-Install instructions (Ubuntu 13.04)
-===================================
-Note: This should also work on earlier versions of Ubuntu.
 
-Build node from source, since the bundled node is often outdated.
-Download source tarball from nodejs.org
+Step 1: Install pre-requisites
+------------------------------
+Run ./install-dependencies.sh -all OR install these manually.
+- nodejs, v0.11.5 or greater
+- mongodb
+- nginx
+- modified version of coffeescript (to support the yield keyword), from https://github.com/jeswin/coffee-script
+
+WARNING: The install script upgrades node to a very new version.
 
 ```
-sudo apt-get install build-essential  
-sudo apt-get build-dep nodejs  
-cd to/node/source-code/directory/
-configure
-make
-sudo make install
+./install-dependencies.sh --node --coffee --host <host_name>
+    --node              Compile and install node (optional)
+    --coffee            Compile and install coffee-script, with support for the yield keyword (optional)
+    --nginx             Install ngnix
+    --help              Print the help screen    
+Examples:
+    ./install-dependencies.sh --all
+    ./install-dependencies.sh --node --coffee
 ```
 
-Install everything else    
-```
-sudo apt-get install nginx  
-sudo apt-get install git  
-sudo apt-get install mongodb  
-sudo apt-get install graphicsmagick  
-sudo npm install -g coffee-script  
-npm install express  
-npm install mongodb  
-npm install validator  
-npm install sanitizer  
-npm install hbs  
-npm install fs-extra  
-npm install gm  
-npm install mongo-express  
-npm install node-minify  
-npm install oauth  
-npm install forever  
-npm install marked  
-npm install less  
-npm install optimist
-npm install functional-node
-```
 
-nginx configuration file
-------------------------
-
-Make sure you change /path/to/fora to wherever you checked out the code.  
+Step 2: Configuration
+---------------------
+Run ./configure OR do this manually.
+- Edit etc/hosts and add your desired hostname (eg: devsite.foraproject.org)
+- Edit src/conf/index.coffee
+- Copy src/conf/settings.config.sample to settings.config and edit it.
+- Copy src/conf/fora.config.sample to fora.config and edit it.
+- If you are planning to use nginx, edit fora.ngnix.conf and copy it to /etc/nginx/sites-available
 
 ```
-server {
-    listen 80;
-    server_name local.foraproject.org;
-    client_max_body_size 20M;
+./configure.sh --host <host_name>
+    --all               Same as --node --coffee
+    --node              Compile and install node (optional)
+    --coffee            Compile and install coffee-script, with support for the yield keyword (optional)
+    --nginx             Install ngnix
+    --help              Print the help screen    
+Examples:
+    ./install-dependencies.sh --all
+    ./install-dependencies.sh --node --coffee
+```
 
-    location /pub {
-        alias /path/to/fora/server/www-user;
-    }
-
-    location /css {
-        alias /path/to/fora/server/app/www/css;
-    }
-
-    location /images {
-        alias /path/to/fora/server/app/www/images;
-    }
-
-    location /js {
-        alias /path/to/fora/server/app/www/js;
-    }
-
-    location /lib {
-        alias /path/to/fora/server/app/www/lib;
-    }
-
-    location / {
-        proxy_pass http://localhost:10981;
-        proxy_set_header   Host         $host;
-    }
-
-    location /api {
-        proxy_pass http://localhost:10982;
-        proxy_set_header   Host         $host;
-    }
-}                       
-```      
-
-/etc/hosts
-----------
-For development set local.foraproject.org to localhost  
-You could use any other, but that's the path expected by the setup script.  
+Environment Variables (export in .bashrc)
+-----------------------------------------
+```
+export NODE_ENV=development #Use 'production' otherwise.
+export NODE_PATH=\"/usr/local/lib/node_modules\" #Because the path the node modules was changed, make this change in .bashrc  
+```
 
 
-Configuration
+
+Step 3: Setup
 -------------
-Copy src/conf/settings.conf.sample to src/conf/settings.conf  
-Copy (or rename) src/conf/fora.conf.sample to src/conf/fora.conf  
-Edit these files if needed.
+```
+./setup.sh --node --coffee --host <host_name> --server <server> --init --recreate_dev_db <db_name>
+
+    --node              Compile and install node
+    --coffee            Compile and install coffee-script, with support for the yield keyword
+    --host <host_name>  Host name. Will be added to etc/hosts. eg: local.foraproject.org
+    --server <server>   nginx OR builtin
+    --init              Initializes the app. Should be used the first time
+    --recreate_dev_db    Creates a development database
+    
+Examples:
+1) You could use this the first time
+    ./setup.sh options --node --coffee --host dev.foraproject.org --server nginx --init --recreate_dev_db fora_dev_db
+```
 
 
-Setup
------
+Running Fora
+------------
+To debug,
+```
+./run.sh --debug
+```
+
+For production
+
+```
+./run.sh
+```
+
+
+
+
+
+
+After the server is running
+---------------------------
+Run this once.
 node --harmony app/scripts/init/index.js
+
+
+
+
+
+
+
 
 
 Setup a Test Database
@@ -141,25 +126,4 @@ node --harmony app/scripts/setup/setup.js --create
 node --harmony app/scripts/setup/setup.js --delete  
 #recreate the database  
 node --harmony app/scripts/setup/setup.js --recreate  
-```
-
-Mongodb Security
-----------------
-Edit /etc/mongodb.conf  
-```
-bind_ip = 127.0.0.1  
-port = MONGODB_PORT  
-```
-
-ENVIRONMENT VARIABLES (export in .bashrc)
------------------------------------------
-```
-export NODE_ENV=development #Use 'production' otherwise.
-export NODE_PATH=\"/usr/local/lib/node_modules\" #Because the path the node modules was changed, make this change in .bashrc  
-```
-
-Instead of setting NODE_PATH, you could also do:
-```
-rm /usr/local/lib/node  
-ln -s /usr/local/lib/node_modules /usr/local/lib/node  
 ```
