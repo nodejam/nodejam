@@ -102,28 +102,39 @@ done
 install_node() {
     sudo apt-get install build-essential            
     sudo apt-get build-dep nodejs
-    rmdir -rf temp/dependencies-node
-    git clone https://github.com/joyent/node.git temp/dependencies-node
-    cd temp/dependencies-node
+    temp=`mktemp -d`
+    git clone https://github.com/joyent/node.git $temp
+    cd $temp
     ./configure
     make
     sudo make install
-    rmdir -rf temp/dependencies-node
+    rm -rf $temp
 }
 
-install_coffee() {
-    rmdir -rf temp/dependencies-coffee
-    git clone https://github.com/jeswin/coffee-script.git temp/dependencies-coffee
-    cd temp/dependencies-coffee
+install_coffee() {    
+    temp_cs=`mktemp -d`
+    
+    cd $temp_cs
+    echo "Copying Coffee-Script dependencies into $temp_cs"
+    npm install coffee-script
+    export PATH=$PATH:`pwd`/node_modules/coffee-script/bin
+    temp_new_cs=`mktemp -d`
+    git clone https://github.com/jeswin/coffee-script.git $temp_new_cs
+    cd $temp_new_cs
     npm install mkdirp  
     npm install jison
+    echo "Building Coffee-Script"
     cake build:parser  
     cake build 
-    sudo cake install
-    rmdir -rf temp/dependencies-coffee
+    echo "Installing Coffee-Script"
+    sudo npm install -g mkdirp  
+    sudo $temp_cs/node_modules/coffee-script/bin/cake install
+    
+    rm -rf $temp_cs
+    rm -rf $temp_new_cs
 }
 
-#Install node if current version is less than 0.11.5
+#Node version must not be less than 0.11.5
 if $node ; then
     if command -v node >/dev/null; then
         node_version=`node -v | grep -o "[0-9].*"`
@@ -139,12 +150,11 @@ if $node ; then
         echo "Node is not installed. Will install."
         install_node
     fi
-
-    #git clone https://github.com/joyent/node.git temp/node
 fi
 
+#coffee-script compiler must support yield
 if $coffee ; then
-    if command -v node >/dev/null; then
+    if command -v coffee >/dev/null; then
         coffee --nodejs --harmony -e "a = (-> yield 1)"
         if [ "$?" -eq 0 ] ; then
             echo "Coffee-Script is installed and supports yield. Update is not needed."
@@ -160,17 +170,25 @@ fi
 
 if $nginx ; then
     if command -v node >/dev/null; then
-        echo Nginx is already installed.
+        echo "Nginx is already installed."
     else
-        echo Nginx is not installed. Will install.
+        echo "Nginx is not installed. Will install."
+        sudo apt-get install nginx
     fi
 fi
 
 if $mongodb ; then
     if command -v mongod >/dev/null; then
-        echo Mongodb is already installed.
+        echo "Mongodb is already installed."
     else
-        echo Mongodb is not installed. Will install.
+        echo "Mongodb is not installed. Will install."
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+        echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+        sudo apt-get update
+        sudo apt-get install mongodb-10gen
+        sudo mkdir -p /data/db
+        sudo chmod 0755 /data/db
+        sudo chown mongod:mongod /data/db
     fi
 fi
 
