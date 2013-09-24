@@ -102,12 +102,25 @@ done
 install_node() {
     sudo apt-get install build-essential            
     sudo apt-get build-dep nodejs
-    rmdir -rf temp/node
-    git clone https://github.com/joyent/node.git temp/node
-    cd temp/node
+    rmdir -rf temp/dependencies-node
+    git clone https://github.com/joyent/node.git temp/dependencies-node
+    cd temp/dependencies-node
     ./configure
     make
     sudo make install
+    rmdir -rf temp/dependencies-node
+}
+
+install_coffee() {
+    rmdir -rf temp/dependencies-coffee
+    git clone https://github.com/jeswin/coffee-script.git temp/dependencies-coffee
+    cd temp/dependencies-coffee
+    npm install mkdirp  
+    npm install jison
+    cake build:parser  
+    cake build 
+    sudo cake install
+    rmdir -rf temp/dependencies-coffee
 }
 
 #Install node if current version is less than 0.11.5
@@ -137,9 +150,11 @@ if $coffee ; then
             echo "Coffee-Script is installed and supports yield. Update is not needed."
         else
             echo "Coffee-Script is installed but does not support yield. Will update compiler." 
+            install_coffee
         fi
     else
         echo "Coffee-Script is not installed. Will install."
+        install_coffee
     fi
 fi
 
