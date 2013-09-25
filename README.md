@@ -36,22 +36,21 @@ Otherwise, do these manually:
 - setup nginx configuration, see fora.nginx.config for a sample
 - install graphicsmagick (apt-get)
 - install these modules with npm:
-    sudo npm install -g less    
-    
-    cd server
-    npm install express
-    npm install mongodb
-    npm install validator
-    npm install sanitizer
-    npm install hbs
-    npm install fs-extra
-    npm install gm
-    npm install node-minify
-    npm install oauth
-    npm install forever
-    npm install marked
-    npm install optimist
-    npm install forever
+    npm install -g less     
+    cd server  
+    npm install express  
+    npm install mongodb  
+    npm install validator  
+    npm install sanitizer  
+    npm install hbs  
+    npm install fs-extra  
+    npm install gm  
+    npm install node-minify  
+    npm install oauth  
+    npm install forever  
+    npm install marked  
+    npm install optimist  
+    npm install forever  
 
 
 Step 2: Configuration
@@ -76,5 +75,5 @@ cd server
 ```
 
 Go to http://hostname in browser.  
-Note: If you used --all, hostname will be local.foraproject.org
+Note: If you used ./install-dependencies.sh --all, hostname will be local.foraproject.org
 
