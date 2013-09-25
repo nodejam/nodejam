@@ -12,9 +12,11 @@ do
     case $1 in
         --debug)
             debug=true 
+            shift
             ;;
         --dont_delete)
             dont_delete=true
+            shift
             ;;
         -*)
             echo "WARN: Unknown option (ignored): $1" >&2
