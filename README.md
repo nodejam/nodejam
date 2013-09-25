@@ -7,7 +7,7 @@ Installation
 
 Step 1: Install pre-requisites
 ------------------------------
-Run ./install-dependencies.sh
+Run ./install-dependencies.sh  
 WARNING: The install script upgrades node to a very new version.
 
 ```
@@ -35,7 +35,7 @@ Otherwise, do these manually:
 - install mongodb (apt-get)
 - setup nginx configuration, see fora.nginx.config for a sample
 - install graphicsmagick (apt-get)
-- install these modules with npm:
+- install these modules with npm:  
     npm install -g less     
     cd server  
     npm install express  
@@ -55,8 +55,8 @@ Otherwise, do these manually:
 
 Step 2: Configuration
 ---------------------
-- Copy src/conf/settings.config.sample to settings.config and edit it.
-- Copy src/conf/fora.config.sample to fora.config and edit it.
+- Edit src/conf/settings.config.sample and rename to src/conf/settings.config
+- Edit src/conf/fora.config.sample and rename to src/conf/fora.config
 - In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
 
 

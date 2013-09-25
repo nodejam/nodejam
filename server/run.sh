@@ -3,13 +3,40 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo switched to $DIR
 cd $DIR
 
-./compile.sh $1
+help() {
+echo "usage: ./run [--debug]"
+}
+
+debug=false
+
+while :
+do
+    case $1 in
+        -debug)
+            debug=true 
+            ;;
+        -*)
+            echo "WARN: Unknown option (ignored): $1" >&2
+            shift
+            ;;
+        *)  # no more options. Stop while loop        
+            break
+            ;;
+    esac
+done
+
+if [ $debug ] ; then
+    ./compile.sh --debug
+else
+    ./compile.sh    
+fi
+
+
+#export PATH=`pwd`/node_modules/.bin:"$PATH"
 echo Fora application starting...
-
-export PATH=`pwd`/node_modules/.bin:"$PATH"
-
 cd app
-if [ "$1" == "--trace" ]; then
+
+if [ $debug ] ; then
     echo Killing node if it is running..
     killall node
     cd website
@@ -26,4 +53,5 @@ else
     forever start -c "node --harmony" app.js
     cd ..
 fi
+
 cd ..

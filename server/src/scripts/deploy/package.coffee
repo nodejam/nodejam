@@ -5,7 +5,7 @@ if process.argv.length > 2
     opt = process.argv[2]
     utils.log "Options: #{process.argv[2]}"
 
-if opt isnt '--debug' and opt isnt '--trace'
+if opt isnt '--debug'
 
     utils.log "Minifying JS and CSS..."
     

@@ -6,19 +6,25 @@
 help() {
 echo "usage: ./install-dependencies.sh options
 options:
-  --all               Same as --node --coffee --nginx --nginx_conf --host local.foraproject.org --mongodb --gm --node_modules
-  --node              Compile and install node
+  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --node-modules
+  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --node-modules
+
+  --node              Install a pre-compiler version of node
+  --node-latest       Compile and install the latest node
   --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install nginx
-  --nginx_conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
+  --nginx-conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
   --host hostname     Adds an entry into /etc/hosts. eg: --host test.myforaproj.com
-  --mongodb           Install MongoDb
+  --mongodb           Install a pre-compiler version of MongoDb
+  --mongodb-latest    Compile and install the latest MongoDb  
   --gm                Install Graphics Magick
-  --node_modules      Install Node Modules
+  --node-modules      Install Node Modules
+
   --help              Print the help screen
+
 Examples:
   ./install-dependencies.sh --all
-  ./install-dependencies.sh --node --coffee --gm --node_modules"
+  ./install-dependencies.sh --node --coffee --gm --node-modules"
 }
 
 if [ $# -eq 0 ]
@@ -60,14 +66,23 @@ vercomp () {
 
 base_dir=$PWD
 node=false
+node_latest=false
 coffee=false
 nginx=false
 nginx_conf=false
 hostname="local.foraproject.org"            
 mongodb=false
+mongodb_latest=false
 gm=false
 node_modules=false
 host=false
+
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+    x86_64=true
+else
+    x86_64=false
+fi
 
 while :
 do
@@ -87,6 +102,17 @@ do
             node_modules=true
             shift
             ;;
+        --latest)
+            node_latest=true
+            coffee=true
+            nginx=true
+            nginx_conf=true
+            host=true
+            mongodb_latest=true
+            gm=true
+            node_modules=true
+            shift
+            ;;
         --node)
             node=true
             shift
@@ -99,7 +125,7 @@ do
             nginx=true
             shift
             ;;
-        --nginx_conf)
+        --nginx-conf)
             nginx_conf=true
             shift
             ;;
@@ -116,7 +142,7 @@ do
             gm=true
             shift
             ;;
-        --node_modules)
+        --node-modules)
             node_modules=true
             shift
             ;;
@@ -130,6 +156,7 @@ do
     esac
 done
 
+
 install_node() {
     sudo apt-get install build-essential            
     sudo apt-get build-dep nodejs
@@ -141,6 +168,7 @@ install_node() {
     sudo make install
     rm -rf $temp
 }
+
 
 install_coffee() {    
     temp_cs=`mktemp -d`
@@ -165,6 +193,7 @@ install_coffee() {
     rm -rf $temp_new_cs
 }
 
+
 #Node version must not be less than 0.11.5
 if $node ; then
     if command -v node >/dev/null; then
@@ -181,7 +210,24 @@ if $node ; then
         echo "Node is not installed. Will install."
         install_node
     fi
+else
+    if $node_latest ; then
+        #!/bin/sh         
+        VERSION=0.11.7
+        PLATFORM=linux
+        if [ x86_64 ] ; then
+            ARCH=x64
+        else
+            ARCH=x86
+        fi
+        PREFIX="/usr/local"
+         
+        mkdir -p "$PREFIX" && \
+        curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz \
+          | tar xzvf - --strip-components=1 -C "$PREFIX"
+    fi
 fi
+
 
 #coffee-script compiler must support yield
 if $coffee ; then
@@ -199,8 +245,11 @@ if $coffee ; then
     fi
 fi
 
+
 cd $base_dir
 
+
+#Install nginx
 if $nginx ; then
     if command -v nginx >/dev/null; then
         echo "Nginx is already installed."
@@ -210,6 +259,8 @@ if $nginx ; then
     fi
 fi
 
+
+#Install nginx configuration files under /etc/nginx
 if $nginx_conf ; then
     if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
 	sudo sh -c "cat fora.nginx.conf | sed -e 's_/path/to/fora/_"$PWD"/_g' -e 's_fora.host.name_"$hostname"/_g' > /etc/nginx/sites-available/fora.conf"
@@ -219,6 +270,8 @@ if $nginx_conf ; then
     fi
 fi
 
+
+#add host name to /etc/hosts
 if $host ; then
     if grep -Fxq "$hostname" /etc/hosts ; then
         echo "/etc/hosts already contains an entry for $hostname. Will not update."
@@ -228,25 +281,35 @@ if $host ; then
     fi    
 fi
 
-if $mongodb ; then
-    if command -v mongod >/dev/null; then
-        echo "Mongodb is already installed."
+
+#Install mongodb
+if command -v mongod >/dev/null; then
+    echo "Mongodb is already installed."
+else
+    if $mongodb ; then
+        sudo apt-get install mongodb
     else
-        echo "Mongodb is not installed. Will install."
-        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-        echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
-        sudo apt-get update
-        sudo apt-get install mongodb-10gen
-        sudo mkdir -p /data/db
-        sudo chmod 0755 /data/db
-        sudo chown mongodb /data/db
+        if $mongodb_latest ; then
+            echo "Mongodb is not installed. Will install."
+            sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+            echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+            sudo apt-get update
+            sudo apt-get install mongodb-10gen
+            #sudo mkdir -p /data/db
+            #sudo chmod 0755 /data/db
+            #sudo chown mongodb /data/db
+        fi
     fi
 fi
 
+
+#Install graphicsmagick
 if $gm ; then
     sudo apt-get install graphicsmagick
 fi
 
+
+#Install all node modules we need
 if $node_modules ; then
     sudo npm install -g less    
     
@@ -266,5 +329,6 @@ if $node_modules ; then
     npm install forever
     cd ..
 fi
+
 
 echo "Install complete."
