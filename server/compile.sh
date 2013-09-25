@@ -10,7 +10,7 @@ dont_delete=false
 while :
 do
     case $1 in
-        -debug)
+        --debug)
             debug=true 
             ;;
         --dont_delete)

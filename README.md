@@ -13,19 +13,25 @@ WARNING: The install script upgrades node to a very new version.
 ```
 usage: ./install-dependencies.sh options
 options:
-  --all               Same as --node --coffee --nginx --nginx_conf --host local.foraproject.org --mongodb --gm --node_modules
-  --node              Compile and install node
+  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --node-modules
+  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --node-modules
+
+  --node              Install a pre-compiler version of node
+  --node-latest       Compile and install the latest node
   --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install nginx
-  --nginx_conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
+  --nginx-conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
   --host hostname     Adds an entry into /etc/hosts. eg: --host test.myforaproj.com
-  --mongodb           Install MongoDb
+  --mongodb           Install a pre-compiler version of MongoDb
+  --mongodb-latest    Compile and install the latest MongoDb  
   --gm                Install Graphics Magick
-  --node_modules      Install Node Modules
+  --node-modules      Install Node Modules
+
   --help              Print the help screen
+
 Examples:
   ./install-dependencies.sh --all
-  ./install-dependencies.sh --node --coffee --gm --node_modules
+  ./install-dependencies.sh --node --coffee --gm --node-modules
 ```
 
 Otherwise, do these manually:

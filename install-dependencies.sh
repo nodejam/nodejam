@@ -84,6 +84,8 @@ else
     x86_64=false
 fi
 
+sudo apt-get install curl
+
 while :
 do
     case $1 in
@@ -117,6 +119,10 @@ do
             node=true
             shift
             ;;
+        --node-latest)
+            node_latest=true
+            shift
+            ;;
         --coffee)
             coffee=true
             shift
@@ -136,6 +142,10 @@ do
             ;;
         --mongodb)
             mongodb=true
+            shift
+            ;;
+        --mongodb-latest)
+            mongodb_latest=true
             shift
             ;;
         --gm)
@@ -221,10 +231,7 @@ else
             ARCH=x86
         fi
         PREFIX="/usr/local"
-         
-        mkdir -p "$PREFIX" && \
-        curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz \
-          | tar xzvf - --strip-components=1 -C "$PREFIX"
+	    sudo sh -c "mkdir -p \"$PREFIX\" && curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz | tar xzvf - --strip-components=1 -C \"$PREFIX\""
     fi
 fi
 
