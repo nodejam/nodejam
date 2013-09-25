@@ -6,10 +6,12 @@
 help() {
 echo "usage: ./install-dependencies.sh options
 options:
-  --all               Same as --node --coffee --nginx --mongodb --gm --node_modules
+  --all               Same as --node --coffee --nginx --nginx_conf --host local.foraproject.org --mongodb --gm --node_modules
   --node              Compile and install node
   --coffee            Compile and install coffee-script, with support for the yield keyword
-  --nginx             Install ngnix
+  --nginx             Install nginx
+  --nginx_conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
+  --host hostname     Adds an entry into /etc/hosts. eg: --host test.myforaproj.com
   --mongodb           Install MongoDb
   --gm                Install Graphics Magick
   --node_modules      Install Node Modules
@@ -56,13 +58,15 @@ vercomp () {
     return 0
 }
 
+base_dir=$PWD
 node=false
 coffee=false
 nginx=false
+nginx_conf=false
 mongodb=false
 gm=false
 node_modules=false
-host="local.foraproject.org"
+host=false
 
 while :
 do
@@ -75,6 +79,9 @@ do
             node=true
             coffee=true
             nginx=true
+            nginx_conf=true
+            host=true
+            hostname="local.foraproject.org"
             mongodb=true
             gm=true
             node_modules=true
@@ -91,6 +98,15 @@ do
         --nginx)
             nginx=true
             shift
+            ;;
+        --nginx_conf)
+            nginx_conf=true
+            shift
+            ;;
+        --host)
+            host=true
+            hostname=$2
+            shift 2
             ;;
         --mongodb)
             mongodb=true
@@ -132,7 +148,7 @@ install_coffee() {
     cd $temp_cs
     echo "Copying Coffee-Script dependencies into $temp_cs"
     npm install coffee-script
-    export PATH=$PATH:`pwd`/node_modules/coffee-script/bin
+    export PATH=$PATH:$PWD/node_modules/coffee-script/bin
     temp_new_cs=`mktemp -d`
     git clone https://github.com/jeswin/coffee-script.git $temp_new_cs
     cd $temp_new_cs
@@ -183,13 +199,34 @@ if $coffee ; then
     fi
 fi
 
+cd $base_dir
+
 if $nginx ; then
-    if command -v node >/dev/null; then
+    if command -v nginx >/dev/null; then
         echo "Nginx is already installed."
     else
         echo "Nginx is not installed. Will install."
         sudo apt-get install nginx
     fi
+fi
+
+if $nginx_conf ; then
+    if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
+        cat fora.nginx.conf | sed -e 's_/path/to/fora/_'"$PWD"'/_g' > /etc/nginx/sites-available/fora.conf
+        ln -s /etc/nginx/sites-available/fora.conf /etc/nginx/sites-enabled/fora.conf
+    else
+        echo "/etc/nginx/sites-available/fora.conf exists. Will not overwrite, you must delete it manually."
+    fi
+fi
+
+if $host ; then
+    if grep -Fxq "$hostname" /etc/hosts ; then
+        echo "/etc/hosts already contains an entry for $hostname. Will not update."
+    else
+        echo "Adding to /etc/hosts..."
+        echo "#This was added by Fora" | sudo tee -a /etc/hosts
+        echo "127.0.0.1 $hostname" | sudo tee -a /etc/hosts
+    fi    
 fi
 
 if $mongodb ; then
@@ -212,6 +249,8 @@ if $gm ; then
 fi
 
 if $node_modules ; then
+    sudo npm install -g less    
+    
     cd server
     npm install express
     npm install mongodb
@@ -224,7 +263,6 @@ if $node_modules ; then
     npm install oauth
     npm install forever
     npm install marked
-    npm install less
     npm install optimist
     npm install forever
     cd ..
