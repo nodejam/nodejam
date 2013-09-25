@@ -63,6 +63,7 @@ node=false
 coffee=false
 nginx=false
 nginx_conf=false
+hostname="local.foraproject.org"            
 mongodb=false
 gm=false
 node_modules=false
@@ -81,7 +82,6 @@ do
             nginx=true
             nginx_conf=true
             host=true
-            hostname="local.foraproject.org"
             mongodb=true
             gm=true
             node_modules=true
@@ -212,8 +212,8 @@ fi
 
 if $nginx_conf ; then
     if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
-        cat fora.nginx.conf | sed -e 's_/path/to/fora/_'"$PWD"'/_g' > /etc/nginx/sites-available/fora.conf
-        ln -s /etc/nginx/sites-available/fora.conf /etc/nginx/sites-enabled/fora.conf
+	sudo sh -c "cat fora.nginx.conf | sed -e 's_/path/to/fora/_"$PWD"/_g' -e 's_fora.host.name_"$hostname"/_g' > /etc/nginx/sites-available/fora.conf"
+        sudo ln -s /etc/nginx/sites-available/fora.conf /etc/nginx/sites-enabled/fora.conf
     else
         echo "/etc/nginx/sites-available/fora.conf exists. Will not overwrite, you must delete it manually."
     fi
@@ -224,8 +224,7 @@ if $host ; then
         echo "/etc/hosts already contains an entry for $hostname. Will not update."
     else
         echo "Adding to /etc/hosts..."
-        echo "#This was added by Fora" | sudo tee -a /etc/hosts
-        echo "127.0.0.1 $hostname" | sudo tee -a /etc/hosts
+        echo "127.0.0.1 $hostname #This was added by Fora" | sudo tee -a /etc/hosts
     fi    
 fi
 
