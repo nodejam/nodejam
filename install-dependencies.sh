@@ -6,15 +6,17 @@
 help() {
 echo "usage: ./install-dependencies.sh options
 options:
-  --all               Same as --node --coffee --nginx --mongodb
+  --all               Same as --node --coffee --nginx --mongodb --gm --node_modules
   --node              Compile and install node
   --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install ngnix
   --mongodb           Install MongoDb
+  --gm                Install Graphics Magick
+  --node_modules      Install Node Modules
   --help              Print the help screen
 Examples:
   ./install-dependencies.sh --all
-  ./install-dependencies.sh --node --coffee"
+  ./install-dependencies.sh --node --coffee --gm --node_modules"
 }
 
 if [ $# -eq 0 ]
@@ -58,6 +60,8 @@ node=false
 coffee=false
 nginx=false
 mongodb=false
+gm=false
+node_modules=false
 host="local.foraproject.org"
 
 while :
@@ -72,7 +76,8 @@ do
             coffee=true
             nginx=true
             mongodb=true
-            host="local.foraproject.org"
+            gm=true
+            node_modules=true
             shift
             ;;
         --node)
@@ -89,6 +94,14 @@ do
             ;;
         --mongodb)
             mongodb=true
+            shift
+            ;;
+        --gm)
+            gm=true
+            shift
+            ;;
+        --node_modules)
+            node_modules=true
             shift
             ;;
         -*)
@@ -194,3 +207,27 @@ if $mongodb ; then
     fi
 fi
 
+if $gm ; then
+    sudo apt-get install graphicsmagick
+fi
+
+if $node_modules ; then
+    cd server
+    npm install express
+    npm install mongodb
+    npm install validator
+    npm install sanitizer
+    npm install hbs
+    npm install fs-extra
+    npm install gm
+    npm install node-minify
+    npm install oauth
+    npm install forever
+    npm install marked
+    npm install less
+    npm install optimist
+    npm install forever
+    cd ..
+fi
+
+echo "Install complete."

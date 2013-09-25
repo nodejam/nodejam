@@ -2,99 +2,57 @@ fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
 
-Installation for Ubuntu 13.04
-=============================
-If you are using Ubuntu, you just need to run the following scripts (in order):
-- ./install-dependencies.sh
-- ./configure.sh --host <domain_name>
-- ./setup.sh
-
-For advanced usage and other operating systems (BSD/*nix), install these manually.
-
+Installation
+============
 
 Step 1: Install pre-requisites
 ------------------------------
-Run ./install-dependencies.sh -all OR install these manually.
-- nodejs, v0.11.5 or greater
-- mongodb
-- nginx
-- modified version of coffeescript (to support the yield keyword), from https://github.com/jeswin/coffee-script
-
+Run ./install-dependencies.sh
 WARNING: The install script upgrades node to a very new version.
 
 ```
 usage: ./install-dependencies.sh options
 options:
-  --all               Same as --node --coffee --nginx --mongodb
+  --all               Same as --node --coffee --nginx --mongodb --gm --node_modules
   --node              Compile and install node
   --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install ngnix
   --mongodb           Install MongoDb
+  --gm                Install Graphics Magick
+  --node_modules      Install Node Modules
   --help              Print the help screen
 Examples:
   ./install-dependencies.sh --all
-  ./install-dependencies.sh --node --coffee
+  ./install-dependencies.sh --node --coffee --gm --node_modules
 ```
+
+Otherwise, install these manually
+- nodejs, v0.11.5 or greater
+- mongodb
+- nginx
+- modified version of coffeescript (to support the yield keyword), from https://github.com/jeswin/coffee-script
 
 
 Step 2: Configuration
 ---------------------
-Run ./configure OR do this manually.
-- Edit etc/hosts and add your desired hostname (eg: devsite.foraproject.org)
-- Edit src/conf/index.coffee
 - Copy src/conf/settings.config.sample to settings.config and edit it.
 - Copy src/conf/fora.config.sample to fora.config and edit it.
 - If you are planning to use nginx, use fora.ngnix.conf for an nginx example site configuration
 
-```
-usage: ./configure.sh [options]
-options:
-  --host hostname       eg: --host dev.myfora.org. hostname defaults to local.foraproject.org
-  --nginx               Setup Fora to run with nginx. Ngnix must be installed previously.
-  --help                Print the help screen
-Examples:
-  ./configure.sh --host dev.myfora.org --nginx
-```
-
-
-Environment Variables (set this up in .bashrc)
------------------------------------------
-```
-export NODE_ENV=development #Use 'production' otherwise.
-export NODE_PATH=\"/usr/local/lib/node_modules\" #Because the path the node modules was changed, make this change in .bashrc  
-```
-
-
-Step 3: Setup
--------------
-```
-./setup.sh --node --coffee --host <host_name> --server <server> --init --recreate_dev_db <db_name>
-
-    --node              Compile and install node
-    --coffee            Compile and install coffee-script, with support for the yield keyword
-    --host <host_name>  Host name. Will be added to etc/hosts. eg: local.foraproject.org
-    --server <server>   nginx OR builtin
-    --init              Initializes the app. Should be used the first time
-    --recreate_dev_db    Creates a development database
-    
-Examples:
-1) You could use this the first time
-    ./setup.sh options --node --coffee --host dev.foraproject.org --server nginx --init --recreate_dev_db fora_dev_db
-```
-
 
 Running Fora
 ------------
-To debug,
+To debug
 ```
+cd server
 ./run.sh --debug
 ```
 
 For production
-
 ```
+cd server
 ./run.sh
 ```
 
-Fora will be running under the hostname you provided in ./configure. Go to http://<hostname> in browser.
+Fora will be running under the hostname you provided in ./configure.sh. Go to http://hostname in browser.
 
