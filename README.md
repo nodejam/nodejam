@@ -23,14 +23,17 @@ Run ./install-dependencies.sh -all OR install these manually.
 WARNING: The install script upgrades node to a very new version.
 
 ```
-./install-dependencies.sh --node --coffee --host <host_name>
-    --node              Compile and install node (optional)
-    --coffee            Compile and install coffee-script, with support for the yield keyword (optional)
-    --nginx             Install ngnix
-    --help              Print the help screen    
+usage: ./install-dependencies.sh options
+options:
+  --all               Same as --node --coffee --nginx --mongodb
+  --node              Compile and install node
+  --coffee            Compile and install coffee-script, with support for the yield keyword
+  --nginx             Install ngnix
+  --mongodb           Install MongoDb
+  --help              Print the help screen
 Examples:
-    ./install-dependencies.sh --all
-    ./install-dependencies.sh --node --coffee
+  ./install-dependencies.sh --all
+  ./install-dependencies.sh --node --coffee
 ```
 
 
@@ -41,27 +44,25 @@ Run ./configure OR do this manually.
 - Edit src/conf/index.coffee
 - Copy src/conf/settings.config.sample to settings.config and edit it.
 - Copy src/conf/fora.config.sample to fora.config and edit it.
-- If you are planning to use nginx, edit fora.ngnix.conf and copy it to /etc/nginx/sites-available
+- If you are planning to use nginx, use fora.ngnix.conf for an nginx example site configuration
 
 ```
-./configure.sh --host <host_name>
-    --all               Same as --node --coffee
-    --node              Compile and install node (optional)
-    --coffee            Compile and install coffee-script, with support for the yield keyword (optional)
-    --nginx             Install ngnix
-    --help              Print the help screen    
+usage: ./configure.sh [options]
+options:
+  --host hostname       eg: --host dev.myfora.org. hostname defaults to local.foraproject.org
+  --nginx               Setup Fora to run with nginx. Ngnix must be installed previously.
+  --help                Print the help screen
 Examples:
-    ./install-dependencies.sh --all
-    ./install-dependencies.sh --node --coffee
+  ./configure.sh --host dev.myfora.org --nginx
 ```
 
-Environment Variables (export in .bashrc)
+
+Environment Variables (set this up in .bashrc)
 -----------------------------------------
 ```
 export NODE_ENV=development #Use 'production' otherwise.
 export NODE_PATH=\"/usr/local/lib/node_modules\" #Because the path the node modules was changed, make this change in .bashrc  
 ```
-
 
 
 Step 3: Setup
@@ -95,35 +96,5 @@ For production
 ./run.sh
 ```
 
+Fora will be running under the hostname you provided in ./configure. Go to http://<hostname> in browser.
 
-
-
-
-
-After the server is running
----------------------------
-Run this once.
-node --harmony app/scripts/init/index.js
-
-
-
-
-
-
-
-
-
-Setup a Test Database
----------------------
-The setup scripts put some data in the database, so that we can play with the app.  
-It also helps in testing if the app is working fine. For the scripts to work, the web app must be running with the above config.  
-
-cd to fora/server  
-```
-#create the database  
-node --harmony app/scripts/setup/setup.js --create  
-#delete the database  
-node --harmony app/scripts/setup/setup.js --delete  
-#recreate the database  
-node --harmony app/scripts/setup/setup.js --recreate  
-```

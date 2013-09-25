@@ -1,21 +1,27 @@
 #!/bin/bash
 
-# Installs dependencies
-# Tested only in Linux
+# Installs dependencies for Fora
+# Tested only in Ubuntu
 
 help() {
-echo "./install-dependencies.sh --node --coffee --host <host_name>
-  --all               Same as --node --coffee --nginx --mongodb --host local.foraproject.org
-  --node              Compile and install node (optional)
-  --coffee            Compile and install coffee-script, with support for the yield keyword (optional)
+echo "usage: ./install-dependencies.sh options
+options:
+  --all               Same as --node --coffee --nginx --mongodb
+  --node              Compile and install node
+  --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install ngnix
   --mongodb           Install MongoDb
-  --host <host_name>  Host name. Will be added to etc/hosts. (optional)
   --help              Print the help screen
 Examples:
   ./install-dependencies.sh --all
-  ./install-dependencies.sh --node --coffee --host dev.foraproject.org"
+  ./install-dependencies.sh --node --coffee"
 }
+
+if [ $# -eq 0 ]
+  then
+    help
+    exit 0
+fi
 
 vercomp () {
     if [[ $1 == $2 ]]
@@ -85,15 +91,11 @@ do
             mongodb=true
             shift
             ;;
-        --host)
-            host=$2     
-            shift 2
-            ;;
         -*)
             echo "WARN: Unknown option (ignored): $1" >&2
             shift
             ;;
-        *)  # no more options. Stop while loop
+        *)  # no more options. Stop while loop        
             break
             ;;
     esac
@@ -188,7 +190,7 @@ if $mongodb ; then
         sudo apt-get install mongodb-10gen
         sudo mkdir -p /data/db
         sudo chmod 0755 /data/db
-        sudo chown mongod:mongod /data/db
+        sudo chown mongodb /data/db
     fi
 fi
 
