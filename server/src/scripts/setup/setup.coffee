@@ -14,7 +14,6 @@ utils.log "NODE_ENV is #{process.env.NODE_ENV}"
 utils.log "Setup will connect to database #{conf.db.name} on #{conf.db.host}"
 argv = require('optimist').argv
 
-
 HOST = argv.host ? 'local.foraproject.org'
 PORT = if argv.port then parseInt(argv.port) else 80
 

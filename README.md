@@ -60,13 +60,11 @@ Otherwise, do these manually:
     npm install marked  
     npm install optimist  
     npm install forever 
-    npm install q 
-
+    npm install q
 
 Step 2: Configuration
 ---------------------
 - In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
-
 
 Step 3: Running Fora
 --------------------
@@ -80,6 +78,22 @@ For production
 ```
 cd server
 ./run.sh
+```
+
+Step 4: Run once
+----------------
+This initializes the application's databases, data directories etc.  
+Run this every year, afterwards. :)
+```
+./runonce.sh
+```
+
+Step 5 (Optional): Want some test data?
+-------------------------------------
+This will write some test data to the database.  
+Can only be run when NODE_ENV isn't production.  
+```
+node --harmony app/scripts/setup/setup.js [hostname]
 ```
 
 Open http://local.foraproject.org in your browser, if you haven't changed the host name. 
