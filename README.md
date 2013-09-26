@@ -7,14 +7,14 @@ Installation
 
 Step 1: Install pre-requisites
 ------------------------------
-Run ./install-dependencies.sh  
+Run ./install-ubuntu.sh  
 WARNING: The install script upgrades node to a very new version.
 
 ```
-usage: ./install-dependencies.sh options
+usage: ./install-ubuntu.sh options
 options:
-  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --node-modules
-  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --node-modules
+  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
+  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
 
   --node              Install a pre-compiler version of node
   --node-latest       Compile and install the latest node
@@ -25,22 +25,25 @@ options:
   --mongodb           Install a pre-compiler version of MongoDb
   --mongodb-latest    Compile and install the latest MongoDb  
   --gm                Install Graphics Magick
+  --config-files      Creates config files if they don't exist
   --node-modules      Install Node Modules
 
   --help              Print the help screen
 
 Examples:
-  ./install-dependencies.sh --all
-  ./install-dependencies.sh --node --coffee --gm --node-modules
+  ./install-ubuntu.sh --all
+  ./install-ubuntu.sh --node --coffee --gm --node-modules
 ```
 
 Otherwise, do these manually:
 - install nodejs, v0.11.5 or greater
 - install nginx (apt-get)
+- setup nginx configuration, see nginx.config.sample
 - install a modified version of coffeescript to support the yield keyword, from https://github.com/jeswin/coffee-script
 - install mongodb (apt-get)
-- setup nginx configuration, see fora.nginx.config for a sample
 - install graphicsmagick (apt-get)
+- edit and rename src/conf/fora.config.sample to src/conf/fora.config
+- edit and rename src/conf/settings.config.sample to src/conf/settings.config
 - install these modules with npm:  
     npm install -g less     
     cd server  
@@ -56,7 +59,8 @@ Otherwise, do these manually:
     npm install forever  
     npm install marked  
     npm install optimist  
-    npm install forever  
+    npm install forever 
+    npm install q 
 
 
 Step 2: Configuration
@@ -64,8 +68,8 @@ Step 2: Configuration
 - In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
 
 
-Running Fora
-------------
+Step 3: Running Fora
+--------------------
 To debug
 ```
 cd server
@@ -78,6 +82,5 @@ cd server
 ./run.sh
 ```
 
-Go to http://hostname in browser.  
-Note: If you used ./install-dependencies.sh --all, hostname will be local.foraproject.org
+Open http://local.foraproject.org in your browser, if you haven't changed the host name. 
 

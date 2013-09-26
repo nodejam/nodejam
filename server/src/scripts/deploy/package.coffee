@@ -3,7 +3,6 @@ compressor = require('node-minify')
 
 if process.argv.length > 2
     opt = process.argv[2]
-    utils.log "Options: #{process.argv[2]}"
 
 if opt isnt '--debug'
 

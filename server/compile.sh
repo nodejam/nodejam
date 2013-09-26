@@ -29,7 +29,7 @@ do
 done
 
 
-if [ ! $dont_delete ]; then
+if ! $dont_delete; then
     echo "Deleting the app directory"
     rm -rf app
     mkdir app
