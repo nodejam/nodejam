@@ -6,8 +6,8 @@
 help() {
 echo "usage: ./install-dependencies.sh options
 options:
-  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --node-modules
-  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --node-modules
+  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
+  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
 
   --node              Install a pre-compiler version of node
   --node-latest       Compile and install the latest node
@@ -18,6 +18,7 @@ options:
   --mongodb           Install a pre-compiler version of MongoDb
   --mongodb-latest    Compile and install the latest MongoDb  
   --gm                Install Graphics Magick
+  --config-files      Creates config files if they don't exist
   --node-modules      Install Node Modules
 
   --help              Print the help screen
@@ -74,6 +75,7 @@ hostname="local.foraproject.org"
 mongodb=false
 mongodb_latest=false
 gm=false
+config_files=false
 node_modules=false
 host=false
 
@@ -101,6 +103,7 @@ do
             host=true
             mongodb=true
             gm=true
+            config_files=true
             node_modules=true
             shift
             ;;
@@ -112,6 +115,7 @@ do
             host=true
             mongodb_latest=true
             gm=true
+            config_files=true
             node_modules=true
             shift
             ;;
@@ -152,6 +156,10 @@ do
             gm=true
             shift
             ;;
+        --config-files)
+            config_files=true
+            shift
+            ;;
         --node-modules)
             node_modules=true
             shift
@@ -168,23 +176,23 @@ done
 
 
 install_node() {
-    sudo apt-get install build-essential            
-    sudo apt-get build-dep nodejs
-    temp=`mktemp -d`
-    git clone https://github.com/joyent/node.git $temp
-    cd $temp
-    ./configure
-    make
-    sudo make install
-    rm -rf $temp
+    VERSION=0.11.7
+    PLATFORM=linux
+    if [ x86_64 ] ; then
+        ARCH=x64
+    else
+        ARCH=x86
+    fi
+    PREFIX="/usr/local"
+    sudo sh -c "mkdir -p \"$PREFIX\" && curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz | tar xzvf - --strip-components=1 -C \"$PREFIX\""
 }
 
 
 install_coffee() {    
     temp_cs=`mktemp -d`
     
+    echo "Installing standard Coffee-Script compiler.. ($temp_cs)"
     cd $temp_cs
-    echo "Copying Coffee-Script dependencies into $temp_cs"
     npm install coffee-script
     export PATH=$PATH:$PWD/node_modules/coffee-script/bin
     temp_new_cs=`mktemp -d`
@@ -222,16 +230,16 @@ if $node ; then
     fi
 else
     if $node_latest ; then
-        #!/bin/sh         
-        VERSION=0.11.7
-        PLATFORM=linux
-        if [ x86_64 ] ; then
-            ARCH=x64
-        else
-            ARCH=x86
-        fi
-        PREFIX="/usr/local"
-	    sudo sh -c "mkdir -p \"$PREFIX\" && curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz | tar xzvf - --strip-components=1 -C \"$PREFIX\""
+        sudo apt-get install build-essential            
+        sudo apt-get build-dep nodejs
+        temp=`mktemp -d`
+        echo "Installing bleeding edge nodejs.."
+        git clone https://github.com/joyent/node.git $temp
+        cd $temp
+        ./configure
+        make
+        sudo make install
+        rm -rf $temp
     fi
 fi
 
@@ -270,8 +278,9 @@ fi
 #Install nginx configuration files under /etc/nginx
 if $nginx_conf ; then
     if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
-	sudo sh -c "cat fora.nginx.conf | sed -e 's_/path/to/fora/_"$PWD"/_g' -e 's_fora.host.name_"$hostname"/_g' > /etc/nginx/sites-available/fora.conf"
+	    sudo sh -c "cat nginx.conf.sample | sed -e 's_/path/to/fora_"$PWD"_g' -e 's_fora.host.name_"$hostname"_g' > /etc/nginx/sites-available/fora.conf"
         sudo ln -s /etc/nginx/sites-available/fora.conf /etc/nginx/sites-enabled/fora.conf
+        sudo /etc/init.d/nginx restart
     else
         echo "/etc/nginx/sites-available/fora.conf exists. Will not overwrite, you must delete it manually."
     fi
@@ -315,6 +324,15 @@ if $gm ; then
     sudo apt-get install graphicsmagick
 fi
 
+#Install all node modules we need
+if $config_files ; then
+    if [ ! -f server/src/conf/settings.config ]; then
+        cp server/src/conf/settings.config.sample server/src/conf/settings.config
+    fi
+    if [ ! -f server/src/conf/fora.config ]; then
+        sudo sh -c "cat server/src/conf/fora.config.sample | sed -e 's_fora.host.name_"$hostname"_g' > server/src/conf/fora.config"
+    fi
+fi
 
 #Install all node modules we need
 if $node_modules ; then

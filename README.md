@@ -61,8 +61,6 @@ Otherwise, do these manually:
 
 Step 2: Configuration
 ---------------------
-- Edit src/conf/settings.config.sample and rename to src/conf/settings.config
-- Edit src/conf/fora.config.sample and rename to src/conf/fora.config
 - In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
 
 
