@@ -91,7 +91,15 @@ Run this every year, afterwards. :)
 Step 5 (Optional): Want some test data?
 -------------------------------------
 ```
-node --harmony app/scripts/setup/setup.js --create [hostname]
+usage: node --harmony app/scripts/setup/setup.js options
+
+options:
+    --create            Creates the database
+    --delete            Deletes the database (Only available in NODE_ENV=development) 
+    --recreate          Calls --delete and --create
+    
+    --host hostname     Optional. If --host is not specified, local.foraproject.org is used.
+    --post port         Optional. If --port is not specified, 80 is used.
 ```
 
 Open http://local.foraproject.org in your browser, if you haven't changed the host name. 
