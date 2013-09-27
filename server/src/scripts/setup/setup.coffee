@@ -24,10 +24,14 @@ init = () ->
     
     del = ->
         (Q.async ->
-            utils.log 'Deleting main database.'
-            db = yield Q.nfcall database.getDb
-            result = yield Q.ninvoke(db, "dropDatabase")
-            utils.log 'Everything is gone now.')()
+            if process.env.NODE_ENV is 'development'
+                utils.log 'Deleting main database.'
+                db = yield Q.nfcall database.getDb
+                result = yield Q.ninvoke(db, "dropDatabase")
+                utils.log 'Everything is gone now.'
+            else
+                utils.log "Delete database can only be used if NODE_ENV is 'development'"
+        )()
 
     create = -> 
         (Q.async ->

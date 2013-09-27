@@ -90,10 +90,8 @@ Run this every year, afterwards. :)
 
 Step 5 (Optional): Want some test data?
 -------------------------------------
-This will write some test data to the database.  
-Can only be run when NODE_ENV isn't production.  
 ```
-node --harmony app/scripts/setup/setup.js [hostname]
+node --harmony app/scripts/setup/setup.js --create [hostname]
 ```
 
 Open http://local.foraproject.org in your browser, if you haven't changed the host name. 

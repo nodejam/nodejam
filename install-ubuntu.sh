@@ -4,7 +4,7 @@
 # Tested only in Ubuntu
 
 help() {
-echo "usage: ./install-dependencies.sh options
+echo "usage: ./install-ubuntu.sh options
 options:
   --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
   --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
@@ -24,8 +24,8 @@ options:
   --help              Print the help screen
 
 Examples:
-  ./install-dependencies.sh --all
-  ./install-dependencies.sh --node --coffee --gm --node-modules"
+  ./install-ubuntu.sh --all
+  ./install-ubuntu.sh --node --coffee --gm --node-modules"
 }
 
 if [ $# -eq 0 ]
