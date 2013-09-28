@@ -10,6 +10,7 @@ conf = require '../../conf'
 models = require '../../models'
 db = new (require '../../common/data/database').Database(conf.db)
 controller = require './controller'
+fs = require 'fs-extra'
 
 OAuth = require('oauth').OAuth
 oa = new OAuth(
@@ -81,9 +82,12 @@ class Auth extends controller.Controller
                                                         netutils.downloadImage(@parseTwitterUserDetails(data[0]).pictureUrl)
                                                             .then (filePath) =>
                                                                 picPath = fsutils.getAssetFilePath user.assetPath, "#{user.username}.jpg"
-                                                                console.log "Resizing to " + picPath
-                                                                gm(filePath).resize(128, 128).write picPath, (err) ->
-                                                                    if err
+                                                                thumbPath = fsutils.getAssetFilePath user.assetPath, "#{user.username}_t.jpg"
+                                                                utils.log "Resizing to " + picPath
+                                                                gm(filePath).resize(128, 128).write picPath, (err) ->                                                                    
+                                                                    if not err
+                                                                        fs.copy picPath, thumbPath
+                                                                    else
                                                                         utils.log(err)                                                                        
                                                         
                                                 res.cookie "userid", user._id.toString()

@@ -29,8 +29,6 @@ getDateFormattedDir = (date) ->
 
 
 getAssetFilePath = (assetUrl, filename) ->
-    console.log assetUrl    
-    console.log filename
     dir = assetUrl.split('/').pop()
     if dirIsValid(dir) and fileIsValid(filename)
         path.join(assetBasePath, dir, filename)

@@ -6,7 +6,7 @@ window.Fora = {
         Posts: {},
         PostTypes: {},
     },
-    Editors: {}
+    Editing: {}
 }
 
 class App
@@ -130,6 +130,8 @@ $.ajaxSetup({
     cache: false
 })
 
+
+
 #Some extensions to jQuery
 $.fn.bindNew = (eventName, p1, p2) ->
     fn = p2 ? p1
@@ -139,7 +141,10 @@ $.fn.bindNew = (eventName, p1, p2) ->
     else
         $(this).off eventName, p1
         $(this).on eventName, p2, fn
+    this
 
+
+    
 $.fn.clickHandler = (p1, p2) ->
     fn = p2 ? p1
     _fn = ->
@@ -151,4 +156,14 @@ $.fn.clickHandler = (p1, p2) ->
     else
         $(this).off 'click touch', p1
         $(this).on 'click touch', p1, _fn
+    this
+    
+
+
+$.fn.highlight = ->
+    elem = this
+    $(elem).addClass 'highlight'
+    setTimeout (-> $(elem).removeClass 'highlight'), 1000
+    this
+
         

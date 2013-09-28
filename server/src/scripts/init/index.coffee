@@ -13,7 +13,7 @@ for i in [0..365] by 1
         fs.exists newPath, (exists) ->
             if not exists
                 fs.mkdir newPath, ->
-                console.log "Created #{newPath}"
+                utils.log "Created #{newPath}"
     
 #Ensure indexes.
 db.getDb (err, db) ->
