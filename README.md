@@ -7,7 +7,7 @@ Installation
 
 Step 1: Install pre-requisites
 ------------------------------
-Run ./install-ubuntu.sh  
+Run ./install-ubuntu.sh --all (or see options below)
 WARNING: The install script upgrades node to a very new version.
 
 ```
@@ -35,13 +35,13 @@ Examples:
   ./install-ubuntu.sh --node --coffee --gm --node-modules
 ```
 
-Otherwise, do these manually:
+If you aren't running the script, you'll have to do these manually:
 - install nodejs, v0.11.5 or greater
-- install nginx (apt-get)
+- install nginx (via OS package manager)
 - setup nginx configuration, see nginx.config.sample
 - install a modified version of coffeescript to support the yield keyword, from https://github.com/jeswin/coffee-script
-- install mongodb (apt-get)
-- install graphicsmagick (apt-get)
+- install mongodb (via OS package manager)
+- install graphicsmagick (via OS package manager)
 - edit and rename src/conf/fora.config.sample to src/conf/fora.config
 - edit and rename src/conf/settings.config.sample to src/conf/settings.config
 - install these modules with npm:  

@@ -11,8 +11,6 @@ class Article
 
 
     onEdit: =>
-        $('.content, h1').attr 'contenteditable', true
-        
         $('.edit-options').hide()
         
         $('.page-wrap').prepend '
@@ -24,15 +22,8 @@ class Article
                 </ul>
             </div>'
         
-        $('.content, h1').highlight()        
-        @makeEditable '.content'        
-        
-    
-    
-    makeEditable: (element) =>
         editor = new Fora.Editing.Editor()
-        editor.edit element
-    
+        editor.editRegion()
     
 
 window.Fora.Views.PostTypes.Article = Article

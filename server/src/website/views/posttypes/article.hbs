@@ -8,7 +8,7 @@
             <img class="cover" src="{{post.cover}}" alt="{{post.coverTitle}}" {{#if editable}} data-editor="type:image"{{/if}} />            
             {{/if}}
             
-            <h1{{#if editable}} data-editor="type:text"{{/if}}>{{post.title}}</h1>
+            <h1{{#if editable}} data-editor-type="title"{{/if}}>{{post.title}}</h1>
 
             <div class="small-page-element tiny-page-element">
                 <div class="iconic-desc sub-heading">            
@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="content"{{#if editable}} data-editor="type:text"{{/if}}>
+            <div class="content"{{#if editable}} data-editor-default="true" data-editor-type="text"{{/if}}>
                 {{{content}}}
             </div>
         </div>
