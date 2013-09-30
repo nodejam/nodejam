@@ -6,14 +6,20 @@ class Item extends window.Fora.Views.BaseView
         
     
     attachEvents: =>
-        $('a.join-forum').click @onJoin
-
+        $('a.join-forum').clickHandler @onJoin
+        $('a.new-post').clickHandler @onNewPost
 
 
     onJoin: (e) =>
-        $.post "/api/forums/#{@forum}/members", (resp) =>
+        $.post "/api/forums/#{@forum.stub}/members", (resp) =>
             alert(JSON.stringify resp)
             #window.document.reload()
+            
+            
+            
+    onNewPost: (e) =>
+        $.post "/api/forums/#{@forum.stub}", { type: @forum.postTypes[0] }, (resp) =>
+            window.location.href = "/#{@forum.stub}/#{resp.stub}?mode=edit"
         
     
             

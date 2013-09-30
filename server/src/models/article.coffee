@@ -6,20 +6,22 @@ models = require('./')
 
 class Article extends postModule.Post
 
-    @describeType: @mergeTypeDefinition {
+    @describeType: {
             type: @,
+            inherits: postModule.Post,
             name: 'article',
             description: 'Article',
             fields: {
+                stub: { type: 'string', default: (dict) -> dict.title.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'') },
                 title: { type: 'string', required: false, maxLength: 200 }
                 subtitle: { type: 'string', required: false, maxLength: 200 },
                 synopsis: { type: 'string', required: false, maxLength: 2000 },
                 cover: { type: 'string', required: false, maxLength: 200 },
                 smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
                 content: { type: 'string', required: false, maxLength: 100000 },
-                format: { type: 'string', $in: ['markdown'] }
+                format: { type: 'string', $in: ['markdown'], default: 'markdown' }
             }
-        }, models.Post.describeType
+        }
 
 
 
@@ -49,6 +51,11 @@ class Article extends postModule.Post
                     id: @_id.toString(),
                     @stub
                 }
+
+    
+    
+    getFormattedFields: =>
+        { content: @formatContent() }
 
     
     

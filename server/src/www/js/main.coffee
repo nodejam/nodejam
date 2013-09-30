@@ -90,8 +90,7 @@ class App
         user.username is @getUser().username
            
         
-        
-        
+                
     loadScript: (src) =>
         $('head').append "<script src=\"#{src}\"></script>"        
 
@@ -105,25 +104,14 @@ window.Fora.uniqueId = (length = 16) ->
   id += Math.random().toString(36).substr(2) while id.length < length
   id.substr 0, length
 
-
-# Utility Functions
-window.Fora.apiUrl = (url, params = {}, options = { api: 'v1'}) ->
-    if /^\//.test(url)
-        url = url.substring(1)
-    token = app.getUser().token
-    if token
-        params.token = token
-    if Object.keys(params).length > 0
-        paramArray = []    
-        for key, val of params
-            paramArray.push "#{key}=#{encodeURIComponent(val)}"    
-        query = paramArray.join '&'
-        if /\?/.test(url)
-            url += "&#{query}"
-        else
-            url += "?#{query}"
-                
-    "/api/#{options.api}/#{url}"
+`
+window.Fora.getUrlParams = function (name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+`
 
 #Avoid caching in jQuery
 $.ajaxSetup({

@@ -75,7 +75,6 @@ class Forum extends DatabaseModel
         },
         extendedFieldPrefix: 'Forum',
         extendedFieldType: ExtendedForumField,
-        trackChanges: true,
         logging: {
                 onInsert: 'NEW_FORUM'
         }
@@ -136,6 +135,7 @@ class Forum extends DatabaseModel
     addPost: (post, context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
+            post.forum = @summarize()
             yield post.save context, db
         )()
         
@@ -193,7 +193,7 @@ class Forum extends DatabaseModel
             posts = yield models.Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
             @snapshot = { posts: p.getView("snapshot") for p in posts }
             if posts.length
-                @stats.lastPost = posts[0].publishedAt
+                @stats.lastPost = posts[0].savedAt
             yield @save context, db)()
             
     

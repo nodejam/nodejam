@@ -12,8 +12,9 @@ debug=false
 while :
 do
     case $1 in
-        -debug)
+        --debug)
             debug=true 
+            shift
             ;;
         -*)
             echo "WARN: Unknown option (ignored): $1" >&2

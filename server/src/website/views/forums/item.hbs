@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    new Fora.Views.Forums.Item("{{forum.stub}}");
+    page = new Fora.Views.Forums.Item({{{forumJson}}});
 </script>
 <div class="columns-wrap">
     <div class="content-area">    
@@ -31,7 +31,7 @@
                 </li>
                 {{else}}
                 <li>
-                    <a href="#" class="positive"><i class="icon-plus"></i>New {{options.primaryPostType}}</a>
+                    <a href="#" class="positive new-post"><i class="icon-plus"></i>New {{options.primaryPostType}}</a>
                 </li>
                 {{/unless}}
             </ul>

@@ -50,10 +50,11 @@ class Forums extends Controller
                         membership = yield models.Membership.get { 'forum.id': forum._id.toString(), 'user.id': req.user.id }, {}, db
                         if membership
                             options.isMember = true
-                            options.primaryPostType =  then forum.postTypes[0]
+                            options.primaryPostType = forum.postTypes[0]
                             
                     res.render req.network.getView('forums', 'item'), { 
                         forum,
+                        forumJson: JSON.stringify(forum),
                         message,
                         posts, 
                         options,

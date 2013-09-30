@@ -33,8 +33,8 @@ db.getDb (err, db) ->
     db.collection 'posts', (_, coll) ->
         coll.ensureIndex { state: 1, 'forum.stub': 1 }, ->
         coll.ensureIndex { state: 1, 'forum.id': 1 }, ->
-        coll.ensureIndex { state: 1, publishedAt: 1, 'forum.stub': 1 }, ->
-        coll.ensureIndex { state: 1, publishedAt: 1, 'forum.id': 1 }, ->
+        coll.ensureIndex { state: 1, savedAt: 1, 'forum.stub': 1 }, ->
+        coll.ensureIndex { state: 1, savedAt: 1, 'forum.id': 1 }, ->
         coll.ensureIndex { 'createdBy.id': 1 }, ->
         coll.ensureIndex { 'createdBy.username': 1 }, ->
         

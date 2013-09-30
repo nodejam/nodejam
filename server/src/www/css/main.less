@@ -16,10 +16,6 @@
     outline: 0px solid transparent;
 }
 
-.highlight { 
-    background-color: #E7EDA5;
-}
-
 .full-background { position: fixed; margin-top: 0; height: 100%; width: 100%; background-color: #ccc; background-size: cover; background-position: center; background-repeat: no-repeat; top: 0; z-index: -1 }
 
 /* By default, scr-tiny is hidden and will be show only on tiny screens */
@@ -294,8 +290,10 @@
     .light-text-mixin;
 
     .nav {
-        margin-bottom: 40px;
-        ul.alt { float: left; clear: both; margin-top: 24px; }
+        &.alt { 
+            margin-bottom: 40px;
+            ul.alt { float: left; clear: both; margin-top: 24px; }
+        }
     }
 }
 

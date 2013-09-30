@@ -1,8 +1,7 @@
 modules = {
     users: 'Users',
     forums: 'Forums',
-    posts: 'Posts',
-    articles: 'Articles',
+    posts: 'Posts'
 }
 
 for k, v of modules

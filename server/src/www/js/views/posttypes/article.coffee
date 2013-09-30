@@ -1,7 +1,11 @@
 class Article
 
-    constructor: ->
-        $(document).ready @attachEvents
+    constructor: (@post) ->
+        $(document).ready =>
+            @attachEvents()
+            mode = Fora.getUrlParams 'mode'
+            if mode is 'edit'
+                @onEdit()
         
         
         
@@ -14,16 +18,18 @@ class Article
         $('.edit-options').hide()
         
         $('.page-wrap').prepend '
-            <div  class="nav buttons">
+            <div class="nav buttons">
                 <ul>
-                    <li><button>Delete</button></li>
-                    <li><button>Discard</button></li>
-                    <li><button class="positive">Publish</button></li>
                 </ul>
             </div>'
+
+        $('.page-wrap .nav.buttons ul').append '<li><button>Delete</button></li>'
+        if @post.state is 'published'
+            $('.page-wrap .nav.buttons ul').append '<li><button>Cancel</button></li>'
+        $('.page-wrap .nav.buttons ul').append '<li><button class="positive">Publish Post</button></li>'
         
         editor = new Fora.Editing.Editor()
-        editor.editRegion()
+        editor.editPage if @post.title then '.content' else 'h1'
     
 
 window.Fora.Views.PostTypes.Article = Article
