@@ -48,7 +48,7 @@ class Article extends postModule.Post
                 {
                     image: @smallCover,
                     @title,
-                    content: @formatData(@data, @format),
+                    content: @formatData(@content, @format),
                     @createdBy,
                     @forum,
                     id: @_id.toString(),
