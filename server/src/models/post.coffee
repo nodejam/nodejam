@@ -78,8 +78,24 @@ class Post extends DatabaseModel
         
     
     getFormattedFields: =>
-        {}
-    
+        result = {}
+        typeDesc = @getTypeDefinition()
+        for entry in typeDesc.formattedFields
+            { field, format } = entry
+            result[field] = @formatData @[field], @[format]
+        result
+            
+
+
+    formatData: (data, format) =>  
+        switch format
+            when 'markdown'
+                if data then mdparser data else ''
+            when 'html', 'text'
+                data
+            else
+                'Invalid format.'
+            
     
     
     save: (context, db) =>
@@ -87,11 +103,13 @@ class Post extends DatabaseModel
         
         (Q.async =>        
             if not @_id            
-                if @stub
+                typeDesc = @getTypeDefinition()
+                if typeDesc.stub
+                    @stub = @[typeDesc.stub].toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
                     #check if the stub exists
                     post = yield Post.get({ @stub, 'forum.id': @forum.id }, context, db)
                     if post
-                        @stub = @_id.toString() + "-" + @stub     
+                        @stub = @_id.toString() + "-" + @stub
                     result = yield super(context, db)               
                 else                    
                     @stub = utils.uniqueId()

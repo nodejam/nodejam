@@ -12,7 +12,6 @@ class Article extends postModule.Post
             name: 'article',
             description: 'Article',
             fields: {
-                stub: { type: 'string', default: (dict) -> dict.title.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'') },
                 title: { type: 'string', required: false, maxLength: 200 }
                 subtitle: { type: 'string', required: false, maxLength: 200 },
                 synopsis: { type: 'string', required: false, maxLength: 2000 },
@@ -20,7 +19,11 @@ class Article extends postModule.Post
                 smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
                 content: { type: 'string', required: false, maxLength: 100000 },
                 format: { type: 'string', $in: ['markdown'], default: 'markdown' }
-            }
+            },
+            stub: 'title',
+            formattedFields: [
+                { field: 'content', format: 'format' }
+            ]
         }
 
 
@@ -45,25 +48,13 @@ class Article extends postModule.Post
                 {
                     image: @smallCover,
                     @title,
-                    content: @formatContent(),
+                    content: @formatData(@data, @format),
                     @createdBy,
                     @forum,
                     id: @_id.toString(),
                     @stub
                 }
 
-    
-    
-    getFormattedFields: =>
-        { content: @formatContent() }
-
-    
-    
-    formatContent: =>   
-        if @format is 'markdown'
-            if @content then mdparser(@content) 
-        else
-            'Invalid format.'
 
 
 exports.Article = Article
