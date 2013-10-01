@@ -6,19 +6,19 @@
                 Recommended
             </li>
             <li>
-                <a href="/{{forum.stub}}/about">Latest</a>
+                <a href="/{{collection.stub}}/about">Latest</a>
             </li>          
         </ul>
         <ul class="alt buttons">
             <li>
-                <a href="#" class="positive"><i class="icon-plus"></i>New Forum</a>
+                <a href="#" class="positive"><i class="icon-plus"></i>New Collection</a>
             </li>
         </ul>
     </div>
     {{#if featured}}
         <ul class="cards">
         {{#each featured}}
-            {{> forumcard summary}}
+            {{> collectioncard summary}}
         {{/each}}
         </ul>
     {{/if}}

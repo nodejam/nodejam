@@ -7,26 +7,26 @@ Controller = require('./controller').Controller
 controllers = require './'
 Q = require('../../common/q')
 
-class Posts extends Controller
+class Records extends Controller
 
 
     create: (req, res, next) =>
         @ensureSession arguments, =>
             (Q.async =>
                 try
-                    forum = yield models.Forum.get { stub: req.params.forum, network: req.network.stub }, { user: req.user }, db
-                    type = models.Post.getTypeDefinition().discriminator req.body        
+                    collection = yield models.Collection.get { stub: req.params.collection, network: req.network.stub }, { user: req.user }, db
+                    type = models.Record.getTypeDefinition().discriminator req.body        
                 
-                    post = new type()
-                    post.type = req.body.type
-                    post.createdBy = req.user
-                    post.rating = 0
+                    record = new type()
+                    record.type = req.body.type
+                    record.createdBy = req.user
+                    record.rating = 0
 
                     if req.body.publish is 'true'
-                        post.state = 'published'
+                        record.state = 'published'
                     else
-                        post.state = 'draft'
-                    post.savedAt = Date.now()
+                        record.state = 'draft'
+                    record.savedAt = Date.now()
 
                     for fieldName, def of type.getTypeDefinition(type, false).fields
                         def = typeUtil.getFullTypeDefinition def
@@ -34,16 +34,16 @@ class Posts extends Controller
                         if req.body[fieldName]
                             switch def.type
                                 when "string"                        
-                                    post[fieldName] = req.body[fieldName]
+                                    record[fieldName] = req.body[fieldName]
                         else
                             if def.default
                                 if typeof def.default is "function"
-                                    post[fieldName] = def.default.call post, req.body
+                                    record[fieldName] = def.default.call record, req.body
                                 else
-                                    post[fieldName] = def.default
+                                    record[fieldName] = def.default
                     
-                    post = yield forum.addPost post
-                    res.send post
+                    record = yield collection.addRecord record
+                    res.send record
 
                 catch e
                     utils.dumpError e
@@ -56,23 +56,23 @@ class Posts extends Controller
         @ensureSession arguments, =>        
             (Q.async =>
                 try
-                    forum = yield models.Forum.get { stub: req.params.forum, network: req.network.stub }, { user: req.user }, db
-                    type = models.Post.getTypeDefinition().discriminator req.body        
-                    post = yield type.getById(req.params.post, { user: req.user }, db)
+                    collection = yield models.Collection.get { stub: req.params.collection, network: req.network.stub }, { user: req.user }, db
+                    type = models.Record.getTypeDefinition().discriminator req.body        
+                    record = yield type.getById(req.params.record, { user: req.user }, db)
                     
-                    if post
-                        if post.createdBy.id is req.user.id or @isAdmin(req.user)
-                            post.savedAt ?= Date.now()
+                    if record
+                        if record.createdBy.id is req.user.id or @isAdmin(req.user)
+                            record.savedAt ?= Date.now()
                             
                             #Add update code here...
                             
-                            post = yield post.save()                            
-                            res.send post
+                            record = yield record.save()                            
+                            res.send record
 
                         else
                             res.send 'Access denied.'
                     else
-                        res.send 'Invalid post.'
+                        res.send 'Invalid record.'
                 catch e
                     next e)()    
 
@@ -82,11 +82,11 @@ class Posts extends Controller
         @ensureSession arguments, => 
             (Q.async =>
                 try
-                    post = yield models.Post.getById(req.params.post, { user: req.user }, db)
-                    if post
-                        if post.createdBy.id is req.user.id or @isAdmin(req.user)
-                            post = yield post.destroy()
-                            res.send post
+                    record = yield models.Record.getById(req.params.record, { user: req.user }, db)
+                    if record
+                        if record.createdBy.id is req.user.id or @isAdmin(req.user)
+                            record = yield record.destroy()
+                            res.send record
                         else
                             res.send 'Access denied.'
                     else
@@ -96,17 +96,17 @@ class Posts extends Controller
                      
 
             
-    addComment: (req, res, next, forum) =>        
+    addComment: (req, res, next, collection) =>        
         @attachUser arguments, => 
-            contentType = forum.settings?.comments?.contentType ? 'text'
+            contentType = collection.settings?.comments?.contentType ? 'text'
             if contentType is 'text'
                 (Q.async =>
                     try
-                        post = yield models.Post.getById(req.params.post, { user: req.user }, db)
+                        record = yield models.Record.getById(req.params.record, { user: req.user }, db)
                         comment = new models.Comment()
                         comment.createdBy = req.user
-                        comment.forum = forum.stub
-                        comment.itemid = post._id.toString()
+                        comment.collection = collection.stub
+                        comment.itemid = record._id.toString()
                         comment.data = req.body.data
                         comment = yield comment.save({ user: req.user }, db)
                         res.send comment
@@ -123,18 +123,18 @@ class Posts extends Controller
             if @isAdmin(req.user)
                 (Q.async =>
                     try
-                        post = yield models.Post.getById(req.params.id, { user: req.user }, db)
-                        if post 
+                        record = yield models.Record.getById(req.params.id, { user: req.user }, db)
+                        if record 
                             if req.body.meta
-                                post = yield post.addMetaList req.body.meta.split(',')
-                            res.send post
+                                record = yield record.addMetaList req.body.meta.split(',')
+                            res.send record
                         else
-                            next new Error "Post not found"
+                            next new Error "Record not found"
                     catch e
                         next e)()
             else
                 next new Error "Access denied"
 
 
-exports.Posts = Posts
+exports.Records = Records
 

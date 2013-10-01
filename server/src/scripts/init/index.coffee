@@ -24,17 +24,17 @@ db.getDb (err, db) ->
     db.collection 'users', (_, coll) ->
         coll.ensureIndex { 'username': 1 }, ->
 
-    db.collection 'forums', (_, coll) ->
+    db.collection 'collections', (_, coll) ->
         coll.ensureIndex { 'network': 1 }, ->
         coll.ensureIndex { 'createdBy.id': 1, 'network': 1 }, ->
         coll.ensureIndex { 'createdBy.username': 1, 'network': 1 }, ->
         coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
 
-    db.collection 'posts', (_, coll) ->
-        coll.ensureIndex { state: 1, 'forum.stub': 1 }, ->
-        coll.ensureIndex { state: 1, 'forum.id': 1 }, ->
-        coll.ensureIndex { state: 1, savedAt: 1, 'forum.stub': 1 }, ->
-        coll.ensureIndex { state: 1, savedAt: 1, 'forum.id': 1 }, ->
+    db.collection 'records', (_, coll) ->
+        coll.ensureIndex { state: 1, 'collection.stub': 1 }, ->
+        coll.ensureIndex { state: 1, 'collection.id': 1 }, ->
+        coll.ensureIndex { state: 1, savedAt: 1, 'collection.stub': 1 }, ->
+        coll.ensureIndex { state: 1, savedAt: 1, 'collection.id': 1 }, ->
         coll.ensureIndex { 'createdBy.id': 1 }, ->
         coll.ensureIndex { 'createdBy.username': 1 }, ->
         

@@ -1,11 +1,11 @@
-<li class="{{view}}" data-url="/{{forum.stub}}/{{stub}}">
+<li class="{{view}}" data-url="/{{collection.stub}}/{{stub}}">
     <div class="item-wrap">
         {{#if image}} 
         <div class="image" style="background-image:url({{image}})"></div>
         {{/if}}
         <div class="content-wrap">
             <div class="content">
-                <h2><a href="/{{forum.stub}}/{{stub}}">{{title}}</a></h2>
+                <h2><a href="/{{collection.stub}}/{{stub}}">{{title}}</a></h2>
                 {{{content}}}
             </div>
             <div class="overlay"></div>
@@ -16,7 +16,7 @@
             <p class="desc-text">
                 <span class="text">
                     <a href="/~{{createdBy.username}}">{{createdBy.name}}</a><br />
-                    <span class="light-text">in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
+                    <span class="light-text">in <a href="/{{collection.stub}}">{{collection.name}}</a></span>
                 </span>
             </p>
         </div>

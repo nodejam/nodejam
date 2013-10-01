@@ -1,26 +1,26 @@
 <script type="text/javascript">
-    new Fora.Views.PostTypes.Article({{{postJson}}});
+    new Fora.Views.RecordTypes.Article({{{recordJson}}});
 </script>
 <div class="page-wrap">
     <div class="content-area">    
         <div class="item text">
-            {{#if post.cover}}
-            <img class="cover" src="{{post.cover}}" alt="{{post.coverTitle}}" {{#if editable}} data-editor="type:image"{{/if}} />            
+            {{#if record.cover}}
+            <img class="cover" src="{{record.cover}}" alt="{{record.coverTitle}}" {{#if editable}} data-editor="type:image"{{/if}} />            
             {{/if}}
             
-            <h1{{#if editable}} data-editor-type="title"{{/if}} data-placeholder="Title goes here...">{{post.title}}</h1>
+            <h1{{#if editable}} data-editor-type="title"{{/if}} data-placeholder="Title goes here...">{{record.title}}</h1>
 
             <div class="small-page-element tiny-page-element">
                 <div class="iconic-desc sub-heading">            
                     <img src="{{author.assetPath}}/{{author.username}}_t.jpg" alt="{{author.name}}" />
                     <span class="text">
                         <a href="/~{{author.username}}">{{author.name}}</a><br />
-                        <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
+                        <span class="light-text">Yesterday in <a href="/{{collection.stub}}">{{collection.name}}</a></span>
                     </span>
                 </div>
             </div>
 
-            <div class="content"{{#if editable}} data-placeholder="And post content goes here..." data-editor-type="text"{{/if}}>
+            <div class="content"{{#if editable}} data-placeholder="And record content goes here..." data-editor-type="text"{{/if}}>
                 {{{formatted.content}}}
             </div>
         </div>
@@ -32,12 +32,12 @@
                     {{author.about}}
                 </p>
                 <p>
-                    <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>                
+                    <span class="light-text">Yesterday in <a href="/{{collection.stub}}">{{collection.name}}</a></span>                
                 </p>                    
             </div>            
             <p class="edit-options">
                 {{#if editable}}
-                <button class="edit positive">Edit Post</button>
+                <button class="edit positive">Edit Record</button>
                 <button><i class="settings icon-cog"></i>Settings</button>
                 {{/if}}
             </p>

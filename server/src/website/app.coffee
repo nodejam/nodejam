@@ -22,8 +22,8 @@ getController = (name) ->
         when 'auth' then new controllers.Auth()
         when 'users' then new controllers.Users()
         when 'home' then new controllers.Home()
-        when 'forums' then new controllers.Forums()
-        when 'posts' then new controllers.Posts()
+        when 'collections' then new controllers.Collections()
+        when 'records' then new controllers.Records()
         else throw new Error "Cannot find controller #{name}."
         
 
@@ -35,14 +35,14 @@ webutils.setup app, getController, (findHandler) ->
     app.get '/auth/twitter', findHandler('auth', (c) -> c.twitter)
     app.get '/auth/twitter/callback', findHandler('auth', (c) -> c.twitterCallback)
 
-    app.get '/forums', findHandler('forums', (c) -> c.index)
+    app.get '/collections', findHandler('collections', (c) -> c.index)
     app.get '/users/selectusername', findHandler('users', (c) -> c.selectUsernameForm)
     app.post '/users/selectusername', findHandler('users', (c) -> c.selectUsername)
     app.get '/~:username', findHandler('users', (c) -> c.item)
-    app.get '/:forum', findHandler('forums', (c) -> c.item)
-    app.get '/:forum/new', findHandler('forums', (c) -> c.createForm)
-    app.get '/:forum/about', findHandler('forums', (c) -> c.about)
-    app.get '/:forum/:stub', findHandler('posts', (c) -> c.item)
+    app.get '/:collection', findHandler('collections', (c) -> c.item)
+    app.get '/:collection/new', findHandler('collections', (c) -> c.createForm)
+    app.get '/:collection/about', findHandler('collections', (c) -> c.about)
+    app.get '/:collection/:stub', findHandler('records', (c) -> c.item)
     
 #Register templates, helpers etc.
 require("./hbshelpers").register()

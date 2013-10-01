@@ -25,24 +25,24 @@ class Message extends DatabaseModel
             switch _format
                 when 'timeline'
                     switch @reason
-                        when 'new-forum'
-                            user = @data.forum.createdBy
+                        when 'new-collection'
+                            user = @data.collection.createdBy
                             {                        
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
                                     link: "/~#{user.username}"
                                 },
-                                verb: "added a new forum",
+                                verb: "added a new collection",
                                 object: {
-                                    thumbnail: @data.forum.icon,
-                                    name: @data.forum.name,
-                                    link: "/#{@data.forum.stub}"
+                                    thumbnail: @data.collection.icon,
+                                    name: @data.collection.name,
+                                    link: "/#{@data.collection.stub}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }
-                        when 'published-post'
-                            user = @data.post.createdBy
+                        when 'published-record'
+                            user = @data.record.createdBy
                             {
                                 subject: {
                                     thumbnail: user.thumbnail,
@@ -51,8 +51,8 @@ class Message extends DatabaseModel
                                 },
                                 verb: "published",
                                 object: {
-                                    name: @data.post.title,
-                                    link: "/#{@data.post.forum.stub}/#{@data.post._id}"
+                                    name: @data.record.title,
+                                    link: "/#{@data.record.collection.stub}/#{@data.record._id}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }                   

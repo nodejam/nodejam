@@ -5,10 +5,10 @@
                 Recommended
             </li>
             <li>
-                <a href="/posts/new">New Posts</a>
+                <a href="/records/new">New Records</a>
             </li>            
             <li>
-                <a href="/forums">Forums</a>
+                <a href="/collections">Collections</a>
             </li>            
         </ul>
     </div>
@@ -16,14 +16,14 @@
     {{#if editorsPicks}}
         <ul class="cards">
         {{#each editorsPicks}}
-            {{> postcard summary}}
+            {{> recordcard summary}}
         {{/each}}
         </ul>
     {{/if}}
     {{#if featured}}
         <ul class="cards">
         {{#each featured}}
-            {{> postcard summary}}
+            {{> recordcard summary}}
         {{/each}}
         </ul>
     {{/if}}

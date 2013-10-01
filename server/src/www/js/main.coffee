@@ -1,10 +1,10 @@
 window.Fora = {
     Views: {
         Home: {},
-        Forums: {},
+        Collections: {},
         Users: {},
-        Posts: {},
-        PostTypes: {},
+        Records: {},
+        RecordTypes: {},
     },
     Editing: {}
 }

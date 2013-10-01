@@ -54,7 +54,7 @@ anupk7 = {
 
 users = [tributeToAaron, jeswin, ebin, anupk7]
 
-#Forums
+#Collections
 poetry = {
     name: 'Poetry',
     description: 'Selected Poetry from around the world.',
@@ -180,7 +180,7 @@ earlyMornings = {
     _createdBy: 'aaronsw'  
 }
 
-forums = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
+collections = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
 
 #Articles
 believeYouCanChange = {
@@ -189,7 +189,7 @@ believeYouCanChange = {
     _content: 'believe-you-can-change.md',
     cover: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
     smallCover: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -200,7 +200,7 @@ cherishMistakes = {
     _content: 'cherish-mistakes.md',
     cover: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
     smallCover: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -211,7 +211,7 @@ confrontReality = {
     _content: 'confront-reality.md',
     cover: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
     smallCover: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -222,7 +222,7 @@ darkKnight = {
     _content: 'dark-knight.md',
     cover: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
     smallCover: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -233,7 +233,7 @@ fixTheMachine = {
     _content: 'lean-into-the-pain.md',
     cover: 'http://farm4.staticflickr.com/3808/9311339474_ec6db28a45_c.jpg',
     smallCover: 'http://farm4.staticflickr.com/3808/9311339474_ec6db28a45_c.jpg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -244,7 +244,7 @@ leanIntoThePain = {
     _content: 'fix-the-machine-not-the-person.md',
     cover: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
     smallCover: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -253,7 +253,7 @@ lookAtYourselfObjectively = {
     title: 'Look at yourself objectively',
     type: "article",
     _content: 'look-at-yourself-objectively.md',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -264,7 +264,7 @@ optimalBiases = {
     _content: 'optimal-biases.md',
     cover: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
     smallCover: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'pick'
 }
@@ -275,7 +275,7 @@ takeAStepBack = {
     _content: 'take-a-step-back.md',
     cover: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
     smallCover: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
@@ -286,7 +286,7 @@ flightOfTheIcarus = {
     _content: 'flight-of-the-icarus.md',
     cover: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
     smallCover: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
-    _forum: 'raw-nerve',
+    _collection: 'raw-nerve',
     _createdBy: 'jeswin',
     _meta: 'featured'
 }
@@ -294,5 +294,5 @@ flightOfTheIcarus = {
 articles = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus]
 
 exports.users = users
-exports.forums = forums
+exports.collections = collections
 exports.articles = articles

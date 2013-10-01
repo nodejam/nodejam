@@ -1,14 +1,14 @@
 mdparser = require('../common/lib/markdownutil').marked
-postModule = require('./post')
+recordModule = require('./record')
 utils = require('../common/utils')
 Q = require('../common/q')
 models = require('./')
 
-class Article extends postModule.Post
+class Article extends recordModule.Record
 
     @describeType: {
             type: @,
-            inherits: postModule.Post,
+            inherits: recordModule.Record,
             name: 'article',
             description: 'Article',
             fields: {
@@ -50,7 +50,7 @@ class Article extends postModule.Post
                     @title,
                     content: @formatData(@content, @format),
                     @createdBy,
-                    @forum,
+                    @collection,
                     id: @_id.toString(),
                     @stub
                 }

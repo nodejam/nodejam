@@ -4,15 +4,15 @@ DatabaseModel = require('../common/data/databasemodel').DatabaseModel
 models = require('./')
 Q = require('../common/q')
 
-class Post extends DatabaseModel
+class Record extends DatabaseModel
     
     @describeType: {
         type: @,
-        collection: 'posts',
-        discriminator: (obj) -> if obj.type is 'article' then models.Article else Post
+        collection: 'records',
+        discriminator: (obj) -> if obj.type is 'article' then models.Article else Record
         fields: {
             type: 'string',
-            forum: { type: models.Forum.Summary },
+            collection: { type: models.Collection.Summary },
             createdBy: { type: models.User.Summary },
             meta: { type: 'array', contentType: 'string' },
             tags: { type: 'array', contentType: 'string' },
@@ -37,7 +37,7 @@ class Post extends DatabaseModel
         for k, v of criteria
             params[k] = v
         
-        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
+        Record.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
         
 
         
@@ -107,30 +107,30 @@ class Post extends DatabaseModel
                 if typeDesc.stub
                     @stub = @[typeDesc.stub].toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
                     #check if the stub exists
-                    post = yield Post.get({ @stub, 'forum.id': @forum.id }, context, db)
-                    if post
+                    record = yield Record.get({ @stub, 'collection.id': @collection.id }, context, db)
+                    if record
                         @stub = @_id.toString() + "-" + @stub
                     result = yield super(context, db)               
                 else                    
                     @stub = utils.uniqueId()
-                    post = yield super(context, db)
-                    @stub = post._id.toString()
-                    result = yield post.save context, db
+                    record = yield super(context, db)
+                    @stub = record._id.toString()
+                    result = yield record.save context, db
             else
                 #check if the stub exists, if the stub has changed.
                 if @stub isnt @getOriginalModel().stub
-                    post = yield Post.get({ @stub, 'forum.id': @forum.id }, context, db)
-                    if post
+                    record = yield Record.get({ @stub, 'collection.id': @collection.id }, context, db)
+                    if record
                         @stub = @_id.toString() + "-" + @stub
 
                 result = yield super(context, db)
                 
             if @state is 'published'
-                forum = yield models.Forum.getById @forum.id, context, db
-                forum.refreshSnapshot()
+                collection = yield models.Collection.getById @collection.id, context, db
+                collection.refreshSnapshot()
             
             return result)()
 
         
             
-exports.Post = Post
+exports.Record = Record

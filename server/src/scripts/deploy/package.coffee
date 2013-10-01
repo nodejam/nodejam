@@ -82,10 +82,6 @@ if opt isnt '--debug'
         fileIn: [
             'app/www/js/lib/jquery-cookie.js',
             'app/www/js/lib/leanmodal.js',
-            'app/www/lib/bangjs/reMarked.js',            
-            'app/www/lib/bangjs/jquery-drags.js',                  
-            'app/www/lib/bangjs/bangjs.js',
-            'app/www/lib/bangjs/bangjs-toolbar.js',
         ],
         fileOut: 'app/www/js/lib.js',
         callback: (err) -> 

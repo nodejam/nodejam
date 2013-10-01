@@ -12,17 +12,17 @@ templates =   {
         users: {
             selectusername: 'users/selectusername'
         },
-        forums: {
-            index: 'forums/index.hbs',
-            item: 'forums/item.hbs',
-            about: 'forums/about.hbs',
-            forumcard: '/views/forums/forumcard.hbs'
+        collections: {
+            index: 'collections/index.hbs',
+            item: 'collections/item.hbs',
+            about: 'collections/about.hbs',
+            collectioncard: '/views/collections/collectioncard.hbs'
         },
-        posts: {
-            postcard: '/views/posts/postcard.hbs',
+        records: {
+            recordcard: '/views/records/recordcard.hbs',
         }
-        posttypes: {
-            article: 'posttypes/article.hbs'
+        recordtypes: {
+            article: 'recordtypes/article.hbs'
         }
     }
 }
