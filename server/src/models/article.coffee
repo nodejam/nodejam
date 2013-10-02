@@ -1,4 +1,3 @@
-mdparser = require('../common/lib/markdownutil').marked
 recordModule = require('./record')
 utils = require('../common/utils')
 Q = require('../common/q')
@@ -18,7 +17,12 @@ class Article extends recordModule.Record
                 cover: { type: 'string', required: false, maxLength: 200 },
                 smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
                 content: { type: 'string', required: false, maxLength: 100000 },
-                format: { type: 'string', $in: ['markdown'], default: 'markdown' }
+                format: { type: 'string', $in: ['markdown'], default: 'markdown' },                
+            },
+            childRecords: {
+                fields: {
+                    conversations: { type: 'array', contentType: models.Conversation }
+                }
             },
             stub: 'title',
             formattedFields: [

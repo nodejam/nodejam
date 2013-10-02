@@ -32,7 +32,7 @@ class Collections extends Controller
                         collection.settings = new models.Collection.Settings
                         
                         collection.settings.comments = {
-                            enabled: if req.body.settings_comments_enable is "false" then false
+                            enabled: if req.body.settings_comments_enabled is "false" then false
                             opened: if req.body.settings_comments_opened is "false" then false
                         }
                         
@@ -47,16 +47,7 @@ class Collections extends Controller
                             yield collection.saveField 'about', req.body.about
                         
                         res.send collection
-            
-                        #Put a notification.
-                        message = new models.Message {
-                            userid: '0',
-                            type: "global-notification",
-                            reason: 'new-collection',
-                            related: [ { type: 'user', id: req.user.id } ],
-                            data: { collection }
-                        }
-                        message.save { user: req.user }, db
+
                 catch e
                     next e)()                            
 

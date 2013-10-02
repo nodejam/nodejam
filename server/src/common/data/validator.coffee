@@ -28,7 +28,7 @@ class Validator
 
         if not def.useCustomValidationOnly                
             fieldDef = typeUtil.getFullTypeDefinition(def)
-
+            
             if fieldDef.required and not value?
                 errors.push "#{fieldName} is #{JSON.stringify value}"
                 errors.push "#{fieldName} is required."
@@ -47,7 +47,7 @@ class Validator
 
                         if fieldDef.type is 'string'
                             if fieldDef.maxLength and fieldDef.maxLength < value.length
-                                errors.push "#{fieldName} should be a longer than #{fieldDef.maxLength}."
+                                errors.push "#{fieldName} cannot be longer than #{fieldDef.maxLength}."
 
                             if fieldDef.$in
                                 if fieldDef.$in.indexOf(value) is -1

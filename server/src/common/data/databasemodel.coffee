@@ -120,9 +120,10 @@ class DatabaseModel extends BaseModel
         else           
             result = {}
             for name, field of modelDescription.fields
+                   
+                fieldDef = typeUtil.getFullTypeDefinition field                
                 value = obj[name]
-                
-                fieldDef = typeUtil.getFullTypeDefinition field
+
                 if typeUtil.isUserDefinedType fieldDef.type
                     if value
                         result[name] = @constructModel value, @getTypeDefinition(fieldDef.type), context, db
@@ -199,18 +200,7 @@ class DatabaseModel extends BaseModel
 
                 return result                                    
             else
-                if @_id
-                    details = "Invalid record with id #{@_id} in #{modelDescription.collection}.\n"
-                else
-                    details = "Validation failed while creating a new record in #{modelDescription.collection}.\n"
-                
-                details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}\n"
-                for e in errors
-                    details += e + "\n"
-                
-                error = new Error('Model failed validation')
-                error.details = details                
-                throw error
+                @onError errors, modelDescription
         )()
 
     
@@ -229,16 +219,18 @@ class DatabaseModel extends BaseModel
     getExtendedField = (obj, name, context, db) ->
         { context, db } = obj.getContext context, db
         desc = obj.getTypeDefinition()
-        fieldName = if desc.extendedFieldPrefix then "#{desc.extendedFieldPrefix}.#{name}" else name
+        fieldDef = desc.extendedFields.fields[name]
+        fieldName = "#{desc.collection}.#{name}"
         (Q.async =>
-            yield desc.extendedFieldType.get { type: fieldName, key: obj._id.toString() }, context, db
-        )()        
+            yield fieldDef.model.get { type: fieldName, key: obj._id.toString() }, context, db
+        )()             
         
 
 
     getField: (name, context, db) =>
         (Q.async =>
-            (yield getExtendedField @, name, context, db).value
+            { context, db } = @getContext context, db
+            (yield getExtendedField @, name, context, db)?.value
         )()        
 
 
@@ -247,19 +239,23 @@ class DatabaseModel extends BaseModel
         { context, db } = @getContext context, db
 
         desc = @getTypeDefinition()
-        fieldName = if desc.extendedFieldPrefix then "#{desc.extendedFieldPrefix}.#{name}" else name
+        fieldDef = desc.extendedFields.fields[name]
+        errors = @validateField value, name, fieldDef
         
         (Q.async =>
-            extendedField = yield getExtendedField @, name, context, db
-            extendedField ?= new desc.extendedFieldType {
-                type: fieldName,
-                key: @_id.toString()
-            }
-            extendedField.value = value
-            yield extendedField.save context, db
+            if not errors.length
+                extendedField = yield getExtendedField @, name, context, db
+                extendedField ?= new fieldDef.model {
+                    type: "#{desc.collection}.#{name}",
+                    key: @_id.toString()
+                }
+                extendedField.value = value
+                yield extendedField.save context, db
+            else
+                @onError errors, desc
         )()        
+        
 
-    
     
     deleteField: (name, context, db) =>
         (Q.async =>
@@ -267,6 +263,22 @@ class DatabaseModel extends BaseModel
             yield extendedField?.destroy()
         )()      
 
+
+
+    onError: (errors, modelDescription) =>
+        if @_id
+            details = "Invalid record with id #{@_id} in #{modelDescription.collection}.\n"
+        else
+            details = "Validation failed while creating a new record in #{modelDescription.collection}.\n"
+        
+        details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}\n"
+        for e in errors
+            details += e + "\n"
+        
+        error = new Error('Model failed validation')
+        error.details = details                
+        throw error            
+        
 
 
     bindContext: (@__context, @__db) =>

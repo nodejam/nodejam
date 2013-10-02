@@ -12,27 +12,15 @@ class Editor
         editables.highlight()        
     
         for e in editables
-            do (e) ->
+            do (e) =>
                 e =  $(e)
-                            
                 switch e.data('editor-type')                
-                    when 'title', 'text'
-                        handleEmpty = (e) =>
-                            if not e.text().trim() and e.data 'placeholder'
-                                e.addClass 'placeholder'
-                                e.html e.data 'placeholder'
-
-                        handleEmpty e
-                        
-                        e.keypress =>
-                            if e.hasClass 'placeholder'
-                                e.removeClass 'placeholder'
-                                e.html ''
-                        
-                        e.blur =>
-                            handleEmpty e
-                    
-                    when 'text'                        
+                    when 'title'
+                        @setupTextElement e
+                                            
+                    when 'text'            
+                        @setupTextElement e
+                                    
                         config = { 
                             toolbar: [ { name: 'basicstyles', items : [ 'Bold','Italic' ] } ]
                         }
@@ -50,9 +38,26 @@ class Editor
                                         range.scrollIntoView()), 100
                             }
                         
-                        ckeditor = CKEDITOR.inline element[0], config        
+                        ckeditor = CKEDITOR.inline e[0], config        
+
                 
+    
+    setupTextElement: (e) =>
+        handleEmpty = =>
+            if not e.text().trim() and e.data 'placeholder'
+                e.addClass 'placeholder'
+                e.html e.data 'placeholder'
+
+        e.keypress =>
+            if e.hasClass 'placeholder'
+                e.removeClass 'placeholder'
+                e.html ''
+        
+        e.blur =>
+            handleEmpty e
             
+        handleEmpty e
+        
         
 
 CKEDITOR.disableAutoInline = true

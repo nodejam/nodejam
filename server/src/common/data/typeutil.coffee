@@ -31,8 +31,6 @@ getFullTypeDefinition = (def) ->
     fieldDef    
     
     
-    
-    
 exports.isUserDefinedType = isUserDefinedType
 exports.getFullTypeDefinition = getFullTypeDefinition
 

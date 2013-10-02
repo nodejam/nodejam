@@ -50,6 +50,11 @@ class BaseModel
             
 
 
+    validateField: (value, fieldName, modelDescription = @getTypeDefinition()) ->
+        Validator.validateField @, value, fieldName, modelDescription
+        
+
+
     getTypeDefinition: (inherited = true) =>
         @constructor.getTypeDefinition @constructor, inherited
             

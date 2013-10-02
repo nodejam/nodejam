@@ -7,8 +7,8 @@ modules = {
     userinfo: 'UserInfo',
     message: 'Message',
     network: 'Network',
-    comment: 'Comment',
     article: 'Article',
+    conversation: 'Conversation',
     membership: 'Membership'
 }
 

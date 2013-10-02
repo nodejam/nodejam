@@ -9,7 +9,11 @@ class Record extends DatabaseModel
     @describeType: {
         type: @,
         collection: 'records',
-        discriminator: (obj) -> if obj.type is 'article' then models.Article else Record
+        discriminator: (obj) -> 
+            switch obj.type
+                when 'article' then models.Article
+                when 'conversation' then models.Conversation
+                else Record                
         fields: {
             type: 'string',
             collection: { type: models.Collection.Summary },
@@ -104,7 +108,7 @@ class Record extends DatabaseModel
         (Q.async =>        
             if not @_id            
                 typeDesc = @getTypeDefinition()
-                if typeDesc.stub
+                if typeDesc.stub and @[typeDesc.stub]
                     @stub = @[typeDesc.stub].toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
                     #check if the stub exists
                     record = yield Record.get({ @stub, 'collection.id': @collection.id }, context, db)
