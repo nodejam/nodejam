@@ -1,8 +1,8 @@
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
 Q = require('../common/q')
 
-class Membership extends DatabaseModel
+class Membership extends ForaDbModel
     
     @describeType: {
         type: @,

@@ -1,6 +1,6 @@
+ForaModel = require('./foramodel').ForaModel
+ForaDbModel = require('./foramodel').ForaDbModel
 utils = require '../common/utils'
-BaseModel = require('../common/data/basemodel').BaseModel
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
 fsutils = require '../common/fsutils'
 Q = require '../common/q'
 hasher = require('../common/lib/hasher').hasher
@@ -8,9 +8,9 @@ models = require './'
 
 emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-class User extends DatabaseModel
+class User extends ForaDbModel
 
-    class Summary extends BaseModel    
+    class Summary extends ForaModel    
         @describeType: {
             type: @,
             fields: {

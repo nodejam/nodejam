@@ -1,7 +1,7 @@
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
 
-class UserInfo extends DatabaseModel
+class UserInfo extends ForaDbModel
 
     @describeType: {
         type: @,

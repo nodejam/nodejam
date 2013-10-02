@@ -1,9 +1,9 @@
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+ForaDbModel = require('./foramodel').ForaDbModel
 Q = require('../common/q')
 hasher = require('../common/lib/hasher').hasher
 models = require('./')
 
-class Credentials extends DatabaseModel
+class Credentials extends ForaDbModel
     
     @describeType: {
         type: @,

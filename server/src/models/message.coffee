@@ -1,8 +1,8 @@
 moment = require('../common/lib/moment')
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
 
-class Message extends DatabaseModel
+class Message extends ForaDbModel
     
     @describeType: {
         type: @,

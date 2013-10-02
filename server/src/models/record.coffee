@@ -1,10 +1,10 @@
 utils = require '../common/utils'
 mdparser = require('../common/lib/markdownutil').marked
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
 Q = require('../common/q')
 
-class Record extends DatabaseModel
+class Record extends ForaDbModel
     
     @describeType: {
         type: @,

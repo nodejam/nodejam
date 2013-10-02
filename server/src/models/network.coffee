@@ -1,8 +1,7 @@
-conf = require '../conf'
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
 
-class Network extends DatabaseModel
+class Network extends ForaDbModel
 
     @describeType: {
         type: @,

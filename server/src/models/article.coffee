@@ -19,11 +19,6 @@ class Article extends recordModule.Record
                 content: { type: 'string', required: false, maxLength: 100000 },
                 format: { type: 'string', $in: ['markdown'], default: 'markdown' },                
             },
-            childRecords: {
-                fields: {
-                    conversations: { type: 'array', contentType: models.Conversation }
-                }
-            },
             stub: 'title',
             formattedFields: [
                 { field: 'content', format: 'format' }
