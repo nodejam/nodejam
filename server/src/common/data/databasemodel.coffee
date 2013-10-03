@@ -215,6 +215,31 @@ class DatabaseModel extends BaseModel
         db.remove modelDescription.collection, { _id: @_id }
 
 
+    
+    associations: (name, context, db) =>
+        { context, db } = @getContext context, db
+        desc = @getTypeDefinition()
+        assoc = desc.associations[name]
+        (Q.async =>            
+            params = {}
+            params[assoc.key] = @_id.toString()
+            if assoc.multiplicity is "many"
+                yield assoc.type.getAll params, context, db
+            else
+                yield assoc.type.get params, context, db
+        )()             
+        
+
+
+    getExtendedField = (obj, name, context, db) ->
+        { context, db } = obj.getContext context, db
+        desc = obj.getTypeDefinition()
+        fieldDef = desc.extendedFields.fields[name]
+        (Q.async =>
+            yield fieldDef.model.get { parentid: obj._id.toString(), field: name }, context, db
+        )()             
+        
+
 
     onError: (errors, modelDescription) =>
         if @_id

@@ -40,11 +40,12 @@ class Collections extends Controller
 
                         yield collection.addRole req.user, 'admin'
                         
-                        if req.body.message
-                            yield collection.saveField 'message', req.body.message
-
-                        if req.body.about
-                            yield collection.saveField 'about', req.body.about
+                        info = new models.CollectionInfo {
+                            collectionid: collection._id.toString(),
+                            message: req.body.message,
+                            about: req.body.about
+                        }
+                        yield info.save { user: req.user }, db
                         
                         res.send collection
 

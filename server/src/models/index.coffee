@@ -2,6 +2,7 @@ modules = {
     user: 'User',
     credentials: 'Credentials',
     collection: 'Collection',
+    collectioninfo: 'CollectionInfo',
     record: 'Record',
     token: 'Token',
     userinfo: 'UserInfo',

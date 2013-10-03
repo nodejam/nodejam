@@ -35,7 +35,7 @@ class Collections extends Controller
             (Q.async =>
                 try
                     collection = yield models.Collection.get({ stub: req.params.collection, network: req.network.stub }, {}, db)
-                    message = yield collection.getField 'message'
+                    message = (yield collection.associations 'info').message
 
                     if message
                         message = mdparser message
@@ -73,7 +73,7 @@ class Collections extends Controller
             (Q.async =>
                 try                
                     collection = yield models.Collection.get({ stub: req.params.collection, network: req.network.stub }, {}, db)        
-                    about = yield collection.getField 'about'
+                    about = (yield collection.associations 'info').about
 
                     #We query admins and mods seperately since the fetch limits the records returned per call
                     leaders = yield collection.getMemberships(['admin','moderator'])
