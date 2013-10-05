@@ -222,21 +222,12 @@ class DatabaseModel extends BaseModel
         assoc = desc.associations[name]
         (Q.async =>            
             params = {}
-            params[assoc.key] = @_id.toString()
+            for k, v of assoc.key
+                params[v] = if k is '_id' then @_id.toString() else @[k]
             if assoc.multiplicity is "many"
                 yield assoc.type.getAll params, context, db
             else
                 yield assoc.type.get params, context, db
-        )()             
-        
-
-
-    getExtendedField = (obj, name, context, db) ->
-        { context, db } = obj.getContext context, db
-        desc = obj.getTypeDefinition()
-        fieldDef = desc.extendedFields.fields[name]
-        (Q.async =>
-            yield fieldDef.model.get { parentid: obj._id.toString(), field: name }, context, db
         )()             
         
 

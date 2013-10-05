@@ -8,7 +8,6 @@ class UserInfo extends ForaDbModel
         collection: 'userinfo',
         fields: {
             userid: 'string',
-            username: 'string',
             subscriptions: { type: 'array', contentType: models.Collection.Summary },
             following: { type: 'array', contentType: models.User.Summary },
             lastMessageAccessTime: { type: 'number', required: false },

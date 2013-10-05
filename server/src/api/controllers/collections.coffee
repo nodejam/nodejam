@@ -45,6 +45,7 @@ class Collections extends Controller
                             message: req.body.message,
                             about: req.body.about
                         }
+                        
                         yield info.save { user: req.user }, db
                         
                         res.send collection
