@@ -30,6 +30,7 @@ class User extends ForaDbModel
             username: 'string',
             name: 'string',
             location: 'string',
+            followerCount: 'number',
             email: { type: 'string', validate: -> emailRegex.test(@email) },
             accessToken: { type: 'string', required: false },
             lastLogin: 'number',
@@ -94,12 +95,8 @@ class User extends ForaDbModel
 
 
     constructor: (params) ->
+        @followerCount ?= 0
         super
-        @about ?= ''
-        @karma ?= 1
-        @preferences ?= {}
-        @followerCount ?= []
-        @totalItemCount ?= 0
 
 
 

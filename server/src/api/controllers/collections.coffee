@@ -1,4 +1,5 @@
 conf = require '../../conf'
+Mapper = require('../../common/data/mapper').Mapper
 db = new (require '../../common/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../common/utils'
@@ -17,6 +18,10 @@ class Collections extends Controller
                         res.send 'A collection with the same name exists.'
                     else
                         collection = new models.Collection
+                        collection.network = req.network.stub
+                        collection.stub = stub
+                        
+                        ###
                         collection.stub = stub
                         collection.network = req.network.stub
                         collection.name = req.body.name
@@ -27,15 +32,20 @@ class Collections extends Controller
                         collection.iconThumbnail = req.body.iconThumbnail                                                
                         collection.recordTypes = if req.body.recordTypes then req.body.recordTypes.split(',') else ['article']
                         collection.cover = req.body.cover
-                        collection.createdBy = req.user
-                        collection.createdAt = Date.now()
                         collection.settings = new models.Collection.Settings
-                        
+
                         collection.settings.comments = {
                             enabled: if req.body.settings_comments_enabled is "false" then false
                             opened: if req.body.settings_comments_opened is "false" then false
                         }
+                        ###
                         
+                        mapper = new Mapper()
+                        mapper.map collection, [req.params, req.query, req.body]
+
+                        if not collection.recordTypes?.length
+                            collection.recordTypes = ['article']
+                        collection.createdBy = req.user
                         collection = yield collection.save { user: req.user }, db
 
                         yield collection.addRole req.user, 'admin'

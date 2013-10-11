@@ -60,9 +60,7 @@ class Record extends ForaDbModel
         @recommendations ?= []
         @meta ?= []
         @tags ?= []
-        @rating ?= 1
-        @createdAt ?= Date.now()
-        
+       
     
     
     addMetaList: (metaList) =>

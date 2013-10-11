@@ -20,12 +20,9 @@ class Records extends Controller
                     record = new type()
                     record.type = req.body.type
                     record.createdBy = req.user
+                    record.state = req.body.state ? 'draft'
                     record.rating = 0
 
-                    if req.body.publish is 'true'
-                        record.state = 'published'
-                    else
-                        record.state = 'draft'
                     record.savedAt = Date.now()
 
                     for fieldName, def of type.getTypeDefinition(type, false).fields
@@ -36,11 +33,11 @@ class Records extends Controller
                                 when "string"                        
                                     record[fieldName] = req.body[fieldName]
                         else
-                            if def.default
-                                if typeof def.default is "function"
-                                    record[fieldName] = def.default.call record, req.body
+                            if def.map?.default
+                                if typeof def.map.default is "function"
+                                    record[fieldName] = def.map.default.call record, req.body
                                 else
-                                    record[fieldName] = def.default
+                                    record[fieldName] = def.map.default
                     
                     record = yield collection.addRecord record
                     res.send record

@@ -76,7 +76,7 @@ init = () ->
                 utils.log "Creating #{article.title}..."
                 
                 article.content = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
-                article.publish = true
+                article.state = 'published'
                 collection = article._collection
                 
                 meta = article._meta

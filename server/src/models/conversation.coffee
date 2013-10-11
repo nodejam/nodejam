@@ -18,8 +18,8 @@ class Conversation extends recordModule.Record
 
 
     constructor: (params) ->
-        super
         @type ?= 'conversation'
+        super
 
 
 
