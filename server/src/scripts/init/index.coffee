@@ -7,9 +7,9 @@ fsutils = require '../../common/fsutils'
 
 #create assetPaths for a whole year.
 today = Date.now()
-for i in [0..365] by 1
+for i in [0..999] by 1
     do (i) ->
-        newPath = path.join fsutils.assetBasePath, fsutils.getDateFormattedDir(today + (i * 86400000))
+        newPath = path.join fsutils.assetBasePath, "#{i}"
         fs.exists newPath, (exists) ->
             if not exists
                 fs.mkdir newPath, ->

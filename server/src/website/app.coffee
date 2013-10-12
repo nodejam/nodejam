@@ -1,7 +1,7 @@
 express = require 'express'
 conf = require '../conf'
 utils = require '../common/utils'
-webutils = require '../common/webutils'
+expressutils = require '../common/expressutils'
 controllers = require './controllers'
 
 host = conf.app.websiteHost
@@ -27,7 +27,7 @@ getController = (name) ->
         else throw new Error "Cannot find controller #{name}."
         
 
-webutils.setup app, getController, (findHandler) ->
+expressutils.setup app, getController, (findHandler) ->
     # Routes
     app.get '/', findHandler('home', (c) -> c.index)
     app.get '/login', findHandler('home', (c) -> c.login)

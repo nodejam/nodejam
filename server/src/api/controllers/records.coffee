@@ -2,7 +2,7 @@ conf = require '../../conf'
 db = new (require '../../common/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../common/utils'
-typeUtil = require '../../common/data/typeutil'
+typeutils = require '../../common/data/typeutils'
 Controller = require('./controller').Controller
 controllers = require './'
 Q = require('../../common/q')
@@ -26,7 +26,7 @@ class Records extends Controller
                     record.savedAt = Date.now()
 
                     for fieldName, def of type.getTypeDefinition(type, false).fields
-                        def = typeUtil.getFullTypeDefinition def
+                        def = typeutils.getFullTypeDefinition def
                         
                         if req.body[fieldName]
                             switch def.type

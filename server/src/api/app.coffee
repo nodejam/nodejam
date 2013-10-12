@@ -1,8 +1,9 @@
 express = require 'express'
 conf = require '../conf'
 utils = require '../common/utils'
-webutils = require '../common/webutils'
+expressutils = require '../common/expressutils'
 controllers = require './controllers'
+validator = require 'validator'
 
 host = conf.app.apiHost
 port = conf.app.apiPort
@@ -20,7 +21,8 @@ getController = (name) ->
         when 'records' then new controllers.Records()
         else throw new Error "Cannot find controller #{name}."
 
-webutils.setup app, getController, (findHandler) ->
+
+expressutils.setup app, getController, (findHandler) ->
     app.post '/api/users', findHandler('users', (c) -> c.create)
     app.get '/api/users/:username', findHandler('users', (c) -> c.item)
 

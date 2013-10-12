@@ -36,7 +36,6 @@ class Users extends Controller
                 res.cookie "userid", result.user._id.toString()
                 res.cookie "username", result.user.username
                 res.cookie "fullName", result.user.name
-                res.cookie "assetPath", result.user.assetPath
                 res.cookie "token", result.token
                 res.redirect "/"
             else

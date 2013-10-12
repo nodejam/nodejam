@@ -1,7 +1,7 @@
 databaseModule = require('./database').Database
 utils = require('../utils')
 BaseModel = require('./basemodel').BaseModel
-typeUtil = require('./typeutil')
+typeutils = require('./typeutils')
 Q = require('../q')
 
 class DatabaseModel extends BaseModel
@@ -121,18 +121,18 @@ class DatabaseModel extends BaseModel
             result = {}
             for name, field of modelDescription.fields
                    
-                fieldDef = typeUtil.getFullTypeDefinition field                
+                fieldDef = typeutils.getFullTypeDefinition field                
                 value = obj[name]
 
-                if typeUtil.isUserDefinedType fieldDef.type
+                if typeutils.isUserDefinedType fieldDef.type
                     if value
                         result[name] = @constructModel value, @getTypeDefinition(fieldDef.type), context, db
                 else
                     if value
                         if fieldDef.type is 'array'
                             arr = []
-                            contentType = typeUtil.getFullTypeDefinition fieldDef.contentType
-                            if typeUtil.isUserDefinedType contentType.type
+                            contentType = typeutils.getFullTypeDefinition fieldDef.contentType
+                            if typeutils.isUserDefinedType contentType.type
                                 for item in value
                                     arr.push @constructModel item, @getTypeDefinition(contentType.type), context, db
                             else

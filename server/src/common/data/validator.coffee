@@ -1,4 +1,4 @@
-typeUtil = require('./typeutil')
+typeutils = require('./typeutils')
 
 class Validator
 
@@ -27,7 +27,7 @@ class Validator
         errors = []
 
         if not def.useCustomValidationOnly                
-            fieldDef = typeUtil.getFullTypeDefinition(def)
+            fieldDef = typeutils.getFullTypeDefinition(def)
             
             if fieldDef.required and not value?
                 errors.push "#{fieldName} is #{JSON.stringify value}"
@@ -41,7 +41,7 @@ class Validator
                 else
                     #If it is a custom class or a primitive
                     if fieldDef._type isnt ''                        
-                        if (typeUtil.isUserDefinedType(fieldDef._type) and not (value instanceof fieldDef._type)) or (not typeUtil.isUserDefinedType(fieldDef._type) and typeof(value) isnt fieldDef._type)
+                        if (typeutils.isUserDefinedType(fieldDef._type) and not (value instanceof fieldDef._type)) or (not typeutils.isUserDefinedType(fieldDef._type) and typeof(value) isnt fieldDef._type)
                             errors.push "#{fieldName} is #{JSON.stringify value}"
                             errors.push "#{fieldName} should be a #{fieldDef._type}."
 
@@ -53,7 +53,7 @@ class Validator
                                 if fieldDef.$in.indexOf(value) is -1
                                     errors.push "#{fieldName} must be one of #{JSON.stringify(fieldDef.$in)}."
 
-                        if typeUtil.isUserDefinedType(fieldDef._type) and value.validate
+                        if typeutils.isUserDefinedType(fieldDef._type) and value.validate
                             errors = errors.concat value.validate()
                         else
                             #We should also check for objects inside object. (ie, do we have fields inside the fieldDef?)

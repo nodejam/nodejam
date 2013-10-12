@@ -77,12 +77,13 @@ class Auth extends controller.Controller
                                             
                                                 #Save profile pic
                                                 getDetails (e, data) =>
-                                                    if data.length and data[0]?                                            
-                                                        fileName = path.join user.assetPath, user.username
+                                                    if data.length and data[0]?
+                                                        assetPath = utils.getHashCode(user.username) % 1000
+                                                        fileName = path.join assetPath, user.username
                                                         netutils.downloadImage(@parseTwitterUserDetails(data[0]).pictureUrl)
                                                             .then (filePath) =>
-                                                                picPath = fsutils.getAssetFilePath user.assetPath, "#{user.username}.jpg"
-                                                                thumbPath = fsutils.getAssetFilePath user.assetPath, "#{user.username}_t.jpg"
+                                                                picPath = fsutils.getAssetFilePath assetPath, "#{user.username}.jpg"
+                                                                thumbPath = fsutils.getAssetFilePath assetPath, "#{user.username}_t.jpg"
                                                                 utils.log "Resizing to " + picPath
                                                                 gm(filePath).resize(128, 128).write picPath, (err) ->                                                                    
                                                                     if not err
@@ -93,7 +94,6 @@ class Auth extends controller.Controller
                                                 res.cookie "userid", user._id.toString()
                                                 res.cookie "username", user.username
                                                 res.cookie "fullName", user.name
-                                                res.cookie "assetPath", user.assetPath
                                                 res.cookie "token", credentials.token
                                                 res.redirect "/"                                                
                                     else

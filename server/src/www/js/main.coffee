@@ -63,7 +63,6 @@ class App
         $.removeCookie('userid')
         $.removeCookie('username')
         $.removeCookie('fullName')
-        $.removeCookie('assetPath')    
         $.removeCookie('token')    
 
 
@@ -74,7 +73,6 @@ class App
                 id: $.cookie('userid'),
                 username: $.cookie('username'),
                 name: $.cookie('fullName'),
-                assetPath: $.cookie('assetPath'),
                 token: $.cookie('token')
             }
               

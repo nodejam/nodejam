@@ -1,5 +1,5 @@
 utils = require '../utils'
-typeutil = require './typeutil'
+typeutils = require './typeutils'
 
 class Mapper
 
@@ -18,9 +18,9 @@ class Mapper
 
     
     getValue: (obj, name, def, prefix, source) =>
-        def = typeutil.getFullTypeDefinition def
+        def = typeutils.getFullTypeDefinition def
         fullName = prefix.concat(name).join '_'
-        if not typeutil.isUserDefinedType(def.type)
+        if not typeutils.isUserDefinedType(def.type)
             val = source[fullName]
             
             if val
@@ -28,7 +28,7 @@ class Mapper
                     obj[name] = @parsePrimitive val, def.type
                 else
                     if def.map?.sourceFormat is 'csv'
-                        contentType = typeutil.getFullTypeDefinition def.contentType
+                        contentType = typeutils.getFullTypeDefinition def.contentType
                         obj[name] = (@parsePrimitive(vs, contentType) for v in val.split(','))
                     else
                         throw new Error "Mapper cannot parse this array: Unknown sourceFormat"

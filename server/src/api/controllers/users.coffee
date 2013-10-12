@@ -24,7 +24,7 @@ class Users extends controller.Controller
                 try                    
                     result = yield models.User.create(req.body, { type: 'builtin', value: { password: req.body.credentials_password } }, { user: req.user }, db)
                     res.contentType 'json'
-                    res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
+                    res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
                 catch e
                     next e)()
         else
@@ -50,7 +50,7 @@ class Users extends controller.Controller
                     db
                 )
                 res.contentType 'json'
-                res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token, assetPath: result.user.assetPath }
+                res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
             catch e
                 next e)()
 

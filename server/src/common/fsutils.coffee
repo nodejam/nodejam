@@ -1,6 +1,6 @@
 path = require 'path'
 fs = require 'fs'
-
+utils = require './utils'
 
 dirIsValid = (dir) ->
     not /(^\/|[~.])/.test dir
@@ -13,7 +13,7 @@ fileIsValid = (file) ->
 pubdir = path.resolve __dirname, '../../www-user'
 tempBasePath = path.join pubdir, 'temp'
 assetBasePath = path.join pubdir, 'assetpaths'
-    
+
 
 getTempFilePath = (filename) ->
     if fileIsValid filename
@@ -32,7 +32,6 @@ getAssetFilePath = (assetUrl, filename) ->
     dir = assetUrl.split('/').pop()
     if dirIsValid(dir) and fileIsValid(filename)
         path.join(assetBasePath, dir, filename)
-
 
 exports.tempBasePath = tempBasePath       
 exports.assetBasePath = assetBasePath       

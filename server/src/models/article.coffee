@@ -16,7 +16,7 @@ class Article extends recordModule.Record
                 synopsis: { type: 'string', required: false, maxLength: 2000 },
                 cover: { type: 'string', required: false, maxLength: 200 },
                 smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
-                content: { type: 'string', required: false, maxLength: 100000 },
+                content: { type: 'string', required: false, maxLength: 100000, sanitize: { html: true } },
                 format: { type: 'string', $in: ['markdown'], map: { default: 'markdown' } },
             },
             stub: 'title',

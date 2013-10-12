@@ -39,6 +39,16 @@ fixUrl = (url) ->
 log = (msg) ->
     console.log msg
     
+    
+getHashCode = (str) ->
+    hash = 0
+    if str.length isnt 0
+        for i in [0..str.length] by 1
+            char = str.charCodeAt(i)
+            hash = ((hash << 5) - hash) + char
+            hash |= 0 # Convert to 32bit integer
+    hash
+    
         
 dumpError = (err) ->
     if err
@@ -54,4 +64,5 @@ exports.extend = extend
 exports.uniqueId = uniqueId
 exports.fixUrl = fixUrl
 exports.log = log
+exports.getHashCode = getHashCode
 exports.dumpError = dumpError
