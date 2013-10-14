@@ -42,13 +42,14 @@ for file in files
             contents.defaultTemplates = templates
             networks.push new models.Network(contents)
 
-
+settings.pubdir ?= path.resolve __dirname, '../../www-user'
 
 module.exports = {
     app: settings.app,
     db: settings.db,
     auth: settings.auth,
     admins: settings.admins,
+    pubdir: settings.pubdir,
     networks,
     templates
 }

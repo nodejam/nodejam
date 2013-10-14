@@ -9,7 +9,7 @@ fsutils = require '../../common/fsutils'
 today = Date.now()
 for i in [0..999] by 1
     do (i) ->
-        newPath = path.join fsutils.assetBasePath, "#{i}"
+        newPath = path.join fsutils.getAssetBasePath(), "#{i}"
         fs.exists newPath, (exists) ->
             if not exists
                 fs.mkdir newPath, ->

@@ -56,6 +56,7 @@ class ExpressRequestWrapper
 
     
     populateObject: (obj, name, def, prefix) =>
+        if name isnt '_id'
             def = typeutils.getFieldDefinition def
             fullName = prefix.concat(name).join '_'
             if not typeutils.isUserDefinedType(def.type)
@@ -63,7 +64,7 @@ class ExpressRequestWrapper
                 if val
                     obj[name] = @parsePrimitive val, def, fullName                
                 else
-                    if name isnt '_id' and def.map isnt false and def.default
+                    if def.map isnt false and def.default
                         obj[name] = if typeof def.map.default is "function" then def.map.default(obj) else def.map.default
             else
                 prefix.push name    

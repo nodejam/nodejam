@@ -1,3 +1,4 @@
+conf = require '../conf'
 path = require 'path'
 fs = require 'fs'
 utils = require './utils'
@@ -10,14 +11,17 @@ fileIsValid = (file) ->
     not /(\.\.|~|\/)/.test file
 
 
-pubdir = path.resolve __dirname, '../../www-user'
-tempBasePath = path.join pubdir, 'temp'
-assetBasePath = path.join pubdir, 'assetpaths'
+getTempBasePath = ->    
+    path.join conf.pubdir, 'temp'
+    
+
+getAssetBasePath = ->
+    path.join conf.pubdir, 'assetpaths'
 
 
 getTempFilePath = (filename) ->
     if fileIsValid filename
-        path.join pubdir, "temp", filename 
+        path.join conf.pubdir, "temp", filename 
 
 
 getDateFormattedDir = (date) ->
@@ -31,11 +35,14 @@ getDateFormattedDir = (date) ->
 getAssetFilePath = (assetUrl, filename) ->
     dir = assetUrl.split('/').pop()
     if dirIsValid(dir) and fileIsValid(filename)
-        path.join(assetBasePath, dir, filename)
+        path.join(getAssetBasePath(), dir, filename)
 
-exports.tempBasePath = tempBasePath       
-exports.assetBasePath = assetBasePath       
-
-exports.getDateFormattedDir = getDateFormattedDir
+    
+exports.getTempBasePath = getTempBasePath
+exports.getAssetBasePath = getAssetBasePath
 exports.getTempFilePath = getTempFilePath
+exports.getDateFormattedDir = getDateFormattedDir
 exports.getAssetFilePath = getAssetFilePath
+
+
+

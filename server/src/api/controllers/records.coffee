@@ -17,27 +17,17 @@ class Records extends Controller
                     collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
                     type = models.Record.getTypeDefinition().discriminator { type: req.body('type') }
                 
-                    record = new type()
-                    record.type = req.body('type')
-                    record.createdBy = req.user
-                    record.state = req.body('state') ? 'draft'
-                    record.rating = 0
-
-                    record.savedAt = Date.now()
-
+                    record = new type {
+                        type: req.body('type'),
+                        createdBy: req.user,
+                        state: req.body('state') ? 'draft',
+                        rating: 0,
+                        savedAt: Date.now(),
+                        format: 'markdown'
+                    }
+                    
                     for fieldName, def of type.getTypeDefinition(type, false).fields
-                        def = typeutils.getFieldDefinition def
-                        
-                        if req.body(fieldName)
-                            switch def.type
-                                when "string"                        
-                                    record[fieldName] = req.body('fieldName')
-                        else
-                            if def.map?.default
-                                if typeof def.map.default is "function"
-                                    record[fieldName] = def.map.default.call record
-                                else
-                                    record[fieldName] = def.map.default
+                        req.populateObject record, fieldName, def, []
                     
                     record = yield collection.addRecord record
                     res.send record
