@@ -1,5 +1,4 @@
 conf = require '../../conf'
-Mapper = require('../../common/data/mapper').Mapper
 db = new (require '../../common/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../common/utils'
@@ -10,10 +9,10 @@ class Collections extends Controller
     
     create: (req, res, next) =>
         @ensureSession arguments, =>            
-            stub = req.body.name.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
+            stub = req.body('name').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
             (Q.async =>
                 try
-                    collection = yield models.Collection.get({ network: req.network.stub, $or: [{ stub }, { name: req.body.name }] }, { user: req.user }, db)
+                    collection = yield models.Collection.get({ network: req.network.stub, $or: [{ stub }, { name: req.body('name') }] }, { user: req.user }, db)
                     if collection
                         res.send 'A collection with the same name exists.'
                     else
@@ -40,9 +39,8 @@ class Collections extends Controller
                         }
                         ###
                         
-                        mapper = new Mapper()
-                        mapper.map collection, [req.params, req.query, req.body]
-
+                        req.map collection, ['name', 'type', 'description', 'category', 'icon', 'iconThumbnail', 'recordTypes', 'cover', 'settings']
+                        
                         if not collection.recordTypes?.length
                             collection.recordTypes = ['article']
                         collection.createdBy = req.user
@@ -52,8 +50,8 @@ class Collections extends Controller
                         
                         info = new models.CollectionInfo {
                             collectionid: collection._id.toString(),
-                            message: req.body.message,
-                            about: req.body.about
+                            message: req.body('message'),
+                            about: req.body('about')
                         }
                         
                         yield info.save { user: req.user }, db
@@ -69,16 +67,16 @@ class Collections extends Controller
         @ensureSession arguments, =>
             (Q.async =>
                 try
-                    collection = yield models.Collection.get({ stub: req.params.collection, network: req.network.stub }, { user: req.user }, db)
+                    collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db)
                     if req.user.id is collection.createdBy.id or @isAdmin(req.user)
-                        collection.description = req.body.description
-                        collection.icon = req.body.icon
-                        collection.iconThumbnail = req.body.iconThumbnail 
-                        if req.body.cover                   
-                            collection.cover = req.body.cover
+                        collection.description = req.body('description')
+                        collection.icon = req.body('icon')
+                        collection.iconThumbnail = req.body('iconThumbnail')
+                        if req.body('cover')
+                            collection.cover = req.body('cover')
                         else
                             collection.cover = ''
-                        collection.tile = req.body.tile ? '/images/collection-tile.png'                                        
+                        collection.tile = req.body('tile') ? '/images/collection-tile.png'                                        
                         collection = yield collection.save()
                         res.send collection
                     else
@@ -92,7 +90,7 @@ class Collections extends Controller
         @ensureSession arguments, =>
             (Q.async =>
                 try
-                    collection = yield models.Collection.get({ stub: req.params.collection, network: req.network.stub }, { user: req.user }, db)
+                    collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db)
                     if @isAdmin(req.user)
                         yield collection.destroy()
                         res.send { success: true }
@@ -107,7 +105,7 @@ class Collections extends Controller
         @ensureSession arguments, =>
             (Q.async =>
                 try
-                    collection = yield models.Collection.get({ stub: req.params.collection, network: req.network.stub }, { user: req.user }, db)
+                    collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db)
                     yield collection.join req.user
                     res.send { success: true }
                 catch 

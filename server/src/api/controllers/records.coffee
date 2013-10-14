@@ -14,28 +14,28 @@ class Records extends Controller
         @ensureSession arguments, =>
             (Q.async =>
                 try
-                    collection = yield models.Collection.get { stub: req.params.collection, network: req.network.stub }, { user: req.user }, db
-                    type = models.Record.getTypeDefinition().discriminator req.body        
+                    collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
+                    type = models.Record.getTypeDefinition().discriminator { type: req.body('type') }
                 
                     record = new type()
-                    record.type = req.body.type
+                    record.type = req.body('type')
                     record.createdBy = req.user
-                    record.state = req.body.state ? 'draft'
+                    record.state = req.body('state') ? 'draft'
                     record.rating = 0
 
                     record.savedAt = Date.now()
 
                     for fieldName, def of type.getTypeDefinition(type, false).fields
-                        def = typeutils.getFullTypeDefinition def
+                        def = typeutils.getFieldDefinition def
                         
-                        if req.body[fieldName]
+                        if req.body(fieldName)
                             switch def.type
                                 when "string"                        
-                                    record[fieldName] = req.body[fieldName]
+                                    record[fieldName] = req.body('fieldName')
                         else
                             if def.map?.default
                                 if typeof def.map.default is "function"
-                                    record[fieldName] = def.map.default.call record, req.body
+                                    record[fieldName] = def.map.default.call record
                                 else
                                     record[fieldName] = def.map.default
                     
@@ -53,9 +53,9 @@ class Records extends Controller
         @ensureSession arguments, =>        
             (Q.async =>
                 try
-                    collection = yield models.Collection.get { stub: req.params.collection, network: req.network.stub }, { user: req.user }, db
-                    type = models.Record.getTypeDefinition().discriminator req.body        
-                    record = yield type.getById(req.params.record, { user: req.user }, db)
+                    collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
+                    type = models.Record.getTypeDefinition().discriminator { type: req.body('type') }
+                    record = yield type.getById(req.params('record'), { user: req.user }, db)
                     
                     if record
                         if record.createdBy.id is req.user.id or @isAdmin(req.user)
@@ -79,7 +79,7 @@ class Records extends Controller
         @ensureSession arguments, => 
             (Q.async =>
                 try
-                    record = yield models.Record.getById(req.params.record, { user: req.user }, db)
+                    record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
                     if record
                         if record.createdBy.id is req.user.id or @isAdmin(req.user)
                             record = yield record.destroy()
@@ -99,12 +99,12 @@ class Records extends Controller
             if contentType is 'text'
                 (Q.async =>
                     try
-                        record = yield models.Record.getById(req.params.record, { user: req.user }, db)
+                        record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
                         comment = new models.Comment()
                         comment.createdBy = req.user
                         comment.collection = collection.stub
                         comment.itemid = record._id.toString()
-                        comment.data = req.body.data
+                        comment.data = req.body('data')
                         comment = yield comment.save({ user: req.user }, db)
                         res.send comment
                     catch e
@@ -120,10 +120,10 @@ class Records extends Controller
             if @isAdmin(req.user)
                 (Q.async =>
                     try
-                        record = yield models.Record.getById(req.params.id, { user: req.user }, db)
+                        record = yield models.Record.getById(req.params('id'), { user: req.user }, db)
                         if record 
-                            if req.body.meta
-                                record = yield record.addMetaList req.body.meta.split(',')
+                            if req.body('meta')
+                                record = yield record.addMetaList req.body('meta').split(',')
                             res.send record
                         else
                             next new Error "Record not found"

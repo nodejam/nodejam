@@ -1,8 +1,9 @@
 express = require 'express'
 utils = require './utils'
+typeutils = require './data/typeutils'
 validator = require 'validator'
 conf = require '../conf'
-
+ExpressRequestWrapper = require('./expressrequestwrapper').ExpressRequestWrapper
 
 sanitize = (sources, options) ->
     if not options?.skip
@@ -31,35 +32,6 @@ http404 = (req, res, next) ->
     res.render('404', { url: req.url });
     res.send(404, { error: 'HTTP 404. There is no water here.' })
     
-###
-    A safe wrapper around the request, to hide access to query, params and body.
-    This allows us to sanitize those fields when requested.    
-###
-class RequestWrapper
-
-    constructor: (@raw) ->
-        @headers = @raw.headers
-    
-    
-    getParameter: (src, name, type = 'string') =>
-        @raw[src][name]
-        
-    
-    params: (name, type) ->
-        @getParameter 'params', name, type
-        
-    
-    query: (name, type) ->
-        @getParameter 'query', name, type
-
-
-    body: (name, type) ->
-        @getParameter 'body', name, type
-    
-    
-    files: (name) ->
-        @getParameter 'files', name
-    
 
 
 setup = (app, getController, cb) ->
@@ -81,8 +53,8 @@ setup = (app, getController, cb) ->
         controller = getController name
         handler = getHandler(controller)
         
-        (req, res, next) ->
-            #req = new RequestWrapper _req
+        (_req, res, next) ->
+            req = new ExpressRequestWrapper _req
             
             network = getNetwork req.headers.host
             if network

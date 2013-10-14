@@ -121,7 +121,7 @@ class DatabaseModel extends BaseModel
             result = {}
             for name, field of modelDescription.fields
                    
-                fieldDef = typeutils.getFullTypeDefinition field                
+                fieldDef = typeutils.getFieldDefinition field                
                 value = obj[name]
 
                 if typeutils.isUserDefinedType fieldDef.type
@@ -131,7 +131,7 @@ class DatabaseModel extends BaseModel
                     if value
                         if fieldDef.type is 'array'
                             arr = []
-                            contentType = typeutils.getFullTypeDefinition fieldDef.contentType
+                            contentType = typeutils.getFieldDefinition fieldDef.contentType
                             if typeutils.isUserDefinedType contentType.type
                                 for item in value
                                     arr.push @constructModel item, @getTypeDefinition(contentType.type), context, db
@@ -146,6 +146,14 @@ class DatabaseModel extends BaseModel
 
             makeResult result, ((o) -> new modelDescription.type o), context, db                
                 
+    
+    
+    create: =>
+        if not @_id
+            @save.apply @, arguments
+        else
+            throw new Error "Cannot create. @_id is not empty."
+        
     
     
     save: (context, db) =>

@@ -4,7 +4,7 @@ isUserDefinedType = (type) ->
     ['string', 'integer', 'number', 'boolean', 'object', 'array', ''].indexOf(type) is -1   
     
 
-getFullTypeDefinition = (def) ->
+getFieldDefinition = (def) ->
     #Convert short hands to full definitions.
     #eg: 'string' means { type: 'string', required: true }
     if typeof(def) is 'string'
@@ -31,14 +31,9 @@ getFullTypeDefinition = (def) ->
 
     fieldDef.required ?= true
     fieldDef.type ?= ''
+    fieldDef 
         
-    fieldDef._type = fieldDef.type ? fieldDef.getType()
-    if fieldDef._type is 'array'
-        fieldDef._contentType = fieldDef.contentType ? fieldDef.getContentType()
-    
-    fieldDef    
-    
     
 exports.isUserDefinedType = isUserDefinedType
-exports.getFullTypeDefinition = getFullTypeDefinition
+exports.getFieldDefinition = getFieldDefinition
 

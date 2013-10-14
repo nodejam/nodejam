@@ -28,7 +28,7 @@ class User extends ForaDbModel
         fields: {
             username: 'string',
             name: 'string',
-            location: 'string',
+            location: 'string !required',
             followerCount: 'number',
             email: { type: 'string', validate: -> emailRegex.test(@email) },
             accessToken: { type: 'string', required: false },
@@ -44,28 +44,23 @@ class User extends ForaDbModel
        
 
    
-    @create: (userDetails, authInfo, context, db) ->
+    create: (authInfo, context, db) ->
         (Q.async =>
             #We can't create a new user with an existing username.
-            username = userDetails.username
-            user = yield User.get { username }, context, db
-            
-            #We have to download the profile pic.
+            if not @_id and not (yield User.get { @username }, context, db)
+                @preferences = { canEmail: true }
 
-            if not user
-                user = new User { username: userDetails.username }
-                user.updateFrom userDetails
-                user = yield user.save context, db
+                user = yield @save context, db
                 
                 #Also create a userinfo
                 userinfo = new (models.UserInfo) {
-                    userid: user._id.toString(),
+                    userid: @_id.toString(),
                 }
                 userinfo = yield userinfo.save context, db
                 
                 credentials = new (models.Credentials) {
                     userid: user._id.toString(),
-                    username,
+                    @username,
                     token: utils.uniqueId(24)                    
                 }
 
@@ -74,13 +69,13 @@ class User extends ForaDbModel
                         result = yield Q.nfcall(hasher, { plaintext: authInfo.value.password })
                         salt = result.salt.toString 'hex'
                         hash = result.key.toString 'hex'
-                        credentials.builtin = { method: 'PBKDF2', username, hash, salt }
+                        credentials.builtin = { method: 'PBKDF2', @username, hash, salt }
                     when 'twitter'
                         credentials.twitter = authInfo.value
                 
                 credentials = yield credentials.save context, db
                         
-                { user, token: credentials.token }            
+                { user, token: credentials.token }
             else
                 { success: false, error: "User aready exists" }
         )()
@@ -105,17 +100,6 @@ class User extends ForaDbModel
 
     getAssetUrl: =>
         "/pub/assetpaths/#{utils.getHashCode(@username) % 1000}"
-
-
-
-    updateFrom: (userDetails) =>
-        @name = userDetails.name
-        @location = userDetails.location
-        @email = userDetails.email ? 'unknown@foraproject.org'
-        @lastLogin = Date.now()
-        @preferences ?= { canEmail: true }
-        if userDetails.about
-            @about = userDetails.about
 
 
 

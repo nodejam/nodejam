@@ -11,8 +11,8 @@ class Records extends controller.Controller
         @attachUser arguments, =>
             (Q.async =>
                 try                
-                    collection = yield models.Collection.get({ stub: req.params.collection, network: req.network.stub }, {}, db)
-                    record = yield models.Record.get({ 'collection.id': collection._id.toString(), stub: (req.params.stub) }, {}, db)
+                    collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, {}, db)
+                    record = yield models.Record.get({ 'collection.id': collection._id.toString(), stub: req.params('stub') }, {}, db)
                     author = yield models.User.getById record.createdBy.id, {}, db
                     authorAssetUrl = author.getAssetUrl()
                     res.render req.network.getView('recordtypes', record.constructor.getTypeDefinition().name), { 

@@ -9,7 +9,7 @@ Q = require('../../common/q')
 class Users extends controller.Controller
     
     create: (req, res, next) =>
-        switch req.body.credentials_type
+        switch req.body('credentials_type')
             when 'builtin'
                 @createBuiltinUser req, res, next
             when 'twitter'
@@ -18,11 +18,19 @@ class Users extends controller.Controller
 
 
     createBuiltinUser: (req, res, next) =>
-        if req.body.secret is conf.auth.adminkeys.default
-            req.body.createdVia = 'internal' 
+        if req.body('secret') is conf.auth.adminkeys.default
+
+            user = new models.User {
+                username: req.body 'username'            
+                preferences: { canEmail: true },
+                createdVia: 'internal'
+            }
+            @updateUser user, req
+            
             (Q.async =>
                 try                    
-                    result = yield models.User.create(req.body, { type: 'builtin', value: { password: req.body.credentials_password } }, { user: req.user }, db)
+                    authInfo = { type: 'builtin', value: { password: req.body('credentials_password') } }
+                    result = yield user.create authInfo, { user: req.user }, db
                     res.contentType 'json'
                     res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
                 catch e
@@ -35,30 +43,41 @@ class Users extends controller.Controller
     createTwitterUser: (req, res, next) =>
         (Q.async =>
             try
-                result = yield models.User.create(
-                    req.body, 
-                    { 
-                        type: 'twitter', 
-                        value: { 
-                            id: req.body.credentials_id, 
-                            username: req.body.credentials_username,    
-                            accessToken: req.body.credentials_accessToken, 
-                            accessTokenSecret: req.body.credentials_accessTokenSecret 
-                        } 
-                    }, 
-                    { user: req.user }, 
-                    db
-                )
+                user = new models.User {
+                    username: req.body 'username'            
+                }
+                @updateUser user, req
+
+                authInfo = { 
+                    type: 'twitter', 
+                    value: { 
+                        id: req.body('credentials_id'), 
+                        username: req.body('credentials_username'),    
+                        accessToken: req.body('credentials_accessToken'), 
+                        accessTokenSecret: req.body('credentials_accessTokenSecret')
+                    } 
+                }
+                result = yield user.create authInfo, { user: req.user }, db
                 res.contentType 'json'
                 res.send { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
             catch e
                 next e)()
+                
 
+
+    updateUser: (user, req) =>
+        
+        user.name = req.body('name')
+        user.location = req.body('location')
+        user.email = req.body('email') ? 'unknown@foraproject.org'
+        user.lastLogin = Date.now()
+        user.about = req.body('about')
+        
 
 
     item: (req, res, next) =>
         (Q.async =>
-            user = yield models.User.get { username: req.params.username }, {}, db
+            user = yield models.User.get { username: req.params('username') }, {}, db
             if user
                 res.send user.summarize()
             else

@@ -27,7 +27,7 @@ class Validator
         errors = []
 
         if not def.useCustomValidationOnly                
-            fieldDef = typeutils.getFullTypeDefinition(def)
+            fieldDef = typeutils.getFieldDefinition def
             
             if fieldDef.required and not value?
                 errors.push "#{fieldName} is #{JSON.stringify value}"
@@ -35,15 +35,15 @@ class Validator
             
             #Check types.       
             if value
-                if fieldDef._type is 'array'
+                if fieldDef.type is 'array'
                     for item in value                        
-                        @addError errors, fieldName, @validateField(obj, item, "[#{fieldName} item]", fieldDef._contentType)
+                        @addError errors, fieldName, @validateField(obj, item, "[#{fieldName} item]", fieldDef.contentType)
                 else
                     #If it is a custom class or a primitive
-                    if fieldDef._type isnt ''                        
-                        if (typeutils.isUserDefinedType(fieldDef._type) and not (value instanceof fieldDef._type)) or (not typeutils.isUserDefinedType(fieldDef._type) and typeof(value) isnt fieldDef._type)
+                    if fieldDef.type isnt ''                        
+                        if (typeutils.isUserDefinedType(fieldDef.type) and not (value instanceof fieldDef.type)) or (not typeutils.isUserDefinedType(fieldDef.type) and typeof(value) isnt fieldDef.type)
                             errors.push "#{fieldName} is #{JSON.stringify value}"
-                            errors.push "#{fieldName} should be a #{fieldDef._type}."
+                            errors.push "#{fieldName} should be a #{fieldDef.type}."
 
                         if fieldDef.type is 'string'
                             if fieldDef.maxLength and fieldDef.maxLength < value.length
@@ -53,7 +53,7 @@ class Validator
                                 if fieldDef.$in.indexOf(value) is -1
                                     errors.push "#{fieldName} must be one of #{JSON.stringify(fieldDef.$in)}."
 
-                        if typeutils.isUserDefinedType(fieldDef._type) and value.validate
+                        if typeutils.isUserDefinedType(fieldDef.type) and value.validate
                             errors = errors.concat value.validate()
                         else
                             #We should also check for objects inside object. (ie, do we have fields inside the fieldDef?)
@@ -65,7 +65,7 @@ class Validator
             
         errors            
         
-
+        
     
     @addError: (list, fieldName, error) ->
         if error is true

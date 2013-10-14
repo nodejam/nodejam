@@ -12,7 +12,7 @@ class Users extends Controller
 
     selectUsernameForm: (req, res, next) =>
         (Q.async =>
-            token = yield models.Token.get({ key: req.query.token }, {}, db)
+            token = yield models.Token.get({ key: req.query('token') }, {}, db)
             res.render req.network.getView('users', 'selectusername'), { 
                 username: token.value.userDetails.username,
                 name: token.value.userDetails.name,
@@ -26,10 +26,10 @@ class Users extends Controller
 
     selectUsername: (req, res, next) =>
         (Q.async =>
-            token = yield models.Token.get({ key: req.query.token }, {}, db)     
-            token.value.userDetails.username = req.body.username
-            token.value.userDetails.name = req.body.name
-            token.value.userDetails.email = req.body.email
+            token = yield models.Token.get({ key: req.query('token') }, {}, db)     
+            token.value.userDetails.username = req.body 'username'
+            token.value.userDetails.name = req.body 'name'
+            token.value.userDetails.email = req.body 'email'
             result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
             if result?.success isnt false
                 res.clearCookie "twitter_oauth_process_key"
