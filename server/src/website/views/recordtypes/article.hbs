@@ -35,12 +35,12 @@
                     <span class="light-text">Yesterday in <a href="/{{collection.stub}}">{{collection.name}}</a></span>                
                 </p>                    
             </div>            
+            {{#if editable}}
             <p class="edit-options">
-                {{#if editable}}
                 <button class="edit positive">Edit Post</button>
                 <button><i class="settings icon-cog"></i>Settings</button>
-                {{/if}}
             </p>
+            {{/if}}
         </div>          
     </div>
 </div>

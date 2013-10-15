@@ -9,7 +9,7 @@ class Controller
     ensureSession: (args, fn) =>
         [req, res, next] = args 
         (Q.async =>
-            user = yield @getUserWithToken(req.query 'token') ? req.cookies 'token'
+            user = yield @getUserWithToken (req.query 'token' ? req.cookies 'token')
             if user.id
                 req.user = user
                 fn()
@@ -22,7 +22,7 @@ class Controller
     attachUser: (args, fn) =>
         [req, res, next] = args
         (Q.async =>
-            user = yield @getUserWithToken(req.query 'token') ? req.cookies 'token'
+            user = yield @getUserWithToken (req.query 'token' ? req.cookies 'token')
             req.user = user
             fn()
         )()
@@ -53,12 +53,6 @@ class Controller
 
 
 
-    getUserPath: (url) =>
-        url = url.replace /\/pub\//, ""
-        path.join __dirname, "../../../www-user/#{url}"
-                
-    
-    
     handleError: (onError) ->
         (fn) ->
             return ->

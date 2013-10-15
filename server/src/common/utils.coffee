@@ -43,11 +43,11 @@ log = (msg) ->
 getHashCode = (str) ->
     hash = 0
     if str.length isnt 0
-        for i in [0..str.length] by 1
+        for i in [0...str.length] by 1
             char = str.charCodeAt(i)
             hash = ((hash << 5) - hash) + char
-            hash |= 0 # Convert to 32bit integer
-    hash
+            hash = hash & hash
+    Math.abs hash
     
         
 dumpError = (err) ->
@@ -57,7 +57,8 @@ dumpError = (err) ->
             log err.details
     else
         log 'Error is null or undefined.'
-    
+
+
 exports.clone = clone
 exports.deepCloneObject = deepCloneObject
 exports.extend = extend

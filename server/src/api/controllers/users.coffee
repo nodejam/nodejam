@@ -3,10 +3,10 @@ conf = require '../../conf'
 db = new (require '../../common/data/database').Database(conf.db)
 models = require '../../models'
 utils = require('../../common/utils')
-controller = require('./controller')
 Q = require('../../common/q')
+Controller = require('../../fora/web/controller').Controller
 
-class Users extends controller.Controller
+class Users extends Controller
     
     create: (req, res, next) =>
         switch req.body('credentials_type')

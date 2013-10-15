@@ -44,12 +44,10 @@ for file in files
 
 settings.pubdir ?= path.resolve __dirname, '../../www-user'
 
-module.exports = {
-    app: settings.app,
-    db: settings.db,
-    auth: settings.auth,
-    admins: settings.admins,
-    pubdir: settings.pubdir,
-    networks,
-    templates
-}
+exports.app = settings.app
+exports.db = settings.db
+exports.auth = settings.auth
+exports.admins = settings.admins
+exports.pubdir = settings.pubdir
+exports.networks = networks
+exports.templates = templates

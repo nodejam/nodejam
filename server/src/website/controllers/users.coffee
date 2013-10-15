@@ -3,9 +3,8 @@ database = (require '../../common/data/database').Database
 db = new database(conf.db)
 models = require '../../models'
 utils = require '../../common/utils'
-Controller = require('./controller').Controller
-controllers = require './'
 Q = require('../../common/q')
+Controller = require('../../fora/web/controller').Controller
 
 
 class Users extends Controller

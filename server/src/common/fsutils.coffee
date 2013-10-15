@@ -1,7 +1,10 @@
-conf = require '../conf'
 path = require 'path'
 fs = require 'fs'
 utils = require './utils'
+
+conf = ->
+    require '../conf'
+
 
 dirIsValid = (dir) ->
     not /(^\/|[~.])/.test dir
@@ -12,16 +15,16 @@ fileIsValid = (file) ->
 
 
 getTempBasePath = ->    
-    path.join conf.pubdir, 'temp'
+    path.join conf().pubdir, 'temp'
     
 
 getAssetBasePath = ->
-    path.join conf.pubdir, 'assetpaths'
+    path.join conf().pubdir, 'assetpaths'
 
 
 getTempFilePath = (filename) ->
     if fileIsValid filename
-        path.join conf.pubdir, "temp", filename 
+        path.join conf().pubdir, "temp", filename 
 
 
 getDateFormattedDir = (date) ->

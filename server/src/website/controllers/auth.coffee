@@ -9,7 +9,7 @@ fsutils = require '../../common/fsutils'
 conf = require '../../conf'
 models = require '../../models'
 db = new (require '../../common/data/database').Database(conf.db)
-controller = require './controller'
+Controller = require('../../fora/web/controller').Controller
 fs = require 'fs-extra'
 
 OAuth = require('oauth').OAuth
@@ -23,7 +23,7 @@ oa = new OAuth(
 	"HMAC-SHA1"
 )
 
-class Auth extends controller.Controller
+class Auth extends Controller
     
     twitter: (req, res, text) =>
         oa.getOAuthRequestToken (error, oauth_token, oauth_token_secret, results) =>
@@ -51,11 +51,11 @@ class Auth extends controller.Controller
 
     
     twitterCallback: (req, res, next) =>
-        models.Token.get({ key: req.cookies.twitter_oauth_process_key }, {}, db)
+        models.Token.get({ key: req.cookies('twitter_oauth_process_key') }, {}, db)
             .then (token) =>
                 if token
                     oauth = token.value
-                    oauth.verifier = req.query.oauth_verifier
+                    oauth.verifier = req.query('oauth_verifier')
                     oa.getOAuthAccessToken oauth.token, oauth.token_secret, oauth.verifier, (error, accessToken, accessTokenSecret, results) =>
                         if error
                             utils.log error
@@ -74,12 +74,11 @@ class Auth extends controller.Controller
                                     if credentials
                                         credentials.getUser({}, db)
                                             .then (user) =>
-                                            
                                                 #Save profile pic
                                                 getDetails (e, data) =>
                                                     if data.length and data[0]?
-                                                        assetPath = utils.getHashCode(user.username) % 1000
-                                                        fileName = path.join assetPath, user.username
+                                                        assetPath = "#{utils.getHashCode(user.username) % 1000}"
+                                                        fileName = path.join "#{assetPath}", user.username
                                                         netutils.downloadImage(@parseTwitterUserDetails(data[0]).pictureUrl)
                                                             .then (filePath) =>
                                                                 picPath = fsutils.getAssetFilePath assetPath, "#{user.username}.jpg"

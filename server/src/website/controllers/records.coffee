@@ -1,11 +1,11 @@
-controller = require './controller'
 conf = require '../../conf'
 db = new (require '../../common/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../common/utils'
 Q = require('../../common/q')
+Controller = require('../../fora/web/controller').Controller
 
-class Records extends controller.Controller
+class Records extends Controller
     
     item: (req, res, next) =>
         @attachUser arguments, =>

@@ -2,8 +2,8 @@ conf = require '../../conf'
 db = new (require '../../common/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../common/utils'
-Controller = require('./controller').Controller
 Q = require('../../common/q')
+Controller = require('../../fora/web/controller').Controller
 
 class Collections extends Controller
     
@@ -19,30 +19,11 @@ class Collections extends Controller
                         collection = new models.Collection
                         collection.network = req.network.stub
                         collection.stub = stub
-                        
-                        ###
-                        collection.stub = stub
-                        collection.network = req.network.stub
-                        collection.name = req.body.name
-                        collection.type = req.body.type ? 'public'
-                        collection.description = req.body.description
-                        collection.category = req.body.category
-                        collection.icon = req.body.icon
-                        collection.iconThumbnail = req.body.iconThumbnail                                                
-                        collection.recordTypes = if req.body.recordTypes then req.body.recordTypes.split(',') else ['article']
-                        collection.cover = req.body.cover
-                        collection.settings = new models.Collection.Settings
-
-                        collection.settings.comments = {
-                            enabled: if req.body.settings_comments_enabled is "false" then false
-                            opened: if req.body.settings_comments_opened is "false" then false
-                        }
-                        ###
-                        
                         req.map collection, ['name', 'type', 'description', 'category', 'icon', 'iconThumbnail', 'recordTypes', 'cover', 'settings']
                         
                         if not collection.recordTypes?.length
                             collection.recordTypes = ['article']
+
                         collection.createdBy = req.user
                         collection = yield collection.save { user: req.user }, db
 
