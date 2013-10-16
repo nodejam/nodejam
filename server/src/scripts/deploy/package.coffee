@@ -100,6 +100,7 @@ if opt isnt '--debug'
             'app/www/js/views/validator.js',
             'app/www/js/views/baseview.js',
             'app/www/js/views/users/selectusername.js'
+            'app/www/js/views/records/record.js'
         ],
         fileOut: 'app/www/js/fora.js',
         callback: (err) -> 

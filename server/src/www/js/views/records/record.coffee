@@ -1,4 +1,4 @@
-class Article
+class Record
 
     constructor: (@record) ->
         $(document).ready =>
@@ -32,4 +32,4 @@ class Article
         editor.editPage if @record.title then '.content' else 'h1'
     
 
-window.Fora.Views.RecordTypes.Article = Article
+window.Fora.Views.Records.Record = Record

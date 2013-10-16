@@ -20,9 +20,7 @@ templates =   {
         },
         records: {
             recordcard: '/views/records/recordcard.hbs',
-        }
-        recordtypes: {
-            article: 'recordtypes/article.hbs'
+            record: 'records/record.hbs'
         }
     }
 }

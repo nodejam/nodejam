@@ -2,29 +2,30 @@ recordModule = require('./record')
 utils = require('../lib/utils')
 Q = require('../lib/q')
 models = require('./')
+widgets = require '../common/widgets/records'
 
 class Article extends recordModule.Record
 
     @describeType: {
-            type: @,
-            inherits: recordModule.Record,
-            name: 'article',
-            description: 'Article',
-            fields: {
-                title: { type: 'string', required: false, maxLength: 200 }
-                subtitle: { type: 'string', required: false, maxLength: 200 },
-                synopsis: { type: 'string', required: false, maxLength: 2000 },
-                cover: { type: 'string', required: false, maxLength: 200 },
-                coverAlt: { type: 'string', required: false, maxLength: 200 },
-                smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
-                content: { type: 'string', required: false, maxLength: 100000 },
-                format: { type: 'string', $in: ['markdown'], map: { default: 'markdown' } },
-            },
-            stub: 'title',
-            formattedFields: [
-                { field: 'content', format: 'format' }
-            ]
-        }
+        type: @,
+        inherits: recordModule.Record,
+        name: 'article',
+        description: 'Article',
+        fields: {
+            title: { type: 'string', required: false, maxLength: 200 }
+            subtitle: { type: 'string', required: false, maxLength: 200 },
+            synopsis: { type: 'string', required: false, maxLength: 2000 },
+            cover: { type: 'string', required: false, maxLength: 200 },
+            coverAlt: { type: 'string', required: false, maxLength: 200 },
+            smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
+            content: { type: 'string', required: false, maxLength: 100000 },
+            format: { type: 'string', $in: ['markdown'], map: { default: 'markdown' } },
+        },
+        stub: 'title',
+        formattedFields: [
+            { field: 'content', format: 'format' }
+        ]
+    }
 
 
 
@@ -34,21 +35,18 @@ class Article extends recordModule.Record
 
 
 
-    render: (name = "standard") =>
+    getTemplate: (name = "standard") =>
         switch name
             when 'standard'
-                new controls.RecordView {
-                    itemPane: [
-                        new controls.Cover,
-                        new controls.Title,
-                        new controls.Authorship { type: 'small'},
-                        new controls.Content
-                    ],
-                    sidebar: [
-                        new controls.Authorship
-                    ]
-                }
-
+                itemPane = [
+                    new widgets.Cover,
+                    new widgets.Title,
+                    new widgets.Authorship('small'),
+                    new widgets.Content
+                ]
+                sidebar = [ new widgets.Authorship ]
+                new widgets.RecordView itemPane, sidebar
+            
 
 
     getView: (name = "standard") =>

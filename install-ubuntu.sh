@@ -34,6 +34,11 @@ if [ $# -eq 0 ]
     exit 0
 fi
 
+if [ "$(whoami)" == "root" ]; then
+	echo "This script must not be run as root. It will prompt for password when required."
+	exit 1
+fi
+
 vercomp () {
     if [[ $1 == $2 ]]
     then
@@ -85,8 +90,6 @@ if [ ${MACHINE_TYPE} == 'x86_64' ]; then
 else
     x86_64=false
 fi
-
-sudo apt-get install curl
 
 while :
 do
@@ -174,7 +177,6 @@ do
     esac
 done
 
-
 install_node() {
     VERSION=0.11.7
     PLATFORM=linux
@@ -184,6 +186,7 @@ install_node() {
         ARCH=x86
     fi
     PREFIX="/usr/local"
+    sudo apt-get install curl
     sudo sh -c "mkdir -p \"$PREFIX\" && curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz | tar xzvf - --strip-components=1 -C \"$PREFIX\""
 }
 
@@ -343,6 +346,7 @@ if $node_modules ; then
     npm install mongodb
     npm install validator
     npm install sanitizer
+    npm install handlebars
     npm install hbs
     npm install fs-extra
     npm install gm

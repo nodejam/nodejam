@@ -5,21 +5,6 @@ validator = require 'validator'
 conf = require '../conf'
 ExpressRequestWrapper = require('./expressrequestwrapper').ExpressRequestWrapper
 
-sanitize = (sources, options) ->
-    if not options?.skip
-        for inputs in sources
-            if inputs
-                for key, val of inputs
-                    if not options?.exclude?.indexOf(key) isnt -1
-                        val = inputs[key]
-                        if typeof(val) is 'string'
-                            if (not options?.allowHtml is '*') or (not options?.allowHtml?.indexOf(key) isnt -1)
-                                val = val.replace '<', '&lt;'
-                                val = val.replace '>', '&gt;'                    
-                            inputs[key] = validator.sanitize(val).xss()
-
-
-
 errorHandler = (err, req, res, next) ->
     utils.dumpError err
     res.send(500, { error: err.message })
@@ -47,7 +32,6 @@ setup = (app, getController, cb) ->
     
     app.use express.limit '6mb'
     app.use express.cookieParser()
-    #app.use validate
     
     cb (name, getHandler) ->
         controller = getController name

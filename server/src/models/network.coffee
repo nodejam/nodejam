@@ -19,6 +19,11 @@ class Network extends ForaDbModel
     }
 
 
+    constructor: (params) ->
+        @templates = {}
+        super
+        
+
 
     getLayout: (name) =>
         name = name ? 'default'
@@ -27,7 +32,7 @@ class Network extends ForaDbModel
         
             
     getView: (namespace, view) =>
-            @templates.views?[namespace]?[view] ? @defaultTemplates.views[namespace][view]
+        @templates.views?[namespace]?[view] ? @defaultTemplates.views[namespace][view]
             
 
 exports.Network = Network

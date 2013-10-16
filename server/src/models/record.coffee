@@ -79,20 +79,17 @@ class Record extends ForaDbModel
 
         
     
-    getFormattedFields: =>
-        result = {}
+    formatField: (name) =>
         typeDesc = @getTypeDefinition()
-        for entry in typeDesc.formattedFields
-            { field, format } = entry
-            result[field] = @formatData @[field], @[format]
-        result
+        { field, format } = typeDesc.formattedFields.filter((f) -> f.field is name)[0]
+        @formatData @[field], @[format]
             
 
 
     formatData: (data, format) =>  
         switch format
             when 'markdown'
-                if data then mdparser data else ''
+                if data then mdparser(data) else ''
             when 'html', 'text'
                 data
             else

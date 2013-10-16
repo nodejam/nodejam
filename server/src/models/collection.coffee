@@ -72,7 +72,7 @@ class Collection extends ForaDbModel
         }
     }
         
-        
+    
     save: (context, db) =>        
         if not @_id
             @stats ?= {
@@ -80,6 +80,7 @@ class Collection extends ForaDbModel
                 members: 1,
                 lastRecord: 0
             }
+            @recordTypes ?= []
             @snapshot ?= { records: [] }
         
         super

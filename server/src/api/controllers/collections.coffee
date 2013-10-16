@@ -21,9 +21,6 @@ class Collections extends Controller
                         collection.stub = stub
                         req.map collection, ['name', 'type', 'description', 'category', 'icon', 'iconThumbnail', 'recordTypes', 'cover', 'settings']
                         
-                        if not collection.recordTypes?.length
-                            collection.recordTypes = ['article']
-
                         collection.createdBy = req.user
                         collection = yield collection.save { user: req.user }, db
 
