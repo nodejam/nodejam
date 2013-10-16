@@ -1,7 +1,7 @@
 express = require 'express'
 conf = require '../conf'
-utils = require '../common/utils'
-expressutils = require '../common/expressutils'
+utils = require '../lib/utils'
+expressutils = require '../lib/expressutils'
 controllers = require './controllers'
 validator = require 'validator'
 

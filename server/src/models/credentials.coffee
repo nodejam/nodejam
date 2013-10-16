@@ -1,6 +1,6 @@
 ForaDbModel = require('./foramodel').ForaDbModel
-Q = require('../common/q')
-hasher = require('../common/lib/hasher').hasher
+Q = require('../lib/q')
+hasher = require('../lib/hasher').hasher
 models = require('./')
 
 class Credentials extends ForaDbModel

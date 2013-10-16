@@ -2,12 +2,12 @@ http = require('http')
 path = require 'path'
 fs = require 'fs'
 querystring = require 'querystring'
-utils = require '../../common/utils'
+utils = require '../../lib/utils'
 data = require './data'
 conf = require '../../conf'
-Q = require('../../common/q')
+Q = require('../../lib/q')
 
-database = new (require '../../common/data/database').Database(conf.db)
+database = new (require '../../lib/data/database').Database(conf.db)
 
 utils.log "Setup started at #{new Date}"
 utils.log "NODE_ENV is #{process.env.NODE_ENV}"

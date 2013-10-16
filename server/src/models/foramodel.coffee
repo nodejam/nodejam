@@ -1,5 +1,5 @@
-BaseModel = require('../common/data/basemodel').BaseModel
-DatabaseModel = require('../common/data/databasemodel').DatabaseModel
+BaseModel = require('../lib/data/basemodel').BaseModel
+DatabaseModel = require('../lib/data/databasemodel').DatabaseModel
 
 class ForaModel extends BaseModel
 

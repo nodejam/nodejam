@@ -1,11 +1,11 @@
 conf = require '../../conf'
-database = (require '../../common/data/database').Database
+database = (require '../../lib/data/database').Database
 db = new database(conf.db)
 models = require '../../models'
-utils = require '../../common/utils'
-Q = require('../../common/q')
-mdparser = require('../../common/lib/markdownutil').marked
-Controller = require('../../fora/web/controller').Controller
+utils = require '../../lib/utils'
+Q = require('../../lib/q')
+mdparser = require('../../lib/markdownutil').marked
+Controller = require('../../common/web/controller').Controller
 
 
 class Collections extends Controller

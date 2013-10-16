@@ -1,10 +1,10 @@
 conf = require '../../conf'
-database = (require '../../common/data/database').Database
+database = (require '../../lib/data/database').Database
 db = new database(conf.db)
 models = require '../../models'
-utils = require '../../common/utils'
-Q = require('../../common/q')
-Controller = require('../../fora/web/controller').Controller
+utils = require '../../lib/utils'
+Q = require('../../lib/q')
+Controller = require('../../common/web/controller').Controller
 
 
 class Users extends Controller

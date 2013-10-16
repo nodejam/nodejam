@@ -1,15 +1,15 @@
 path = require 'path'
 conf = require '../../conf'
-db = new (require '../../common/data/database').Database(conf.db)
+db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
-Q = require('../../common/q')
+Q = require('../../lib/q')
 
 class Controller        
 
     ensureSession: (args, fn) =>
         [req, res, next] = args 
         (Q.async =>
-            user = yield @getUserWithToken (req.query 'token' ? req.cookies 'token')
+            user = yield @getUserWithToken(req.query('token') ? req.cookies('token'))
             if user.id
                 req.user = user
                 fn()
@@ -22,7 +22,7 @@ class Controller
     attachUser: (args, fn) =>
         [req, res, next] = args
         (Q.async =>
-            user = yield @getUserWithToken (req.query 'token' ? req.cookies 'token')
+            user = yield @getUserWithToken(req.query('token') ? req.cookies('token'))
             req.user = user
             fn()
         )()

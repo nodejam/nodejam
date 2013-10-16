@@ -1,6 +1,6 @@
 recordModule = require('./record')
-utils = require('../common/utils')
-Q = require('../common/q')
+utils = require('../lib/utils')
+Q = require('../lib/q')
 models = require('./')
 
 class Article extends recordModule.Record
@@ -15,6 +15,7 @@ class Article extends recordModule.Record
                 subtitle: { type: 'string', required: false, maxLength: 200 },
                 synopsis: { type: 'string', required: false, maxLength: 2000 },
                 cover: { type: 'string', required: false, maxLength: 200 },
+                coverAlt: { type: 'string', required: false, maxLength: 200 },
                 smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
                 content: { type: 'string', required: false, maxLength: 100000 },
                 format: { type: 'string', $in: ['markdown'], map: { default: 'markdown' } },
@@ -30,6 +31,23 @@ class Article extends recordModule.Record
     constructor: (params) ->
         super
         @type ?= 'article'
+
+
+
+    render: (name = "standard") =>
+        switch name
+            when 'standard'
+                new controls.RecordView {
+                    itemPane: [
+                        new controls.Cover,
+                        new controls.Title,
+                        new controls.Authorship { type: 'small'},
+                        new controls.Content
+                    ],
+                    sidebar: [
+                        new controls.Authorship
+                    ]
+                }
 
 
 

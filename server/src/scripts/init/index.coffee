@@ -1,9 +1,9 @@
 conf = require '../../conf'
-db = new (require '../../common/data/database').Database(conf.db)
-utils = require '../../common/utils'
+db = new (require '../../lib/data/database').Database(conf.db)
+utils = require '../../lib/utils'
 fs = require 'fs'
 path = require 'path'
-fsutils = require '../../common/fsutils'
+fsutils = require '../../lib/fsutils'
 
 #create assetPaths for a whole year.
 today = Date.now()

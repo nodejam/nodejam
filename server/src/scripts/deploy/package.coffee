@@ -1,4 +1,4 @@
-utils = require '../../common/utils'
+utils = require '../../lib/utils'
 compressor = require('node-minify')
 
 if process.argv.length > 2

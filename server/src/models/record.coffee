@@ -1,8 +1,8 @@
-utils = require '../common/utils'
-mdparser = require('../common/lib/markdownutil').marked
+utils = require '../lib/utils'
+mdparser = require('../lib/markdownutil').marked
 ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
-Q = require('../common/q')
+Q = require('../lib/q')
 
 class Record extends ForaDbModel
     

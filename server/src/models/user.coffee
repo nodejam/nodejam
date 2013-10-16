@@ -1,9 +1,9 @@
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
-utils = require '../common/utils'
-fsutils = require '../common/fsutils'
-Q = require '../common/q'
-hasher = require('../common/lib/hasher').hasher
+utils = require '../lib/utils'
+fsutils = require '../lib/fsutils'
+Q = require '../lib/q'
+hasher = require('../lib/hasher').hasher
 models = require './'
 
 emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

@@ -1,10 +1,10 @@
 conf = require '../../conf'
-db = new (require '../../common/data/database').Database(conf.db)
+db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
-utils = require '../../common/utils'
-typeutils = require '../../common/data/typeutils'
-Q = require('../../common/q')
-Controller = require('../../fora/web/controller').Controller
+utils = require '../../lib/utils'
+typeutils = require '../../lib/data/typeutils'
+Q = require('../../lib/q')
+Controller = require('../../common/web/controller').Controller
 
 class Records extends Controller
 

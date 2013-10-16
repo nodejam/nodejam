@@ -1,7 +1,7 @@
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
-utils = require('../common/utils')
-Q = require('../common/q')
+utils = require('../lib/utils')
+Q = require('../lib/q')
 models = require('./')
 
 class Collection extends ForaDbModel
