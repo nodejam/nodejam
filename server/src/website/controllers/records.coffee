@@ -25,6 +25,7 @@ class Records extends Controller
                     res.render req.network.getView('records', 'record'), { 
                         html,
                         json: JSON.stringify(record),
+                        typeDefinition: JSON.stringify(record.getTypeDefinition()),
                         user: req.user,
                         pageName: 'record-page',
                         pageType: 'std-page'

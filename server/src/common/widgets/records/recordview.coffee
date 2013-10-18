@@ -9,6 +9,7 @@ class RecordView extends Widget
         </div>
         <div class="sidebar large-page-element">
             {{{sidebarHtml}}}
+            <div class="sidebar-options"></div>
         </div>'
 
     

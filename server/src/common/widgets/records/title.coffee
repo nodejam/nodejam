@@ -3,7 +3,7 @@ Widget = require '../widget'
 
 class Title extends Widget
 
-    @template: handlebars.compile '<h1 data-editor-type="title" data-placeholder="Title goes here...">{{title}}</h1>'
+    @template: handlebars.compile '<h1 data-field-type="title" data-field-title=>{{fieldTitle}}</h1>'
 
 
 
@@ -13,7 +13,7 @@ class Title extends Widget
         
     render: (data) =>
         title = data.record[@title]
-        Title.template { title }        
+        Title.template { title, fieldTitle: @title }        
 
     
 exports.Title = Title

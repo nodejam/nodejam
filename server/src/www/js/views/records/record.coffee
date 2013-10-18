@@ -1,16 +1,27 @@
 class Record
 
-    constructor: (@record) ->
-        $(document).ready =>
+    constructor: (@record, @typeDefinition) ->        
+        $(document).ready () =>
+            @editable = app.getUser()?.id is @record.createdBy.id
+            if @editable
+                $('.sidebar-options').html '
+                    <p class="edit-options">
+                        <button class="edit positive">Edit Post</button>
+                        <button><i class="settings icon-cog"></i>Settings</button>
+                    </p>'
+            
             @attachEvents()
-            mode = Fora.getUrlParams 'mode'
-            if mode is 'edit'
-                @onEdit()
+            
+            if @editable
+                mode = Fora.getUrlParams 'mode'
+                if mode is 'edit'
+                    @onEdit()                
         
         
         
     attachEvents: =>
-        $('button.edit').click @onEdit
+        if @editable
+            $('button.edit').click @onEdit
 
 
 

@@ -4,7 +4,7 @@ Widget = require '../widget'
 class Content extends Widget
     
     @template = handlebars.compile '
-        <div class="content" data-placeholder="And record content goes here..." data-editor-type="text">
+        <div class="content" data-field-type="content" data-field-content="{{field}}">
             {{{content}}}
         </div>'
     
@@ -16,7 +16,7 @@ class Content extends Widget
         
     render: (data) =>
         content = data.record.formatField @content
-        Content.template { content }
+        Content.template { content, field: @content }
 
     
 exports.Content = Content
