@@ -1,20 +1,17 @@
 class Editor
     
-    constructor: ->
-    
+    constructor: (@typeDefinition) ->
+                
 
         
-    editPage: (element) =>
-        element = $(element)
-        
-        editables = $('[data-editor-type]')
-        editables.attr 'contenteditable', true
+    editPage: =>
+        editables = $('[data-field-type]')
         editables.highlight()        
     
         for e in editables
             do (e) =>
                 e =  $(e)
-                switch e.data('editor-type')                
+                switch e.data('field-type')                
                     when 'title'
                         @setupTextElement e
                                             
@@ -25,24 +22,25 @@ class Editor
                             toolbar: [ { name: 'basicstyles', items : [ 'Bold','Italic' ] } ]
                         }
                         
-                        if element[0] is e[0]
-                            config.on = {
-                                instanceReady: (evt) => 
-                                    evt.editor.focus()
-                                focus: (evt) =>
-                                    setTimeout (=>
-                                        editor = evt.editor
-                                        range = editor.createRange()
-                                        range.moveToElementEditStart editor.editable()
-                                        range.select()
-                                        range.scrollIntoView()), 100
-                            }
+                        config.on = {
+                            instanceReady: (evt) => 
+                                evt.editor.focus()
+                            focus: (evt) =>
+                                setTimeout (=>
+                                    editor = evt.editor
+                                    range = editor.createRange()
+                                    range.moveToElementEditStart editor.editable()
+                                    range.select()
+                                    range.scrollIntoView()), 100
+                        }
                         
                         ckeditor = CKEDITOR.inline e[0], config        
 
                 
     
-    setupTextElement: (e) =>
+    setupTextElement: (e) =>    
+        e.attr 'contenteditable', true
+
         handleEmpty = =>
             if not e.text().trim() and e.data 'placeholder'
                 e.addClass 'placeholder'

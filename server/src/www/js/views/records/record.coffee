@@ -27,7 +27,7 @@ class Record
 
     onEdit: =>
         $('.edit-options').hide()
-        
+
         $('.page-wrap').prepend '
             <div class="nav buttons">
                 <ul>
@@ -39,8 +39,7 @@ class Record
             $('.page-wrap .nav.buttons ul').append '<li><button>Cancel</button></li>'
         $('.page-wrap .nav.buttons ul').append '<li><button class="positive">Publish Post</button></li>'
         
-        editor = new Fora.Editing.Editor()
-        editor.editPage if @record.title then '.content' else 'h1'
-    
+        editor = new Fora.Editing.Editor @typeDefinition
+        editor.editPage()
 
 window.Fora.Views.Records.Record = Record

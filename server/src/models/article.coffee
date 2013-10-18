@@ -42,7 +42,7 @@ class Article extends recordModule.Record
                     new widgets.Cover,
                     new widgets.Title,
                     new widgets.Authorship('small'),
-                    new widgets.Content
+                    new widgets.Text
                 ]
                 sidebar = [ new widgets.Authorship ]
                 new widgets.RecordView itemPane, sidebar

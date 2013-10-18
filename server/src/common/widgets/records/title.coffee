@@ -3,17 +3,17 @@ Widget = require '../widget'
 
 class Title extends Widget
 
-    @template: handlebars.compile '<h1 data-field-type="title" data-field-title=>{{fieldTitle}}</h1>'
+    @template: handlebars.compile '<h1 data-field-type="title" data-placeholder="Title goes here..." data-field-title="{{fieldTitle}}">{{title}}</h1>'
 
 
 
-    constructor: (@title = 'title') ->
-
+    constructor: (@fields = {}) ->
+        @fields.title = 'title'
        
         
     render: (data) =>
-        title = data.record[@title]
-        Title.template { title, fieldTitle: @title }        
+        title = data.record[@fields.title]
+        Title.template { title, fieldTitle: @fields.title }        
 
     
 exports.Title = Title

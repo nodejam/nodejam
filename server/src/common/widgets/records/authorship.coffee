@@ -30,13 +30,15 @@ class Authorship extends Widget
         
         
 
-    constructor: (@type, @author = 'author', @collection = 'collection') ->
+    constructor: (@type, @fields = {}) ->
+        @fields.author ?= 'author'
+        @fields.collection ?= 'collection'
         
-       
+        
         
     render: (data) =>
-        author = data[@author]
-        collection = data[@collection]
+        author = data[@fields.author]
+        collection = data[@fields.collection]
         assetUrl = data.author.getAssetUrl()
         switch @type
             when 'small'
