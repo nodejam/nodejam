@@ -3,7 +3,7 @@ Widget = require '../widget'
 
 class Title extends Widget
 
-    @template: handlebars.compile '<h1 data-field-type="title" data-placeholder="Title goes here..." data-field-title="{{fieldTitle}}">{{title}}</h1>'
+    @template: handlebars.compile '<h1 data-field-type="title" data-placeholder="Title goes here..." data-fieldname-title="{{fieldTitle}}">{{title}}</h1>'
 
 
 

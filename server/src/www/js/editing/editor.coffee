@@ -1,14 +1,14 @@
 class Editor
     
     constructor: (@typeDefinition) ->
-                
+        @editables = $('[data-field-type]')
+                        
 
         
     editPage: =>
-        editables = $('[data-field-type]')
-        editables.highlight()        
+        @editables.highlight()        
     
-        for e in editables
+        for e in @editables
             do (e) =>
                 e =  $(e)
                 switch e.data('field-type')                
@@ -57,6 +57,17 @@ class Editor
         handleEmpty e
         
         
+        
+    update: (record) =>
+        for e in @editables
+            e =  $(e)
+            switch e.data('field-type')                
+                when 'title'
+                    record[$('fieldname-title')] = e.text()
+                when 'text'
+                    record[$('fieldname-text')] = e.text()
+                    
+                    
 
 CKEDITOR.disableAutoInline = true
 

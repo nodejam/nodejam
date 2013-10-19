@@ -3,7 +3,7 @@ Widget = require '../widget'
 
 class Cover extends Widget
 
-    @template: handlebars.compile '<img class="cover" src="{{src}}" alt="{{alt}}" data-field-type="cover" data-field-src={{fieldSrc}} data-field-alt={{fieldAlt}} />'
+    @template: handlebars.compile '<img class="cover" src="{{src}}" alt="{{alt}}" data-field-type="cover" data-fieldname-src={{fieldSrc}} data-fieldname-alt={{fieldAlt}} />'
 
 
 

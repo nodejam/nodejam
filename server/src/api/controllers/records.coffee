@@ -25,9 +25,7 @@ class Records extends Controller
                         format: 'markdown'
                     }
                     
-                    for fieldName, def of type.getTypeDefinition(type, false).fields
-                        req.populateObject record, fieldName, def, []
-                    
+                    req.map record, (f for f of type.getTypeDefinition(type, false).fields)                            
                     record = yield collection.addRecord record
                     res.send record
 
@@ -48,13 +46,10 @@ class Records extends Controller
                     
                     if record
                         if record.createdBy.id is req.user.id or @isAdmin(req.user)
-                            record.savedAt ?= Date.now()
-                            
-                            #Add update code here...
-                            
-                            record = yield record.save()                            
+                            record.savedAt = Date.now()                            
+                            req.map record, (f for f of type.getTypeDefinition(type, false).fields)                            
+                            record = yield record.save()
                             res.send record
-
                         else
                             res.send 'Access denied.'
                     else

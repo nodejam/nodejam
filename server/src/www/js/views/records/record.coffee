@@ -26,6 +26,8 @@ class Record
 
 
     onEdit: =>
+        editor = new Fora.Editing.Editor @typeDefinition
+
         $('.edit-options').hide()
 
         $('.page-wrap').prepend '
@@ -34,12 +36,24 @@ class Record
                 </ul>
             </div>'
 
-        $('.page-wrap .nav.buttons ul').append '<li><button>Delete</button></li>'
+        $('.page-wrap .nav.buttons ul').append '<li><button class="delete">Delete</button></li>'
+
         if @record.state is 'published'
-            $('.page-wrap .nav.buttons ul').append '<li><button>Cancel</button></li>'
-        $('.page-wrap .nav.buttons ul').append '<li><button class="positive">Publish Post</button></li>'
+            $('.page-wrap .nav.buttons ul').append '<li><button class="cancel">Cancel</button></li>'
+            publishText = "Republish"
+        else
+            publishText = "Publish Post"
+            
+        $('.page-wrap .nav.buttons ul').append '<li><button class="publish positive">' + publishText + '</button></li>'
+
+        $('button.publish').click =>
+            editor.update @record
+            $.ajax "/#{@record.collection.stub}/#{@record._id}", { type: 'PUT', data: @record }, =>
+                document.location = "/#{@record.collection.stub}/#{@record.id}"
         
-        editor = new Fora.Editing.Editor @typeDefinition
         editor.editPage()
+        
+    
+    
 
 window.Fora.Views.Records.Record = Record
