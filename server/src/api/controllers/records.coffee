@@ -40,13 +40,13 @@ class Records extends Controller
             (Q.async =>
                 try
                     collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
-                    type = models.Record.getTypeDefinition().discriminator { type: req.body('type') }
-                    record = yield type.getById(req.params('record'), { user: req.user }, db)
+                    record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
+                    type = record.constructor
                     
                     if record
                         if record.createdBy.id is req.user.id or @isAdmin(req.user)
-                            record.savedAt = Date.now()                            
-                            req.map record, (f for f of type.getTypeDefinition(type, false).fields)           
+                            record.savedAt = Date.now()                       
+                            req.map record, @getMappableFields(type)
                             record = yield record.save()
                             res.send record
                         else

@@ -50,7 +50,7 @@ class ExpressRequestWrapper
     map: (target, whitelist, options = { overwrite: true }, prefix = []) =>
         typeDef = target.getTypeDefinition()        
         for field, def of typeDef.fields
-            if @populateObject(target, field, def, whitelist, options, prefix)
+            if @populateObject(target, field, def, whitelist, options, prefix) is true
                 modified = true
         modified
                 
@@ -75,16 +75,17 @@ class ExpressRequestWrapper
                 else
                     prefix.push name
                     
-                    if def.type is 'object' or def.type is ''
-                        newObj = {}
-                        #Decide what to do here...
-                    else
-                        newObj = new def.type()
-                        modified = @map(newObj, whitelist, options, prefix)
-                        
-                    #Check if something was filled.
+                    if obj[name]
+                        newObj = obj[name]
+                    else                             
+                        if def.type isnt 'object' and def.type isnt ''
+                            newObj = new def.type()
+
+                    modified = @map(newObj, whitelist, options, prefix)
+                    
                     if modified
-                        obj[name] = newObj
+                        obj[name] ?= newObj
+                        
                     prefix.pop()
 
 
