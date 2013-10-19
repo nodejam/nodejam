@@ -63,9 +63,9 @@ class Editor
             e =  $(e)
             switch e.data('field-type')                
                 when 'title'
-                    record[$('fieldname-title')] = e.text()
+                    record[e.data('fieldname-title')] = e.text()
                 when 'text'
-                    record[$('fieldname-text')] = e.text()
+                    record[e.data('fieldname-text')] = e.html()
                     
                     
 

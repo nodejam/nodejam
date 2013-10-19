@@ -9,7 +9,8 @@ class Controller
     ensureSession: (args, fn) =>
         [req, res, next] = args 
         (Q.async =>
-            user = yield @getUserWithToken(req.query('token') ? req.cookies('token'))
+            token = if req.query('token') then req.query('token') else req.cookies('token')
+            user = yield @getUserWithToken token
             if user.id
                 req.user = user
                 fn()

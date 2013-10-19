@@ -29,6 +29,7 @@ expressutils.setup app, getController, (findHandler) ->
     app.post '/api/collections', findHandler('collections', (c) -> c.create)
     app.post '/api/collections/:collection/members', findHandler('collections', (c) -> c.join)
     app.post '/api/collections/:collection', findHandler('records', (c) -> c.create)
+    app.put '/api/collections/:collection/records/:record', findHandler('records', (c) -> c.edit)
 
     app.put "/api/admin/records/:id", findHandler('records', (c) -> c.admin_update)
     

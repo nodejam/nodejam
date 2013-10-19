@@ -48,7 +48,7 @@ class Record
 
         $('button.publish').click =>
             editor.update @record
-            $.ajax "/#{@record.collection.stub}/#{@record._id}", { type: 'PUT', data: @record }, =>
+            $.ajax "/api/collections/#{@record.collection.stub}/records/#{@record._id}", { type: 'PUT', data: @record }, =>
                 document.location = "/#{@record.collection.stub}/#{@record.id}"
         
         editor.editPage()

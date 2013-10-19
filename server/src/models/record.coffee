@@ -80,9 +80,7 @@ class Record extends ForaDbModel
         
     
     formatField: (name) =>
-        typeDesc = @getTypeDefinition()
-        { field, format } = typeDesc.formattedFields.filter((f) -> f.field is name)[0]
-        @formatData @[field], @[format]
+        @formatData @[name], @[@getTypeDefinition().fields[name].format]
             
 
 

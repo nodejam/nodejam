@@ -47,7 +47,7 @@ class Records extends Controller
                     if record
                         if record.createdBy.id is req.user.id or @isAdmin(req.user)
                             record.savedAt = Date.now()                            
-                            req.map record, (f for f of type.getTypeDefinition(type, false).fields)                            
+                            req.map record, (f for f of type.getTypeDefinition(type, false).fields)           
                             record = yield record.save()
                             res.send record
                         else
@@ -55,7 +55,7 @@ class Records extends Controller
                     else
                         res.send 'Invalid record.'
                 catch e
-                    next e)()    
+                    next e)()
 
 
                 
