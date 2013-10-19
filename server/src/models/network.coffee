@@ -10,8 +10,8 @@ class Network extends ForaDbModel
             name: 'string',
             stub: 'string',
             domains: { type: 'array', contentType: 'string' },
-            templates: 'any',
-            defaultTemplates: 'any'
+            templates: '',
+            defaultTemplates: ''
         },
         logging: {
             onInsert: 'NEW_USER'

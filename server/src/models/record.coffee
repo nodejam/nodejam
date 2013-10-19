@@ -1,10 +1,53 @@
 utils = require '../lib/utils'
 mdparser = require('../lib/markdownutil').marked
-ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
 Q = require('../lib/q')
+ForaModel = require('./foramodel').ForaModel
+ForaDbModel = require('./foramodel').ForaDbModel
 
 class Record extends ForaDbModel
+    
+    class Cover extends ForaModel
+        @describeType: {
+            type: @,
+            alias: '',
+            fields: {
+                image: 'string',
+                small: 'string',
+                alt: 'string !required'
+            }
+        }
+        
+        @toJSON: ->
+            "Record.Fields.Cover"
+        
+        
+    class TextContent extends ForaModel
+        @describeType: {
+            type: @,
+            fields: {
+                text: 'string',
+                format: 'string'
+            }
+        }
+    
+        formatContent: =>
+            switch @format
+                when 'markdown'
+                    if @text then mdparser(@text) else ''
+                when 'html', 'text'
+                    @text
+                else
+                    'Invalid format.'
+
+        @toJSON: ->
+            "Record.Fields.TextContent"
+    
+
+    @Fields: {
+        Cover: Cover,
+        TextContent: TextContent
+    }
     
     @describeType: {
         type: @,
@@ -76,22 +119,6 @@ class Record extends ForaDbModel
             @meta = (m for m in @meta when metaList.indexOf(m) is -1)
             yield @save()
         )()
-
-        
-    
-    formatField: (name) =>
-        @formatData @[name], @[@getTypeDefinition().fields[name].format]
-            
-
-
-    formatData: (data, format) =>  
-        switch format
-            when 'markdown'
-                if data then mdparser(data) else ''
-            when 'html', 'text'
-                data
-            else
-                'Invalid format.'
             
     
     

@@ -1,25 +1,22 @@
-recordModule = require('./record')
+Record = require('./record').Record
 utils = require('../lib/utils')
 Q = require('../lib/q')
 models = require('./')
 widgets = require '../common/widgets/records'
 
-class Article extends recordModule.Record
+class Article extends Record
 
     @describeType: {
         type: @,
-        inherits: recordModule.Record,
-        name: 'article',
+        alias: 'article',
+        inherits: Record,
         description: 'Article',
         fields: {
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },
             synopsis: { type: 'string', required: false, maxLength: 2000 },
-            cover: { type: 'string', required: false, maxLength: 200 },
-            coverAlt: { type: 'string', required: false, maxLength: 200 },
-            smallCover: { type: 'string', required: false, maxLength: 200, validate: -> if @cover and not @smallCover then 'Missing small cover.' else true },
-            content: { type: 'string', format: 'format', required: false, maxLength: 100000 },
-            format: { type: 'string', $in: ['markdown'], map: { default: 'markdown' } },
+            cover: { type: Record.Fields.Cover, required: false },
+            content: { type: Record.Fields.TextContent }
         },
         stub: 'title'
     }
@@ -50,7 +47,7 @@ class Article extends recordModule.Record
         switch name
             when "snapshot"
                 {
-                    image: @smallCover,
+                    image: @cover?.small,
                     @title,
                     @createdBy,
                     id: @_id.toString(),
@@ -58,16 +55,14 @@ class Article extends recordModule.Record
                 } 
             when "card"
                 {
-                    image: @smallCover,
+                    image: @cover?.small,
                     @title,
-                    content: @formatData(@content, @format),
+                    content: @content.formatContent(),
                     @createdBy,
                     @collection,
                     id: @_id.toString(),
                     @stub
                 }
-
-
 
 exports.Article = Article
 

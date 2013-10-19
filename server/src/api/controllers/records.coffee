@@ -22,10 +22,9 @@ class Records extends Controller
                         state: req.body('state') ? 'draft',
                         rating: 0,
                         savedAt: Date.now(),
-                        format: 'markdown'
+                        format: 'html'
                     }
-                    
-                    req.map record, (f for f of type.getTypeDefinition(type, false).fields)                            
+                    req.map record, @getMappableFields(type)
                     record = yield collection.addRecord record
                     res.send record
 
@@ -58,6 +57,20 @@ class Records extends Controller
                     next e)()
 
 
+    
+    getMappableFields: (type, acc = [], prefix = []) =>
+        for field, def of models.Record.getTypeDefinition(type, false).fields
+            def = typeutils.getFieldDefinition def
+            if typeutils.isPrimitiveType def.type
+                acc.push prefix.concat(field).join '_'
+            else
+                if typeutils.isUserDefinedType def.type
+                    prefix.push field
+                    @getMappableFields def.type, acc, prefix
+                    prefix.pop field            
+        acc
+        
+                    
                 
     remove: (req, res, next) =>
         @ensureSession arguments, => 

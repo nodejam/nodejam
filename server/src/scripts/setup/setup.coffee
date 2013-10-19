@@ -75,7 +75,8 @@ init = () ->
                 utils.log "Creating a new article with token(#{token})...."
                 utils.log "Creating #{article.title}..."
                 
-                article.content = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
+                article.content_text = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
+                article.content_format = 'markdown'
                 article.state = 'published'
                 collection = article._collection
                 

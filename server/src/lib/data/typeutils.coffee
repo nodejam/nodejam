@@ -1,8 +1,10 @@
 utils = require '../utils'
 
 isUserDefinedType = (type) ->
-    ['string', 'integer', 'number', 'boolean', 'object', 'array', ''].indexOf(type) is -1   
-    
+    ['string', 'number', 'boolean', 'object', 'array', ''].indexOf(type) is -1   
+
+isPrimitiveType = (type) ->
+    ['string', 'number', 'boolean', 'array'].indexOf(type) > -1   
 
 getFieldDefinition = (def) ->
     #Convert short hands to full definitions.
@@ -35,5 +37,6 @@ getFieldDefinition = (def) ->
         
     
 exports.isUserDefinedType = isUserDefinedType
+exports.isPrimitiveType = isPrimitiveType
 exports.getFieldDefinition = getFieldDefinition
 

@@ -8,15 +8,14 @@ class Cover extends Widget
 
 
     constructor: (@fields = {}) ->
-        @fields.src ?= 'cover'
-        @fields.alt ?= 'coverAlt'
+        @fields.cover ?= 'cover'
        
        
         
     render: (data) =>
-        src = data.record[@fields.src]
-        alt = data.record[@fields.alt]
-        Cover.template { src, alt, fieldSrc: @fields.src, fieldAlt: @fields.alt }        
+        src = data.record[@fields.cover].image
+        alt = data.record[@fields.cover].alt
+        Cover.template { src, alt, fieldSrc: "#{@fields.cover}_image", fieldAlt: "#{@fields.cover}_alt" }        
 
     
 exports.Cover = Cover

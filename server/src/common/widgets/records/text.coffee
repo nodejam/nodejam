@@ -15,7 +15,7 @@ class Text extends Widget
        
         
     render: (data) =>
-        text = data.record.formatField @fields.text
+        text = data.record[@fields.text].formatContent()
         Text.template { text, fieldText: @fields.text }
 
     

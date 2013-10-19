@@ -55,10 +55,6 @@ class Validator
 
                         if typeutils.isUserDefinedType(fieldDef.type) and value.validate
                             errors = errors.concat value.validate()
-                        else
-                            #We should also check for objects inside object. (ie, do we have fields inside the fieldDef?)
-                            if fieldDef.fields
-                                errors =  errors.concat @validate value, fieldDef
         
         if value and fieldDef.validate
             @addError errors, fieldName, fieldDef.validate.call obj
