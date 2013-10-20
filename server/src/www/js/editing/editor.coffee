@@ -12,6 +12,9 @@ class Editor
             do (e) =>
                 e =  $(e)
                 switch e.data('field-type')                
+                    when 'cover'
+                        @setupCover e
+                        
                     when 'title'
                         @setupTextElement e
                                             
@@ -36,7 +39,12 @@ class Editor
                         
                         ckeditor = CKEDITOR.inline e[0], config        
 
-                
+
+
+    setupCover: (e) =>
+        if not $('.cover img').length
+            $('.cover').html '<p class="editor-option add-picture"><i class="icon-picture"></i> <a href="#">Add a picture</a></p>'
+                        
     
     setupTextElement: (e) =>    
         e.attr 'contenteditable', true

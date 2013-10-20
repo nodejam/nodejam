@@ -209,11 +209,7 @@
                 width: 980px; margin: auto; padding: 0;            
                 &.small { width: 600px; }
                 .single-item-mixin (640px, 280px);
-                .item { 
-                    float: left; margin-right: 60px; 
-                    .cover { width: 100%; margin-bottom: 20px; }
-                    &.text { .content-text-mixin; }
-                }
+                .item { float: left; margin-right: 60px; }
                 .sidebar { 
                     float: left; 
                     .header { margin-top: 8px; }
@@ -262,10 +258,6 @@
                 width: @width + 0px; margin: auto; padding: 0;            
                 &.small { width: 600px; }
                 .single-item-mixin (100%, 100%);
-                .item { 
-                    .cover { width: 100%; margin-bottom: 20px; }
-                    &.text { .content-text-mixin; }
-                }
                 .sidebar { 
                     .header { 
                         img { width: 120px; border-radius: 100% }
@@ -328,10 +320,6 @@
                 &.small { width: 300px; margin: auto }          
                 .single-item-mixin (100%, 100%);
                 .content-area {
-                    .item { 
-                        .cover { width: 100%; margin-bottom: 20px; }
-                        &.text { .content-text-mixin; }
-                    }
                     .sidebar { 
                         .header { 
                             img { width: 120px; border-radius: 100% }
@@ -484,8 +472,12 @@
         width: @width; margin: auto; 
         .content { 
             font-size: 1.2em; clear: both;
-            .wider { width: @width + 40px; }
+            .wider { width: @width + 40px; }                
         }
+        .cover { 
+            img { width: 100%; margin-bottom: 20px; }
+        }
+        &.text { .content-text-mixin; }        
     }
     
     .sidebar {

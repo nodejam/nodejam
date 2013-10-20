@@ -47,7 +47,8 @@ if opt isnt '--debug'
         buffer: 1000 * 1024,
         tempPath: '../temp/',
         fileIn: [
-            'app/www/css/main.css'
+            'app/www/css/main.css',
+            'app/www/css/editor.css',
         ],
         fileOut: 'app/www/css/fora.css',
         callback: (err) -> 

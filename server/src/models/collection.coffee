@@ -63,7 +63,7 @@ class Collection extends ForaDbModel
             stub: 'string',
             type: { type: 'string', $in: ['public', 'protected', 'private'] },
             recordTypes: { type: 'array', contentType: 'string', map: { format: 'csv' } },
-            settings: { type: Settings },
+            settings: { type: Settings, required: false },
             icon: 'string',
             iconThumbnail: 'string',
             cover: { type: 'string', required: false },

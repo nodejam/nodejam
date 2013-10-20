@@ -73,20 +73,14 @@ class ExpressRequestWrapper
                                 obj[name] = if typeof def.map.default is "function" then def.map.default(obj) else def.map.default
                                 true
                 else
-                    prefix.push name
-                    
-                    if obj[name]
-                        newObj = obj[name]
-                    else                             
-                        if def.type isnt 'object' and def.type isnt ''
-                            newObj = new def.type()
-
-                    modified = @map(newObj, whitelist, options, prefix)
-                    
-                    if modified
-                        obj[name] ?= newObj
+                    if def.type isnt 'object' and def.type isnt ''
+                        prefix.push name
                         
-                    prefix.pop()
+                        newObj = obj[name] ? new def.type()
+                        if @map(newObj, whitelist, options, prefix)
+                            obj[name] ?= newObj
+                            
+                        prefix.pop()
 
 
 

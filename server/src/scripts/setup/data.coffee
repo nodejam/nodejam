@@ -290,7 +290,16 @@ flightOfTheIcarus = {
     _meta: 'featured'
 }
 
-articles = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus]
+huckleberryFinn = {
+    title: 'Huckleberry Finn',
+    type: "article",
+    _content: 'huckleberry-finn.md',
+    _collection: 'raw-nerve',
+    _createdBy: 'jeswin',
+    _meta: 'featured'
+}
+
+articles = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus, huckleberryFinn]
 
 exports.users = users
 exports.collections = collections
