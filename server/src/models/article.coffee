@@ -44,9 +44,8 @@ class Article extends Record
                         sidebar: [ { widget: 'authorship' } ]
                     }
                 }
-            
+                    
                             
-
 
     getView: (name = "standard") =>
         switch name
