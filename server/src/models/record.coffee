@@ -2,6 +2,7 @@ utils = require '../lib/utils'
 mdparser = require('../lib/markdownutil').marked
 models = require('./')
 Q = require('../lib/q')
+widgets = require '../common/widgets/records'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
@@ -156,5 +157,35 @@ class Record extends ForaDbModel
             return result)()
 
         
+    
+    parseTemplate: (data) =>
+        if data instanceof Array
+            (@parseTemplate(i) for i in data)
+        else if data.widget
+            ctor = if typeof data.widget is 'string' then @getWidget(data.widget) else data.widget
+            if data.params
+                params = {}
+                for k, v of data.params
+                    params[k] = @parseTemplate(v)
+                new ctor params
+            else
+                new ctor
+        else
+            data
+                
+
+
+    getWidget: (name) =>
+        switch name
+            when 'cover'
+                widgets.Cover
+            when 'title'
+                widgets.Title
+            when 'authorship'
+                widgets.Authorship
+            when 'text'
+                widgets.Text
+            when 'recordview'
+                widgets.RecordView
             
 exports.Record = Record

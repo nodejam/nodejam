@@ -2,7 +2,6 @@
 /* Card view. Where we should boxes on a page, with variable column count based on screen size. */
 .cards-mixin (@colWidth; @colSpacing; @colHeaderSize; @colTextSize; @wideColImageWidth; @wideColWidth) {
     
-    /* POSTS */
     ul.cards {
         clear: both; float: left;
         
@@ -42,6 +41,7 @@
                 height: 160px; background-size: cover; background-position: center; background-repeat: no-repeat;
                 width: 100%; margin-bottom: 12px;
             }
+            
             .content-wrap { 
                 .content { 
                     margin-bottom: 8px; height: 360px; overflow: hidden;               
@@ -49,6 +49,7 @@
                 
                 .overlay {
                     position:absolute; height: 48px; margin-top: -56px; pointer-events: none;
+                    
                     .overlay-size() when not (ispercentage(@colWidth)) {
                         width: @colWidth + 0px;
                     }

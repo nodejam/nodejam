@@ -12,7 +12,8 @@ class Cover extends Widget
         <div class="cover" data-field-type="cover" data-fieldname-src={{fieldSrc}} data-fieldname-alt={{fieldAlt}}></div>'
 
 
-    constructor: (@fields = {}) ->
+    constructor: (params = {}) ->
+        @fields = params.fields ? {}
         @fields.cover ?= 'cover'
         
        

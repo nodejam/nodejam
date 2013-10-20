@@ -32,15 +32,20 @@ class Article extends Record
     getTemplate: (name = "standard") =>
         switch name
             when 'standard'
-                itemPane = [
-                    new widgets.Cover,
-                    new widgets.Title,
-                    new widgets.Authorship('small'),
-                    new widgets.Text
-                ]
-                sidebar = [ new widgets.Authorship ]
-                new widgets.RecordView itemPane, sidebar
+                @parseTemplate {
+                    widget: "recordview",
+                    params: {
+                        itemPane: [
+                            { widget: 'cover' },
+                            { widget: 'title' },
+                            { widget: 'authorship', params: { type: 'small' } },
+                            { widget: 'text' },
+                        ],
+                        sidebar: [ { widget: 'authorship' } ]
+                    }
+                }
             
+                            
 
 
     getView: (name = "standard") =>

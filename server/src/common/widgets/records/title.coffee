@@ -7,9 +7,11 @@ class Title extends Widget
 
 
 
-    constructor: (@fields = {}) ->
-        @fields.title = 'title'
+    constructor: (params = {}) ->
+        @fields = params.fields ? {}
+        @fields.title ?= 'title'
        
+        
         
     render: (data) =>
         title = data.record[@fields.title]

@@ -30,7 +30,9 @@ class Authorship extends Widget
         
         
 
-    constructor: (@type, @fields = {}) ->
+    constructor: (params = {}) ->
+        @type = params.type ? ''
+        @fields = params.fields ? {}
         @fields.author ?= 'author'
         @fields.collection ?= 'collection'
         

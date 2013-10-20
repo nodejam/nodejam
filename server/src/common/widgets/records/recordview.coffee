@@ -14,7 +14,9 @@ class RecordView extends Widget
 
     
     
-    constructor: (@itemPane, @sidebar) ->
+    constructor: (params) ->
+        @itemPane = params.itemPane
+        @sidebar = params.sidebar
 
         
         

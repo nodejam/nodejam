@@ -148,8 +148,12 @@ $.fn.clickHandler = (p1, p2) ->
 
 $.fn.highlight = ->
     elem = this
+    $(elem).removeClass 'unhighlight'
     $(elem).addClass 'highlight'
-    setTimeout (-> $(elem).removeClass 'highlight'), 1000
+    unhighlight = ->
+        $(elem).removeClass 'highlight';
+        (elem).addClass 'unhighlight'
+    setTimeout unhighlight, 1000
     this
 
         

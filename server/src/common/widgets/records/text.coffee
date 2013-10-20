@@ -10,8 +10,9 @@ class Text extends Widget
     
         
 
-    constructor: (@fields = {}) ->
-        @fields.text = 'content'
+    constructor: (params = {}) ->
+        @fields = params.fields ? {}
+        @fields.text ?= 'content'
        
         
     render: (data) =>
