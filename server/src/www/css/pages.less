@@ -1,0 +1,200 @@
+.page-sections-base-mixin (@fontSize) {
+    .container { 
+        font-size: @fontSize + 0px;
+    }
+}
+
+.content-area { 
+    .fontContent; clear: both; margin-top: 12px;
+    > h1 { margin-top: -12px }    
+}
+
+/* A page with just content. */
+.single-item-mixin (@width, @sidebarWidth) {
+    .item {
+        width: @width; margin: auto; 
+        .content { 
+            font-size: 1.2em; clear: both;
+            .wider { width: @width + 40px; }                
+        }
+        .cover { 
+            img { width: 100%; margin-bottom: 20px; }
+        }
+        &.text { 
+            p { line-height: 1.4em; margin-bottom: 1.4em }
+        }
+    }
+    
+    .sidebar {
+        font-size: 0.9em;
+        width: @sidebarWidth;
+    }
+}
+
+/*
+    There are three main page mixins, based on size.
+    a) Large: 1200px
+    b) Small: 720px
+    c) Tiny: less than 720px   
+*/
+.large-page-mixin {
+    .small-page-element, .tiny-page-element { display: none }
+    .large-page-element { display: block !important }
+    .light-text-mixin;
+}
+
+.large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
+    @unit: (@minWidth / 40);
+
+    .cover-page {
+        @coverWidth: (@unit * 9);
+        .large-page-mixin;    
+        .cover { 
+            height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center; 
+            width: @coverWidth + 0px;
+        }
+        
+        .container {
+            margin-right: @coverWidth + 0px; margin-top: 22px;
+            .columns-wrap {
+                width: (@colCount * (@colWidth + @colSpacing)) + 0px;
+                padding: 0 0 0 (@colSpacing / 2) + 0px;
+            }
+        }
+    }    
+}
+
+.large-std-page-mixin () {
+    .std-page {
+        .large-page-mixin;
+        .container {
+            margin-top: 22px;
+
+            .page-wrap {
+                width: 980px; margin: auto; padding: 0;            
+                &.small { width: 600px; }
+                .single-item-mixin (640px, 280px);
+                .item { float: left; margin-right: 60px; }
+                .sidebar { 
+                    float: left; 
+                    .header { margin-top: 8px; }
+                }                                
+                .form-standard-mixin(32px, 240px);
+            }
+        }
+    }
+}
+
+.small-page-mixin {
+    .large-page-element, .tiny-page-element { display: none }
+    .small-page-element { display: block !important }
+    .light-text-mixin;
+}
+
+.small-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
+    @unit: (@minWidth / 40);
+    
+    .cover-page {
+        .small-page-mixin;
+        @coverHeight: 260;
+        .cover { 
+            background-size: cover; background-position: center; 
+            height: @coverHeight + 0px;
+        }
+
+        .container {
+            margin-top: 24px;
+
+            .columns-wrap {
+                width: (@colCount * (@colWidth + @colSpacing)) + 0px;
+                padding: 0 0 0 (@colSpacing / 2) + 0px;
+            }
+        }        
+    }
+}
+
+.small-std-page-mixin (@width, @sidebarWidth) {
+    .std-page {
+        .small-page-mixin;
+        .container {
+            margin-top: 72px;
+
+            .page-wrap {
+                width: @width + 0px; margin: auto; padding: 0;            
+                &.small { width: 600px; }
+                .single-item-mixin (100%, 100%);
+                .sidebar { 
+                    .header { 
+                        img { width: 120px; border-radius: 100% }
+                        h2 { margin: 6px 0; }
+                    }
+                }
+            }
+            
+            .form-standard-mixin(32px, 220px);
+        }
+    }
+}
+
+.tiny-page-mixin {
+    .large-page-element, .small-page-element { display: none }
+    .tiny-page-element { display: block !important }
+    .light-text-mixin;
+
+    .nav {
+        &.alt { 
+            margin-bottom: 40px;
+            ul.alt { float: left; clear: both; margin-top: 24px; }
+        }
+    }
+}
+
+.tiny-cover-page-mixin (@width) {
+    .cover-page {
+        .tiny-page-mixin;
+        @coverHeight: 200;
+        .cover { 
+            background-size: cover; background-position: center; 
+            height: @coverHeight + 0px;
+        }
+
+        .container {
+            margin-top: 24px;
+
+            .columns-wrap {
+                .widths() when not (ispercentage(@width)) {
+                    width: @width + 0px; margin: auto;
+                }
+                .widths() when (ispercentage(@width)) {
+                    padding: 0 12px;
+                }                        
+                .widths();
+            }
+        }        
+    }
+}
+
+.tiny-std-page-mixin {
+    .std-page {
+        .tiny-page-mixin;
+        .container {
+            margin-top: 72px;
+
+            .page-wrap {
+                margin: auto 12px; padding: 0;  
+                &.small { width: 300px; margin: auto }          
+                .single-item-mixin (100%, 100%);
+                .content-area {
+                    .sidebar { 
+                        .header { 
+                            img { width: 120px; border-radius: 100% }
+                            h2 { margin: 6px 0; }
+                        }
+                    }
+                }                
+                .form-standard-mixin(24px, 220px);
+            }
+        }        
+    }
+}
+

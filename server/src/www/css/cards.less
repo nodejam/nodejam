@@ -1,0 +1,106 @@
+
+/* Card view. Where we should boxes on a page, with variable column count based on screen size. */
+.cards-mixin (@colWidth; @colSpacing; @colHeaderSize; @colTextSize; @wideColImageWidth; @wideColWidth) {
+    
+    /* POSTS */
+    ul.cards {
+        clear: both; float: left;
+        
+        .margins() when not (ispercentage(@colWidth)) {
+            margin: -32px 0 32px -(@colSpacing / 2) + 0px; 
+        }
+        .margins() when (ispercentage(@colWidth)) {
+            margin: 0;
+        }        
+        
+        .margins();
+
+        > li {
+            float: left; overflow: hidden; 
+
+            .column-size() when not (ispercentage(@colWidth)) {
+                margin: 32px ((@colSpacing / 2) + 0px) 0 ((@colSpacing / 2) + 0px);
+                width: @colWidth + 0px; 
+            }
+
+            .column-size() when (ispercentage(@colWidth)) {                                
+                margin-bottom: 32px;
+            }        
+            
+            .column-size();
+
+            &.alt { 
+                background-color: @colorUltraLight;            
+                width: @colWidth - 1px; border-right: 1px solid @colorLighter; border-bottom: 1px solid @colorLighter; 
+                .overlay { margin-left: -12px; }
+                .content-wrap {
+                    padding: 0 12px;
+                }
+            }
+
+            .image { 
+                height: 160px; background-size: cover; background-position: center; background-repeat: no-repeat;
+                width: 100%; margin-bottom: 12px;
+            }
+            .content-wrap { 
+                .content { 
+                    margin-bottom: 8px; height: 360px; overflow: hidden;               
+                }
+                
+                .overlay {
+                    position:absolute; height: 48px; margin-top: -56px; pointer-events: none;
+                    .overlay-size() when not (ispercentage(@colWidth)) {
+                        width: @colWidth + 0px;
+                    }
+                    .overlay-size() when (ispercentage(@colWidth)) {
+                        width: 100%; left: 0;
+                    }
+                    .overlay-size();
+                    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+                    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+                    background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+                    background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+                    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+                }
+                .activity { .fontBase; font-size: 0.75em; float: right; color: @colorNeutral; font-weight: bold; line-height: 1.3em; margin-top: 4px; padding-right: 4px; }
+            }
+            
+            .image + .content-wrap .content { max-height: 188px }
+
+            /* Alternate layout */
+            &.alt {
+                .image { height: 100px; }
+                .image + .content-wrap .content { max-height: 248px }
+            }
+            
+            h2 { margin: 0 0 8px 0; line-height: 1.1em; }      
+            .subheading { 
+                font-style: italic; margin: 0 0 8px 0; color: @colorNeutral;
+                a { color: @colorNeutral }
+            }
+            p { margin: 0 0 12px 0 }
+            
+            /* wide column is only needed if width isn't in percetage. */
+            .wide-column() when not (ispercentage(@colWidth)) {
+                &.wide {            
+                    width: @wideColImageWidth + @wideColWidth + 60px; height: 280px;
+                    .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
+                    .content-wrap { 
+                        float: left; height: 280px; width: @wideColWidth + 0px; 
+                        .content { 
+                            max-height: 200px; 
+                            h2 { font-size: 1.7em }
+                        }
+                        .overlay { width: @wideColWidth + 0px }
+                        .source {
+                            .text { width: (@wideColWidth - 160) }
+                        }
+                    }
+                }                        
+            }                      
+            .wide-column();  
+        }
+    }
+}

@@ -39,11 +39,18 @@
 
 .highlight { background-color: #E7EDA5 !important; }
 .placeholder { color: #ccc }
+.error { color: Red }
+.italicize { font-style: italic }
+.action { 
+    &.positive { color: @colorPositive }
+    &.negative { color: @colorNegative }
+}
 
-.control (@fg, @bg, @borderHighLight, @borderShadow) { 
-    color: @fg; background-color: @bg; border-top: 1px solid darken(@bg, @borderHighLight); border-right: 1px solid darken(@bg, @borderShadow);     
-    border-bottom: 1px solid darken(@bg, @borderShadow); border-left: 1px solid darken(@bg, @borderHighLight);
-    &:hover { background-color: lighten(@bg, 5%);  }
+.light-text-mixin  { 
+    .light-text {
+        color: @colorNeutral; font-style: italic;
+        a { color: @colorDark }
+    }
 }
 
 /* BORDERS */
@@ -67,6 +74,12 @@ a {
 }
 
 /* FORM CONTROLS */
+.control (@fg, @bg, @borderHighLight, @borderShadow) { 
+    color: @fg; background-color: @bg; border-top: 1px solid darken(@bg, @borderHighLight); border-right: 1px solid darken(@bg, @borderShadow);     
+    border-bottom: 1px solid darken(@bg, @borderShadow); border-left: 1px solid darken(@bg, @borderHighLight);
+    &:hover { background-color: lighten(@bg, 5%);  }
+}
+
 input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
     input[type="checkbox"] { margin-right: 4px; }
     input[type="file"] { padding: 0; border: none }
@@ -94,4 +107,12 @@ h1 { font-size: 1.8em }
 h2 { font-size: 1.4em }
 h3 { font-size: 1.2em }
 li { list-style: none }
+
+
+
+
+.full-background { 
+    position: fixed; margin-top: 0; height: 100%; width: 100%; background-color: #ccc; background-size: cover; 
+    background-position: center; background-repeat: no-repeat; top: 0; z-index: -1 
+}
 

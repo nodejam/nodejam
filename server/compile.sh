@@ -50,7 +50,6 @@ coffee -o app/ -c src/
 
 echo "Running LESS.."
 lessc app/www/css/main.less app/www/css/main.css
-lessc app/www/css/editor.less app/www/css/editor.css
 
 if $debug; then
     node --harmony app/scripts/deploy/package.js --debug

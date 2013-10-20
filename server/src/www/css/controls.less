@@ -1,0 +1,42 @@
+/* Dynamically created login */
+.login-box-mixin (@width, @spacing, @fontSize) {
+    #login-box {
+        .rounded; padding: @spacing (2 * @spacing); background: @colorLighter; width: @width; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; 
+        h2 { clear: both; margin: 0 }
+        li {
+            font-size: @fontSize; clear: both; height: (@fontSize * 2.3);
+            i { 
+                float: left; font-size: (@fontSize * 2);
+                &.icon-twitter { color: #00aced }
+                &.icon-facebook { color: #3b5998 }
+                &.icon-google-plus { color: #d34836 }    
+            }
+            a { 
+                float: left; margin: 6px 0 0 12px;
+                &.twitter { color: #00aced }
+            }
+        }
+    }
+}
+
+/* Dashboard Style Widgets */
+.dashboard-widgets {
+    > div {
+        float: left; .rounded; background: @colorUltraLight; color: white;
+        p {
+            line-height: 0.6em; margin: 0;
+            &.large-text { font-size: 32px; font-weight: bold; text-align: center }
+            .subtext { font-size: 12px; font-weight: bold; text-transform: uppercase }
+        }     
+        &.full { width: 80%; padding: 20px 8% 12px 8%; margin: 0 4% 20px 0 }
+        &.half { width: 40%; padding: 20px 4% 12px 4%; margin: 0 2% 20px 0 }
+        &.cg1 { background-color: @colorGroup1 }
+        &.cg2 { background-color: @colorGroup2 }
+        &.cg3 { background-color: @colorGroup3 }
+        &.cg4 { background-color: @colorGroup4 }               
+    }
+}
+
+/* LEAN MODAL - Thanks to http://leanmodal.finelysliced.com.au/ */
+#lean_overlay { position: fixed; z-index:100; top: 0px; left: 0px; height:100%; width:100%; background: #000; display: none; }
+

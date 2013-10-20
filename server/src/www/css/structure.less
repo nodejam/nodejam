@@ -1,0 +1,97 @@
+/* Common for all pages */
+.header {
+    .logo {
+        .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left; 
+        text-transform: uppercase; position: absolute; top: 6px; left: 6px; 
+        &:hover { background: #333; }
+    }    
+}
+
+.nav {         
+    height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; clear: both;
+    border-bottom: 2px solid @colorUltraLight; /* box-shadow: 0 2px 0 @colorUltraLight; */
+    ul {
+        float: left; 
+        li { 
+            float: left; padding-right: 12px; color: @colorNeutral; 
+            &.selected { color: @colorDark }
+            a { text-decoration: underline; }
+            i { text-decoration: none }
+        }
+        &.alt { float: right; }
+    }
+    &.buttons {
+        padding-bottom: 24px;
+        ul {
+            float: right;
+            li { padding-right: 4px; }
+        }
+    }
+}
+
+.container { 
+    text-align: center; 
+    .page-wrap { 
+        text-align: left; margin: auto;
+    }
+    .columns-wrap { 
+        text-align: left; margin: auto;
+    }
+    .columns-wrap, .page-wrap {
+        /* Generic sections. */
+        .content-sections {
+            margin-bottom: 24px;
+            > div {
+                float: left; margin-right: 24px;
+                &.normal { min-width: 240px; max-width: 480px; }
+                &.small { min-width: 240px; max-width: 320px }
+            }
+            &:after { content: ""; display: block; clear: both; }
+        }
+        /* These are for icon + title combos, or just titles. Such as thumbnail and author */
+        .iconic-desc {
+            line-height: 1.5em; display: block; font-size: 0.9em; height: 40px;
+            img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 1px 4px 0 0 }
+            .text { display: block; float: left; margin-left: 4px; }
+            
+            &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
+        }
+
+        .iconic-section {        
+            img { float: right; width:48px; height: 48px; border-radius: 100%; margin-top: 3px; }
+            h2 { margin: 0 0 .2em 0 }
+        }
+
+        .desc-text {
+            font-size: 0.9em; line-height: 1.5em; 
+            li { display: block; padding-bottom: 8px; }
+        }
+    }
+}
+
+/* Left side pane */
+.site-options {
+    height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 99; box-shadow: 4px 0 4px black;
+                        
+    ul {
+        background: @colorDarker; opacity: 0.96; width: 220px; height: 100%; 
+        padding-top: 12px; font-size: 12px; font-weight: bold; color: @colorLight;
+        li {                
+            border-bottom: 1px solid @colorDarkerBorder; clear: both; display: table; width: 100%;
+            a { 
+                display: block; padding: 10px 4px 10px 20px; color: @colorLight; float: left; min-width: 120px;
+                i { 
+                    margin-right: 12px; 
+                }
+                &:hover { color: white }
+                &.right { 
+                    float: right; padding: 10px 24px 10px 16px; margin: 0; min-width: 0;
+                    i { margin: 0 }
+                }   
+            }
+        }
+    }
+    .transparent-overlay {
+        position: fixed; margin-left: 220px; height: 100%; top: 0; left: 0; width: 100%; cursor: pointer;
+    }
+}

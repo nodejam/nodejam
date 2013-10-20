@@ -1,0 +1,35 @@
+[contenteditable="true"] {
+    background-color: white;
+    -moz-transition:background-color 1s;
+    -webkit-transition:background-color 1s;
+    -o-transition:background-color 1s;
+    transition:background-color 1s; 
+    outline: 0px solid transparent;
+}
+
+/* The standard Form */
+.form-standard-mixin (@spacing, @inputBaseWidth) {
+    form.standard {
+        .rounded; background: #f6f6f6; padding: (@spacing/2) 0 @spacing 0;
+        
+        input, textarea { width: @inputBaseWidth }
+        label, input, button, textarea { margin-left: @spacing }                
+
+        &.single-col {
+            fieldset {
+                border: none; margin: 0 0 (@spacing/1.5) 0; padding: 0; 
+                legend { 
+                    font-size: 1.2em; margin-bottom: (@spacing/1.5); font-weight: bold; padding-left: @spacing;
+                    padding-left: @spacing; border-bottom: 1px solid @colorLight; box-shadow: 0px 2px 0 @colorUltraLight; display: block; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; padding-bottom: (@spacing/4);
+                }
+                label {
+                    font-size: 0.8em; font-weight: bold; display: block;
+                }
+                input {
+                    margin-bottom: 12px; display: block;
+                    &:last-child { margin-bottom: 0 }
+                }
+            }
+        }
+    }
+}
