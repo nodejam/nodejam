@@ -8,48 +8,6 @@ ForaDbModel = require('./foramodel').ForaDbModel
 
 class Record extends ForaDbModel
     
-    class Cover extends ForaModel
-        @describeType: {
-            type: @,
-            alias: '',
-            fields: {
-                image: 'string',
-                small: 'string',
-                alt: 'string !required'
-            }
-        }
-        
-        @toJSON: ->
-            "Record.Fields.Cover"
-        
-        
-    class TextContent extends ForaModel
-        @describeType: {
-            type: @,
-            fields: {
-                text: 'string',
-                format: 'string'
-            }
-        }
-    
-        formatContent: =>
-            switch @format
-                when 'markdown'
-                    if @text then mdparser(@text) else ''
-                when 'html', 'text'
-                    @text
-                else
-                    'Invalid format.'
-
-        @toJSON: ->
-            "Record.Fields.TextContent"
-    
-
-    @Fields: {
-        Cover: Cover,
-        TextContent: TextContent
-    }
-    
     @describeType: {
         type: @,
         collection: 'records',

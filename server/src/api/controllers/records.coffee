@@ -2,7 +2,6 @@ conf = require '../../conf'
 db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../lib/utils'
-typeutils = require '../../lib/data/typeutils'
 Q = require('../../lib/q')
 Controller = require('../../common/web/controller').Controller
 
@@ -59,12 +58,13 @@ class Records extends Controller
 
     
     getMappableFields: (type, acc = [], prefix = []) =>
+        typeUtils = models.Record.getTypeUtils()
         for field, def of models.Record.getTypeDefinition(type, false).fields
-            def = typeutils.getFieldDefinition def
-            if typeutils.isPrimitiveType def.type
+            def = typeUtils.getFieldDefinition def
+            if typeUtils.isPrimitiveType def.type
                 acc.push prefix.concat(field).join '_'
             else
-                if typeutils.isUserDefinedType def.type
+                if typeUtils.isUserDefinedType def.type
                     prefix.push field
                     @getMappableFields def.type, acc, prefix
                     prefix.pop field            

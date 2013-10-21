@@ -1,8 +1,9 @@
-typeutils = require('./typeutils')
-
 class Validator
 
-    @validate: (obj, modelDescription) ->   
+    constructor: (@typeUtils) ->
+        
+
+    validate: (obj, modelDescription) ->   
         errors = []
         
         if not modelDescription.useCustomValidationOnly
@@ -23,11 +24,11 @@ class Validator
     
     
     
-    @validateField: (obj, value, fieldName, def) ->
+    validateField: (obj, value, fieldName, def) ->
         errors = []
 
         if not def.useCustomValidationOnly                
-            fieldDef = typeutils.getFieldDefinition def
+            fieldDef = @typeUtils.getFieldDefinition def
             
             if fieldDef.required and not value?
                 errors.push "#{fieldName} is #{JSON.stringify value}"
@@ -41,7 +42,7 @@ class Validator
                 else
                     #If it is a custom class or a primitive
                     if fieldDef.type isnt ''                        
-                        if (typeutils.isUserDefinedType(fieldDef.type) and not (value instanceof fieldDef.type)) or (not typeutils.isUserDefinedType(fieldDef.type) and typeof(value) isnt fieldDef.type)
+                        if (@typeUtils.isUserDefinedType(fieldDef.type) and not (value instanceof fieldDef.type)) or (not @typeUtils.isUserDefinedType(fieldDef.type) and typeof(value) isnt fieldDef.type)
                             errors.push "#{fieldName} is #{JSON.stringify value}"
                             errors.push "#{fieldName} should be a #{fieldDef.type}."
 
@@ -53,7 +54,7 @@ class Validator
                                 if fieldDef.$in.indexOf(value) is -1
                                     errors.push "#{fieldName} must be one of #{JSON.stringify(fieldDef.$in)}."
 
-                        if typeutils.isUserDefinedType(fieldDef.type) and value.validate
+                        if @typeUtils.isUserDefinedType(fieldDef.type) and value.validate
                             errors = errors.concat value.validate()
         
         if value and fieldDef.validate
@@ -63,7 +64,7 @@ class Validator
         
         
     
-    @addError: (list, fieldName, error) ->
+    addError: (list, fieldName, error) ->
         if error is true
             return list
         if error is false
@@ -77,7 +78,6 @@ class Validator
         if error
             list.push error
             return list
-
 
 
 exports.Validator = Validator

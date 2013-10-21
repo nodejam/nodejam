@@ -1,7 +1,6 @@
 databaseModule = require('./database').Database
 utils = require('../utils')
 BaseModel = require('./basemodel').BaseModel
-typeutils = require('./typeutils')
 Q = require('../q')
 
 class DatabaseModel extends BaseModel
@@ -115,24 +114,26 @@ class DatabaseModel extends BaseModel
     
     
     @constructModelImpl: (obj, modelDescription, context, db) ->    
+        typeUtils = @getTypeUtils()        
+        
         if modelDescription.customConstructor
             makeResult obj, ((o) -> modelDescription.customConstructor o), context, db
         else           
             result = {}
             for name, field of modelDescription.fields
                    
-                fieldDef = typeutils.getFieldDefinition field                
+                fieldDef = typeUtils.getFieldDefinition field                
                 value = obj[name]
 
-                if typeutils.isUserDefinedType fieldDef.type
+                if typeUtils.isUserDefinedType fieldDef.type
                     if value
                         result[name] = @constructModel value, @getTypeDefinition(fieldDef.type), context, db
                 else
                     if value
                         if fieldDef.type is 'array'
                             arr = []
-                            contentType = typeutils.getFieldDefinition fieldDef.contentType
-                            if typeutils.isUserDefinedType contentType.type
+                            contentType = typeUtils.getFieldDefinition fieldDef.contentType
+                            if typeUtils.isUserDefinedType contentType.type
                                 for item in value
                                     arr.push @constructModel item, @getTypeDefinition(contentType.type), context, db
                             else
@@ -194,7 +195,7 @@ class DatabaseModel extends BaseModel
                         }
                         db.insert('events', event)                            
                     result = yield db.insert(modelDescription.collection, @)
-                    result = DatabaseModel.constructModel(result, modelDescription, context, db)
+                    result = @constructor.constructModel(result, modelDescription, context, db)
                 else
                     if modelDescription.logging?.onUpdate
                         event = {

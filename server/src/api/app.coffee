@@ -4,6 +4,7 @@ utils = require '../lib/utils'
 expressutils = require '../lib/expressutils'
 controllers = require './controllers'
 validator = require 'validator'
+TypeUtils = require('../lib/data/typeutils').TypeUtils
 
 host = conf.app.apiHost
 port = conf.app.apiPort
@@ -22,7 +23,7 @@ getController = (name) ->
         else throw new Error "Cannot find controller #{name}."
 
 
-expressutils.setup app, getController, (findHandler) ->
+expressutils.setup { app, getController, typeUtils: new TypeUtils() }, (findHandler) ->
     app.post '/api/users', findHandler('users', (c) -> c.create)
     app.get '/api/users/:username', findHandler('users', (c) -> c.item)
 

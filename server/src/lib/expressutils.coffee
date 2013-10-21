@@ -1,6 +1,5 @@
 express = require 'express'
 utils = require './utils'
-typeutils = require './data/typeutils'
 validator = require 'validator'
 conf = require '../conf'
 ExpressRequestWrapper = require('./expressrequestwrapper').ExpressRequestWrapper
@@ -19,8 +18,9 @@ http404 = (req, res, next) ->
     
 
 
-setup = (app, getController, cb) ->
-
+setup = (config, cb) ->
+    { app, getController, typeUtils } = config
+    
     getNetwork = (hostName) ->    
         matches = (n for n in conf.networks when n.domains.indexOf(hostName) isnt -1)
         if matches.length then matches[0]
@@ -38,7 +38,7 @@ setup = (app, getController, cb) ->
         handler = getHandler(controller)
         
         (_req, res, next) ->
-            req = new ExpressRequestWrapper _req
+            req = new ExpressRequestWrapper _req, typeUtils
             
             network = getNetwork req.headers.host
             if network

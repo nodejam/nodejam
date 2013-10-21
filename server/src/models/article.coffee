@@ -3,6 +3,7 @@ utils = require('../lib/utils')
 Q = require('../lib/q')
 models = require('./')
 widgets = require '../common/widgets/records'
+fields = require './fields'
 
 class Article extends Record
 
@@ -15,8 +16,8 @@ class Article extends Record
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },
             synopsis: { type: 'string', required: false, maxLength: 2000 },
-            cover: { type: Record.Fields.Cover, required: false },
-            content: { type: Record.Fields.TextContent }
+            cover: { type: fields.Cover, required: false },
+            content: { type: fields.TextContent }
         },
         stub: 'title'
     }

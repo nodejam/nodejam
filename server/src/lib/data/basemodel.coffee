@@ -1,6 +1,7 @@
 databaseModule = require('./database').Database
-Validator = require('./validator').Validator
 utils = require('../utils')
+Validator = require('./validator').Validator
+typeUtils = new (require('./typeutils').TypeUtils)
 
 class BaseModel
 
@@ -42,16 +43,23 @@ class BaseModel
             if parent.fields
                 utils.extend result.fields, parent.fields 
             result
-        
+
+
+
+    @getTypeUtils: ->
+        typeUtils
+
 
     
     validate: (modelDescription = @getTypeDefinition()) ->
-        Validator.validate @, modelDescription
+        validator = new Validator @constructor.getTypeUtils()
+        validator.validate @, modelDescription
             
 
 
     validateField: (value, fieldName, modelDescription = @getTypeDefinition()) ->
-        Validator.validateField @, value, fieldName, modelDescription
+        validator = new Validator @constructor.getTypeUtils()
+        validator.validateField @, value, fieldName, modelDescription
         
 
 
