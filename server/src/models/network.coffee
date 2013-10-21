@@ -9,7 +9,7 @@ class Network extends ForaDbModel
         fields: {
             name: 'string',
             stub: 'string',
-            domains: { type: 'array', contentType: 'string' },
+            domains: { type: 'array', contents: 'string' },
             templates: '',
             defaultTemplates: ''
         },

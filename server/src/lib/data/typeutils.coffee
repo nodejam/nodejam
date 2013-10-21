@@ -3,33 +3,27 @@ utils = require '../utils'
 class TypeUtils
     
     isUserDefinedType: (type) ->
-        ['string', 'number', 'boolean', 'object', 'array', ''].indexOf(type) is -1   
-
+        ['string', 'number', 'boolean', 'array', ''].indexOf(type) is -1   
 
 
     isPrimitiveType: (type) ->
         ['string', 'number', 'boolean', 'array'].indexOf(type) > -1   
 
 
-
     getFieldDefinition: (def) ->
         #Convert short hands to full definitions.
         #eg: 'string' means { type: 'string', required: true }
         if typeof(def) is 'string'
-            defString = def.split ' '        
+            defString = def.split ' '
             switch defString[0]
                 when 'integer'
                     fieldDef = {
                         type: 'number',
                         integer: true
                     }
-                when 'string'
-                    fieldDef = {
-                        type: 'string'
-                    }                    
                 else
                     fieldDef = {
-                        type: @resolveType(defString[0])
+                        type: defString[0]
                     }
             fieldDef.required = defString.indexOf('!required') is -1
         else 
@@ -40,16 +34,21 @@ class TypeUtils
             fieldDef.type = 'number'
             fieldDef.integer = 'true'
             fieldDef.required = true
+            
+        if fieldDef.type is 'array'
+            fieldDef.contents = @getFieldDefinition fieldDef.contents
 
         fieldDef.required ?= true
+        
+        if typeof(fieldDef.type) is 'string' and @isUserDefinedType(fieldDef.type) 
+            fieldDef.type = @resolveType fieldDef.type
+        
         fieldDef.type ?= ''
-    
+        
         fieldDef 
         
 
-    
     resolveType: (name) =>
         name
-    
     
 exports.TypeUtils = TypeUtils

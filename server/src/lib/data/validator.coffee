@@ -24,12 +24,10 @@ class Validator
     
     
     
-    validateField: (obj, value, fieldName, def) ->
+    validateField: (obj, value, fieldName, fieldDef) ->
         errors = []
 
-        if not def.useCustomValidationOnly                
-            fieldDef = @typeUtils.getFieldDefinition def
-            
+        if not fieldDef.useCustomValidationOnly                
             if fieldDef.required and not value?
                 errors.push "#{fieldName} is #{JSON.stringify value}"
                 errors.push "#{fieldName} is required."
@@ -38,7 +36,7 @@ class Validator
             if value
                 if fieldDef.type is 'array'
                     for item in value                        
-                        @addError errors, fieldName, @validateField(obj, item, "[#{fieldName} item]", fieldDef.contentType)
+                        @addError errors, fieldName, @validateField(obj, item, "[#{fieldName} item]", fieldDef.contents)
                 else
                     #If it is a custom class or a primitive
                     if fieldDef.type isnt ''                        

@@ -16,8 +16,8 @@ class Article extends Record
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },
             synopsis: { type: 'string', required: false, maxLength: 2000 },
-            cover: { type: fields.Cover, required: false },
-            content: { type: fields.TextContent }
+            cover: 'CoverPicture !required',
+            content: 'TextContent'
         },
         stub: 'title'
     }

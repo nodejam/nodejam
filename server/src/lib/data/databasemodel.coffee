@@ -92,7 +92,7 @@ class DatabaseModel extends BaseModel
 
     @constructModel: (obj, modelDescription, context, db) ->
         if modelDescription.discriminator
-            modelDescription = @getTypeDefinition(modelDescription.discriminator obj)
+            modelDescription = modelDescription.discriminator(obj).getTypeDefinition()
             
         result = @constructModelImpl(obj, modelDescription, context, db)
 
@@ -120,22 +120,20 @@ class DatabaseModel extends BaseModel
             makeResult obj, ((o) -> modelDescription.customConstructor o), context, db
         else           
             result = {}
-            for name, field of modelDescription.fields
+            for name, fieldDef of modelDescription.fields
                    
-                fieldDef = typeUtils.getFieldDefinition field                
                 value = obj[name]
 
                 if typeUtils.isUserDefinedType fieldDef.type
                     if value
-                        result[name] = @constructModel value, @getTypeDefinition(fieldDef.type), context, db
+                        result[name] = @constructModel value, fieldDef.type.getTypeDefinition(), context, db
                 else
                     if value
                         if fieldDef.type is 'array'
                             arr = []
-                            contentType = typeUtils.getFieldDefinition fieldDef.contentType
-                            if typeUtils.isUserDefinedType contentType.type
+                            if typeUtils.isUserDefinedType fieldDef.contents.type
                                 for item in value
-                                    arr.push @constructModel item, @getTypeDefinition(contentType.type), context, db
+                                    arr.push @constructModel item, fieldDef.contents.type.getTypeDefinition(), context, db
                             else
                                 arr = value
                             result[name] = arr

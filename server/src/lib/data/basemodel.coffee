@@ -10,13 +10,20 @@ class BaseModel
 
 
 
-    @getTypeDefinition: (model = @, inherited = true) ->
-        typeDesc = if typeof model.describeType is "function" then model.describeType() else model.describeType
+    @getTypeDefinition: (inherited = true) ->
+        if not @typeDefinition 
+            @typeDefinition = if typeof @describeType is "function" then @describeType() else @describeType                
+
+            for field, def of @typeDefinition.fields
+                @typeDefinition.fields[field] = @getTypeUtils().getFieldDefinition(def)
         
-        if inherited and typeDesc?.inherits
-            @mergeTypeDefinition typeDesc, typeDesc.inherits.getTypeDefinition()
+        if @typeDefinition.inherits
+            @fullTypeDefinition = @mergeTypeDefinition @typeDefinition, @typeDefinition.inherits.getTypeDefinition()
+
+        if inherited and @typeDefinition.inherits
+            @fullTypeDefinition
         else
-            typeDesc
+            @typeDefinition
         
         
     
@@ -63,8 +70,8 @@ class BaseModel
         
 
 
-    getTypeDefinition: (inherited = true) =>
-        @constructor.getTypeDefinition @constructor, inherited
+    getTypeDefinition: (inherited) =>
+        @constructor.getTypeDefinition inherited
             
 
     

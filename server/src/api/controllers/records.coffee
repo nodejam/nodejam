@@ -7,7 +7,6 @@ Controller = require('../../common/web/controller').Controller
 
 class Records extends Controller
 
-
     create: (req, res, next) =>
         @ensureSession arguments, =>
             (Q.async =>
@@ -55,11 +54,16 @@ class Records extends Controller
                 catch e
                     next e)()
 
-
     
+    ###
+        All fields defined specifically in a class inherited from Record will be 'mappable'.
+        models.Record.getTypeDefinition(type, false) returns fields in inherited class.
+        Note: fields in Record are not mappable.
+    ###    
     getMappableFields: (type, acc = [], prefix = []) =>
         typeUtils = models.Record.getTypeUtils()
-        for field, def of models.Record.getTypeDefinition(type, false).fields
+        
+        for field, def of type.getTypeDefinition(false).fields
             def = typeUtils.getFieldDefinition def
             if typeUtils.isPrimitiveType def.type
                 acc.push prefix.concat(field).join '_'
@@ -70,7 +74,6 @@ class Records extends Controller
                     prefix.pop field            
         acc
         
-                    
                 
     remove: (req, res, next) =>
         @ensureSession arguments, => 

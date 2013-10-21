@@ -3,7 +3,7 @@ conf = require '../conf'
 utils = require '../lib/utils'
 expressutils = require '../lib/expressutils'
 controllers = require './controllers'
-TypeUtils = require('../lib/data/typeutils').TypeUtils
+ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
 
 host = conf.app.websiteHost
 port = conf.app.websitePort
@@ -28,7 +28,7 @@ getController = (name) ->
         else throw new Error "Cannot find controller #{name}."
         
 
-expressutils.setup { app, getController, typeUtils: new TypeUtils() }, (findHandler) ->
+expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (findHandler) ->
     # Routes
     app.get '/', findHandler('home', (c) -> c.index)
     app.get '/login', findHandler('home', (c) -> c.login)
