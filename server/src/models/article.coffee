@@ -16,7 +16,7 @@ class Article extends Record
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },
             synopsis: { type: 'string', required: false, maxLength: 2000 },
-            cover: 'CoverPicture !required',
+            cover: 'Image !required',
             content: 'TextContent'
         },
         stub: 'title'
@@ -37,12 +37,26 @@ class Article extends Record
                     widget: "recordview",
                     params: {
                         itemPane: [
-                            { widget: 'cover' },
+                            { widget: 'image', params: { fields: { image: 'cover' }, editable: true, class: 'cover' } },
                             { widget: 'title' },
                             { widget: 'authorship', params: { type: 'small' } },
                             { widget: 'text' },
                         ],
                         sidebar: [ { widget: 'authorship' } ]
+                    }
+                }
+            when 'snapshot'
+                items = []
+                if @cover
+                    items.push { widget: "image", params: { fields: { image: 'cover' } } }
+                items = items.concat [
+                    { widget: "title" },
+                    { widget: 'text' }
+                ]
+                @parseTemplate {
+                    widget: "cardview",
+                    params: {
+                        @items
                     }
                 }
                     

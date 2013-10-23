@@ -134,8 +134,8 @@ class Record extends ForaDbModel
 
     getWidget: (name) =>
         switch name
-            when 'cover'
-                widgets.Cover
+            when 'image'
+                widgets.Image
             when 'title'
                 widgets.Title
             when 'authorship'

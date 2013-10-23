@@ -1,5 +1,5 @@
 handlebars = require('handlebars')
-Widget = require '../widget'
+Widget = require('../widget').Widget
 
 class Title extends Widget
 
@@ -14,7 +14,7 @@ class Title extends Widget
         
         
     render: (data) =>
-        title = data.record[@fields.title]
+        title = @getValue data.record, @fields.title
         Title.template { title, fieldTitle: @fields.title }        
 
     

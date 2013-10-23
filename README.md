@@ -81,15 +81,7 @@ cd server
 ./run.sh
 ```
 
-Step 4: Run once
-----------------
-This initializes the application's databases, data directories etc.  
-Run this every year, afterwards. :)
-```
-./runonce.sh
-```
-
-Step 5 (Optional): Want some test data?
+Step 4 (Optional): Want some test data?
 -------------------------------------
 ```
 usage: node --harmony app/scripts/setup/setup.js options

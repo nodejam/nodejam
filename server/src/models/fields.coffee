@@ -1,19 +1,20 @@
 mdparser = require('../lib/markdownutil').marked
 ForaModel = require('./foramodel').ForaModel
 
-class CoverPicture extends ForaModel
+class Image extends ForaModel
     @describeType: {
         type: @,
         alias: '',
         fields: {
-            image: 'string',
-            small: 'string',
+            src: 'string',
+            small: 'string !required',
             alt: 'string !required'
         }
     }
     
     @toJSON: ->
-        "CoverPicture1"
+        "Image"
+    
     
     
 class TextContent extends ForaModel
@@ -37,5 +38,5 @@ class TextContent extends ForaModel
     @toJSON: ->
         "TextContent"
         
-exports.CoverPicture = CoverPicture
+exports.Image = Image
 exports.TextContent = TextContent

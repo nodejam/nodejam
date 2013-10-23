@@ -113,7 +113,7 @@ class DatabaseModel extends BaseModel
         
     
     
-    @constructModelImpl: (obj, modelDescription, context, db) ->    
+    @constructModelImpl: (obj, modelDescription, context, db) ->
         typeUtils = @getTypeUtils()        
         
         if modelDescription.customConstructor

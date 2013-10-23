@@ -12,8 +12,8 @@ class Editor
             do (e) =>
                 e =  $(e)
                 switch e.data('field-type')                
-                    when 'cover'
-                        @setupCover e
+                    when 'image'
+                        @setupImage e
                         
                     when 'title'
                         @setupTextElement e
@@ -41,9 +41,9 @@ class Editor
 
 
 
-    setupCover: (e) =>
-        if not $('.cover img').length
-            $('.cover').html '<p class="editor-option add-picture"><i class="icon-picture"></i> <a href="#">Add a picture</a></p>'
+    setupImage: (e) =>
+        if not $('.image img').length
+            $('.image').html '<p class="editor-option add-picture"><i class="icon-picture"></i> <a href="#">Add a picture</a></p>'
                         
     
     setupTextElement: (e) =>    

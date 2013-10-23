@@ -1,5 +1,5 @@
 handlebars = require('handlebars')
-Widget = require '../widget'
+Widget = require('../widget').Widget
 
 class Authorship extends Widget
     
@@ -39,8 +39,8 @@ class Authorship extends Widget
         
         
     render: (data) =>
-        author = data[@fields.author]
-        collection = data[@fields.collection]
+        author = @getValue data, @fields.author
+        collection = @getValue data, @fields.collection
         assetUrl = data.author.getAssetUrl()
         switch @type
             when 'small'

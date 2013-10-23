@@ -7,8 +7,8 @@ class ForaTypeUtils extends TypeUtils
         switch name
             when 'TextContent'
                 fields.TextContent
-            when 'CoverPicture'
-                fields.CoverPicture
+            when 'Image'
+                fields.Image
             else
                 super
 

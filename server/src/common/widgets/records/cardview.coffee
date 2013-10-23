@@ -1,5 +1,5 @@
 handlebars = require('handlebars')
-Widget = require '../widget'
+Widget = require('../widget').Widget
 
 class CardView extends Widget
 

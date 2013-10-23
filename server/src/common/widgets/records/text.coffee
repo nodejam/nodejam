@@ -1,5 +1,5 @@
 handlebars = require('handlebars')
-Widget = require '../widget'
+Widget = require('../widget').Widget
 
 class Text extends Widget
     
@@ -16,7 +16,7 @@ class Text extends Widget
        
         
     render: (data) =>
-        text = data.record[@fields.text].formatContent()
+        text = @getValue(data.record, @fields.text).formatContent()
         Text.template { text, fieldText: @fields.text }
 
     
