@@ -44,16 +44,13 @@ class Article extends Record
                     sidebar: [ { widget: 'authorship' } ]
                 }
             when 'card'
-                items = []
-                if @cover
-                    items.push { widget: "image", image: '@cover', type: 'small', bg: true }
-                items = items.concat [
-                    { widget: "title", link: 'hbs /{{collection.stub}}/{{stub}}' },
-                    { widget: 'text', text: '@content' }
-                ]
                 @parseTemplate {
                     widget: "cardview",
-                    items
+                    cover: [{ widget: "image", image: '@cover', type: 'small', bg: true }],
+                    content: [
+                        { widget: "title", link: 'hbs /{{collection.stub}}/{{stub}}' },
+                        { widget: 'text', text: '@content' }
+                    ]
                 }
                 
                             
