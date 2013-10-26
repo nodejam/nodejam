@@ -1,7 +1,7 @@
 utils = require '../lib/utils'
 models = require('./')
 Q = require('../lib/q')
-widgets = require '../common/widgets/records'
+widgets = require '../common/widgets'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
@@ -115,18 +115,16 @@ class Record extends ForaDbModel
 
         
     
-    parseTemplate: (data) =>
+    parseTemplate: (data) =>    
         if data instanceof Array
             (@parseTemplate(i) for i in data)
         else if data.widget
             ctor = if typeof data.widget is 'string' then @getWidget(data.widget) else data.widget
-            if data.params
-                params = {}
-                for k, v of data.params
-                    params[k] = @parseTemplate(v)
-                new ctor params
-            else
-                new ctor
+            params = {}
+            for k, v of data
+                if k isnt 'widget'
+                    params[k] = @parseTemplate v
+            new ctor params
         else
             data
                 
@@ -144,5 +142,7 @@ class Record extends ForaDbModel
                 widgets.Text
             when 'recordview'
                 widgets.RecordView
+            when 'cardview'
+                widgets.CardView
             
 exports.Record = Record

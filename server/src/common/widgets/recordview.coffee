@@ -1,5 +1,5 @@
 handlebars = require('handlebars')
-Widget = require('../widget').Widget
+Widget = require('./widget').Widget
 
 class RecordView extends Widget
 

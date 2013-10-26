@@ -17,15 +17,15 @@ class Home extends Controller
             (Q.async =>
                 try
                     editorsPicks = yield models.Record.find({ meta: 'pick', 'collection.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 1), {}, db)
-                    for record in editorsPicks
-                        record.summary = record.getView("card")
-                        record.summary.view = "wide"
-
                     featured = yield models.Record.find({ meta: 'featured', 'collection.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
                     featured = (f for f in featured when (x._id for x in editorsPicks).indexOf(f._id) is -1)
-                    for record in featured
-                        record.summary = record.getView("card")
-                        record.summary.view = "standard"
+
+                    for record in editorsPicks.concat(featured)
+                        template = record.getTemplate 'card'
+                        record.html = template.render {
+                            record,
+                            collection: record.collection,
+                        }
 
                     res.render req.network.getView('home', 'index'), { 
                         editorsPicks, 
@@ -36,7 +36,7 @@ class Home extends Controller
                     }
                 catch e
                     next e)()
-                            
+
 
 
     login: (req, res, next) =>

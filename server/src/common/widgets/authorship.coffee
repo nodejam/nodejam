@@ -1,5 +1,5 @@
 handlebars = require('handlebars')
-Widget = require('../widget').Widget
+Widget = require('./widget').Widget
 
 class Authorship extends Widget
     
@@ -31,22 +31,18 @@ class Authorship extends Widget
         
 
     constructor: (params = {}) ->
-        @type = params.type ? ''
-        @fields = params.fields ? {}
-        @fields.author ?= 'author'
-        @fields.collection ?= 'collection'
+        @params.author = @parseExpression(params.collection ? 'author')
+        @params.collection = @parseExpression(params.collection ? 'collection')
         
         
         
     render: (data) =>
-        author = @getValue data, @fields.author
-        collection = @getValue data, @fields.collection
-        assetUrl = data.author.getAssetUrl()
+        assetUrl = @author.getAssetUrl()
         switch @type
             when 'small'
-                Authorship.smallTemplate { author, collection, assetUrl }
+                Authorship.smallTemplate { author: @params.author, collection: @params.collection, assetUrl }
             else
-                Authorship.template { author, collection, assetUrl }
+                Authorship.template { author: @params.author, collection: @params.collection, assetUrl }
 
     
 exports.Authorship = Authorship

@@ -82,10 +82,12 @@
                 a { color: @colorNeutral }
             }
             p { margin: 0 0 12px 0 }
-            
-            /* wide column is only needed if width isn't in percetage. */
+        }
+        
+        /* wide column is only needed if width isn't in percetage. */
+        &.wide {
             .wide-column() when not (ispercentage(@colWidth)) {
-                &.wide {            
+                li {            
                     width: @wideColImageWidth + @wideColWidth + 60px; height: 280px;
                     .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
                     .content-wrap { 
@@ -99,8 +101,8 @@
                             .text { width: (@wideColWidth - 160) }
                         }
                     }
-                }                        
-            }                      
+                }
+            }
             .wide-column();  
         }
     }

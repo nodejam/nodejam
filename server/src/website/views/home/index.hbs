@@ -14,16 +14,20 @@
     </div>
     <div class="content-area">    
     {{#if editorsPicks}}
-        <ul class="cards">
+        <ul class="cards wide">
         {{#each editorsPicks}}
-            {{> recordcard summary}}
+            <li>
+            {{{html}}}
+            </li>
         {{/each}}
         </ul>
     {{/if}}
     {{#if featured}}
         <ul class="cards">
         {{#each featured}}
-            {{> recordcard summary}}
+            <li>
+            {{{html}}}
+            </li>
         {{/each}}
         </ul>
     {{/if}}
