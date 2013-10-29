@@ -34,22 +34,22 @@ class Article extends Record
         switch name
             when 'standard'
                 @parseTemplate {
-                    widget: "recordview",
+                    widget: "recordview",                    
                     itemPane: [
-                        { widget: 'image', image: '@cover', editable: true, class: 'cover' },
-                        { widget: 'title' },
-                        { widget: 'authorship', type: 'small' },
-                        { widget: 'text', text: '@content' },
+                        { widget: 'image', image: '@record.cover', editable: true, field: 'cover',  class: 'cover', size: 1 },
+                        { widget: 'title', title: '@record.title', size: 1, editable: true, field: 'title' },
+                        { widget: 'authorship', type: 'small', author: '@author' },
+                        { widget: 'text', text: '@record.content', editable: true, field: 'content' },
                     ],
-                    sidebar: [ { widget: 'authorship' } ]
+                    sidebar: [ { widget: 'authorship', author: '@author' } ]
                 }
             when 'card'
                 @parseTemplate {
                     widget: "cardview",
-                    cover: [{ widget: "image", image: '@cover', type: 'small', bg: true }],
+                    cover: [{ widget: "image", image: '@record.cover', type: 'small', bg: true }],
                     content: [
-                        { widget: "title", link: 'hbs /{{collection.stub}}/{{stub}}' },
-                        { widget: 'text', text: '@content' }
+                        { widget: "title", size: 2, title: '@record.title', link: 'hbs /{{collection.stub}}/{{record.stub}}' },
+                        { widget: 'text', text: '@record.content' }
                     ]
                 }
                 

@@ -5,6 +5,8 @@ class Widget
     @templateCache = []
     
     parseExpression: (exp, params) =>
+        if exp is undefined
+            return
         if typeof exp is 'string'
             expArray = exp.split ' '
             if expArray.length is 1
@@ -31,7 +33,7 @@ class Widget
     getFieldValue: (field, src) =>
         val = src
         for f in field.split('.')
-            val = src[f]
+            val = val[f]
             if not val
                 return
         return val

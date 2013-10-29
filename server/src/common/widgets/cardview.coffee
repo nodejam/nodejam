@@ -30,9 +30,9 @@ class CardView extends Widget
         cover = content = ''
         
         for w in @params.cover
-            cover += w.render data.record
+            cover += w.render data
         for w in @params.content
-            content += w.render data.record
+            content += w.render data
         
         CardView.template { cover, content, record: data.record }
     

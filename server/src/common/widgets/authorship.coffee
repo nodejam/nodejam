@@ -30,19 +30,18 @@ class Authorship extends Widget
         
         
 
-    constructor: (params = {}) ->
-        @params.author = @parseExpression(params.collection ? 'author')
-        @params.collection = @parseExpression(params.collection ? 'collection')
+    constructor: (@params) ->
+        @params.author = '@author'
+        @params.collection = '@collection'
         
         
         
     render: (data) =>
-        assetUrl = @author.getAssetUrl()
-        switch @type
-            when 'small'
-                Authorship.smallTemplate { author: @params.author, collection: @params.collection, assetUrl }
-            else
-                Authorship.template { author: @params.author, collection: @params.collection, assetUrl }
+        author = @parseExpression @params.author, data
+        collection = @parseExpression @params.collection, data
+        assetUrl = author.getAssetUrl()
+        
+        (if @params.type is 'small' then Authorship.smallTemplate else Authorship.template) { author, collection, assetUrl }
 
     
 exports.Authorship = Authorship

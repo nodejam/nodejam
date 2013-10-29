@@ -11,7 +11,6 @@ class Text extends Widget
         
 
     constructor: (@params) ->
-        @params.text ?= 'content'
        
         
     render: (data) =>
