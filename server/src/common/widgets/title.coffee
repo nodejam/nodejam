@@ -3,10 +3,10 @@ Widget = require('./widget').Widget
 
 class Title extends Widget
 
-    @header: handlebars.compile '<{{element}} data-placeholder="Title goes here..." data-fieldname="{{field}}">{{title}}</{{element}}>'
+    @header: handlebars.compile '<{{element}} {{attr}}">{{title}}</{{element}}>'
 
 
-    @headerWithLink: handlebars.compile '<{{element}} data-placeholder="Title goes here..." data-fieldname="{{field}}"><a href="{{link}}">{{title}}</a></{{element}}>'
+    @headerWithLink: handlebars.compile '<{{element}} {{attr}}"><a href="{{link}}">{{title}}</a></{{element}}>'
 
 
     constructor: (@params) ->
@@ -18,10 +18,22 @@ class Title extends Widget
         
         element = "h" + parseInt(@params.size)
         
+        attribs = {}
+        
+        if @params.class
+            attribs.class = @params.class
+
+        if @params.field
+            attribs['data-field-type'] = 'text'
+            attribs['data-field-name'] = @params.field
+            attribs['data-placeholder'] = "Title goes here..."   
+
+        attr = @toAttributes(attribs)                 
+        
         if not link
-            Title.header { title, element, field: @params.field }
+            Title.header { title, element, attr }
         else
-            Title.headerWithLink { title, link, element, field: @params.field }
+            Title.headerWithLink { title, link, element, attr }
             
     
 exports.Title = Title

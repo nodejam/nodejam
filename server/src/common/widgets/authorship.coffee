@@ -12,9 +12,10 @@ class Authorship extends Widget
                 {{author.about}}
             </p>
             <p>
-                <span class="light-text">Yesterday in <a href="/{{collection.stub}}">{{collection.name}}</a></span>                
-            </p>                    
+                <span class="light-text">Yesterday in <a href="/{{collection.stub}}">{{collection.name}}</a></span>
+            </p>     
         </div>'
+        
     
     # For tiny and small screens
     @smallTemplate = handlebars.compile '

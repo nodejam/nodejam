@@ -38,5 +38,13 @@ class Widget
                 return
         return val
 
+
+    toAttributes: (obj) =>
+        attrs = []
+        
+        for k,v of obj
+            attrs.push "#{k}=#{v}"
+        
+        return attrs.join ' '
     
 exports.Widget = Widget

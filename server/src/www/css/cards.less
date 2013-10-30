@@ -36,11 +36,11 @@
             
             .content-wrap { 
                 .content { 
-                    margin-bottom: 8px;  overflow: hidden; height: 282px;   
+                    margin-bottom: 4px;  overflow: hidden; height: 282px;   
                 }
                 
                 .overlay {
-                    position:absolute; height: 48px; margin-top: -56px; pointer-events: none;
+                    position:absolute; height: 48px; margin-top: -50px; pointer-events: none;
                     
                     .overlay-size() when not (ispercentage(@colWidth)) {
                         width: @colWidth + 0px;
@@ -57,7 +57,7 @@
                     background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
                 }
-                .activity { .fontBase; font-size: 0.75em; float: right; color: @colorNeutral; font-weight: bold; line-height: 1.3em; margin-top: 4px; padding-right: 4px; }
+                .activity { .fontBase; font-size: 0.75em; float: right; color: @colorNeutral; font-weight: bold; line-height: 1.3em; padding-right: 4px; }
             }
             
             .image + .content-wrap .content { height: 108px }

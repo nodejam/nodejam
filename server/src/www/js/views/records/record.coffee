@@ -36,13 +36,13 @@ class Record
                 </ul>
             </div>'
 
-        $('.page-wrap .nav.buttons ul').append '<li><button class="delete">Delete</button></li>'
-
         if @record.state is 'published'
             $('.page-wrap .nav.buttons ul').append '<li><button class="cancel">Cancel</button></li>'
             publishText = "Republish"
         else
             publishText = "Publish Post"
+
+        $('.page-wrap .nav.buttons ul').append '<li><button class="delete">Delete</button></li>'
             
         $('.page-wrap .nav.buttons ul').append '<li><button class="publish positive">' + publishText + '</button></li>'
 
