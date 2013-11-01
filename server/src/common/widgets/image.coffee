@@ -51,7 +51,7 @@ class Image extends Widget
             if image
                 Image.editableTemplate { src, alt, attr }        
             else
-                Image.emptyEditableTemplate {}
+                Image.emptyEditableTemplate { attr }
         else
             if @params.bg
                 if image then Image.bgTemplate { src, alt, attr } else ''

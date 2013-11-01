@@ -47,8 +47,8 @@ class Record
         $('.page-wrap .nav.buttons ul').append '<li><button class="publish positive">' + publishText + '</button></li>'
 
         $('button.publish').click =>
-            editor.update @record
-            $.ajax "/api/collections/#{@record.collection.stub}/records/#{@record._id}", { type: 'PUT', data: @record }, =>
+            data = editor.update()
+            $.ajax "/api/collections/#{@record.collection.stub}/records/#{@record._id}", { type: 'PUT', data }, =>
                 document.location = "/#{@record.collection.stub}/#{@record.id}"
         
         editor.editPage()

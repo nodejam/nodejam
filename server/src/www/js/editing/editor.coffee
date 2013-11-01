@@ -29,12 +29,12 @@ class Editor
                             instanceReady: (evt) => 
                                 evt.editor.focus()
                             focus: (evt) =>
-                                setTimeout (=>
-                                    editor = evt.editor
-                                    range = editor.createRange()
-                                    range.moveToElementEditStart editor.editable()
-                                    range.select()
-                                    range.scrollIntoView()), 100
+                                #setTimeout (=>
+                                #    editor = evt.editor
+                                #    range = editor.createRange()
+                                #    range.moveToElementEditStart editor.editable()
+                                #    range.select()
+                                #    range.scrollIntoView()), 100
                         }
                         
                         ckeditor = CKEDITOR.inline e[0], config        
@@ -66,15 +66,17 @@ class Editor
         
         
         
-    update: (record) =>
+    update: (record = {}) =>
         for e in @editables
             e =  $(e)
             switch e.data('field-type')                
                 when 'title'
-                    record[e.data('fieldname-title')] = e.text()
+                    record[e.data('field-name')] = e.text()
                 when 'text'
-                    record[e.data('fieldname-text')] = e.html()
-                    
+                    field = e.data('field-name')
+                    record[field + '_text'] = e.html()
+                    record[field + '_format'] = 'html'
+        record
                     
 
 CKEDITOR.disableAutoInline = true

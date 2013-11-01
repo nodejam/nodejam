@@ -27,9 +27,9 @@ class Collections extends Controller
                     }
                 catch e
                     next e)()
-            
-    
-    
+
+
+
     item: (req, res, next) =>
         @attachUser arguments, =>
             (Q.async =>

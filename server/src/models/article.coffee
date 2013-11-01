@@ -55,7 +55,7 @@ class Article extends Record
                 
                             
 
-    getView: (name = "standard") =>
+    getView: (name) =>
         switch name
             when "snapshot"
                 {

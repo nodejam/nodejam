@@ -191,11 +191,14 @@ class Collection extends ForaDbModel
     refreshSnapshot: (context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            records = yield models.Record.find({ 'collection.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)
-            @snapshot = new { records: p.getView("snapshot") for p in records }
+            records = yield models.Record.find({ 'collection.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)            
+            @snapshot = { records: (p.getView("snapshot") for p in records) }
             if records.length
+                cursor = yield models.Record.getCursor({ 'collection.id': @_id.toString() , state: 'published' }, context, db)
+                @stats.records = yield Q.ninvoke cursor, 'count'
                 @stats.lastRecord = records[0].savedAt
-            yield @save context, db)()
+                yield @save context, db
+        )()
 
 
 exports.Collection = Collection
