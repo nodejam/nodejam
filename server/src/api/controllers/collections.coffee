@@ -46,7 +46,7 @@ class Collections extends Controller
             (Q.async =>
                 try
                     collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db)
-                    if req.user.id is collection.createdBy.id or @isAdmin(req.user)
+                    if req.user.username is collection.createdBy.username or @isAdmin(req.user)
                         collection.description = req.body('description')
                         collection.icon = req.body('icon')
                         collection.iconThumbnail = req.body('iconThumbnail')

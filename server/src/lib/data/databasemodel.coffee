@@ -205,7 +205,8 @@ class DatabaseModel extends BaseModel
                     attachContextAndDb @, context, db
                     result = @
 
-                return result                                    
+                return result              
+                                      
             else
                 @onError errors, modelDescription
         )()

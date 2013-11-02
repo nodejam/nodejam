@@ -13,16 +13,14 @@ class Records extends Controller
                 try
                     collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
                     type = models.Record.getTypeDefinition().discriminator { type: req.body('type') }
-                
+                    
                     record = new type {
-                        type: req.body('type'),
                         createdBy: req.user,
-                        state: req.body('state') ? 'draft',
+                        state: req.body('state'),
                         rating: 0,
                         savedAt: Date.now(),
-                        format: 'html'
                     }
-                    req.map record, @getMappableFields(type)
+                    req.map record, @getMappableFields(type)                    
                     record = yield collection.addRecord record
                     res.send record
 
@@ -42,7 +40,7 @@ class Records extends Controller
                     type = record.constructor
                     
                     if record
-                        if record.createdBy.id is req.user.id or @isAdmin(req.user)
+                        if record.createdBy.username is req.user.username or @isAdmin(req.user)
                             record.savedAt = Date.now()                       
                             req.map record, @getMappableFields(type)
                             record = yield record.save()
@@ -81,7 +79,7 @@ class Records extends Controller
                 try
                     record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
                     if record
-                        if record.createdBy.id is req.user.id or @isAdmin(req.user)
+                        if record.createdBy.username is req.user.username or @isAdmin(req.user)
                             record = yield record.destroy()
                             res.send record
                         else

@@ -42,16 +42,19 @@ class Collections extends Controller
                         
                     records = yield collection.getRecords(12, { _id: -1 })
                     for record in records
-                            record.summary = record.getView("card")
-                            record.summary.view = "standard"
+                        template = record.getTemplate 'card'
+                        record.html = template.render {
+                            record,
+                            collection: record.collection,
+                        }                    
 
                     options = {}
                     if req.user
-                        membership = yield models.Membership.get { 'collection.id': collection._id.toString(), 'user.id': req.user.id }, {}, db
+                        membership = yield models.Membership.get { 'collection.id': collection._id.toString(), 'user.username': req.user.username }, {}, db
                         if membership
                             options.isMember = true
                             options.primaryRecordType = collection.recordTypes[0]
-                            
+                    
                     res.render req.network.getView('collections', 'item'), { 
                         collection,
                         collectionJson: JSON.stringify(collection),

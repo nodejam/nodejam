@@ -89,7 +89,7 @@ class Collection extends ForaDbModel
                 members: 1,
                 lastRecord: 0
             }
-            @recordTypes ?= []
+            @recordTypes ?= ['article']
             @snapshot ?= { records: [] }
         
         super
@@ -154,7 +154,7 @@ class Collection extends ForaDbModel
         { context, db } = @getContext context, db
         
         (Q.async =>
-            membership = yield models.Membership.get { 'collection.id': @_id.toString(), 'user.id': user.id }, context, db
+            membership = yield models.Membership.get { 'collection.id': @_id.toString(), 'user.username': user.username }, context, db
             if not membership
                 membership = new (models.Membership) {
                     collection: @summarize(),
@@ -173,7 +173,7 @@ class Collection extends ForaDbModel
         { context, db } = @getContext context, db
         
         (Q.async =>
-            membership = yield models.Membership.get { 'collection.id': @_id.toString(), 'user.id': user.id }, context, db
+            membership = yield models.Membership.get { 'collection.id': @_id.toString(), 'user.username': user.username }, context, db
             membership.roles = (r for r in membership.roles when r isnt role)
             yield if membership.roles.length then membership.save() else membership.destroy()
         )()
@@ -186,7 +186,7 @@ class Collection extends ForaDbModel
             yield models.Membership.find { 'collection.id': @_id.toString(), roles: { $in: roles } }, ((cursor) -> cursor.sort({ id: -1 }).limit 200), context, db
         )()        
         
-                
+      
             
     refreshSnapshot: (context, db) =>
         { context, db } = @getContext context, db

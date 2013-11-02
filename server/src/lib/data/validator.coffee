@@ -33,7 +33,7 @@ class Validator
                 errors.push "#{fieldName} is required."
             
             #Check types.       
-            if value
+            if value?
                 if fieldDef.type is 'array'
                     for item in value                        
                         @addError errors, fieldName, @validateField(obj, item, "[#{fieldName} item]", fieldDef.contents)
@@ -55,7 +55,7 @@ class Validator
                         if @typeUtils.isUserDefinedType(fieldDef.type) and value.validate
                             errors = errors.concat value.validate()
         
-        if value and fieldDef.validate
+        if value? and fieldDef.validate
             @addError errors, fieldName, fieldDef.validate.call obj
             
         errors            
