@@ -92,9 +92,9 @@ class Record extends ForaDbModel
                     record = yield Record.get({ @stub, 'collection.id': @collection.id }, context, db)
                     if record
                         @stub = @_id.toString() + "-" + @stub
-                    result = yield super(context, db)        
-                else               
-                    @stub = utils.uniqueId()
+                    result = yield super(context, db)               
+                else                    
+                    @stub = "temp_#{utils.uniqueId()}"
                     record = yield super(context, db)
                     @stub = record._id.toString()
                     result = yield record.save context, db

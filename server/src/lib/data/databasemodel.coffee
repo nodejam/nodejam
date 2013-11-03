@@ -128,7 +128,7 @@ class DatabaseModel extends BaseModel
                     if value
                         result[name] = @constructModel value, fieldDef.type.getTypeDefinition(), context, db
                 else
-                    if value
+                    if value?
                         if fieldDef.type is 'array'
                             arr = []
                             if typeUtils.isUserDefinedType fieldDef.contents.type
@@ -185,7 +185,7 @@ class DatabaseModel extends BaseModel
                 @__updateTimestamp = Date.now()                
                 @__shard = if modelDescription.generateShard? then modelDescription.generateShard(@) else "1"
 
-                if not @_id?
+                if not @_id
                     if modelDescription.logging?.onInsert
                         event = {
                             type: modelDescription.logging.onInsert,

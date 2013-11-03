@@ -20,7 +20,9 @@ class Records extends Controller
                         rating: 0,
                         savedAt: Date.now(),
                     }
-                    req.map record, @getMappableFields(type)                    
+                    
+                    req.map record, @getMappableFields(type)
+                    
                     record = yield collection.addRecord record
                     res.send record
 
