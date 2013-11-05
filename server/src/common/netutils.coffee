@@ -1,5 +1,5 @@
-Q = require './q'
-utils = require './utils'
+Q = require '../lib/q'
+utils = require '../lib/utils'
 fsutils = require './fsutils'
 url = require 'url'
 fs = require 'fs-extra'
@@ -18,7 +18,7 @@ downloadImage = (imageUrl) ->
         if ['jpg', 'jpeg', 'png', 'gif', 'bmp'].indexOf(extension.toLowerCase()) is -1
             utils.log "Cannot download image. Invalid file extension in #{imageUrl}."
 
-        filePath = fsutils.getTempFilePath filename
+        filePath = fsutils.getFilePath "temp/#{filename}"
         
         _curl = "curl --proto =http,https --proto-redir =http,https --max-filesize 5000000 " + imageUrl + " > #{filePath}"
         yield Q.nfcall exec, _curl

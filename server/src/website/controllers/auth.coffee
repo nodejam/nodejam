@@ -4,8 +4,8 @@ gm = require 'gm'
 vOAuth = require('oauth').OAuth
 Q = require('../../lib/q')
 utils = require '../../lib/utils'
-netutils = require '../../lib/netutils'
-fsutils = require '../../lib/fsutils'
+netutils = require '../../common/netutils'
+fsutils = require '../../common/fsutils'
 conf = require '../../conf'
 models = require '../../models'
 db = new (require '../../lib/data/database').Database(conf.db)
@@ -81,8 +81,8 @@ class Auth extends Controller
                                                         fileName = path.join "#{assetPath}", user.username
                                                         netutils.downloadImage(@parseTwitterUserDetails(data[0]).pictureUrl)
                                                             .then (filePath) =>
-                                                                picPath = fsutils.getAssetFilePath assetPath, "#{user.username}.jpg"
-                                                                thumbPath = fsutils.getAssetFilePath assetPath, "#{user.username}_t.jpg"
+                                                                picPath = fsutils.getFilePath 'assetpaths', "#{assetPath}/#{user.username}.jpg"
+                                                                thumbPath = fsutils.getFilePath 'assetpaths', "#{assetPath}/#{user.username}_t.jpg"
                                                                 utils.log "Resizing to " + picPath
                                                                 gm(filePath).resize(128, 128).write picPath, (err) ->                                                                    
                                                                     if not err

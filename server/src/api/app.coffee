@@ -15,11 +15,10 @@ app = express()
 
 getController = (name) ->
     switch name.toLowerCase()        
-        when 'auth' then new controllers.Auth()
         when 'users' then new controllers.Users()
-        when 'home' then new controllers.Home()
         when 'collections' then new controllers.Collections()
         when 'records' then new controllers.Records()
+        when 'images' then new controllers.Images()
         else throw new Error "Cannot find controller #{name}."
 
 
@@ -31,6 +30,8 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.post '/api/collections/:collection/members', findHandler('collections', (c) -> c.join)
     app.post '/api/collections/:collection', findHandler('records', (c) -> c.create)
     app.put '/api/collections/:collection/records/:record', findHandler('records', (c) -> c.edit)
+    
+    app.post '/api/images', findHandler('images', (c) -> c.upload)
 
     app.put "/api/admin/records/:id", findHandler('records', (c) -> c.admin_update)
     

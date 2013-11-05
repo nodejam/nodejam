@@ -3,17 +3,21 @@ db = new (require '../../lib/data/database').Database(conf.db)
 utils = require '../../lib/utils'
 fs = require 'fs'
 path = require 'path'
-fsutils = require '../../lib/fsutils'
+fsutils = require '../../common/fsutils'
 
-#create assetPaths for a whole year.
+#create directories
 today = Date.now()
-for i in [0..999] by 1
-    do (i) ->
-        newPath = path.join fsutils.getAssetBasePath(), "#{i}"
-        fs.exists newPath, (exists) ->
-            if not exists
-                fs.mkdir newPath, ->
-                utils.log "Created #{newPath}"
+for p in (fsutils.getBasePath(x) for x in ['assetpaths', 'images', 'originalimages'])
+    for i in [0..999] by 1    
+        do (p) ->
+            do (i) ->
+                newPath = path.join p, "#{i}"
+                fs.exists newPath, (exists) ->
+                    if not exists
+                        fs.mkdir newPath, ->
+                        utils.log "Created #{newPath}"
+                    else
+                        utils.log "#{newPath} exists"
     
 #Ensure indexes.
 db.getDb (err, db) ->

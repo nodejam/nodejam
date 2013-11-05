@@ -1,7 +1,6 @@
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 utils = require '../lib/utils'
-fsutils = require '../lib/fsutils'
 Q = require '../lib/q'
 hasher = require('../lib/hasher').hasher
 models = require './'

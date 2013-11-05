@@ -42,9 +42,38 @@ class Editor
 
 
     setupImage: (e) =>
-        if not $('.image img').length
-            $('.image').html '<p class="editor-option add-picture"><i class="icon-picture"></i> <a href="#">Add a picture</a></p>'
-                        
+        if not e.find('img').length            
+            e.html '
+                <p class="editor-option add-picture">
+                    <i class="icon-picture"></i> <a href="#">Add a picture</a>
+                </p>'
+            e.find('p a').clickHandler => @addImage e
+                
+                
+                
+    addImage: (e) =>
+        uid = Fora.uniqueId()
+        $('body').append "
+            <form style=\"display:none;width:0;height:0\" id=\"upload-form-#{uid}\" enctype=\"multipart/form-data\" action=\"/api/images\" target=\"upload-frame-#{uid}\" method=\"POST\" style=\"display:none\">
+                <input name=\"file\" type=\"file\" />
+                <iframe id=\"upload-frame-#{uid}\" name=\"upload-frame-#{uid}\"></iframe>
+            </form>"
+
+        form = $("#upload-form-#{uid}")
+        form.find("input").change => 
+            if form.find("input").val()
+               form.submit()
+       
+        frame = $("#upload-frame-#{uid}")
+        frame.load =>
+            image = JSON.parse($(frame.contents()[0]).text()).image
+            smallImage = JSON.parse($(frame.contents()[0]).text()).small
+            e.html "<img src=\"#{image}\" data-small-image=\"#{smallImage}\" alt=\"\" />"
+            form.remove()
+            
+        form.find("input").click()
+        
+            
     
     setupTextElement: (e) =>    
         e.attr 'contenteditable', true

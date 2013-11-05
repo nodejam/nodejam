@@ -63,9 +63,15 @@ If you aren't running the script, you'll have to do these manually:
     npm install forever 
     npm install q
 
+
 Step 2: Configuration
 ---------------------
-- In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
+Run this once to setup directories and indexes
+```
+node --harmony app/scripts/init/index.js
+```  
+In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
+
 
 Step 3: Running Fora
 --------------------
@@ -80,6 +86,7 @@ For production
 cd server
 ./run.sh
 ```
+
 
 Step 4 (Optional): Want some test data?
 -------------------------------------

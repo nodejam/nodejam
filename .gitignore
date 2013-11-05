@@ -25,10 +25,8 @@ server/www-user/images/*
 !server/www-user/images/cover.jpg
 !server/www-user/images/cover-experience.jpg
 !server/www-user/images/placeholder
-server/www-user/thumbnails/*
-!server/www-user/thumbnails/placeholder
-server/www-user/originals/*
-!server/www-user/originals/placeholder
+server/www-user/originalimages/*
+!server/www-user/originalimages/placeholder
 server/www-user/temp/*
 !server/www-user/temp/placeholder
 

@@ -41,8 +41,11 @@ class ExpressRequestWrapper
         
     
     
-    files: =>
-        @raw.files
+    files: (name) =>
+        if name
+            @raw.files[name]
+        else
+            @raw.files
 
 
     
