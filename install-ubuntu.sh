@@ -178,7 +178,7 @@ do
 done
 
 install_node() {
-    VERSION=0.11.7
+    VERSION=0.11.8
     PLATFORM=linux
     if [ x86_64 ] ; then
         ARCH=x64

@@ -44,9 +44,8 @@ If you aren't running the script, you'll have to do these manually:
 - install graphicsmagick (via OS package manager)
 - edit and rename src/conf/fora.config.sample to src/conf/fora.config
 - edit and rename src/conf/settings.config.sample to src/conf/settings.config
-- install these modules with npm:  
-    npm install -g less     
-    cd server
+- install these modules with npm:
+    npm install -g less
     npm install express  
     npm install mongodb  
     npm install validator  
@@ -57,7 +56,6 @@ If you aren't running the script, you'll have to do these manually:
     npm install gm  
     npm install node-minify  
     npm install oauth  
-    npm install forever  
     npm install marked  
     npm install optimist  
     npm install forever 
