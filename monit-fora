@@ -1,0 +1,18 @@
+#!monit
+set logfile /var/log/monit.log
+
+check process fora with pidfile "/var/run/fora-api.pid"
+    start program = "/sbin/start fora-api"
+    stop program  = "/sbin/stop fora-api"
+    if failed port 10982 protocol HTTP
+        request /api/healthcheck
+        with timeout 10 seconds
+        then restart
+        
+check process fora with pidfile "/var/run/fora-app.pid"
+    start program = "/sbin/start fora-app"
+    stop program  = "/sbin/stop fora-app"
+    if failed port 10981 protocol HTTP
+        request /healthcheck
+        with timeout 10 seconds
+        then restart        

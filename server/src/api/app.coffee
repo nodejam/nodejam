@@ -28,6 +28,8 @@ getController = (name) ->
 
 
 expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (findHandler) ->
+    app.get '/api/healthcheck', (req, res, next) -> res.send { jacksparrow: "alive" }
+
     app.post '/api/users', findHandler('users', (c) -> c.create)
     app.get '/api/users/:username', findHandler('users', (c) -> c.item)
 
@@ -40,5 +42,4 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
 
     app.put "/api/admin/records/:id", findHandler('records', (c) -> c.admin_update)
     
-
 app.listen port

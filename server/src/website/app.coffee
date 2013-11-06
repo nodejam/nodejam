@@ -35,7 +35,8 @@ getController = (name) ->
         
 
 expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (findHandler) ->
-    # Routes
+    app.get '/healthcheck', (req, res, next) -> res.send { jacksparrow: "alive" }    
+
     app.get '/', findHandler('home', (c) -> c.index)
     app.get '/login', findHandler('home', (c) -> c.login)
 
@@ -50,6 +51,7 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.get '/:collection/new', findHandler('collections', (c) -> c.createForm)
     app.get '/:collection/about', findHandler('collections', (c) -> c.about)
     app.get '/:collection/:stub', findHandler('records', (c) -> c.item)
+    
     
 #Register templates, helpers etc.
 require("./hbshelpers").register()

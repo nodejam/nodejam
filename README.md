@@ -83,8 +83,9 @@ For production
 ./compile.sh
 
 ```
-In production, you should also run fora with a monitoring tool such as upstart or monit.  
-And start app/website/app.js and app/api/app.js
+In production, you should also run fora with monitoring tools such as upstart and monit.  
+- The services you need to run are app/website/app.js, app/api/app.js
+- Check the sample files upstart-fora-app.conf, upstart-fora-api.conf and monit-fora
 
 
 Step 4 (Optional): Want some test data?
