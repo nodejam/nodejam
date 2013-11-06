@@ -145,8 +145,8 @@ class Record extends ForaDbModel
         switch name
             when 'image'
                 widgets.Image
-            when 'title'
-                widgets.Title
+            when 'heading'
+                widgets.Heading
             when 'authorship'
                 widgets.Authorship
             when 'text'

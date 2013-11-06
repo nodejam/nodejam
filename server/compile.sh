@@ -12,6 +12,7 @@ do
     case $1 in
         --debug)
             debug=true 
+            echo "Compiling in debug mode"
             shift
             ;;
         --dont_delete)

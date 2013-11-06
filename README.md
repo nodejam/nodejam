@@ -71,6 +71,7 @@ Run this once to setup directories and indexes
 node --harmony app/scripts/init/index.js
 ```  
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
+In production, you should also run fora with a monitoring tool such as upstart or monit.
 
 
 Step 3: Running Fora

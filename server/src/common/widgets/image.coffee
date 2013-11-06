@@ -3,20 +3,13 @@ Widget = require('./widget').Widget
 
 class Image extends Widget
 
-    @template: handlebars.compile '
-        <img src="{{src}}" alt="{{alt}}" {{attr}}/>'
+    @template: handlebars.compile '<img {{attr}} src="{{src}}" alt="{{alt}}" />'
 
     
-    @bgTemplate: handlebars.compile '
-        <div style="background-image:url({{src}})" {{attr}}></div>'
+    @bgTemplate: handlebars.compile '<div style="background-image:url({{src}})" {{attr}}></div>'
 
 
-    @editableTemplate: handlebars.compile '
-        <img src="{{src}}" alt="{{alt}}" {{attr}}/>'
-        
-        
-    @emptyEditableTemplate: handlebars.compile '
-        <div class="image" {{attr}}></div>'
+    @emptyTemplate: handlebars.compile '<div class="image" {{attr}}></div>'
 
 
     constructor: (@params) ->
@@ -31,27 +24,27 @@ class Image extends Widget
             else
                 src = image.small
             alt = image.alt
-            caption = image.caption
         
         attribs = {}
 
-        if @params.bg
-            attribs.class = 'image'
-
         if @params.class
-            attribs.class = @params.class
+            attribs['class'] = @params.class
+        else
+            attribs['class'] = 'image'
 
         if @params.field
             attribs['data-field-type'] = 'image'
             attribs['data-field-name'] = @params.field
-        
+            if image
+                attribs['data-small-image'] = image.small
+
         attr = @toAttributes(attribs)
         
         if @params.editable        
             if image
-                Image.editableTemplate { src, alt, attr }        
+                Image.template { src, alt, attr }        
             else
-                Image.emptyEditableTemplate { attr }
+                Image.emptyTemplate { attr }
         else
             if @params.bg
                 if image then Image.bgTemplate { src, alt, attr } else ''

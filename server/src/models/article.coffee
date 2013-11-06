@@ -37,8 +37,8 @@ class Article extends Record
                 @parseTemplate {
                     widget: "recordview",                    
                     itemPane: [
-                        { widget: 'image', image: '@record.cover', editable: true, field: 'cover',  class: 'cover', size: 1 },
-                        { widget: 'title', title: '@record.title', size: 1, editable: true, field: 'title' },
+                        { widget: 'image', image: '@record.cover', editable: true, field: 'cover',  size: 1 },
+                        { widget: 'heading', title: '@record.title', size: 1, editable: true, field: 'title' },
                         { widget: 'authorship', type: 'small', author: '@author' },
                         { widget: 'text', text: '@record.content', editable: true, field: 'content' },
                     ],
@@ -49,7 +49,7 @@ class Article extends Record
                     widget: "cardview",
                     cover: [{ widget: "image", image: '@record.cover', type: 'small', bg: true }],
                     content: [
-                        { widget: "title", size: 2, title: '@record.title', link: 'hbs /{{collection.stub}}/{{record.stub}}' },
+                        { widget: "heading", size: 2, title: '@record.title', link: 'hbs /{{collection.stub}}/{{record.stub}}' },
                         { widget: 'text', text: '@record.content' }
                     ]
                 }

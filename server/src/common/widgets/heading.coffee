@@ -1,7 +1,7 @@
 handlebars = require('handlebars')
 Widget = require('./widget').Widget
 
-class Title extends Widget
+class Heading extends Widget
 
     @header: handlebars.compile '<{{element}} {{attr}}">{{title}}</{{element}}>'
 
@@ -31,9 +31,9 @@ class Title extends Widget
         attr = @toAttributes(attribs)                 
         
         if not link
-            Title.header { title, element, attr }
+            Heading.header { title, element, attr }
         else
-            Title.headerWithLink { title, link, element, attr }
+            Heading.headerWithLink { title, link, element, attr }
             
     
-exports.Title = Title
+exports.Heading = Heading

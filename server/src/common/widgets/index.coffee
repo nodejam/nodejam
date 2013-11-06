@@ -1,5 +1,5 @@
 exports.Image = require('./image').Image
-exports.Title = require('./title').Title
+exports.Heading = require('./heading').Heading
 exports.Text = require('./text').Text
 exports.Authorship = require('./authorship').Authorship
 exports.RecordView = require('./recordview').RecordView

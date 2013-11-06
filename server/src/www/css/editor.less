@@ -1,6 +1,13 @@
-.editor-option {
-    padding: 12px 0 4px 0;
-    i { font-size: 32px; float: left; }
-    a { float: left; margin: 4px 0 0 8px }    
+.editor-option-row {
+    .fontBase; font-size: @fontSize; padding: 8px 0 !important; margin: 0 0 12px 0 !important;
+    &.icon-text {
+        i { font-size: 32px; float: left; }
+        a { float: left; margin: 4px 0 0 8px }    
+    }
     &:after { content: ""; display: block; clear: both; }
+}
+
+.editor-inline-bar {
+    .fontBase; padding: 8px !important; margin: -72px 0 0 0 !important; position: absolute; background: @colorDarker; z-index: 10; 
+    a { color: @colorLighter; font-size: 11px }
 }

@@ -355,7 +355,6 @@ if $node_modules ; then
     npm install forever
     npm install marked
     npm install optimist
-    npm install forever
     npm install q
     cd ..
 fi

@@ -14,6 +14,7 @@ do
     case $1 in
         --debug)
             debug=true 
+            echo "Running in debug mode"
             shift
             ;;
         -*)
@@ -26,7 +27,7 @@ do
     esac
 done
 
-if [ $debug ] ; then
+if $debug ; then
     ./compile.sh --debug
 else
     ./compile.sh    
@@ -37,22 +38,13 @@ fi
 echo Fora application starting...
 cd app
 
-if [ $debug ] ; then
-    echo Killing node if it is running..
-    killall node
-    cd website
-    node --harmony app.js &
-    cd ..
-    cd api
-    node --harmony app.js &
-    cd ..
-else
-    cd website
-    forever start -c "node --harmony" app.js
-    cd ..
-    cd api
-    forever start -c "node --harmony" app.js
-    cd ..
-fi
+echo Killing node if it is running..
+killall node
+cd website
+node --harmony app.js &
+cd ..
+cd api
+node --harmony app.js &
+cd ..
 
 cd ..
