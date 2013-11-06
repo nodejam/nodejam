@@ -27,7 +27,9 @@ class Images extends Controller
                             original = fsutils.getFilePath 'originalimages', "#{dir}/#{filename}"
                             image = fsutils.getFilePath 'images', "#{dir}/#{filename}"
                             smallImage = fsutils.getFilePath 'images', "#{dir}/small_#{filename}"
-                            fs.rename file.path, original, (err) =>
+                            fsutils.copyFile file.path, original, (err) =>
+                                if err
+                                    console.log err
                                 @resizeImage original, image, { width: 1600, height: 1600 }, (err) =>
                                     @resizeImage original, smallImage, { width: 400, height: 400 }, (err) =>
                                         res.set 'Content-Type', 'text/html'

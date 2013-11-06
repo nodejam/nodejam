@@ -40,10 +40,19 @@ getDateFormattedDir = (date = new Date()) ->
     "#{year}-#{month}-#{dayNum}"
 
 
+copyFile = (src, dest, cb) ->
+    src = fs.createReadStream src
+    dest = fs.createWriteStream dest
+    src.pipe dest
+    src.on 'end', cb
+    src.on 'error', cb 
+    
+
 exports.getBasePath = getBasePath
 exports.getFilePath = getFilePath
 
 exports.getRandomDir = getRandomDir
 exports.getDateFormattedDir = getDateFormattedDir
 
+exports.copyFile = copyFile
 
