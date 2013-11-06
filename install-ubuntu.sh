@@ -15,7 +15,7 @@ options:
   --nginx             Install nginx
   --nginx-conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
   --host hostname     Adds an entry into /etc/hosts. eg: --host test.myforaproj.com
-  --mongodb           Install a pre-compiler version of MongoDb
+  --mongodb           Install a pre-compiled version of MongoDb
   --mongodb-latest    Compile and install the latest MongoDb  
   --gm                Install Graphics Magick
   --config-files      Creates config files if they don't exist

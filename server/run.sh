@@ -4,7 +4,7 @@ echo switched to $DIR
 cd $DIR
 
 help() {
-echo "usage: ./run [--debug]"
+echo "usage: ./run [--debug|--production]"
 }
 
 debug=false
@@ -15,6 +15,10 @@ do
         --debug)
             debug=true 
             echo "Running in debug mode"
+            shift
+            ;;
+        --production)
+            echo "Ha! You should not use this script in production. Run with upstart, monit, forever etc."
             shift
             ;;
         -*)

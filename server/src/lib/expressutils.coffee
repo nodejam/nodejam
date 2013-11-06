@@ -25,12 +25,8 @@ setup = (config, cb) ->
         matches = (n for n in conf.networks when n.domains.indexOf(hostName) isnt -1)
         if matches.length then matches[0]
     
-    app.use express.bodyParser {
-        uploadDir:'../../www-user/temp',
-        limit: '6mb'
-    }
-    
-    app.use express.limit '6mb'
+    app.use express.json { limit: '6mb' }
+    app.use express.urlencoded { limit: '6mb' }
     app.use express.cookieParser()
     
     cb (name, getHandler) ->
@@ -47,7 +43,7 @@ setup = (config, cb) ->
             else            
                 next new Error 'Invalid Network'
     
-    app.use(app.router)
+    app.use app.router
     app.use errorHandler
     app.use http404
 

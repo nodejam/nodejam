@@ -89,7 +89,7 @@ class ExpressRequestWrapper
             when 'number'
                 (if def.integer then parseInt else parseFloat) val
             when 'string'
-                validator.sanitize(val).xss()
+                validator.sanitize(val).escape()
             when 'boolean'
                 val is "true"
             when 'array'
