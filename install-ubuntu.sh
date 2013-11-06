@@ -352,7 +352,6 @@ if $node_modules ; then
     npm install gm
     npm install node-minify
     npm install oauth
-    npm install forever
     npm install marked
     npm install optimist
     npm install q

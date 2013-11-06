@@ -50,7 +50,7 @@ If you aren't running the script, you'll have to do these manually:
     npm install mongodb  
     npm install validator  
     npm install sanitizer  
-    npm install handlebars
+    npm install handlebars  
     npm install hbs  
     npm install fs-extra  
     npm install gm  
@@ -58,8 +58,7 @@ If you aren't running the script, you'll have to do these manually:
     npm install oauth  
     npm install marked  
     npm install optimist  
-    npm install forever 
-    npm install q
+    npm install q  
 
 
 Step 2: Configuration
