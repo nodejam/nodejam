@@ -2,8 +2,8 @@ class Editor
     
     constructor: (@typeDefinition) ->
         @editables = $('[data-field-type]')
-        @imageField = new Fora.Editing.Image()
-        @textField = new Fora.Editing.Text()
+        @imageField = new Fora.Editing.Image @
+        @textField = new Fora.Editing.Text @
         
         
         

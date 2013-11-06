@@ -21,13 +21,13 @@ http404 = (req, res, next) ->
 setup = (config, cb) ->
     { app, getController, typeUtils } = config
     
+    app.use express.json()
+    app.use express.urlencoded()
+    app.use express.cookieParser()
+    
     getNetwork = (hostName) ->    
         matches = (n for n in conf.networks when n.domains.indexOf(hostName) isnt -1)
         if matches.length then matches[0]
-    
-    app.use express.json { limit: '6mb' }
-    app.use express.urlencoded { limit: '6mb' }
-    app.use express.cookieParser()
     
     cb (name, getHandler) ->
         controller = getController name

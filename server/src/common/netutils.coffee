@@ -18,7 +18,7 @@ downloadImage = (imageUrl) ->
         if ['jpg', 'jpeg', 'png', 'gif', 'bmp'].indexOf(extension.toLowerCase()) is -1
             utils.log "Cannot download image. Invalid file extension in #{imageUrl}."
 
-        filePath = fsutils.getFilePath "temp/#{filename}"
+        filePath = fsutils.getFilePath "temp", filename
         
         _curl = "curl --proto =http,https --proto-redir =http,https --max-filesize 5000000 " + imageUrl + " > #{filePath}"
         yield Q.nfcall exec, _curl

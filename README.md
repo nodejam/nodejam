@@ -59,6 +59,7 @@ If you aren't running the script, you'll have to do these manually:
     npm install marked  
     npm install optimist  
     npm install q  
+    npm install multiparty  
 
 
 Step 2: Configuration
@@ -81,9 +82,8 @@ cd server
 For production
 ```
 ./compile.sh
-
 ```
-In production, you should also run fora with monitoring tools such as upstart and monit.  
+And run with monitoring tools such as upstart and monit.  
 - The services you need to run are app/website/app.js, app/api/app.js
 - Check the sample files upstart-fora-app.conf, upstart-fora-api.conf and monit-fora
 

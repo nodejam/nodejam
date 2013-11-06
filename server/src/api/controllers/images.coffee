@@ -12,29 +12,31 @@ class Images extends Controller
 
     upload: (req, res, next) =>
         @ensureSession arguments, =>
-            if req.files
-                timestamp = Date.now()
-                extension = req.files("file").name.split('.').pop().toLowerCase()
-                #Validate the extension                
-                if ['jpg', 'jpeg', 'png', 'gif', 'bmp'].indexOf(extension) is -1
-                    next new AppError "Invalid file extension", "INVALID_FILE_EXTENSION"
+            req.files (err, files) =>
+                file = files.file[0]
+                if not err
+                    timestamp = Date.now()
+                    extension = file.originalFilename.split('.').pop().toLowerCase()
+                    #Validate the extension                
+                    if ['jpg', 'jpeg', 'png', 'gif', 'bmp'].indexOf(extension) is -1
+                        next new AppError "Invalid file extension", "INVALID_FILE_EXTENSION"
+                    else
+                        try
+                            dir = fsutils.getRandomDir()                        
+                            filename = "#{utils.uniqueId(8)}_#{timestamp}.#{extension}"
+                            original = fsutils.getFilePath 'originalimages', "#{dir}/#{filename}"
+                            image = fsutils.getFilePath 'images', "#{dir}/#{filename}"
+                            smallImage = fsutils.getFilePath 'images', "#{dir}/small_#{filename}"
+                            fs.rename file.path, original, (err) =>
+                                @resizeImage original, image, { width: 1600, height: 1600 }, (err) =>
+                                    @resizeImage original, smallImage, { width: 400, height: 400 }, (err) =>
+                                        res.set 'Content-Type', 'text/html'
+                                        res.send { image: "/pub/images/#{dir}/#{filename}", small: "/pub/images/#{dir}/small_#{filename}" }
+                        catch e
+                            utils.dumpError e
                 else
-                    try
-                        dir = fsutils.getRandomDir()                        
-                        filename = "#{utils.uniqueId(8)}_#{timestamp}.#{extension}"
-                        original = fsutils.getFilePath 'originalimages', "#{dir}/#{filename}"
-                        image = fsutils.getFilePath 'images', "#{dir}/#{filename}"
-                        smallImage = fsutils.getFilePath 'images', "#{dir}/small_#{filename}"
-                        fs.rename req.files("file").path, original, (err) =>
-                            @resizeImage original, image, { width: 1600, height: 1600 }, (err) =>
-                                @resizeImage original, smallImage, { width: 400, height: 400 }, (err) =>
-                                    res.set 'Content-Type', 'text/html'
-                                    res.send { image: "/pub/images/#{dir}/#{filename}", small: "/pub/images/#{dir}/small_#{filename}" }
-                    catch e
-                        utils.dumpError e
-            else
-                res.send "error"
-                
+                    res.send "error"
+                    
 
 
     resizeImage: (src, dest, options, cb) =>

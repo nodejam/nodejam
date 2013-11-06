@@ -15,7 +15,7 @@ class Image
             container.find("a.remove").clickHandler =>
                 fieldName = container.find("img").data("field-name")
                 container.replaceWith "<div id=\"#{divId}\" class=\"image\" data-field-type=\"image\" data-field-name=\"#{fieldName}\"></div>"
-                @setupImage $("##{divId}")
+                @setup $("##{divId}")
                 
         else
             e.html '

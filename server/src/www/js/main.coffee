@@ -19,9 +19,9 @@ class App
     init: =>
         user = @getUser()
         if user
-            $('.site-options .account').html "<a href=\"#{@getUserUrl()}\"><i class=\"icon-user\"></i>#{user.username}</a><a href=\"#\" class=\"right logout\"><i class=\"icon-signout\"></i></a>"
+            $('.site-options .account').html "<a href=\"#{@getUserUrl()}\"><i class=\"fa fa-user\"></i>#{user.username}</a><a href=\"#\" class=\"right logout\"><i class=\"fa fa-sign-out\"></i></a>"
         else
-            $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"icon-signin\"></i>Login</a>"
+            $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"fa fa-sign-in\"></i>Login</a>"
 
         @attachHandlers()
 
@@ -45,7 +45,7 @@ class App
         $('body').append '
             <div id="login-box">
                 <ul>
-                    <li><i class="icon-twitter"></i> <a class="twitter" href="/auth/twitter">Sign in with Twitter</a></li>
+                    <li><i class="fa fa-twitter"></i> <a class="twitter" href="/auth/twitter">Sign in with Twitter</a></li>
                 </ul>
             </div>'
             
@@ -55,7 +55,7 @@ class App
 
     logout: =>
         @clearCookies()
-        $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"icon-signin\"></i>Login</a>"
+        $('.site-options .account').html "<a class=\"login\" href=\"#\"><i class=\"fa fa-sign-in\"></i>Login</a>"
         
 
 

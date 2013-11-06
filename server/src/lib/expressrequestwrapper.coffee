@@ -5,6 +5,7 @@
 
 utils = require './utils'
 validator = require 'validator'
+multiparty = require 'multiparty'
 
 class ExpressRequestWrapper
 
@@ -41,14 +42,13 @@ class ExpressRequestWrapper
         
     
     
-    files: (name) =>
-        if name
-            @raw.files[name]
-        else
-            @raw.files
+    files: (cb) =>
+        form = new multiparty.Form { autoFields: true, autoFiles: true }
+        form.parse @raw, (err, fields, files) =>
+            cb err, files
+            
 
 
-    
     map: (target, whitelist, options = { overwrite: true }, prefix = []) =>
         typeDef = target.getTypeDefinition()        
         for field, def of typeDef.fields
