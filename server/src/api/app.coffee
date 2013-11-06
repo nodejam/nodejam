@@ -1,13 +1,18 @@
 express = require 'express'
-conf = require '../conf'
 utils = require '../lib/utils'
 expressutils = require '../lib/expressutils'
 controllers = require './controllers'
 validator = require 'validator'
 ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
 
-host = conf.app.apiHost
-port = conf.app.apiPort
+process.chdir __dirname
+
+host = process.argv[2]
+port = process.argv[3]
+
+if not host or not port
+    utils.log "Usage: app.js host port"
+    process.exit()
 
 utils.log "Fora API started at #{new Date} on #{host}:#{port}"
 

@@ -75,14 +75,16 @@ Step 3: Running Fora
 To debug
 ```
 cd server
-./run.sh --debug
+./debug.sh
 ```
 
 For production
 ```
+./compile.sh
+
+```
 In production, you should also run fora with a monitoring tool such as upstart or monit.  
 And start app/website/app.js and app/api/app.js
-```
 
 
 Step 4 (Optional): Want some test data?

@@ -5,8 +5,14 @@ expressutils = require '../lib/expressutils'
 controllers = require './controllers'
 ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
 
-host = conf.app.websiteHost
-port = conf.app.websitePort
+process.chdir __dirname
+
+host = process.argv[2]
+port = process.argv[3]
+
+if not host or not port
+    utils.log "Usage: app.js host port"
+    process.exit()
 
 utils.log "Fora Website started at #{new Date} on #{host}:#{port}"
 
