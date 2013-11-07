@@ -3,13 +3,14 @@ ForaDbModel = require('./foramodel').ForaDbModel
 
             
 class CollectionInfo extends ForaDbModel
-    @describeType: {
+    @typeDefinition: {
         type: @,
+        alias: 'CollectionInfo',
         collection: 'collectioninfo',
         fields: {
             collectionid: 'string',
-            about: { type: 'string', required: false },
-            message: { type: 'string', required: false }
+            about: 'string !required',
+            message: 'string !required'
         }
     }
     

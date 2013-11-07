@@ -3,13 +3,23 @@ TypeUtils = require('../lib/data/typeutils').TypeUtils
 class ForaTypeUtils extends TypeUtils
 
     resolveType: (name) =>
-        fields = require('./fields')
-        switch name
-            when 'TextContent'
-                fields.TextContent
-            when 'Image'
-                fields.Image
-            else
-                super
+        if not ForaTypeUtils.Cache
+            ForaTypeUtils.Cache = {}
+            
+        if not ForaTypeUtils.Cache[name]
+            @loadType require('./'), ForaTypeUtils.Cache
+            @loadType require('./fields'), ForaTypeUtils.Cache
 
+        ForaTypeUtils.Cache[name]
+        
+        
+        
+    loadType: (ns, cache) =>
+        for k, v of ns
+            typeDef = if typeof v.typeDefinition is "function" then v.typeDefinition() else v.typeDefinition
+            cache[typeDef.alias] = typeDef.type
+            
+            if typeDef.type.childModels
+                @loadType typeDef.type.childModels, cache           
+                        
 exports.ForaTypeUtils = ForaTypeUtils

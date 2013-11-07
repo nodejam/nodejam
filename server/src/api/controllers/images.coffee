@@ -28,8 +28,6 @@ class Images extends Controller
                             image = fsutils.getFilePath 'images', "#{dir}/#{filename}"
                             smallImage = fsutils.getFilePath 'images', "#{dir}/small_#{filename}"
                             fsutils.copyFile file.path, original, (err) =>
-                                if err
-                                    console.log err
                                 @resizeImage original, image, { width: 1600, height: 1600 }, (err) =>
                                     @resizeImage original, smallImage, { width: 400, height: 400 }, (err) =>
                                         res.set 'Content-Type', 'text/html'
@@ -42,10 +40,10 @@ class Images extends Controller
 
 
     resizeImage: (src, dest, options, cb) =>
-        console.log "Resizing #{src}..."
+        utils.log "Resizing #{src}..."
         gm(src).size (err, size) =>
             gm(src).resize(options.width).write dest, (err) =>
-                console.log "Resized #{src} to #{dest}"
+                utils.log "Resized #{src} to #{dest}"
                 cb()
 
 

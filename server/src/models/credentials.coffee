@@ -5,8 +5,9 @@ models = require('./')
 
 class Credentials extends ForaDbModel
     
-    @describeType: {
+    @typeDefinition: {
         type: @,
+        alias: 'Credentials',
         collection: 'credentials',
         fields: {
             userid: 'string',

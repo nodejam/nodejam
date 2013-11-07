@@ -7,11 +7,10 @@ fields = require './fields'
 
 class Article extends Record
 
-    @describeType: {
+    @typeDefinition: {
         type: @,
-        alias: 'article',
-        inherits: Record,
-        description: 'Article',
+        alias: 'Article',
+        inherits: 'Record',
         fields: {
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },

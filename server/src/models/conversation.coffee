@@ -5,11 +5,10 @@ models = require('./')
 
 class Conversation extends recordModule.Record
     
-    @describeType: {
+    @typeDefinition: {
             type: @,
-            inherits: recordModule.Record,
-            name: 'conversation',
-            description: 'Conversation',
+            alias: 'Conversation',
+            inherits: 'Record',
             fields: {
                 content: { type: 'string', required: false, maxLength: 50000 },
             }

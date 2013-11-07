@@ -39,8 +39,8 @@ class Validator
                         @addError errors, fieldName, @validateField(obj, item, "[#{fieldName} item]", fieldDef.contents)
                 else
                     #If it is a custom class or a primitive
-                    if fieldDef.type isnt ''                        
-                        if (@typeUtils.isUserDefinedType(fieldDef.type) and not (value instanceof fieldDef.type)) or (not @typeUtils.isUserDefinedType(fieldDef.type) and typeof(value) isnt fieldDef.type)
+                    if fieldDef.type isnt ''      
+                        if (@typeUtils.isUserDefinedType(fieldDef.type) and not (value instanceof fieldDef.ctor)) or (not @typeUtils.isUserDefinedType(fieldDef.type) and typeof(value) isnt fieldDef.type)
                             errors.push "#{fieldName} is #{JSON.stringify value}"
                             errors.push "#{fieldName} should be a #{fieldDef.type}."
 

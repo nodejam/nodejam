@@ -10,8 +10,9 @@ emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((
 class User extends ForaDbModel
 
     class Summary extends ForaModel    
-        @describeType: {
+        @typeDefinition: {
             type: @,
+            alias: "User.Summary",
             fields: {
                 id: 'string',
                 username: 'string',
@@ -21,8 +22,11 @@ class User extends ForaDbModel
         
     @Summary: Summary
     
-    @describeType: {
+    @childModels: { Summary }
+
+    @typeDefinition: {
         type: @,
+        alias: "User",
         collection: 'users',
         fields: {
             username: 'string',

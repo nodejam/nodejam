@@ -3,8 +3,9 @@ models = require('./')
 
 class Token extends ForaDbModel
 
-    @describeType: {
+    @typeDefinition: {
         type: @,
+        alias: "Token",
         collection: 'tokens',
         fields: {
             type: 'string',

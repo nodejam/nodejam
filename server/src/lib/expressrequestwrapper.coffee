@@ -50,7 +50,7 @@ class ExpressRequestWrapper
 
 
     map: (target, whitelist, options = { overwrite: true }, prefix = []) =>
-        typeDef = target.getTypeDefinition()        
+        typeDef = target.getTypeDefinition()     
         for field, def of typeDef.fields
             if @populateObject(target, field, def, whitelist, options, prefix) is true
                 modified = true
@@ -76,7 +76,7 @@ class ExpressRequestWrapper
                     if def.type isnt ''
                         prefix.push name
                         
-                        newObj = obj[name] ? new def.type()
+                        newObj = obj[name] ? new def.ctor()
                         if @map(newObj, whitelist, options, prefix)
                             obj[name] ?= newObj
                             

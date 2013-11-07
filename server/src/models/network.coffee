@@ -3,8 +3,9 @@ models = require('./')
 
 class Network extends ForaDbModel
 
-    @describeType: {
+    @typeDefinition: {
         type: @,
+        alias: "Network",
         collection: 'networks',
         fields: {
             name: 'string',

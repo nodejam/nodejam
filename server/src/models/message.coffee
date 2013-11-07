@@ -4,8 +4,9 @@ models = require('./')
 
 class Message extends ForaDbModel
     
-    @describeType: {
+    @typeDefinition: {
         type: @,
+        alias: "Message",
         collection: 'messages',
         fields: {
             userid: 'string',

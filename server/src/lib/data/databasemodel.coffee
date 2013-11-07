@@ -126,14 +126,14 @@ class DatabaseModel extends BaseModel
 
                 if typeUtils.isUserDefinedType fieldDef.type
                     if value
-                        result[name] = @constructModel value, fieldDef.type.getTypeDefinition(), context, db
+                        result[name] = @constructModel value, fieldDef.ctor.getTypeDefinition(), context, db
                 else
                     if value?
                         if fieldDef.type is 'array'
                             arr = []
                             if typeUtils.isUserDefinedType fieldDef.contents.type
                                 for item in value
-                                    arr.push @constructModel item, fieldDef.contents.type.getTypeDefinition(), context, db
+                                    arr.push @constructModel item, fieldDef.contents.ctor.getTypeDefinition(), context, db
                             else
                                 arr = value
                             result[name] = arr
@@ -227,15 +227,18 @@ class DatabaseModel extends BaseModel
     associations: (name, context, db) =>
         { context, db } = @getContext context, db
         desc = @getTypeDefinition()
+        
         assoc = desc.associations[name]
+        typeUtils = @constructor.getTypeUtils()
+        ctor = typeUtils.resolveType assoc.type
         (Q.async =>            
             params = {}
             for k, v of assoc.key
                 params[v] = if k is '_id' then @_id.toString() else @[k]
             if assoc.multiplicity is "many"
-                yield assoc.type.getAll params, context, db
+                yield ctor.getAll params, context, db
             else
-                yield assoc.type.get params, context, db
+                yield ctor.get params, context, db
         )()             
         
 

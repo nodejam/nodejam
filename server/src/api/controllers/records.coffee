@@ -64,13 +64,12 @@ class Records extends Controller
         typeUtils = models.Record.getTypeUtils()
         
         for field, def of type.getTypeDefinition(false).fields
-            def = typeUtils.getFieldDefinition def
             if typeUtils.isPrimitiveType def.type
                 acc.push prefix.concat(field).join '_'
             else
                 if typeUtils.isUserDefinedType def.type
                     prefix.push field
-                    @getMappableFields def.type, acc, prefix
+                    @getMappableFields def.ctor, acc, prefix
                     prefix.pop field            
         acc
         
