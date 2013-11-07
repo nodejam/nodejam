@@ -25,7 +25,6 @@ class BaseModel
 
 
 
-
     @getTypeUtils: ->
         typeUtils
 

@@ -42,14 +42,15 @@ class Text
             
 
 
-    update: (e, record) =>
+    update: (record, e) =>
         switch e.data('field-type')                
             when 'heading'
                 record[e.data('field-name')] = e.text()
             when 'text'
-                field = e.data('field-name')
-                record[field + '_text'] = e.html()
-                record[field + '_format'] = 'html'
+                record[e.data('field-name')] = {
+                    text: e.html()
+                    format: 'html'
+                }
 
 
 window.Fora.Editing.Text = Text

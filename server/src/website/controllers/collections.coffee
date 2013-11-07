@@ -35,37 +35,40 @@ class Collections extends Controller
             (Q.async =>
                 try
                     collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, {}, db)
-                    message = (yield collection.associations 'info').message
+                    if collection
+                        message = (yield collection.associations 'info').message
 
-                    if message
-                        message = mdparser message
+                        if message
+                            message = mdparser message
+                            
+                        records = yield collection.getRecords(12, { _id: -1 })
+                        for record in records
+                            template = record.getTemplate 'card'
+                            record.html = template.render {
+                                record,
+                                collection: record.collection,
+                            }                    
+
+                        options = {}
+                        if req.user
+                            membership = yield models.Membership.get { 'collection.id': collection._id.toString(), 'user.username': req.user.username }, {}, db
+                            if membership
+                                options.isMember = true
+                                options.primaryRecordType = collection.recordTypes[0]
                         
-                    records = yield collection.getRecords(12, { _id: -1 })
-                    for record in records
-                        template = record.getTemplate 'card'
-                        record.html = template.render {
-                            record,
-                            collection: record.collection,
-                        }                    
-
-                    options = {}
-                    if req.user
-                        membership = yield models.Membership.get { 'collection.id': collection._id.toString(), 'user.username': req.user.username }, {}, db
-                        if membership
-                            options.isMember = true
-                            options.primaryRecordType = collection.recordTypes[0]
-                    
-                    res.render req.network.getView('collections', 'item'), { 
-                        collection,
-                        collectionJson: JSON.stringify(collection),
-                        message,
-                        records, 
-                        options,
-                        user: req.user,
-                        pageName: 'collection-page', 
-                        pageType: 'cover-page', 
-                        cover: collection.cover ? '/pub/images/cover.jpg'
-                    }
+                        res.render req.network.getView('collections', 'item'), { 
+                            collection,
+                            collectionJson: JSON.stringify(collection),
+                            message,
+                            records, 
+                            options,
+                            user: req.user,
+                            pageName: 'collection-page', 
+                            pageType: 'cover-page', 
+                            cover: collection.cover ? '/pub/images/cover.jpg'
+                        }
+                    else
+                        res.send 404
                 catch e
                     next e)()
 

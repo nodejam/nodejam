@@ -13,8 +13,8 @@ class Record extends ForaDbModel
         collection: 'records',
         discriminator: (obj) -> 
             switch obj.type
-                when 'article' then models.Article
-                when 'conversation' then models.Conversation
+                when 'Article' then models.Article
+                when 'Conversation' then models.Conversation
                 else Record                
         fields: {
             type: 'string',

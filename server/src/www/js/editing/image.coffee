@@ -48,9 +48,19 @@ class Image
             smallImage = JSON.parse($(frame.contents()[0]).text()).small
             fieldName = e.data("field-name")
             e.replaceWith "<img src=\"#{image}\" id=\"#{imageId}\" data-field-type=\"image\" data-field-name=\"#{fieldName}\" data-small-image=\"#{smallImage}\" class=\"image\" alt=\"\" />"
-            @setupImage $("##{imageId}")
+            @setup $("##{imageId}")
             form.remove()            
             
         form.find("input").click()    
+
+
+
+    update: (record, e) =>
+        if e.attr('src')
+            record[e.data('field-name')] = {
+                src: e.attr('src'),
+                alt: e.attr('alt'),
+                small: e.data('small-image')
+            }
 
 window.Fora.Editing.Image = Image

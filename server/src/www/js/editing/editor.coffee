@@ -20,10 +20,21 @@ class Editor
     update: (record = {}) =>
         for e in @editables
             e = $ e
-            @getField(e.data 'field-type').update record, e
-        record
+            @getField(e.data 'field-type').update record, e                
+        @flatten record, [], {}
                     
-
+                    
+    
+    flatten: (record, prefix, acc) =>
+        for f, v of record
+            if v and typeof v isnt "function"
+                if typeof v is "object"
+                    @flatten v, prefix.concat(f), acc
+                else
+                    acc[prefix.concat(f).join('_')] = v
+        acc
+        
+        
 
     getRandomElementId: =>
         "e#{Fora.uniqueId()}"

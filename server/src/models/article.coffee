@@ -25,7 +25,7 @@ class Article extends Record
 
     constructor: (params) ->
         super
-        @type ?= 'article'
+        @type ?= 'Article'
         @content ?= new fields.TextContent { text: '', format: 'html' }
         
         

@@ -24,7 +24,7 @@ class Heading extends Widget
             attribs.class = @params.class
 
         if @params.field
-            attribs['data-field-type'] = 'text'
+            attribs['data-field-type'] = 'heading'
             attribs['data-field-name'] = @params.field
             attribs['data-placeholder'] = "Title goes here..."   
 

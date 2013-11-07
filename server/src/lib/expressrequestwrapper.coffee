@@ -5,6 +5,7 @@
 
 utils = require './utils'
 validator = require 'validator'
+sanitizer = require 'sanitizer'
 multiparty = require 'multiparty'
 
 class ExpressRequestWrapper
@@ -76,28 +77,33 @@ class ExpressRequestWrapper
                     if def.type isnt ''
                         prefix.push name
                         
-                        newObj = obj[name] ? new def.ctor()
+                        newObj = new def.ctor()
                         if @map(newObj, whitelist, options, prefix)
-                            obj[name] ?= newObj
-                            
+                            if Object.keys(newObj).length
+                                obj[name] = newObj
+
                         prefix.pop()
 
 
 
     parsePrimitive: (val, def, fieldName) =>
-        switch def.type
-            when 'number'
-                (if def.integer then parseInt else parseFloat) val
-            when 'string'
-                validator.sanitize(val).escape()
-            when 'boolean'
-                val is "true"
-            when 'array'
-                if def.map?.format is 'csv'
-                    (@parsePrimitive(vs, def.contents.type, fieldName) for v in val.split(','))                    
-                else
-                    throw new Error "Cannot parse this array. Unknown format."
-            else      
-                throw new Error "#{def.type} #{fieldName} is a non-primitive. Cannot parse."
-                
+        if val
+            switch def.type
+                when 'number'
+                    (if def.integer then parseInt else parseFloat) val
+                when 'string'
+                    if def.html
+                        sanitizer.sanitize(val)
+                    else
+                        sanitizer.escape(val)
+                when 'boolean'
+                    val is "true"
+                when 'array'
+                    if def.map?.format is 'csv'
+                        (@parsePrimitive(v, def.contents, fieldName) for v in val.split(','))                    
+                    else
+                        throw new Error "Cannot parse this array. Unknown format."
+                else      
+                    throw new Error "#{def.type} #{fieldName} is a non-primitive. Cannot parse."
+                    
 exports.ExpressRequestWrapper = ExpressRequestWrapper

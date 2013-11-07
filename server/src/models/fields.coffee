@@ -19,7 +19,7 @@ class TextContent extends ForaModel
         type: @,
         alias: 'TextContent',
         fields: {
-            text: 'string',
+            text: { type: 'string', html: true },
             format: 'string'
         }
     }
