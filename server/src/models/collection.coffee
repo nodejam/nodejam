@@ -85,7 +85,7 @@ class Collection extends ForaDbModel
                 members: 1,
                 lastRecord: 0
             }
-            @recordTypes ?= ['article']
+            @recordTypes ?= ['Article']
             @snapshot ?= { records: [] }
         
         super

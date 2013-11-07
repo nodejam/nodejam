@@ -23,7 +23,7 @@ class Text
 
         if e.data('field-type') is 'text'
             config = { 
-                toolbar: [ { name: 'basicstyles', items : [ 'Bold','Italic' ] } ]
+                toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote', 'Image' ] } ]
             }
             
             config.on = {
