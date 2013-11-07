@@ -92,7 +92,7 @@ class ExpressRequestWrapper
                     (if def.integer then parseInt else parseFloat) val
                 when 'string'
                     if def.html
-                        sanitizer.sanitize(val)
+                        sanitizer.sanitize(sanitizer.unescapeEntities val)
                     else
                         sanitizer.escape(val)
                 when 'boolean'
