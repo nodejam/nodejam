@@ -15,7 +15,7 @@
         .margins();
 
         > li {
-            float: left; overflow: hidden; height: 360px; 
+            float: left; overflow: hidden; height: 360px; line-height: 1.4em;
 
             .column-size() when not (ispercentage(@colWidth)) {
                 margin: 32px ((@colSpacing / 2) + 0px) 0 ((@colSpacing / 2) + 0px);
@@ -74,7 +74,7 @@
                 .image { height: 100px; }
             }
             
-            h2 { margin: 0 0 8px 0; line-height: 1.1em; }      
+            h2 { margin: 0 0 8px 0; font-size: 1.2em; line-height: 1.1em; }      
             .subheading { 
                 font-style: italic; margin: 0 0 8px 0; color: @colorNeutral;
                 a { color: @colorNeutral }
@@ -90,9 +90,9 @@
                     .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
                     .content-wrap { 
                         float: left; height: 280px; width: @wideColWidth + 0px; 
+                        h2 { font-size: 1.6em }
                         .content { 
-                            height: 200px; 
-                            h2 { font-size: 1.7em }
+                            height: 180px;                             
                         }
                         .overlay { width: @wideColWidth + 0px }
                         .source {
