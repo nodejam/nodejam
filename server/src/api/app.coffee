@@ -26,10 +26,7 @@ getController = (name) ->
         when 'images' then new controllers.Images()
         else throw new Error "Cannot find controller #{name}."
 
-http404 = (req, res, next) ->
-    res.send 404
-
-expressutils.setup { app, getController, typeUtils: new ForaTypeUtils(), http404 }, (findHandler) ->
+expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (findHandler) ->
     app.get '/api/healthcheck', (req, res, next) -> res.send { jacksparrow: "alive" }
 
     app.post '/api/users', findHandler('users', (c) -> c.create)

@@ -1,16 +1,16 @@
 class Editor
     
     constructor: (@typeDefinition) ->
-        @editables = $('[data-field-type]')
         @imageField = new Fora.Editing.Image @
         @textField = new Fora.Editing.Text @
         
         
         
     editPage: =>
-        @editables.highlight()        
+        editables = $('[data-field-type]')
+        editables.highlight()        
     
-        for e in @editables
+        for e in editables
             do (e) =>
                 e = $ e
                 @getField(e.data 'field-type').setup e
@@ -18,7 +18,7 @@ class Editor
 
 
     update: (record = {}) =>
-        for e in @editables
+        for e in $('[data-field-type]')
             e = $ e
             @getField(e.data 'field-type').update record, e                
         @flatten record, [], {}

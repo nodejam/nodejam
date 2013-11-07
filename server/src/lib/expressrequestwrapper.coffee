@@ -79,8 +79,7 @@ class ExpressRequestWrapper
                         
                         newObj = new def.ctor()
                         if @map(newObj, whitelist, options, prefix)
-                            if Object.keys(newObj).length
-                                obj[name] = newObj
+                            obj[name] = newObj
 
                         prefix.pop()
 
