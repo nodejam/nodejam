@@ -18,7 +18,7 @@ class Item extends window.Fora.Views.BaseView
             
             
     onNewRecord: (e) =>
-        $.post "/api/collections/#{@collection.stub}", { type: @collection.recordTypes[0], state: 'new' }, (resp) =>
+        $.post "/api/collections/#{@collection.stub}", { type: @collection.recordTypes[0], state: 'draft' }, (resp) =>
             window.location.href = "/#{@collection.stub}/#{resp.stub}?mode=edit"
         
     

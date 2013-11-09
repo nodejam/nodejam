@@ -19,8 +19,7 @@ class Collections extends Controller
                         collection = new models.Collection
                         collection.network = req.network.stub
                         collection.stub = stub
-                        req.map collection, ['name', 'type', 'description', 'category', 'icon', 'iconThumbnail', 'recordTypes', 'cover', 'settings']
-                        
+                        req.map collection, ['name', 'type', 'description', 'recordTypes', 'cover_src', 'cover_small', 'cover_alt']                        
                         collection.createdBy = req.user
                         collection = yield collection.save { user: req.user }, db
 
@@ -48,13 +47,7 @@ class Collections extends Controller
                     collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db)
                     if req.user.username is collection.createdBy.username or @isAdmin(req.user)
                         collection.description = req.body('description')
-                        collection.icon = req.body('icon')
-                        collection.iconThumbnail = req.body('iconThumbnail')
-                        if req.body('cover')
-                            collection.cover = req.body('cover')
-                        else
-                            collection.cover = ''
-                        collection.tile = req.body('tile') ? '/images/collection-tile.png'                                        
+                        req.map collection, ['description', 'recordTypes', 'cover_src', 'cover_small', 'cover_alt']     
                         collection = yield collection.save()
                         res.send collection
                     else

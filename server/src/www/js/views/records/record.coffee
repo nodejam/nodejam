@@ -48,8 +48,14 @@ class Record
 
         $('button.publish').click =>
             data = editor.update()
-            $.ajax "/api/collections/#{@record.collection.stub}/records/#{@record._id}", { type: 'PUT', data }, =>
-                document.location = "/#{@record.collection.stub}/#{@record.id}"
+            data.state = 'published'
+            $.ajax "/api/collections/#{@record.collection.stub}/records/#{@record._id}", 
+                { 
+                    type: 'PUT', 
+                    data, 
+                    success: =>
+                        document.location.href = "/#{@record.collection.stub}/#{@record.stub}"
+                }
         
         editor.editPage()
         

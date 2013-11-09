@@ -60,9 +60,8 @@ class Collection extends ForaDbModel
             type: { type: 'string', $in: ['public', 'protected', 'private'] },
             recordTypes: { type: 'array', contents: 'string', map: { format: 'csv' } },
             settings: "Collection.Settings !required",
-            icon: 'string',
-            iconThumbnail: 'string',
-            cover: 'string !required',
+            cover: 'Image',
+            coverFocus: 'string !required',
             createdBy: "User.Summary",
             snapshot: '',            
             stats: "Collection.Stats",
@@ -103,7 +102,7 @@ class Collection extends ForaDbModel
         
         
         
-    getView: (name = "standard") =>
+    getView: (name) =>
         switch name
             when 'card'
                 {
@@ -113,7 +112,7 @@ class Collection extends ForaDbModel
                     @stub,
                     @createdBy,
                     @snapshot,
-                    image: @icon
+                    image: @cover?.small
                 }
 
 
@@ -141,7 +140,7 @@ class Collection extends ForaDbModel
     getRecords: (limit, sort, context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            yield models.Record.find({ 'collection.stub': @stub, 'collection.network': @network }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+            yield models.Record.find({ 'collection.stub': @stub, 'collection.network': @network, state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
         )()
         
 

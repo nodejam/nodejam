@@ -35,7 +35,7 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.post '/api/collections', findHandler('collections', (c) -> c.create)
     app.post '/api/collections/:collection/members', findHandler('collections', (c) -> c.join)
     app.post '/api/collections/:collection', findHandler('records', (c) -> c.create)
-    app.put '/api/collections/:collection/records/:record', findHandler('records', (c) -> c.edit)
+    app.put '/api/collections/:collection/records/:id', findHandler('records', (c) -> c.edit)
     
     app.post '/api/images', findHandler('images', (c) -> c.upload)
 

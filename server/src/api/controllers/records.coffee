@@ -38,13 +38,15 @@ class Records extends Controller
             (Q.async =>
                 try
                     collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
-                    record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
+                    record = yield models.Record.getById(req.params('id'), { user: req.user }, db)
                     type = record.constructor
                     
                     if record
                         if record.createdBy.username is req.user.username or @isAdmin(req.user)
                             record.savedAt = Date.now()                       
                             req.map record, @getMappableFields(type)
+                            if req.body('state') is 'published'
+                                record.state = 'published'
                             record = yield record.save()
                             res.send record
                         else
@@ -73,6 +75,7 @@ class Records extends Controller
                     prefix.pop field            
         acc
         
+                
                 
     remove: (req, res, next) =>
         @ensureSession arguments, => 

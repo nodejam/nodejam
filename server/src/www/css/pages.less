@@ -7,16 +7,7 @@
 .content-area { 
     .fontContent; clear: both; margin-top: 12px;
     h1, h2, h3 { .fontContentHeading; }
-    > h1 { margin-top: -12px }    
-    
-    ol { 
-        margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
-        li { list-style-type: decimal }
-    }
-    ul { 
-        margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
-        li { list-style-type: disc }
-    }
+    > h1 { margin-top: -12px }        
 }
 
 /* A page with just content. */
@@ -26,6 +17,15 @@
         .content { 
             font-size: 1.3em; clear: both;
             .wider { width: @width + 40px; }                
+
+            ol { 
+                margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
+                li { list-style-type: decimal }
+            }
+            ul { 
+                margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
+                li { list-style-type: disc }
+            }            
         }
 
         img.image { width: 100%; margin-bottom: 20px; }
@@ -81,10 +81,10 @@
             margin-top: 22px;
 
             .page-wrap {
-                width: 980px; margin: auto; padding: 0;            
+                width: 992px; margin: auto; padding: 0;            
                 &.small { width: 600px; }
-                .single-item-mixin (640px, 280px);
-                .item { float: left; margin-right: 60px; }
+                .single-item-mixin (668px, 280px);
+                .item { float: left; margin-right: 44px; }
                 .sidebar { 
                     float: left; 
                     .header { margin-top: 8px; }

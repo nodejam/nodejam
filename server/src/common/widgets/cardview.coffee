@@ -9,8 +9,8 @@ class CardView extends Widget
             {{{content}}}
             <div class="overlay"></div>
             <span class="activity">
-                <i class="icon-comment"></i> 93<br />
-                <i class="icon-thumbs-up-alt"></i> 10k
+                <i class="fa fa-comment"></i> 93<br />
+                <i class="fa fa-thumbs-up"></i> 10k
             </span>
             <p class="desc-text">
                 <span class="text">

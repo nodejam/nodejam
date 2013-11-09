@@ -65,7 +65,7 @@ class Collections extends Controller
                             user: req.user,
                             pageName: 'collection-page', 
                             pageType: 'cover-page', 
-                            cover: collection.cover ? '/pub/images/cover.jpg'
+                            cover: collection.cover?.src ? '/pub/images/cover.jpg'
                         }
                     else
                         res.send 404

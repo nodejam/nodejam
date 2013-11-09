@@ -16,9 +16,8 @@ class Article extends Record
             subtitle: { type: 'string', required: false, maxLength: 200 },
             synopsis: { type: 'string', required: false, maxLength: 2000 },
             cover: 'Image !required',
-            content: 'TextContent'
-        },
-        stub: 'title'
+            content: 'TextContent !required'
+        }
     }
 
 
