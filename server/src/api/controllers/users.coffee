@@ -3,7 +3,7 @@ conf = require '../../conf'
 db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
 utils = require('../../lib/utils')
-Q = require('../../lib/q')
+Q = require 'q'
 Controller = require('../../common/web/controller').Controller
 
 class Users extends Controller

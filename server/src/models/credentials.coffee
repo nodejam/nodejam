@@ -1,5 +1,5 @@
 ForaDbModel = require('./foramodel').ForaDbModel
-Q = require('../lib/q')
+Q = require 'q'
 hasher = require('../lib/hasher').hasher
 models = require('./')
 

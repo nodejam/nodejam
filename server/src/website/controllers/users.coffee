@@ -3,7 +3,7 @@ database = (require '../../lib/data/database').Database
 db = new database(conf.db)
 models = require '../../models'
 utils = require '../../lib/utils'
-Q = require('../../lib/q')
+Q = require 'q'
 Controller = require('../../common/web/controller').Controller
 
 

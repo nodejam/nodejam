@@ -1,6 +1,6 @@
 recordModule = require('./record')
 utils = require('../lib/utils')
-Q = require('../lib/q')
+Q = require 'q'
 models = require('./')
 
 class Conversation extends recordModule.Record

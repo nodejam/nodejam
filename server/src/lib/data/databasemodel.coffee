@@ -1,7 +1,7 @@
 databaseModule = require('./database').Database
 utils = require('../utils')
 BaseModel = require('./basemodel').BaseModel
-Q = require('../q')
+Q = require 'q'
 
 class DatabaseModel extends BaseModel
 

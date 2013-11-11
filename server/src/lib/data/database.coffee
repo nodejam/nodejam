@@ -1,6 +1,6 @@
 Mongo = require 'mongodb'
 utils = require '../utils'
-Q = require('../q')
+Q = require 'q'
 
 class Database
     constructor: (@conf) ->

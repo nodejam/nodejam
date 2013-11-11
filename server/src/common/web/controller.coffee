@@ -2,7 +2,7 @@ path = require 'path'
 conf = require '../../conf'
 db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
-Q = require('../../lib/q')
+Q = require 'q'
 
 class Controller        
 

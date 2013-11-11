@@ -1,7 +1,7 @@
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 utils = require('../lib/utils')
-Q = require('../lib/q')
+Q = require 'q'
 models = require('./')
 
 class Forum extends ForaDbModel

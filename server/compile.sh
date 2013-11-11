@@ -6,6 +6,7 @@ echo "usage: ./compile [--debug]"
 
 debug=false
 dont_delete=false
+harmony=true
 
 while :
 do
@@ -15,7 +16,12 @@ do
             echo "Compiling in debug mode"
             shift
             ;;
-        --dont_delete)
+        --no-harmony)
+            harmony=false
+            echo "Harmony is enabled"
+            shift
+            ;;
+        --dont-delete)
             dont_delete=true
             shift
             ;;
@@ -49,12 +55,33 @@ rm -rf _temp
 echo "Compiling CS files.."
 coffee -o app/ -c src/
 
+#Run it through generator.
+#This step is unnecessary if we are using node --harmony
+if ! $harmony; then
+    echo Running regenerator..
+    find `pwd`/app/api -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+    find `pwd`/app/common -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+    find `pwd`/app/conf -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+    find `pwd`/app/lib -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+    find `pwd`/app/models -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+    find `pwd`/app/scripts -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+    find `pwd`/app/website -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+fi
+
 echo "Running LESS.."
 lessc app/www/css/main.less app/www/css/main.css
 
 if $debug; then
-    node --harmony app/scripts/deploy/package.js --debug
+    if ! $harmony; then
+        node app/scripts/deploy/package.js --debug
+    else
+        node --harmony app/scripts/deploy/package.js --debug
+    fi
     cp src/website/views/layouts/default-debug.hbs app/website/views/layouts/default.hbs
 else
-    node --harmony app/scripts/deploy/package.js
+    if ! $harmony; then
+        node --harmony app/scripts/deploy/package.js
+    else
+        node app/scripts/deploy/package.js
+    fi
 fi
