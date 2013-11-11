@@ -29,7 +29,7 @@ getController = (name) ->
         when 'auth' then new controllers.Auth()
         when 'users' then new controllers.Users()
         when 'home' then new controllers.Home()
-        when 'collections' then new controllers.Collections()
+        when 'forums' then new controllers.Forums()
         when 'records' then new controllers.Records()
         else throw new Error "Cannot find controller #{name}."
         
@@ -43,15 +43,15 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.get '/auth/twitter', findHandler('auth', (c) -> c.twitter)
     app.get '/auth/twitter/callback', findHandler('auth', (c) -> c.twitterCallback)
 
-    app.get '/collections', findHandler('collections', (c) -> c.index)
-    app.get '/collections/new', findHandler('collections', (c) -> c.index)
+    app.get '/forums', findHandler('forums', (c) -> c.index)
+    app.get '/forums/new', findHandler('forums', (c) -> c.index)
     app.get '/users/selectusername', findHandler('users', (c) -> c.selectUsernameForm)
     app.post '/users/selectusername', findHandler('users', (c) -> c.selectUsername)
     app.get '/~:username', findHandler('users', (c) -> c.item)
-    app.get '/:collection', findHandler('collections', (c) -> c.item)
-    app.get '/:collection/new', findHandler('collections', (c) -> c.createForm)
-    app.get '/:collection/about', findHandler('collections', (c) -> c.about)
-    app.get '/:collection/:stub', findHandler('records', (c) -> c.item)    
+    app.get '/:forum', findHandler('forums', (c) -> c.item)
+    app.get '/:forum/new', findHandler('forums', (c) -> c.createForm)
+    app.get '/:forum/about', findHandler('forums', (c) -> c.about)
+    app.get '/:forum/:stub', findHandler('records', (c) -> c.item)    
     
     
 #Register templates, helpers etc.

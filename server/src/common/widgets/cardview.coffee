@@ -15,7 +15,7 @@ class CardView extends Widget
             <p class="desc-text">
                 <span class="text">
                     <a href="/~{{record.createdBy.username}}">{{record.createdBy.name}}</a><br />
-                    <span class="light-text">in <a href="/{{record.collection.stub}}">{{record.collection.name}}</a></span>
+                    <span class="light-text">in <a href="/{{record.forum.stub}}">{{record.forum.name}}</a></span>
                 </span>
             </p>
         </div>'

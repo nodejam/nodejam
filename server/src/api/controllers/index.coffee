@@ -1,6 +1,6 @@
 modules = {
     users: 'Users',
-    collections: 'Collections',
+    forums: 'Forums',
     records: 'Records'
     images: 'Images'
 }

@@ -2,17 +2,17 @@ ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
             
-class CollectionInfo extends ForaDbModel
+class ForumInfo extends ForaDbModel
     @typeDefinition: {
         type: @,
-        alias: 'CollectionInfo',
-        collection: 'collectioninfo',
+        alias: 'ForumInfo',
+        collection: 'foruminfo',
         fields: {
-            collectionid: 'string',
+            forumid: 'string',
             about: 'string !required',
             message: 'string !required'
         }
     }
     
     
-exports.CollectionInfo = CollectionInfo    
+exports.ForumInfo = ForumInfo    

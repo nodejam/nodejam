@@ -12,6 +12,6 @@ exports.register = ->
     fs = require 'fs'
     path = require 'path'
     conf = require '../conf'
-    collectioncard = fs.readFileSync path.join(__dirname, conf.templates.views.collections.collectioncard), 'utf8'
-    hbs.registerPartial 'collectioncard', collectioncard
+    forumcard = fs.readFileSync path.join(__dirname, conf.templates.views.forums.forumcard), 'utf8'
+    hbs.registerPartial 'forumcard', forumcard
 

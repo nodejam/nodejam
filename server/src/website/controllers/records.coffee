@@ -11,9 +11,9 @@ class Records extends Controller
         @attachUser arguments, =>
             (Q.async =>
                 try                
-                    collection = yield models.Collection.get({ stub: req.params('collection'), network: req.network.stub }, {}, db)
-                    if collection
-                        record = yield models.Record.get({ 'collection.id': collection._id.toString(), stub: req.params('stub') }, {}, db)
+                    forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, {}, db)
+                    if forum
+                        record = yield models.Record.get({ 'forum.id': forum._id.toString(), stub: req.params('stub') }, {}, db)
                         if record
                             author = yield models.User.getById record.createdBy.id, {}, db
                             
@@ -21,7 +21,7 @@ class Records extends Controller
                             html = template.render {
                                 record,
                                 author,
-                                collection
+                                forum
                             }
                             
                             res.render req.network.getView('records', 'record'), { 

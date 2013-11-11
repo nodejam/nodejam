@@ -21,31 +21,31 @@ for p in (fsutils.getBasePath(x) for x in ['assetpaths', 'images', 'originalimag
     
 #Ensure indexes.
 db.getDb (err, db) ->
-    db.collection 'sessions', (_, coll) ->
+    db.forum 'sessions', (_, coll) ->
         coll.ensureIndex { passkey: 1 }, ->
         coll.ensureIndex { accessToken: 1 }, ->
 
-    db.collection 'users', (_, coll) ->
+    db.forum 'users', (_, coll) ->
         coll.ensureIndex { 'username': 1 }, ->
 
-    db.collection 'collections', (_, coll) ->
+    db.forum 'forums', (_, coll) ->
         coll.ensureIndex { 'network': 1 }, ->
         coll.ensureIndex { 'createdBy.id': 1, 'network': 1 }, ->
         coll.ensureIndex { 'createdBy.username': 1, 'network': 1 }, ->
         coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
 
-    db.collection 'records', (_, coll) ->
-        coll.ensureIndex { state: 1, 'collection.stub': 1 }, ->
-        coll.ensureIndex { state: 1, 'collection.id': 1 }, ->
-        coll.ensureIndex { state: 1, savedAt: 1, 'collection.stub': 1 }, ->
-        coll.ensureIndex { state: 1, savedAt: 1, 'collection.id': 1 }, ->
+    db.forum 'records', (_, coll) ->
+        coll.ensureIndex { state: 1, 'forum.stub': 1 }, ->
+        coll.ensureIndex { state: 1, 'forum.id': 1 }, ->
+        coll.ensureIndex { state: 1, savedAt: 1, 'forum.stub': 1 }, ->
+        coll.ensureIndex { state: 1, savedAt: 1, 'forum.id': 1 }, ->
         coll.ensureIndex { 'createdBy.id': 1 }, ->
         coll.ensureIndex { 'createdBy.username': 1 }, ->
         
-    db.collection 'messages', (_, coll) ->
+    db.forum 'messages', (_, coll) ->
         coll.ensureIndex { userid: 1 }, ->
         
-    db.collection 'tokens', (_, coll) ->
+    db.forum 'tokens', (_, coll) ->
         coll.ensureIndex { key: 1 }, ->
 
 setTimeout (-> process.exit()), 5000

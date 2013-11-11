@@ -12,11 +12,11 @@ templates =   {
         users: {
             selectusername: 'users/selectusername'
         },
-        collections: {
-            index: 'collections/index.hbs',
-            item: 'collections/item.hbs',
-            about: 'collections/about.hbs',
-            collectioncard: '/views/collections/collectioncard.hbs'
+        forums: {
+            index: 'forums/index.hbs',
+            item: 'forums/item.hbs',
+            about: 'forums/about.hbs',
+            forumcard: '/views/forums/forumcard.hbs'
         },
         records: {
             recordcard: '/views/records/recordcard.hbs',

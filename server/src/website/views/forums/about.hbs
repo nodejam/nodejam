@@ -1,13 +1,13 @@
 <div class="columns-wrap">
     <div class="content-area">    
-        <h1>{{collection.name}}</h1>
+        <h1>{{forum.name}}</h1>
         <div class="nav">
             <ul>
                 <li>
-                    <a href="/{{collection.stub}}">Recommended</a>
+                    <a href="/{{forum.stub}}">Recommended</a>
                 </li>
                 <li>
-                    <a href="/{{collection.stub}}/latest">Upcoming</a>
+                    <a href="/{{forum.stub}}/latest">Upcoming</a>
                 </li>            
                 <li class="selected">
                     About
@@ -19,8 +19,8 @@
             <div class="normal">
                 {{{about}}}
                 <p class="italicize">    
-                    Public Collection. Since May, 2011. <br />
-                    <span class="light-text">by</span> <a href="/~{{createdBy.username}}">{{collection.createdBy.name}}</a>
+                    Public Forum. Since May, 2011. <br />
+                    <span class="light-text">by</span> <a href="/~{{createdBy.username}}">{{forum.createdBy.name}}</a>
                 </p>        
             </div>
             <div class="normal">

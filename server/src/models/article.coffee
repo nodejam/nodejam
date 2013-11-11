@@ -47,7 +47,7 @@ class Article extends Record
                     widget: "cardview",
                     cover: [{ widget: "image", image: '@record.cover', type: 'small', bg: true }],
                     content: [
-                        { widget: "heading", size: 2, title: '@record.title', link: 'hbs /{{collection.stub}}/{{record.stub}}' },
+                        { widget: "heading", size: 2, title: '@record.title', link: 'hbs /{{forum.stub}}/{{record.stub}}' },
                         { widget: 'text', text: '@record.content' }
                     ]
                 }

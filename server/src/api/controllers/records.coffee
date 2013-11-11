@@ -11,7 +11,7 @@ class Records extends Controller
         @ensureSession arguments, =>
             (Q.async =>
                 try
-                    collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
+                    forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
                     type = models.Record.getTypeDefinition().discriminator { type: req.body('type') }
                     
                     record = new type {
@@ -23,7 +23,7 @@ class Records extends Controller
                     
                     req.map record, @getMappableFields(type)
                     
-                    record = yield collection.addRecord record
+                    record = yield forum.addRecord record
                     res.send record
 
                 catch e
@@ -37,7 +37,7 @@ class Records extends Controller
         @ensureSession arguments, =>        
             (Q.async =>
                 try
-                    collection = yield models.Collection.get { stub: req.params('collection'), network: req.network.stub }, { user: req.user }, db
+                    forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
                     record = yield models.Record.getById(req.params('id'), { user: req.user }, db)
                     type = record.constructor
                     
@@ -95,16 +95,16 @@ class Records extends Controller
                      
 
             
-    addComment: (req, res, next, collection) =>        
+    addComment: (req, res, next, forum) =>        
         @attachUser arguments, => 
-            contentType = collection.settings?.comments?.contentType ? 'text'
+            contentType = forum.settings?.comments?.contentType ? 'text'
             if contentType is 'text'
                 (Q.async =>
                     try
                         record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
                         comment = new models.Comment()
                         comment.createdBy = req.user
-                        comment.collection = collection.stub
+                        comment.forum = forum.stub
                         comment.itemid = record._id.toString()
                         comment.data = req.body('data')
                         comment = yield comment.save({ user: req.user }, db)

@@ -18,7 +18,7 @@ class Record extends ForaDbModel
                 else Record                
         fields: {
             type: 'string',
-            collection: "Collection.Summary",
+            forum: "Forum.Summary",
             createdBy: "User.Summary",
             meta: { type: 'array', contents: 'string' },
             tags: { type: 'array', contents: 'string' },
@@ -91,8 +91,8 @@ class Record extends ForaDbModel
             result = yield super(context, db)
             
             if @state is 'published'
-                collection = yield models.Collection.getById @collection.id, context, db
-                collection.refreshSnapshot()
+                forum = yield models.Forum.getById @forum.id, context, db
+                forum.refreshSnapshot()
             
             result
         )()

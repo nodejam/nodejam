@@ -1,8 +1,8 @@
 modules = {
     user: 'User',
     credentials: 'Credentials',
-    collection: 'Collection',
-    collectioninfo: 'CollectionInfo',
+    forum: 'Forum',
+    foruminfo: 'ForumInfo',
     record: 'Record',
     token: 'Token',
     userinfo: 'UserInfo',

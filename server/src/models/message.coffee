@@ -26,19 +26,19 @@ class Message extends ForaDbModel
             switch _format
                 when 'timeline'
                     switch @reason
-                        when 'new-collection'
-                            user = @data.collection.createdBy
+                        when 'new-forum'
+                            user = @data.forum.createdBy
                             {                        
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
                                     link: "/~#{user.username}"
                                 },
-                                verb: "added a new collection",
+                                verb: "added a new forum",
                                 object: {
-                                    thumbnail: @data.collection.icon,
-                                    name: @data.collection.name,
-                                    link: "/#{@data.collection.stub}"
+                                    thumbnail: @data.forum.icon,
+                                    name: @data.forum.name,
+                                    link: "/#{@data.forum.stub}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }
@@ -53,7 +53,7 @@ class Message extends ForaDbModel
                                 verb: "published",
                                 object: {
                                     name: @data.record.title,
-                                    link: "/#{@data.record.collection.stub}/#{@data.record._id}"
+                                    link: "/#{@data.record.forum.stub}/#{@data.record._id}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }                   

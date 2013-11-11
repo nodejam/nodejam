@@ -21,7 +21,7 @@ app = express()
 getController = (name) ->
     switch name.toLowerCase()        
         when 'users' then new controllers.Users()
-        when 'collections' then new controllers.Collections()
+        when 'forums' then new controllers.Forums()
         when 'records' then new controllers.Records()
         when 'images' then new controllers.Images()
         else throw new Error "Cannot find controller #{name}."
@@ -32,10 +32,10 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.post '/api/users', findHandler('users', (c) -> c.create)
     app.get '/api/users/:username', findHandler('users', (c) -> c.item)
 
-    app.post '/api/collections', findHandler('collections', (c) -> c.create)
-    app.post '/api/collections/:collection/members', findHandler('collections', (c) -> c.join)
-    app.post '/api/collections/:collection', findHandler('records', (c) -> c.create)
-    app.put '/api/collections/:collection/records/:id', findHandler('records', (c) -> c.edit)
+    app.post '/api/forums', findHandler('forums', (c) -> c.create)
+    app.post '/api/forums/:forum/members', findHandler('forums', (c) -> c.join)
+    app.post '/api/forums/:forum', findHandler('records', (c) -> c.create)
+    app.put '/api/forums/:forum/records/:id', findHandler('records', (c) -> c.edit)
     
     app.post '/api/images', findHandler('images', (c) -> c.upload)
 

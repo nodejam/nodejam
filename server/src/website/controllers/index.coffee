@@ -2,7 +2,7 @@ modules = {
     auth: 'Auth',
     users: 'Users',
     home: 'Home',
-    collections: 'Collections',
+    forums: 'Forums',
     records: 'Records'
 }
 

@@ -1,7 +1,7 @@
 window.Fora = {
     Views: {
         Home: {},
-        Collections: {},
+        Forums: {},
         Users: {},
         Records: {},
         RecordTypes: {},

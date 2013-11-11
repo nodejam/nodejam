@@ -12,7 +12,7 @@ class Authorship extends Widget
                 {{author.about}}
             </p>
             <p>
-                <span class="light-text">Yesterday in <a href="/{{collection.stub}}">{{collection.name}}</a></span>
+                <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
             </p>     
         </div>'
         
@@ -24,7 +24,7 @@ class Authorship extends Widget
                 <img src="{{assetUrl}}/{{author.username}}_t.jpg" alt="{{author.name}}" />
                 <span class="text">
                     <a href="/~{{author.username}}">{{author.name}}</a><br />
-                    <span class="light-text">Yesterday in <a href="/{{collection.stub}}">{{collection.name}}</a></span>
+                    <span class="light-text">Yesterday in <a href="/{{forum.stub}}">{{forum.name}}</a></span>
                 </span>
             </div>
         </div>'
@@ -33,16 +33,16 @@ class Authorship extends Widget
 
     constructor: (@params) ->
         @params.author = '@author'
-        @params.collection = '@collection'
+        @params.forum = '@forum'
         
         
         
     render: (data) =>
         author = @parseExpression @params.author, data
-        collection = @parseExpression @params.collection, data
+        forum = @parseExpression @params.forum, data
         assetUrl = author.getAssetUrl()
         
-        (if @params.type is 'small' then Authorship.smallTemplate else Authorship.template) { author, collection, assetUrl }
+        (if @params.type is 'small' then Authorship.smallTemplate else Authorship.template) { author, forum, assetUrl }
 
     
 exports.Authorship = Authorship

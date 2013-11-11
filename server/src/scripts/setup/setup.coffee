@@ -48,46 +48,47 @@ init = () ->
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
 
-            for collection in data.collections
-                token = _globals.sessions[collection._createdBy].token
-                utils.log "Creating a new collection #{collection.name} with token(#{token})...."
-                delete collection._createdBy
-                if collection._message
-                    collection.message = fs.readFileSync path.resolve(__dirname, "collections/#{collection._message}"), 'utf-8'                    
-                delete collection._message
-                if collection._about
-                    collection.about = fs.readFileSync path.resolve(__dirname, "collections/#{collection._about}"), 'utf-8'                    
-                delete collection._about
-                resp = yield Q.nfcall doHttpRequest, "/api/collections?token=#{token}", querystring.stringify(collection), 'post'
-                collectionJson = JSON.parse resp
-                utils.log "Created #{collectionJson.name}"
+            for forum in data.forums
+                token = _globals.sessions[forum._createdBy].token
+                utils.log "Creating a new forum #{forum.name} with token #{token}...."
+                delete forum._createdBy
+                if forum._message
+                    forum.message = fs.readFileSync path.resolve(__dirname, "forums/#{forum._message}"), 'utf-8'                    
+                delete forum._message
+                if forum._about
+                    forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'                    
+                delete forum._about
+                resp = yield Q.nfcall doHttpRequest, "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
+                forumJson = JSON.parse resp
+                utils.log "Created #{forumJson.name}"
                 
                 for u, uToken of _globals.sessions
                     if uToken.token isnt token
-                        resp = yield Q.nfcall doHttpRequest, "/api/collections/#{collectionJson.stub}/members?token=#{uToken.token}", querystring.stringify(collection), 'post'
+                        resp = yield Q.nfcall doHttpRequest, "/api/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
                         resp = JSON.parse resp
-                        utils.log "#{u} joined #{collection.name}"
+                        utils.log "#{u} joined #{forum.name}"
             
             for article in data.articles                    
                 token = _globals.sessions[article._createdBy].token
                 adminkey = _globals.sessions['jeswin'].token
                 
-                utils.log "Creating a new article with token(#{token})...."
+                utils.log "Creating a new article with token #{token}...."
                 utils.log "Creating #{article.title}..."
                 
                 article.content_text = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
                 article.content_format = 'markdown'
                 article.state = 'published'
-                collection = article._collection
+                forum = article._forum
                 
                 meta = article._meta
                             
-                delete article._collection
+                delete article._forum
                 delete article._createdBy
                 delete article._content
                 delete article._meta
                 
-                resp = yield Q.nfcall doHttpRequest, "/api/collections/#{collection}?token=#{token}", querystring.stringify(article), 'post'            
+                
+                resp = yield Q.nfcall doHttpRequest, "/api/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'            
                 resp = JSON.parse resp
                 utils.log "Created #{resp.title} with id #{resp._id}"
                 

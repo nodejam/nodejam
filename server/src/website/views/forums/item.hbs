@@ -1,9 +1,9 @@
 <script type="text/javascript">
-    page = new Fora.Views.Collections.Item({{{collectionJson}}});
+    page = new Fora.Views.Forums.Item({{{forumJson}}});
 </script>
 <div class="columns-wrap">
     <div class="content-area">    
-        <h1>{{collection.name}}</h1>
+        <h1>{{forum.name}}</h1>
         {{#if message}}
         <div class="content-sections">
             <div class="normal">
@@ -17,17 +17,17 @@
                     Recommended
                 </li>
                 <li>
-                    <a href="/{{collection.stub}}/latest">Upcoming</a>
+                    <a href="/{{forum.stub}}/latest">Upcoming</a>
                 </li>            
                 <li>
-                    <a href="/{{collection.stub}}/about">About</a>
+                    <a href="/{{forum.stub}}/about">About</a>
                 </li>          
             </ul>
             {{#if user}}
             <ul class="alt buttons">
                 {{#unless options.isMember}}
                 <li>
-                    <a href="#" class="positive join-collection"><i class="fa fa-user"></i>Join Forum</a>
+                    <a href="#" class="positive join-forum"><i class="fa fa-user"></i>Join Forum</a>
                 </li>
                 {{else}}
                 <li>
