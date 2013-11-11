@@ -35,12 +35,12 @@
             }
             
             .content-wrap { 
-                .content { 
-                    margin-bottom: 4px;  overflow: hidden; height: 282px;   
-                }
-                
+                height: 320px; overflow: hidden;
+            }
+            
+            .card-info {
                 .overlay {
-                    position:absolute; height: 48px; margin-top: -50px; pointer-events: none;
+                    position:absolute; height: 48px; margin-top: -48px; pointer-events: none;
                     
                     .overlay-size() when not (ispercentage(@colWidth)) {
                         width: @colWidth + 0px;
@@ -58,9 +58,7 @@
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
                 }
                 .activity { .fontBase; font-size: 0.65em; float: right; color: @colorNeutral; line-height: 1.7em; padding-right: 4px; }
-            }
-            
-            .image + .content-wrap .content { height: 108px }
+            }           
             
             /* Alternate layout */
             &.alt {

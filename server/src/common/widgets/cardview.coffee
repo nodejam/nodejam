@@ -4,9 +4,10 @@ Widget = require('./widget').Widget
 class CardView extends Widget
 
     @template: handlebars.compile '
-        {{{cover}}}
         <div class="content-wrap">
             {{{content}}}
+        </div>
+        <div class="card-info">
             <div class="overlay"></div>
             <span class="activity">
                 <i class="fa fa-comment"></i> 93<br />
@@ -27,14 +28,12 @@ class CardView extends Widget
         
         
     render: (data) =>
-        cover = content = ''
+        content = ''
         
-        for w in @params.cover
-            cover += w.render data
         for w in @params.content
             content += w.render data
         
-        CardView.template { cover, content, record: data.record }
+        CardView.template { content, record: data.record }
     
         
 exports.CardView = CardView

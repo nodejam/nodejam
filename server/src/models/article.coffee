@@ -45,9 +45,9 @@ class Article extends Record
             when 'card'
                 @parseTemplate {
                     widget: "cardview",
-                    cover: [{ widget: "image", image: '@record.cover', type: 'small', bg: true }],
                     content: [
                         { widget: "heading", size: 2, title: '@record.title', link: 'hbs /{{forum.stub}}/{{record.stub}}' },
+                        { widget: "image", image: '@record.cover', type: 'small', bg: true },
                         { widget: 'text', text: '@record.content' }
                     ]
                 }
