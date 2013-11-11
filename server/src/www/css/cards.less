@@ -85,17 +85,17 @@
             .wide-column() when not (ispercentage(@colWidth)) {
                 li {            
                     width: @wideColImageWidth + @wideColWidth + 60px; height: 280px;
-                    .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
                     .content-wrap { 
-                        float: left; height: 280px; width: @wideColWidth + 0px; 
+                        float: left; height: 280px; width: (@wideColWidth + @wideColImageWidth) + 0px; 
+                        .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
                         h2 { font-size: 1.6em }
                         .content { 
-                            height: 180px;                             
+                            height: 180px; overflow: hidden;                    
                         }
-                        .overlay { width: @wideColWidth + 0px }
-                        .source {
-                            .text { width: (@wideColWidth - 160) }
-                        }
+                    }
+                    .card-info {
+                        position: absolute; margin-top: 240px; margin-left: @wideColImageWidth + 20px; width: @wideColWidth - 40px;
+                        .overlay { width: @wideColWidth + 0px; } 
                     }
                 }
             }
