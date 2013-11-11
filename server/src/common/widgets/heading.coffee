@@ -3,10 +3,10 @@ Widget = require('./widget').Widget
 
 class Heading extends Widget
 
-    @header: handlebars.compile '<{{element}} {{attr}}">{{title}}</{{element}}>'
+    @header: handlebars.compile '<{{element}} {{{attr}}}">{{title}}</{{element}}>'
 
 
-    @headerWithLink: handlebars.compile '<{{element}} {{attr}}"><a href="{{link}}">{{title}}</a></{{element}}>'
+    @headerWithLink: handlebars.compile '<{{element}} {{{attr}}}"><a href="{{link}}">{{title}}</a></{{element}}>'
 
 
     constructor: (@params) ->

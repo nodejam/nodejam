@@ -1,7 +1,7 @@
 <li class="{{view}} alt" data-url="/{{stub}}">
     <div class="item-wrap">
-        <div class="image" style="background-image:url({{image}})"></div>
         <div class="content-wrap">
+            <div class="image" style="background-image:url({{image}})"></div>        
             <h2><a href="/{{stub}}">{{name}}</a></h2>
             <div class="content">        
                 {{#if snapshot.records}}                
@@ -17,6 +17,8 @@
                 </ul>
                 {{/if}}
             </div>            
+        </div>
+        <div class="card-info">
             <div class="overlay"></div>
         </div>
     </div>

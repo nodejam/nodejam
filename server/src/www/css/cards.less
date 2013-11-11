@@ -62,14 +62,11 @@
             
             /* Alternate layout */
             &.alt {
-                background-color: @colorUltraLight;            
-                width: @colWidth - 1px; border-right: 1px solid @colorLighter; border-bottom: 1px solid @colorLighter; 
-                .overlay { margin-left: -12px; }
+                background-color: @colorUltraLight; width: @colWidth - 1px; border-right: 1px solid @colorLighter; border-bottom: 1px solid @colorLighter; 
                 .content-wrap {
-                    padding: 0 12px;
-                    .content { height: 212px }
+                    padding: 0 12px; height: 360px; overflow: hidden;
+                    .image { height: 100px; }
                 }
-                .image { height: 100px; }
             }
             
             h2 { margin: 0 0 8px 0; font-size: 1.2em; line-height: 1.3em; }      

@@ -43,7 +43,7 @@ class Widget
         attrs = []
         
         for k,v of obj
-            attrs.push "#{k}=#{v}"
+            attrs.push "#{k}=\"#{v}\""
         
         return attrs.join ' '
     

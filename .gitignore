@@ -19,7 +19,6 @@ server/src/conf/*
 !server/src/conf/*.sample
 
 server/www-user/assetpaths/*
-!server/www-user/assetpaths/default
 !server/www-user/assetpaths/placeholder
 server/www-user/images/*
 !server/www-user/images/cover.jpg

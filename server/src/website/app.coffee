@@ -44,7 +44,7 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.get '/auth/twitter/callback', findHandler('auth', (c) -> c.twitterCallback)
 
     app.get '/forums', findHandler('forums', (c) -> c.index)
-    app.get '/forums/new', findHandler('forums', (c) -> c.index)
+    app.get '/forums/new', findHandler('forums', (c) -> c.create)
     app.get '/users/selectusername', findHandler('users', (c) -> c.selectUsernameForm)
     app.post '/users/selectusername', findHandler('users', (c) -> c.selectUsername)
     app.get '/~:username', findHandler('users', (c) -> c.item)

@@ -74,6 +74,14 @@ class Forums extends Controller
 
 
 
+    create: (req, res, next) =>
+        res.render req.network.getView('forums', 'create'), { 
+            pageName: 'create-forum-page', 
+            pageType: 'cover-page', 
+        }        
+
+
+
     about: (req, res, next) =>
         @attachUser arguments, =>
             (Q.async =>

@@ -4,7 +4,7 @@ Widget = require('./widget').Widget
 class Text extends Widget
     
     @template = handlebars.compile '
-        <div class="content" {{attr}}>
+        <div class="content" {{{attr}}}>
             {{{text}}}
         </div>'
     

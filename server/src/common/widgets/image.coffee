@@ -3,13 +3,13 @@ Widget = require('./widget').Widget
 
 class Image extends Widget
 
-    @template: handlebars.compile '<img {{attr}} src="{{src}}" alt="{{alt}}" />'
+    @template: handlebars.compile '<img {{{attr}}} src="{{src}}" alt="{{alt}}" />'
 
     
-    @bgTemplate: handlebars.compile '<div style="background-image:url({{src}})" {{attr}}></div>'
+    @bgTemplate: handlebars.compile '<div style="background-image:url({{src}})" {{{attr}}}></div>'
 
 
-    @emptyTemplate: handlebars.compile '<div class="image" {{attr}}></div>'
+    @emptyTemplate: handlebars.compile '<div class="image" {{{attr}}}></div>'
 
 
     constructor: (@params) ->
