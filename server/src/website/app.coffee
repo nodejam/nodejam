@@ -44,13 +44,14 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.get '/auth/twitter/callback', findHandler('auth', (c) -> c.twitterCallback)
 
     app.get '/collections', findHandler('collections', (c) -> c.index)
+    app.get '/collections/new', findHandler('collections', (c) -> c.index)
     app.get '/users/selectusername', findHandler('users', (c) -> c.selectUsernameForm)
     app.post '/users/selectusername', findHandler('users', (c) -> c.selectUsername)
     app.get '/~:username', findHandler('users', (c) -> c.item)
     app.get '/:collection', findHandler('collections', (c) -> c.item)
     app.get '/:collection/new', findHandler('collections', (c) -> c.createForm)
     app.get '/:collection/about', findHandler('collections', (c) -> c.about)
-    app.get '/:collection/:stub', findHandler('records', (c) -> c.item)
+    app.get '/:collection/:stub', findHandler('records', (c) -> c.item)    
     
     
 #Register templates, helpers etc.
