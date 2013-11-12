@@ -1,4 +1,4 @@
-Q = require 'q'
+Q = require '../lib/q'
 utils = require '../lib/utils'
 fsutils = require './fsutils'
 url = require 'url'

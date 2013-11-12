@@ -1,6 +1,6 @@
 Mongo = require 'mongodb'
 utils = require '../utils'
-Q = require 'q'
+Q = require '../q'
 
 class Database
     constructor: (@conf) ->
@@ -29,7 +29,7 @@ class Database
             try
                 task db, (err) =>
             catch e
-                utils.dumpError e
+                utils.printError e
 
 
 

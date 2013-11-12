@@ -1,6 +1,6 @@
 Record = require('./record').Record
 utils = require('../lib/utils')
-Q = require 'q'
+Q = require '../lib/q'
 models = require('./')
 widgets = require '../common/widgets'
 fields = require './fields'

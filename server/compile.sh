@@ -6,7 +6,7 @@ echo "usage: ./compile [--debug]"
 
 debug=false
 dont_delete=false
-harmony=true
+es6=true
 
 while :
 do
@@ -16,9 +16,9 @@ do
             echo "Compiling in debug mode"
             shift
             ;;
-        --no-harmony)
-            harmony=false
-            echo "Harmony is enabled"
+        --es5)
+            es6=false
+            echo "Compiling for ES5"
             shift
             ;;
         --dont-delete)
@@ -57,31 +57,37 @@ coffee -o app/ -c src/
 
 #Run it through generator.
 #This step is unnecessary if we are using node --harmony
-if ! $harmony; then
+compile_to_es5() {
+    dir=`pwd`/$1
+    echo Processing $dir
+    find $dir -name *.js -type f -exec cp {} {}.es6 \; -exec sh -c 'regenerator --include-runtime {}.es6 > {}' \; 
+}
+
+if ! $es6; then
     echo Running regenerator..
-    find `pwd`/app/api -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
-    find `pwd`/app/common -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
-    find `pwd`/app/conf -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
-    find `pwd`/app/lib -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
-    find `pwd`/app/models -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
-    find `pwd`/app/scripts -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
-    find `pwd`/app/website -name *.js -type f -exec cp {} {}.harmony \; -exec sh -c 'regenerator --include-runtime {}.harmony > {}' \;
+    compile_to_es5 "app/api"
+    compile_to_es5 "app/common"
+    compile_to_es5 "app/conf"
+    compile_to_es5 "app/lib"
+    compile_to_es5 "app/models"
+    compile_to_es5 "app/scripts"
+    compile_to_es5 "app/website"
 fi
 
 echo "Running LESS.."
 lessc app/www/css/main.less app/www/css/main.css
 
 if $debug; then
-    if ! $harmony; then
+    if ! $es6; then
         node app/scripts/deploy/package.js --debug
     else
         node --harmony app/scripts/deploy/package.js --debug
     fi
     cp src/website/views/layouts/default-debug.hbs app/website/views/layouts/default.hbs
 else
-    if ! $harmony; then
-        node --harmony app/scripts/deploy/package.js
-    else
+    if ! $es6; then
         node app/scripts/deploy/package.js
+    else
+        node --harmony app/scripts/deploy/package.js
     fi
 fi

@@ -2,7 +2,7 @@ conf = require '../../conf'
 db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../lib/utils'
-Q = require 'q'
+Q = require '../../lib/q'
 Controller = require('../../common/web/controller').Controller
 
 class Records extends Controller
@@ -27,7 +27,6 @@ class Records extends Controller
                     res.send record
 
                 catch e
-                    utils.dumpError e
                     next e
             )()
 

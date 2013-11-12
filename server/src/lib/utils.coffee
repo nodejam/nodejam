@@ -50,7 +50,7 @@ getHashCode = (str) ->
     Math.abs hash
     
         
-dumpError = (err) ->
+printError = (err) ->
     if err
         log err.stack ? 'There is no stack trace.'
         if err.details
@@ -59,6 +59,10 @@ dumpError = (err) ->
         log 'Error is null or undefined.'
 
 
+printStack = ->
+    err = new Error
+    log err.stack
+
 exports.clone = clone
 exports.deepCloneObject = deepCloneObject
 exports.extend = extend
@@ -66,4 +70,5 @@ exports.uniqueId = uniqueId
 exports.fixUrl = fixUrl
 exports.log = log
 exports.getHashCode = getHashCode
-exports.dumpError = dumpError
+exports.printError = printError
+exports.printStack = printStack

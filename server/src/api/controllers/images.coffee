@@ -3,7 +3,7 @@ db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../lib/utils'
 fsutils = require '../../common/fsutils'
-Q = require 'q'
+Q = require '../../lib/q'
 Controller = require('../../common/web/controller').Controller
 fs = require 'fs-extra'
 gm = require 'gm'
@@ -33,7 +33,7 @@ class Images extends Controller
                                         res.set 'Content-Type', 'text/html'
                                         res.send { image: "/pub/images/#{dir}/#{filename}", small: "/pub/images/#{dir}/small_#{filename}" }
                         catch e
-                            utils.dumpError e
+                            next e
                 else
                     res.send "error"
                     

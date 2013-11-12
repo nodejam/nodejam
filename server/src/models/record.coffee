@@ -1,6 +1,6 @@
 utils = require '../lib/utils'
 models = require('./')
-Q = require 'q'
+Q = require '../lib/q'
 widgets = require '../common/widgets'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel

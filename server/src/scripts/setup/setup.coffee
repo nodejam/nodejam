@@ -5,7 +5,7 @@ querystring = require 'querystring'
 utils = require '../../lib/utils'
 data = require './data'
 conf = require '../../conf'
-Q = require 'q'
+Q = require '../../lib/q'
 
 database = new (require '../../lib/data/database').Database(conf.db)
 

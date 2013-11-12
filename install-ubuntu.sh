@@ -9,7 +9,7 @@ options:
   --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
   --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
 
-  --node              Install a pre-compiler version of node
+  --node              Install a pre-compiled version of node
   --node-latest       Compile and install the latest node
   --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install nginx
@@ -340,7 +340,7 @@ fi
 #Install all node modules we need
 if $node_modules ; then
     sudo npm install -g less    
-    
+    sudo npm install -g regenerator
     cd server
     npm install express
     npm install mongodb

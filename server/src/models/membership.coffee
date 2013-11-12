@@ -1,6 +1,6 @@
 ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
-Q = require 'q'
+Q = require '../lib/q'
 
 class Membership extends ForaDbModel
     

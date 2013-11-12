@@ -1,14 +1,20 @@
 #!/bin/bash
 
-harmony=true
+compile=true
+es6=true
 production=false
 
 while :
 do
     case $1 in
-        --no-harmony)
-            harmony=false
-            echo "Compiling for node harmony"
+        --no-compile)
+            compile=false
+            echo "Skipping compilation"
+            shift
+            ;;
+        --es5)
+            es6=false
+            echo "Debugging ES5 code"
             shift
             ;;
         --production)
@@ -26,17 +32,19 @@ do
     esac
 done
 
-if $production; then
-    if ! $harmony; then
-        ./compile.sh --no-harmony
+if $compile; then
+    if $production; then
+        if ! $es6; then
+            ./compile.sh --es5
+        else
+            ./compile.sh
+        fi
     else
-        ./compile.sh
-    fi
-else
-    if ! $harmony; then
-        ./compile.sh --debug --no-harmony
-    else
-        ./compile.sh --debug
+        if ! $es6; then
+            ./compile.sh --debug --es5
+        else
+            ./compile.sh --debug
+        fi
     fi
 fi
 
@@ -46,7 +54,7 @@ echo Debugging Fora...
 echo Killing node if it is running..
 killall node
 
-if ! $harmony; then
+if ! $es6; then
     node app/website/app.js localhost 10981 &
     node app/api/app.js localhost 10982 &
 else

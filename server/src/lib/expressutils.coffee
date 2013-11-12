@@ -5,7 +5,7 @@ conf = require '../conf'
 ExpressRequestWrapper = require('./expressrequestwrapper').ExpressRequestWrapper
 
 errorHandler = (err, req, res, next) ->
-    utils.dumpError err
+    utils.printError err
     res.send(500, { error: err.message })
     process.exit()
 
