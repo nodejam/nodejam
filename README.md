@@ -7,7 +7,7 @@ Installation
 
 Step 1: Install pre-requisites
 ------------------------------
-Run ./install-ubuntu.sh --all (or see options below)
+Run ./install-ubuntu.sh --all (or see options below)  
 WARNING: The install script upgrades node to a very new version.
 
 ```
@@ -44,7 +44,8 @@ If you aren't running the script, you'll have to do these manually:
 - install graphicsmagick (via OS package manager)
 - edit and rename src/conf/fora.config.sample to src/conf/fora.config
 - edit and rename src/conf/settings.config.sample to src/conf/settings.config
-- install these modules with npm:
+- install these modules with npm
+
 ```
 npm install -g less
 npm install -g regenerator
