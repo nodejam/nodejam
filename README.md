@@ -61,7 +61,6 @@ npm install node-minify
 npm install oauth  
 npm install marked  
 npm install optimist  
-npm install q  
 npm install multiparty  
 ```
 
