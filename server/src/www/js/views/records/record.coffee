@@ -26,7 +26,7 @@ class Record
 
 
     onEdit: =>
-        editor = new Fora.Editing.Editor @typeDefinition
+        editor = new Fora.Editing.Editor($ '.item')
 
         $('.edit-options').hide()
 
@@ -57,7 +57,6 @@ class Record
                         document.location.href = "/#{@record.forum.stub}/#{@record.stub}"
                 }
         
-        editor.editPage()
         
     
     

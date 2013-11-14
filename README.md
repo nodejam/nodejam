@@ -45,6 +45,7 @@ If you aren't running the script, you'll have to do these manually:
 - edit and rename src/conf/fora.config.sample to src/conf/fora.config
 - edit and rename src/conf/settings.config.sample to src/conf/settings.config
 - install these modules with npm:
+```
     npm install -g less
     npm install -g regenerator
     npm install express  
@@ -61,7 +62,7 @@ If you aren't running the script, you'll have to do these manually:
     npm install optimist  
     npm install q  
     npm install multiparty  
-
+```
 
 Step 2: Configuration
 ---------------------
@@ -79,7 +80,7 @@ To debug
 cd server
 ./debug.sh [--es5]
 ```
-- The --es5 option will transform ES6 code to ES5, allowing you to run on stable node.
+- The --es5 option will transform ES6 code to ES5, allowing you to run on stable node. 
 
 For production
 ```
@@ -89,6 +90,9 @@ And run with monitoring tools such as upstart and monit.
 - The services you need to run are app/website/app.js, app/api/app.js
 - Check the sample files upstart-fora-app.conf, upstart-fora-api.conf and monit-fora
 - The --es5 option will transform ES6 code to ES5, allowing you to run on stable node.
+
+Note:  
+ES6 to ES5 transformation is done with Regenerator (https://github.com/facebook/regenerator).
 
 
 Step 4 (Optional): Want some test data?

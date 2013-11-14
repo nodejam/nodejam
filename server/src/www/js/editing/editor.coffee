@@ -1,24 +1,21 @@
 class Editor
     
-    constructor: (@typeDefinition) ->
+    constructor: (@container) ->
         @imageField = new Fora.Editing.Image @
         @textField = new Fora.Editing.Text @
         
-        
-        
-    editPage: =>
-        editables = $('[data-field-type]')
+        editables = @container.find('[data-field-type]')
         editables.highlight()        
     
         for e in editables
             do (e) =>
                 e = $ e
-                @getField(e.data 'field-type').setup e
-
+                @getField(e.data 'field-type').setup e        
+        
 
 
     update: (record = {}) =>
-        for e in $('[data-field-type]')
+        for e in @container.find('[data-field-type]')
             e = $ e
             @getField(e.data 'field-type').update record, e                
         @flatten record, [], {}
