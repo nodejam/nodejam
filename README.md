@@ -46,22 +46,22 @@ If you aren't running the script, you'll have to do these manually:
 - edit and rename src/conf/settings.config.sample to src/conf/settings.config
 - install these modules with npm:
 ```
-    npm install -g less
-    npm install -g regenerator
-    npm install express  
-    npm install mongodb  
-    npm install validator  
-    npm install sanitizer  
-    npm install handlebars  
-    npm install hbs  
-    npm install fs-extra  
-    npm install gm  
-    npm install node-minify  
-    npm install oauth  
-    npm install marked  
-    npm install optimist  
-    npm install q  
-    npm install multiparty  
+npm install -g less
+npm install -g regenerator
+npm install express  
+npm install mongodb  
+npm install validator  
+npm install sanitizer  
+npm install handlebars  
+npm install hbs  
+npm install fs-extra  
+npm install gm  
+npm install node-minify  
+npm install oauth  
+npm install marked  
+npm install optimist  
+npm install q  
+npm install multiparty  
 ```
 
 Step 2: Configuration
