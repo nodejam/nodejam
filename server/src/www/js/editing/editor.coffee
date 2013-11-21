@@ -42,7 +42,7 @@ class Editor
         switch type
             when 'image'
                 @imageField                
-            when 'heading', 'text'
+            when 'heading', 'text', 'plain-text'
                 @textField
     
 

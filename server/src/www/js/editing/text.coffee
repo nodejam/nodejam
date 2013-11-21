@@ -7,29 +7,49 @@ class Text
         e.attr 'contenteditable', true
 
         handleEmpty = =>
-            if not e.text().trim() and e.data 'placeholder'
-                e.addClass 'placeholder'
-                e.html e.data 'placeholder'
+            if not e.text().trim()
+                if e.data 'placeholder'
+                    e.html "<span class=\"pre-placeholder\">&nbsp;</span><span class=\"placeholder\">#{e.data 'placeholder'}</span>"
 
-        e.keypress =>
-            if e.hasClass 'placeholder'
-                e.removeClass 'placeholder'
-                e.html ''
-        
-        e.blur =>
-            handleEmpty e
+        onFocus = =>
+            placeholder = e.find('.placeholder')
+    
+            if placeholder.length
+                placeholder.addClass 'dim'
+                
+                #Place caret at beginning
+                range = document.createRange()
+                range.selectNodeContents(e[0])
+                range.collapse(true)
+                selection = window.getSelection()
+                selection.removeAllRanges()
+                selection.addRange(range);
             
-        handleEmpty e
-
+                #Remove dim from other placeholders
+                $('.placeholder').not(placeholder[0]).removeClass 'dim'
+            
+            
+                    
+        e.click onFocus
+        e.focus onFocus             
+        e.bind 'touch', onFocus
+        e.blur handleEmpty
+        e.keydown =>
+            if e.find('.placeholder').length
+                e.empty()
+            
         if e.data('field-type') is 'text'
             config = { 
-                toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote', 'Image' ] } ]
+                toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote', 'Image' ] } ],
+                forcePasteAsPlainText: true
             }
             
             config.on = {
                 instanceReady: (evt) => 
-                    evt.editor.focus()
-                focus: (evt) =>
+                    handleEmpty()
+                
+                    #evt.editor.focus()
+                #focus: (evt) =>
                     #setTimeout (=>
                     #    editor = evt.editor
                     #    range = editor.createRange()
@@ -40,11 +60,16 @@ class Text
             
             ckeditor = CKEDITOR.inline e[0], config  
             
+        
+        else    
+            handleEmpty()
+    
 
 
     update: (record, e) =>
+        e.find('.pre-placeholder,.placeholder').remove()
         switch e.data('field-type')                
-            when 'heading'
+            when 'heading', 'plain-text'
                 record[e.data('field-name')] = e.text()
             when 'text'
                 record[e.data('field-name')] = {

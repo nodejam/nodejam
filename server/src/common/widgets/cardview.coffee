@@ -14,10 +14,8 @@ class CardView extends Widget
                 <i class="fa fa-thumbs-up"></i> 10k
             </span>
             <p class="desc-text">
-                <span class="text">
-                    <a href="/~{{record.createdBy.username}}">{{record.createdBy.name}}</a><br />
-                    <span class="light-text">in <a href="/{{record.forum.stub}}">{{record.forum.name}}</a></span>
-                </span>
+                <a href="/~{{record.createdBy.username}}">{{record.createdBy.name}}</a><br />
+                <span class="italicize">in <a href="/{{record.forum.stub}}">{{record.forum.name}}</a></span>
             </p>
         </div>'
 

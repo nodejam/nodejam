@@ -8,10 +8,8 @@
                 <ul class="desc-text">
                 {{#each snapshot.records}}                
                     <li>
-                        <span class="text">
-                            <a href="/{{../stub}}/{{stub}}">{{title}}</a><br />
-                            <span class="light-text">{{createdBy.name}}</span>
-                        </span>
+                        <a href="/{{../stub}}/{{stub}}">{{title}}</a><br />
+                        <span class="italicize">{{createdBy.name}}</span>
                     </li>
                 {{/each}}
                 </ul>

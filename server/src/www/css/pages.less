@@ -7,32 +7,36 @@
 .content-area { 
     .fontContent; clear: both; margin-top: 12px;
     h1, h2, h3 { .fontContentHeading; }
-    > h1 { margin-top: -12px }        
+
+    .content {    
+        font-size: 1.3em; 
+
+        ol { 
+            margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
+            li { list-style-type: decimal }
+        }
+        ul { 
+            margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
+            li { list-style-type: disc }
+        }
+          
+        p { line-height: 1.4em; margin-bottom: 1.4em }
+    }
+
+    img.image { width: 100%; margin-bottom: 20px; }
+    
+    .cards {
+        .content {
+            font-size: 1.1em; 
+            p { line-height: 1.4em; margin-bottom: 1.2em }
+        }
+    }
 }
 
 /* A page with just content. */
 .single-item-mixin (@width, @sidebarWidth) {
     .item {
         width: @width; margin: auto; 
-        .content { 
-            font-size: 1.3em; clear: both;
-            .wider { width: @width + 40px; }                
-
-            ol { 
-                margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
-                li { list-style-type: decimal }
-            }
-            ul { 
-                margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
-                li { list-style-type: disc }
-            }            
-        }
-
-        img.image { width: 100%; margin-bottom: 20px; }
-
-        &.text { 
-            p { line-height: 1.4em; margin-bottom: 1.4em }
-        }
     }
     
     .sidebar {
@@ -66,9 +70,14 @@
         
         .container {
             margin-right: @coverWidth + 0px; margin-top: 22px;
+
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
                 padding: 0 0 0 (@colSpacing / 2) + 0px;
+            }
+            
+            .page-wrap {
+                width: 800px; margin: auto; padding: 0;            
             }
         }
     }    
@@ -77,9 +86,10 @@
 .large-std-page-mixin () {
     .std-page {
         .large-page-mixin;
+        
         .container {
             margin-top: 22px;
-
+            
             .page-wrap {
                 width: 992px; margin: auto; padding: 0;            
                 &.small { width: 600px; }
@@ -118,6 +128,10 @@
             .columns-wrap {
                 width: (@colCount * (@colWidth + @colSpacing)) + 0px;
                 padding: 0 0 0 (@colSpacing / 2) + 0px;
+            }
+
+            .page-wrap {
+                width: 600px;
             }
         }        
     }
@@ -180,6 +194,11 @@
                 }                        
                 .widths();
             }
+
+            .page-wrap {
+                padding: 0 12px;
+            }
+
         }        
     }
 }
