@@ -7,7 +7,7 @@ class Item extends window.Fora.Views.BaseView
     
     attachEvents: =>
         $('a.join-forum').clickHandler @onJoin
-        $('a.new-record').clickHandler @onNewRecord
+        $('a.new-post').clickHandler @onNewPost
 
 
     onJoin: (e) =>
@@ -17,8 +17,8 @@ class Item extends window.Fora.Views.BaseView
             
             
             
-    onNewRecord: (e) =>
-        $.post "/api/forums/#{@forum.stub}", { type: @forum.recordTypes[0], state: 'draft' }, (resp) =>
+    onNewPost: (e) =>
+        $.post "/api/forums/#{@forum.stub}", { type: @forum.postTypes[0], state: 'draft' }, (resp) =>
             window.location.href = "/#{@forum.stub}/#{resp.stub}?mode=edit"
         
     

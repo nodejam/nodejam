@@ -3,7 +3,7 @@ modules = {
     credentials: 'Credentials',
     forum: 'Forum',
     foruminfo: 'ForumInfo',
-    record: 'Record',
+    post: 'Post',
     token: 'Token',
     userinfo: 'UserInfo',
     message: 'Message',

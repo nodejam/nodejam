@@ -1,11 +1,11 @@
 handlebars = require('handlebars')
 Widget = require('./widget').Widget
 
-class RecordView extends Widget
+class PostView extends Widget
 
     @template: handlebars.compile '
         <div class="item text">
-            {{{recordHtml}}}
+            {{{postHtml}}}
         </div>
         <div class="sidebar large-page-element">
             {{{sidebarHtml}}}
@@ -21,13 +21,13 @@ class RecordView extends Widget
         
         
     render: (data) =>
-        recordHtml = sidebarHtml = ''
+        postHtml = sidebarHtml = ''
         for w in @itemPane
-            recordHtml += w.render data
+            postHtml += w.render data
         for w in @sidebar
             sidebarHtml += w.render data
-        RecordView.template { recordHtml, sidebarHtml }
+        PostView.template { postHtml, sidebarHtml }
     
         
         
-exports.RecordView = RecordView
+exports.PostView = PostView

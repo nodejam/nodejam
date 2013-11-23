@@ -1,8 +1,8 @@
-class Record
+class Post
 
-    constructor: (@record, @typeDefinition) ->        
+    constructor: (@post, @typeDefinition) ->        
         $(document).ready () =>
-            @editable = app.getUser()?.id is @record.createdBy.id
+            @editable = app.getUser()?.id is @post.createdBy.id
             if @editable
                 $('.sidebar-options').html '
                     <p class="edit-options">
@@ -36,7 +36,7 @@ class Record
                 </ul>
             </div>'
 
-        if @record.state is 'published'
+        if @post.state is 'published'
             $('.page-wrap .nav.buttons ul').append '<li><button class="cancel">Cancel</button></li>'
             publishText = "Republish"
         else
@@ -49,16 +49,16 @@ class Record
         $('button.publish').click =>
             data = editor.update()
             data.state = 'published'
-            $.ajax "/api/forums/#{@record.forum.stub}/records/#{@record._id}", 
+            $.ajax "/api/forums/#{@post.forum.stub}/posts/#{@post._id}", 
                 { 
                     type: 'PUT', 
                     data, 
                     success: =>
-                        document.location.href = "/#{@record.forum.stub}/#{@record.stub}"
+                        document.location.href = "/#{@post.forum.stub}/#{@post.stub}"
                 }
         
         
     
     
 
-window.Fora.Views.Records.Record = Record
+window.Fora.Views.Posts.Post = Post

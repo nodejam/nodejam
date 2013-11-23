@@ -5,17 +5,17 @@ widgets = require '../common/widgets'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
-class Record extends ForaDbModel
+class Post extends ForaDbModel
     
     @typeDefinition: {
         type: @,
-        alias: "Record",
-        collection: 'records',
+        alias: "Post",
+        collection: 'posts',
         discriminator: (obj) -> 
             switch obj.type
                 when 'Article' then models.Article
                 when 'Conversation' then models.Conversation
-                else Record                
+                else Post                
         fields: {
             type: 'string',
             forum: "Forum.Summary",
@@ -43,7 +43,7 @@ class Record extends ForaDbModel
         for k, v of criteria
             params[k] = v
         
-        Record.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
+        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
         
 
         
@@ -102,7 +102,7 @@ class Record extends ForaDbModel
     #Dummy. So that a data error doesn't blow up the app.
     getTemplate: (name = "standard") =>
         @parseTemplate {
-            widget: "recordview",                    
+            widget: "postview",                    
             itemPane: [],
             sidebar: []
         }                
@@ -134,9 +134,9 @@ class Record extends ForaDbModel
                 widgets.Authorship
             when 'text'
                 widgets.Text
-            when 'recordview'
-                widgets.RecordView
+            when 'postview'
+                widgets.PostView
             when 'cardview'
                 widgets.CardView
             
-exports.Record = Record
+exports.Post = Post

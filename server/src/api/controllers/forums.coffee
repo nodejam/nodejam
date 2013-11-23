@@ -19,7 +19,7 @@ class Forums extends Controller
                         forum = new models.Forum
                         forum.network = req.network.stub
                         forum.stub = stub
-                        req.map forum, ['name', 'type', 'description', 'recordTypes', 'cover_src', 'cover_small', 'cover_alt']                        
+                        req.map forum, ['name', 'type', 'description', 'postTypes', 'cover_src', 'cover_small', 'cover_alt']                        
                         forum.createdBy = req.user
                         forum = yield forum.save { user: req.user }, db
 
@@ -47,7 +47,7 @@ class Forums extends Controller
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db)
                     if req.user.username is forum.createdBy.username or @isAdmin(req.user)
                         forum.description = req.body('description')
-                        req.map forum, ['description', 'recordTypes', 'cover_src', 'cover_small', 'cover_alt']     
+                        req.map forum, ['description', 'postTypes', 'cover_src', 'cover_small', 'cover_alt']     
                         forum = yield forum.save()
                         res.send forum
                     else

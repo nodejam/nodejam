@@ -4,9 +4,9 @@
             <div class="image" style="background-image:url({{image}})"></div>        
             <h2><a href="/{{stub}}">{{name}}</a></h2>
             <div class="content">        
-                {{#if snapshot.records}}                
+                {{#if snapshot.posts}}                
                 <ul class="desc-text">
-                {{#each snapshot.records}}                
+                {{#each snapshot.posts}}                
                     <li>
                         <a href="/{{../stub}}/{{stub}}">{{title}}</a><br />
                         <span class="italicize">{{createdBy.name}}</span>

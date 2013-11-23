@@ -14,16 +14,16 @@ class Editor
         
 
 
-    update: (record = {}) =>
+    update: (post = {}) =>
         for e in @container.find('[data-field-type]')
             e = $ e
-            @getField(e.data 'field-type').update record, e                
-        @flatten record, [], {}
+            @getField(e.data 'field-type').update post, e                
+        @flatten post, [], {}
                     
                     
     
-    flatten: (record, prefix, acc) =>
-        for f, v of record
+    flatten: (post, prefix, acc) =>
+        for f, v of post
             if v and typeof v isnt "function"
                 if typeof v is "object"
                     @flatten v, prefix.concat(f), acc

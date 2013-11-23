@@ -1,16 +1,16 @@
-Record = require('./record').Record
+Post = require('./post').Post
 utils = require('../lib/utils')
 Q = require '../lib/q'
 models = require('./')
 widgets = require '../common/widgets'
 fields = require './fields'
 
-class Article extends Record
+class Article extends Post
 
     @typeDefinition: {
         type: @,
         alias: 'Article',
-        inherits: 'Record',
+        inherits: 'Post',
         fields: {
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },
@@ -33,12 +33,12 @@ class Article extends Record
         switch name
             when 'standard'
                 @parseTemplate {
-                    widget: "recordview",                    
+                    widget: "postview",                    
                     itemPane: [
-                        { widget: 'image', image: '@record.cover', editable: true, field: 'cover',  size: 1 },
-                        { widget: 'heading', title: '@record.title', size: 1, editable: true, field: 'title' },
+                        { widget: 'image', image: '@post.cover', editable: true, field: 'cover',  size: 1 },
+                        { widget: 'heading', title: '@post.title', size: 1, editable: true, field: 'title' },
                         { widget: 'authorship', type: 'small', author: '@author' },
-                        { widget: 'text', text: '@record.content', editable: true, field: 'content' },
+                        { widget: 'text', text: '@post.content', editable: true, field: 'content' },
                     ],
                     sidebar: [ { widget: 'authorship', author: '@author' } ]
                 }
@@ -46,9 +46,9 @@ class Article extends Record
                 @parseTemplate {
                     widget: "cardview",
                     content: [
-                        { widget: "heading", size: 2, title: '@record.title', link: 'hbs /{{forum.stub}}/{{record.stub}}' },
-                        { widget: "image", image: '@record.cover', type: 'small', bg: true },
-                        { widget: 'text', text: '@record.content' }
+                        { widget: "heading", size: 2, title: '@post.title', link: 'hbs /{{forum.stub}}/{{post.stub}}' },
+                        { widget: "image", image: '@post.cover', type: 'small', bg: true },
+                        { widget: 'text', text: '@post.content' }
                     ]
                 }
                 

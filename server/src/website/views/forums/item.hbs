@@ -31,15 +31,15 @@
                 </li>
                 {{else}}
                 <li>
-                    <a href="#" class="positive new-record"><i class="fa fa-plus"></i>New {{options.primaryRecordType}}</a>
+                    <a href="#" class="positive new-post"><i class="fa fa-plus"></i>New {{options.primaryPostType}}</a>
                 </li>
                 {{/unless}}
             </ul>
             {{/if}}
         </div>
-        {{#if records}}
+        {{#if posts}}
             <ul class="cards">
-            {{#each records}}
+            {{#each posts}}
                 <li>
                 {{{html}}}
                 </li>

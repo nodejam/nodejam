@@ -245,9 +245,9 @@ class DatabaseModel extends BaseModel
 
     onError: (errors, modelDescription) =>
         if @_id
-            details = "Invalid record with id #{@_id} in #{modelDescription.collection}.\n"
+            details = "Invalid post with id #{@_id} in #{modelDescription.collection}.\n"
         else
-            details = "Validation failed while creating a new record in #{modelDescription.collection}.\n"
+            details = "Validation failed while creating a new post in #{modelDescription.collection}.\n"
         
         details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}\n"
         for e in errors

@@ -5,7 +5,7 @@ utils = require '../../lib/utils'
 Q = require '../../lib/q'
 Controller = require('../../common/web/controller').Controller
 
-class Records extends Controller
+class Posts extends Controller
     
     item: (req, res, next) =>
         @attachUser arguments, =>
@@ -13,23 +13,23 @@ class Records extends Controller
                 try                
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, {}, db)
                     if forum
-                        record = yield models.Record.get({ 'forum.id': forum._id.toString(), stub: req.params('stub') }, {}, db)
-                        if record
-                            author = yield models.User.getById record.createdBy.id, {}, db
+                        post = yield models.Post.get({ 'forum.id': forum._id.toString(), stub: req.params('stub') }, {}, db)
+                        if post
+                            author = yield models.User.getById post.createdBy.id, {}, db
                             
-                            template = record.getTemplate 'standard'
+                            template = post.getTemplate 'standard'
                             html = template.render {
-                                record,
+                                post,
                                 author,
                                 forum
                             }
                             
-                            res.render req.network.getView('records', 'record'), { 
+                            res.render req.network.getView('posts', 'post'), { 
                                 html,
-                                json: JSON.stringify(record),
-                                typeDefinition: JSON.stringify(record.getTypeDefinition()),
+                                json: JSON.stringify(post),
+                                typeDefinition: JSON.stringify(post.getTypeDefinition()),
                                 user: req.user,
-                                pageName: 'record-page',
+                                pageName: 'post-page',
                                 pageType: 'std-page'
                             }
                         else
@@ -41,4 +41,4 @@ class Records extends Controller
             
         
             
-exports.Records = Records
+exports.Posts = Posts

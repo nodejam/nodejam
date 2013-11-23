@@ -16,15 +16,15 @@ class Home extends Controller
         @attachUser arguments, =>
             (Q.async =>
                 try
-                    editorsPicks = yield models.Record.find({ meta: 'pick', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 1), {}, db)
-                    featured = yield models.Record.find({ meta: 'featured', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
+                    editorsPicks = yield models.Post.find({ meta: 'pick', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 1), {}, db)
+                    featured = yield models.Post.find({ meta: 'featured', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)
                     featured = (f for f in featured when (x._id for x in editorsPicks).indexOf(f._id) is -1)
 
-                    for record in editorsPicks.concat(featured)
-                        template = record.getTemplate 'card'
-                        record.html = template.render {
-                            record,
-                            forum: record.forum,
+                    for post in editorsPicks.concat(featured)
+                        template = post.getTemplate 'card'
+                        post.html = template.render {
+                            post,
+                            forum: post.forum,
                         }
 
                     res.render req.network.getView('home', 'index'), { 

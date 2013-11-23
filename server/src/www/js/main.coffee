@@ -3,8 +3,8 @@ window.Fora = {
         Home: {},
         Forums: {},
         Users: {},
-        Records: {},
-        RecordTypes: {},
+        Posts: {},
+        PostTypes: {},
     },
     Editing: {}
 }

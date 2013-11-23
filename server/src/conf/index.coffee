@@ -19,9 +19,9 @@ templates =   {
             forumcard: '/views/forums/forumcard.hbs',
             create: 'forums/create.hbs'
         },
-        records: {
-            recordcard: '/views/records/recordcard.hbs',
-            record: 'records/record.hbs'
+        posts: {
+            postcard: '/views/posts/postcard.hbs',
+            post: 'posts/post.hbs'
         }
     }
 }

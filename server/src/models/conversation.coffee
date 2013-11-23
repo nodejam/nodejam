@@ -1,14 +1,14 @@
-recordModule = require('./record')
+postModule = require('./post')
 utils = require('../lib/utils')
 Q = require '../lib/q'
 models = require('./')
 
-class Conversation extends recordModule.Record
+class Conversation extends postModule.Post
     
     @typeDefinition: {
             type: @,
             alias: 'Conversation',
-            inherits: 'Record',
+            inherits: 'Post',
             fields: {
                 content: { type: 'string', required: false, maxLength: 50000 },
             }

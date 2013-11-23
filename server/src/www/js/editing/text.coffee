@@ -66,13 +66,13 @@ class Text
     
 
 
-    update: (record, e) =>
+    update: (post, e) =>
         e.find('.pre-placeholder,.placeholder').remove()
         switch e.data('field-type')                
             when 'heading', 'plain-text'
-                record[e.data('field-name')] = e.text()
+                post[e.data('field-name')] = e.text()
             when 'text'
-                record[e.data('field-name')] = {
+                post[e.data('field-name')] = {
                     text: e.html()
                     format: 'html'
                 }

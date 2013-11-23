@@ -55,9 +55,9 @@ class Image
 
 
 
-    update: (record, e) =>
+    update: (post, e) =>
         if e.attr('src')
-            record[e.data('field-name')] = {
+            post[e.data('field-name')] = {
                 src: e.attr('src'),
                 alt: e.attr('alt'),
                 small: e.data('small-image')

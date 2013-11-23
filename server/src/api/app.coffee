@@ -22,7 +22,7 @@ getController = (name) ->
     switch name.toLowerCase()        
         when 'users' then new controllers.Users()
         when 'forums' then new controllers.Forums()
-        when 'records' then new controllers.Records()
+        when 'posts' then new controllers.Posts()
         when 'images' then new controllers.Images()
         else throw new Error "Cannot find controller #{name}."
 
@@ -34,11 +34,11 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
 
     app.post '/api/forums', findHandler('forums', (c) -> c.create)
     app.post '/api/forums/:forum/members', findHandler('forums', (c) -> c.join)
-    app.post '/api/forums/:forum', findHandler('records', (c) -> c.create)
-    app.put '/api/forums/:forum/records/:id', findHandler('records', (c) -> c.edit)
+    app.post '/api/forums/:forum', findHandler('posts', (c) -> c.create)
+    app.put '/api/forums/:forum/posts/:id', findHandler('posts', (c) -> c.edit)
     
     app.post '/api/images', findHandler('images', (c) -> c.upload)
 
-    app.put "/api/admin/records/:id", findHandler('records', (c) -> c.admin_update)
+    app.put "/api/admin/posts/:id", findHandler('posts', (c) -> c.admin_update)
     
 app.listen port

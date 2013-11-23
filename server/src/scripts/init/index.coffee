@@ -34,7 +34,7 @@ db.getDb (err, db) ->
         coll.ensureIndex { 'createdBy.username': 1, 'network': 1 }, ->
         coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
 
-    db.forum 'records', (_, coll) ->
+    db.forum 'posts', (_, coll) ->
         coll.ensureIndex { state: 1, 'forum.stub': 1 }, ->
         coll.ensureIndex { state: 1, 'forum.id': 1 }, ->
         coll.ensureIndex { state: 1, savedAt: 1, 'forum.stub': 1 }, ->

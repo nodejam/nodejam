@@ -42,8 +42,8 @@ class Message extends ForaDbModel
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }
-                        when 'published-record'
-                            user = @data.record.createdBy
+                        when 'published-post'
+                            user = @data.post.createdBy
                             {
                                 subject: {
                                     thumbnail: user.thumbnail,
@@ -52,8 +52,8 @@ class Message extends ForaDbModel
                                 },
                                 verb: "published",
                                 object: {
-                                    name: @data.record.title,
-                                    link: "/#{@data.record.forum.stub}/#{@data.record._id}"
+                                    name: @data.post.title,
+                                    link: "/#{@data.post.forum.stub}/#{@data.post._id}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }                   

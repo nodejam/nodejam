@@ -30,7 +30,7 @@ getController = (name) ->
         when 'users' then new controllers.Users()
         when 'home' then new controllers.Home()
         when 'forums' then new controllers.Forums()
-        when 'records' then new controllers.Records()
+        when 'posts' then new controllers.Posts()
         else throw new Error "Cannot find controller #{name}."
         
 
@@ -51,7 +51,7 @@ expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (find
     app.get '/:forum', findHandler('forums', (c) -> c.item)
     app.get '/:forum/new', findHandler('forums', (c) -> c.createForm)
     app.get '/:forum/about', findHandler('forums', (c) -> c.about)
-    app.get '/:forum/:stub', findHandler('records', (c) -> c.item)    
+    app.get '/:forum/:stub', findHandler('posts', (c) -> c.item)    
     
     
 #Register templates, helpers etc.

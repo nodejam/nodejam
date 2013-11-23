@@ -5,26 +5,26 @@ utils = require '../../lib/utils'
 Q = require '../../lib/q'
 Controller = require('../../common/web/controller').Controller
 
-class Records extends Controller
+class Posts extends Controller
 
     create: (req, res, next) =>
         @ensureSession arguments, =>
             (Q.async =>
                 try
                     forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
-                    type = models.Record.getTypeDefinition().discriminator { type: req.body('type') }
+                    type = models.Post.getTypeDefinition().discriminator { type: req.body('type') }
                     
-                    record = new type {
+                    post = new type {
                         createdBy: req.user,
                         state: req.body('state'),
                         rating: 0,
                         savedAt: Date.now(),
                     }
                     
-                    req.map record, @getMappableFields(type)
+                    req.map post, @getMappableFields(type)
                     
-                    record = yield forum.addRecord record
-                    res.send record
+                    post = yield forum.addPost post
+                    res.send post
 
                 catch e
                     next e
@@ -37,32 +37,32 @@ class Records extends Controller
             (Q.async =>
                 try
                     forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
-                    record = yield models.Record.getById(req.params('id'), { user: req.user }, db)
-                    type = record.constructor
+                    post = yield models.Post.getById(req.params('id'), { user: req.user }, db)
+                    type = post.constructor
                     
-                    if record
-                        if record.createdBy.username is req.user.username or @isAdmin(req.user)
-                            record.savedAt = Date.now()                       
-                            req.map record, @getMappableFields(type)
+                    if post
+                        if post.createdBy.username is req.user.username or @isAdmin(req.user)
+                            post.savedAt = Date.now()                       
+                            req.map post, @getMappableFields(type)
                             if req.body('state') is 'published'
-                                record.state = 'published'
-                            record = yield record.save()
-                            res.send record
+                                post.state = 'published'
+                            post = yield post.save()
+                            res.send post
                         else
                             res.send 'Access denied.'
                     else
-                        res.send 'Invalid record.'
+                        res.send 'Invalid post.'
                 catch e
                     next e)()
 
     
     ###
-        All fields defined specifically in a class inherited from Record will be 'mappable'.
-        models.Record.getTypeDefinition(type, false) returns fields in inherited class.
-        Note: fields in Record are not mappable.
+        All fields defined specifically in a class inherited from Post will be 'mappable'.
+        models.Post.getTypeDefinition(type, false) returns fields in inherited class.
+        Note: fields in Post are not mappable.
     ###    
     getMappableFields: (type, acc = [], prefix = []) =>
-        typeUtils = models.Record.getTypeUtils()
+        typeUtils = models.Post.getTypeUtils()
         
         for field, def of type.getTypeDefinition(false).fields
             if typeUtils.isPrimitiveType def.type
@@ -80,11 +80,11 @@ class Records extends Controller
         @ensureSession arguments, => 
             (Q.async =>
                 try
-                    record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
-                    if record
-                        if record.createdBy.username is req.user.username or @isAdmin(req.user)
-                            record = yield record.destroy()
-                            res.send record
+                    post = yield models.Post.getById(req.params('post'), { user: req.user }, db)
+                    if post
+                        if post.createdBy.username is req.user.username or @isAdmin(req.user)
+                            post = yield post.destroy()
+                            res.send post
                         else
                             res.send 'Access denied.'
                     else
@@ -100,11 +100,11 @@ class Records extends Controller
             if contentType is 'text'
                 (Q.async =>
                     try
-                        record = yield models.Record.getById(req.params('record'), { user: req.user }, db)
+                        post = yield models.Post.getById(req.params('post'), { user: req.user }, db)
                         comment = new models.Comment()
                         comment.createdBy = req.user
                         comment.forum = forum.stub
-                        comment.itemid = record._id.toString()
+                        comment.itemid = post._id.toString()
                         comment.data = req.body('data')
                         comment = yield comment.save({ user: req.user }, db)
                         res.send comment
@@ -121,18 +121,18 @@ class Records extends Controller
             if @isAdmin(req.user)
                 (Q.async =>
                     try
-                        record = yield models.Record.getById(req.params('id'), { user: req.user }, db)
-                        if record 
+                        post = yield models.Post.getById(req.params('id'), { user: req.user }, db)
+                        if post 
                             if req.body('meta')
-                                record = yield record.addMetaList req.body('meta').split(',')
-                            res.send record
+                                post = yield post.addMetaList req.body('meta').split(',')
+                            res.send post
                         else
-                            next new Error "Record not found"
+                            next new Error "Post not found"
                     catch e
                         next e)()
             else
                 next new Error "Access denied"
 
 
-exports.Records = Records
+exports.Posts = Posts
 

@@ -14,7 +14,7 @@ class Forums extends Controller
         @attachUser arguments, =>
             (Q.async =>
                 try
-                    featured = yield models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ 'stats.lastRecord': -1 }).limit 12), {}, db)
+                    featured = yield models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ 'stats.lastPost': -1 }).limit 12), {}, db)
                     for forum in featured
                         forum.summary = forum.getView("card")
                         forum.summary.view = "standard"
@@ -41,12 +41,12 @@ class Forums extends Controller
                         if message
                             message = mdparser message
                             
-                        records = yield forum.getRecords(12, { _id: -1 })
-                        for record in records
-                            template = record.getTemplate 'card'
-                            record.html = template.render {
-                                record,
-                                forum: record.forum,
+                        posts = yield forum.getPosts(12, { _id: -1 })
+                        for post in posts
+                            template = post.getTemplate 'card'
+                            post.html = template.render {
+                                post,
+                                forum: post.forum,
                             }                    
 
                         options = {}
@@ -54,13 +54,13 @@ class Forums extends Controller
                             membership = yield models.Membership.get { 'forum.id': forum._id.toString(), 'user.username': req.user.username }, {}, db
                             if membership
                                 options.isMember = true
-                                options.primaryRecordType = forum.recordTypes[0]
+                                options.primaryPostType = forum.postTypes[0]
                         
                         res.render req.network.getView('forums', 'item'), { 
                             forum,
                             forumJson: JSON.stringify(forum),
                             message,
-                            records, 
+                            posts, 
                             options,
                             user: req.user,
                             pageName: 'forum-page', 
@@ -90,7 +90,7 @@ class Forums extends Controller
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, {}, db)        
                     about = (yield forum.associations 'info').about
 
-                    #We query admins and mods seperately since the fetch limits the records returned per call
+                    #We query admins and mods seperately since the fetch limits the posts returned per call
                     leaders = yield forum.getMemberships(['admin','moderator'])
                     admins = leaders.filter (u) -> u.roles.indexOf('admin') isnt -1
                     moderators = leaders.filter (u) -> u.roles.indexOf('moderator') isnt -1 and u.roles.indexOf('admin') is -1

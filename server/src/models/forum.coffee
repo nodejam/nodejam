@@ -39,9 +39,9 @@ class Forum extends ForaDbModel
             type: @,
             alias: "Forum.Stats",
             fields: {
-                records: 'number',
+                posts: 'number',
                 members: 'number',
-                lastRecord: 'number'
+                lastPost: 'number'
             }
         }
         
@@ -58,7 +58,7 @@ class Forum extends ForaDbModel
             name: 'string',
             stub: 'string',
             type: { type: 'string', $in: ['public', 'protected', 'private'] },
-            recordTypes: { type: 'array', contents: 'string', map: { format: 'csv' } },
+            postTypes: { type: 'array', contents: 'string', map: { format: 'csv' } },
             settings: "Forum.Settings !required",
             cover: 'Image',
             coverFocus: 'string !required',
@@ -80,12 +80,12 @@ class Forum extends ForaDbModel
     save: (context, db) =>        
         if not @_id
             @stats = new Stats {
-                records: 0,
+                posts: 0,
                 members: 1,
-                lastRecord: 0
+                lastPost: 0
             }
-            @recordTypes ?= ['Article']
-            @snapshot ?= { records: [] }
+            @postTypes ?= ['Article']
+            @snapshot ?= { posts: [] }
         
         super
 
@@ -128,19 +128,19 @@ class Forum extends ForaDbModel
         
         
         
-    addRecord: (record, context, db) =>
+    addPost: (post, context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            record.forum = @summarize()
-            yield record.save context, db
+            post.forum = @summarize()
+            yield post.save context, db
         )()
         
 
 
-    getRecords: (limit, sort, context, db) =>
+    getPosts: (limit, sort, context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            yield models.Record.find({ 'forum.stub': @stub, 'forum.network': @network, state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+            yield models.Post.find({ 'forum.stub': @stub, 'forum.network': @network, state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
         )()
         
 
@@ -186,12 +186,12 @@ class Forum extends ForaDbModel
     refreshSnapshot: (context, db) =>
         { context, db } = @getContext context, db
         (Q.async =>
-            records = yield models.Record.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)            
-            @snapshot = { records: (p.getView("snapshot") for p in records) }
-            if records.length
-                cursor = yield models.Record.getCursor({ 'forum.id': @_id.toString() , state: 'published' }, context, db)
-                @stats.records = yield Q.ninvoke cursor, 'count'
-                @stats.lastRecord = records[0].savedAt
+            posts = yield models.Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)            
+            @snapshot = { posts: (p.getView("snapshot") for p in posts) }
+            if posts.length
+                cursor = yield models.Post.getCursor({ 'forum.id': @_id.toString() , state: 'published' }, context, db)
+                @stats.posts = yield Q.ninvoke cursor, 'count'
+                @stats.lastPost = posts[0].savedAt
                 yield @save context, db
         )()
 

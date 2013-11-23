@@ -1,7 +1,7 @@
 modules = {
     users: 'Users',
     forums: 'Forums',
-    records: 'Records'
+    posts: 'Posts'
     images: 'Images'
 }
 
