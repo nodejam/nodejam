@@ -26,13 +26,18 @@ class Home extends Controller
                             post,
                             forum: post.forum,
                         }
-
+                        
+                    coverContent = "
+                    <h1>Editor's Picks</h1>
+                    <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free.</p>"
+                    
                     res.render req.network.getView('home', 'index'), { 
                         editorsPicks, 
                         featured, 
                         pageName: 'home-page', 
                         pageType: 'cover-page', 
-                        cover: '/pub/images/cover.jpg'
+                        cover: '/pub/images/cover.jpg',
+                        coverContent,
                     }
                 catch e
                     next e)()

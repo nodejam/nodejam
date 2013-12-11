@@ -35,11 +35,8 @@ class Forums extends Controller
             (Q.async =>
                 try
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, {}, db)
+                    info = yield forum.associations 'info'
                     if forum
-                        message = (yield forum.associations 'info').message
-
-                        if message
-                            message = mdparser message
                             
                         posts = yield forum.getPosts(12, { _id: -1 })
                         for post in posts
@@ -56,16 +53,27 @@ class Forums extends Controller
                                 options.isMember = true
                                 options.primaryPostType = forum.postTypes[0]
                         
+                        coverContent = "
+                            <h1>#{forum.name}</h1>
+                            <p>#{info.about}</p>"
+                            
+                        coverOpacity = forum.coverOpacity
+                        coverBackground = forum.coverBackground
+                            
+                        
                         res.render req.network.getView('forums', 'item'), { 
                             forum,
                             forumJson: JSON.stringify(forum),
-                            message,
+                            message: if info.message then mdparser(info.message),
                             posts, 
                             options,
                             user: req.user,
                             pageName: 'forum-page', 
                             pageType: 'cover-page', 
-                            cover: forum.cover?.src ? '/pub/images/cover.jpg'
+                            cover: forum.cover?.src ? '/pub/images/cover.jpg',
+                            coverContent,
+                            coverOpacity,
+                            coverBackground
                         }
                     else
                         res.send 404

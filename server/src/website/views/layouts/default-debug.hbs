@@ -61,7 +61,13 @@
     <!-- cover -->
     {{#equals pageType "cover-page"}}
     <div class="cover" style="background-image:url({{cover}})">
-    {{coverContent}}
+        <div class="content-wrap">
+            <div class="underlay" style="{{#if coverBackground}}background:{{coverBackground}};{{/if}}{{#if coverOpacity}}opacity:{{coverOpacity}};{{/if}}">
+            </div>
+            <div class="content">
+            {{{coverContent}}}
+            </div>
+        </div>
     </div>
     {{/equals}}
 

@@ -1,5 +1,5 @@
 {
     "name": "Fora",
-    "stub": "fora",
+    "stub": "foraproject.org",
     "domains": ["local.foraproject.org", "www.local.foraproject.org"]
 }

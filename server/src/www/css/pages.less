@@ -58,6 +58,18 @@
     .light-text-mixin;
 }
 
+.cover-content-mixin {
+    .content-wrap {
+        position: absolute; overflow:hidden;
+        .underlay { position: absolute; z-index: -1; width: 400px; height: 100%; background: white; opacity: 0.6; }
+        .content {
+            color: black;
+            p { .fontContent }
+        }
+    }            
+}
+
+
 .large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
     @unit: (@minWidth / 40);
 
@@ -67,6 +79,14 @@
         .cover { 
             height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center; 
             width: @coverWidth + 0px;
+            
+            .cover-content-mixin;
+            .content-wrap {
+                position: absolute; bottom: 0; z-index: 1;                      
+                .content {
+                    padding: 32px;
+                }
+            }
         }
         
         .container {
@@ -117,10 +137,18 @@
     
     .cover-page {
         .small-page-mixin;
-        @coverHeight: 260;
+        @coverHeight: 300;
         .cover { 
-            background-size: cover; background-position: center; 
-            height: @coverHeight + 0px;
+            background-size: cover; background-position: center; position: relative;
+            height: @coverHeight + 0px; overflow: hidden;
+            
+            .cover-content-mixin;
+            .content-wrap {
+                right: 0; bottom: 20px;
+                .content {
+                    padding: 12px 24px; width: 352px;
+                }
+            }            
         }
 
         .container {
@@ -177,10 +205,18 @@
 .tiny-cover-page-mixin (@width) {
     .cover-page {
         .tiny-page-mixin;
-        @coverHeight: 200;
+        @coverHeight: 420;
         .cover { 
-            background-size: cover; background-position: center; 
+            background-size: cover; background-position: center;  position: relative;
             height: @coverHeight + 0px;
+            
+            .cover-content-mixin;
+            .content-wrap {
+                right: 0; bottom: 20px; 
+                .content {
+                    padding: 12px; width: 280px;
+                }
+            }               
         }
 
         .container {

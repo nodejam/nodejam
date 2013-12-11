@@ -40,7 +40,7 @@ class Text
             
         if e.data('field-type') is 'text'
             config = { 
-                toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote', 'Image' ] } ],
+                toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote' ] } ],
                 forcePasteAsPlainText: true
             }
             

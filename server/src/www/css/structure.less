@@ -2,10 +2,12 @@
 .header {
     .logo {
         .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left; 
-        text-transform: uppercase; position: absolute; top: 6px; left: 6px; 
+        text-transform: uppercase; position: absolute; top: 6px; left: 6px; position: absolute; z-index: 100;
         &:hover { background: #333; }
     }    
 }
+
+.option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; }
 
 .nav {         
     height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; clear: both;
@@ -71,7 +73,7 @@
 
 /* Left side pane */
 .site-options {
-    height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 99; box-shadow: 4px 0 4px black;
+    height: 100%; position: fixed; top: 0; left: 0; display: none; z-index: 99; 
                         
     ul {
         background: @colorDarker; opacity: 0.96; width: 220px; height: 100%; 
@@ -95,3 +97,5 @@
         position: fixed; margin-left: 220px; height: 100%; top: 0; left: 0; width: 100%; cursor: pointer;
     }
 }
+
+
