@@ -13,7 +13,7 @@ class CardView extends Widget
                 <i class="fa fa-comment"></i> 93<br />
                 <i class="fa fa-thumbs-up"></i> 10k
             </span>
-            <p class="desc-text">
+            <p class="text-block">
                 <a href="/~{{post.createdBy.username}}">{{post.createdBy.name}}</a><br />
                 <span class="italicize">in <a href="/{{post.forum.stub}}">{{post.forum.name}}</a></span>
             </p>

@@ -10,7 +10,7 @@
 .option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; }
 
 .nav {         
-    height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorNeutral; padding-bottom: 4px; margin-bottom: 16px; clear: both;
+    .option-bar; clear: both;
     border-bottom: 2px solid @colorUltraLight; /* box-shadow: 0 2px 0 @colorUltraLight; */
     ul {
         float: left; 
@@ -50,8 +50,13 @@
             }
             &:after { content: ""; display: block; clear: both; }
         }
-        /* These are for icon + title combos, or just titles. Such as thumbnail and author */
-        .iconic-desc {
+
+        .text-block {
+            font-size: 1em; line-height: 1.2em; 
+            li { display: block; padding-bottom: 8px; }
+        }
+
+        .icon-block {
             line-height: 1.2em; display: block; font-size: 1em; height: 40px;
             img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 1px 4px 0 0 }
             .text { display: block; float: left; margin-left: 4px; }
@@ -59,14 +64,10 @@
             &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
         }
 
-        .iconic-section {        
+        .stamp-block {        
             img { float: right; width:48px; height: 48px; border-radius: 100%; margin-top: 3px; }
             h2 { margin: 0 0 .2em 0 }
-        }
-
-        .desc-text {
-            font-size: 1em; line-height: 1.2em; 
-            li { display: block; padding-bottom: 8px; }
+            &.square { border-radius: none; }
         }
     }
 }

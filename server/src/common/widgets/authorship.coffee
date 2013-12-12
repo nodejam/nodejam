@@ -5,7 +5,7 @@ class Authorship extends Widget
     
     # For large screens
     @template = handlebars.compile '
-        <div class="header iconic-section">
+        <div class="header stamp-block">
             <img src="{{assetUrl}}/{{author.username}}.jpg" alt="{{author.name}}" />
             <h2>{{author.name}}</h2>
             <p>
@@ -20,7 +20,7 @@ class Authorship extends Widget
     # For tiny and small screens
     @smallTemplate = handlebars.compile '
         <div class="small-page-element tiny-page-element">
-            <div class="iconic-desc sub-heading">            
+            <div class="icon-block sub-heading">            
                 <img src="{{assetUrl}}/{{author.username}}_t.jpg" alt="{{author.name}}" />
                 <span class="text">
                     <a href="/~{{author.username}}">{{author.name}}</a><br />
