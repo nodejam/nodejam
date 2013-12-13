@@ -1,6 +1,10 @@
 
-/* Card view. Where we should boxes on a page, with variable column count based on screen size. */
-.cards-mixin (@colWidth; @colSpacing; @colHeaderSize; @colTextSize; @wideColImageWidth; @wideColWidth) {
+/* 
+    Card view. Where we should boxes on a page, with variable column count based on screen size. 
+    wide column width = alt widths
+    narrow column width = alt widths / 3
+*/
+.cards-mixin (@colWidth; @colSpacing; @colHeaderSize; @colTextSize; @altColImageWidth; @altColWidth) {
     
     ul.cards {
         clear: both; float: left;
@@ -82,22 +86,39 @@
         &.wide {
             .wide-column() when not (ispercentage(@colWidth)) {
                 li {            
-                    width: @wideColImageWidth + @wideColWidth + 60px; height: 280px;
+                    width: @altColImageWidth + @altColWidth + 60px; height: 280px;
                     .content-wrap { 
-                        float: left; height: 280px; width: (@wideColWidth + @wideColImageWidth) + 0px; 
-                        .image { width: @wideColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
+                        float: left; height: 280px; width: (@altColWidth + @altColImageWidth) + 0px; 
+                        .image { width: @altColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
                         h2 { font-size: 1.6em }
                         .content { 
                             height: 188px; overflow: hidden;                    
                         }
                     }
                     .card-info {
-                        position: absolute; margin-top: 240px; margin-left: @wideColImageWidth + 20px; width: @wideColWidth - 40px;
-                        .overlay { width: @wideColWidth + 0px; } 
+                        position: absolute; margin-top: 240px; margin-left: @altColImageWidth + 20px; width: @altColWidth - 40px;
+                        .overlay { width: @altColWidth + 0px; } 
                     }
                 }
             }
             .wide-column();  
         }
+        
+        &.narrow {
+            .narrow-column() when not (ispercentage(@colWidth)) {
+                li {            
+                    width: ((@altColImageWidth + @altColWidth + 60px) / 3);
+                }
+            }
+            .narrow-column();              
+        }
+        
+        &.no-height {
+            li { height: auto }
+        }
+        
+        &:after { content: ""; display: block; clear: both; }
     }
 }
+
+

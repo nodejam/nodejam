@@ -114,14 +114,15 @@
             .page-wrap {
                 width: 992px; margin: auto; padding: 0;            
                 &.small { width: 600px; }
-                .single-item-mixin (668px, 280px);
-                .item { float: left; margin-right: 44px; }
-                .sidebar { 
-                    float: left; 
-                    .header { margin-top: 8px; }
-                }                                
-                .form-standard-mixin(32px, 240px);
             }
+
+            .single-item-mixin (668px, 280px);
+            .item { float: left; margin-right: 44px; }
+            .sidebar { 
+                float: left; 
+                .header { margin-top: 8px; }
+            }                                
+            .form-standard-mixin(32px, 240px);
         }
     }
 }
@@ -175,15 +176,15 @@
             .page-wrap {
                 width: @width + 0px; margin: auto; padding: 0;            
                 &.small { width: 600px; }
-                .single-item-mixin (100%, 100%);
-                .sidebar { 
-                    .header { 
-                        img { width: 120px; border-radius: 100% }
-                        h2 { margin: 6px 0; }
-                    }
+            }
+
+            .single-item-mixin (100%, 100%);
+            .sidebar { 
+                .header { 
+                    img { width: 120px; border-radius: 100% }
+                    h2 { margin: 6px 0; }
                 }
             }
-            
             .form-standard-mixin(32px, 220px);
         }
     }
@@ -249,17 +250,18 @@
             .page-wrap {
                 margin: auto 12px; padding: 0;  
                 &.small { width: 300px; margin: auto }          
-                .single-item-mixin (100%, 100%);
-                .content-area {
-                    .sidebar { 
-                        .header { 
-                            img { width: 120px; border-radius: 100% }
-                            h2 { margin: 6px 0; }
-                        }
-                    }
-                }                
-                .form-standard-mixin(24px, 220px);
             }
+            
+            .single-item-mixin (100%, 100%);
+            .content-area {
+                .sidebar { 
+                    .header { 
+                        img { width: 120px; border-radius: 100% }
+                        h2 { margin: 6px 0; }
+                    }
+                }
+            }                
+            .form-standard-mixin(24px, 220px);
         }        
     }
 }
