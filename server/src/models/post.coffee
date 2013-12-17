@@ -128,10 +128,14 @@ class Post extends ForaDbModel
         switch name
             when 'image'
                 widgets.Image
+            when 'cover'
+                widgets.Cover
             when 'heading'
                 widgets.Heading
             when 'authorship'
                 widgets.Authorship
+            when 'html'
+                widgets.Html
             when 'text'
                 widgets.Text
             when 'postview'

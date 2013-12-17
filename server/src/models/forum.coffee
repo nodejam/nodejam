@@ -60,8 +60,7 @@ class Forum extends ForaDbModel
             type: { type: 'string', $in: ['public', 'protected', 'private'] },
             postTypes: { type: 'array', contents: 'string', map: { format: 'csv' } },
             settings: "Forum.Settings !required",
-            cover: 'Image',
-            coverFocus: 'string !required',
+            cover: 'Cover !required',
             createdBy: "User.Summary",
             snapshot: '',            
             stats: "Forum.Stats",
@@ -112,7 +111,7 @@ class Forum extends ForaDbModel
                     @stub,
                     @createdBy,
                     @snapshot,
-                    image: @cover?.small
+                    image: @cover.image?.small
                 }
 
 

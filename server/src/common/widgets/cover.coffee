@@ -1,11 +1,13 @@
 handlebars = require('handlebars')
 Widget = require('./widget').Widget
 
-class Image extends Widget
+class Cover extends Widget
 
     @template: handlebars.compile '<img {{{attr}}} src="{{src}}" alt="{{alt}}" />'
+
     
     @bgTemplate: handlebars.compile '<div style="background-image:url({{src}})" {{{attr}}}></div>'
+
 
     @emptyTemplate: handlebars.compile '<div class="image" {{{attr}}}></div>'
 
@@ -14,43 +16,44 @@ class Image extends Widget
         
         
     render: (data) =>
-        image = @parseExpression @params.image, data
+        cover = @parseExpression @params.cover, data
 
-        if image
+        if cover?.image
             if @params.type isnt 'small'
-                src = image.src
+                src = cover.image.src
             else
-                src = image.small
-            alt = image.alt
+                src = cover.image.small
+            alt = cover.image.alt
         
         attribs = {}
 
         if @params.class
             attribs['class'] = @params.class
         else
-            attribs['class'] = 'image'
+            attribs['class'] = 'cover'
 
         if @params.field
-            attribs['data-field-type'] = 'image'
+            attribs['data-field-type'] = 'cover'
             attribs['data-field-name'] = @params.field
-            if image
-                attribs['data-small-image'] = image.small
+            if cover?.image
+                attribs['data-small-image'] = cover.image.small
 
         attr = @toAttributes(attribs)
         
         if @params.editable        
-            if image
-                Image.template { src, alt, attr }        
+            if cover?.image
+                Cover.template { src, alt, attr }        
             else
-                Image.emptyTemplate { attr }
+                Cover.emptyTemplate { attr }
         else
             if @params.bg
-                if image then Image.bgTemplate { src, alt, attr } else ''
+                if cover?.image then Cover.bgTemplate { src, alt, attr } else ''
             else
-                if image then Image.template { src, alt, attr } else ''
+                if cover?.image then Cover.template { src, alt, attr } else ''
                 
             
     
-exports.Image = Image
+exports.Cover = Cover
+
 
 

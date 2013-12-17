@@ -1,3 +1,27 @@
+/* Generic sections. */
+.content { 
+    .fontContent;
+    h1, h2, h3 { .fontContentHeading } 
+}
+
+.text-block {
+    font-size: 1em; line-height: 1.2em; 
+    li { display: block; padding-bottom: 8px; }
+}
+
+.icon-block {
+    line-height: 1.2em; display: block; font-size: 1em; 
+    img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 1px 4px 0 0 }
+    .text { display: block; float: left; margin-left: 4px; }                        
+    &.sub-heading { margin-top: -4px; margin-bottom: 12px; }
+}
+
+.stamp-block {        
+    img { float: right; width:48px; height: 48px; border-radius: 100%; margin-top: 3px; }
+    h2 { margin: 0 0 .2em 0 }
+    &.square { border-radius: none; }
+}
+
 /* Dynamically created login */
 .login-box-mixin (@width, @spacing, @fontSize) {
     #login-box {

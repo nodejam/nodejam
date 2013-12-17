@@ -15,7 +15,7 @@ class Article extends Post
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },
             synopsis: { type: 'string', required: false, maxLength: 2000 },
-            cover: 'Image !required',
+            cover: 'Cover !required',
             content: 'TextContent !required'
         }
     }
@@ -35,7 +35,7 @@ class Article extends Post
                 @parseTemplate {
                     widget: "postview",                    
                     itemPane: [
-                        { widget: 'image', image: '@post.cover', editable: true, field: 'cover',  size: 1 },
+                        { widget: 'cover', cover: '@post.cover', editable: true, field: 'cover',  size: 1 },
                         { widget: 'heading', title: '@post.title', size: 1, editable: true, field: 'title' },
                         { widget: 'authorship', type: 'small', author: '@author' },
                         { widget: 'text', text: '@post.content', editable: true, field: 'content' },
@@ -43,15 +43,24 @@ class Article extends Post
                     sidebar: [ { widget: 'authorship', author: '@author' } ]
                 }
             when 'card'
+                cardFace = []
+                
+                if @cover
+                    cardFace.push { widget: "image", image: '@post.cover.image', type: 'small', bg: true }
+                else
+                    cardFace.push { 
+                        widget: "html", 
+                        html: "<div class=\"content-wrap\">Hello World</div>"
+                    }
+                    
                 @parseTemplate {
                     widget: "cardview",
+                    cardFace,
                     content: [
                         { widget: "heading", size: 2, title: '@post.title', link: 'hbs /{{forum.stub}}/{{post.stub}}' },
-                        { widget: "image", image: '@post.cover', type: 'small', bg: true },
-                        { widget: 'text', text: '@post.content' }
                     ]
                 }
-                
+
                             
 
     getView: (name) =>

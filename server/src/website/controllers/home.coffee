@@ -32,12 +32,16 @@ class Home extends Controller
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free.</p>"
                     
                     res.render req.network.getView('home', 'index'), { 
-                        editorsPicks, 
-                        featured, 
-                        pageName: 'home-page', 
-                        pageType: 'cover-page', 
-                        cover: '/pub/images/cover.jpg',
-                        coverContent,
+                        editorsPicks,
+                        featured,
+                        pageName: 'home-page',
+                        pageLayout: {
+                            type: 'fluid-page',
+                            cover: {
+                                image: '/pub/images/cover.jpg',
+                                content: coverContent
+                            }
+                        }
                     }
                 catch e
                     next e)()

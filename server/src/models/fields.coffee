@@ -8,9 +8,24 @@ class Image extends ForaModel
         fields: {
             src: 'string',
             small: 'string !required',
-            alt: 'string !required'
+            alt: 'string !required',
+            credits: 'string !required'
         }
     }
+    
+
+
+class Cover extends ForaModel
+    @typeDefinition: {
+        type: @,
+        alias: 'Cover',
+        fields: {
+            image: 'Image',
+            bgColor: 'string !required',
+            bgOpacity: 'number !required',
+            foreColor: 'string !required',
+        }
+    }    
     
 
     
@@ -34,4 +49,5 @@ class TextContent extends ForaModel
                 'Invalid format.'
 
 exports.Image = Image
+exports.Cover = Cover
 exports.TextContent = TextContent

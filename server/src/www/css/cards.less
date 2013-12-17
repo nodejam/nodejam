@@ -1,124 +1,21 @@
-
-/* 
-    Card view. Where we should boxes on a page, with variable column count based on screen size. 
-    wide column width = alt widths
-    narrow column width = alt widths / 3
-*/
-.cards-mixin (@colWidth; @colSpacing; @colHeaderSize; @colTextSize; @altColImageWidth; @altColWidth) {
-    
-    ul.cards {
-        clear: both; float: left;
-        
-        .margins() when not (ispercentage(@colWidth)) {
-            margin: -32px 0 32px -(@colSpacing / 2) + 0px; 
-        }
-        .margins() when (ispercentage(@colWidth)) {
-            margin: 0;
-        }        
-        
-        .margins();
-
-        > li {
-            float: left; overflow: hidden; height: 360px; line-height: 1.6em;
-
-            .column-size() when not (ispercentage(@colWidth)) {
-                margin: 32px ((@colSpacing / 2) + 0px) 0 ((@colSpacing / 2) + 0px);
-                width: @colWidth + 0px; 
-            }
-
-            .column-size() when (ispercentage(@colWidth)) {                                
-                margin-bottom: 32px; width: @colWidth;
-            }        
-            
-            .column-size();
-
-
-            .image { 
-                height: 160px; background-size: cover; background-position: center; background-repeat: no-repeat;
-                width: 100%; margin-bottom: 12px;
-            }
-            
-            .content-wrap { 
-                height: 320px; overflow: hidden;
-            }
-            
-            .card-info {
-                .overlay {
-                    position:absolute; height: 48px; margin-top: -48px; pointer-events: none;
-                    
-                    .overlay-size() when not (ispercentage(@colWidth)) {
-                        width: @colWidth + 0px;
-                    }
-                    .overlay-size() when (ispercentage(@colWidth)) {
-                        width: 100%; left: 0;
-                    }
-                    .overlay-size();
-                    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-                    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-                    background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
-                    background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
-                    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C */
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-                }
-                .activity { .fontBase; font-size: 0.65em; float: right; color: @colorNeutral; line-height: 1.8em; padding-right: 4px; }
-            }           
-            
-            /* Alternate layout */
-            &.alt {
-                background-color: @colorUltraLight; width: @colWidth - 1px; border-right: 1px solid @colorLighter; border-bottom: 1px solid @colorLighter; 
-                .content-wrap {
-                    height: 360px;
-                    .image { height: 100px; }
-                    h2, .content { margin: 0 12px 12px 12px; }
-                }
-            }
-            
-            h2 { margin: 0 0 8px 0; font-size: 1.2em; line-height: 1.3em; }      
-            .subheading { 
-                font-style: italic; margin: 0 0 8px 0; color: @colorNeutral;
-                a { color: @colorNeutral }
-            }
-            p { margin: 0 0 12px 0; }
-        }
-        
-        /* wide column is only needed if width isn't in percetage. */
-        &.wide {
-            .wide-column() when not (ispercentage(@colWidth)) {
-                li {            
-                    width: @altColImageWidth + @altColWidth + 60px; height: 280px;
-                    .content-wrap { 
-                        float: left; height: 280px; width: (@altColWidth + @altColImageWidth) + 0px; 
-                        .image { width: @altColImageWidth + 0px; height: 280px; margin-right: 20px; float: left; background-size: cover; background-repeat: no-repeat }
-                        h2 { font-size: 1.6em }
-                        .content { 
-                            height: 188px; overflow: hidden;                    
-                        }
-                    }
-                    .card-info {
-                        position: absolute; margin-top: 240px; margin-left: @altColImageWidth + 20px; width: @altColWidth - 40px;
-                        .overlay { width: @altColWidth + 0px; } 
-                    }
-                }
-            }
-            .wide-column();  
-        }
-        
-        &.narrow {
-            .narrow-column() when not (ispercentage(@colWidth)) {
-                li {            
-                    width: ((@altColImageWidth + @altColWidth + 60px) / 3);
-                }
-            }
-            .narrow-column();              
-        }
-        
-        &.no-height {
-            li { height: auto }
-        }
-        
-        &:after { content: ""; display: block; clear: both; }
-    }
+ul.cards {
+    h1, h2, h3 { margin-bottom: 0.4em }
+    p { margin-bottom: 0.6em }    
 }
 
-
+.cards-mixin(@minWidth) when (@minWidth >= 720) {
+    ul.cards {
+        > li {
+            clear: both; margin-bottom: 40px;
+            > .card-face { 
+                float: left; width: 120px;
+                .image { width: 100%; height: 90px; background-size: cover; background-position: 50% 50% }
+                > .content-wrap { width: 100%; height: 90px; background: #eee }
+            }
+            > .card-content { 
+                float: left; width: 540px; margin-left: 20px; margin-top: -4px; font-size: 1.1em;
+            }   
+            &:after { content: ""; display:block; clear: both }
+        }    
+    }   
+}

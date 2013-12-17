@@ -68,20 +68,23 @@ class ExpressRequestWrapper
                         val = @body fullName, 'string'
                         if val
                             obj[name] = @parsePrimitive val, def, fullName
-                            true            
+                            return true            
                         else
                             if def.map isnt false and def.default
                                 obj[name] = if typeof def.map.default is "function" then def.map.default(obj) else def.map.default
-                                true
+                                return true
                 else
                     if def.type isnt ''
                         prefix.push name
                         
                         newObj = new def.ctor()
-                        if @map(newObj, whitelist, options, prefix)
+                        hasMapped = @map(newObj, whitelist, options, prefix)
+                        if hasMapped
                             obj[name] = newObj
-
+                            
                         prefix.pop()
+                        
+                        return hasMapped
 
 
 

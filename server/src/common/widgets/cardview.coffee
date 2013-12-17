@@ -4,19 +4,19 @@ Widget = require('./widget').Widget
 class CardView extends Widget
 
     @template: handlebars.compile '
-        <div class="content-wrap">
-            {{{content}}}
+        <div class="card-face">
+            {{{cardFace}}}
         </div>
-        <div class="card-info">
-            <div class="overlay"></div>
-            <span class="activity">
-                <i class="fa fa-comment"></i> 93<br />
-                <i class="fa fa-thumbs-up"></i> 10k
-            </span>
-            <p class="text-block">
-                <a href="/~{{post.createdBy.username}}">{{post.createdBy.name}}</a><br />
-                <span class="italicize">in <a href="/{{post.forum.stub}}">{{post.forum.name}}</a></span>
-            </p>
+        <div class="card-content">
+            {{{content}}}
+            <p class="content">Sometimes there is a sub-heading. It is often meaning-less. And does not stand the test of space.</p>
+            <div class="content">
+                <p class="light-text">
+                    <a href="/~{{post.createdBy.username}}">{{post.createdBy.name}}</a>
+                    in <a href="/{{post.forum.stub}}">{{post.forum.name}}</a><br />
+                    <i class="fa fa-comment"></i> 93 comments
+                </p>
+            </div>            
         </div>'
 
 
@@ -26,12 +26,15 @@ class CardView extends Widget
         
         
     render: (data) =>
-        content = ''
+        cardFace = content = ''
+        
+        for w in @params.cardFace
+            cardFace += w.render data
         
         for w in @params.content
             content += w.render data
         
-        CardView.template { content, post: data.post }
+        CardView.template { cardFace, content, post: data.post }
     
         
 exports.CardView = CardView

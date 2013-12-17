@@ -39,7 +39,7 @@
              
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
   </head>
-  <body class="{{pageName}} {{pageType}}">
+  <body class="{{pageName}} {{pageLayout.type}}">
 
     <!-- header -->
     <div class="header">
@@ -59,23 +59,22 @@
     </div>
 
     <!-- cover -->
-    {{#equals pageType "cover-page"}}
-    <div class="cover" style="background-image:url({{cover}})">
-        <div class="content-wrap">
-            <div class="underlay" style="{{#if coverBackground}}background:{{coverBackground}};{{/if}}{{#if coverOpacity}}opacity:{{coverOpacity}};{{/if}}">
-            </div>
-            <div class="content">
-            {{{coverContent}}}
+    {{#if pageLayout.cover}}
+    <div class="cover">
+        <div class="image" style="background-image:url({{pageLayout.cover.image}})">
+            <div class="content-wrap">
+                <div class="underlay" style="{{#if pageLayout.cover.bgcolor}}background:{{pageLayout.cover.bgcolor}};{{/if}}{{#if pageLayout.cover.opacity}}opacity:{{pageLayout.cover.opacity}};{{/if}}">
+                </div>
+                <div class="content">
+                {{{pageLayout.cover.content}}}
+                </div>
             </div>
         </div>
     </div>
-    {{/equals}}
+    {{/if}}
 
     <!-- content -->
-    <div class="container">
-        {{{body}}}
-        <div style="clear:both"></div>
-    </div>
+    {{{body}}}
 
   </body>
 </html>     

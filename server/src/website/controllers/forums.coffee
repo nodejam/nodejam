@@ -58,8 +58,7 @@ class Forums extends Controller
                             <p>#{info.about}</p>"
                             
                         coverOpacity = forum.coverOpacity
-                        coverBackground = forum.coverBackground
-                            
+                        coverBgColor = forum.coverBgColor
                         
                         res.render req.network.getView('forums', 'item'), { 
                             forum,
@@ -69,11 +68,15 @@ class Forums extends Controller
                             options,
                             user: req.user,
                             pageName: 'forum-page', 
-                            pageType: 'cover-page', 
-                            cover: forum.cover?.src ? '/pub/images/cover.jpg',
-                            coverContent,
-                            coverOpacity,
-                            coverBackground
+                            pageLayout: {
+                                type: 'fluid-page',
+                                cover: {
+                                    image: '/pub/images/cover.jpg',
+                                    content: coverContent,
+                                    opacity: coverOpacity,
+                                    bgcolor: coverBgColor
+                                }
+                            }              
                         }
                     else
                         res.send 404

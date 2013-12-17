@@ -4,11 +4,6 @@
 .fontContentHeading { font-family: 'Lato', sans-serif; }
 .fontAlt { font-family: 'Oswald', sans-serif; }
 
-@fontSizeLarge: 16px;
-@fontSize: 14px;
-@fontSizeSmall: 12px;
-@fontSizeTiny: 11px; 
-
 /* COLORS */
 
 @colorText: #333;
@@ -49,11 +44,10 @@
     &.negative { color: @colorNegative }
 }
 
-.light-text-mixin  { 
-    .light-text {
-        color: @colorNeutral; font-style: italic;
-        a { color: @colorDark }
-    }
+.light-text {
+    color: @colorNeutral; font-style: italic; font-size: 0.9em;
+    a { color: @colorDark }
+    i { font-size: 0.9em }
 }
 
 /* BORDERS */
@@ -83,7 +77,7 @@ a {
     &:hover { background-color: lighten(@bg, 5%);  }
 }
 
-input, select, textarea { .fontBase; font-size: @fontSize; .control(@colorText, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
+input, select, textarea { .fontBase; .control(@colorText, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
     input[type="checkbox"] { margin-right: 4px; }
     input[type="file"] { padding: 0; border: none }
 
@@ -92,7 +86,7 @@ label.alert-required:after { content: '*' }
 
 button { 
     .fontBase; .control(@colorText, @colorLighter, 5%, 10%); .rounded; 
-    padding: 11px 14px 11px 14px; margin: 0 2px 0 0; font-size: 11px;
+    padding: 11px 14px 11px 14px; margin: 0 2px 0 0; 
     font-weight: bold; text-transform: uppercase; cursor: pointer;     
 
     i { padding-right: 6px; }        
@@ -103,16 +97,13 @@ button {
 }
 
 /* LIST */
-ul { margin: 0; padding: 0 }
-p { margin:0 0 1em 0; padding: 0 }
 h1, h2, h3, h4 { margin:0 0 0.6em 0; padding: 0 }
-h1 { font-size: 1.8em }
-h2 { font-size: 1.4em }
-h3 { font-size: 1.2em }
-li { list-style: none }
-
-.full-background { 
-    position: fixed; margin-top: 0; height: 100%; width: 100%; background-color: #ccc; background-size: cover; 
-    background-position: center; background-repeat: no-repeat; top: 0; z-index: -1 
+    h1 { font-size: 1.6em }
+    h2 { font-size: 1.4em }
+    h3 { font-size: 1.2em }
+p { margin:0 0 1em 0; padding: 0 }
+ul { 
+    margin: 0; padding: 0;
+    li { list-style: none }
 }
 

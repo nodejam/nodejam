@@ -1,4 +1,39 @@
-/* .*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) */
+/* 
+    We have the following width classes:
+        (Tiny)
+        tiny: < 720px
+
+        (Standard)
+        small: 720px - 1023px
+        standard: 1024 - 1279px
+
+        (Large)
+        large: 1280 - 1719px
+        xlarge: > 1720px
+*/
+
+@media (min-width: 1720px) { 
+    .large-pages(1720);
+}
+
+@media (min-width: 1400px) and (max-width: 1719px) { 
+    .large-pages(1400);    
+}
+
+@media (min-width: 1280px) and (max-width: 1399px) { 
+    .large-pages(1280);    
+}
+
+@media (min-width: 1280px) { 
+    .large-pages-common();
+}    
+
+
+
+
+        
+/*
+.*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) 
 @media (min-width: 1760px) { 
     .large-cover-page-mixin(1760; 3; 360; 40);    
     .cards-mixin(360; 40; 22; 16; 220; 500);
@@ -77,4 +112,4 @@
     .tiny-cover-page-mixin(100%);
     .cards-mixin(100%; 32; 22; 14; 220; 380);
 }
-
+*/
