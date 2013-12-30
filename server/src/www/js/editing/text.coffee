@@ -7,16 +7,19 @@ class Text
         e.attr 'contenteditable', true
 
         handleEmpty = =>
-            if not e.text().trim()
+            if e.text().trim()
                 if e.data 'placeholder'
-                    e.html "<span class=\"pre-placeholder\">&nbsp;</span><span class=\"placeholder\">#{e.data 'placeholder'}</span>"
+                    placeholder = e.find('.placeholder')            
+                    if placeholder.length
+                        placeholder.removeClass 'dim'
+            else
+                e.html "<span class=\"placeholder\">#{e.data 'placeholder'}</span>"
 
         onFocus = =>
             placeholder = e.find('.placeholder')
     
             if placeholder.length
-                placeholder.addClass 'dim'
-                
+                placeholder.addClass 'dim'                
                 #Place caret at beginning
                 range = document.createRange()
                 range.selectNodeContents(e[0])
@@ -25,19 +28,15 @@ class Text
                 selection.removeAllRanges()
                 selection.addRange(range);
             
-                #Remove dim from other placeholders
-                $('.placeholder').not(placeholder[0]).removeClass 'dim'
-            
-            
-                    
         e.click onFocus
         e.focus onFocus             
         e.bind 'touch', onFocus
         e.blur handleEmpty
+        
         e.keydown =>
             if e.find('.placeholder').length
                 e.empty()
-            
+
         if e.data('field-type') is 'text'
             config = { 
                 toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote' ] } ],
@@ -47,27 +46,17 @@ class Text
             config.on = {
                 instanceReady: (evt) => 
                     handleEmpty()
-                
-                    #evt.editor.focus()
-                #focus: (evt) =>
-                    #setTimeout (=>
-                    #    editor = evt.editor
-                    #    range = editor.createRange()
-                    #    range.moveToElementEditStart editor.editable()
-                    #    range.select()
-                    #    range.scrollIntoView()), 100
             }
             
             ckeditor = CKEDITOR.inline e[0], config  
-            
-        
+
         else    
             handleEmpty()
     
 
 
     update: (post, e) =>
-        e.find('.pre-placeholder,.placeholder').remove()
+        e.find('.placeholder').remove()
         switch e.data('field-type')                
             when 'heading', 'plain-text'
                 post[e.data('field-name')] = e.text()

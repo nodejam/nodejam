@@ -81,8 +81,10 @@ class Forums extends Controller
     create: (req, res, next) =>
         res.render req.network.getView('forums', 'create'), { 
             pageName: 'create-forum-page', 
-            pageType: 'cover-page',
-            cover: '/pub/images/cover.jpg'
+            pageLayout: {
+                type: 'fluid-page',
+                cover: { image: { src: '/pub/images/cover.jpg' } },
+            }                        
         }        
 
 
