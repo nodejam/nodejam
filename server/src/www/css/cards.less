@@ -3,19 +3,60 @@ ul.cards {
     p { margin-bottom: 0.6em }    
 }
 
-.cards-mixin(@minWidth) when (@minWidth >= 720) {
+.cards-mixin-common {
     ul.cards {
         > li {
             clear: both; margin-bottom: 40px;
             > .card-face { 
-                float: left; width: 120px;
-                .image { width: 100%; height: 90px; background-size: cover; background-position: 50% 50% }
-                > .content-wrap { width: 100%; height: 90px; background: #eee }
+                float: left; 
+                .image { background-size: cover; background-position: 50% 50% }
+                > .content-wrap { background: @colorLightest }
             }
             > .card-content { 
-                float: left; width: 540px; margin-left: 20px; margin-top: -4px; font-size: 1.1em;
+                float: left; margin-left: 20px; margin-top: -4px; font-size: 1.1em;
             }   
             &:after { content: ""; display:block; clear: both }
-        }    
+        }
+        
+        &.fixed-size {
+            float: left; 
+        }
+    }  
+}
+
+.cards-standard-mixin(@minWidth) {
+    ul.cards {
+        &.standard {
+            > li {            
+                > .card-face { 
+                    width: 120px;
+                    .image { width: 100%; height: 90px; }
+                }
+                > .card-content { 
+                    width: (@minWidth - 180px); 
+                }   
+            }
+        }
+    }
+}
+
+.cards-alt-mixin(@minWidth) {
+    ul.cards {
+        &.alt {
+            > li {    
+                background: @colorUltraLight; margin-right: 40px; clear: none; float: left;
+                
+                > .card-face {
+                    width: (@minWidth - 320px);
+                    .image { height: 300px; }
+                    float: right;
+                }      
+                > .card-content {
+                    h2 { font-size: 1.3em }
+                    padding-top: 12px; padding-right: 20px; width: 300px; height: 288px; overflow: hidden;
+                    float: right;
+                }
+            }
+        }
     }   
 }

@@ -17,13 +17,13 @@ class Forums extends Controller
                     featured = yield models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ 'stats.lastPost': -1 }).limit 12), {}, db)
                     for forum in featured
                         forum.summary = forum.getView("card")
-                        forum.summary.view = "standard"
                     
                     res.render req.network.getView('forums', 'index'), { 
                         featured, 
                         pageName: 'forums-page', 
-                        pageType: 'cover-page', 
-                        cover: '/pub/images/cover.jpg'
+                        pageLayout: {
+                            type: 'fixed-page',
+                        }              
                     }
                 catch e
                     next e)()
@@ -57,9 +57,6 @@ class Forums extends Controller
                             <h1>#{forum.name}</h1>
                             <p>#{info.about}</p>"
                             
-                        coverOpacity = forum.coverOpacity
-                        coverBgColor = forum.coverBgColor
-                        
                         res.render req.network.getView('forums', 'item'), { 
                             forum,
                             forumJson: JSON.stringify(forum),
@@ -70,12 +67,8 @@ class Forums extends Controller
                             pageName: 'forum-page', 
                             pageLayout: {
                                 type: 'fluid-page',
-                                cover: {
-                                    image: '/pub/images/cover.jpg',
-                                    content: coverContent,
-                                    opacity: coverOpacity,
-                                    bgcolor: coverBgColor
-                                }
+                                cover: forum.cover,
+                                coverContent
                             }              
                         }
                     else

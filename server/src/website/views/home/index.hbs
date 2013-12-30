@@ -3,7 +3,7 @@
         <div class="nav">
             <ul>
                 <li class="selected">
-                    Posts
+                    Trending
                 </li>
                 <li>
                     <a href="/forums">Forums</a>
@@ -12,7 +12,7 @@
         </div>
 
         {{#if editorsPicks}}
-            <ul class="cards wide">
+            <ul class="cards standard">
             {{#each editorsPicks}}
                 <li>
                 {{{html}}}
@@ -22,7 +22,7 @@
         {{/if}}
 
         {{#if featured}}
-        <ul class="cards">
+        <ul class="cards standard">
         {{#each featured}}
             <li>
             {{{html}}}
@@ -31,13 +31,4 @@
         </ul>
         {{/if}}
     </div>
-</div>
-<div class="alt-pane">
-    <p>
-    I’ve noticed that some people have complimented my series Raw Nerve by saying it’s a great explanation of cognitive
-    biases. Which always amuses me, since the series grew out of frustrations I had with the usual way that term gets
-    used. There’s a group of people (call them the cognitive bias community) who say the way to be more rational — to
-    get better at making decisions that get you what you want — is to work at overcoming your biases. But if you’re
-    overcoming biases, surely there are some lessons that will help you more than others.
-    </p>
 </div>

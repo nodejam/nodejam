@@ -57,6 +57,7 @@ class Forum extends ForaDbModel
             network: 'string',
             name: 'string',
             stub: 'string',
+            description: 'string',
             type: { type: 'string', $in: ['public', 'protected', 'private'] },
             postTypes: { type: 'array', contents: 'string', map: { format: 'csv' } },
             settings: "Forum.Settings !required",
@@ -108,6 +109,7 @@ class Forum extends ForaDbModel
                     id: @_id.toString()
                     @network,
                     @name,
+                    @description,
                     @stub,
                     @createdBy,
                     @snapshot,

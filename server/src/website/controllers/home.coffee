@@ -38,9 +38,9 @@ class Home extends Controller
                         pageLayout: {
                             type: 'fluid-page',
                             cover: {
-                                image: '/pub/images/cover.jpg',
-                                content: coverContent
-                            }
+                                image: { src: '/pub/images/cover.jpg' },
+                            },
+                            coverContent
                         }
                     }
                 catch e

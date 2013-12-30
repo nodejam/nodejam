@@ -1,24 +1,24 @@
-<li class="{{view}} alt" data-url="/{{stub}}">
-    <div class="item-wrap">
-        <div class="content-wrap">
-            <div class="image" style="background-image:url({{image}})"></div>        
-            <h2><a href="/{{stub}}">{{name}}</a></h2>
-            <div class="content">        
-                {{#if snapshot.posts}}                
-                <ul class="text-block">
-                {{#each snapshot.posts}}                
-                    <li>
-                        <a href="/{{../stub}}/{{stub}}">{{title}}</a><br />
-                        <span class="italicize">{{createdBy.name}}</span>
-                    </li>
-                {{/each}}
-                </ul>
-                {{/if}}
-            </div>            
+<li>
+    <div class="card-face">
+        <div style="background-image:url({{image}})" class="image"></div>
+    </div>
+    <div class="card-content">
+        <h2><a href="/{{stub}}">{{name}}</a></h2>
+        {{#if snapshot.posts}}
+        <ul class="text-block content">
+            {{#each snapshot.posts}}                
+            <li>
+                <a href="/{{../stub}}/{{stub}}">{{title}}</a><br />
+                <p class="light-text">by {{createdBy.name}}</p> 
+            </li>
+            {{/each}}
+        </ul>
+        {{else}}
+        <div class="text-block content">
+            <p>{{description}}</p>
+            <p class="light-text">edited by {{createdBy.name}}</p> 
         </div>
-        <div class="card-info">
-            <div class="overlay"></div>
-        </div>
+        {{/if}}
     </div>
 </li>
 

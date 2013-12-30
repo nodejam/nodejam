@@ -1,13 +1,13 @@
-<div class="columns-wrap">
-    <div class="content-area">    
+<div class="full-pane">
+    <div class="content-area wide">    
     <div class="nav alt">
         <ul>
-            <li class="selected">
-                Recommended
-            </li>
             <li>
-                <a href="/{{forum.stub}}/about">Latest</a>
+                <a href="/">Trending</a>
             </li>          
+            <li class="selected">
+                Forums
+            </li>
         </ul>
         <ul class="alt buttons">
             <li>
@@ -16,7 +16,7 @@
         </ul>
     </div>
     {{#if featured}}
-        <ul class="cards">
+        <ul class="cards alt">
         {{#each featured}}
             {{> forumcard summary}}
         {{/each}}

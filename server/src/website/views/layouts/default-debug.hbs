@@ -61,13 +61,15 @@
     <!-- cover -->
     {{#if pageLayout.cover}}
     <div class="cover">
-        <div class="image" style="background-image:url({{pageLayout.cover.image}})">
+        <div class="image" style="background-image:url({{pageLayout.cover.image.src}})">
             <div class="content-wrap">
-                <div class="underlay" style="{{#if pageLayout.cover.bgcolor}}background:{{pageLayout.cover.bgcolor}};{{/if}}{{#if pageLayout.cover.opacity}}opacity:{{pageLayout.cover.opacity}};{{/if}}">
+                <div class="underlay" style="{{#if pageLayout.cover.bgColor}}background:{{pageLayout.cover.bgColor}};{{/if}}{{#if pageLayout.cover.opacity}}opacity:{{pageLayout.cover.opacity}};{{/if}}">
                 </div>
+                {{#if pageLayout.coverContent}}
                 <div class="content">
-                {{{pageLayout.cover.content}}}
+                {{{pageLayout.coverContent}}}
                 </div>
+                {{/if}}
             </div>
         </div>
     </div>
