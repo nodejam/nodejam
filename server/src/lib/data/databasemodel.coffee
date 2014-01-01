@@ -14,7 +14,7 @@ class DatabaseModel extends BaseModel
 
     @get: (params, context, db) ->
         modelDescription = @getTypeDefinition()
-        (Q.async =>
+        (Q.async =>*
             result = yield db.findOne(modelDescription.collection, params)
             if result then @constructModel(result, modelDescription, context, db)
         )()
@@ -23,7 +23,7 @@ class DatabaseModel extends BaseModel
 
     @getAll: (params, context, db) ->
         modelDescription = @getTypeDefinition()
-        (Q.async =>
+        (Q.async =>*
             cursor = yield db.find(modelDescription.collection, params)
             items = yield Q.nfcall cursor.toArray.bind(cursor)
             if items.length
@@ -36,7 +36,7 @@ class DatabaseModel extends BaseModel
     
     @find: (params, fnCursor, context, db) ->
         modelDescription = @getTypeDefinition()
-        (Q.async =>
+        (Q.async =>*
             cursor = yield db.find(modelDescription.collection, params)
             fnCursor cursor
             items = yield Q.nfcall cursor.toArray.bind(cursor)
@@ -50,7 +50,7 @@ class DatabaseModel extends BaseModel
 
     @getCursor: (params, context, db) ->
         modelDescription = @getTypeDefinition()
-        (Q.async =>
+        (Q.async =>*
             yield db.find modelDescription.collection, params
         )()
 
@@ -58,7 +58,7 @@ class DatabaseModel extends BaseModel
            
     @getById: (id, context, db) ->
         modelDescription = @getTypeDefinition()
-        (Q.async =>
+        (Q.async =>*
             result = yield db.findOne(modelDescription.collection, { _id: databaseModule.ObjectId(id) })
             if result then @constructModel(result, modelDescription, context, db)
         )()
@@ -67,7 +67,7 @@ class DatabaseModel extends BaseModel
             
     @destroyAll: (params, db) ->
         modelDescription = @getTypeDefinition()
-        (Q.async =>            
+        (Q.async =>*       
             if modelDescription.canDestroyAll?(params)
                 yield db.remove(modelDescription.collection, params)
             else
@@ -156,7 +156,7 @@ class DatabaseModel extends BaseModel
     
     
     save: (context, db) =>
-        (Q.async =>
+        (Q.async =>*
             context ?= @__context
             db ?= @__db
             detachContextAndDb @
@@ -231,7 +231,7 @@ class DatabaseModel extends BaseModel
         assoc = desc.associations[name]
         typeUtils = @constructor.getTypeUtils()
         ctor = typeUtils.resolveType assoc.type
-        (Q.async =>            
+        (Q.async =>*            
             params = {}
             for k, v of assoc.key
                 params[v] = if k is '_id' then @_id.toString() else @[k]

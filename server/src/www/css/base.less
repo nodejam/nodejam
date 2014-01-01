@@ -5,7 +5,6 @@
 .fontAlt { font-family: 'Oswald', sans-serif; }
 
 /* COLORS */
-
 @colorText: #333;
 @colorDimText: lighten(@colorText, 30%);
 @colorLink: #559;
@@ -32,32 +31,24 @@
 @colorGroup3: #a63600;
 @colorGroup4: #399200;
 
-.placeholder { 
-    color: #aaa; 
-    &.dim { color: #eee } 
-}
-
-.error { color: Red }
-.italicize { font-style: italic }
-.action { 
-    &.positive { color: @colorPositive }
-    &.negative { color: @colorNegative }
-}
-
-.light-text {
-    color: @colorNeutral; font-style: italic; font-size: 0.9em;
-    a { color: @colorDark }
-    i { font-size: 0.9em }
-}
-
-/* BORDERS */
-.rounded { border-radius: 2px; }
-
 /* TAGS */
 body { .fontBase; color: @colorText; margin: 0; }
 
 em { font-style: italic; font-weight: normal }
 strong { font-weight: bold }
+
+h1, h2, h3, h4 { margin:0 0 0.6em 0; padding: 0 }
+    h1 { font-size: 1.6em }
+    h2 { font-size: 1.4em }
+    h3 { font-size: 1.1em }
+    h4 { font-size: 1em }
+
+p { margin:0 0 1em 0; padding: 0 }
+
+ul { 
+    margin: 0; padding: 0;
+    li { list-style: none }
+}
 
 /* LINKS */
 a {  
@@ -71,13 +62,13 @@ a {
 }
 
 /* FORM CONTROLS */
-.control (@fg, @bg, @borderHighLight, @borderShadow) { 
-    color: @fg; background-color: @bg; border-top: 1px solid darken(@bg, @borderHighLight); border-right: 1px solid darken(@bg, @borderShadow);     
-    border-bottom: 1px solid darken(@bg, @borderShadow); border-left: 1px solid darken(@bg, @borderHighLight);
-    &:hover { background-color: lighten(@bg, 5%);  }
+.control (@fg, @bg, @borderColor, @borderHighLight, @borderShadow) { 
+    color: @fg; background-color: @bg; border-top: 2px solid darken(@borderColor, @borderHighLight); border-right: 2px solid darken(@borderColor, @borderShadow);     
+    border-bottom: 2px solid darken(@borderColor, @borderShadow); border-left: 2px solid darken(@borderColor, @borderHighLight);
+    &:hover { background-color: darken(@bg, 10%);  }
 }
 
-input, select, textarea { .fontBase; .control(@colorText, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
+input, select, textarea { .fontBase; .control(@colorText, #fff, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
     input[type="checkbox"] { margin-right: 4px; }
     input[type="file"] { padding: 0; border: none }
 
@@ -85,25 +76,38 @@ label.alert-required { color: @colorNegative; }
 label.alert-required:after { content: '*' }
 
 button { 
-    .fontBase; .control(@colorText, @colorLighter, 5%, 10%); .rounded; 
-    padding: 11px 14px 11px 14px; margin: 0 2px 0 0; 
-    font-weight: bold; text-transform: uppercase; cursor: pointer;     
+    .fontBase; .control(@colorText, #fff, #fff, 8%, 8%); border-radius: 30px; outline: none;
+    padding: 11px 14px 11px 14px; margin: 0 2px 0 0; font-weight: bold; text-transform: uppercase; cursor: pointer;     
 
     i { padding-right: 6px; }        
     &.textless i { padding-right: 0; }
 
-    &.positive { .control(#fff, @colorPositive, 0, 2%) }
-    &.negative { .control(#fff, @colorNegative, 0, 2%) }
+    &.positive { color: @colorPositive }
+    &.negative { color: @colorNegative }    
 }
 
-/* LIST */
-h1, h2, h3, h4 { margin:0 0 0.6em 0; padding: 0 }
-    h1 { font-size: 1.6em }
-    h2 { font-size: 1.4em }
-    h3 { font-size: 1.1em }
-p { margin:0 0 1em 0; padding: 0 }
-ul { 
-    margin: 0; padding: 0;
-    li { list-style: none }
+/* CUSTOM */
+.placeholder { 
+    color: #aaa; 
+    &.dim { color: #eee } 
 }
+
+.error { color: Red }
+.action { 
+    &.positive { color: @colorPositive }
+    &.negative { color: @colorNegative }
+}
+
+.large-text {
+    font-size: 1.3em;    
+}
+
+.sub-text {
+    color: @colorNeutral; font-style: italic; font-size: 0.9em;
+    a { color: @colorDark }
+    i { font-size: 0.9em }
+}
+
+.rounded { border-radius: 2px; }
+
 

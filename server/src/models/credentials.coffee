@@ -27,7 +27,7 @@ class Credentials extends ForaDbModel
 
     #Todo. Token Expiry.   
     @authenticateBuiltinUser: (username, password, context, db) ->
-        (Q.async =>
+        (Q.async =>*
             credentials = yield models.Credentials.get({ "builtin.username": username }, context, db)
             if credentials
                 salt = new Buffer credentials.builtin.salt, 'hex'
@@ -43,7 +43,7 @@ class Credentials extends ForaDbModel
 
 
     getUser: (context, db) =>
-        (Q.async =>
+        (Q.async =>*
             yield models.User.getById(@userid, context, db)
         )()
 

@@ -5,17 +5,24 @@
 <div class="main-pane">
     <div class="content-area">    
         <h1 data-field-type="heading" data-field-name="title" data-placeholder="Name of the forum" contenteditable="true"></h1>
-        <p class="content" data-field-type="plain-text" data-field-name="description" data-placeholder="Description of the forum goes here..."></p>
+        <p class="content large-text" data-field-type="plain-text" data-field-name="description" data-placeholder="Write a description"></p>
         <h3>Permissions</h3>
-        <ul class="icon-block square cards narrow no-height">
+        <ul class="selectable iconic medium-height">
+            <div></div>
             <li class="selected">
-                <img src="" /><p class="text">This one goes out to the one</p>
+                <i class="fa fa-check"></i>
+                <img src="" alt="" />
+                <div>
+                    <h4>Public</h4>
+                    <p>Anybody can join and post in the forum. We recommend this.</p>
+                </div>                
             </li>
             <li>
-                <img src="" /><p class="text">This one goes out to the one</p>
-            </li>
-            <li>
-                <img src="" /><p class="text">This one goes out to the one</p>
+                <img src="" />
+                <div>
+                    <h4>Protected</h4>
+                    <p>People will need your approval to join the forum.</p>
+                </div>
             </li>
         </ul>
         <div class="option-bar">

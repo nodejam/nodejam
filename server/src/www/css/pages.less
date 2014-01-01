@@ -1,262 +1,93 @@
-/*
-.page-sections-base-mixin (@fontSize) {
-    .container { 
-        font-size: @fontSize + 0px;
-    }
-}
-
-.content-area { 
-    .fontContent; clear: both; margin-top: 12px;
-    h1, h2, h3 { .fontContentHeading; }
-
-    .item.text {
-        .content {    
-            font-size: 1.3em; 
-
-            ol { 
-                margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
-                li { list-style-type: decimal }
-            }
-            ul { 
-                margin: 0.6em 0 1.2em 0; padding: 0 0 0 40px;
-                li { list-style-type: disc }
-            }
-              
-            p { line-height: 1.4em; margin-bottom: 1.4em }
-        }
-    }
-
-    img.image { width: 100%; margin-bottom: 20px; }
+/* Large Pages */
+.large-pages-common() {
+    .nav { margin-right: 40px }
     
-    .cards {
-        .content {
-            p { line-height: 1.4em; margin-bottom: 1.2em }
-        }
-    }
-}
-
-.single-item-mixin (@width, @sidebarWidth) {
-    .item {
-        width: @width; margin: auto; 
+    .content-area {
+        width: 720px; margin: auto;
+        .cards-mixin-common;        
+        .cards-standard-mixin(720);
     }
     
-    .sidebar {
-        font-size: 0.9em;
-        width: @sidebarWidth;
-    }
-}
-
-.large-page-mixin {
-    .small-page-element, .tiny-page-element { display: none }
-    .large-page-element { display: block !important }
-    .light-text-mixin;
-}
-
-.cover-content-mixin {
-    .content-wrap {
-        position: absolute; overflow:hidden;
-        .underlay { position: absolute; z-index: -1; width: 400px; height: 100%; background: white; opacity: 0.6; }
-        .content {
-            color: black;
-            p { .fontContent }
-        }
-    }            
-}
-
-
-.large-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
-    @unit: (@minWidth / 40);
-
-    .cover-page {
-        @coverWidth: (@unit * 9);
-        .large-page-mixin;    
-        .cover { 
-            height: 100%; position: fixed; top:0; right: 0; background-size: cover; background-position: center; 
-            width: @coverWidth + 0px;
-            
-            .cover-content-mixin;
-            .content-wrap {
-                position: absolute; bottom: 0; z-index: 1;                      
-                .content {
-                    padding: 32px;
-                }
-            }
+    .fluid-page {
+        .main-pane {
+            margin-top: 20px;
         }
         
-        .container {
-            margin-right: @coverWidth + 0px; margin-top: 22px;
-
-            .columns-wrap {
-                width: (@colCount * (@colWidth + @colSpacing)) + 0px;
-                padding: 0 0 0 (@colSpacing / 2) + 0px;
+        .cover {
+            position: fixed; height: 100%; top: 0;
+            .image {
+                background-size: cover; background-position: 50% 50%; height: 100%;
+                .content-wrap { left: 32px; bottom: 0; position: absolute }
             }
-            
-            .page-wrap {
-                width: 800px; margin: auto; padding: 0;            
-            }
-        }
-    }    
-}
-
-.large-std-page-mixin () {
-    .std-page {
-        .large-page-mixin;
-        
-        .container {
-            margin-top: 22px;
-            
-            .page-wrap {
-                width: 992px; margin: auto; padding: 0;            
-                &.small { width: 600px; }
-            }
-
-            .single-item-mixin (668px, 280px);
-            .item { float: left; margin-right: 44px; }
-            .sidebar { 
-                float: left; 
-                .header { margin-top: 8px; }
-            }                                
-            .form-standard-mixin(32px, 240px);
         }
     }
-}
-
-.small-page-mixin {
-    .large-page-element, .tiny-page-element { display: none }
-    .small-page-element { display: block !important }
-    .light-text-mixin;
-}
-
-.small-cover-page-mixin (@minWidth; @colCount; @colWidth; @colSpacing) {
-    @unit: (@minWidth / 40);
     
-    .cover-page {
-        .small-page-mixin;
-        @coverHeight: 300;
-        .cover { 
-            background-size: cover; background-position: center; position: relative;
-            height: @coverHeight + 0px; overflow: hidden;
-            
-            .cover-content-mixin;
-            .content-wrap {
-                right: 0; bottom: 20px;
-                .content {
-                    padding: 12px 24px; width: 352px;
-                }
-            }            
+    .fixed-page {
+        .full-pane {
+            margin: 20px auto;
         }
+    }
+}
 
-        .container {
-            margin-top: 24px;
+.large-pages-dynamic(@width) {
+    .content-area {
+        .cards-alt-mixin((@width / 2) - 140px);
+        &.wide {
+            width: (@width - 160px);
+        }
+    }        
+    
+    .fixed-page {
+        .full-pane {
+            width: (@width - 160px);
+        }
+    }
+}
 
-            .columns-wrap {
-                width: (@colCount * (@colWidth + @colSpacing)) + 0px;
-                padding: 0 0 0 (@colSpacing / 2) + 0px;
+.large-pages(@minWidth) when (@minWidth >= 1720) {  
+    .large-pages-dynamic(1720);
+
+    .fluid-page {
+        .main-pane {
+            width: 50%;
+        }          
+        .cover {
+            width: 50%; left: 50%; 
+        }
+        
+        &.multi-pane {
+            .main-pane { margin-top: 420px; }
+
+            .alt-pane {
+                width: 50%; left: 50%; margin-top: 420px;
             }
 
-            .page-wrap {
-                width: 600px;
-            }
+            .cover { position:absolute; left:0; top: 0; width: 100%; height: 400px; }
+        }
+    }
+}
+
+.large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {  
+    .large-pages-dynamic(1400);
+    .fluid-page {
+        .main-pane {
+            width: 60%;
         }        
-    }
-}
-
-.small-std-page-mixin (@width, @sidebarWidth) {
-    .std-page {
-        .small-page-mixin;
-        .container {
-            margin-top: 72px;
-
-            .page-wrap {
-                width: @width + 0px; margin: auto; padding: 0;            
-                &.small { width: 600px; }
-            }
-
-            .single-item-mixin (100%, 100%);
-            .sidebar { 
-                .header { 
-                    img { width: 120px; border-radius: 100% }
-                    h2 { margin: 6px 0; }
-                }
-            }
-            .form-standard-mixin(32px, 220px);
+        .cover {
+            width: 40%; left: 60%; 
         }
     }
 }
 
-.tiny-page-mixin {
-    .large-page-element, .small-page-element { display: none }
-    .tiny-page-element { display: block !important }
-    .light-text-mixin;
+.large-pages(@minWidth) when (@minWidth < 1400) {  
+    .large-pages-dynamic(@minWidth);
 
-    .nav {
-        &.alt { 
-            margin-bottom: 40px;
-            ul.alt { float: left; clear: both; margin-top: 24px; }
-        }
-    }
-}
-
-.tiny-cover-page-mixin (@width) {
-    .cover-page {
-        .tiny-page-mixin;
-        @coverHeight: 420;
-        .cover { 
-            background-size: cover; background-position: center;  position: relative;
-            height: @coverHeight + 0px;
-            
-            .cover-content-mixin;
-            .content-wrap {
-                right: 0; bottom: 20px; 
-                .content {
-                    padding: 12px; width: 280px;
-                }
-            }               
-        }
-
-        .container {
-            margin-top: 24px;
-
-            .columns-wrap {
-                .widths() when not (ispercentage(@width)) {
-                    width: @width + 0px; margin: auto;
-                }
-                .widths() when (ispercentage(@width)) {
-                    padding: 0 12px;
-                }                        
-                .widths();
-            }
-
-            .page-wrap {
-                padding: 0 12px;
-            }
-
+    .fluid-page {
+        .main-pane {
+            width: 66%;
         }        
+        .cover {
+            width: 34%; left: 66%; 
+        }
     }
 }
-
-.tiny-std-page-mixin {
-    .std-page {
-        .tiny-page-mixin;
-        .container {
-            margin-top: 72px;
-
-            .page-wrap {
-                margin: auto 12px; padding: 0;  
-                &.small { width: 300px; margin: auto }          
-            }
-            
-            .single-item-mixin (100%, 100%);
-            .content-area {
-                .sidebar { 
-                    .header { 
-                        img { width: 120px; border-radius: 100% }
-                        h2 { margin: 6px 0; }
-                    }
-                }
-            }                
-            .form-standard-mixin(24px, 220px);
-        }        
-    }
-}
-*/

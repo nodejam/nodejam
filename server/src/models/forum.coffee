@@ -120,7 +120,7 @@ class Forum extends ForaDbModel
 
     join: (user, token, context, db) => 
         { context, db } = @getContext context, db
-        (Q.async =>
+        (Q.async =>*
             if @type is 'public'
                 yield @addRole user, 'member', context, db
             else
@@ -131,7 +131,7 @@ class Forum extends ForaDbModel
         
     addPost: (post, context, db) =>
         { context, db } = @getContext context, db
-        (Q.async =>
+        (Q.async =>*
             post.forum = @summarize()
             yield post.save context, db
         )()
@@ -140,7 +140,7 @@ class Forum extends ForaDbModel
 
     getPosts: (limit, sort, context, db) =>
         { context, db } = @getContext context, db
-        (Q.async =>
+        (Q.async =>*
             yield models.Post.find({ 'forum.stub': @stub, 'forum.network': @network, state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
         )()
         
@@ -149,7 +149,7 @@ class Forum extends ForaDbModel
     addRole: (user, role, context, db) =>
         { context, db } = @getContext context, db
         
-        (Q.async =>
+        (Q.async =>*
             membership = yield models.Membership.get { 'forum.id': @_id.toString(), 'user.username': user.username }, context, db
             if not membership
                 membership = new (models.Membership) {
@@ -168,7 +168,7 @@ class Forum extends ForaDbModel
     removeRole: (user, role, context, db) =>
         { context, db } = @getContext context, db
         
-        (Q.async =>
+        (Q.async =>*
             membership = yield models.Membership.get { 'forum.id': @_id.toString(), 'user.username': user.username }, context, db
             membership.roles = (r for r in membership.roles when r isnt role)
             yield if membership.roles.length then membership.save() else membership.destroy()
@@ -178,7 +178,7 @@ class Forum extends ForaDbModel
                                 
     getMemberships: (roles, context, db) =>
         { context, db } = @getContext context, db
-        (Q.async =>
+        (Q.async =>*
             yield models.Membership.find { 'forum.id': @_id.toString(), roles: { $in: roles } }, ((cursor) -> cursor.sort({ id: -1 }).limit 200), context, db
         )()        
         
@@ -186,7 +186,7 @@ class Forum extends ForaDbModel
             
     refreshSnapshot: (context, db) =>
         { context, db } = @getContext context, db
-        (Q.async =>
+        (Q.async =>*
             posts = yield models.Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)            
             @snapshot = { posts: (p.getView("snapshot") for p in posts) }
             if posts.length

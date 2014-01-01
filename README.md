@@ -39,7 +39,7 @@ If you aren't running the script, you'll have to do these manually:
 - install nodejs, v0.11.5 or greater
 - install nginx (via OS package manager)
 - setup nginx configuration, see nginx.config.sample
-- install a modified version of coffeescript to support the yield keyword, from https://github.com/jeswin/coffee-script
+- install a modified version of coffeescript to support the yield keyword, from https://github.com/alubbe/coffee-script.git
 - install mongodb (via OS package manager)
 - install graphicsmagick (via OS package manager)
 - edit and rename src/conf/fora.config.sample to src/conf/fora.config
@@ -49,7 +49,7 @@ If you aren't running the script, you'll have to do these manually:
 ```
 npm install -g less
 npm install -g regenerator
-npm install express  
+npm install koa
 npm install mongodb  
 npm install validator  
 npm install sanitizer  

@@ -27,7 +27,7 @@ class Users extends Controller
             }
             @updateUser user, req
             
-            (Q.async =>
+            (Q.async =>*
                 try                    
                     authInfo = { type: 'builtin', value: { password: req.body('credentials_password') } }
                     result = yield user.create authInfo, { user: req.user }, db
@@ -41,7 +41,7 @@ class Users extends Controller
 
 
     createTwitterUser: (req, res, next) =>
-        (Q.async =>
+        (Q.async =>*
             try
                 user = new models.User {
                     username: req.body 'username'            
@@ -76,7 +76,7 @@ class Users extends Controller
 
 
     item: (req, res, next) =>
-        (Q.async =>
+        (Q.async =>*
             user = yield models.User.get { username: req.params('username') }, {}, db
             if user
                 res.send user.summarize()

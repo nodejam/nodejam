@@ -14,7 +14,7 @@ class Home extends Controller
     
     index: (req, res, next) =>
         @attachUser arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try
                     editorsPicks = yield models.Post.find({ meta: 'pick', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 1), {}, db)
                     featured = yield models.Post.find({ meta: 'featured', 'forum.network': req.network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 12), {}, db)

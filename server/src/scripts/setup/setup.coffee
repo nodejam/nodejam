@@ -23,7 +23,7 @@ init = () ->
     _globals = {}
     
     del = ->
-        (Q.async ->
+        (Q.async ->*
             if process.env.NODE_ENV is 'development'
                 utils.log 'Deleting main database.'
                 db = yield Q.nfcall database.getDb
@@ -34,7 +34,7 @@ init = () ->
         )()
 
     create = -> 
-        (Q.async ->
+        (Q.async ->*
             utils.log 'This script will setup basic data. Calls the latest HTTP API.'
 
             #Create Users
@@ -102,17 +102,17 @@ init = () ->
 
 
     if argv.delete
-        (Q.async ->
+        (Q.async ->*
             yield del()
             process.exit())()
 
     else if argv.create
-        (Q.async ->
+        (Q.async ->*
             yield create()
             process.exit())()
 
     else if argv.recreate
-        (Q.async ->
+        (Q.async ->*
             yield del()
             yield create()
             process.exit())()

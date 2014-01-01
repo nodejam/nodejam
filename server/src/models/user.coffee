@@ -48,7 +48,7 @@ class User extends ForaDbModel
 
    
     create: (authInfo, context, db) ->
-        (Q.async =>
+        (Q.async =>*
             #We can't create a new user with an existing username.
             if not @_id and not (yield User.get { @username }, context, db)
                 @preferences = { canEmail: true }

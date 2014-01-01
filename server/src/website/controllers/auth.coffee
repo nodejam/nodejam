@@ -40,7 +40,7 @@ class Auth extends Controller
                     value: oauth                    
                 }        
                 
-                (Q.async =>               
+                (Q.async =>*
                     try
                         token = yield token.save {}, db
                         res.cookie 'twitter_oauth_process_key', oauthProcessKey

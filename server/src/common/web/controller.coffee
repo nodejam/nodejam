@@ -8,7 +8,7 @@ class Controller
 
     ensureSession: (args, fn) =>
         [req, res, next] = args 
-        (Q.async =>
+        (Q.async =>*
             token = if req.query('token') then req.query('token') else req.cookies('token')
             user = yield @getUserWithToken token
             if user.id
@@ -22,7 +22,7 @@ class Controller
 
     attachUser: (args, fn) =>
         [req, res, next] = args
-        (Q.async =>
+        (Q.async =>*
             token = if req.query('token') then req.query('token') else req.cookies('token')
             user = yield @getUserWithToken token
             req.user = user
@@ -32,7 +32,7 @@ class Controller
 
 
     getUserWithToken: (token) =>
-        (Q.async => 
+        (Q.async =>*
             if token
                 credentials = yield models.Credentials.get({ token }, {}, db)
                 if credentials

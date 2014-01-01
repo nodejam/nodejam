@@ -10,7 +10,7 @@ class Forums extends Controller
     create: (req, res, next) =>
         @ensureSession arguments, =>            
             stub = req.body('name').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
-            (Q.async =>
+            (Q.async =>*
                 try
                     forum = yield models.Forum.get({ network: req.network.stub, $or: [{ stub }, { name: req.body('name') }] }, { user: req.user }, db)
                     if forum
@@ -42,7 +42,7 @@ class Forums extends Controller
                 
     edit: (req, res, next) =>
         @ensureSession arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db)
                     if req.user.username is forum.createdBy.username or @isAdmin(req.user)
@@ -59,7 +59,7 @@ class Forums extends Controller
                     
     remove: (req, res, next) =>
         @ensureSession arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db)
                     if @isAdmin(req.user)
@@ -74,7 +74,7 @@ class Forums extends Controller
 
     join: (req, res, next) =>
         @ensureSession arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db)
                     yield forum.join req.user

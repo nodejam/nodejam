@@ -9,7 +9,7 @@ class Posts extends Controller
     
     item: (req, res, next) =>
         @attachUser arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try                
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, {}, db)
                     if forum

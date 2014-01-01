@@ -66,7 +66,7 @@ class Post extends ForaDbModel
     
     
     addMetaList: (metaList) =>
-        (Q.async =>
+        (Q.async =>*
             @meta = @meta.concat (m for m in metaList when @meta.indexOf(m) is -1)
             yield @save()
         )()
@@ -74,7 +74,7 @@ class Post extends ForaDbModel
 
 
     removeMetaList: (metaList) =>
-        (Q.async =>
+        (Q.async =>*
             @meta = (m for m in @meta when metaList.indexOf(m) is -1)
             yield @save()
         )()
@@ -84,7 +84,7 @@ class Post extends ForaDbModel
     save: (context, db) =>
         { context, db } = @getContext context, db
         
-        (Q.async =>
+        (Q.async =>*
             #If the stub has changed, we need to check if it's unique
             @stub ?= utils.uniqueId(16)
 

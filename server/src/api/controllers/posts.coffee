@@ -9,7 +9,7 @@ class Posts extends Controller
 
     create: (req, res, next) =>
         @ensureSession arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try
                     forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
                     type = models.Post.getTypeDefinition().discriminator { type: req.body('type') }
@@ -34,7 +34,7 @@ class Posts extends Controller
 
     edit: (req, res, next) =>
         @ensureSession arguments, =>        
-            (Q.async =>
+            (Q.async =>*
                 try
                     forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
                     post = yield models.Post.getById(req.params('id'), { user: req.user }, db)
@@ -78,7 +78,7 @@ class Posts extends Controller
                 
     remove: (req, res, next) =>
         @ensureSession arguments, => 
-            (Q.async =>
+            (Q.async =>*
                 try
                     post = yield models.Post.getById(req.params('post'), { user: req.user }, db)
                     if post
@@ -98,7 +98,7 @@ class Posts extends Controller
         @attachUser arguments, => 
             contentType = forum.settings?.comments?.contentType ? 'text'
             if contentType is 'text'
-                (Q.async =>
+                (Q.async =>*
                     try
                         post = yield models.Post.getById(req.params('post'), { user: req.user }, db)
                         comment = new models.Comment()
@@ -119,7 +119,7 @@ class Posts extends Controller
     admin_update: (req, res, next) =>
         @ensureSession [req, res, next], =>
             if @isAdmin(req.user)
-                (Q.async =>
+                (Q.async =>*
                     try
                         post = yield models.Post.getById(req.params('id'), { user: req.user }, db)
                         if post 

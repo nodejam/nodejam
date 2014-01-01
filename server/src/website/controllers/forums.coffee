@@ -12,7 +12,7 @@ class Forums extends Controller
 
     index: (req, res, next) =>
         @attachUser arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try
                     featured = yield models.Forum.find({ network: req.network.stub }, ((cursor) -> cursor.sort({ 'stats.lastPost': -1 }).limit 12), {}, db)
                     for forum in featured
@@ -32,7 +32,7 @@ class Forums extends Controller
 
     item: (req, res, next) =>
         @attachUser arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, {}, db)
                     info = yield forum.associations 'info'
@@ -82,7 +82,7 @@ class Forums extends Controller
         res.render req.network.getView('forums', 'create'), { 
             pageName: 'create-forum-page', 
             pageLayout: {
-                type: 'fluid-page',
+                type: 'fluid-page',wwwwww
                 cover: { image: { src: '/pub/images/cover.jpg' } },
             }                        
         }        
@@ -91,7 +91,7 @@ class Forums extends Controller
 
     about: (req, res, next) =>
         @attachUser arguments, =>
-            (Q.async =>
+            (Q.async =>*
                 try                
                     forum = yield models.Forum.get({ stub: req.params('forum'), network: req.network.stub }, {}, db)        
                     about = (yield forum.associations 'info').about

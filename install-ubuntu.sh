@@ -199,7 +199,7 @@ install_coffee() {
     npm install coffee-script
     export PATH=$PATH:$PWD/node_modules/coffee-script/bin
     temp_new_cs=`mktemp -d`
-    git clone https://github.com/jeswin/coffee-script.git $temp_new_cs
+    git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
     cd $temp_new_cs
     npm install mkdirp  
     npm install jison
@@ -250,7 +250,8 @@ fi
 #coffee-script compiler must support yield
 if $coffee ; then
     if command -v coffee >/dev/null; then
-        coffee --nodejs --harmony -e "a = (-> yield 1)"
+        echo "NOTE: While checking for yield support you might see an error... ignore it."
+        coffee --nodejs --harmony -e "a = (->* yield 1)"
         if [ "$?" -eq 0 ] ; then
             echo "Coffee-Script is installed and supports yield. Update is not needed."
         else
@@ -342,7 +343,7 @@ if $node_modules ; then
     sudo npm install -g less    
     sudo npm install -g regenerator
     cd server
-    npm install express
+    npm install koa
     npm install mongodb
     npm install validator
     npm install sanitizer

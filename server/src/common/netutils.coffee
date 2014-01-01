@@ -9,7 +9,7 @@ spawn = require('child_process').spawn
 
 
 downloadImage = (imageUrl) ->
-    (Q.async ->
+    (Q.async ->*
         parseResult = url.parse imageUrl
         hostArr = parseResult.hostname?.split '.'
         extension = parseResult.pathname.split('/').pop().split('.').pop()

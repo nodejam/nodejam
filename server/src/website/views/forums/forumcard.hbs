@@ -9,14 +9,14 @@
             {{#each snapshot.posts}}                
             <li>
                 <a href="/{{../stub}}/{{stub}}">{{title}}</a><br />
-                <p class="light-text">by {{createdBy.name}}</p> 
+                <p class="sub-text">by {{createdBy.name}}</p> 
             </li>
             {{/each}}
         </ul>
         {{else}}
         <div class="text-block content">
             <p>{{description}}</p>
-            <p class="light-text">edited by {{createdBy.name}}</p> 
+            <p class="sub-text">edited by {{createdBy.name}}</p> 
         </div>
         {{/if}}
     </div>

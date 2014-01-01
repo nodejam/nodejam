@@ -11,3 +11,36 @@
     .fontBase; padding: 8px !important; margin: -72px 0 0 0 !important; position: absolute; background: @colorDarker; z-index: 10; 
     a { color: @colorLighter; font-size: 11px }
 }
+
+ul.selectable {
+    .fontBase;
+    > li {
+        .rounded; margin:0 10px 10px 0; float: left; background: @colorLightest; width: 300px; padding: 10px; overflow: hidden; cursor: pointer;
+        > div {
+            font-size: 0.8em;
+        }        
+        &.selected {
+            > i { position: absolute; color: white; margin: -4px }
+            &:before {
+                content: ""; height: 60px; width: 60px; display: block; background: green; transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); 
+                margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
+            }
+        }
+        &:hover { background: @colorLighter }
+    }
+    &.iconic {
+        > li {
+            img {
+                width: 40px; height: 40px; float: left; margin-right: 12px;
+            }
+            > div {
+                float: left; width: 240px;
+            }
+        }
+    }
+    &.medium-height {
+        > li { height: 80px; }
+    }
+    
+    &:after { content: ""; display:block; clear: both }
+}

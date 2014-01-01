@@ -10,7 +10,7 @@ Controller = require('../../common/web/controller').Controller
 class Users extends Controller
 
     selectUsernameForm: (req, res, next) =>
-        (Q.async =>
+        (Q.async =>*
             token = yield models.Token.get({ key: req.query('token') }, {}, db)
             res.render req.network.getView('users', 'selectusername'), { 
                 username: token.value.userDetails.username,
@@ -24,7 +24,7 @@ class Users extends Controller
         
 
     selectUsername: (req, res, next) =>
-        (Q.async =>
+        (Q.async =>*
             token = yield models.Token.get({ key: req.query('token') }, {}, db)     
             token.value.userDetails.username = req.body 'username'
             token.value.userDetails.name = req.body 'name'
