@@ -1,8 +1,8 @@
-express = require 'express'
+koa = require 'koa'
+favicon = require 'koa-favicon'
+route = require 'koa-route'
 conf = require '../conf'
 utils = require '../lib/utils'
-expressutils = require '../lib/expressutils'
-controllers = require './controllers'
 ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
 
 process.chdir __dirname
@@ -16,45 +16,38 @@ if not host or not port
 
 utils.log "Fora Website started at #{new Date} on #{host}:#{port}"
 
-app = express()
+app = koa()
 
-app.set("view engine", "hbs");
-app.set('view options', { layout: conf.templates.layouts.default })
+app.use favicon()
 
-app.use express.favicon()
-app.use express.cookieParser()
+#Routes
+m_home = require './controllers/home'
+m_auth = require './controllers/auth'
+m_users = require './controllers/users'
+m_forums = require './controllers/forums'
+m_posts = require './controllers/posts'
 
-getController = (name) ->
-    switch name.toLowerCase()        
-        when 'auth' then new controllers.Auth()
-        when 'users' then new controllers.Users()
-        when 'home' then new controllers.Home()
-        when 'forums' then new controllers.Forums()
-        when 'posts' then new controllers.Posts()
-        else throw new Error "Cannot find controller #{name}."
-        
+app.use route.get '/healthcheck', -> this.body { "Jack Sparrow is alive" }
 
-expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (findHandler) ->
-    app.get '/healthcheck', (req, res, next) -> res.send { jacksparrow: "alive" }    
+app.use route.get '/', m_home.index
+app.use route.get '/login', m_home.login
 
-    app.get '/', findHandler('home', (c) -> c.index)
-    app.get '/login', findHandler('home', (c) -> c.login)
+app.use route.get '/auth/twitter', m_auth.twitter
+app.use route.get '/auth/twitter/callback', m_auth.twitterCallback
 
-    app.get '/auth/twitter', findHandler('auth', (c) -> c.twitter)
-    app.get '/auth/twitter/callback', findHandler('auth', (c) -> c.twitterCallback)
+app.use route.get '/forums', m_forums.index
+app.use route.get '/forums/new', m_forums.create
 
-    app.get '/forums', findHandler('forums', (c) -> c.index)
-    app.get '/forums/new', findHandler('forums', (c) -> c.create)
-    app.get '/users/selectusername', findHandler('users', (c) -> c.selectUsernameForm)
-    app.post '/users/selectusername', findHandler('users', (c) -> c.selectUsername)
-    app.get '/~:username', findHandler('users', (c) -> c.item)
-    app.get '/:forum', findHandler('forums', (c) -> c.item)
-    app.get '/:forum/new', findHandler('forums', (c) -> c.createForm)
-    app.get '/:forum/about', findHandler('forums', (c) -> c.about)
-    app.get '/:forum/:stub', findHandler('posts', (c) -> c.item)    
-    
+app.use route.get '/users/selectusername', m_users.selectUsernameForm
+app.use route.post '/users/selectusername', m_users.selectUsername
+app.use route.post '/~:username', m_users.item
+
+app.use route.get '/:forum', m_forums.item
+app.use route.get '/:forum/about', m_forums.about
+app.use route.get '/:forum/:stub', m_posts.item
     
 #Register templates, helpers etc.
 require("./hbshelpers").register()
 
+#Start
 app.listen port

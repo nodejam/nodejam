@@ -50,6 +50,12 @@ If you aren't running the script, you'll have to do these manually:
 npm install -g less
 npm install -g regenerator
 npm install koa
+npm install koa-route
+npm install koa-favicon
+npm install co
+npm install co-body
+npm install co-multipart
+npm install thunkify
 npm install mongodb  
 npm install validator  
 npm install sanitizer  

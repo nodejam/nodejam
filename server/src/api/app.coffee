@@ -1,9 +1,7 @@
-express = require 'express'
+koa = require 'koa'
+route = require 'koa-route'
 utils = require '../lib/utils'
-expressutils = require '../lib/expressutils'
-controllers = require './controllers'
-validator = require 'validator'
-ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
+conf = require '../conf'
 
 process.chdir __dirname
 
@@ -16,29 +14,41 @@ if not host or not port
 
 utils.log "Fora API started at #{new Date} on #{host}:#{port}"
 
-app = express()
+app = koa()
 
-getController = (name) ->
-    switch name.toLowerCase()        
-        when 'users' then new controllers.Users()
-        when 'forums' then new controllers.Forums()
-        when 'posts' then new controllers.Posts()
-        when 'images' then new controllers.Images()
-        else throw new Error "Cannot find controller #{name}."
+#Request Parsing & Network
+parser = require '../lib/web/requestparser'
+ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
+app.use (next) ->*
+    if @method is 'POST' or @method is 'PUT' or @method is 'PATCH'
+        @parser =  new parser.RequestParser(@, new ForaTypeUtils)
+        yield @parser.init()
 
-expressutils.setup { app, getController, typeUtils: new ForaTypeUtils() }, (findHandler) ->
-    app.get '/api/healthcheck', (req, res, next) -> res.send { jacksparrow: "alive" }
-
-    app.post '/api/users', findHandler('users', (c) -> c.create)
-    app.get '/api/users/:username', findHandler('users', (c) -> c.item)
-
-    app.post '/api/forums', findHandler('forums', (c) -> c.create)
-    app.post '/api/forums/:forum/members', findHandler('forums', (c) -> c.join)
-    app.post '/api/forums/:forum', findHandler('posts', (c) -> c.create)
-    app.put '/api/forums/:forum/posts/:id', findHandler('posts', (c) -> c.edit)
+    network = (n for n in conf.networks when n.domains.indexOf(@host) isnt -1)
+    if network.length
+        @network = network[0]
     
-    app.post '/api/images', findHandler('images', (c) -> c.upload)
+    yield next
 
-    app.put "/api/admin/posts/:id", findHandler('posts', (c) -> c.admin_update)
-    
+#Routes
+m_users = require './controllers/users'
+m_forums = require './controllers/forums'
+m_posts = require './controllers/posts'
+m_images = require './controllers/images'
+
+app.use route.get '/api/healthcheck', -> this.body { jacksparrow: "alive" }
+
+app.use route.post '/api/users', m_users.create
+app.use route.get '/api/users/:username', m_users.item
+
+app.use route.post '/api/forums', m_forums.create
+app.use route.post '/api/forums/:forum/members', m_forums.join
+app.use route.post '/api/forums/:forum', m_posts.create
+app.use route.put '/api/forums/:forum/posts/:id', m_posts.edit
+
+app.use route.post '/api/image', m_images.upload
+
+app.use route.put "/api/admin/posts/:id", m_posts.admin_update
+
+#Start
 app.listen port

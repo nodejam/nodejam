@@ -1,6 +1,5 @@
 utils = require '../lib/utils'
 models = require('./')
-Q = require '../lib/q'
 widgets = require '../common/widgets'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
@@ -65,37 +64,31 @@ class Post extends ForaDbModel
        
     
     
-    addMetaList: (metaList) =>
-        (Q.async =>*
-            @meta = @meta.concat (m for m in metaList when @meta.indexOf(m) is -1)
-            yield @save()
-        )()
-        
-
-
-    removeMetaList: (metaList) =>
-        (Q.async =>*
-            @meta = (m for m in @meta when metaList.indexOf(m) is -1)
-            yield @save()
-        )()
-            
+    addMetaList: (metaList) =>*
+        @meta = @meta.concat (m for m in metaList when @meta.indexOf(m) is -1)
+        yield @save()
     
 
-    save: (context, db) =>
+
+    removeMetaList: (metaList) =>*
+        @meta = (m for m in @meta when metaList.indexOf(m) is -1)
+        yield @save()
+        
+    
+
+    save: (context, db) =>*
         { context, db } = @getContext context, db
         
-        (Q.async =>*
-            #If the stub has changed, we need to check if it's unique
-            @stub ?= utils.uniqueId(16)
+        #If the stub has changed, we need to check if it's unique
+        @stub ?= utils.uniqueId(16)
 
-            result = yield super(context, db)
-            
-            if @state is 'published'
-                forum = yield models.Forum.getById @forum.id, context, db
-                forum.refreshSnapshot()
-            
-            result
-        )()
+        result = yield super(context, db)
+        
+        if @state is 'published'
+            forum = yield models.Forum.getById @forum.id, context, db
+            forum.refreshSnapshot()
+        
+        result
             
 
 

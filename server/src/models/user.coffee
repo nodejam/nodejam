@@ -1,10 +1,9 @@
+thunkify = require 'thunkify'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 utils = require '../lib/utils'
-Q = require '../lib/q'
 hasher = require('../lib/hasher').hasher
 models = require './'
-
 emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 class User extends ForaDbModel
@@ -47,41 +46,39 @@ class User extends ForaDbModel
        
 
    
-    create: (authInfo, context, db) ->
-        (Q.async =>*
-            #We can't create a new user with an existing username.
-            if not @_id and not (yield User.get { @username }, context, db)
-                @preferences = { canEmail: true }
+    create: (authInfo, context, db) =>*
+        #We can't create a new user with an existing username.
+        if not @_id and not (yield User.get { @username }, context, db)
+            @preferences = { canEmail: true }
 
-                user = yield @save context, db
-                
-                #Also create a userinfo
-                userinfo = new (models.UserInfo) {
-                    userid: @_id.toString(),
-                }
-                userinfo = yield userinfo.save context, db
-                
-                credentials = new (models.Credentials) {
-                    userid: user._id.toString(),
-                    @username,
-                    token: utils.uniqueId(24)                    
-                }
+            user = yield @save context, db
+            
+            #Also create a userinfo
+            userinfo = new (models.UserInfo) {
+                userid: @_id.toString(),
+            }
+            userinfo = yield userinfo.save context, db
+            
+            credentials = new (models.Credentials) {
+                userid: user._id.toString(),
+                @username,
+                token: utils.uniqueId(24)                    
+            }
 
-                switch authInfo.type
-                    when 'builtin'
-                        result = yield Q.nfcall(hasher, { plaintext: authInfo.value.password })
-                        salt = result.salt.toString 'hex'
-                        hash = result.key.toString 'hex'
-                        credentials.builtin = { method: 'PBKDF2', @username, hash, salt }
-                    when 'twitter'
-                        credentials.twitter = authInfo.value
-                
-                credentials = yield credentials.save context, db
-                        
-                { user, token: credentials.token }
-            else
-                { success: false, error: "User aready exists" }
-        )()
+            switch authInfo.type
+                when 'builtin'
+                    result = yield thunkify(hasher) { plaintext: authInfo.value.password }
+                    salt = result.salt.toString 'hex'
+                    hash = result.key.toString 'hex'
+                    credentials.builtin = { method: 'PBKDF2', @username, hash, salt }
+                when 'twitter'
+                    credentials.twitter = authInfo.value
+            
+            credentials = yield credentials.save context, db
+                    
+            { user, token: credentials.token }
+        else
+            { success: false, error: "User aready exists" }
             
 
                                                             

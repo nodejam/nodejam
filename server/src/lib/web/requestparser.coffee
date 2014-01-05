@@ -3,60 +3,46 @@
     This allows us to sanitize those fields when requested.    
 ###
 
-utils = require './utils'
+utils = require '../utils'
 validator = require 'validator'
 sanitizer = require 'sanitizer'
-multiparty = require 'multiparty'
+co = require 'co'
+body = require 'co-body'
+multipart = require 'co-multipart'
 
-class ExpressRequestWrapper
+class RequestParser
 
-    constructor: (@raw, @typeUtils) ->
-        @headers = @raw.headers
+    constructor: (@ctx, @typeUtils) ->
+
 
     
+    init: ->*
+        if not initted
+            @rawBody = yield body @ctx
+            initted = true            
     
-    getParameter: (src, name, def = "string") =>
-        if typeof def is 'string' 
+    
+    
+    body: (name, def = 'string') =>
+        if typeof def is 'string'
             def = @typeUtils.getFieldDefinition def
-        val = @raw[src][name]
-        @parsePrimitive val, def, name
+        @parsePrimitive @rawBody[name], def, name 
         
 
     
-    params: (name, type) =>
-        @getParameter 'params', name, type
-        
-
-    
-    query: (name, type) =>
-        @getParameter 'query', name, type
-
-
-
-    body: (name, type) =>
-        @getParameter 'body', name, type
-    
-
-    
-    cookies: (name, type) =>
-        @getParameter 'cookies', name, type
-        
-    
-    
-    files: (cb) =>
-        form = new multiparty.Form { autoFields: true, autoFiles: true }
-        form.parse @raw, (err, fields, files) =>
-            cb err, files
+    files: =>*
+        (yield* multipart @ctx).files
             
 
 
     map: (target, whitelist, options = { overwrite: true }, prefix = []) =>
+        @init()
         typeDef = target.getTypeDefinition()     
         for field, def of typeDef.fields
             if @populateObject(target, field, def, whitelist, options, prefix) is true
                 modified = true
         modified
-                
+   
         
     
     populateObject: (obj, name, def, whitelist, options, prefix) =>
@@ -107,5 +93,5 @@ class ExpressRequestWrapper
                         throw new Error "Cannot parse this array. Unknown format."
                 else      
                     throw new Error "#{def.type} #{fieldName} is a non-primitive. Cannot parse."
-                    
-exports.ExpressRequestWrapper = ExpressRequestWrapper
+
+exports.RequestParser = RequestParser

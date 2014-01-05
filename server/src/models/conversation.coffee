@@ -1,6 +1,5 @@
 postModule = require('./post')
 utils = require('../lib/utils')
-Q = require '../lib/q'
 models = require('./')
 
 class Conversation extends postModule.Post

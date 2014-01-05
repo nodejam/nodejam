@@ -344,6 +344,12 @@ if $node_modules ; then
     sudo npm install -g regenerator
     cd server
     npm install koa
+    npm install koa-route
+    npm install koa-favicon
+    npm install co
+    npm install co-body
+    npm install co-multipart
+    npm install thunkify    
     npm install mongodb
     npm install validator
     npm install sanitizer

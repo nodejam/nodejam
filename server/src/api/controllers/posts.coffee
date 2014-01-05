@@ -2,137 +2,97 @@ conf = require '../../conf'
 db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
 utils = require '../../lib/utils'
-Q = require '../../lib/q'
-Controller = require('../../common/web/controller').Controller
+auth = require '../../common/web/auth'
 
-class Posts extends Controller
-
-    create: (req, res, next) =>
-        @ensureSession arguments, =>
-            (Q.async =>*
-                try
-                    forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
-                    type = models.Post.getTypeDefinition().discriminator { type: req.body('type') }
-                    
-                    post = new type {
-                        createdBy: req.user,
-                        state: req.body('state'),
-                        rating: 0,
-                        savedAt: Date.now(),
-                    }
-                    
-                    req.map post, @getMappableFields(type)
-                    
-                    post = yield forum.addPost post
-                    res.send post
-
-                catch e
-                    next e
-            )()
+exports.create = auth.handler { session: true }, (forum) ->*
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
+    type = models.Post.getTypeDefinition().discriminator { type: @parser.body('type') }
+    
+    post = new type {
+        createdBy: @session.user,
+        state: @parser.body('state'),
+        rating: 0,
+        savedAt: Date.now()
+    }
+    
+    @parser.map post, getMappableFields(type)
+    post = yield forum.addPost post
+    this.body = post
 
 
 
-    edit: (req, res, next) =>
-        @ensureSession arguments, =>        
-            (Q.async =>*
-                try
-                    forum = yield models.Forum.get { stub: req.params('forum'), network: req.network.stub }, { user: req.user }, db
-                    post = yield models.Post.getById(req.params('id'), { user: req.user }, db)
-                    type = post.constructor
-                    
-                    if post
-                        if post.createdBy.username is req.user.username or @isAdmin(req.user)
-                            post.savedAt = Date.now()                       
-                            req.map post, @getMappableFields(type)
-                            if req.body('state') is 'published'
-                                post.state = 'published'
-                            post = yield post.save()
-                            res.send post
-                        else
-                            res.send 'Access denied.'
-                    else
-                        res.send 'Invalid post.'
-                catch e
-                    next e)()
+exports.edit = auth.handler { session: true }, (forum, id) ->*
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
+    post = yield models.Post.getById(id, { user: @session.user }, db)
+    type = post.constructor
+    
+    if post
+        if (post.createdBy.username is @session.user.username) or @session.admin
+            post.savedAt = Date.now()                       
+            @parser.map post, getMappableFields(type)
+            if @parser.body('state') is 'published'
+                post.state = 'published'
+            post = yield post.save()
+            this.body = post
+        else
+            this.body = 'ACCESS_DENIED'
+    else
+        this.body = 'ACCESS_DENIED'
+
+
+###
+    All fields defined specifically in a class inherited from Post will be 'mappable'.
+    models.Post.getTypeDefinition(type, false) returns fields in inherited class.
+    Note: fields in Post are not mappable.
+###    
+getMappableFields = (type, acc = [], prefix = []) ->
+    typeUtils = models.Post.getTypeUtils()
+    
+    for field, def of type.getTypeDefinition(false).fields
+        if typeUtils.isPrimitiveType def.type
+            acc.push prefix.concat(field).join '_'
+        else
+            if typeUtils.isUserDefinedType def.type
+                prefix.push field
+                getMappableFields def.ctor, acc, prefix
+                prefix.pop field            
+    acc
 
     
-    ###
-        All fields defined specifically in a class inherited from Post will be 'mappable'.
-        models.Post.getTypeDefinition(type, false) returns fields in inherited class.
-        Note: fields in Post are not mappable.
-    ###    
-    getMappableFields: (type, acc = [], prefix = []) =>
-        typeUtils = models.Post.getTypeUtils()
+exports.remove = auth.handler { session: true }, (post) ->*
+    post = yield models.Post.getById(post, { user: @session.user }, db)
+    if post
+        if (post.createdBy.username is @session.user.username) or @session.admin
+            post = yield post.destroy()
+            this.body = post
+        else
+            this.body = 'ACCESS_DENIED'
+    else
+        this.body = 'INVALID_POST'
+                 
+
         
-        for field, def of type.getTypeDefinition(false).fields
-            if typeUtils.isPrimitiveType def.type
-                acc.push prefix.concat(field).join '_'
-            else
-                if typeUtils.isUserDefinedType def.type
-                    prefix.push field
-                    @getMappableFields def.ctor, acc, prefix
-                    prefix.pop field            
-        acc
-        
-                
-                
-    remove: (req, res, next) =>
-        @ensureSession arguments, => 
-            (Q.async =>*
-                try
-                    post = yield models.Post.getById(req.params('post'), { user: req.user }, db)
-                    if post
-                        if post.createdBy.username is req.user.username or @isAdmin(req.user)
-                            post = yield post.destroy()
-                            res.send post
-                        else
-                            res.send 'Access denied.'
-                    else
-                        res.send "Invalid article."
-                catch e
-                    next e)()    
-                     
-
-            
-    addComment: (req, res, next, forum) =>        
-        @attachUser arguments, => 
-            contentType = forum.settings?.comments?.contentType ? 'text'
-            if contentType is 'text'
-                (Q.async =>*
-                    try
-                        post = yield models.Post.getById(req.params('post'), { user: req.user }, db)
-                        comment = new models.Comment()
-                        comment.createdBy = req.user
-                        comment.forum = forum.stub
-                        comment.itemid = post._id.toString()
-                        comment.data = req.body('data')
-                        comment = yield comment.save({ user: req.user }, db)
-                        res.send comment
-                    catch e
-                        next e)()                
-            else
-                next new Error 'Unsupported Comment Type'
+exports.addComment = auth.handler { session: true }, (id) ->*
+    contentType = forum.settings?.comments?.contentType ? 'text'
+    if contentType is 'text'
+        post = yield models.Post.getById(id, { user: @session.user }, db)
+        comment = new models.Comment()
+        comment.createdBy = @session.user
+        comment.forum = forum.stub
+        comment.itemid = post._id.toString()
+        comment.data = @parser.body('data')
+        comment = yield comment.save({ user: @session.user }, db)
+        this.body = comment
 
 
 
-    #Admin Features
-    admin_update: (req, res, next) =>
-        @ensureSession [req, res, next], =>
-            if @isAdmin(req.user)
-                (Q.async =>*
-                    try
-                        post = yield models.Post.getById(req.params('id'), { user: req.user }, db)
-                        if post 
-                            if req.body('meta')
-                                post = yield post.addMetaList req.body('meta').split(',')
-                            res.send post
-                        else
-                            next new Error "Post not found"
-                    catch e
-                        next e)()
-            else
-                next new Error "Access denied"
-
-
-exports.Posts = Posts
+#Admin Features
+exports.admin_update = auth.handler { admin: true }, (id) ->*
+    post = yield models.Post.getById(id, { user: @session.user }, db)
+    if post 
+        if @parser.body('meta')
+            post = yield post.addMetaList @parser.body('meta').split(',')
+        this.body = post
+    else
+        this.body = 'INVALID_POST'
 

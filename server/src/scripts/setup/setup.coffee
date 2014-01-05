@@ -2,10 +2,11 @@ http = require('http')
 path = require 'path'
 fs = require 'fs'
 querystring = require 'querystring'
+co = require 'co'
+thunkify = require 'thunkify'
 utils = require '../../lib/utils'
 data = require './data'
 conf = require '../../conf'
-Q = require '../../lib/q'
 
 database = new (require '../../lib/data/database').Database(conf.db)
 
@@ -19,31 +20,29 @@ PORT = if argv.port then parseInt(argv.port) else 80
 
 utils.log "Setup will connect to #{HOST}:#{PORT}"
 
-init = () ->
+init = () ->*
     _globals = {}
     
-    del = ->
-        (Q.async ->*
+    del = ->*
             if process.env.NODE_ENV is 'development'
                 utils.log 'Deleting main database.'
-                db = yield Q.nfcall database.getDb
-                result = yield Q.ninvoke(db, "dropDatabase")
+                db = yield database.getDb()
+                result = yield (thunkify db.dropDatabase).call(db)
                 utils.log 'Everything is gone now.'
             else
                 utils.log "Delete database can only be used if NODE_ENV is 'development'"
-        )()
 
-    create = -> 
-        (Q.async ->*
+    create = ->*
             utils.log 'This script will setup basic data. Calls the latest HTTP API.'
 
             #Create Users
             _globals.sessions = {}
 
+            _doHttpRequest = thunkify(doHttpRequest)
             for user in data.users
                 utils.log "Creating #{user.username}..." 
                 user.secret = conf.auth.adminkeys.default
-                resp = yield Q.nfcall doHttpRequest, '/api/users', querystring.stringify(user), 'post'            
+                resp = yield _doHttpRequest '/api/users', querystring.stringify(user), 'post'            
                 resp = JSON.parse resp             
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
@@ -58,13 +57,13 @@ init = () ->
                 if forum._about
                     forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'                    
                 delete forum._about
-                resp = yield Q.nfcall doHttpRequest, "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
+                resp = yield _doHttpRequest "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
                 forumJson = JSON.parse resp
                 utils.log "Created #{forumJson.name}"
                 
                 for u, uToken of _globals.sessions
                     if uToken.token isnt token
-                        resp = yield Q.nfcall doHttpRequest, "/api/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
+                        resp = yield _doHttpRequest "/api/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
                         resp = JSON.parse resp
                         utils.log "#{u} joined #{forum.name}"
             
@@ -88,34 +87,31 @@ init = () ->
                 delete article._meta
                 
                 
-                resp = yield Q.nfcall doHttpRequest, "/api/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'            
+                resp = yield _doHttpRequest "/api/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'            
                 resp = JSON.parse resp
                 utils.log "Created #{resp.title} with id #{resp._id}"
                 
                 for metaTag in meta.split(',')
-                    resp = yield Q.nfcall doHttpRequest, "/api/admin/posts/#{resp._id}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'        
+                    resp = yield _doHttpRequest "/api/admin/posts/#{resp._id}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'        
                     resp = JSON.parse resp
                     utils.log "Added #{metaTag} tag to article #{resp.title}."
                     
             #Without this return, CS will create a wrapper function to return the results (array) of: for metaTag in meta.split(',')
-            return)()
+            return
 
 
     if argv.delete
-        (Q.async ->*
-            yield del()
-            process.exit())()
+        yield del()
+        process.exit()
 
     else if argv.create
-        (Q.async ->*
-            yield create()
-            process.exit())()
+        yield create()
+        process.exit()
 
     else if argv.recreate
-        (Q.async ->*
             yield del()
             yield create()
-            process.exit())()
+            process.exit()
     else
         utils.log 'Invalid option.'
         process.exit()  
@@ -147,5 +143,7 @@ doHttpRequest = (url, data, method, cb) ->
         req.write(data)
 
     req.end()        
-    
-init()
+
+(co ->*
+    yield init()
+)()

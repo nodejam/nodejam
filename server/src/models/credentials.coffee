@@ -1,5 +1,4 @@
 ForaDbModel = require('./foramodel').ForaDbModel
-Q = require '../lib/q'
 hasher = require('../lib/hasher').hasher
 models = require('./')
 
@@ -26,26 +25,22 @@ class Credentials extends ForaDbModel
 
 
     #Todo. Token Expiry.   
-    @authenticateBuiltinUser: (username, password, context, db) ->
-        (Q.async =>*
-            credentials = yield models.Credentials.get({ "builtin.username": username }, context, db)
-            if credentials
-                salt = new Buffer credentials.builtin.salt, 'hex'
-                result = yield Q.nfcall hasher, {plaintext: password, salt}
-                if credentials.hash is result.key.toString 'hex'
-                    { token: credentials.token }
-                else
-                    { success: false, error: "Invalid username or password" }
+    @authenticateBuiltinUser: (username, password, context, db) ->*
+        credentials = yield models.Credentials.get({ "builtin.username": username }, context, db)
+        if credentials
+            salt = new Buffer credentials.builtin.salt, 'hex'
+            result = yield Q.nfcall hasher, {plaintext: password, salt}
+            if credentials.hash is result.key.toString 'hex'
+                { token: credentials.token }
             else
                 { success: false, error: "Invalid username or password" }
-        )()
+        else
+            { success: false, error: "Invalid username or password" }
         
 
 
-    getUser: (context, db) =>
-        (Q.async =>*
+    getUser: (context, db) =>*
             yield models.User.getById(@userid, context, db)
-        )()
 
 
 exports.Credentials = Credentials
