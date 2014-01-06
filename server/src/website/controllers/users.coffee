@@ -8,7 +8,7 @@ auth = require '../../common/web/auth'
 
 exports.selectUsernameForm = ->*
     token = yield models.Token.get({ key: @query('token') }, {}, db)
-    res.render @network.getView('users', 'selectusername'), { 
+    @render @network.getView('users', 'selectusername'), { 
         username: token.value.userDetails.username,
         name: token.value.userDetails.name,
         pageName: 'select-username-page', 
@@ -18,11 +18,11 @@ exports.selectUsernameForm = ->*
     
     
 
-exports.selectUsername = =>*
-    token = yield models.Token.get({ key: req.query('token') }, {}, db)     
-    token.value.userDetails.username = req.body 'username'
-    token.value.userDetails.name = req.body 'name'
-    token.value.userDetails.email = req.body 'email'
+exports.selectUsername = ->*
+    token = yield models.Token.get({ key: @query('token') }, {}, db)     
+    token.value.userDetails.username = @parser.body 'username'
+    token.value.userDetails.name = @parser.body 'name'
+    token.value.userDetails.email = @parser.body 'email'
     result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
     if result?.success isnt false
         res.clearCookie "twitter_oauth_process_key"

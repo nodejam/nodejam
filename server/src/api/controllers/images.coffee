@@ -7,7 +7,7 @@ fs = require 'fs-extra'
 gm = require 'gm'
 auth = require '../../common/web/auth'
 
-exports.upload = auth.handler { session: true }, =>*
+exports.upload = auth.handler { session: true }, ->*
     req.files (err, files) =>
         file = files.file[0]
         if not err
@@ -35,7 +35,7 @@ exports.upload = auth.handler { session: true }, =>*
                     
 
 
-exports.resizeImage = (src, dest, options, cb) =>
+exports.resizeImage = (src, dest, options, cb) ->*
     utils.log "Resizing #{src}..."
     gm(src).size (err, size) =>
         gm(src).resize(options.width).write dest, (err) =>

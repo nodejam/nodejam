@@ -13,6 +13,7 @@ handler = ->
     options ?= {}
     ->*
         token = @query.token ? @cookies.get('token')                
+        @session = {}
         if options.session or options.admin
             user = yield getUserWithToken token
             if user.id
@@ -20,7 +21,7 @@ handler = ->
                 if options.admin and not isAdmin
                     throw new Error "NOT_ADMIN"
                 else
-                    @session = { user }
+                    @session.user = user
                     @session.admin = isAdmin
                     yield fn.apply @, arguments
             else
@@ -29,7 +30,7 @@ handler = ->
             if token
                 user = yield getUserWithToken token
                 if user.id
-                    @session = { user }
+                    @session.user = user
             yield fn.apply @, arguments
 
 

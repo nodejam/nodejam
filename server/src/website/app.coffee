@@ -1,9 +1,9 @@
 koa = require 'koa'
 favicon = require 'koa-favicon'
 route = require 'koa-route'
-conf = require '../conf'
+hbs = require 'koa-hbs'
 utils = require '../lib/utils'
-ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
+init = require '../common/web/init'
 
 process.chdir __dirname
 
@@ -17,8 +17,15 @@ if not host or not port
 utils.log "Fora Website started at #{new Date} on #{host}:#{port}"
 
 app = koa()
-
+init app
 app.use favicon()
+
+app.use hbs.middleware {
+  viewPath: __dirname + '/views',
+  partialsPath: __dirname + '/views/partials',
+  layoutsPath: __dirname + '/views/layouts',
+  defaultLayout: 'default'
+}
 
 #Routes
 m_home = require './controllers/home'

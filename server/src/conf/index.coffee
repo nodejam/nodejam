@@ -6,22 +6,22 @@ templates =   {
     },
     views: {    
         home: {
-            index: 'home/index.hbs',
-            login: 'home/login.hbs',        
+            index: 'home/index',
+            login: 'home/login',        
         },
         users: {
             selectusername: 'users/selectusername'
         },
         forums: {
-            index: 'forums/index.hbs',
-            item: 'forums/item.hbs',
-            about: 'forums/about.hbs',
-            forumcard: '/views/forums/forumcard.hbs',
-            create: 'forums/create.hbs'
+            index: 'forums/index',
+            item: 'forums/item',
+            about: 'forums/about',
+            forumcard: '/views/forums/forumcard',
+            create: 'forums/create'
         },
         posts: {
-            postcard: '/views/posts/postcard.hbs',
-            post: 'posts/post.hbs'
+            postcard: '/views/posts/postcard',
+            post: 'posts/post'
         }
     }
 }

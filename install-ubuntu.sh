@@ -346,6 +346,7 @@ if $node_modules ; then
     npm install koa
     npm install koa-route
     npm install koa-favicon
+    npm install koa-hbs    
     npm install co
     npm install co-body
     npm install co-multipart

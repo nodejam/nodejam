@@ -1,8 +1,7 @@
 koa = require 'koa'
 route = require 'koa-route'
 utils = require '../lib/utils'
-conf = require '../conf'
-
+init = require '../common/web/init'
 process.chdir __dirname
 
 host = process.argv[2]
@@ -15,20 +14,7 @@ if not host or not port
 utils.log "Fora API started at #{new Date} on #{host}:#{port}"
 
 app = koa()
-
-#Request Parsing & Network
-parser = require '../lib/web/requestparser'
-ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
-app.use (next) ->*
-    if @method is 'POST' or @method is 'PUT' or @method is 'PATCH'
-        @parser =  new parser.RequestParser(@, new ForaTypeUtils)
-        yield @parser.init()
-
-    network = (n for n in conf.networks when n.domains.indexOf(@host) isnt -1)
-    if network.length
-        @network = network[0]
-    
-    yield next
+init app
 
 #Routes
 m_users = require './controllers/users'
