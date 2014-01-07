@@ -10,10 +10,12 @@
 @colorLink: #559;
 @colorLinkHover: darken(@colorLink, 20%);
 
-@colorNegative: #600;
-@colorDarkNegative: darken(@colorNegative, 10%);
-@colorPositive: #060;
-@colorDarkPositive: darken(@colorPositive, 10%);
+@colorNegative: #966;
+@colorDarkNegative: #633;
+@colorLightNegative: #dcc;
+@colorPositive: #696;
+@colorDarkPositive: #363;
+@colorLightPositive: #cdc;
 
 @colorLight: #ccc;
 @colorLighter: #ddd;
@@ -65,7 +67,7 @@ a {
 .control (@fg, @bg, @borderColor, @borderHighLight, @borderShadow) { 
     color: @fg; background-color: @bg; border-top: 2px solid darken(@borderColor, @borderHighLight); border-right: 2px solid darken(@borderColor, @borderShadow);     
     border-bottom: 2px solid darken(@borderColor, @borderShadow); border-left: 2px solid darken(@borderColor, @borderHighLight);
-    &:hover { background-color: darken(@bg, 10%);  }
+    &:hover { background-color: darken(@bg, 2%);  }
 }
 
 input, select, textarea { .fontBase; .control(@colorText, #fff, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
@@ -82,8 +84,8 @@ button {
     i { padding-right: 6px; }        
     &.textless i { padding-right: 0; }
 
-    &.positive { color: @colorPositive }
-    &.negative { color: @colorNegative }    
+    &.positive { color: @colorPositive; border-color: @colorLightPositive  }
+    &.negative { color: @colorNegative; border-color: @colorLightNegative }
 }
 
 /* CUSTOM */
@@ -95,7 +97,7 @@ button {
 .error { color: Red }
 .action { 
     &.positive { color: @colorPositive }
-    &.negative { color: @colorNegative }
+    &.negative { color: @colorNegative }    
 }
 
 .large-text {

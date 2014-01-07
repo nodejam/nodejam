@@ -1,3 +1,5 @@
+.main-pane, .alt-pane { margin-top: 20px }
+
 /* Large Pages */
 .large-pages-common() {
     .nav { margin-right: 40px }
@@ -8,11 +10,7 @@
         .cards-standard-mixin(720);
     }
     
-    .fluid-page {
-        .main-pane {
-            margin-top: 20px;
-        }
-        
+    .with-cover {
         .cover {
             position: fixed; height: 100%; top: 0;
             .image {
@@ -21,73 +19,59 @@
             }
         }
     }
-    
-    .fixed-page {
-        .full-pane {
-            margin: 20px auto;
-        }
-    }
 }
 
-.large-pages-dynamic(@width) {
-    .content-area {
-        .cards-alt-mixin((@width / 2) - 140px);
-        &.wide {
-            width: (@width - 160px);
-        }
-    }        
-    
-    .fixed-page {
-        .full-pane {
-            width: (@width - 160px);
-        }
-    }
-}
 
-.large-pages(@minWidth) when (@minWidth >= 1720) {  
-    .large-pages-dynamic(1720);
+.single-section-page(@maxFixedWidth, @coverWidth) {
+    .single-section-page {
+        .main-pane { width: 100%; }
+        
+        &.fixed-width {
+            .main-pane { width: (@maxFixedWidth - 160px); margin-left: auto; margin-right: auto; }
 
-    .fluid-page {
-        .main-pane {
-            width: 50%;
-        }          
-        .cover {
-            width: 50%; left: 50%; 
+            .content-area {
+                .cards-alt-mixin((@maxFixedWidth / 2) - 140px);
+                &.wide {
+                    width: (@maxFixedWidth - 160px);
+                }
+            }
         }
         
-        &.multi-pane {
-            .main-pane { margin-top: 420px; }
-
-            .alt-pane {
-                width: 50%; left: 50%; margin-top: 420px;
-            }
-
-            .cover { position:absolute; left:0; top: 0; width: 100%; height: 400px; }
+        &.with-cover {      
+            .main-pane { width: (100% - @coverWidth); }
+            .cover { width: @coverWidth; left: (100% - @coverWidth); }
+            &.full-cover { /* TODO */ }
         }
     }
+}
+
+
+.multi-section-page(@mainWidth, @coverHeight) {
+    .multi-section-page {
+        .main-pane { width: @mainWidth; }
+        .alt-pane { width: (100% - @mainWidth); left: @mainWidth; }
+
+        &.with-cover {      
+            .main-pane, .alt-pane { margin-top: (@coverHeight + 20px); }
+            .cover { position:absolute; left:0; top: 0; width: 100%; height: @coverHeight; }
+            &.full-cover { /* TODO */ }
+        }
+    }
+}
+
+
+.large-pages(@minWidth) when (@minWidth >= 1720) {  
+    .single-section-page(1720, 50%);
+    .multi-section-page(50%, 400px);
 }
 
 .large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {  
-    .large-pages-dynamic(1400);
-    .fluid-page {
-        .main-pane {
-            width: 60%;
-        }        
-        .cover {
-            width: 40%; left: 60%; 
-        }
-    }
+    .single-section-page(1400, 40%);
+    .multi-section-page(60%, 400px);
 }
 
 .large-pages(@minWidth) when (@minWidth < 1400) {  
-    .large-pages-dynamic(@minWidth);
-
-    .fluid-page {
-        .main-pane {
-            width: 66%;
-        }        
-        .cover {
-            width: 34%; left: 66%; 
-        }
-    }
+    .single-section-page(@minWidth, 34%);
+    .multi-section-page(66%, 400px);
 }
+

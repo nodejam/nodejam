@@ -25,6 +25,11 @@ exports.item = auth.handler (forum, post) ->*
                 typeDefinition: JSON.stringify(post.getTypeDefinition()),
                 user: @session.user,
                 pageName: 'post-page',
-                pageType: 'std-page'
+                pageLayout: {
+                    type: 'single-section-page with-cover',
+                    cover: {
+                        image: { src: '/pub/images/cover.jpg' },
+                    },
+                }                
             }
     

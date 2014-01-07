@@ -24,7 +24,7 @@ exports.index = auth.handler ->*
         featured,
         pageName: 'home-page',
         pageLayout: {
-            type: 'fluid-page',
+            type: 'single-section-page with-cover',
             cover: {
                 image: { src: '/pub/images/cover.jpg' },
             },
@@ -37,6 +37,6 @@ exports.index = auth.handler ->*
 exports.login = ->*
     yield @render req.network.getView('home', 'login'), { 
         pageName: 'login-page', 
-        pageType: 'std-page', 
+        pageType: 'single-section-page', 
     }
 

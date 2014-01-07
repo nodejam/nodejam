@@ -16,7 +16,7 @@ exports.index = auth.handler ->*
         featured, 
         pageName: 'forums-page', 
         pageLayout: {
-            type: 'fixed-page',
+            type: 'single-section-page fixed-width',
         }              
     }
 
@@ -55,7 +55,7 @@ exports.item = auth.handler (stub) ->*
             user: @session.user,
             pageName: 'forum-page', 
             pageLayout: {
-                type: 'fluid-page',
+                type: 'single-section-page with-cover',
                 cover: forum.cover,
                 coverContent
             }              
@@ -67,8 +67,7 @@ exports.create = ->*
     yield @render @network.getView('forums', 'create'), { 
         pageName: 'create-forum-page', 
         pageLayout: {
-            type: 'fluid-page',wwwwww
-            cover: { image: { src: '/pub/images/cover.jpg' } },
+            type: 'single-section-page fixed-width'
         }                        
     }        
 
@@ -91,7 +90,9 @@ exports.about = (stub) ->*
         moderators,
         members,
         pageName: 'forum-about-page', 
-        pageType: 'cover-page', 
-        cover: forum.cover ? '/pub/images/cover.jpg'
+        pageLayout: {
+            type: 'single-section-page with-cover',
+            cover: { image: { src: forum.cover ? '/pub/images/cover.jpg' } },
+        }
     }
 
