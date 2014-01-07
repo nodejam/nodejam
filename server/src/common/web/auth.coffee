@@ -16,7 +16,7 @@ handler = ->
         @session = {}
         if options.session or options.admin
             user = yield getUserWithToken token
-            if user.id
+            if user
                 isAdmin = (u for u in conf.admins when u is user?.username).length > 0
                 if options.admin and not isAdmin
                     throw new Error "NOT_ADMIN"
@@ -29,7 +29,7 @@ handler = ->
         else
             if token
                 user = yield getUserWithToken token
-                if user.id
+                if user
                     @session.user = user
             yield fn.apply @, arguments
 

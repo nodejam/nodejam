@@ -66,7 +66,7 @@ class Article extends Post
         switch name
             when "snapshot"
                 {
-                    image: @cover?.small,
+                    image: @cover?.image.small,
                     @title,
                     @createdBy,
                     id: @_id.toString(),

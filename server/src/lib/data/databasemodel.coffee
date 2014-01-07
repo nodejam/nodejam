@@ -33,6 +33,7 @@ class DatabaseModel extends BaseModel
     @find: (params, fnCursor, context, db) ->*
         modelDescription = @getTypeDefinition()
         cursor = yield db.find(modelDescription.collection, params)
+        fnCursor cursor
         items = yield thunkify(cursor.toArray).call cursor
         if items.length
             (@constructModel(item, modelDescription, context, db) for item in items)

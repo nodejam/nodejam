@@ -86,7 +86,7 @@ class Post extends ForaDbModel
         
         if @state is 'published'
             forum = yield models.Forum.getById @forum.id, context, db
-            forum.refreshSnapshot()
+            yield forum.refreshSnapshot()
         
         result
             

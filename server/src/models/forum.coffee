@@ -1,3 +1,4 @@
+thunkify = require 'thunkify'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 utils = require('../lib/utils')
@@ -173,14 +174,13 @@ class Forum extends ForaDbModel
             
     refreshSnapshot: (context, db) =>*
         { context, db } = @getContext context, db
-        posts = yield models.Post.find({ 'forum.id': @_id.toString() , state: 'published' }, ((cursor) -> cursor.sort({ _id: -1 }).limit 10), context, db)            
+        posts = yield @getPosts 10, { _id: -1 }, context, db
         @snapshot = { posts: (p.getView("snapshot") for p in posts) }
         if posts.length
             cursor = yield models.Post.getCursor({ 'forum.id': @_id.toString() , state: 'published' }, context, db)
             @stats.posts = yield thunkify(cursor.count).call cursor
             @stats.lastPost = posts[0].savedAt
             yield @save context, db
-
 
 exports.Forum = Forum
 
