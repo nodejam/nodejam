@@ -12,6 +12,7 @@
             overlay: 0.9
             closeButton: null
 
+        $('#lean_overlay').remove()
         overlay = $("<div id='lean_overlay'></div>")
 
         $("body").append overlay

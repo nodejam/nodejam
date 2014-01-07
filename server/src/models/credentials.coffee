@@ -29,7 +29,7 @@ class Credentials extends ForaDbModel
         credentials = yield models.Credentials.get({ "builtin.username": username }, context, db)
         if credentials
             salt = new Buffer credentials.builtin.salt, 'hex'
-            result = yield Q.nfcall hasher, {plaintext: password, salt}
+            result = yield thunkify(hasher) {plaintext: password, salt}
             if credentials.hash is result.key.toString 'hex'
                 { token: credentials.token }
             else

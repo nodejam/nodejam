@@ -177,7 +177,7 @@ class Forum extends ForaDbModel
         @snapshot = { posts: (p.getView("snapshot") for p in posts) }
         if posts.length
             cursor = yield models.Post.getCursor({ 'forum.id': @_id.toString() , state: 'published' }, context, db)
-            @stats.posts = yield Q.ninvoke cursor, 'count'
+            @stats.posts = yield thunkify(cursor.count).call cursor
             @stats.lastPost = posts[0].savedAt
             yield @save context, db
 
