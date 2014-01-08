@@ -8,7 +8,7 @@ auth = require '../../common/web/auth'
 
 
 exports.index = auth.handler ->*
-    featured = yield models.Forum.find({ network: @network.stub }, ((cursor) -> cursor.sort({ 'stats.lastPost': -1 }).limit 12), {}, db)
+    featured = yield models.Forum.find({ network: @network.stub }, ((cursor) -> cursor.sort({ 'stats.lastPost': -1 }).limit 32), {}, db)
     for forum in featured
         forum.summary = forum.getView("card")
     

@@ -113,7 +113,7 @@ class Forum extends ForaDbModel
                     @stub,
                     @createdBy,
                     @snapshot,
-                    image: @cover.image?.small
+                    image: @cover?.image?.small
                 }
 
 

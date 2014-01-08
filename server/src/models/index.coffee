@@ -10,7 +10,7 @@ modules = {
     network: 'Network',
     article: 'Article',
     conversation: 'Conversation',
-    membership: 'Membership'
+    membership: 'Membership',
 }
 
 for k, v of modules

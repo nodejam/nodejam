@@ -238,7 +238,7 @@ class DatabaseModel extends BaseModel
             details += e + "\n"
         
         error = new Error('Model failed validation')
-        error.details = details                
+        error.details = details  
         throw error            
         
 
