@@ -9,7 +9,7 @@ class Create extends window.Fora.Views.BaseView
         forum = @editor.data()
         alert JSON.stringify forum
         $.post '/api/forums', forum, (data) =>
-            alert JSON.stringify data
+            document.location.href = "/#{data.stub}"
     
             
 window.Fora.Views.Forums.Create = Create

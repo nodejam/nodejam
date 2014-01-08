@@ -18,8 +18,6 @@ exports.create = auth.handler { session: true }, ->*
         @parser.map forum, ['name', 'type', 'description', 'postTypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
         forum.createdBy = @session.user
         
-        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/pub/images/forum-cover.jpg', small: '/pub/images/forum-cover-small.jpg',  alt: forum.name, credits: "" } }
-        
         forum = yield forum.save creds, db
         yield forum.addRole @session.user, 'admin'
         

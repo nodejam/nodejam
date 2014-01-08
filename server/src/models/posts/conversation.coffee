@@ -1,8 +1,7 @@
-postModule = require('./post')
-utils = require('../lib/utils')
-models = require('./')
+models = require('../')
+Post = require('../post').Post
 
-class Conversation extends postModule.Post
+class Conversation extends Post
     
     @typeDefinition: {
             type: @,

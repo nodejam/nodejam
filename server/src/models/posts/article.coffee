@@ -1,8 +1,7 @@
-Post = require('./post').Post
-utils = require('../lib/utils')
-models = require('./')
-widgets = require '../common/widgets'
-fields = require './fields'
+models = require('../')
+Post = require('../post').Post
+fields = require '../fields'
+widgets = require '../../common/widgets'
 
 class Article extends Post
 
