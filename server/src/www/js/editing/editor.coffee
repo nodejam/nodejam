@@ -1,23 +1,23 @@
 class Editor
     
     constructor: (@container) ->
-        @imageField = new Fora.Editing.Image @
-        @textField = new Fora.Editing.Text @
-        
         editables = @container.find('[data-field-type]')
         editables.highlight()        
     
         for e in editables
             do (e) =>
                 e = $ e
-                @getField(e.data 'field-type').setup e        
+                ctor = @getControl(e.data 'field-type')
+                control = new ctor(e, @)
+                e.data 'control', control
+                control.setup()
         
 
 
     update: (post = {}) =>
         for e in @container.find('[data-field-type]')
             e = $ e
-            @getField(e.data 'field-type').update post, e                
+            e.data('control').update post
         @flatten post, [], {}
                     
                     
@@ -38,12 +38,14 @@ class Editor
 
 
 
-    getField: (type) =>
+    getControl: (type) =>
         switch type
             when 'image'
-                @imageField                
+                Fora.Editing.Image                
             when 'heading', 'text', 'plain-text'
-                @textField
+                Fora.Editing.Text
+            when 'selectable'
+                Fora.Editing.Selectable
     
 
 

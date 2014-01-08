@@ -6,7 +6,7 @@ class Validator
         @hasFocused = false
 
         @completionCb = options.onComplete            
-        @page = options.page
+        @scope = options.scope
         
         if options.form
             @parseForm options.form
@@ -37,7 +37,7 @@ class Validator
         else if /\(\)$/.test(strValidation)
             functionName = strValidation.replace /\(\)$/, ''
             validation.type = 'function'            
-            validation.function = @page[functionName]
+            validation.function = @scope[functionName]
             validation.element = element
 
         validation.element.data 'validation-reference', validation

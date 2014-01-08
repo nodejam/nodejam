@@ -47,7 +47,7 @@ class Post
         $('.page-wrap .nav.buttons ul').append '<li><button class="publish positive">' + publishText + '</button></li>'
 
         $('button.publish').click =>
-            data = editor.update()
+            data = editor.data()
             data.state = 'published'
             $.ajax "/api/forums/#{@post.forum.stub}/posts/#{@post._id}", 
                 { 

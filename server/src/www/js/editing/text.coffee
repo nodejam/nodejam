@@ -1,22 +1,22 @@
 class Text 
 
-    constructor: (@editor) ->
+    constructor: (@e, @editor) ->
 
 
-    setup: (e) =>    
-        e.attr 'contenteditable', true
+    setup: =>
+        @e.attr 'contenteditable', true
 
         handleEmpty = =>
-            if e.text().trim()
-                if e.data 'placeholder'
-                    placeholder = e.find('.placeholder')            
+            if @e.text().trim()
+                if @e.data 'placeholder'
+                    placeholder = @e.find('.placeholder')            
                     if placeholder.length
                         placeholder.removeClass 'dim'
             else
-                e.html "<span class=\"placeholder\">#{e.data 'placeholder'}</span>"
+                @e.html "<span class=\"placeholder\">#{@e.data 'placeholder'}</span>"
 
         onFocus = =>
-            placeholder = e.find('.placeholder')
+            placeholder = @e.find('.placeholder')
     
             if placeholder.length
                 placeholder.addClass 'dim'                
@@ -28,16 +28,16 @@ class Text
                 selection.removeAllRanges()
                 selection.addRange(range);
             
-        e.click onFocus
-        e.focus onFocus             
-        e.bind 'touch', onFocus
-        e.blur handleEmpty
+        @e.click onFocus
+        @e.focus onFocus             
+        @e.bind 'touch', onFocus
+        @e.blur handleEmpty
         
-        e.keydown =>
-            if e.find('.placeholder').length
-                e.empty()
+        @e.keydown =>
+            if @e.find('.placeholder').length
+                @e.empty()
 
-        if e.data('field-type') is 'text'
+        if @e.data('field-type') is 'text'
             config = { 
                 toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote' ] } ],
                 forcePasteAsPlainText: true
@@ -55,14 +55,14 @@ class Text
     
 
 
-    update: (post, e) =>
-        e.find('.placeholder').remove()
-        switch e.data('field-type')                
+    update: (post) =>
+        @e.find('.placeholder').remove()
+        switch @e.data('field-type')                
             when 'heading', 'plain-text'
-                post[e.data('field-name')] = e.text()
+                post[@e.data('field-name')] = @e.text()
             when 'text'
-                post[e.data('field-name')] = {
-                    text: e.html()
+                post[@e.data('field-name')] = {
+                    text: @e.html()
                     format: 'html'
                 }
 

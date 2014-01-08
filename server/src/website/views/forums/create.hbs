@@ -5,11 +5,10 @@
 <div class="main-pane">
     <div class="content-area">    
         <h1 data-field-type="heading" data-field-name="title" data-placeholder="Name of the forum" contenteditable="true"></h1>
-        <p class="content large-text" data-field-type="plain-text" data-field-name="description" data-placeholder="Write a description"></p>
+        <p data-field-type="plain-text" data-field-name="description" data-placeholder="Write a description. Couple of lines maybe, not too long." class="content large-text" ></p>
         <h3>Permissions</h3>
-        <ul class="selectable iconic medium-height">
-            <div></div>
-            <li class="selected">
+        <ul data-field-type="selectable" data-field-name="type" class="selectable iconic medium-height" >
+            <li class="selected" data-field-value="public">
                 <i class="fa fa-check"></i>
                 <img src="" alt="" />
                 <div>
@@ -17,11 +16,11 @@
                     <p>Anybody can join and post in the forum. Recommended.</p>
                 </div>                
             </li>
-            <li>
+            <li data-field-value="protected">
                 <img src="" />
                 <div>
                     <h4>Protected</h4>
-                    <p>People will need your approval to join the forum.</p>
+                    <p>Anybody can join, but only approved users can post in the forum.</p>
                 </div>
             </li>
         </ul>
@@ -30,5 +29,3 @@
         </div>
     </div>
 </div>
-
-

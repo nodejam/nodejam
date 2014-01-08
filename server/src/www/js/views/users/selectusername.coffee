@@ -23,7 +23,7 @@ class SelectUsername extends window.Fora.Views.BaseView
         validator = new Fora.Views.Validator {
             onComplete: cb,
             form: 'form.select-username',
-            page: this
+            scope: this
         }        
         validator.validate()
         
