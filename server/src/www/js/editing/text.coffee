@@ -6,15 +6,6 @@ class Text
     setup: =>
         @e.attr 'contenteditable', true
 
-        handleEmpty = =>
-            if @e.text().trim()
-                if @e.data 'placeholder'
-                    placeholder = @e.find('.placeholder')            
-                    if placeholder.length
-                        placeholder.removeClass 'dim'
-            else
-                @e.html "<span class=\"placeholder\">#{@e.data 'placeholder'}</span>"
-
         onFocus = =>
             placeholder = @e.find('.placeholder')
     
@@ -31,7 +22,7 @@ class Text
         @e.click onFocus
         @e.focus onFocus             
         @e.bind 'touch', onFocus
-        @e.blur handleEmpty
+        @e.blur @handleEmpty
         
         @e.keydown =>
             if @e.find('.placeholder').length
@@ -45,13 +36,13 @@ class Text
             
             config.on = {
                 instanceReady: (evt) => 
-                    handleEmpty()
+                    @handleEmpty()
             }
             
             ckeditor = CKEDITOR.inline e[0], config  
 
         else    
-            handleEmpty()
+            @handleEmpty()
     
 
 
@@ -65,6 +56,17 @@ class Text
                     text: @e.html()
                     format: 'html'
                 }
+        @handleEmpty()
+        
 
+        
+    handleEmpty: =>
+            if @e.text().trim()
+                if @e.data 'placeholder'
+                    placeholder = @e.find('.placeholder')            
+                    if placeholder.length
+                        placeholder.removeClass 'dim'
+            else
+                @e.html "<span class=\"placeholder\">#{@e.data 'placeholder'}</span>"
 
 window.Fora.Editing.Text = Text

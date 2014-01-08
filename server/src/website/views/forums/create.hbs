@@ -4,28 +4,28 @@
 
 <div class="main-pane">
     <div class="content-area">    
-        <h1 data-field-type="heading" data-field-name="title" data-placeholder="Name of the forum" contenteditable="true"></h1>
+        <h1 data-field-type="heading" data-field-name="name" data-placeholder="Name of the forum" contenteditable="true"></h1>
         <p data-field-type="plain-text" data-field-name="description" data-placeholder="Write a description. Couple of lines maybe, not too long." class="content large-text" ></p>
         <h3>Permissions</h3>
         <ul data-field-type="selectable" data-field-name="type" class="selectable iconic medium-height" >
             <li class="selected" data-field-value="public">
                 <i class="fa fa-check"></i>
-                <img src="" alt="" />
-                <div>
+                <div class="icon"></div>
+                <div class="text">
                     <h4>Public</h4>
                     <p>Anybody can join and post in the forum. Recommended.</p>
                 </div>                
             </li>
             <li data-field-value="protected">
-                <img src="" />
-                <div>
+                <div class="icon"></div>
+                <div class="text">
                     <h4>Protected</h4>
                     <p>Anybody can join, but only approved users can post in the forum.</p>
                 </div>
             </li>
         </ul>
         <div class="option-bar">
-            <button class="positive">Create Forum</button>
+            <button class="positive create">Create Forum</button>
         </div>
     </div>
 </div>

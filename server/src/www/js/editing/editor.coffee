@@ -14,7 +14,7 @@ class Editor
         
 
 
-    update: (post = {}) =>
+    data: (post = {}) =>
         for e in @container.find('[data-field-type]')
             e = $ e
             e.data('control').update post
