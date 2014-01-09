@@ -1,16 +1,15 @@
 <div class="main-pane">
+    <div class="nav">
+        <ul>
+            <li class="selected">
+                Trending
+            </li>
+            <li>
+                <a href="/forums">Forums</a>
+            </li>            
+        </ul>
+    </div>
     <div class="content-area">
-        <div class="nav">
-            <ul>
-                <li class="selected">
-                    Trending
-                </li>
-                <li>
-                    <a href="/forums">Forums</a>
-                </li>            
-            </ul>
-        </div>
-
         {{#if editorsPicks}}
             <ul class="cards standard">
             {{#each editorsPicks}}

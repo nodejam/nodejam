@@ -1,5 +1,4 @@
 <div class="main-pane">
-    <div class="content-area wide">    
     <div class="nav alt">
         <ul>
             <li>
@@ -15,13 +14,15 @@
             </li>
         </ul>
     </div>
-    {{#if featured}}
-        <ul class="cards alt">
-        {{#each featured}}
-            {{> forumcard summary}}
-        {{/each}}
-        </ul>
-    {{/if}}
+    <div class="fixed-width">
+        <div class="content-area wide">    
+        {{#if featured}}
+            <ul class="cards alt">
+            {{#each featured}}
+                {{> forumcard summary}}
+            {{/each}}
+            </ul>
+        {{/if}}
+        </div>
     </div>
 </div>
-

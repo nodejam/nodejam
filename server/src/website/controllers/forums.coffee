@@ -2,6 +2,7 @@ conf = require '../../conf'
 database = (require '../../lib/data/database').Database
 db = new database(conf.db)
 models = require '../../models'
+fields = require '../../models/fields'
 utils = require '../../lib/utils'
 mdparser = require('../../lib/markdownutil').marked
 auth = require '../../common/web/auth'
@@ -16,7 +17,7 @@ exports.index = auth.handler ->*
         featured, 
         pageName: 'forums-page', 
         pageLayout: {
-            type: 'single-section-page fixed-width',
+            type: 'single-section-page',
         }              
     }
 
@@ -45,6 +46,8 @@ exports.item = auth.handler (stub) ->*
         coverContent = "
             <h1>#{forum.name}</h1>
             <p>#{info.about}</p>"
+            
+        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/pub/images/forum-cover.jpg', small: '/pub/images/forum-cover-small.jpg', alt: forum.name } }
             
         yield @render @network.getView('forums', 'item'), { 
             forum,
