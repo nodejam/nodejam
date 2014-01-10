@@ -62,7 +62,8 @@ poetry = {
     permission: 'public',
     type: 'public',
     category: 'literature',
-    _createdBy: 'jeswin'  
+    _createdBy: 'jeswin',
+    posttypes: 'Haiku,Article'
 }
 
 movies = {

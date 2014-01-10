@@ -45,10 +45,11 @@ exports.item = auth.handler (stub) ->*
         
         coverContent = "
             <h1>#{forum.name}</h1>
-            <p>#{info.about}</p>"
+            <p data-field-type=\"plain-text\" data-field-name=\"description\">#{forum.description}</p>
+            <div class=\"option-bar\"><button class=\"edit\">Edit</button></div>"
             
         forum.cover ?= new fields.Cover { image: new fields.Image { src: '/pub/images/forum-cover.jpg', small: '/pub/images/forum-cover-small.jpg', alt: forum.name } }
-            
+        
         yield @render @network.getView('forums', 'item'), { 
             forum,
             forumJson: JSON.stringify(forum),
@@ -60,8 +61,9 @@ exports.item = auth.handler (stub) ->*
             pageLayout: {
                 type: 'single-section-page with-cover',
                 cover: forum.cover,
-                coverContent
-            }              
+                coverContent,
+                coverEdit: { field: 'cover' }
+            }           
         }
 
 

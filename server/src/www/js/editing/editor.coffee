@@ -1,7 +1,13 @@
 class Editor
     
     constructor: (@container) ->
-        editables = @container.find('[data-field-type]')
+        @container.addClass 'editor'
+        if @container.attr('data-field-type')
+            editables = @container
+            editables.add @container.find('[data-field-type]')
+        else
+            editables = @container.find('[data-field-type]')
+
         editables.highlight()        
     
         for e in editables
@@ -11,6 +17,11 @@ class Editor
                 control = new ctor(e, @)
                 e.data 'control', control
                 control.setup()
+        
+
+    
+    exit: =>
+        @container.removeClass 'editor'
         
 
 
@@ -46,6 +57,8 @@ class Editor
                 Fora.Editing.Text
             when 'selectable'
                 Fora.Editing.Selectable
+            when 'cover'
+                Fora.Editing.Cover
     
 
 

@@ -1,4 +1,6 @@
-.main-pane, .alt-pane { margin-top: 20px; box-sizing: border-box; -moz-box-sizing: border-box; padding-left: 64px; padding-right: 24px;  }
+.main-pane, .alt-pane { 
+    margin-top: 20px; box-sizing: border-box; -moz-box-sizing: border-box; padding-left: 64px; padding-right: 24px;      
+}
 
 /* Large Pages */
 .large-pages-common() {
@@ -13,8 +15,23 @@
             position: fixed; height: 100%; top: 0;
             .image {
                 background-size: cover; background-position: 50% 50%; height: 100%;
-                .content-wrap { left: 32px; bottom: 0; position: absolute }
+                > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
+                > .content-wrap { 
+                    left: 32px; bottom: 20px; position: absolute; color: @colorLighter;
+                    h1 { font-size: 2em }
+                    p { font-size: 1.3em }
+                    
+                }
             }
+            button {
+                background: transparent; 
+            }
+        }
+    }
+    
+    .main-pane, .alt-pane {
+        > .nav { 
+            &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
         }
     }
 }
@@ -37,7 +54,9 @@
         
         &.with-cover {      
             .main-pane { width: (100% - @coverWidth); }
-            .cover { width: @coverWidth; left: (100% - @coverWidth); }
+            .cover { 
+                width: @coverWidth; left: (100% - @coverWidth); 
+            }
             &.full-cover { /* TODO */ }
         }
     }

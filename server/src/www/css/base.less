@@ -64,8 +64,8 @@ a {
 }
 
 /* FORM CONTROLS */
-.control (@fg, @bg, @borderColor, @borderHighLight, @borderShadow) { 
-    color: @fg; background-color: @bg; border-top: 2px solid darken(@borderColor, @borderHighLight); border-right: 2px solid darken(@borderColor, @borderShadow);     
+.control (@fg, @bg, @borderColor, @borderHighLight, @borderShadow) {
+    min-width:80px; color: @fg; background-color: @bg; border-top: 2px solid darken(@borderColor, @borderHighLight); border-right: 2px solid darken(@borderColor, @borderShadow);     
     border-bottom: 2px solid darken(@borderColor, @borderShadow); border-left: 2px solid darken(@borderColor, @borderHighLight);
     &:hover { background-color: darken(@bg, 2%);  }
 }
@@ -79,7 +79,7 @@ label.alert-required:after { content: '*' }
 
 button { 
     .fontBase; .control(@colorText, #fff, #fff, 8%, 8%); border-radius: 30px; outline: none;
-    padding: 11px 14px 11px 14px; margin: 0 2px 0 0; font-weight: bold; text-transform: uppercase; cursor: pointer;     
+    padding: 9px 12px 9px 12px; margin: 0 2px 0 0; font-weight: bold; text-transform: uppercase; cursor: pointer;     
 
     i { padding-right: 6px; }        
     &.textless i { padding-right: 0; }

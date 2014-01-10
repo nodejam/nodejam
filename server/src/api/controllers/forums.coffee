@@ -15,7 +15,7 @@ exports.create = auth.handler { session: true }, ->*
         forum = new models.Forum
         forum.network = @network.stub
         forum.stub = stub
-        @parser.map forum, ['name', 'type', 'description', 'postTypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
+        @parser.map forum, ['name', 'type', 'description', 'posttypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
         forum.createdBy = @session.user
         
         forum = yield forum.save creds, db

@@ -39,7 +39,7 @@ class Text
                     @handleEmpty()
             }
             
-            ckeditor = CKEDITOR.inline e[0], config  
+            ckeditor = CKEDITOR.inline @e[0], config  
 
         else    
             @handleEmpty()
