@@ -1,14 +1,7 @@
 models = require '../models'
 
 templates =   {
-    layouts: {
-        default: 'layouts/default',    
-    },
-    views: {    
-        home: {
-            index: 'home/index',
-            login: 'home/login',        
-        },
+    views: {
         users: {
             selectusername: 'users/selectusername'
         },
@@ -38,7 +31,6 @@ for file in files
         when 'settings.config'
             settings = contents
         else
-            contents.defaultTemplates = templates
             networks.push new models.Network(contents)
 
 settings.pubdir ?= path.resolve __dirname, '../../www-user'
@@ -49,4 +41,3 @@ exports.auth = settings.auth
 exports.admins = settings.admins
 exports.pubdir = settings.pubdir
 exports.networks = networks
-exports.templates = templates

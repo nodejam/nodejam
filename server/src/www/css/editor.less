@@ -18,11 +18,12 @@
 
 
     .editor-option-row {
-        .fontBase; padding: 8px 0 !important; margin: 0 0 12px 0 !important;
+        .fontBase; margin: 0 0 12px 0 !important;
         &.icon-text {
             i { font-size: 32px; float: left; }
             a { float: left; margin: 4px 0 0 8px }    
         }
+
         &:after { content: ""; display: block; clear: both; }
     }
 
@@ -71,6 +72,12 @@
 
 
     .cover-editor {
+        /* When Empty */
+        > .add-cover {
+            padding: 24px; background: @colorLighter
+        }
+
+        /* Not Empty */
         > .underlay { 
             position: fixed; background: black; opacity: 0.4; height: 140px; width: 240px; margin: 0; padding: 16px; top: 20px; margin-left: 32px;border-radius: 3px; z-index: 2;    
         }

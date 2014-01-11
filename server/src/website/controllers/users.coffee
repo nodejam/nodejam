@@ -8,7 +8,7 @@ auth = require '../../common/web/auth'
 
 exports.selectUsernameForm = ->*
     token = yield models.Token.get({ key: @query('token') }, {}, db)
-    @render @network.getView('users', 'selectusername'), { 
+    @render 'users/selectusername', { 
         username: token.value.userDetails.username,
         name: token.value.userDetails.name,
         pageName: 'select-username-page', 

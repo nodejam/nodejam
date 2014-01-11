@@ -33,10 +33,10 @@ class Article extends Post
                 @parseTemplate {
                     widget: "postview",                    
                     itemPane: [
-                        { widget: 'cover', cover: '@post.cover', editable: true, field: 'cover',  size: 1 },
-                        { widget: 'heading', title: '@post.title', size: 1, editable: true, field: 'title' },
+                        { widget: 'cover', cover: '@post.cover', field: 'cover',  editable: true, size: 1 },
+                        { widget: 'heading', title: '@post.title', field: 'title', editable: true, size: 1 },
                         { widget: 'authorship', type: 'small', author: '@author' },
-                        { widget: 'text', text: '@post.content', editable: true, field: 'content' },
+                        { widget: 'text', text: '@post.content', field: 'content', editable: true },
                     ],
                     sidebar: [ { widget: 'authorship', author: '@author' } ]
                 }

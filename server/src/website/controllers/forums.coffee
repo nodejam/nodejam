@@ -13,7 +13,7 @@ exports.index = auth.handler ->*
     for forum in featured
         forum.summary = forum.getView("card")
     
-    yield @render @network.getView('forums', 'index'), { 
+    yield @render 'forums/index', { 
         featured, 
         pageName: 'forums-page', 
         pageLayout: {
@@ -50,7 +50,7 @@ exports.item = auth.handler (stub) ->*
             
         forum.cover ?= new fields.Cover { image: new fields.Image { src: '/pub/images/forum-cover.jpg', small: '/pub/images/forum-cover-small.jpg', alt: forum.name } }
         
-        yield @render @network.getView('forums', 'item'), { 
+        yield @render 'forums/item', { 
             forum,
             forumJson: JSON.stringify(forum),
             message: if info.message then mdparser(info.message),
@@ -69,7 +69,7 @@ exports.item = auth.handler (stub) ->*
 
 
 exports.create = ->*
-    yield @render @network.getView('forums', 'create'), { 
+    yield @render 'forums/create', { 
         pageName: 'create-forum-page', 
         pageLayout: {
             type: 'single-section-page fixed-width'
@@ -88,7 +88,7 @@ exports.about = (stub) ->*
     moderators = leaders.filter (u) -> u.roles.indexOf('moderator') isnt -1 and u.roles.indexOf('admin') is -1
     members = (yield forum.getMemberships ['member']).filter (u) -> u.roles.indexOf('admin') is -1 and u.roles.indexOf('moderator') is -1
     
-    yield @render @network.getView('forums', 'about'), {
+    yield @render 'forums/about', {
         forum,
         about: if about then mdparser(about),
         admins,

@@ -19,7 +19,7 @@ exports.index = auth.handler ->*
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free.</p>"
 
-    yield @render @network.getView('home', 'index'), { 
+    yield @render 'home/index', { 
         editorsPicks,
         featured,
         pageName: 'home-page',
@@ -35,7 +35,7 @@ exports.index = auth.handler ->*
 
 
 exports.login = ->*
-    yield @render req.network.getView('home', 'login'), { 
+    yield @render 'home/login', { 
         pageName: 'login-page', 
         pageType: 'single-section-page', 
     }

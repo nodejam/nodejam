@@ -51,8 +51,6 @@ class Editor
 
     getControl: (type) =>
         switch type
-            when 'image'
-                Fora.Editing.Image                
             when 'heading', 'text', 'plain-text'
                 Fora.Editing.Text
             when 'selectable'

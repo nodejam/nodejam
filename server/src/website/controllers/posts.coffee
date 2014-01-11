@@ -19,17 +19,14 @@ exports.item = auth.handler (forum, post) ->*
                 forum
             }
             
-            yield @render @network.getView('posts', 'post'), { 
+            yield @render 'posts/post', { 
                 html,
                 json: JSON.stringify(post),
                 typeDefinition: JSON.stringify(post.getTypeDefinition()),
                 user: @session.user,
                 pageName: 'post-page',
                 pageLayout: {
-                    type: 'single-section-page with-cover',
-                    cover: {
-                        image: { src: '/pub/images/cover.jpg' },
-                    },
+                    type: 'single-section-page',
                 }                
             }
     

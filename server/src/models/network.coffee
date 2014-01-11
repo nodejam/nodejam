@@ -11,8 +11,6 @@ class Network extends ForaDbModel
             name: 'string',
             stub: 'string',
             domains: { type: 'array', contents: 'string' },
-            templates: '',
-            defaultTemplates: ''
         },
         logging: {
             onInsert: 'NEW_USER'
@@ -23,17 +21,6 @@ class Network extends ForaDbModel
     constructor: (params) ->
         @templates = {}
         super
-        
-
-
-    getLayout: (name) =>
-        name = name ? 'default'
-        @templates.layouts?[name] ? @defaultTemplates.layouts[name]
-
-        
-            
-    getView: (namespace, view) =>
-        @templates.views?[namespace]?[view] ? @defaultTemplates.views[namespace][view]
             
 
 exports.Network = Network

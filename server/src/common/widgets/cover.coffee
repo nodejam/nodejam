@@ -9,7 +9,7 @@ class Cover extends Widget
     @bgTemplate: handlebars.compile '<div style="background-image:url({{src}})" {{{attr}}}></div>'
 
 
-    @emptyTemplate: handlebars.compile '<div class="image" {{{attr}}}></div>'
+    @emptyTemplate: handlebars.compile '<div {{{attr}}}></div>'
 
 
     constructor: (@params) ->
@@ -35,6 +35,7 @@ class Cover extends Widget
         if @params.field
             attribs['data-field-type'] = 'cover'
             attribs['data-field-name'] = @params.field
+            attribs['data-cover-format'] = 'normal,top,full'
             if cover?.image
                 attribs['data-small-image'] = cover.image.small
 
