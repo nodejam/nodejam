@@ -7,14 +7,14 @@ class Article extends Post
 
     @typeDefinition: {
         type: @,
-        alias: 'Article',
-        inherits: 'Post',
+        name: 'article',
+        inherits: 'post',
         fields: {
             title: { type: 'string', required: false, maxLength: 200 }
             subtitle: { type: 'string', required: false, maxLength: 200 },
             synopsis: { type: 'string', required: false, maxLength: 2000 },
-            cover: 'Cover !required',
-            content: 'TextContent !required'
+            cover: 'cover !required',
+            content: 'text-content !required'
         }
     }
 
@@ -22,7 +22,7 @@ class Article extends Post
 
     constructor: (params) ->
         super
-        @type ?= 'Article'
+        @type ?= 'article'
         @content ?= new fields.TextContent { text: '', format: 'html' }
         
         

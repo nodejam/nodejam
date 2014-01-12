@@ -5,7 +5,7 @@ class Token extends ForaDbModel
 
     @typeDefinition: {
         type: @,
-        alias: "Token",
+        name: "token",
         collection: 'tokens',
         fields: {
             type: 'string',

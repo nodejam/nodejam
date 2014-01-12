@@ -4,7 +4,7 @@ ForaModel = require('./foramodel').ForaModel
 class Image extends ForaModel
     @typeDefinition: {
         type: @,
-        alias: 'Image',
+        name: 'image',
         fields: {
             src: 'string',
             small: 'string !required',
@@ -18,9 +18,9 @@ class Image extends ForaModel
 class Cover extends ForaModel
     @typeDefinition: {
         type: @,
-        alias: 'Cover',
+        name: 'cover',
         fields: {
-            image: 'Image',
+            image: 'image',
             bgColor: 'string !required',
             bgOpacity: 'number !required',
             foreColor: 'string !required',
@@ -32,7 +32,7 @@ class Cover extends ForaModel
 class TextContent extends ForaModel
     @typeDefinition: {
         type: @,
-        alias: 'TextContent',
+        name: 'text-content',
         fields: {
             text: { type: 'string', allowHtml: true },
             format: 'string'

@@ -17,7 +17,7 @@ class ForaTypeUtils extends TypeUtils
     loadType: (ns, cache) =>
         for k, v of ns
             typeDef = if typeof v.typeDefinition is "function" then v.typeDefinition() else v.typeDefinition
-            cache[typeDef.alias] = typeDef.type
+            cache[typeDef.name] = typeDef.type
             
             if typeDef.type.childModels
                 @loadType typeDef.type.childModels, cache           

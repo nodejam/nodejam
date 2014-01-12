@@ -6,7 +6,7 @@ class Message extends ForaDbModel
     
     @typeDefinition: {
         type: @,
-        alias: "Message",
+        name: "message",
         collection: 'messages',
         fields: {
             userid: 'string',

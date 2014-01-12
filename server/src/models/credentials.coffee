@@ -6,7 +6,7 @@ class Credentials extends ForaDbModel
     
     @typeDefinition: {
         type: @,
-        alias: 'Credentials',
+        name: 'credentials',
         collection: 'credentials',
         fields: {
             userid: 'string',

@@ -5,7 +5,7 @@ ForaDbModel = require('./foramodel').ForaDbModel
 class ForumInfo extends ForaDbModel
     @typeDefinition: {
         type: @,
-        alias: 'ForumInfo',
+        name: 'forum-info',
         collection: 'foruminfo',
         fields: {
             forumid: 'string',

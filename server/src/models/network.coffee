@@ -5,7 +5,7 @@ class Network extends ForaDbModel
 
     @typeDefinition: {
         type: @,
-        alias: "Network",
+        name: "network",
         collection: 'networks',
         fields: {
             name: 'string',

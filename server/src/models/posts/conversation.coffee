@@ -5,8 +5,8 @@ class Conversation extends Post
     
     @typeDefinition: {
             type: @,
-            alias: 'Conversation',
-            inherits: 'Post',
+            name: 'conversation',
+            inherits: 'post',
             fields: {
                 content: { type: 'string', required: false, maxLength: 50000 },
             }

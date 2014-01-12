@@ -12,7 +12,7 @@ class User extends ForaDbModel
     class Summary extends ForaModel    
         @typeDefinition: {
             type: @,
-            alias: "User.Summary",
+            name: "user-summary",
             fields: {
                 id: 'string',
                 username: 'string',
@@ -26,7 +26,7 @@ class User extends ForaDbModel
 
     @typeDefinition: {
         type: @,
-        alias: "User",
+        name: "user",
         collection: 'users',
         fields: {
             username: 'string',

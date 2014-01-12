@@ -27,7 +27,7 @@ class TypeUtils
                 baseCtor = @resolveType typeDefinition.inherits
                 fullTypeDefinition = @mergeTypeDefinition typeDefinition, baseCtor.getTypeDefinition()    
 
-            match = { ctor, alias: typeDefinition.alias, typeDefinition, fullTypeDefinition }
+            match = { ctor, name: typeDefinition.name, typeDefinition, fullTypeDefinition }
             TypeUtils.TypeDefCache.push match
             
         if inherited and match.typeDefinition.inherits then match.fullTypeDefinition else match.typeDefinition
