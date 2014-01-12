@@ -18,16 +18,16 @@ server/src/conf/*
 !server/src/conf/index.conf
 !server/src/conf/*.sample
 
-server/www-user/assetpaths/*
-!server/www-user/assetpaths/placeholder
-server/www-user/images/*
-!server/www-user/images/cover.jpg
-!server/www-user/images/cover-experience.jpg
-!server/www-user/images/placeholder
-server/www-user/originalimages/*
-!server/www-user/originalimages/placeholder
-server/www-user/temp/*
-!server/www-user/temp/placeholder
+server/public/assetpaths/*
+!server/public/assetpaths/placeholder
+server/public/images/*
+!server/public/images/cover.jpg
+!server/public/images/cover-experience.jpg
+!server/public/images/placeholder
+server/public/originalimages/*
+!server/public/originalimages/placeholder
+server/public/temp/*
+!server/public/temp/placeholder
 
 Thumbs.db
 

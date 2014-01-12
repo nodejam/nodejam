@@ -27,7 +27,7 @@ exports.upload = auth.handler { session: true }, ->*
                         @resizeImage original, image, { width: 1600, height: 1600 }, (err) =>
                             @resizeImage original, smallImage, { width: 400, height: 400 }, (err) =>
                                 res.set 'Content-Type', 'text/html'
-                                res.send { image: "/pub/images/#{dir}/#{filename}", small: "/pub/images/#{dir}/small_#{filename}" }
+                                res.send { image: "/public/images/#{dir}/#{filename}", small: "/pub/images/#{dir}/small_#{filename}" }
                 catch e
                     next e
         else

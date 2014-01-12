@@ -18,11 +18,10 @@ class Widget
             else
                 switch expArray[0]
                     when 'hbs'
-                        #throw new Error 'HBS_NOT_IMPLEMENTED'
+                        throw new Error 'HBS_NOT_IMPLEMENTED'
                         
                         ###
                         -- Hold until we decide on how to santize this --
-                        ###
                         for t in Widget.templateCache
                             if t.key is expArray[1]
                                 return t.value(params)
@@ -30,6 +29,7 @@ class Widget
                         template = handlebars.compile expArray[1]
                         Widget.templateCache.push { key: expArray[1], value: template }
                         return template(params)
+                        ###
                         
         else
             throw new Error "UNSUPPORTED_EXPRESSION"        

@@ -1,6 +1,7 @@
 path = require 'path'
 fs = require 'fs'
 utils = require '../lib/utils'
+conf = require '../conf'
 
 conf = ->
     require '../conf'
@@ -30,7 +31,7 @@ getFilePath = (base, file) ->
 
 
 getRandomDir = ->
-    Date.now() % 1000
+    Date.now() % conf.userDirCount
 
 
 getDateFormattedDir = (date = new Date()) ->

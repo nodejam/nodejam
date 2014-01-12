@@ -48,7 +48,7 @@ exports.item = auth.handler (stub) ->*
             <p data-field-type=\"plain-text\" data-field-name=\"description\">#{forum.description}</p>
             <div class=\"option-bar\"><button class=\"edit\">Edit</button></div>"
             
-        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/pub/images/forum-cover.jpg', small: '/pub/images/forum-cover-small.jpg', alt: forum.name } }
+        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/public/images/forum-cover.jpg', small: '/public/images/forum-cover-small.jpg', alt: forum.name } }
         
         yield @render 'forums/item', { 
             forum,
@@ -97,7 +97,7 @@ exports.about = (stub) ->*
         pageName: 'forum-about-page', 
         pageLayout: {
             type: 'single-section-page with-cover',
-            cover: { image: { src: forum.cover ? '/pub/images/cover.jpg' } },
+            cover: { image: { src: forum.cover ? '/public/images/cover.jpg' } },
         }
     }
 

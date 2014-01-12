@@ -26,7 +26,7 @@ exports.index = auth.handler ->*
         pageLayout: {
             type: 'single-section-page with-cover',
             cover: {
-                image: { src: '/pub/images/cover.jpg' },
+                image: { src: '/public/images/cover.jpg' },
             },
             coverContent
         }

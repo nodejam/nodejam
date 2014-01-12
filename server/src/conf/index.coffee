@@ -1,24 +1,5 @@
 models = require '../models'
 
-templates =   {
-    views: {
-        users: {
-            selectusername: 'users/selectusername'
-        },
-        forums: {
-            index: 'forums/index',
-            item: 'forums/item',
-            about: 'forums/about',
-            forumcard: '/views/forums/forumcard',
-            create: 'forums/create'
-        },
-        posts: {
-            postcard: '/views/posts/postcard',
-            post: 'posts/post'
-        }
-    }
-}
-
 #We will do everything synchronously.
 fs = require 'fs'
 path = require 'path'
@@ -41,3 +22,4 @@ exports.auth = settings.auth
 exports.admins = settings.admins
 exports.pubdir = settings.pubdir
 exports.networks = networks
+exports.userDirCount = 10

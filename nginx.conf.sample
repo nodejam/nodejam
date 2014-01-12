@@ -3,8 +3,8 @@ server {
     server_name fora.host.name;
     client_max_body_size 20M;
 
-    location /pub {
-        alias /path/to/fora/server/www-user;
+    location /public {
+        alias /path/to/fora/server/public;
     }
 
     location /css {

@@ -4,6 +4,7 @@ ForaDbModel = require('./foramodel').ForaDbModel
 utils = require '../lib/utils'
 hasher = require('../lib/hasher').hasher
 models = require './'
+conf = require '../conf'
 emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 class User extends ForaDbModel
@@ -99,7 +100,7 @@ class User extends ForaDbModel
 
 
     getAssetUrl: =>
-        "/pub/assetpaths/#{utils.getHashCode(@username) % 1000}"
+        "/public/assetpaths/#{utils.getHashCode(@username) % conf.userDirCount}"
 
 
 
