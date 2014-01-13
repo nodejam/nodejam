@@ -1,5 +1,5 @@
 ForaDbModel = require('./foramodel').ForaDbModel
-hasher = require('../lib/hasher').hasher
+hasher = require('../lib/hasher')
 models = require('./')
 
 class Credentials extends ForaDbModel

@@ -26,4 +26,4 @@ hasher = (opts, callback) ->
             opts.key = new Buffer(key)
             callback null, opts
     
-exports.hasher = hasher
+module.exports = hasher
