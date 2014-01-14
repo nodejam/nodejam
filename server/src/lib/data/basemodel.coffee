@@ -30,15 +30,15 @@ class BaseModel
 
 
     
-    validate: (modelDescription = @getTypeDefinition()) ->
+    validate: (modelTypeDefinition = @getTypeDefinition()) ->
         validator = new Validator @constructor.getTypeUtils()
-        validator.validate @, modelDescription
+        validator.validate @, modelTypeDefinition
             
 
 
-    validateField: (value, fieldName, modelDescription = @getTypeDefinition()) ->
+    validateField: (value, fieldName, modelTypeDefinition = @getTypeDefinition()) ->
         validator = new Validator @constructor.getTypeUtils()
-        validator.validateField @, value, fieldName, modelDescription
+        validator.validateField @, value, fieldName, modelTypeDefinition
         
 
 

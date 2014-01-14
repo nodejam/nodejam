@@ -2,24 +2,24 @@ TypeUtils = require('../lib/data/typeutils').TypeUtils
 
 class ForaTypeUtils extends TypeUtils
 
-    resolveType: (name) =>
+    resolveUserDefinedType: (name) =>
         if not ForaTypeUtils.Cache
             ForaTypeUtils.Cache = {}
             
         if not ForaTypeUtils.Cache[name]
-            @loadType require('./'), ForaTypeUtils.Cache
-            @loadType require('./fields'), ForaTypeUtils.Cache
+            @loadTypes require('./'), ForaTypeUtils.Cache
+            @loadTypes require('./fields'), ForaTypeUtils.Cache
 
-        ForaTypeUtils.Cache[name]
+        #If we can't find it, assume it is one of the post types. 
+        ForaTypeUtils.Cache[name] ? { typeDefinition: { } }
         
         
-        
-    loadType: (ns, cache) =>
+    loadTypes: (ns, cache) =>
         for k, v of ns
             typeDef = if typeof v.typeDefinition is "function" then v.typeDefinition() else v.typeDefinition
             cache[typeDef.name] = typeDef.type
             
             if typeDef.type.childModels
-                @loadType typeDef.type.childModels, cache           
+                @loadTypes typeDef.type.childModels, cache           
                         
 exports.ForaTypeUtils = ForaTypeUtils

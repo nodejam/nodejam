@@ -12,7 +12,7 @@ class Post extends ForaDbModel
             type: @,
             name: "post",
             collection: 'posts',
-            discriminator: (obj) -> 
+            discriminator: (obj) ->*
                 switch obj.type
                     when 'article' then posts.Article
                     when 'conversation' then posts.Conversation

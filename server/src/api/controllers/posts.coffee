@@ -6,7 +6,7 @@ auth = require '../../common/web/auth'
 
 exports.create = auth.handler { session: true }, (forum) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-    type = models.Post.getTypeDefinition().discriminator { type: @parser.body('type') }
+    type = yield models.Post.getTypeDefinition().discriminator { type: @parser.body('type') }
     
     post = new type {
         createdBy: @session.user,

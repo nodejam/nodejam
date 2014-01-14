@@ -13,52 +13,52 @@ class DatabaseModel extends BaseModel
 
 
     @get: (params, context, db) ->*
-        modelDescription = @getTypeDefinition()
-        result = yield db.findOne(modelDescription.collection, params)
-        if result then yield @constructModel(result, modelDescription, context, db)
+        modelTypeDefinition = @getTypeDefinition()
+        result = yield db.findOne(modelTypeDefinition.collection, params)
+        if result then yield @constructModel(result, modelTypeDefinition, context, db)
                 
 
 
     @getAll: (params, context, db) ->*
-        modelDescription = @getTypeDefinition()
-        cursor = yield db.find(modelDescription.collection, params)
+        modelTypeDefinition = @getTypeDefinition()
+        cursor = yield db.find(modelTypeDefinition.collection, params)
         items = yield thunkify(cursor.toArray).call cursor
         if items.length
-            (yield @constructModel(item, modelDescription, context, db) for item in items)
+            (yield @constructModel(item, modelTypeDefinition, context, db) for item in items)
         else
             []
                     
 
     
     @find: (params, fnCursor, context, db) ->*
-        modelDescription = @getTypeDefinition()
-        cursor = yield db.find(modelDescription.collection, params)
+        modelTypeDefinition = @getTypeDefinition()
+        cursor = yield db.find(modelTypeDefinition.collection, params)
         fnCursor cursor
         items = yield thunkify(cursor.toArray).call cursor
         if items.length
-            (yield @constructModel(item, modelDescription, context, db) for item in items)
+            (yield @constructModel(item, modelTypeDefinition, context, db) for item in items)
         else
             []            
 
 
 
     @getCursor: (params, context, db) ->*
-        modelDescription = @getTypeDefinition()
-        yield db.find modelDescription.collection, params
+        modelTypeDefinition = @getTypeDefinition()
+        yield db.find modelTypeDefinition.collection, params
 
 
            
     @getById: (id, context, db) ->*
-        modelDescription = @getTypeDefinition()
-        result = yield db.findOne(modelDescription.collection, { _id: databaseModule.ObjectId(id) })
-        if result then yield @constructModel(result, modelDescription, context, db)
+        modelTypeDefinition = @getTypeDefinition()
+        result = yield db.findOne(modelTypeDefinition.collection, { _id: databaseModule.ObjectId(id) })
+        if result then yield @constructModel(result, modelTypeDefinition, context, db)
             
             
             
     @destroyAll: (params, db) ->*
-        modelDescription = @getTypeDefinition()
-        if modelDescription.canDestroyAll?(params)
-            yield db.remove(modelDescription.collection, params)
+        modelTypeDefinition = @getTypeDefinition()
+        if modelTypeDefinition.canDestroyAll?(params)
+            yield db.remove(modelTypeDefinition.collection, params)
         else
             throw new Error "Call to destroyAll must pass safety checks on params."
             
@@ -77,16 +77,21 @@ class DatabaseModel extends BaseModel
             model.__db = undefined
 
 
-
-    @constructModel: (obj, modelDescription, context, db) ->*
-        if modelDescription.discriminator
-            modelDescription = modelDescription.discriminator(obj).getTypeDefinition()
+    makeResult = (obj, fnConstructor, context, db) ->*
+        result = yield fnConstructor(obj, context, db)
+        attachContextAndDb(result, context, db)
+        result
+        
+    
+    @constructModel: (obj, modelTypeDefinition, context, db) ->*
+        if modelTypeDefinition.discriminator
+            modelTypeDefinition = (yield modelTypeDefinition.discriminator obj).getTypeDefinition()
             
-        result = yield @constructModelImpl(obj, modelDescription, context, db)
+        result = yield @_constructModel_impl(obj, modelTypeDefinition, context, db)
 
-        if modelDescription.trackChanges
+        if modelTypeDefinition.trackChanges
             clone = utils.deepCloneObject(obj)
-            original = yield @constructModelImpl(clone, modelDescription, context, db)
+            original = yield @_constructModel_impl(clone, modelTypeDefinition, context, db)
             result.getOriginalModel = ->
                 original
         
@@ -94,47 +99,47 @@ class DatabaseModel extends BaseModel
         
         
     
-    makeResult = (obj, fnConstructor, context, db) ->*
-        result = yield fnConstructor(obj)
-        attachContextAndDb(result, context, db)
-        result
-        
-    
-    
-    @constructModelImpl: (obj, modelDescription, context, db) ->*
-        if modelDescription.customConstructor
-            fnCtor = (o) ->* yield modelDescription.customConstructor o
+    @_constructModel_impl: (obj, modelTypeDefinition, context, db) ->*
+        if modelTypeDefinition.customConstructor
+            fnCtor = (_o, _ctx, _db) ->* yield modelTypeDefinition.customConstructor _o, _ctx, _db
             yield makeResult obj, fnCtor, context, db
-        else           
-            result = {}
-            typeUtils = @getTypeUtils()        
-        
-            for name, fieldDef of modelDescription.fields
-                   
-                value = obj[name]
+        else
+            result = yield @constructModelFields(obj, modelTypeDefinition.fields, context, db)
 
-                if typeUtils.isUserDefinedType fieldDef.type
-                    if value
-                        result[name] = yield @constructModel value, fieldDef.ctor.getTypeDefinition(), context, db
-                else
-                    if value?
-                        if fieldDef.type is 'array'
-                            arr = []
-                            if typeUtils.isUserDefinedType fieldDef.contents.type
-                                for item in value
-                                    arr.push yield @constructModel item, fieldDef.contents.ctor.getTypeDefinition(), context, db
-                            else
-                                arr = value
-                            result[name] = arr
-                        else
-                            result[name] = value    
-            
-            if obj._id
-                result._id = obj._id
-
-            fnCtor = (o) ->* new modelDescription.type o
+            fnCtor = (_o, _ctx, _db) ->* new modelTypeDefinition.type _o, _ctx, _db
             yield makeResult result, fnCtor, context, db                
                 
+
+    
+    @constructModelFields: (obj, fields, context, db) ->*
+        result = {}
+        typeUtils = @getTypeUtils()        
+    
+        for name, fieldDef of fields
+               
+            value = obj[name]
+
+            if typeUtils.isUserDefinedType fieldDef.type
+                if value
+                    result[name] = yield @constructModel value, fieldDef.ctor.getTypeDefinition(), context, db
+            else
+                if value?
+                    if fieldDef.type is 'array'
+                        arr = []
+                        if typeUtils.isUserDefinedType fieldDef.contents.type
+                            for item in value
+                                arr.push yield @constructModel item, fieldDef.contents.ctor.getTypeDefinition(), context, db
+                        else
+                            arr = value
+                        result[name] = arr
+                    else
+                        result[name] = value    
+        
+        if obj._id
+            result._id = obj._id
+    
+        result
+        
     
     
     create: =>
@@ -150,9 +155,9 @@ class DatabaseModel extends BaseModel
         db ?= @__db
         detachContextAndDb @
     
-        modelDescription = @getTypeDefinition()
+        modelTypeDefinition = @getTypeDefinition()
 
-        for fieldName, def of modelDescription.fields
+        for fieldName, def of modelTypeDefinition.fields
             if def.autoGenerated
                 switch def.event
                     when 'created'
@@ -166,38 +171,38 @@ class DatabaseModel extends BaseModel
 
         if not errors.length
 
-            if @_id and (modelDescription.concurrency is 'optimistic' or not modelDescription.concurrency)
+            if @_id and (modelTypeDefinition.concurrency is 'optimistic' or not modelTypeDefinition.concurrency)
                 _item = yield @constructor.getById(@_id, context, db)
                 if _item.__updateTimestamp isnt @__updateTimestamp
                     throw new Error "Update timestamp mismatch. Was #{_item.__updateTimestamp} in saved, #{@__updateTimestamp} in new."
 
             @__updateTimestamp = Date.now()                
-            @__shard = if modelDescription.generateShard? then modelDescription.generateShard(@) else "1"
+            @__shard = if modelTypeDefinition.generateShard? then modelTypeDefinition.generateShard(@) else "1"
 
             if not @_id
-                if modelDescription.logging?.onInsert
+                if modelTypeDefinition.logging?.onInsert
                     event = {
-                        type: modelDescription.logging.onInsert,
+                        type: modelTypeDefinition.logging.onInsert,
                         data: @
                     }
                     db.insert('events', event)                            
-                result = yield db.insert(modelDescription.collection, @)
-                result = yield @constructor.constructModel(result, modelDescription, context, db)
+                result = yield db.insert(modelTypeDefinition.collection, @)
+                result = yield @constructor.constructModel(result, modelTypeDefinition, context, db)
             else
-                if modelDescription.logging?.onUpdate
+                if modelTypeDefinition.logging?.onUpdate
                     event = {
-                        type: modelDescription.logging.onUpdate,
+                        type: modelTypeDefinition.logging.onUpdate,
                         data: @
                     }
                     db.insert('events', event)
-                yield db.update(modelDescription.collection, { @_id }, @)
+                yield db.update(modelTypeDefinition.collection, { @_id }, @)
                 attachContextAndDb @, context, db
                 result = @
 
             return result              
                                   
         else
-            @onError errors, modelDescription
+            @onError errors, modelTypeDefinition
 
     
     
@@ -207,8 +212,8 @@ class DatabaseModel extends BaseModel
         if not context or not db
             throw new Error "Invalid context or db"
 
-        modelDescription = @getTypeDefinition()
-        db.remove modelDescription.collection, { _id: @_id }
+        modelTypeDefinition = @getTypeDefinition()
+        db.remove modelTypeDefinition.collection, { _id: @_id }
 
 
     
@@ -218,7 +223,7 @@ class DatabaseModel extends BaseModel
         
         assoc = desc.associations[name]
         typeUtils = @constructor.getTypeUtils()
-        ctor = typeUtils.resolveType assoc.type
+        ctor = typeUtils.resolveUserDefinedType assoc.type
         params = {}
         for k, v of assoc.key
             params[v] = if k is '_id' then @_id.toString() else @[k]
@@ -229,11 +234,11 @@ class DatabaseModel extends BaseModel
         
 
 
-    onError: (errors, modelDescription) =>
+    onError: (errors, modelTypeDefinition) =>
         if @_id
-            details = "Invalid record with id #{@_id} in #{modelDescription.collection}.\n"
+            details = "Invalid record with id #{@_id} in #{modelTypeDefinition.collection}.\n"
         else
-            details = "Validation failed while creating a new record in #{modelDescription.collection}.\n"
+            details = "Validation failed while creating a new record in #{modelTypeDefinition.collection}.\n"
         
         details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}\n"
         for e in errors

@@ -24,7 +24,7 @@ class TypeUtils
                 typeDefinition.fields[field] = @getFieldDefinition(def)
             
             if typeDefinition.inherits
-                baseCtor = @resolveType typeDefinition.inherits
+                baseCtor = @resolveUserDefinedType typeDefinition.inherits
                 fullTypeDefinition = @mergeTypeDefinition typeDefinition, baseCtor.getTypeDefinition()    
 
             match = { ctor, name: typeDefinition.name, typeDefinition, fullTypeDefinition }
@@ -77,13 +77,9 @@ class TypeUtils
         fieldDef.type ?= ''
 
         if @isUserDefinedType(fieldDef.type) 
-            fieldDef.ctor = @resolveType fieldDef.type
+            fieldDef.ctor = @resolveUserDefinedType fieldDef.type
         
         fieldDef 
         
-        
 
-    resolveType: (name) =>
-        name
-    
 exports.TypeUtils = TypeUtils
