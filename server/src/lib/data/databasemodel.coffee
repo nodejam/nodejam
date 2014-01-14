@@ -15,7 +15,7 @@ class DatabaseModel extends BaseModel
     @get: (params, context, db) ->*
         modelDescription = @getTypeDefinition()
         result = yield db.findOne(modelDescription.collection, params)
-        if result then @constructModel(result, modelDescription, context, db)
+        if result then yield @constructModel(result, modelDescription, context, db)
                 
 
 
@@ -24,7 +24,7 @@ class DatabaseModel extends BaseModel
         cursor = yield db.find(modelDescription.collection, params)
         items = yield thunkify(cursor.toArray).call cursor
         if items.length
-            (@constructModel(item, modelDescription, context, db) for item in items)
+            (yield @constructModel(item, modelDescription, context, db) for item in items)
         else
             []
                     
@@ -36,7 +36,7 @@ class DatabaseModel extends BaseModel
         fnCursor cursor
         items = yield thunkify(cursor.toArray).call cursor
         if items.length
-            (@constructModel(item, modelDescription, context, db) for item in items)
+            (yield @constructModel(item, modelDescription, context, db) for item in items)
         else
             []            
 
@@ -51,7 +51,7 @@ class DatabaseModel extends BaseModel
     @getById: (id, context, db) ->*
         modelDescription = @getTypeDefinition()
         result = yield db.findOne(modelDescription.collection, { _id: databaseModule.ObjectId(id) })
-        if result then @constructModel(result, modelDescription, context, db)
+        if result then yield @constructModel(result, modelDescription, context, db)
             
             
             
@@ -78,15 +78,15 @@ class DatabaseModel extends BaseModel
 
 
 
-    @constructModel: (obj, modelDescription, context, db) ->
+    @constructModel: (obj, modelDescription, context, db) ->*
         if modelDescription.discriminator
             modelDescription = modelDescription.discriminator(obj).getTypeDefinition()
             
-        result = @constructModelImpl(obj, modelDescription, context, db)
+        result = yield @constructModelImpl(obj, modelDescription, context, db)
 
         if modelDescription.trackChanges
             clone = utils.deepCloneObject(obj)
-            original = @constructModelImpl(clone, modelDescription, context, db)
+            original = yield @constructModelImpl(clone, modelDescription, context, db)
             result.getOriginalModel = ->
                 original
         
@@ -94,34 +94,35 @@ class DatabaseModel extends BaseModel
         
         
     
-    makeResult = (obj, fnConstructor, context, db) ->
-        result = fnConstructor(obj)
+    makeResult = (obj, fnConstructor, context, db) ->*
+        result = yield fnConstructor(obj)
         attachContextAndDb(result, context, db)
         result
         
     
     
-    @constructModelImpl: (obj, modelDescription, context, db) ->
-        typeUtils = @getTypeUtils()        
-        
+    @constructModelImpl: (obj, modelDescription, context, db) ->*
         if modelDescription.customConstructor
-            makeResult obj, ((o) -> modelDescription.customConstructor o), context, db
+            fnCtor = (o) ->* yield modelDescription.customConstructor o
+            yield makeResult obj, fnCtor, context, db
         else           
             result = {}
+            typeUtils = @getTypeUtils()        
+        
             for name, fieldDef of modelDescription.fields
                    
                 value = obj[name]
 
                 if typeUtils.isUserDefinedType fieldDef.type
                     if value
-                        result[name] = @constructModel value, fieldDef.ctor.getTypeDefinition(), context, db
+                        result[name] = yield @constructModel value, fieldDef.ctor.getTypeDefinition(), context, db
                 else
                     if value?
                         if fieldDef.type is 'array'
                             arr = []
                             if typeUtils.isUserDefinedType fieldDef.contents.type
                                 for item in value
-                                    arr.push @constructModel item, fieldDef.contents.ctor.getTypeDefinition(), context, db
+                                    arr.push yield @constructModel item, fieldDef.contents.ctor.getTypeDefinition(), context, db
                             else
                                 arr = value
                             result[name] = arr
@@ -131,7 +132,8 @@ class DatabaseModel extends BaseModel
             if obj._id
                 result._id = obj._id
 
-            makeResult result, ((o) -> new modelDescription.type o), context, db                
+            fnCtor = (o) ->* new modelDescription.type o
+            yield makeResult result, fnCtor, context, db                
                 
     
     
@@ -180,7 +182,7 @@ class DatabaseModel extends BaseModel
                     }
                     db.insert('events', event)                            
                 result = yield db.insert(modelDescription.collection, @)
-                result = @constructor.constructModel(result, modelDescription, context, db)
+                result = yield @constructor.constructModel(result, modelDescription, context, db)
             else
                 if modelDescription.logging?.onUpdate
                     event = {
