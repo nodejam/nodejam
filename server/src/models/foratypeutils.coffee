@@ -2,7 +2,7 @@ TypeUtils = require('../lib/data/typeutils').TypeUtils
 
 class ForaTypeUtils extends TypeUtils
 
-    resolveUserDefinedType: (name) =>
+    resolveUserDefinedType: (name) =>*
         if not ForaTypeUtils.Cache
             ForaTypeUtils.Cache = {}
             
@@ -10,8 +10,7 @@ class ForaTypeUtils extends TypeUtils
             @loadTypes require('./'), ForaTypeUtils.Cache
             @loadTypes require('./fields'), ForaTypeUtils.Cache
 
-        #If we can't find it, assume it is one of the post types. 
-        ForaTypeUtils.Cache[name] ? { typeDefinition: { } }
+        ForaTypeUtils.Cache[name] ? new DynamicType()
         
         
     loadTypes: (ns, cache) =>

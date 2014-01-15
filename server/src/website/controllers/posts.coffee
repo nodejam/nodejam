@@ -22,7 +22,7 @@ exports.item = auth.handler (forum, post) ->*
             yield @render 'posts/post', { 
                 html,
                 json: JSON.stringify(post),
-                typeDefinition: JSON.stringify(post.getTypeDefinition()),
+                typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
                 user: @session.user,
                 pageName: 'post-page',
                 pageLayout: {

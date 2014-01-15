@@ -20,9 +20,9 @@ exports.selectUsernameForm = ->*
 
 exports.selectUsername = ->*
     token = yield models.Token.get({ key: @query('token') }, {}, db)     
-    token.value.userDetails.username = @parser.body 'username'
-    token.value.userDetails.name = @parser.body 'name'
-    token.value.userDetails.email = @parser.body 'email'
+    token.value.userDetails.username = yield @parser.body 'username'
+    token.value.userDetails.name = yield @parser.body 'name'
+    token.value.userDetails.email = yield @parser.body 'email'
     result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
     if result?.success isnt false
         res.clearCookie "twitter_oauth_process_key"

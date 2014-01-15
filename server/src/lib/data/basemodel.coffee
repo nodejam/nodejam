@@ -10,8 +10,8 @@ class BaseModel
 
 
 
-    @getTypeDefinition: (inherited = true) ->    
-        @getTypeUtils().getTypeDefinition @, inherited
+    @getTypeDefinition: (inherited = true) ->*        
+        yield (@getTypeUtils().getTypeDefinition) @, inherited
         
         
     
@@ -30,20 +30,22 @@ class BaseModel
 
 
     
-    validate: (modelTypeDefinition = @getTypeDefinition()) ->
+    validate: (modelTypeDefinition) ->*
+        modelTypeDefinition ?= yield @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
-        validator.validate @, modelTypeDefinition
+        yield validator.validate @, modelTypeDefinition
             
 
 
-    validateField: (value, fieldName, modelTypeDefinition = @getTypeDefinition()) ->
+    validateField: (value, fieldName, modelTypeDefinition) ->*
+        modelTypeDefinition ?= yield @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
-        validator.validateField @, value, fieldName, modelTypeDefinition
+        yield validator.validateField @, value, fieldName, modelTypeDefinition
         
 
 
-    getTypeDefinition: (inherited) =>
-        @constructor.getTypeDefinition inherited
+    getTypeDefinition: (inherited) =>*
+        yield @constructor.getTypeDefinition inherited
             
 
     

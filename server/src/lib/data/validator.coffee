@@ -3,28 +3,28 @@ class Validator
     constructor: (@typeUtils) ->
         
 
-    validate: (obj, modelDescription) ->   
+    validate: (obj, modelDescription) ->*
         errors = []
         
         if not modelDescription.useCustomValidationOnly
             for fieldName, def of modelDescription.fields                
-                @addError errors, fieldName, @validateField(obj, obj[fieldName], fieldName, def)
+                @addError errors, fieldName, yield @validateField(obj, obj[fieldName], fieldName, def)
 
             if modelDescription.validate
-                customValidationResults = modelDescription.validate.call obj
+                customValidationResults = yield modelDescription.validate.call obj
                 return if customValidationResults?.length then errors.concat customValidationResults else errors
             else
                 return errors
         else
             if modelDescription.validate
-                customValidationResults = modelDescription.validate.call obj
+                customValidationResults = yield modelDescription.validate.call obj
                 return if customValidationResults?.length then customValidationResults else []
             else
                 return []
     
     
     
-    validateField: (obj, value, fieldName, fieldDef) ->
+    validateField: (obj, value, fieldName, fieldDef) ->*
         errors = []
 
         if not fieldDef.useCustomValidationOnly                
@@ -36,7 +36,7 @@ class Validator
             if value?
                 if fieldDef.type is 'array'
                     for item in value                        
-                        @addError errors, fieldName, @validateField(obj, item, "[#{fieldName} item]", fieldDef.contents)
+                        @addError errors, fieldName, yield @validateField(obj, item, "[#{fieldName} item]", fieldDef.contents)
                 else
                     #If it is a custom class or a primitive
                     if fieldDef.type isnt ''      
@@ -53,10 +53,10 @@ class Validator
                                     errors.push "#{fieldName} must be one of #{JSON.stringify(fieldDef.$in)}."
 
                         if @typeUtils.isUserDefinedType(fieldDef.type) and value.validate
-                            errors = errors.concat value.validate()
+                            errors = errors.concat yield value.validate()
         
         if value? and fieldDef.validate
-            @addError errors, fieldName, fieldDef.validate.call obj
+            @addError errors, fieldName, yield fieldDef.validate.call obj
             
         errors            
         

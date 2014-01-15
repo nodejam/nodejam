@@ -7,15 +7,15 @@ auth = require '../../common/web/auth'
 
 exports.create = auth.handler { session: true }, ->*
     creds = { user: @session.user }
-    stub = @parser.body('name').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
-    forum = yield models.Forum.get({ network: @network.stub, $or: [{ stub }, { name: @parser.body('name') }] }, creds, db)
+    stub = (yield @parser.body 'name').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
+    forum = yield models.Forum.get({ network: @network.stub, $or: [{ stub }, { name: yield @parser.body('name') }] }, creds, db)
     if forum
         throw new Error "FORUM_EXISTS"
     else
         forum = new models.Forum
         forum.network = @network.stub
         forum.stub = stub
-        @parser.map forum, ['name', 'type', 'description', 'posttypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
+        yield @parser.map forum, ['name', 'type', 'description', 'posttypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
         forum.createdBy = @session.user
         
         forum = yield forum.save creds, db
@@ -23,8 +23,8 @@ exports.create = auth.handler { session: true }, ->*
         
         info = new models.ForumInfo {
             forumid: forum._id.toString(),
-            message: @parser.body('message'),
-            about: @parser.body('about')
+            message: yield @parser.body('message'),
+            about: yield @parser.body('about')
         }
         yield info.save creds, db        
         this.body = forum
@@ -34,8 +34,8 @@ exports.create = auth.handler { session: true }, ->*
 exports.edit = auth.handler { session: true }, (stub) ->*
     forum = yield models.Forum.get({ stub, network: @network.stub }, { user: @session.user }, db)
     if (@session.user.username is forum.createdBy.username) or @session.admin
-        forum.description = @parser.body('description')
-        @parser.map forum, ['description', 'postTypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']     
+        forum.description = yield @parser.body('description')
+        yield @parser.map forum, ['description', 'postTypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']     
         forum = yield forum.save()
         this.body = forum
     else

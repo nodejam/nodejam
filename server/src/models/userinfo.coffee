@@ -1,5 +1,4 @@
 ForaDbModel = require('./foramodel').ForaDbModel
-models = require('./')
 
 class UserInfo extends ForaDbModel
 

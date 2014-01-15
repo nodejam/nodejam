@@ -16,16 +16,16 @@ class TypeUtils
 
 
 
-    getTypeDefinition: (ctor, inherited) =>
+    getTypeDefinition: (ctor, inherited) =>*
         match = (f for f in TypeUtils.TypeDefCache when f.ctor is ctor)[0]
         if not match
             typeDefinition = if typeof ctor.typeDefinition is "function" then ctor.typeDefinition() else ctor.typeDefinition                
             for field, def of typeDefinition.fields
-                typeDefinition.fields[field] = @getFieldDefinition(def)
+                typeDefinition.fields[field] = yield @getFieldDefinition(def)
             
             if typeDefinition.inherits
-                baseCtor = @resolveUserDefinedType typeDefinition.inherits
-                fullTypeDefinition = @mergeTypeDefinition typeDefinition, baseCtor.getTypeDefinition()    
+                baseCtor = yield @resolveUserDefinedType typeDefinition.inherits
+                fullTypeDefinition = @mergeTypeDefinition typeDefinition, yield baseCtor.getTypeDefinition()    
 
             match = { ctor, name: typeDefinition.name, typeDefinition, fullTypeDefinition }
             TypeUtils.TypeDefCache.push match
@@ -50,7 +50,7 @@ class TypeUtils
             
             
 
-    getFieldDefinition: (def) ->
+    getFieldDefinition: (def) ->*
         if typeof(def) is 'string'
 
             defString = def.split ' '
@@ -71,13 +71,13 @@ class TypeUtils
             fieldDef.required = true
             
         if fieldDef.type is 'array'
-            fieldDef.contents = @getFieldDefinition fieldDef.contents
+            fieldDef.contents = yield @getFieldDefinition fieldDef.contents
 
         fieldDef.required ?= true                
         fieldDef.type ?= ''
 
         if @isUserDefinedType(fieldDef.type) 
-            fieldDef.ctor = @resolveUserDefinedType fieldDef.type
+            fieldDef.ctor = yield @resolveUserDefinedType fieldDef.type
         
         fieldDef 
         

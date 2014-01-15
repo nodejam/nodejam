@@ -6,16 +6,16 @@ auth = require '../../common/web/auth'
 
 exports.create = auth.handler { session: true }, (forum) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-    type = yield models.Post.getTypeDefinition().discriminator { type: @parser.body('type') }
+    type = yield (yield models.Post.getTypeDefinition()).discriminator { type: yield @parser.body('type') }
     
     post = new type {
         createdBy: @session.user,
-        state: @parser.body('state'),
+        state: yield @parser.body('state'),
         rating: 0,
         savedAt: Date.now()
     }
     
-    @parser.map post, getMappableFields(type)
+    @parser.map post, yield getMappableFields(type)
     post = yield forum.addPost post
     this.body = post
 
@@ -29,8 +29,8 @@ exports.edit = auth.handler { session: true }, (forum, id) ->*
     if post
         if (post.createdBy.username is @session.user.username) or @session.admin
             post.savedAt = Date.now()                       
-            @parser.map post, getMappableFields(type)
-            if @parser.body('state') is 'published'
+            @parser.map post, yield getMappableFields(type)
+            if yield @parser.body('state') is 'published'
                 post.state = 'published'
             post = yield post.save()
             this.body = post
@@ -45,10 +45,10 @@ exports.edit = auth.handler { session: true }, (forum, id) ->*
     models.Post.getTypeDefinition(type, false) returns fields in inherited class.
     Note: fields in Post are not mappable.
 ###    
-getMappableFields = (type, acc = [], prefix = []) ->
+getMappableFields = (type, acc = [], prefix = []) ->*
     typeUtils = models.Post.getTypeUtils()
     
-    for field, def of type.getTypeDefinition(false).fields
+    for field, def of (yield type.getTypeDefinition false).fields
         if typeUtils.isPrimitiveType def.type
             acc.push prefix.concat(field).join '_'
         else
@@ -80,7 +80,7 @@ exports.addComment = auth.handler { session: true }, (id) ->*
         comment.createdBy = @session.user
         comment.forum = forum.stub
         comment.itemid = post._id.toString()
-        comment.data = @parser.body('data')
+        comment.data = yield @parser.body('data')
         comment = yield comment.save({ user: @session.user }, db)
         this.body = comment
 
@@ -90,8 +90,8 @@ exports.addComment = auth.handler { session: true }, (id) ->*
 exports.admin_update = auth.handler { admin: true }, (id) ->*
     post = yield models.Post.getById(id, { user: @session.user }, db)
     if post 
-        if @parser.body('meta')
-            post = yield post.addMetaList @parser.body('meta').split(',')
+        if yield @parser.body('meta')
+            post = yield post.addMetaList (yield @parser.body 'meta').split(',')
         this.body = post
     else
         this.body = 'INVALID_POST'

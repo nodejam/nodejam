@@ -33,7 +33,7 @@ class User extends ForaDbModel
             name: 'string',
             location: 'string !required',
             followerCount: 'number',
-            email: { type: 'string', validate: -> emailRegex.test(@email) },
+            email: { type: 'string', validate: ->* emailRegex.test(@email) },
             accessToken: { type: 'string', required: false },
             lastLogin: 'number',
             about: { type: 'string', required: false },
@@ -59,7 +59,7 @@ class User extends ForaDbModel
                 userid: @_id.toString(),
             }
             userinfo = yield userinfo.save context, db
-            
+
             credentials = new (models.Credentials) {
                 userid: user._id.toString(),
                 @username,
