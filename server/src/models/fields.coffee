@@ -3,40 +3,51 @@ ForaModel = require('./foramodel').ForaModel
 
 class Image extends ForaModel
     @typeDefinition: {
-        type: @,
         name: 'image',
-        fields: {
-            src: 'string',
-            small: 'string !required',
-            alt: 'string !required',
-            credits: 'string !required'
-        }
+        schema: {
+            type: 'object',        
+            properties: {
+                src: { type: 'string' },
+                small: { type: 'string' },
+                alt: { type: 'string' },
+                credits: { type: 'string' },
+            },
+            required: ['src']
+        },
     }
     
 
 
 class Cover extends ForaModel
     @typeDefinition: {
-        type: @,
         name: 'cover',
-        fields: {
-            image: 'image',
-            bgColor: 'string !required',
-            bgOpacity: 'number !required',
-            foreColor: 'string !required',
-        }
+        schema: {
+            type: 'object',        
+            properties: {
+                image: { $ref: 'image' },
+                bgColor: { type: 'string' },
+                bgOpacity: { type: 'string' },
+                foreColor: { type: 'string' },
+            },
+            required: ['image']
+        },
     }    
     
 
     
 class TextContent extends ForaModel
+
     @typeDefinition: {
-        type: @,
         name: 'text-content',
-        fields: {
-            text: { type: 'string', allowHtml: true },
-            format: 'string'
-        }
+        schema: {
+            type: 'object',        
+            properties: {
+                text: { type: 'string' },
+                format: { type: 'string' }
+            },
+            required: ['text', 'format']            
+        },        
+        allowHtml: ['text']
     }
 
     formatContent: =>

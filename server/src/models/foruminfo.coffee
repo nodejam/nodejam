@@ -4,13 +4,16 @@ ForaDbModel = require('./foramodel').ForaDbModel
             
 class ForumInfo extends ForaDbModel
     @typeDefinition: {
-        type: @,
         name: 'forum-info',
         collection: 'foruminfo',
-        fields: {
-            forumid: 'string',
-            about: 'string !required',
-            message: 'string !required'
+        schema: {
+            type: 'object',        
+            properties: {
+                forumid: { type: 'string' },
+                about: { type: 'string' },
+                message: { type: 'string' }
+            },
+            required: ['forumid']
         }
     }
     

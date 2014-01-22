@@ -40,15 +40,10 @@ exports.edit = auth.handler { session: true }, (forum, id) ->*
         this.body = 'ACCESS_DENIED'
 
 
-###
-    All fields defined specifically in a class inherited from Post will be 'mappable'.
-    models.Post.getTypeDefinition(type, false) returns fields in inherited class.
-    Note: fields in Post are not mappable.
-###    
 getMappableFields = (type, acc = [], prefix = []) ->*
     typeUtils = models.Post.getTypeUtils()
     
-    for field, def of (yield type.getTypeDefinition false).fields
+    for field, def of (yield type.getTypeDefinition()).fields
         if typeUtils.isPrimitiveType def.type
             acc.push prefix.concat(field).join '_'
         else

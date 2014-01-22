@@ -3,61 +3,49 @@ class Validator
     constructor: (@typeUtils) ->
         
 
-    validate: (obj, modelDescription) ->*
+    validate: (obj, typeDefinition) ->*
         errors = []
         
-        if not modelDescription.useCustomValidationOnly
-            for fieldName, def of modelDescription.fields                
-                @addError errors, fieldName, yield @validateField(obj, obj[fieldName], fieldName, def)
+        for fieldName, def of typeDefinition.schema.properties                
+            @addError errors, fieldName, yield @validateField(obj, obj[fieldName], fieldName, def)
 
-            if modelDescription.validate
-                customValidationResults = yield modelDescription.validate.call obj
-                return if customValidationResults?.length then errors.concat customValidationResults else errors
-            else
-                return errors
+        if typeDefinition.schema.required?.length
+            for field in typeDefinition.schema.required
+                if typeof obj[field] is 'undefined'
+                    errors.push "#{field} is required"
+
+        if typeDefinition.validate
+            customValidationResults = yield typeDefinition.validate.call obj
+            return if customValidationResults?.length then errors.concat customValidationResults else errors
         else
-            if modelDescription.validate
-                customValidationResults = yield modelDescription.validate.call obj
-                return if customValidationResults?.length then customValidationResults else []
-            else
-                return []
+            return errors
     
     
     
     validateField: (obj, value, fieldName, fieldDef) ->*
         errors = []
 
-        if not fieldDef.useCustomValidationOnly                
-            if fieldDef.required and not value?
-                errors.push "#{fieldName} is #{JSON.stringify value}"
-                errors.push "#{fieldName} is required."
-            
-            #Check types.       
-            if value?
-                if fieldDef.type is 'array'
-                    for item in value                        
-                        @addError errors, fieldName, yield @validateField(obj, item, "[#{fieldName} item]", fieldDef.contents)
-                else
-                    #If it is a custom class or a primitive
-                    if fieldDef.type isnt ''      
-                        if (@typeUtils.isUserDefinedType(fieldDef.type) and not (value instanceof fieldDef.ctor)) or (not @typeUtils.isUserDefinedType(fieldDef.type) and typeof(value) isnt fieldDef.type)
-                            errors.push "#{fieldName} is #{JSON.stringify value}"
-                            errors.push "#{fieldName} should be a #{fieldDef.type}."
-
-                        if fieldDef.type is 'string'
-                            if fieldDef.maxLength and fieldDef.maxLength < value.length
-                                errors.push "#{fieldName} cannot be longer than #{fieldDef.maxLength}."
-
-                            if fieldDef.$in
-                                if fieldDef.$in.indexOf(value) is -1
-                                    errors.push "#{fieldName} must be one of #{JSON.stringify(fieldDef.$in)}."
-
-                        if @typeUtils.isUserDefinedType(fieldDef.type) and value.validate
+        #Check types.       
+        if value?
+            if fieldDef.type is 'array'
+                for item in value                        
+                    @addError errors, fieldName, yield @validateField(obj, item, "[#{fieldName} item]", fieldDef.items)
+            else
+                typeCheck = (fn) ->
+                    if not fn()
+                        errors.push "#{fieldName}: expected #{fieldDef.type} but is #{JSON.stringify value}"
+                    
+                switch fieldDef.type
+                    when 'integer'
+                        typeCheck -> value % 1 is 0
+                    when 'number'
+                        typeCheck -> typeof value is 'number'
+                    when 'string'
+                        typeCheck -> typeof value is 'string'
+                    else
+                        if @typeUtils.isCustomType(fieldDef.type) and value.validate
                             errors = errors.concat yield value.validate()
         
-        if value? and fieldDef.validate
-            @addError errors, fieldName, yield fieldDef.validate.call obj
-            
         errors            
         
         

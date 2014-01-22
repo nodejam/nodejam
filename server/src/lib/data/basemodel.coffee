@@ -1,7 +1,6 @@
 databaseModule = require('./database').Database
 utils = require('../utils')
 Validator = require('./validator').Validator
-typeUtils = new (require('./typeutils').TypeUtils)
 
 class BaseModel
 
@@ -10,10 +9,15 @@ class BaseModel
 
 
 
-    @getTypeDefinition: (inherited = true) ->*        
-        yield (@getTypeUtils().getTypeDefinition) @, inherited
-        
-        
+    @getTypeDefinition: ->*
+        if not @__typeDefinition
+            typeDef = if typeof @typeDefinition is "function" then @typeDefinition() else @typeDefinition
+            @__typeDefinition = yield @getTypeUtils().getTypeDefinition typeDef.name
+            if not @__typeDefinition
+                throw new Error "CANNOT_RESOLVE_TYPE_DEFINITION"
+        @__typeDefinition
+            
+            
     
     @getLimit: (limit, _default, max) ->
         result = _default
@@ -25,30 +29,24 @@ class BaseModel
 
 
 
-    @getTypeUtils: ->
-        typeUtils
-
-
-    
-    validate: (modelTypeDefinition) ->*
-        modelTypeDefinition ?= yield @getTypeDefinition()
+    validate: (typeDefinition) ->*
+        typeDefinition ?= yield @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
-        yield validator.validate @, modelTypeDefinition
+        yield validator.validate @, typeDefinition
             
 
 
-    validateField: (value, fieldName, modelTypeDefinition) ->*
-        modelTypeDefinition ?= yield @getTypeDefinition()
+    validateField: (value, fieldName, typeDefinition) ->*
+        typeDefinition ?= yield @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
-        yield validator.validateField @, value, fieldName, modelTypeDefinition
+        yield validator.validateField @, value, fieldName, typeDefinition
         
 
-
-    getTypeDefinition: (inherited) =>*
-        yield @constructor.getTypeDefinition inherited
-            
-
     
+    getTypeDefinition: =>*
+        yield @constructor.getTypeDefinition()
+
+
     toJSON: ->
         result = {}
         for k,v of @
