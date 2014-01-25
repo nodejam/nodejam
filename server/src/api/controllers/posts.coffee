@@ -6,16 +6,18 @@ auth = require '../../common/web/auth'
 
 exports.create = auth.handler { session: true }, (forum) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-    type = yield (yield models.Post.getTypeDefinition()).discriminator { type: yield @parser.body('type') }
+    postType = yield @parser.body('type')
+    typeDef = yield (yield models.Post.getTypeDefinition()).discriminator { type: postType }
     
-    post = new type {
+    post = new typeDef.ctor {
+        type: postType,
         createdBy: @session.user,
         state: yield @parser.body('state'),
         rating: 0,
         savedAt: Date.now()
     }
     
-    @parser.map post, yield getMappableFields(type)
+    @parser.map post, yield getMappableFields(typeDef)
     post = yield forum.addPost post
     this.body = post
 
@@ -40,14 +42,15 @@ exports.edit = auth.handler { session: true }, (forum, id) ->*
         this.body = 'ACCESS_DENIED'
 
 
-getMappableFields = (type, acc = [], prefix = []) ->*
+
+getMappableFields = (typeDef, acc = [], prefix = []) ->*
     typeUtils = models.Post.getTypeUtils()
     
-    for field, def of (yield type.getTypeDefinition()).fields
+    for field, def of typeDef.schema.properties
         if typeUtils.isPrimitiveType def.type
             acc.push prefix.concat(field).join '_'
         else
-            if typeUtils.isUserDefinedType def.type
+            if typeUtils.isCustomType def.type
                 prefix.push field
                 getMappableFields def.ctor, acc, prefix
                 prefix.pop field            

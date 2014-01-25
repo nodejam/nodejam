@@ -11,7 +11,7 @@ class Post extends ForaDbModel
             name: "post",
             collection: 'posts',
             discriminator: (obj) ->*
-                yield @getTypeUtils().getTypeDefinition(obj.type)
+                yield Post.getTypeUtils().getTypeDefinition(obj.type)
             schema: {
                 type: 'object',        
                 properties: {
@@ -138,5 +138,11 @@ class Post extends ForaDbModel
                 widgets.PostView
             when 'cardview'
                 widgets.CardView
+                
+
+    
+    getView: =>
+        
+                
             
 exports.Post = Post

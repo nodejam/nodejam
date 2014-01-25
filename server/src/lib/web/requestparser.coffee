@@ -51,8 +51,8 @@ class RequestParser
         result = { changed: false }
 
         if not obj[name] or options.overwrite
-            fullName = prefix.concat(name).join '_'
-            if @typeUtils.isPrimitiveType(def.type)
+            fullName = prefix.concat(name).join('_').toLowerCase()
+            if @typeUtils.isPrimitiveType(def.type) and def.type isnt 'array'
                 if whitelist.indexOf(fullName) > -1
                     val = yield @body fullName, 'string'
                     if val
@@ -77,8 +77,10 @@ class RequestParser
     parsePrimitive: (val, def, fieldName) =>
         if val
             switch def.type
+                when 'integer'
+                    parseInt val
                 when 'number'
-                    (if def.integer then parseInt else parseFloat) val
+                    parseFloat val
                 when 'string'
                     if def.allowHtml
                         sanitizer.sanitize(sanitizer.unescapeEntities val)
@@ -86,11 +88,6 @@ class RequestParser
                         sanitizer.escape(val)
                 when 'boolean'
                     val is "true"
-                when 'array'
-                    if def.map?.format is 'csv'
-                        (@parsePrimitive(v, def.contents, fieldName) for v in val.split(','))                    
-                    else
-                        throw new Error "Cannot parse this array. Unknown format."
                 else      
                     throw new Error "#{def.type} #{fieldName} is a non-primitive. Cannot parse."
 

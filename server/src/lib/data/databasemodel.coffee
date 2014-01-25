@@ -83,17 +83,23 @@ class DatabaseModel extends BaseModel
         result
         
     
+    
     @constructModel: (obj, typeDefinition, context, db) ->*
         if typeDefinition.ctor.discriminator
-            typeDefinition = yield typeDefinition.ctor.discriminator obj
+            effectiveTypeDef = yield typeDefinition.ctor.discriminator obj
+        else
+            effectiveTypeDef = typeDefinition
             
-        result = yield @_constructModel_impl(obj, typeDefinition, context, db)
-
-        if typeDefinition.trackChanges
+        result = yield @_constructModel_impl(obj, effectiveTypeDef, context, db)
+        
+        if effectiveTypeDef.trackChanges
             clone = utils.deepCloneObject(obj)
-            original = yield @_constructModel_impl(clone, typeDefinition, context, db)
+            original = yield @_constructModel_impl(clone, effectiveTypeDef, context, db)
             result.getOriginalModel = ->
                 original
+        
+        if effectiveTypeDef isnt typeDefinition
+            result.getTypeDefinition = original.getTypeDefinition = -> effectiveTypeDef
         
         result
         

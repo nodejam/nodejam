@@ -12,7 +12,7 @@ class BaseModel
     @getTypeDefinition: ->*
         if not @__typeDefinition
             typeDef = if typeof @typeDefinition is "function" then @typeDefinition() else @typeDefinition
-            @__typeDefinition = yield @getTypeUtils().getTypeDefinition typeDef.name
+            @__typeDefinition = yield @getTypeUtils().getTypeDefinition(typeDef.name)
             if not @__typeDefinition
                 throw new Error "CANNOT_RESOLVE_TYPE_DEFINITION"
         @__typeDefinition

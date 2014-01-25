@@ -28,7 +28,11 @@ class Validator
         #Check types.       
         if value?
             if fieldDef.type is 'array'
-                for item in value                        
+                if fieldDef.minItems and value.length < fieldDef.minItems
+                    errors.push "#{fieldName}: must have at least #{fieldDef.minItems} elements"
+                if fieldDef.maxItems and value.length > fieldDef.maxItems
+                    errors.push "#{fieldName}: can have at most #{fieldDef.minItems} elements"
+                for item in value
                     @addError errors, fieldName, yield @validateField(obj, item, "[#{fieldName} item]", fieldDef.items)
             else
                 typeCheck = (fn) ->

@@ -2,7 +2,18 @@ TypeUtils = require('../lib/data/typeutils').TypeUtils
 
 class ForaTypeUtils extends TypeUtils
 
-    getCacheItems: =>
+    getCacheItems: =>*
+        definitions = {}
+        
+        for defs in [yield @getModelTypeDefinitions(), yield @getTrustedPostExtensions()]
+            for name, def of defs
+                definitions[name] ?= def    
+        
+        return definitions
+        
+    
+    
+    getModelTypeDefinitions: =>*
         #Get type definitions from models
         models = []
 
@@ -15,9 +26,7 @@ class ForaTypeUtils extends TypeUtils
         for moduleName in ['./', './fields']
             fnAdd require moduleName
 
-        fnBuildDef = (td) ->
-            
-            
+        
         definitions = {}
         
         for model in models            
@@ -25,23 +34,51 @@ class ForaTypeUtils extends TypeUtils
             def = @completeTypeDefinition(def, model)
             definitions[def.name] ?= def
         
-        #Get type definitions from extensions
+        definitions
+        
+    
+    
+    getTrustedPostExtensions: =>*
+        fs = require 'fs'
+        path = require 'path'
+        thunkify = require 'thunkify'
+        readdir = thunkify fs.readdir
+        stat = thunkify fs.stat
+        
+        getDirs = (dir) ->*
+            dirs = []
+            files = yield readdir dir
+            for file, index in files
+                filePath = "#{dir}/#{file}"
+                entry = yield stat filePath
+                if entry.isDirectory()
+                    dirs.push(file)
+            dirs            
+        
+        definitions = {}
         Post = require('./post').Post
         postTypeDef = if typeof Post.typeDefinition is "function" then Post.typeDefinition() else Post.typeDefinition
         
-        for module in require('../extensions/posts/models')
-            definitions[module.typeDefinition.name] ?= module.typeDefinition
-            module.typeDefinition.collection = postTypeDef.collection
-            
-            for k, v of postTypeDef.schema.properties
-                module.typeDefinition.schema.properties[k] = v
-            
-            for req in postTypeDef.schema.required
-                if module.typeDefinition.schema.required.indexOf(req) is -1
-                    module.typeDefinition.schema.required.push req        
-        
-        return definitions
-        
+        for ext in yield getDirs path.join __dirname, '../extensions/posts'
+            for version in yield getDirs path.join __dirname, '../extensions/posts', ext
+                typeDefinition = require("../extensions/posts/#{ext}/#{version}/model")
+                definitions["#{ext}/#{version}"] ?= typeDefinition
+                typeDefinition.collection = postTypeDef.collection
+                typeDefinition.trackChanges = postTypeDef.trackChanges
+                typeDefinition.ctor = Post
+                typeDefinition.trust = 'trusted'
+                typeDefinition.version = version
+                
+                for k, v of postTypeDef.schema.properties
+                    typeDefinition.schema.properties[k] = v
+                
+                for req in postTypeDef.schema.required
+                    if typeDefinition.schema.required.indexOf(req) is -1
+                        typeDefinition.schema.required.push req        
+
+        definitions
+
+
         
         
     resolveDynamicTypeDefinition: (name) =>*

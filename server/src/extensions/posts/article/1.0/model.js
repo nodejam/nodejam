@@ -1,5 +1,4 @@
 module.exports = {
-    name: 'article',
     schema: {
         type: 'object',
         properties: {
@@ -12,5 +11,3 @@ module.exports = {
         required: ['title']
     }
 }
-
-

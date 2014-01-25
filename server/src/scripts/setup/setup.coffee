@@ -57,6 +57,7 @@ init = () ->*
                 if forum._about
                     forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'                    
                 delete forum._about
+                forum.posttypes = "article/1.0,events/1.0"
                 resp = yield _doHttpRequest "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
                 forumJson = JSON.parse resp
                 utils.log "Created #{forumJson.name}"

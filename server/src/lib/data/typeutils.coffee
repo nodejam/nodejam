@@ -38,8 +38,6 @@ class TypeUtils
                 else
                     if value.$ref
                         def.schema.properties[property].typeDefinition = yield @getTypeDefinition value.$ref
-                    else
-                        
         return
         
 
@@ -50,18 +48,17 @@ class TypeUtils
             TypeUtils.typeCache = {}
             
             if @getCacheItems
-                items = @getCacheItems()
+                items = yield @getCacheItems()
 
-                for name, def of items                    
-                    console.log name
-                    TypeUtils.typeCache[name] = def        
+                for modelName, def of items                    
+                    TypeUtils.typeCache[modelName] = def        
             
                 yield @resolveReferences()
         
         #First check if it resolves in type cache
         #Then check if it resolves in the context
         #Otherwise build
-        TypeUtils.typeCache[name] ? dynamicResolutionContext[name] ? yield @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
+        return (TypeUtils.typeCache[name] ? dynamicResolutionContext[name]) ? yield @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
 
     
 
