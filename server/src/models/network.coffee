@@ -11,7 +11,7 @@ class Network extends ForaDbModel
             properties: {
                 name: { type: 'string' },
                 stub: { type: 'string' },
-                domains: { type: 'array', items: 'string' },
+                domains: { type: 'array', items: { type: 'string' } },
             },
             required: ['name', 'stub', 'domains']
         },

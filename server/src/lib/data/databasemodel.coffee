@@ -64,14 +64,14 @@ class DatabaseModel extends BaseModel
             
             
         
-    attachContextAndDb = (model, context, db) ->
+    attachSystemFields = (model, context, db) ->
         if model instanceof DatabaseModel
             model.__context = context
             model.__db = db
         
         
         
-    detachContextAndDb = (model) ->
+    detachSystemFields = (model) ->
         if model instanceof DatabaseModel
             model.__context = undefined
             model.__db = undefined
@@ -79,14 +79,14 @@ class DatabaseModel extends BaseModel
 
     makeResult = (obj, fnConstructor, context, db) ->*
         result = yield fnConstructor(obj, context, db)
-        attachContextAndDb(result, context, db)
+        attachSystemFields(result, context, db)
         result
         
     
     
     @constructModel: (obj, typeDefinition, context, db) ->*
-        if typeDefinition.ctor.discriminator
-            effectiveTypeDef = yield typeDefinition.ctor.discriminator obj
+        if typeDefinition.discriminator
+            effectiveTypeDef = yield typeDefinition.discriminator obj
         else
             effectiveTypeDef = typeDefinition
             
@@ -99,7 +99,7 @@ class DatabaseModel extends BaseModel
                 original
         
         if effectiveTypeDef isnt typeDefinition
-            result.getTypeDefinition = original.getTypeDefinition = -> effectiveTypeDef
+            result.getTypeDefinition = original.getTypeDefinition = ->* effectiveTypeDef
         
         result
         
@@ -125,21 +125,24 @@ class DatabaseModel extends BaseModel
                
             value = obj[name]
 
-            if def.$ref
-                if value
-                    result[name] = yield @constructModel value, def.typeDefinition
-            else
+            if typeUtils.isPrimitiveType(def.type)
                 if value?
                     if def.type is 'array'
                         arr = []
-                        if def.items.$ref
+                        if def.items.typeDefinition
                             for item in value
                                 arr.push yield @constructModel item, def.items.typeDefinition
                         else
                             arr = value
                         result[name] = arr
                     else
-                        result[name] = value    
+                        result[name] = value
+            else
+                if def.typeDefinition #Known type definition
+                    if value
+                        result[name] = yield @constructModel value, def.typeDefinition
+                else #Object of any structure
+                    result[name] = value
         
         if obj._id
             result._id = obj._id
@@ -160,7 +163,7 @@ class DatabaseModel extends BaseModel
     
         context ?= @__context
         db ?= @__db
-        detachContextAndDb @
+        detachSystemFields @
 
         typeDefinition = yield @getTypeDefinition()
 
@@ -202,13 +205,23 @@ class DatabaseModel extends BaseModel
                     }
                     db.insert('events', event)
                 yield db.update(typeDefinition.collection, { @_id }, @)
-                attachContextAndDb @, context, db
+                attachSystemFields @, context, db
                 result = @
 
             return result              
                                   
         else
-            @onError errors, typeDefinition
+            if @_id
+                details = "Invalid record with id #{@_id} in #{typeDefinition.collection}.\n"
+            else
+                details = "Validation failed while creating a new record in #{typeDefinition.collection}.\n"
+            
+            details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}"
+            details = "#{details}: #{errors.join(', ')}"
+            
+            error = new Error("Model failed validation: #{details}")
+            error.details = details  
+            throw error    
 
     
     
@@ -238,22 +251,7 @@ class DatabaseModel extends BaseModel
         else
             yield ctor.get params, context, db
         
-
-
-    onError: (errors, typeDefinition) =>
-        if @_id
-            details = "Invalid record with id #{@_id} in #{typeDefinition.collection}.\n"
-        else
-            details = "Validation failed while creating a new record in #{typeDefinition.collection}.\n"
-        
-        details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}"
-        details = "#{details}: #{errors.join(', ')}"
-        
-        error = new Error("Model failed validation: #{details}")
-        error.details = details  
-        throw error            
-        
-
+    
 
     bindContext: (@__context, @__db) =>
 

@@ -11,15 +11,18 @@ class Post extends ForaDbModel
             name: "post",
             collection: 'posts',
             discriminator: (obj) ->*
-                yield Post.getTypeUtils().getTypeDefinition(obj.type)
+                def = yield Post.getTypeUtils().getTypeDefinition(obj.type)
+                if def.ctor isnt Post                    
+                    throw new Error "Post type definitions must have ctor set to Post"
+                def
             schema: {
                 type: 'object',        
                 properties: {
                     type: { type: 'string' },
                     forum: { $ref: 'forum-summary' },
                     createdBy: { $ref: 'user-summary' },
-                    meta: { type: 'array', items: 'string' },
-                    tags: { type: 'array', items: 'string' },
+                    meta: { type: 'array', items: { type: 'string' } },
+                    tags: { type: 'array', items: { type: 'string' } },
                     stub: { type: 'string' },
                     recommendations: { type: 'array', items: { $ref: 'user-summary' } },            
                     state: { type: 'string', enum: ['draft','published'] },
@@ -56,6 +59,15 @@ class Post extends ForaDbModel
             if result > max
                 result = max
         result    
+        
+    
+    
+    @create: (params) ->*
+        typeDef = yield (yield @getTypeDefinition()).discriminator params
+        post = new Post params
+        post.getTypeDefinition = ->*
+            typeDef
+        post
 
 
     

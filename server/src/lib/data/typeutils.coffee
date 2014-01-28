@@ -3,7 +3,7 @@ utils = require '../utils'
 class TypeUtils
     
 
-    isPrimitiveType: (type) ->        
+    isPrimitiveType: (type) ->      
         ['string', 'number', 'integer', 'boolean', 'array'].indexOf(type) > -1   
 
 

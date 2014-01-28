@@ -11,7 +11,7 @@ class Membership extends ForaDbModel
             properties: {
                 user: { $ref: 'user-summary'},
                 forum: { $ref: 'forum-summary' },
-                roles: { type: 'array', items: 'string' },
+                roles: { type: 'array', items: { type: 'string' } },
             }
         },
         required: ['user', 'forum', 'roles'],

@@ -27,54 +27,119 @@ class RequestParser
         def ?= { type: 'string' }
         if typeof def is 'string'
             def = { type: def }
-        @parsePrimitive @rawBody[name], def, name
+        @parseSimpleType @rawBody[name], name, def
 
     
     
     files: =>*
         (yield* multipart @ctx).files
+
+
+
+    map: (target, whitelist, options = { overwrite: true }, parents = []) =>*
+        whitelist = (f.split('_') for f in whitelist)
+        yield @map_impl target, whitelist, options, parents
+        
+
+
+    map_impl: (target, whitelist, options, parents) =>*
+        @init()
+        typeDef = yield target.getTypeDefinition()     
+        for fieldName, def of typeDef.schema.properties
+            fieldWhiteList = (a for a in whitelist when a[0] is fieldName)        
+            if yield @setField target, fieldName, def, typeDef, fieldWhiteList, options, parents
+                changed = true
+
+        return changed
+   
+        
+
+    setField: (obj, fieldName, def, typeDef, whitelist, options, parents) =>*
+        if @typeUtils.isPrimitiveType(def.type)
+            if def.type isnt 'array'
+                if whitelist[0]?[0] is fieldName
+                    yield @setSimpleType(obj, fieldName, def, typeDef, whitelist, options, parents)
+            else
+                yield @setArray(obj, fieldName, def, typeDef, whitelist, options, parents)
+        else
+            yield @setCustomType(obj, fieldName, def, typeDef, whitelist, options, parents)
+                        
+                        
+
+    #eg: name: "jeswin", age: 33    
+    setSimpleType: (obj, fieldName, def, typeDef, whitelist, options, parents) =>*
+        formField = parents.concat(fieldName).join('_')
+        val = yield @body formField
+        if val
+            result = @parseSimpleType val, fieldName, def, typeDef
+            if not (obj instanceof Array)
+                if options.overwrite
+                    obj[fieldName] = result
+                else
+                    obj[fieldName] ?= result
+                changed = true
+            else
+                obj.push result
+                changed = true
+            
+        return changed    
             
 
 
-    map: (target, whitelist, options = { overwrite: true }, prefix = []) =>*
-        result = { changed: false }
-        @init()
-        typeDef = yield target.getTypeDefinition()     
-        for field, def of typeDef.schema.properties
-            populateResult = yield @populateObject target, field, def, whitelist, options, prefix
-            result.changed = populateResult.changed
-        yield result
-   
-        
-    
-    populateObject: (obj, name, def, whitelist, options, prefix) =>*
-        result = { changed: false }
-
-        if not obj[name] or options.overwrite
-            fullName = prefix.concat(name).join('_').toLowerCase()
-            if @typeUtils.isPrimitiveType(def.type) and def.type isnt 'array'
-                if whitelist.indexOf(fullName) > -1
-                    val = yield @body fullName, 'string'
-                    if val
-                        obj[name] = @parsePrimitive val, def, fullName
-                        result.changed = true
+    #Two possibilities
+    #1. Array of primitives (eg: customerids_1: 13, customerids_2: 44, or as CSV like customerids: "1,54,66,224")
+    #2. Array of objects (eg: customers_1_name: "jeswin", customers_1_age: "33")
+    setArray: (obj, fieldName, def, typeDef, whitelist, options, parents) =>*   
+        if typeDef?.mapping?[fieldName]
+            if def.items.type isnt 'array'
+                if whitelist.indexOf(fieldName) isnt -1
+                    formField = parents.concat(fieldName).join('_')
+                    val = yield @body formField
+                    items = val.split ','
+                    for i in items
+                        obj[fieldName].push @parseSimpleType val, "#{fieldName}[]", def.items, def
+                        changed = true
             else
-                prefix.push name
+                throw new Error "Cannot map array of arrays"
+        else
+            parents.push fieldName
 
-                if def.typeDefinition                    
-                    newObj = new def.typeDefinition.ctor()
-                    mapResult = @map(newObj, whitelist, options, prefix)
-                    if mapResult.changed
-                        obj[name] = newObj
-                        result.changed = true
-                    
-                prefix.pop()
+            counter = 1
+            newArray = obj[fieldName] ? []
+            while true
+                if yield @setField(newArray, counter, def.items, def, whitelist, options, parents)
+                    counter++
+                    obj[fieldName] ?= newArray
+                    changed = true
+                else
+                    break                        
 
-        yield result
+            parents.pop()
+            
+        return changed
+
+    
+    
+    setCustomType: (obj, fieldName, def, typeDef, whitelist, options, parents) =>*
+        whitelist = (a[1..] for a in whitelist)
+        parents.push fieldName
+
+        if def.typeDefinition                    
+            newObj = new def.typeDefinition.ctor()
+            changed = yield @map_impl(newObj, whitelist, options, parents)
+            if changed
+                if not (obj instanceof Array)
+                    obj[fieldName] = newObj                    
+                else
+                    obj.push newObj
+
+        parents.pop() 
+                   
+        return changed    
 
 
 
-    parsePrimitive: (val, def, fieldName) =>
+    parseSimpleType: (val, fieldName, def, typeDef) =>
         if val
             switch def.type
                 when 'integer'
@@ -82,13 +147,13 @@ class RequestParser
                 when 'number'
                     parseFloat val
                 when 'string'
-                    if def.allowHtml
+                    if typeDef?.htmlFields?.indexOf(fieldName) isnt -1
                         sanitizer.sanitize(sanitizer.unescapeEntities val)
                     else
                         sanitizer.escape(val)
                 when 'boolean'
                     val is "true"
                 else      
-                    throw new Error "#{def.type} #{fieldName} is a non-primitive. Cannot parse."
+                    throw new Error "#{def.type} #{fieldName} is not a primitive type or is an array. Cannot parse."
 
 exports.RequestParser = RequestParser

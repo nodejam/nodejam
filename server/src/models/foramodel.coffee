@@ -5,21 +5,15 @@ ForaTypeUtils = require('./foratypeutils').ForaTypeUtils
 
 class ForaModel extends BaseModel
     
-    @foraTypeUtils: new ForaTypeUtils()
-    
-    
     @getTypeUtils: ->
-        @foraTypeUtils
+        ForaTypeUtils
 
 
 
 class ForaDbModel extends DatabaseModel
 
-    @foraTypeUtils: new ForaTypeUtils()
-    
-    
     @getTypeUtils: ->
-        @foraTypeUtils
+        ForaTypeUtils
 
 
 exports.ForaModel = ForaModel

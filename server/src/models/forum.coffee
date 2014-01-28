@@ -67,7 +67,7 @@ class Forum extends ForaDbModel
                 stub: { type: 'string' },
                 description: { type: 'string' },
                 type: { type: 'string', enum: ['public', 'protected', 'private'] },
-                postTypes: { type: 'array', items: 'string', minItems: 1 },
+                postTypes: { type: 'array', items: { type: 'string' }, minItems: 1 },
                 settings: { $ref: 'forum-settings' },
                 cover: { $ref: 'cover' },
                 createdBy: { $ref: 'user-summary' },
@@ -80,6 +80,9 @@ class Forum extends ForaDbModel
             createdAt: { event: 'created' },
             updatedAt: { event: 'updated' }
         },
+        mapping: {
+            postTypes: { type: 'csv' },
+        }
         associations: {
             info: { type: "forum-info", key: { '_id': 'forumid' } }
         },
