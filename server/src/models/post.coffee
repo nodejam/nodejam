@@ -110,8 +110,7 @@ class Post extends ForaDbModel
     getTemplate: (name) =>*
         typeDef = yield @getTypeDefinition()
         extension = @getExtension typeDef
-        json = yield extension.getTemplate.call @, name
-        html = @parseTemplate json
+        yield extension.getTemplate.call @, name
         
 
 
@@ -119,45 +118,9 @@ class Post extends ForaDbModel
         typeDef = yield @getTypeDefinition()
         extension = @getExtension typeDef
         json = yield extension.getView.call @, name
-        
-
-    
-    parseTemplate: (data) =>    
-        if data instanceof Array
-            (@parseTemplate(i) for i in data)
-        else if data.widget
-            ctor = if typeof data.widget is 'string' then @getWidget(data.widget) else data.widget
-            params = {}
-            for k, v of data
-                if k isnt 'widget'
-                    params[k] = @parseTemplate v
-            new ctor params
-        else
-            data
                 
 
 
-    getWidget: (name) =>
-        switch name
-            when 'image'
-                widgets.Image
-            when 'cover'
-                widgets.Cover
-            when 'heading'
-                widgets.Heading
-            when 'authorship'
-                widgets.Authorship
-            when 'html'
-                widgets.Html
-            when 'text'
-                widgets.Text
-            when 'postview'
-                widgets.PostView
-            when 'cardview'
-                widgets.CardView
-                
-
-    
     getExtension: (typeDef) =>
         switch typeDef.extensionType 
             when 'builtin'

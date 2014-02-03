@@ -4,20 +4,19 @@
 
 /* Large Pages */
 .large-pages-common() {
-    .content-area {
-        width: 720px; margin: auto;
-        .cards-mixin-common;        
-        .cards-standard-mixin(720);
+    .main-pane, .alt-pane {
+        > .nav { 
+            &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
+        }
     }
     
     .with-cover {
         .cover {
-            position: fixed; height: 100%; top: 0;
             .image {
                 background-size: cover; background-position: 50% 50%; height: 100%;
                 > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
                 > .content-wrap { 
-                    left: 32px; bottom: 20px; position: absolute; color: @colorNeutral; max-width: 500px;
+                    color: @colorNeutral; 
                     h1 { font-size: 2em; margin-bottom: .3em }
                     p { font-size: 1.3em }
                     
@@ -27,68 +26,112 @@
                 background: transparent; 
             }
         }
-    }
-    
-    .main-pane, .alt-pane {
-        > .nav { 
-            &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
-        }
-    }
-}
-
-
-.single-section-page(@maxFixedWidth, @coverWidth) {
-    .single-section-page {
-        .main-pane { width: 100%; }
-        
-        .fixed-width {
-            .main-pane { width: (@maxFixedWidth - 160px); margin-left: auto; margin-right: auto; }
-
-            .content-area {
-                .cards-alt-mixin((@maxFixedWidth / 2) - 140px);
-                &.wide {
-                    width: (@maxFixedWidth - 160px);
+        &.auto-cover {
+            .cover {
+                position: fixed; height: 100%; top: 0; right: 0;
+                .image {
+                    > .content-wrap { 
+                        left: 32px; bottom: 20px; position: absolute; max-width: 500px;
+                    }
                 }
             }
         }
-        
-        &.with-cover {      
-            .main-pane { width: (100% - @coverWidth); }
-            .cover { 
-                width: @coverWidth; left: (100% - @coverWidth); 
-            }
-            &.full-cover { /* TODO */ }
-        }
+        &.top-cover { /* TODO */ }
+        &.full-cover { /* TODO */ }        
     }
 }
 
+.single-col-content-area() {
+    .content-area {
+        width: 720px; margin: auto;
+        .cards-standard-mixin(720);
+        .cards-alt-mixin(660);
+    }
+}
 
-.multi-section-page(@mainWidth, @coverHeight) {
-    .multi-section-page {
-        .main-pane { width: @mainWidth; }
-        .alt-pane { width: (100% - @mainWidth); left: @mainWidth; }
+.two-col-content-area(@width) {
+    .content-area {    
+        width: ((2 * @width) + 160px); margin: auto;
+        .cards-alt-mixin(@width);
+    }
+}
 
-        &.with-cover {      
-            .main-pane, .alt-pane { margin-top: (@coverHeight + 20px); }
-            .cover { position:absolute; left:0; top: 0; width: 100%; height: @coverHeight; }
-            &.full-cover { /* TODO */ }
+/*
+    Single section pages
+    1.  main pane occupies 50% of the width
+        has one content column. content area width is 720px;
+        It could take 50% in the middle, or to the left if there is a cover on the right.
+    
+    2.  main pane occupies max defined width (called 'wide')
+        has two content columns. content area width is max defined width.
+        Two column auto-cover will default to top-cover
+*/
+
+.single-section-page(@twoColPaneWidth, @topCoverHeight, @autoCoverWidth) {
+    .single-section-page {        
+        
+        .cards-mixin-common;        
+    
+        &.single-column {
+            &.auto-cover {
+                .main-pane { 
+                    width: (100% - @autoCoverWidth); margin-right: 50%; 
+                    .single-col-content-area();
+                }
+                .cover { 
+                    width: @autoCoverWidth; left: (100% - @autoCoverWidth); 
+                }
+            }
+            
+            &.sans-cover, &.top-cover, &.full-cover {
+                .main-pane { 
+                    width: 100%; 
+                    .single-col-content-area();
+                }
+            }
         }
+
+        &.two-column {
+            &.sans-cover, &.top-cover, &.full-cover {
+                .main-pane { 
+                    width: 100%; 
+                    .two-col-content-area((@twoColPaneWidth / 2) - 140px);
+                }
+            }
+            
+            &.auto-cover { /* TODO: Make this top-cover, auto-cover in two-column should always be on the top */ }
+        }
+        
+        &.top-cover { /* TODO */ }
+        &.full-cover { /* TODO */ }
+    }
+    
+}
+
+
+/*
+    Multi section pages
+*/
+.multi-section-page(@mainPaneWidth, @coverHeight) {
+    .multi-section-page {
+        .main-pane { width: @mainPaneWidth; float: left; }
+        .alt-pane { width: (100% - @mainPaneWidth); float: left }
     }
 }
 
 
 .large-pages(@minWidth) when (@minWidth >= 1720) {  
-    .single-section-page(1720, 50%);
+    .single-section-page(1720, 400px, 50%);
     .multi-section-page(50%, 400px);
 }
 
 .large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {  
-    .single-section-page(1400, 40%);
+    .single-section-page(1400, 400px, 40%);
     .multi-section-page(60%, 400px);
 }
 
 .large-pages(@minWidth) when (@minWidth < 1400) {  
-    .single-section-page(@minWidth, 34%);
+    .single-section-page(@minWidth, 400px, 34%);
     .multi-section-page(66%, 400px);
 }
 

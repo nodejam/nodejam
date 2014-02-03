@@ -2,9 +2,9 @@ exports.getTemplate = (name) ->
     switch name
         when 'standard'
             {
-                widget: "postview",                    
-                itemPane: [
-                    { widget: 'cover', cover: '@post.cover', field: 'cover',  editable: true, size: 1 },
+                widget: "single-section-page",
+                cover: { cover: '@post.cover', field: 'cover',  editable: true, size: 1 },
+                mainPane: [                    
                     { widget: 'heading', title: '@post.title', field: 'title', editable: true, size: 1 },
                     { widget: 'authorship', type: 'small', author: '@author' },
                     { widget: 'text', text: '@post.content', field: 'content', editable: true },

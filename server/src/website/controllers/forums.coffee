@@ -17,7 +17,7 @@ exports.index = auth.handler ->*
         featured, 
         pageName: 'forums-page', 
         pageLayout: {
-            type: 'single-section-page',
+            type: 'single-section-page two-column sans-cover',
         }              
     }
 

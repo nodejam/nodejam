@@ -11,22 +11,17 @@ exports.item = auth.handler (forum, post) ->*
         post = yield models.Post.get({ 'forum.id': forum._id.toString(), stub: post }, {}, db)
         if post
             author = yield models.User.getById post.createdBy.id, {}, db
-            
-            template = post.getTemplate 'standard'
-            html = template.render {
-                post,
-                author,
-                forum
-            }
-            
-            yield @render 'posts/post', { 
-                html,
+    
+            viewModel = { 
                 json: JSON.stringify(post),
                 typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
                 user: @session.user,
                 pageName: 'post-page',
-                pageLayout: {
-                    type: 'single-section-page',
-                }                
             }
+            
+            pageTemplate = yield post.getTemplate 'standard'            
+            contents = pageTemplate.render { post, author, forum }, viewModel
+            
+            yield @render 'posts/post', viewModel
     
+   

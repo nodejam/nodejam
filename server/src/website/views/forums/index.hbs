@@ -14,15 +14,13 @@
             </li>
         </ul>
     </div>
-    <div class="fixed-width">
-        <div class="content-area wide">    
-        {{#if featured}}
-            <ul class="cards alt">
-            {{#each featured}}
-                {{> forumcard summary}}
-            {{/each}}
-            </ul>
-        {{/if}}
-        </div>
+    <div class="content-area">    
+    {{#if featured}}
+        <ul class="cards alt">
+        {{#each featured}}
+            {{> forumcard summary}}
+        {{/each}}
+        </ul>
+    {{/if}}
     </div>
 </div>
