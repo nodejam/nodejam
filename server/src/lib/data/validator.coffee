@@ -46,14 +46,16 @@ class Validator
                         typeCheck -> typeof value is 'number'
                     when 'string'
                         typeCheck -> typeof value is 'string'
+                    when 'boolean'
+                        typeCheck -> typeof value is 'boolean'
                     else
                         if @typeUtils.isCustomType(fieldDef.type) and value.validate
                             errors = errors.concat yield value.validate()
         
         errors            
-        
-        
-    
+
+
+
     addError: (list, fieldName, error) ->
         if error is true
             return list

@@ -155,7 +155,7 @@ class DatabaseModel extends BaseModel
         if not @_id
             @save.apply @, arguments
         else
-            throw new Error "Cannot create. @_id is not empty."
+            throw new Error "Cannot create. @_id is not empty"
         
     
     

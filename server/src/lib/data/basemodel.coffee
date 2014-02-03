@@ -47,6 +47,7 @@ class BaseModel
         yield @constructor.getTypeDefinition()
 
 
+
     toJSON: ->
         result = {}
         for k,v of @

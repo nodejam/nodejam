@@ -10,7 +10,7 @@ exports.index = auth.handler ->*
     featured = (f for f in featured when (x._id for x in editorsPicks).indexOf(f._id) is -1)
 
     for post in editorsPicks.concat(featured)
-        template = post.getTemplate 'card'
+        template = yield post.getTemplate 'card'
         post.html = template.render {
             post,
             forum: post.forum,

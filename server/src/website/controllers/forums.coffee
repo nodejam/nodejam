@@ -34,7 +34,7 @@ exports.item = auth.handler (stub) ->*
             post.html = template.render {
                 post,
                 forum: post.forum,
-            }                    
+            }
 
         options = {}
         if @session.user

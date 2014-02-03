@@ -104,16 +104,21 @@ class Post extends ForaDbModel
             yield forum.refreshSnapshot()
         
         result
-            
+        
+        
+        
+    getTemplate: (name) =>*
+        typeDef = yield @getTypeDefinition()
+        extension = @getExtension typeDef
+        json = yield extension.getTemplate.call @, name
+        html = @parseTemplate json
+        
 
 
-    #Dummy. So that a data error doesn't blow up the app.
-    getTemplate: (name = "standard") =>
-        @parseTemplate {
-            widget: "postview",                    
-            itemPane: [],
-            sidebar: []
-        }                
+    getView: (name) =>*
+        typeDef = yield @getTypeDefinition()
+        extension = @getExtension typeDef
+        json = yield extension.getView.call @, name
         
 
     
@@ -153,8 +158,13 @@ class Post extends ForaDbModel
                 
 
     
-    getView: =>
+    getExtension: (typeDef) =>
+        switch typeDef.extensionType 
+            when 'builtin'
+                [name, version] = typeDef.name.split '/'
+                require "../extensions/posts/#{name}/#{version}/script"
+            else
+                throw new Error "Unsupported extension type"
         
-                
-            
+    
 exports.Post = Post
