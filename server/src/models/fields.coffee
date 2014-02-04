@@ -24,6 +24,7 @@ class Cover extends ForaModel
         schema: {
             type: 'object',        
             properties: {
+                type: { type: 'string' },
                 image: { $ref: 'image' },
                 bgColor: { type: 'string' },
                 bgOpacity: { type: 'string' },

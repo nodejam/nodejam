@@ -34,7 +34,7 @@ class CardView extends Widget
         for w in @params.content
             content += w.render data
         
-        { html: CardView.template { cardFace, content, post: data.post } }
+        CardView.template { cardFace, content, post: data.post }
     
         
 exports.CardView = CardView

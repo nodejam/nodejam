@@ -1,26 +1,32 @@
-<div class="main-pane">
-    <div class="nav alt">
-        <ul>
-            <li>
-                <a href="/">Trending</a>
-            </li>          
-            <li class="selected">
-                Forums
-            </li>
-        </ul>
-        <ul class="alt buttons">
-            <li>
-                <a href="/forums/new" class="positive"><i class="fa fa-plus"></i>New Forum</a>
-            </li>
-        </ul>
+<div class="single-section-page two-columns">
+
+    {{> cover coverInfo}}
+
+    <div class="main-pane">
+        <div class="nav alt">
+            <ul>
+                <li>
+                    <a href="/">Trending</a>
+                </li>          
+                <li class="selected">
+                    Forums
+                </li>
+            </ul>
+            <ul class="alt buttons">
+                <li>
+                    <a href="/forums/new" class="positive"><i class="fa fa-plus"></i>New Forum</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content-area">    
+        {{#if featured}}
+            <ul class="cards alt">
+            {{#each featured}}
+                {{> forumcard summary}}
+            {{/each}}
+            </ul>
+        {{/if}}
+        </div>
     </div>
-    <div class="content-area">    
-    {{#if featured}}
-        <ul class="cards alt">
-        {{#each featured}}
-            {{> forumcard summary}}
-        {{/each}}
-        </ul>
-    {{/if}}
-    </div>
+
 </div>

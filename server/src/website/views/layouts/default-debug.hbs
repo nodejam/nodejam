@@ -61,23 +61,6 @@
         </div>
     </div>
 
-    <!-- cover -->
-    {{#if pageLayout.cover}}
-    <div class="cover"{{#if pageLayout.coverEdit.field}} data-field-type="cover" data-field-name="{{pageLayout.coverEdit.field}}"{{/if}}>
-        <div class="image" style="background-image:url({{pageLayout.cover.image.src}})">
-            <div class="underlay" style="{{#if pageLayout.cover.bgColor}}background:{{pageLayout.cover.bgColor}};{{/if}}{{#if pageLayout.cover.opacity}}opacity:{{pageLayout.cover.opacity}};{{/if}}"></div>
-            <div class="content-wrap">
-                {{#if pageLayout.coverContent}}
-                <div class="content" style="{{#if pageLayout.cover.foreColor}}color:{{pageLayout.cover.foreColor}};{{/if}}">
-                {{{pageLayout.coverContent}}}
-                </div>
-                {{/if}}
-            </div>
-        </div>
-    </div>
-    {{/if}}
-
-    <!-- content -->
     {{{body}}}
 
   </body>

@@ -3,7 +3,22 @@ Widget = require('./widget').Widget
 
 class Heading extends Widget
 
-    @header: handlebars.compile '<{{element}} {{{attr}}}">{{title}}</{{element}}>'
+    @header: handlebars.compile '
+        <div class="cover"{{#if field}} data-field-type="cover" data-field-name="{{field}}" 
+        data-cover-format="{{cover.type}}" data-small-image="{{cover.image.small}}"{{/if}}>
+
+            <div class="image" style="background-image:url({{cover.image.src}})">
+                <div class="underlay" style="{{#if cover.bgColor}}background:{{cover.bgColor}};{{/if}}{{#if cover.opacity}}opacity:{{cover.opacity}};{{/if}}"></div>
+                <div class="content-wrap">
+                    {{#if content}}
+                    <div class="content" style="{{#if cover.foreColor}}color:{{cover.foreColor}};{{/if}}">
+                    {{{content}}}
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+
+        </div>'
 
 
     @headerWithLink: handlebars.compile '<{{element}} {{{attr}}}"><a href="{{link}}">{{title}}</a></{{element}}>'

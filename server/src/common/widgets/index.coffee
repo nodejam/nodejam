@@ -3,9 +3,10 @@ exports.Image = require('./image').Image
 exports.Heading = require('./heading').Heading
 exports.Text = require('./text').Text
 exports.Html = require('./html').Html
-exports.Authorship = require('./authorship').Authorship
-exports.PostView = require('./postview').PostView
+exports.Author = require('./author').Author
 exports.CardView = require('./cardview').CardView
+exports.SingleSectionPage = require('./singlesectionpage').SingleSectionPage
+exports.MultiSectionPage = require('./multisectionpage').MultiSectionPage
 
 parse = (data) ->
     if data instanceof Array
@@ -30,15 +31,17 @@ get = (name) ->
             exports.Cover
         when 'heading'
             exports.Heading
-        when 'authorship'
-            exports.Authorship
+        when 'author'
+            exports.Author
         when 'html'
             exports.Html
         when 'text'
             exports.Text
-        when 'postview'
-            exports.PostView
         when 'cardview'
             exports.CardView
+        when 'single-section-page'
+            exports.SingleSectionPage
+        when 'multi-section-page'
+            exports.MultiSectionPage
             
 exports.get = get

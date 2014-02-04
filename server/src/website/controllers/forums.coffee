@@ -14,11 +14,8 @@ exports.index = auth.handler ->*
         forum.summary = forum.getView("card")
     
     yield @render 'forums/index', { 
-        featured, 
-        pageName: 'forums-page', 
-        pageLayout: {
-            type: 'single-section-page two-column sans-cover',
-        }              
+        pageName: 'forums-page',
+        featured
     }
 
 

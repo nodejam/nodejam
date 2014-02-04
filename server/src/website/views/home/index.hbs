@@ -1,33 +1,39 @@
-<div class="main-pane">
-    <div class="nav">
-        <ul>
-            <li class="selected">
-                Trending
-            </li>
-            <li>
-                <a href="/forums">Forums</a>
-            </li>            
-        </ul>
-    </div>
-    <div class="content-area">
-        {{#if editorsPicks}}
+<div class="single-section-page single-column">
+
+    {{> cover coverInfo}}
+
+    <div class="main-pane">
+        <div class="nav">
+            <ul>
+                <li class="selected">
+                    Trending
+                </li>
+                <li>
+                    <a href="/forums">Forums</a>
+                </li>            
+            </ul>
+        </div>
+        <div class="content-area">
+            {{#if editorsPicks}}
+                <ul class="cards standard">
+                {{#each editorsPicks}}
+                    <li>
+                    {{{html}}}
+                    </li>
+                {{/each}}
+                </ul>
+            {{/if}}
+
+            {{#if featured}}
             <ul class="cards standard">
-            {{#each editorsPicks}}
+            {{#each featured}}
                 <li>
                 {{{html}}}
                 </li>
             {{/each}}
             </ul>
-        {{/if}}
-
-        {{#if featured}}
-        <ul class="cards standard">
-        {{#each featured}}
-            <li>
-            {{{html}}}
-            </li>
-        {{/each}}
-        </ul>
-        {{/if}}
-    </div>
+            {{/if}}
+        </div>
+    </div>  
+    
 </div>

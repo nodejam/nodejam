@@ -12,26 +12,25 @@ exports.index = auth.handler ->*
 
     for post in editorsPicks.concat(featured)
         template = widgets.parse yield post.getTemplate 'card'
-        result = template.render {
+        post.html = template.render {
             post,
             forum: post.forum,
         }
-        post.html = result.html
         
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free.</p>"
 
     yield @render 'home/index', { 
+        pageName: 'home-page',
         editorsPicks,
         featured,
-        pageName: 'home-page',
-        pageLayout: {
-            type: 'single-section-page single-column with-cover auto-cover',
+        coverInfo: {
+            class: 'auto-cover',
             cover: {
                 image: { src: '/public/images/cover.jpg' },
             },
-            coverContent
-        }
+            content: coverContent
+        },
     }
 
 

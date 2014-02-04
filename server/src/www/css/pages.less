@@ -10,34 +10,33 @@
         }
     }
     
-    .with-cover {
-        .cover {
-            .image {
-                background-size: cover; background-position: 50% 50%; height: 100%;
-                > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
-                > .content-wrap { 
-                    color: @colorNeutral; 
-                    h1 { font-size: 2em; margin-bottom: .3em }
-                    p { font-size: 1.3em }
-                    
-                }
-            }
-            button {
-                background: transparent; 
+    .cover {
+        .image {
+            background-size: cover; background-position: 50% 50%; height: 100%;
+            > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
+            > .content-wrap { 
+                color: @colorNeutral; 
+                h1 { font-size: 2em; margin-bottom: .3em }
+                p { font-size: 1.3em }
+                
             }
         }
+        button {
+            background: transparent; 
+        }
+        
         &.auto-cover {
-            .cover {
-                position: fixed; height: 100%; top: 0; right: 0;
-                .image {
-                    > .content-wrap { 
-                        left: 32px; bottom: 20px; position: absolute; max-width: 500px;
-                    }
+            position: fixed; height: 100%; top: 0; right: 0;
+            .image {
+                > .content-wrap { 
+                    left: 32px; bottom: 20px; position: absolute; max-width: 500px;
                 }
             }
         }
+
         &.top-cover { /* TODO */ }
         &.full-cover { /* TODO */ }        
+
     }
 }
 
@@ -73,35 +72,31 @@
         .cards-mixin-common;        
     
         &.single-column {
-            &.auto-cover {
-                .main-pane { 
+
+            .auto-cover {
+                width: @autoCoverWidth; left: (100% - @autoCoverWidth); 
+                + .main-pane { 
                     width: (100% - @autoCoverWidth); margin-right: 50%; 
                     .single-col-content-area();
                 }
-                .cover { 
-                    width: @autoCoverWidth; left: (100% - @autoCoverWidth); 
-                }
             }
             
-            &.sans-cover, &.top-cover, &.full-cover {
-                .main-pane { 
+            .top-cover, .full-cover {
+                + .main-pane { 
                     width: 100%; 
                     .single-col-content-area();
                 }
             }
         }
 
-        &.two-column {
-            &.sans-cover, &.top-cover, &.full-cover {
-                .main-pane { 
-                    width: 100%; 
-                    .two-col-content-area((@twoColPaneWidth / 2) - 140px);
-                }
-            }
-            
-            &.auto-cover { /* TODO: Make this top-cover, auto-cover in two-column should always be on the top */ }
+        &.two-columns {
+            .main-pane {
+                 width: 100%; 
+                .two-col-content-area((@twoColPaneWidth / 2) - 140px);
+            }            
         }
         
+        &.auto-cover { /* TODO: Make this top-cover, auto-cover in two-column should always be on the top */ }
         &.top-cover { /* TODO */ }
         &.full-cover { /* TODO */ }
     }
@@ -131,7 +126,7 @@
 }
 
 .large-pages(@minWidth) when (@minWidth < 1400) {  
-    .single-section-page(@minWidth, 400px, 34%);
+    .single-section-page(@minWidth, 400px, 28%);
     .multi-section-page(66%, 400px);
 }
 

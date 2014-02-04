@@ -1,16 +1,17 @@
 exports.getTemplate = (name) -> 
     switch name
+    
         when 'standard'
             {
                 widget: "single-section-page",
-                cover: { cover: '@post.cover', field: 'cover',  editable: true, size: 1 },
-                mainPane: [                    
-                    { widget: 'heading', title: '@post.title', field: 'title', editable: true, size: 1 },
-                    { widget: 'authorship', type: 'small', author: '@author' },
-                    { widget: 'text', text: '@post.content', field: 'content', editable: true },
-                ],
-                sidebar: [ { widget: 'authorship', author: '@author' } ]
+                cover: { widget: 'cover', cover: '@post.cover', field: 'cover' },
+                title: { widget: 'heading', title: '@post.title', field: 'title', size: 1 },
+                author: { widget: 'author', author: '@author', type: 'small' },
+                contents: [
+                    { widget: 'text', text: '@post.content', field: 'content' },
+                ]
             }
+    
         when 'card'
             cardFace = []
             
