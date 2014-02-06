@@ -3,25 +3,63 @@ Widget = require('./widget').Widget
 
 class Cover extends Widget
 
-    @header: handlebars.compile '<{{element}} {{{attr}}}">{{title}}</{{element}}>'
+    @template: handlebars.compile '
+    {{#if cover}}
+    <div class="cover {{class}}"{{#if field}} data-field-type="cover" data-field-name="{{field}}" 
+            data-cover-format="{{cover.type}}" data-small-image="{{cover.image.small}}"{{/if}}>
+
+        <div class="image" style="background-image:url({{cover.image.src}})">
+            <div class="underlay" style="{{#if cover.bgColor}}background:{{cover.bgColor}};{{/if}}{{#if cover.opacity}}opacity:{{cover.opacity}};{{/if}}"></div>
+            <div class="content-wrap">
+                {{#if content}}
+                <div class="content" style="{{#if cover.foreColor}}color:{{cover.foreColor}};{{/if}}">
+                {{{content}}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+
+    </div>
+    {{/if}}'
+    
+    
+    @inlineTemplate: handlebars.compile '
+    {{#if cover}}
+    <div class="cover {{class}}"{{#if field}} data-field-type="cover" data-field-name="{{field}}" 
+            data-cover-format="{{cover.type}}" data-small-image="{{cover.image.small}}"{{/if}}>
+
+        <img src="{{cover.image.src}}" />
+
+    </div>
+    {{/if}}'
+    
+
+
 
     constructor: (@params) ->
         
         
         
-    render: (data) =>
+    render: (data, content) =>
         cover = @parseExpression @params.cover, data
-
+        coverType = cover.type ? "inline-cover"
+        model = {}
+        
         if cover
-            if cover.type
-                cover.classes = "with-cover #{cover.type}"
-            else
-                cover.classes = "with-cover auto-cover"
+            model.cover = cover
+            model.class = coverType
             
             if @params.editable
-                cover.field = @params.field            
+                model.field = @params.field
+                
+            if content
+                model.content = content
         
-        { cover }
+        if coverType isnt 'inline-cover'
+            Cover.template model
+        else
+            Cover.inlineTemplate model
+
         
     
 exports.Cover = Cover

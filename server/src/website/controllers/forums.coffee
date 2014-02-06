@@ -56,7 +56,7 @@ exports.item = auth.handler (stub) ->*
             user: @session.user,
             pageName: 'forum-page', 
             pageLayout: {
-                type: 'single-section-page with-cover',
+                type: 'single-section-page',
                 cover: forum.cover,
                 coverContent,
                 coverEdit: { field: 'cover' }
@@ -93,7 +93,7 @@ exports.about = (stub) ->*
         members,
         pageName: 'forum-about-page', 
         pageLayout: {
-            type: 'single-section-page with-cover',
+            type: 'single-section-page',
             cover: { image: { src: forum.cover ? '/public/images/cover.jpg' } },
         }
     }

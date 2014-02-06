@@ -11,18 +11,20 @@
     }
     
     .cover {
-        .image {
-            background-size: cover; background-position: 50% 50%; height: 100%;
-            > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
-            > .content-wrap { 
-                color: @colorNeutral; 
-                h1 { font-size: 2em; margin-bottom: .3em }
-                p { font-size: 1.3em }
-                
+        &.auto-cover, &.top-cover, &.full-cover {
+            .image {
+                background-size: cover; background-position: 50% 50%; height: 100%;
+                > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
+                > .content-wrap { 
+                    color: @colorNeutral; 
+                    h1 { font-size: 2em; margin-bottom: .3em }
+                    p { font-size: 1.3em }
+                    
+                }
             }
-        }
-        button {
-            background: transparent; 
+            button {
+                background: transparent; 
+            }
         }
         
         &.auto-cover {
@@ -34,9 +36,13 @@
             }
         }
 
-        &.top-cover { /* TODO */ }
-        &.full-cover { /* TODO */ }        
+        &.inline-cover { 
+            padding-left: 64px; padding-right: 24px;
+            img { width: 100% }
+        }
 
+        &.top-cover { height: 400px; }
+        &.full-cover { /* TODO */ }        
     }
 }
 
@@ -51,6 +57,7 @@
 .two-col-content-area(@width) {
     .content-area {    
         width: ((2 * @width) + 160px); margin: auto;
+        .cards-standard-mixin(@width);
         .cards-alt-mixin(@width);
     }
 }
@@ -81,11 +88,15 @@
                 }
             }
             
-            .top-cover, .full-cover {
+            .top-cover, .full-cover, .inline-cover {
                 + .main-pane { 
                     width: 100%; 
                     .single-col-content-area();
                 }
+            }
+            
+            .inline-cover {
+                width: 720px; margin: 64px auto 12px auto;                
             }
         }
 
@@ -94,13 +105,8 @@
                  width: 100%; 
                 .two-col-content-area((@twoColPaneWidth / 2) - 140px);
             }            
-        }
-        
-        &.auto-cover { /* TODO: Make this top-cover, auto-cover in two-column should always be on the top */ }
-        &.top-cover { /* TODO */ }
-        &.full-cover { /* TODO */ }
-    }
-    
+        }        
+    }    
 }
 
 

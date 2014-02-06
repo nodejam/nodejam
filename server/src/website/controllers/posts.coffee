@@ -12,22 +12,14 @@ exports.item = auth.handler (forum, post) ->*
         if post
             author = yield models.User.getById post.createdBy.id, {}, db
     
-            viewModel = { 
+            pageTemplate = widgets.parse yield post.getTemplate 'standard'            
+            
+            yield @render 'posts/post', { 
                 pageName: 'post-page',
                 json: JSON.stringify(post),
                 typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
                 user: @session.user,
+                html: pageTemplate.render { post, author, forum }
             }
-            
-            pageTemplate = widgets.parse yield post.getTemplate 'standard'            
-            result = pageTemplate.render { post, author, forum }
-            
-            if result.cover
-                viewModel.cover = result.cover
-                viewModel.coverContent = result.coverContent
-            viewModel.html = result.html
-            viewModel.pageType = result.pageType
-            
-            yield @render 'posts/post', viewModel
     
    

@@ -189,8 +189,12 @@ class Forum extends ForaDbModel
     refreshSnapshot: (context, db) =>*
         { context, db } = @getContext context, db
         posts = yield @getPosts 10, { _id: -1 }, context, db
-        @snapshot = { posts: (p.getView("snapshot") for p in posts) }
-        if posts.length
+        @snapshot = { posts: [] }
+
+        if posts.length 
+            for p in posts
+                @snapshot.posts.push yield p.getView("snapshot")
+
             cursor = yield models.Post.getCursor({ 'forum.id': @_id.toString() , state: 'published' }, context, db)
             @stats.posts = yield thunkify(cursor.count).call cursor
             @stats.lastPost = posts[0].savedAt

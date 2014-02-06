@@ -23,9 +23,9 @@ exports.create = auth.handler { session: true }, (forum) ->*
 
 
 
-exports.edit = auth.handler { session: true }, (forum, id) ->*
+exports.edit = auth.handler { session: true }, (forum, post) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-    post = yield models.Post.getById(id, { user: @session.user }, db)
+    post = yield models.Post.getById(post, { user: @session.user }, db)
     
     if post
         if (post.createdBy.username is @session.user.username) 

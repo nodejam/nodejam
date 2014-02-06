@@ -110,14 +110,14 @@ class Post extends ForaDbModel
     getTemplate: (name) =>*
         typeDef = yield @getTypeDefinition()
         extension = @getExtension typeDef
-        yield extension.getTemplate.call @, name
+        extension.getTemplate.call @, name
         
 
 
     getView: (name) =>*
         typeDef = yield @getTypeDefinition()
         extension = @getExtension typeDef
-        json = yield extension.getView.call @, name
+        extension.getView.call @, name
                 
 
 

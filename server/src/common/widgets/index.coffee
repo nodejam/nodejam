@@ -17,7 +17,9 @@ parse = (data) ->
         for k, v of data
             if k isnt 'widget'
                 params[k] = parse v
-        new ctor params
+        result = new ctor params
+        result.__params = data
+        result
     else
         data
 

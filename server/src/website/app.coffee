@@ -51,7 +51,7 @@ app.use route.post '/~:username', m_users.item
 
 app.use route.get '/:forum', m_forums.item
 app.use route.get '/:forum/about', m_forums.about
-app.use route.get '/:forum/:stub', m_posts.item
+app.use route.get '/:forum/:post', m_posts.item
     
 #Register templates, helpers etc.
 require("./hbshelpers").register()

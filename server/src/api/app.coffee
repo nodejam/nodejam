@@ -30,7 +30,7 @@ app.use route.get '/api/users/:username', m_users.item
 app.use route.post '/api/forums', m_forums.create
 app.use route.post '/api/forums/:forum/members', m_forums.join
 app.use route.post '/api/forums/:forum', m_posts.create
-app.use route.put '/api/forums/:forum/posts/:id', m_posts.edit
+app.use route.put '/api/forums/:forum/posts/:post', m_posts.edit
 
 app.use route.post '/api/image', m_images.upload
 
