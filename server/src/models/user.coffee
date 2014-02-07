@@ -109,7 +109,7 @@ class User extends ForaDbModel
 
 
     getAssetUrl: =>
-        "/public/assetspaths/#{@assets}"
+        "/public/assets/#{@assets}"
 
 
 

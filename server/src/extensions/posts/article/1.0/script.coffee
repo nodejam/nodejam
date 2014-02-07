@@ -1,6 +1,5 @@
 exports.save = ->*
     @cover?.type ?= 'inline-cover'
-    console.log @cover
     
     
 

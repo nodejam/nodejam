@@ -73,17 +73,30 @@ div.content {
     li { display: block; padding-bottom: 8px; }
 }
 
+/*
+    Icon Block
+    *******  ************
+    * img *  *   text   *
+    *******  ************
+*/
 .icon-block {
     line-height: 1.4em; display: block; font-size: 0.9em; 
-    img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 1px 4px 0 0 }
-    .text { display: block; float: left; margin-left: 4px; }    
-    &.sub-heading {         
-        margin: 12px 0 16px 0; 
+    img { float: left; width:32px; height: 32px; border-radius: 100%; margin: 4px 4px 0 0 }
+    .text { 
+        display: block; float: left; margin: 0px 0 16px 4px; 
         h3, h4 { margin: 0 }
     }
     &:after { content: ""; display:block; clear: both }
 }
 
+/*
+    Stamp Block
+    *******  ************
+    * img *     text    *
+    *******  that flows *
+    *   around the img  * 
+    *********************
+*/
 .stamp-block {        
     img { float: right; width:48px; height: 48px; border-radius: 100%; margin-top: 3px; }
     h2 { margin: 0 0 .2em 0 }
