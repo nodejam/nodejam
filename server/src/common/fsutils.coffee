@@ -20,7 +20,7 @@ filePathIsValid = (filePath) ->
 
 
 getBasePath = (name) ->
-    if ['images', 'originalimages', 'temp', 'assetpaths'].indexOf(name) > -1
+    if ['images', 'originalimages', 'temp', 'assets'].indexOf(name) > -1
         path.join conf().pubdir, name    
 
 

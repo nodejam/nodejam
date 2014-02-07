@@ -1,4 +1,10 @@
-exports.getTemplate = (name) -> 
+exports.save = ->*
+    @cover?.type ?= 'inline-cover'
+    console.log @cover
+    
+    
+
+exports.getTemplate = (name) ->*
     switch name
     
         when 'standard'
@@ -35,7 +41,7 @@ exports.getTemplate = (name) ->
             
 
 
-exports.getView = (name) ->
+exports.getView = (name) ->*
     switch name
         when "snapshot"
             {

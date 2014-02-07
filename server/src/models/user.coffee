@@ -18,6 +18,7 @@ class User extends ForaDbModel
                     id: { type: 'string' },
                     username: { type: 'string' },
                     name: { type: 'string' },
+                    assets: { type: 'string' }
                 },
                 required: ['id', 'username', 'name']
             }
@@ -35,13 +36,14 @@ class User extends ForaDbModel
             properties: {
                 username: { type: 'string' },
                 name: { type: 'string' },
+                assets: { type: 'string' },
                 location: { type: 'string' },
                 followerCount: { type: 'integer' },
                 email: { type: 'string' },
                 lastLogin: { type: 'number' }
                 about: { type: 'string' },
             },
-            required: ['username', 'name', 'followerCount', 'email', 'lastLogin']
+            required: ['username', 'name', 'assets', 'followerCount', 'email', 'lastLogin']
         }
         validate: ->*
             if not emailRegex.test(@email)
@@ -58,6 +60,7 @@ class User extends ForaDbModel
         if not @_id and not (yield User.get { @username }, context, db)
             @preferences = { canEmail: true }
 
+            @assets = "#{utils.getHashCode(@username) % conf.userDirCount}"
             user = yield @save context, db
             
             #Also create a userinfo
@@ -106,15 +109,16 @@ class User extends ForaDbModel
 
 
     getAssetUrl: =>
-        "/public/assetpaths/#{utils.getHashCode(@username) % conf.userDirCount}"
+        "/public/assetspaths/#{@assets}"
 
 
 
     summarize: =>
         new Summary {
-            id: @_id.toString()
-            username: @username
-            name: @name,
+            id: @_id.toString(),
+            @username,
+            @name,
+            @assets
         }
         
     

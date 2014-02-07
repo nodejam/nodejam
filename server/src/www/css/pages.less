@@ -2,8 +2,36 @@
     margin-top: 20px; box-sizing: border-box; -moz-box-sizing: border-box; padding-left: 64px; padding-right: 24px;      
 }
 
+.content-area {
+    &.upsize {
+        h1 { font-size: 1.8em }
+        h2 { font-size: 1.6em }
+        h3 { font-size: 1.4em }
+        p { font-size: 1.4em }
+    }
+}
+
+.single-col-content-area() {
+    .content-area {
+        width: 720px; margin: auto;
+        .cards-standard-mixin(720);
+        .cards-alt-mixin(660);
+    }
+}
+
+.two-col-content-area(@width) {
+    .content-area {    
+        width: ((2 * @width) + 160px); margin: auto;
+        .cards-standard-mixin(@width);
+        .cards-alt-mixin(@width);
+    }
+}
+
 /* Large Pages */
 .large-pages-common() {
+    .small-page-element .tiny-page-element { display: none; }
+    .large-page-element { display: block !important; }
+
     .main-pane, .alt-pane {
         > .nav { 
             &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
@@ -46,21 +74,6 @@
     }
 }
 
-.single-col-content-area() {
-    .content-area {
-        width: 720px; margin: auto;
-        .cards-standard-mixin(720);
-        .cards-alt-mixin(660);
-    }
-}
-
-.two-col-content-area(@width) {
-    .content-area {    
-        width: ((2 * @width) + 160px); margin: auto;
-        .cards-standard-mixin(@width);
-        .cards-alt-mixin(@width);
-    }
-}
 
 /*
     Single section pages
@@ -73,13 +86,21 @@
         Two column auto-cover will default to top-cover
 */
 
-.single-section-page(@twoColPaneWidth, @topCoverHeight, @autoCoverWidth) {
+.large-single-section-page(@twoColPaneWidth, @topCoverHeight, @autoCoverWidth) {
     .single-section-page {        
         
         .cards-mixin-common;        
     
         &.single-column {
 
+            /* No cover */
+            .main-pane:first-child { 
+                width: 100%; margin-top: 64px;
+                .single-col-content-area();
+            }
+
+
+            /* Auto cover in large pages position on the side */
             .auto-cover {
                 width: @autoCoverWidth; left: (100% - @autoCoverWidth); 
                 + .main-pane { 
@@ -88,6 +109,7 @@
                 }
             }
             
+            /* Top, full and inline position on top */
             .top-cover, .full-cover, .inline-cover {
                 + .main-pane { 
                     width: 100%; 
@@ -95,6 +117,7 @@
                 }
             }
             
+            /* Inline covers have the same width as content area. Position on top */
             .inline-cover {
                 width: 720px; margin: 64px auto 12px auto;                
             }
@@ -113,26 +136,35 @@
 /*
     Multi section pages
 */
-.multi-section-page(@mainPaneWidth, @coverHeight) {
+.large-multi-section-page(@mainPaneWidth, @coverHeight) {
     .multi-section-page {
         .main-pane { width: @mainPaneWidth; float: left; }
         .alt-pane { width: (100% - @mainPaneWidth); float: left }
     }
 }
 
-
+/* Large page sub-classes */
 .large-pages(@minWidth) when (@minWidth >= 1720) {  
-    .single-section-page(1720, 400px, 50%);
-    .multi-section-page(50%, 400px);
+    .large-single-section-page(1720, 400px, 50%);
+    .large-multi-section-page(50%, 400px);
 }
 
 .large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {  
-    .single-section-page(1400, 400px, 40%);
-    .multi-section-page(60%, 400px);
+    .large-single-section-page(1400, 400px, 40%);
+    .large-multi-section-page(60%, 400px);
 }
 
 .large-pages(@minWidth) when (@minWidth < 1400) {  
-    .single-section-page(@minWidth, 400px, 28%);
-    .multi-section-page(66%, 400px);
+    .large-single-section-page(@minWidth, 400px, 28%);
+    .large-multi-section-page(66%, 400px);
 }
 
+/* Small Pages */
+.small-pages-common() {
+    .large-page-element .tiny-page-element { display: none; }
+    .small-page-element { display: block !important; }
+}
+
+.small-pages(@minWidth) {
+    
+}

@@ -71,12 +71,11 @@ exports.twitterCallback = ->*
         if credentials
             user = yield credentials.getUser {}, db
             if data.length and data[0]?
-                assetPath = "#{utils.getHashCode(user.username) % 1000}"
-                fileName = path.join "#{assetPath}", user.username
+                fileName = path.join "#{user.assets}", user.username
                 filePath = yield netutils.downloadImage (parseTwitterUserDetails data[0]).pictureUrl
 
-                picPath = fsutils.getFilePath 'assetpaths', "#{assetPath}/#{user.username}.jpg"
-                thumbPath = fsutils.getFilePath 'assetpaths', "#{assetPath}/#{user.username}_t.jpg"
+                picPath = fsutils.getFilePath 'assets', "#{user.assets}/#{user.username}.jpg"
+                thumbPath = fsutils.getFilePath 'assets', "#{user.assets}/#{user.username}_t.jpg"
                 
                 utils.log "Resizing to " + picPath                
                 

@@ -7,7 +7,7 @@ fsutils = require '../../common/fsutils'
 
 #create directories
 today = Date.now()
-for p in (fsutils.getBasePath(x) for x in ['assetpaths', 'images', 'originalimages'])
+for p in (fsutils.getBasePath(x) for x in ['assets', 'images', 'originalimages'])
     for i in [0..999] by 1    
         do (p) ->
             do (i) ->

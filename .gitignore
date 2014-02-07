@@ -18,8 +18,8 @@ server/src/conf/*
 !server/src/conf/index.conf
 !server/src/conf/*.sample
 
-server/public/assetpaths/*
-!server/public/assetpaths/placeholder
+server/public/assets/*
+!server/public/assets/placeholder
 server/public/images/*
 !server/public/images/cover.jpg
 !server/public/images/cover-experience.jpg

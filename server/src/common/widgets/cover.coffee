@@ -6,7 +6,7 @@ class Cover extends Widget
     @template: handlebars.compile '
     {{#if cover}}
     <div class="cover {{class}}"{{#if field}} data-field-type="cover" data-field-name="{{field}}" 
-            data-cover-format="{{cover.type}}" data-small-image="{{cover.image.small}}"{{/if}}>
+            data-cover-format="cover.type" data-small-image="{{cover.image.small}}"{{/if}}>
 
         <div class="image" style="background-image:url({{cover.image.src}})">
             <div class="underlay" style="{{#if cover.bgColor}}background:{{cover.bgColor}};{{/if}}{{#if cover.opacity}}opacity:{{cover.opacity}};{{/if}}"></div>
@@ -26,7 +26,7 @@ class Cover extends Widget
     @inlineTemplate: handlebars.compile '
     {{#if cover}}
     <div class="cover {{class}}"{{#if field}} data-field-type="cover" data-field-name="{{field}}" 
-            data-cover-format="{{cover.type}}" data-small-image="{{cover.image.small}}"{{/if}}>
+            data-cover-format="cover.type" data-small-image="{{cover.image.small}}"{{/if}}>
 
         <img src="{{cover.image.src}}" />
 
@@ -42,12 +42,11 @@ class Cover extends Widget
         
     render: (data, content) =>
         cover = @parseExpression @params.cover, data
-        coverType = cover.type ? "inline-cover"
         model = {}
         
         if cover
             model.cover = cover
-            model.class = coverType
+            model.class = cover.type
             
             if @params.editable
                 model.field = @params.field
@@ -55,11 +54,12 @@ class Cover extends Widget
             if content
                 model.content = content
         
-        if coverType isnt 'inline-cover'
-            Cover.template model
+            if cover.type isnt 'inline-cover'
+                Cover.template model
+            else
+                Cover.inlineTemplate model
         else
-            Cover.inlineTemplate model
-
+            ''
         
     
 exports.Cover = Cover

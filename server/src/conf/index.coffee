@@ -14,7 +14,7 @@ for file in files
         else
             networks.push new models.Network(contents)
 
-settings.pubdir ?= path.resolve __dirname, '../../www-user'
+settings.pubdir ?= path.resolve __dirname, '../../public'
 
 exports.app = settings.app
 exports.db = settings.db
@@ -22,4 +22,4 @@ exports.auth = settings.auth
 exports.admins = settings.admins
 exports.pubdir = settings.pubdir
 exports.networks = networks
-exports.userDirCount = 10
+exports.userDirCount = 100

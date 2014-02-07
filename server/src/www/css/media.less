@@ -26,7 +26,13 @@
 
 @media (min-width: 1200px) { 
     .large-pages-common();
-}    
+}
+
+@media (min-width: 720px) and (max-width: 1199px) { 
+    .small-pages(720);    
+    .small-pages-common();
+}
+
 
 @media (min-width: 720px) { 
     .login-box-mixin(400px, 16px, 24px)

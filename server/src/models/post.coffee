@@ -94,6 +94,10 @@ class Post extends ForaDbModel
     save: (context, db) =>*
         { context, db } = @getContext context, db
         
+        typeDef = yield @getTypeDefinition()
+        extension = @getExtension typeDef
+        yield extension.save.call @
+        
         #If the stub has changed, we need to check if it's unique
         @stub ?= utils.uniqueId(16)
 
@@ -110,14 +114,14 @@ class Post extends ForaDbModel
     getTemplate: (name) =>*
         typeDef = yield @getTypeDefinition()
         extension = @getExtension typeDef
-        extension.getTemplate.call @, name
+        yield extension.getTemplate.call @, name
         
 
 
     getView: (name) =>*
         typeDef = yield @getTypeDefinition()
         extension = @getExtension typeDef
-        extension.getView.call @, name
+        yield extension.getView.call @, name
                 
 
 
