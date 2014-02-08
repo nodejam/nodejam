@@ -303,25 +303,26 @@ fi
 
 
 #Install mongodb
-if command -v mongod >/dev/null; then
-    echo "Mongodb is already installed."
-else
-    if $mongodb ; then
-        sudo apt-get install mongodb
+if $mongodb || $mongodb_latest ; then
+    if command -v mongod >/dev/null; then
+        echo "Mongodb is already installed."
     else
-        if $mongodb_latest ; then
-            echo "Mongodb is not installed. Will install."
-            sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-            echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
-            sudo apt-get update
-            sudo apt-get install mongodb-10gen
-            #sudo mkdir -p /data/db
-            #sudo chmod 0755 /data/db
-            #sudo chown mongodb /data/db
+        if $mongodb ; then
+            sudo apt-get install mongodb
+        else
+            if $mongodb_latest ; then
+                echo "Mongodb is not installed. Will install."
+                sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+                echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+                sudo apt-get update
+                sudo apt-get install mongodb-10gen
+                #sudo mkdir -p /data/db
+                #sudo chmod 0755 /data/db
+                #sudo chown mongodb /data/db
+            fi
         fi
     fi
 fi
-
 
 #Install graphicsmagick
 if $gm ; then
@@ -355,7 +356,6 @@ if $node_modules ; then
     npm install validator
     npm install sanitizer
     npm install handlebars
-    npm install hbs
     npm install fs-extra
     npm install gm
     npm install node-minify
