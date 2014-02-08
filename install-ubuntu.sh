@@ -83,6 +83,7 @@ gm=false
 config_files=false
 node_modules=false
 host=false
+dont_force=true
 
 MACHINE_TYPE=`uname -m`
 if [ ${MACHINE_TYPE} == 'x86_64' ]; then
@@ -167,6 +168,10 @@ do
             node_modules=true
             shift
             ;;
+        --force)
+            dont_force=false
+            shift
+            ;;
         -*)
             echo "WARN: Unknown option (ignored): $1" >&2
             shift
@@ -201,6 +206,8 @@ install_coffee() {
     temp_new_cs=`mktemp -d`
     git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
     cd $temp_new_cs
+    echo "Switching to earlier version (1e377ed59bc4f679863b7543f0c33d1f89dbf6ac), until a parser bug is fixed.."
+    git checkout 1e377ed59bc4f679863b7543f0c33d1f89dbf6ac
     npm install mkdirp  
     npm install jison
     echo "Building Coffee-Script"
@@ -217,9 +224,9 @@ install_coffee() {
 
 #Node version must not be less than 0.11.5
 if $node ; then
-    if command -v node >/dev/null; then
+    if $dont_force && command -v node >/dev/null; then
         node_version=`node -v | grep -o "[0-9].*"`
-        vercomp $node_version "0.11.5"
+        vercomp $node_version "0.11.9"
         result=$?
         if [[ $result -le 1 ]] ; then
             echo "Node version $node_version is installed. Update is not needed."
@@ -228,7 +235,7 @@ if $node ; then
             install_node
         fi
     else
-        echo "Node is not installed. Will install."
+        echo "Node will be installed."
         install_node
     fi
 else
@@ -249,7 +256,8 @@ fi
 
 #coffee-script compiler must support yield
 if $coffee ; then
-    if command -v coffee >/dev/null; then
+    if $dont_force && command -v coffee >/dev/null; then
+	echo $dont_force
         echo "NOTE: While checking for yield support you might see an error... ignore it."
         coffee --nodejs --harmony -e "a = (->* yield 1)"
         if [ "$?" -eq 0 ] ; then
@@ -259,7 +267,7 @@ if $coffee ; then
             install_coffee
         fi
     else
-        echo "Coffee-Script is not installed. Will install."
+        echo "Coffee-Script will be installed."
         install_coffee
     fi
 fi
@@ -270,10 +278,10 @@ cd $base_dir
 
 #Install nginx
 if $nginx ; then
-    if command -v nginx >/dev/null; then
+    if $dont_force && command -v nginx >/dev/null; then
         echo "Nginx is already installed."
     else
-        echo "Nginx is not installed. Will install."
+        echo "Nginx will be installed."
         sudo apt-get install nginx
     fi
 fi
@@ -304,7 +312,7 @@ fi
 
 #Install mongodb
 if $mongodb || $mongodb_latest ; then
-    if command -v mongod >/dev/null; then
+    if $dont_force && command -v mongod >/dev/null; then
         echo "Mongodb is already installed."
     else
         if $mongodb ; then
