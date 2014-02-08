@@ -6,7 +6,7 @@ window.Fora.Utils.uniqueId = (length = 16) ->
 
 
 #uploads an image, takes a callback
-window.Fora.Utils.uploadImage (fn) ->
+window.Fora.Utils.uploadImage = (fn) ->
     frameId = "e_" + Fora.Utils.uniqueId(16)
 
     form = $ "
@@ -31,7 +31,7 @@ window.Fora.Utils.uploadImage (fn) ->
         
     form.find("input").click()        
     
-#get params by parsing the url. Decaf.    
+#get params by parsing the url. Decaf. 
 `
 window.Fora.Utils.getUrlParams = function (name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");

@@ -1,15 +1,25 @@
 #!/bin/bash
 
+echo Debugging Fora...
+
 compile=true
 es6=true
 production=false
+watch=false
 
+#Parse options
 while :
 do
     case $1 in
         --no-compile)
             compile=false
             echo "Skipping compilation"
+            shift
+            ;;
+        --watch)
+            compile=false
+            watch=true
+            echo "Skipping compilation and watching for changes"
             shift
             ;;
         --es5)
@@ -32,6 +42,7 @@ do
     esac
 done
 
+#Compile?
 if $compile; then
     if $production; then
         if ! $es6; then
@@ -48,18 +59,38 @@ if $compile; then
     fi
 fi
 
-#export PATH=`pwd`/node_modules/.bin:"$PATH"
-echo Debugging Fora...
+last_restart=0
+restart_processes() {
+    current_time=$(date +%s)
+    difference=$((current_time - last_restart))
 
-echo Killing node if it is running..
-killall node
+    if ((difference > 5)); then
+        echo "$difference seconds since last restart"
+        last_restart=$current_time
 
-if ! $es6; then
-    node app/website/app.js localhost 10981 &
-    node app/api/app.js localhost 10982 &
-else
-    node --harmony app/website/app.js localhost 10981 &
-    node --harmony app/api/app.js localhost 10982 &
-fi    
+        #fora_website and fora_api are simply identifiers, so that we can find and kill
+        echo Killing all running fora processes...
+        kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}')
+
+        if ! $es6; then
+            node app/website/app.js localhost 10981 fora_website &
+            node app/api/app.js localhost 10982 fora_api &
+        else
+            node --harmony app/website/app.js localhost 10981 fora_website &
+            node --harmony app/api/app.js localhost 10982 fora_api &
+        fi    
+    fi
+    
+}
+
+#Watch?
+if $watch; then
+    while read i;
+    do
+      restart_processes      
+    done < <(coffee -o app/ -cw src/)    
+fi
+
+restart_processes
 
 

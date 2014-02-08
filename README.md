@@ -88,6 +88,8 @@ cd server
 ./debug.sh [--es5]
 ```
 - The --es5 option will transform ES6 code to ES5, allowing you to run on stable node. 
+- The --no-compile will skip compilation.
+- The --watch option will monitor the folder for changes and compile automatically.
 
 For production
 ```

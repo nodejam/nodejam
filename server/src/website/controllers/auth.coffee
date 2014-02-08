@@ -25,7 +25,6 @@ oa = new OAuth(
 )
 
 
-
 thunk_getOAuthRequestToken = ->
     (cb) ->
         oa.getOAuthRequestToken (error, oauth_token, oauth_token_secret, results) ->
