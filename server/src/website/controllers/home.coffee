@@ -40,4 +40,3 @@ exports.login = ->*
         pageName: 'login-page', 
         pageType: 'single-section-page', 
     }
-

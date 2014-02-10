@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Installs dependencies for Fora
-# Tested only in Ubuntu
+# Tested only in Ubuntu. 
 
 help() {
 echo "usage: ./install-ubuntu.sh options
 options:
-  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
-  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
+  --all               Same as --common --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
+  --latest            Same as --common --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
 
   --node              Install a pre-compiled version of node
   --node-latest       Compile and install the latest node
@@ -20,6 +20,7 @@ options:
   --gm                Install Graphics Magick
   --config-files      Creates config files if they don't exist
   --node-modules      Install Node Modules
+  --common            Install common libs. 1) inotify-tools
 
   --help              Print the help screen
 
@@ -35,7 +36,7 @@ if [ $# -eq 0 ]
 fi
 
 if [ "$(whoami)" == "root" ]; then
-	echo "This script must not be run as root. It will prompt for password when required."
+	echo "This script must not be run as root. It will prompt for password as required."
 	exit 1
 fi
 
@@ -71,6 +72,8 @@ vercomp () {
 }
 
 base_dir=$PWD
+dont_force=true
+common=false
 node=false
 node_latest=false
 coffee=false
@@ -83,7 +86,6 @@ gm=false
 config_files=false
 node_modules=false
 host=false
-dont_force=true
 
 MACHINE_TYPE=`uname -m`
 if [ ${MACHINE_TYPE} == 'x86_64' ]; then
@@ -100,6 +102,7 @@ do
             exit 0      # This is not an error, User asked help. Don't do "exit 1"
             ;;
         -a | --all)
+            common=true
             node=true
             coffee=true
             nginx=true
@@ -112,6 +115,7 @@ do
             shift
             ;;
         --latest)
+            common=true
             node_latest=true
             coffee=true
             nginx=true
@@ -121,6 +125,10 @@ do
             gm=true
             config_files=true
             node_modules=true
+            shift
+            ;;
+        --common)
+            common=true
             shift
             ;;
         --node)
@@ -182,6 +190,18 @@ do
     esac
 done
 
+
+
+install_common() {
+    sudo apt-get install inotify-tools
+}
+
+if $common ; then
+    install_common
+fi
+
+
+
 install_node() {
     VERSION=0.11.8
     PLATFORM=linux
@@ -194,33 +214,6 @@ install_node() {
     sudo apt-get install curl
     sudo sh -c "mkdir -p \"$PREFIX\" && curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz | tar xzvf - --strip-components=1 -C \"$PREFIX\""
 }
-
-
-install_coffee() {    
-    temp_cs=`mktemp -d`
-    
-    echo "Installing standard Coffee-Script compiler.. ($temp_cs)"
-    cd $temp_cs
-    npm install coffee-script
-    export PATH=$PATH:$PWD/node_modules/coffee-script/bin
-    temp_new_cs=`mktemp -d`
-    git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
-    cd $temp_new_cs
-    echo "Switching to earlier version (1e377ed59bc4f679863b7543f0c33d1f89dbf6ac), until a parser bug is fixed.."
-    git checkout 1e377ed59bc4f679863b7543f0c33d1f89dbf6ac
-    npm install mkdirp  
-    npm install jison
-    echo "Building Coffee-Script"
-    cake build:parser  
-    cake build 
-    echo "Installing Coffee-Script"
-    sudo npm install -g mkdirp  
-    sudo $temp_cs/node_modules/coffee-script/bin/cake install
-    
-    rm -rf $temp_cs
-    rm -rf $temp_new_cs
-}
-
 
 #Node version must not be less than 0.11.5
 if $node ; then
@@ -252,6 +245,33 @@ else
         rm -rf $temp
     fi
 fi
+
+
+
+install_coffee() {    
+    temp_cs=`mktemp -d`
+    
+    echo "Installing standard Coffee-Script compiler.. ($temp_cs)"
+    cd $temp_cs
+    npm install coffee-script
+    export PATH=$PATH:$PWD/node_modules/coffee-script/bin
+    temp_new_cs=`mktemp -d`
+    git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
+    cd $temp_new_cs
+    echo "Switching to earlier version (1e377ed59bc4f679863b7543f0c33d1f89dbf6ac), until a parser bug is fixed.."
+    git checkout 1e377ed59bc4f679863b7543f0c33d1f89dbf6ac
+    npm install mkdirp  
+    npm install jison
+    echo "Building Coffee-Script"
+    cake build:parser  
+    cake build 
+    echo "Installing Coffee-Script"
+    sudo npm install -g mkdirp  
+    sudo $temp_cs/node_modules/coffee-script/bin/cake install
+    
+    rm -rf $temp_cs
+    rm -rf $temp_new_cs
+}
 
 
 #coffee-script compiler must support yield
@@ -351,6 +371,7 @@ fi
 if $node_modules ; then
     sudo npm install -g less    
     sudo npm install -g regenerator
+    
     cd server
     npm install koa
     npm install koa-route

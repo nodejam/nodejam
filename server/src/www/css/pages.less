@@ -1,7 +1,3 @@
-.main-pane, .alt-pane { 
-    margin-top: 20px; box-sizing: border-box; -moz-box-sizing: border-box; padding-left: 64px; padding-right: 24px;      
-}
-
 .content-area {
     &.upsize {
         h1 { font-size: 1.8em }
@@ -33,6 +29,7 @@
     .large-page-element { display: block !important; }
 
     .main-pane, .alt-pane {
+        margin-top: 20px; box-sizing: border-box; -moz-box-sizing: border-box; padding-left: 64px; padding-right: 24px;      
         > .nav { 
             &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
         }
@@ -95,7 +92,7 @@
 
             /* No cover */
             .main-pane:first-child { 
-                width: 100%; margin-top: 64px;
+                width: 100%; 
                 .single-col-content-area();
             }
 

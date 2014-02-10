@@ -15,8 +15,8 @@ exports.selectUsernameForm = ->*
         pageType: 'std-page', 
         token: token.key
     }
-    
-    
+
+
 
 exports.selectUsername = ->*
     token = yield models.Token.get({ key: @query('token') }, {}, db)     

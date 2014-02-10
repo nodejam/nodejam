@@ -107,6 +107,7 @@ exports.twitterCallback = ->*
             token.destroy {}, db
 
 
+
 parseTwitterUserDetails = (userDetails) ->
     {
         id: userDetails.id.toString(),

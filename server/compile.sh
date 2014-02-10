@@ -1,7 +1,8 @@
 #!/bin/bash
 
 help() {
-echo "usage: ./compile [--debug]"
+echo "usage: ./compile [options]"
+echo "options: --debug, --es5, --dont-delete"
 }
 
 debug=false
@@ -25,6 +26,10 @@ do
             dont_delete=true
             shift
             ;;
+        --help)
+            help
+            exit 0
+            ;;
         -*)
             echo "WARN: Unknown option (ignored): $1" >&2
             shift
@@ -47,6 +52,7 @@ fi
 echo "Copying src to app.."
 cp -r src _temp
 find _temp -name '*.coffee' | xargs rm -rf
+find _temp -name '*.less' | xargs rm -rf
 find _temp -name '*.*~' | xargs rm -rf
 cp -r _temp/* app
 rm -rf _temp
@@ -75,7 +81,7 @@ if ! $es6; then
 fi
 
 echo "Running LESS.."
-lessc app/www/css/main.less app/www/css/main.css
+lessc src/www/css/main.less app/www/css/main.css
 
 if $debug; then
     if ! $es6; then
