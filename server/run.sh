@@ -1,6 +1,4 @@
 #!/bin/bash
-echo Debugging Fora...
-
 es6=true
 
 #Parse options
@@ -25,7 +23,7 @@ done
 start_processes() {
     #fora_website and fora_api are simply identifiers, so that we can find and kill
     echo Killing all running fora processes...
-    kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}')
+    kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}') 2>/dev/null
 
     if ! $es6; then
         node app/website/app.js localhost 10981 fora_website &

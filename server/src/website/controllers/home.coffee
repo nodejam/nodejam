@@ -18,7 +18,7 @@ exports.index = auth.handler ->*
         }
         
     coverContent = "<h1>Editor's Picks</h1>
-                    <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free.</p>"
+                    <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
 
     yield @render 'home/index', { 
         pageName: 'home-page',
