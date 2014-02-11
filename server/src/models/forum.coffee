@@ -32,9 +32,6 @@ class Forum extends ForaDbModel
                     stub: { type: 'string' },
                     createdBy: { $ref: "user-summary" }
                 },
-                links: {
-                    createdBy: { type: 'user' }
-                }
                 required: ['id', 'network', 'name', 'stub', 'createdBy']
             }
         }    
@@ -89,8 +86,8 @@ class Forum extends ForaDbModel
         },
         links: {
             createdBy: { type: 'user-summary', key: 'createdById' }
-            posts: { type: 'post', field: 'forum' },
-            info: { type: 'forum-info', field: 'forum' }
+            posts: { type: 'post', field: 'forumId' },
+            info: { type: 'forum-info', field: 'forumId' }
         },
         logging: {
                 onInsert: 'NEW_FORUM'

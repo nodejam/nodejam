@@ -46,8 +46,8 @@ class User extends ForaDbModel
             required: ['username', 'name', 'assets', 'followerCount', 'email', 'lastLogin']
         },
         links: {
-            credentials: { type: 'credentials', field: 'user', multiplicity: 'one' }
-            info: { type: 'user-info', field: 'user', multiplicity: 'one' }
+            credentials: { type: 'credentials', field: 'userId', multiplicity: 'one' }
+            info: { type: 'user-info', field: 'userId', multiplicity: 'one' }
         },
         validate: ->*
             if not emailRegex.test(@email)

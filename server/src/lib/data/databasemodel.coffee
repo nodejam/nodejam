@@ -247,24 +247,27 @@ class DatabaseModel extends BaseModel
         if link.key
             #This is the child record
             #make sure there is a link back
-            matches = (l for k, l of otherTypeDef.links when l.field is name and l.type is typeDef.name)
-            if matches.length
-                otherLink = matches[0]
-                yield otherTypeDef.ctor.getById @[link.key], context, db
-            else
-                throw new Error "Missing backlink for #{name} in #{typeDef.name}"    
+            switch typeDef.schema.properties[link.key].type
+                when 'string'
+                    if @[link.key]
+                        yield otherTypeDef.ctor.getById @[link.key], context, db    
+                when 'array'
+                    throw new Error "Array keys are not implemented"
                     
         else if link.field
-            #This is the parent record.
-            otherLink = otherTypeDef.links[link.field]
-            params = {}
-            params["#{otherLink.key}"] = @_id.toString()
-            results = yield otherTypeDef.ctor.getAll params, context, db
+            #Parent record
+            switch otherTypeDef.schema.properties[link.field].type
+                when 'string'
+                    params = {}
+                    params["#{otherLink.key}"] = @_id.toString()
+                    result = yield otherTypeDef.ctor.getAll params, context, db
 
-            if link.multiplicity is "one"
-                if results.length then results[0]
-            else
-                results
+                    if link.multiplicity is "one"
+                        if result.length then result[0]
+                    else
+                        result
+                when 'array'
+                    throw new Error "Array keys are not implemented"
                                 
         else
             throw new Error "Invalid link #{name} in #{typeDef.name}"
