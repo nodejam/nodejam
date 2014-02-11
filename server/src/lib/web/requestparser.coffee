@@ -124,7 +124,7 @@ class RequestParser
         whitelist = (a[1..] for a in whitelist)
         parents.push fieldName
 
-        if def.typeDefinition                    
+        if def.typeDefinition?.ctor
             newObj = new def.typeDefinition.ctor()
             changed = yield @map_impl(newObj, whitelist, options, parents)
             if changed

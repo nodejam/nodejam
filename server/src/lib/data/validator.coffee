@@ -49,8 +49,11 @@ class Validator
                     when 'boolean'
                         typeCheck -> typeof value is 'boolean'
                     else
-                        if @typeUtils.isCustomType(fieldDef.type) and value.validate
-                            errors = errors.concat yield value.validate()
+                        if @typeUtils.isCustomType(fieldDef.type)
+                            if value.validate
+                                errors = errors.concat yield value.validate()
+                            else if fieldDef.typeDefinition
+                                errors = errors.concat yield @validate value, fieldDef.typeDefinition
         
         errors            
 

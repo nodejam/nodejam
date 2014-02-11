@@ -6,7 +6,7 @@ fields = require '../../models/fields'
 utils = require '../../lib/utils'
 mdparser = require('../../lib/markdownutil').marked
 auth = require '../../common/web/auth'
-
+widgets = require '../../common/widgets'
 
 
 exports.index = auth.handler ->*
@@ -23,12 +23,12 @@ exports.index = auth.handler ->*
 
 exports.item = auth.handler (stub) ->*
     forum = yield models.Forum.get({ stub, network: @network.stub }, {}, db)
-    info = yield forum.associations 'info'
+    info = yield forum.link 'info'
 
     if forum
         posts = yield forum.getPosts(12, { _id: -1 })
         for post in posts
-            template = post.getTemplate 'card'
+            template = widgets.parse yield post.getTemplate 'card'
             post.html = template.render {
                 post,
                 forum: post.forum,
@@ -56,12 +56,11 @@ exports.item = auth.handler (stub) ->*
             options,
             user: @session.user,
             pageName: 'forum-page', 
-            pageLayout: {
-                type: 'single-section-page',
+            coverInfo: {
+                class: 'auto-cover',
                 cover: forum.cover,
-                coverContent,
-                coverEdit: { field: 'cover' }
-            }           
+                content: coverContent
+            }
         }
 
 
@@ -78,7 +77,7 @@ exports.create = ->*
 
 exports.about = (stub) ->*
     forum = yield models.Forum.get({ stub, network: @network.stub }, {}, db)        
-    about = (yield forum.associations 'info').about
+    about = (yield forum.link 'info').about
 
     #We query admins and mods seperately since the fetch limits the posts returned per call
     leaders = yield forum.getMemberships(['admin','moderator'])

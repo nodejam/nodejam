@@ -30,13 +30,12 @@ exports.index = auth.handler ->*
                 image: { src: '/public/images/cover.jpg' },
             },
             content: coverContent
-        },
+        }
     }
 
 
 
 exports.login = ->*
     yield @render 'home/login', { 
-        pageName: 'login-page', 
-        pageType: 'single-section-page', 
+        pageName: 'login-page'
     }

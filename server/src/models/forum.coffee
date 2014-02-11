@@ -72,7 +72,17 @@ class Forum extends ForaDbModel
                 postTypes: { type: 'array', items: { type: 'string' }, minItems: 1 },
                 settings: { $ref: 'forum-settings' },
                 cover: { $ref: 'cover' },
-                snapshot: { type: 'object' }
+                snapshot: { 
+                    type: 'object',
+                    properties: {
+                        image: { type: 'string' },
+                        title: { type: 'string' },
+                        createdBy: { $ref: 'user-summary' }
+                        id: { type: 'string' },
+                        stub: { type: 'string' }                  
+                    },
+                    required: ['title', 'createdBy', 'id', 'stub']
+                }
                 stats: { $ref: 'forum-stats' },
             }
             required: ['network', 'name', 'description', 'stub', 'type', 'createdById', 'createdBy', 'postTypes', 'snapshot', 'stats']

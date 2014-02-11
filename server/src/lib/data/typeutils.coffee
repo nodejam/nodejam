@@ -1,5 +1,6 @@
 utils = require '../utils'
 
+
 class TypeUtils
     
 
@@ -33,10 +34,14 @@ class TypeUtils
         for name, def of TypeUtils.typeCache
             for property, value of def.schema.properties
                 if value.type is 'array'
-                    if value.items.$ref
+                    if typeof value.items.type is 'object'
+                        def.schema.properties[property].items.typeDefinition = { name: "<anonymous>", schema: value.items.type }
+                    else if value.items.$ref
                         def.schema.properties[property].items.typeDefinition = yield @getTypeDefinition value.items.$ref
                 else
-                    if value.$ref
+                    if value.type is 'object'
+                        def.schema.properties[property].typeDefinition = { name: "<anonymous>", schema: value.type }
+                    else if value.$ref
                         def.schema.properties[property].typeDefinition = yield @getTypeDefinition value.$ref
         return
         

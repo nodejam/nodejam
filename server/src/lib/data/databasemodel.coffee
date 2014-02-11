@@ -112,7 +112,8 @@ class DatabaseModel extends BaseModel
         else
             result = yield @constructModelFields obj, typeDefinition.schema.properties, context, db
 
-            fnCtor = (_o, _ctx, _db) ->* new typeDefinition.ctor _o, _ctx, _db
+            fnCtor = (_o, _ctx, _db) ->*
+                if typeDefinition.ctor then new typeDefinition.ctor _o, _ctx, _db else {}
             yield makeResult result, fnCtor, context, db                
                 
 
@@ -259,7 +260,7 @@ class DatabaseModel extends BaseModel
             switch otherTypeDef.schema.properties[link.field].type
                 when 'string'
                     params = {}
-                    params["#{otherLink.key}"] = @_id.toString()
+                    params["#{link.field}"] = @_id.toString()
                     result = yield otherTypeDef.ctor.getAll params, context, db
 
                     if link.multiplicity is "one"
