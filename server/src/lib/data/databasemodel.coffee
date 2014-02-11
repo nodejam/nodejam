@@ -53,8 +53,8 @@ class DatabaseModel extends BaseModel
         result = yield db.findOne(typeDefinition.collection, { _id: databaseModule.ObjectId(id) })
         if result then yield @constructModel(result, typeDefinition, context, db)
             
-            
-            
+
+
     @destroyAll: (params, db) ->*
         typeDefinition = yield @getTypeDefinition()
         if typeDefinition.canDestroyAll?(params)
@@ -236,20 +236,38 @@ class DatabaseModel extends BaseModel
 
 
     
-    associations: (name, context, db) =>*
+    link: (name, context, db) =>*
         { context, db } = @getContext context, db
-        desc = yield @getTypeDefinition()
-        
-        assoc = desc.associations[name]
+
         typeUtils = @constructor.getTypeUtils()
-        ctor = typeUtils.resolveUserDefinedType assoc.type
-        params = {}
-        for k, v of assoc.key
-            params[v] = if k is '_id' then @_id.toString() else @[k]
-        if assoc.multiplicity is "many"
-            yield ctor.getAll params, context, db
+        typeDef = yield @getTypeDefinition()
+        link = typeDef.links[name]
+        otherTypeDef = yield typeUtils.getTypeDefinition(link.type)        
+        
+        if link.key
+            #This is the child record
+            #make sure there is a link back
+            matches = (l for k, l of otherTypeDef.links when l.field is name and l.type is typeDef.name)
+            if matches.length
+                otherLink = matches[0]
+                yield otherTypeDef.ctor.getById @[link.key], context, db
+            else
+                throw new Error "Missing backlink for #{name} in #{typeDef.name}"    
+                    
+        else if link.field
+            #This is the parent record.
+            otherLink = otherTypeDef.links[link.field]
+            params = {}
+            params["#{otherLink.key}"] = @_id.toString()
+            results = yield otherTypeDef.ctor.getAll params, context, db
+
+            if link.multiplicity is "one"
+                if results.length then results[0]
+            else
+                results
+                                
         else
-            yield ctor.get params, context, db
+            throw new Error "Invalid link #{name} in #{typeDef.name}"
         
     
 

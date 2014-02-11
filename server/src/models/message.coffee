@@ -10,14 +10,17 @@ class Message extends ForaDbModel
         schema: {
             type: 'object',        
             properties: {
-                userid: { type: 'string' },
+                userId: { type: 'string' },
                 type: { type: 'string', enum: ['message', 'global-notification', 'user-notification'] },
                 to: { type: 'object'  },
                 from: { type: 'object' },
                 data: { type: 'object' },
 
-            }
-            required: ['userid', 'type', 'to', 'from', 'data']
+            },
+            links: {
+                user: { type: 'user', key: 'userId' }
+            },
+            required: ['userId', 'type', 'to', 'from', 'data']
         },
         validate: ->*
             errors = []

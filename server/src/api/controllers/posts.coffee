@@ -11,6 +11,7 @@ exports.create = auth.handler { session: true }, (forum) ->*
 
     post = yield models.Post.create {
         type: yield @parser.body('type'),
+        createdById: @session.user.id,
         createdBy: @session.user,
         state: yield @parser.body('state'),
         rating: 0,

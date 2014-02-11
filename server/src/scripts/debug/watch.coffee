@@ -55,6 +55,8 @@ linux = ->*
 
 processEvents = (events) ->
     for ev in events
+        action = null
+    
         #Files inside the www directory
         matches = (a for a in actions when a.dir isnt ev.dir and a.file isnt ev.file)
                 
@@ -102,7 +104,6 @@ processEvents = (events) ->
                 #All changes in other folders will require a restart of app (for eg: a new coffee script file)
                 for dir in ['www', 'scripts']
                     regex = new RegExp "^app/#{dir}/"
-                    console.log src + "=" + regex.test src
                     if not regex.test src
                         restart = true    
                 

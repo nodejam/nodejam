@@ -30,20 +30,20 @@ db.getDb (err, db) ->
 
     db.forum 'forums', (_, coll) ->
         coll.ensureIndex { 'network': 1 }, ->
-        coll.ensureIndex { 'createdBy.id': 1, 'network': 1 }, ->
+        coll.ensureIndex { 'createdById': 1, 'network': 1 }, ->
         coll.ensureIndex { 'createdBy.username': 1, 'network': 1 }, ->
         coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
 
     db.forum 'posts', (_, coll) ->
         coll.ensureIndex { state: 1, 'forum.stub': 1 }, ->
-        coll.ensureIndex { state: 1, 'forum.id': 1 }, ->
+        coll.ensureIndex { state: 1, 'forumId': 1 }, ->
         coll.ensureIndex { state: 1, savedAt: 1, 'forum.stub': 1 }, ->
-        coll.ensureIndex { state: 1, savedAt: 1, 'forum.id': 1 }, ->
-        coll.ensureIndex { 'createdBy.id': 1 }, ->
+        coll.ensureIndex { state: 1, savedAt: 1, 'forumId': 1 }, ->
+        coll.ensureIndex { 'createdById': 1 }, ->
         coll.ensureIndex { 'createdBy.username': 1 }, ->
         
     db.forum 'messages', (_, coll) ->
-        coll.ensureIndex { userid: 1 }, ->
+        coll.ensureIndex { userId: 1 }, ->
         
     db.forum 'tokens', (_, coll) ->
         coll.ensureIndex { key: 1 }, ->

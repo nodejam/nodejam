@@ -26,7 +26,7 @@ exports.selectUsername = ->*
     result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
     if result?.success isnt false
         res.clearCookie "twitter_oauth_process_key"
-        res.cookie "userid", result.user._id.toString()
+        res.cookie "userId", result.user._id.toString()
         res.cookie "username", result.user.username
         res.cookie "fullName", result.user.name
         res.cookie "token", result.token

@@ -39,7 +39,7 @@ getUserWithToken = (token) ->*
     if token
         credentials = yield models.Credentials.get({ token }, {}, db)
         if credentials
-            user = yield credentials.getUser({}, db)
+            user = yield credentials.link('user', {}, db)
             user?.summarize()
     
 

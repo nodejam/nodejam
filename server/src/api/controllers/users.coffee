@@ -20,7 +20,7 @@ exports.create = auth.handler ->*
                 
                 authInfo = { type: 'builtin', value: { password: yield @parser.body('credentials_password') } }
                 result = yield user.create authInfo, { user: @session?.user }, db    
-                @body = { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
+                @body = { userId: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
 
         when 'twitter'
             user = new models.User {
@@ -38,7 +38,7 @@ exports.create = auth.handler ->*
                 } 
             }
             result = yield user.create authInfo, { user: @parser.user }, db
-            @body = { userid: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
+            @body = { userId: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
     
     
 

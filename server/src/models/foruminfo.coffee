@@ -9,11 +9,14 @@ class ForumInfo extends ForaDbModel
         schema: {
             type: 'object',        
             properties: {
-                forumid: { type: 'string' },
+                forumId: { type: 'string' },
                 about: { type: 'string' },
                 message: { type: 'string' }
             },
-            required: ['forumid']
+            required: ['forumId']
+        },
+        links: {
+            forum: { type: 'forum', key: 'forumId' }
         }
     }
     

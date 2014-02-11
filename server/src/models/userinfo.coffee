@@ -8,12 +8,15 @@ class UserInfo extends ForaDbModel
         schema: {
             type: 'object',        
             properties: {
-                userid: { type: 'string' },
+                userId: { type: 'string' },
                 subscriptions: { type: 'array', items: { $ref: 'forum-summary' } },
                 following: { type: 'array', items: { $ref: 'user-summary' } },
                 lastMessageAccessTime: { type: 'number' }
             },
-            required: ['userid', 'following', 'subscriptions' ]
+            required: ['userId', 'following', 'subscriptions' ]
+        },
+        links: { 
+            user: { type: 'user', key: 'userId' }
         }
         logging: {
             onInsert: 'NEW_USER'

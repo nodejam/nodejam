@@ -68,7 +68,7 @@ exports.twitterCallback = ->*
         data = JSON.parse yield thunk_oaGet "https://api.twitter.com/1.1/users/lookup.json?screen_name=#{results.screen_name}", accessToken, accessTokenSecret
 
         if credentials
-            user = yield credentials.getUser {}, db
+            user = yield credentials.link("user")
             if data.length and data[0]?
                 fileName = path.join "#{user.assets}", user.username
                 filePath = yield netutils.downloadImage (parseTwitterUserDetails data[0]).pictureUrl
@@ -82,7 +82,7 @@ exports.twitterCallback = ->*
                 yield thunkify(gmagick.write).call gmagick, picPath
                 fs.copy picPath, thumbPath
                 
-                @cookies.set "userid", user._id.toString(), { httpOnly: false }
+                @cookies.set "userId", user._id.toString(), { httpOnly: false }
                 @cookies.set "username", user.username, { httpOnly: false }
                 @cookies.set "fullName", user.name, { httpOnly: false }
                 @cookies.set "token", credentials.token

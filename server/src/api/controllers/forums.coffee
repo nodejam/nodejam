@@ -18,13 +18,14 @@ exports.create = auth.handler { session: true }, ->*
         yield @parser.map forum, ['name', 'type', 'description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
         forum.postTypes = (yield @parser.body 'posttypes').split(',')
         
+        forum.createdById = @session.user.id
         forum.createdBy = @session.user
         
         forum = yield forum.save creds, db
         yield forum.addRole @session.user, 'admin'
         
         info = new models.ForumInfo {
-            forumid: forum._id.toString(),
+            forumId: forum._id.toString(),
             message: yield @parser.body('message'),
             about: yield @parser.body('about')
         }

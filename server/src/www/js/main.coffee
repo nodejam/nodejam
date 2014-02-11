@@ -60,16 +60,16 @@ class App
 
 
     clearCookies: =>
-        $.removeCookie('userid')
+        $.removeCookie('userId')
         $.removeCookie('username')
         $.removeCookie('fullName')
 
 
 
     getUser: =>
-        if $.cookie('userid')
+        if $.cookie('userId')
             {
-                id: $.cookie('userid'),
+                id: $.cookie('userId'),
                 username: $.cookie('username'),
                 name: $.cookie('fullName'),
             }

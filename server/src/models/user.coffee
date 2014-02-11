@@ -20,7 +20,7 @@ class User extends ForaDbModel
                     name: { type: 'string' },
                     assets: { type: 'string' }
                 },
-                required: ['id', 'username', 'name']
+                required: ['id', 'username', 'name', 'assets']
             }
         }
         
@@ -32,7 +32,7 @@ class User extends ForaDbModel
         name: "user",
         collection: 'users',
         schema: {
-            type: 'object',        
+            type: 'object',      
             properties: {
                 username: { type: 'string' },
                 name: { type: 'string' },
@@ -44,7 +44,11 @@ class User extends ForaDbModel
                 about: { type: 'string' },
             },
             required: ['username', 'name', 'assets', 'followerCount', 'email', 'lastLogin']
-        }
+        },
+        links: {
+            credentials: { type: 'credentials', field: 'user', multiplicity: 'one' }
+            info: { type: 'user-info', field: 'user', multiplicity: 'one' }
+        },
         validate: ->*
             if not emailRegex.test(@email)
                 ['Invalid email']            
@@ -65,12 +69,12 @@ class User extends ForaDbModel
             
             #Also create a userinfo
             userinfo = new (models.UserInfo) {
-                userid: @_id.toString(),
+                userId: @_id.toString(),
             }
             userinfo = yield userinfo.save context, db
 
             credentials = new (models.Credentials) {
-                userid: user._id.toString(),
+                userId: user._id.toString(),
                 @username,
                 token: utils.uniqueId(24)                    
             }
