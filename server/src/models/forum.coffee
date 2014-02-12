@@ -75,13 +75,22 @@ class Forum extends ForaDbModel
                 snapshot: { 
                     type: 'object',
                     properties: {
-                        image: { type: 'string' },
-                        title: { type: 'string' },
-                        createdBy: { $ref: 'user-summary' }
-                        id: { type: 'string' },
-                        stub: { type: 'string' }                  
-                    },
-                    required: ['title', 'createdBy', 'id', 'stub']
+                        posts: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    image: { type: 'string' },
+                                    title: { type: 'string' },
+                                    createdBy: { $ref: 'user-summary' }
+                                    id: { type: 'string' },
+                                    stub: { type: 'string' }                  
+                                },
+                                required: ['title', 'createdBy', 'id', 'stub']
+                            }
+                        }
+                    }
+                    required: ['posts']
                 }
                 stats: { $ref: 'forum-stats' },
             }

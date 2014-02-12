@@ -32,18 +32,33 @@ class TypeUtils
     
     resolveReferences: =>*
         for name, def of TypeUtils.typeCache
-            for property, value of def.schema.properties
-                if value.type is 'array'
-                    if typeof value.items.type is 'object'
-                        def.schema.properties[property].items.typeDefinition = { name: "<anonymous>", schema: value.items.type }
-                    else if value.items.$ref
-                        def.schema.properties[property].items.typeDefinition = yield @getTypeDefinition value.items.$ref
-                else
-                    if value.type is 'object'
-                        def.schema.properties[property].typeDefinition = { name: "<anonymous>", schema: value.type }
-                    else if value.$ref
-                        def.schema.properties[property].typeDefinition = yield @getTypeDefinition value.$ref
+            yield @resolveReferencesInDef def
         return
+        
+    
+    
+    resolveReferencesInDef: (def) =>*
+        fn = (val, prop) =>*
+            if val.type is 'object'
+                subTypeDef = { 
+                    name: "<anonymous>", 
+                    schema: {
+                        type: val.type,
+                        properties: val.properties,
+                        required: val.required
+                    }
+                }
+                prop.typeDefinition = subTypeDef
+                yield @resolveReferencesInDef subTypeDef
+            else if val.$ref
+                prop.typeDefinition = yield @getTypeDefinition val.$ref
+        
+        
+        for property, value of def.schema.properties
+            if value.type is 'array'
+                yield fn value.items, def.schema.properties[property].items
+            else
+                yield fn value, def.schema.properties[property]
         
 
 
