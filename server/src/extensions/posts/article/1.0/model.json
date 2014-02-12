@@ -1,4 +1,5 @@
 {
+    "type": "post",
     "schema": {
         "type": "object",
         "properties": {
