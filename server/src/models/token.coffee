@@ -11,7 +11,9 @@ class Token extends ForaDbModel
             properties: {
                 type: { type: 'string' },
                 key: { type: 'string' },
-                value: { type: 'object' },
+                value: { 
+                    type: 'object'
+                },
             }
             required: ['type', 'key', 'value']
         },

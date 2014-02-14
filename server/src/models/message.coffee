@@ -25,7 +25,7 @@ class Message extends ForaDbModel
         validate: ->*
             errors = []
             errors = if @type is 'user-notification' or @type is 'message' then errors.concat @to.validate()
-            errors = if @type is 'user-notification' or @type is 'message' then errors.concat @from.validate()   
+            errors = if @type is 'user-notification' or @type is 'message' then errors.concat @from.validate()
     }
         
         

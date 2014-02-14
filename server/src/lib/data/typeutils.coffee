@@ -40,16 +40,17 @@ class TypeUtils
     resolveReferencesInDef: (def) =>*
         fn = (val, prop) =>*
             if val.type is 'object'
-                subTypeDef = { 
-                    name: "<anonymous>", 
-                    schema: {
-                        type: val.type,
-                        properties: val.properties,
-                        required: val.required
+                if val.properties
+                    subTypeDef = { 
+                        name: "<anonymous>", 
+                        schema: {
+                            type: val.type,
+                            properties: val.properties,
+                            required: val.required
+                        }
                     }
-                }
-                prop.typeDefinition = subTypeDef
-                yield @resolveReferencesInDef subTypeDef
+                    prop.typeDefinition = subTypeDef
+                    yield @resolveReferencesInDef subTypeDef
             else if val.$ref
                 prop.typeDefinition = yield @getTypeDefinition val.$ref
         
