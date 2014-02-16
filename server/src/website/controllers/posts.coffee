@@ -18,7 +18,7 @@ exports.item = auth.handler (forum, post) ->*
                 pageName: 'post-page',
                 json: JSON.stringify(post),
                 typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
-                user: @session.user,
+                _session: @session.user,
                 html: pageTemplate.render { post, author, forum }
             }
     

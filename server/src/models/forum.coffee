@@ -173,7 +173,7 @@ class Forum extends ForaDbModel
 
     getPosts: (limit, sort, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Post.find({ 'forum.stub': @stub, 'forum.network': @network, state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+        yield models.Post.find({ 'forumId': @_id.toString(), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
         
 
     

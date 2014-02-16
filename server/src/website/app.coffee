@@ -47,7 +47,7 @@ app.use route.get '/forums/new', m_forums.create
 
 app.use route.get '/users/selectusername', m_users.selectUsernameForm
 app.use route.post '/users/selectusername', m_users.selectUsername
-app.use route.post '/~:username', m_users.item
+app.use route.get '/~:username', m_users.item
 
 app.use route.get '/:forum', m_forums.item
 app.use route.get '/:forum/about', m_forums.about

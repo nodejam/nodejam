@@ -54,7 +54,7 @@ exports.item = auth.handler (stub) ->*
             message: if info.message then mdparser(info.message),
             posts, 
             options,
-            user: @session.user,
+            _session: @session.user,
             pageName: 'forum-page', 
             coverInfo: {
                 class: 'auto-cover',

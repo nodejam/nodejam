@@ -4,6 +4,8 @@ db = new database(conf.db)
 models = require '../../models'
 utils = require '../../lib/utils'
 auth = require '../../common/web/auth'
+fields = require '../../models/fields'
+widgets = require '../../common/widgets'
 
 
 exports.selectUsernameForm = ->*
@@ -35,3 +37,34 @@ exports.selectUsername = ->*
         next new Error "Could not save user"
         
     token.destroy {}, db       
+    
+    
+exports.item = auth.handler (username) ->*
+    user = yield models.User.get { username }, {}, db
+    
+    if user
+        posts = yield user.getPosts 12, { _id: -1 }
+        
+        for post in posts
+            template = widgets.parse yield post.getTemplate 'card'
+            post.html = template.render {
+                post,
+                forum: post.forum,
+            }
+
+        coverContent = "
+            <h1>#{user.name}</h1>"
+            
+        user.cover ?= new fields.Cover { image: new fields.Image { src: '/public/images/user-cover.jpg', small: '/public/images/user-cover-small.jpg', alt: user.name } }
+        
+        yield @render 'forums/item', { 
+            posts,
+            user,            
+            _session: @session.user,
+            pageName: 'user-page', 
+            coverInfo: {
+                class: 'auto-cover',
+                cover: user.cover,
+                content: coverContent
+            }
+        }

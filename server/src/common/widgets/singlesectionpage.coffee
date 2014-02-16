@@ -8,7 +8,7 @@ class SingleSectionPage extends Widget
         <div class="single-section-page single-column">
             {{{cover}}}
             <div class="main-pane">
-                <div class="content-area upsize">
+                <div class="content-area upsize item">
                 {{{html}}}
                 </div>
             </div>

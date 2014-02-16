@@ -4,10 +4,10 @@ class Post
         $(document).ready () =>
             @editable = app.getUser()?.id is @post.createdBy.id
             if @editable
-                $('.sidebar-options').html '
-                    <p class="edit-options">
-                        <button class="edit positive">Edit Post</button>
+                $('.main-pane').prepend '                
+                    <p class="option-bar">
                         <button><i class="settings icon-cog"></i>Settings</button>
+                        <button class="edit positive">Edit Post</button>
                     </p>'
             
             @attachEvents()

@@ -96,17 +96,18 @@ class User extends ForaDbModel
             
 
                                                             
-    @getByUsername: (username, context, db) ->
-        User.get({ username }, context, db)
-
-
-
     constructor: (params) ->
         @followerCount ?= 0
         super
 
 
 
+    getPosts:(limit, sort, context, db) =>*
+        { context, db } = @getContext context, db
+        yield models.Post.find({ 'createdById': @_id.toString(), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+    
+    
+    
     getUrl: =>
         "/~#{@username}"
 
