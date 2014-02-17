@@ -1,5 +1,7 @@
 {
     "name": "Fora",
     "stub": "foraproject.org",
-    "domains": ["local.foraproject.org", "www.local.foraproject.org"]
+    "domains": ["local.foraproject.org", "www.local.foraproject.org"],
+    "cover": "/images/cover.jpg",
+    "theme": "default-theme"    
 }

@@ -10,11 +10,10 @@ widgets = require '../../common/widgets'
 
 exports.selectUsernameForm = ->*
     token = yield models.Token.get({ key: @query('token') }, {}, db)
-    @render 'users/selectusername', { 
+    @renderPage 'users/selectusername', { 
         username: token.value.userDetails.username,
         name: token.value.userDetails.name,
         pageName: 'select-username-page', 
-        pageType: 'std-page', 
         token: token.key
     }
 
@@ -55,15 +54,13 @@ exports.item = auth.handler (username) ->*
         coverContent = "
             <h1>#{user.name}</h1>"
             
-        user.cover ?= new fields.Cover { image: new fields.Image { src: '/public/images/user-cover.jpg', small: '/public/images/user-cover-small.jpg', alt: user.name } }
+        user.cover ?= new fields.Cover { image: new fields.Image { src: '/images/user-cover.jpg', small: '/images/user-cover-small.jpg', alt: user.name } }
         
-        yield @render 'forums/item', { 
+        yield @renderPage 'forums/item', { 
             posts,
             user,            
-            _session: @session.user,
-            pageName: 'user-page', 
+            pageName: 'user-page',
             coverInfo: {
-                class: 'auto-cover',
                 cover: user.cover,
                 content: coverContent
             }

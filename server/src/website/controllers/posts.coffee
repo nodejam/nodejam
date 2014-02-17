@@ -14,11 +14,10 @@ exports.item = auth.handler (forum, post) ->*
     
             pageTemplate = widgets.parse yield post.getTemplate 'standard'            
             
-            yield @render 'posts/post', { 
+            yield @renderPage 'posts/post', { 
                 pageName: 'post-page',
                 json: JSON.stringify(post),
                 typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
-                _session: @session.user,
                 html: pageTemplate.render { post, author, forum }
             }
     

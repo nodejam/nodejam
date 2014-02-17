@@ -1,20 +1,22 @@
 .make-theme(
     @name, 
-    @colorLight: #ccc, 
-    @colorLighter: #eee, 
-    @colorLightest: #f6f6f6, 
+    @colorBright: #ccc, 
+    @colorBrighter: #eee, 
+    @colorBrightest: #f6f6f6, 
     @colorNeutral: #999, 
-    @colorDark: #666, 
+    @colorDark: #666,
     @colorDarker: #333,
     @colorDarkest: #111,
-    @colorLink: #6F6,
-    @colorLinkHover: #afa,
+    @colorStandout: yellow,
+    @colorMaxBright: white,
+    @colorLink: #012463,
+    @colorLinkHover: #022E82,
     @colorPositive: #060,
     @colorNegative: #600,
-    @textOpacity: 0.9
+    @textOpacity: 0.9,
 ) {
     background: url("/images/themes/@{name}/bg.png") repeat;
-    color: @colorLight;
+    color: @colorDarker;
 
     a { 
         color: @colorLink; 
@@ -24,7 +26,7 @@
     }
     
     .subText {
-        color: @colorLight; 
+        color: @colorBright; 
         a { color: @colorDark }
     }
     
@@ -35,8 +37,8 @@
     
     /* CUSTOM */
     .placeholder { 
-        color: ; 
-        &.dim { color: #eee } 
+        color: @colorBright; 
+        &.dim { color: @colorBrighter } 
     }
 
     /* FORM CONTROLS */
@@ -46,11 +48,11 @@
     }
     
     input, select, textarea {
-        .control (@colorLight, @colorDark, @colorDarker)
+        .control (@colorBright, @colorDark, @colorDarker)
     }
     
     button {
-        .control (@colorLight, @colorDark, @colorDarker);
+        .control (@colorBright, @colorDark, @colorDarker);
         &.positive { color: @colorPositive; }
         &.negative { color: @colorNegative; }    
     }
@@ -60,7 +62,7 @@
         ul.cards {
             > li {
                 > .card-face { 
-                    > .content-wrap { background: @colorLightest }
+                    > .content-wrap { background: @colorBrightest }
                 }
             }
         }
@@ -70,28 +72,40 @@
         ul.cards {
             &.alt {
                 > li {    
-                    background: @colorLightest;
+                    background: @colorBrightest;
                 }
             }
         }   
     }    
     
     /*  CONTROLS.LESS */
-    .option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorLight; padding-bottom: 4px; margin: 0 0 16px 0; }
+    .option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorBright; padding-bottom: 4px; margin: 0 0 16px 0; }
 
     .nav {         
-        border-bottom-color: @colorLight;
+        border-bottom-color: @colorBright;
         ul {
             li { 
-                color: @colorLight; 
-                &.selected { color: @colorLight }
+                color: @colorNeutral; 
+                &.selected { color: @colorDark }
             }
         }
     }        
 
+    .site-options {
+        ul {
+            color: @colorBrighter;
+            li {                
+                a { 
+                    color: @colorBrighter; 
+                    &:hover { color: @colorMaxBright }
+                }
+            }
+        }
+    }
+
     .dashboard-widgets {
         > div {
-            background: @colorLightest; color: @colorLight;
+            background: @colorBrightest; color: @colorBright;
         }
     }    
     
@@ -111,15 +125,40 @@
     
     /* EDITOR.LESS */
     .editor {
+        .highlight { background-color: @colorMaxBright !important; opacity: 0.8}
+
         .editor-inline-bar {
             background: @colorDark; 
-            a { color: @colorLight; }
+            a { color: @colorBright; }
         }
         
         ul.selectable {
             > li {
-                background: @colorLightest; 
-                &:hover { background: @colorLighter }
+                background: @colorBrightest; 
+                
+                &.selected {
+                    > i { color: @colorMaxBright; }
+                    &:before {
+                        background: green;
+                    }
+                }
+                
+                &:hover { background: @colorBrighter }
+            }
+        }
+        
+        .cover-editor {
+            > .content-area {
+                color: @colorBright; 
+                a { color: @colorBright }
+                
+                span.colors {             
+                    > span { 
+                        border: 1px solid @colorDark; 
+                        &:hover { border-color: @colorBright }
+                        &.selected { border-color: @colorStandout }
+                    }
+                }
             }
         }
     }
@@ -127,24 +166,31 @@
 
 
 /*  COLOR GROUPS */
-.color-groups (@c1, @c2, @c3, @c4) {
+.color-groups (@c1: #970026, @c2: #006f48, @c3: #a63600, @c4: #399200) {
     &.cg1 { background-color: @c1 }
     &.cg2 { background-color: @c2 }
     &.cg3 { background-color: @c3 }
     &.cg4 { background-color: @c4 }       
 }
 
-/* CARDS */
+/* THEMES */
+.default-theme {
+    .make-theme('default');
+    .color-groups();
+}
 
 .paper-theme {
     .make-theme('paper');
+    .color-groups();
 }
 
 .black-paper-theme {
-    .make-theme('black-paper', '#FFF', '0.95')
+    .make-theme('black-paper');
+    .color-groups();
 }
 
 .green-cup-theme {
-    .make-theme('green-cup', '#FFF', '0.95')
+    .make-theme('green-cup');
+    .color-groups();
 }
 

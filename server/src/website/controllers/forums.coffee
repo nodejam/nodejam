@@ -14,7 +14,7 @@ exports.index = auth.handler ->*
     for forum in featured
         forum.summary = forum.getView("card")
     
-    yield @render 'forums/index', { 
+    yield @renderPage 'forums/index', { 
         pageName: 'forums-page',
         featured
     }
@@ -46,18 +46,16 @@ exports.item = auth.handler (stub) ->*
             <p data-field-type=\"plain-text\" data-field-name=\"description\">#{forum.description}</p>
             <div class=\"option-bar\"><button class=\"edit\">Edit</button></div>"
             
-        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/public/images/forum-cover.jpg', small: '/public/images/forum-cover-small.jpg', alt: forum.name } }
+        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/images/forum-cover.jpg', small: '/images/forum-cover-small.jpg', alt: forum.name } }
         
-        yield @render 'forums/item', { 
+        yield @renderPage 'forums/item', { 
             forum,
             forumJson: JSON.stringify(forum),
             message: if info.message then mdparser(info.message),
             posts, 
             options,
-            _session: @session.user,
             pageName: 'forum-page', 
             coverInfo: {
-                class: 'auto-cover',
                 cover: forum.cover,
                 content: coverContent
             }
@@ -66,7 +64,7 @@ exports.item = auth.handler (stub) ->*
 
 
 exports.create = ->*
-    yield @render 'forums/create', { 
+    yield @renderPage 'forums/create', { 
         pageName: 'create-forum-page', 
         pageLayout: {
             type: 'single-section-page fixed-width'
@@ -85,16 +83,17 @@ exports.about = (stub) ->*
     moderators = leaders.filter (u) -> u.roles.indexOf('moderator') isnt -1 and u.roles.indexOf('admin') is -1
     members = (yield forum.getMemberships ['member']).filter (u) -> u.roles.indexOf('admin') is -1 and u.roles.indexOf('moderator') is -1
     
-    yield @render 'forums/about', {
+    yield @renderPage 'forums/about', {
         forum,
         about: if about then mdparser(about),
         admins,
         moderators,
         members,
         pageName: 'forum-about-page', 
-        pageLayout: {
-            type: 'single-section-page',
-            cover: { image: { src: forum.cover ? '/public/images/cover.jpg' } },
+        coverInfo: {
+            cover: { 
+                image: { src: forum.cover ? '/images/cover.jpg' } 
+            },
         }
     }
 

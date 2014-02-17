@@ -20,14 +20,13 @@ exports.index = auth.handler ->*
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
 
-    yield @render 'home/index', { 
+    yield @renderPage 'home/index', { 
         pageName: 'home-page',
         editorsPicks,
         featured,
         coverInfo: {
-            class: 'auto-cover',
             cover: {
-                image: { src: '/public/images/cover.jpg' },
+                image: { src: '/images/cover.jpg' },
             },
             content: coverContent
         }
@@ -36,6 +35,6 @@ exports.index = auth.handler ->*
 
 
 exports.login = ->*
-    yield @render 'home/login', { 
+    yield @renderPage 'home/login', { 
         pageName: 'login-page'
     }

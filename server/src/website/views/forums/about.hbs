@@ -1,74 +1,74 @@
-<div class="main-pane">
-    <div class="content-area">    
-        <h1>{{forum.name}}</h1>
-        <div class="nav">
-            <ul>
-                <li>
-                    <a href="/{{forum.stub}}">Recommended</a>
-                </li>
-                <li>
-                    <a href="/{{forum.stub}}/latest">Upcoming</a>
-                </li>            
-                <li class="selected">
-                    About
-                </li>          
-            </ul>
-        </div>
-        {{#if about}}
-        <div class="content-sections">
-            <div class="normal">
-                {{{about}}}
-                <p class="desc-text">    
-                    Public Forum. Since May, 2011. <br />
-                    <span class="sub-text">by <a href="/~{{createdBy.username}}">{{forum.createdBy.name}}</a></span>
-                </p>        
-            </div>
-            <div class="normal">
-                <div class="dashboard-widgets">
-                    <div class="half cg1">
-                        <p class="large-text">
-                            112
-                            <br />
-                            <span class="subtext">posts</span>
-                        </p>
-                    </div>
-                    <div class="half cg2">
-                        <p class="large-text">
-                            12.4k
-                            <br />
-                            <span class="subtext">members</span>
-                        </p>
-                    </div>
-                    <div class="half cg3">
-                        <p class="large-text">
-                            143k
-                            <br />
-                            <span class="subtext">visits</span>
-                        </p>
-                    </div>
-                    <div class="half cg4">
-                        <p class="large-text">
-                            13.2k
-                            <br />
-                            <span class="subtext">likes</span>
-                        </p>
-                    </div>
-                </div>
-            </div>     
-            <div class="content-section normal">
-                {{#if admins}}                
-                <ul class="admins">
-                    {{#each admins}}
+<div class="single-section-page">
+    <div class="main-pane">
+        <div class="content-area">    
+            <h1>{{forum.name}}</h1>
+            <div class="nav">
+                <ul>
                     <li>
-                        {{user.name}}
+                        <a href="/{{forum.stub}}">Recommended</a>
                     </li>
-                    {{/each}}
+                    <li>
+                        <a href="/{{forum.stub}}/latest">Upcoming</a>
+                    </li>            
+                    <li class="selected">
+                        About
+                    </li>          
                 </ul>
-                {{/if}}
-            </div>                                    
+            </div>
+            {{#if about}}
+            <div class="content-sections">
+                <div class="normal">
+                    {{{about}}}
+                    <p class="desc-text">    
+                        Public Forum. Since May, 2011. <br />
+                        <span class="sub-text">by <a href="/~{{createdBy.username}}">{{forum.createdBy.name}}</a></span>
+                    </p>        
+                </div>
+                <div class="normal">
+                    <div class="dashboard-widgets">
+                        <div class="half cg1">
+                            <p class="large-text">
+                                112
+                                <br />
+                                <span class="subtext">posts</span>
+                            </p>
+                        </div>
+                        <div class="half cg2">
+                            <p class="large-text">
+                                12.4k
+                                <br />
+                                <span class="subtext">members</span>
+                            </p>
+                        </div>
+                        <div class="half cg3">
+                            <p class="large-text">
+                                143k
+                                <br />
+                                <span class="subtext">visits</span>
+                            </p>
+                        </div>
+                        <div class="half cg4">
+                            <p class="large-text">
+                                13.2k
+                                <br />
+                                <span class="subtext">likes</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>     
+                <div class="content-section normal">
+                    {{#if admins}}                
+                    <ul class="admins">
+                        {{#each admins}}
+                        <li>
+                            {{user.name}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{/if}}
+                </div>                                    
+            </div>
+            {{/if}}
         </div>
-        {{/if}}
     </div>
 </div>
-
-
