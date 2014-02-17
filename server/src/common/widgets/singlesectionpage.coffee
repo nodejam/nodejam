@@ -23,6 +23,7 @@ class SingleSectionPage extends Widget
         result = {}
 
         cover = ''
+        
         if @params.cover
             if @params.cover.type is 'full-cover'
                 cover = @params.cover.render data, (@params.title.render(data) + @params.author.render(data))

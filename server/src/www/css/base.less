@@ -4,37 +4,18 @@
 .fontContentHeading { font-family: 'Lato', sans-serif; }
 .fontAlt { font-family: 'Oswald', sans-serif; }
 
-/* COLORS */
-@colorText: #333;
-@colorDimText: lighten(@colorText, 30%);
-@colorLink: #559;
-@colorLinkHover: darken(@colorLink, 20%);
 
-@colorNegative: #966;
-@colorDarkNegative: #633;
-@colorLightNegative: #dcc;
-@colorPositive: #696;
-@colorDarkPositive: #363;
-@colorLightPositive: #cdc;
+/* SYSTEM WIDE COLORS */
+@sysColorDark: #666;
+@sysColorDark: #333;
+@sysColorDark: #111;
+@sysColorLight: #ccc;
+@sysColorLighter: #eee;
+@sysColorLightest: #f6f6f6;
 
-@colorLight: #ccc;
-@colorLighter: #ddd;
-@colorLightest: #eee;
-@colorUltraLight: #f6f6f6;
-@colorNeutral: #999;
-@colorDark: #666;
-@colorDarkerBorder: #444;
-@colorDarker: #333;
-@colorDarkest: #000;
-
-/* THEME */
-@colorGroup1: #970026;
-@colorGroup2: #006f48;
-@colorGroup3: #a63600;
-@colorGroup4: #399200;
 
 /* TAGS */
-body { .fontBase; color: @colorText; margin: 0; }
+body { .fontBase; margin: 0; }
 
 em { font-style: italic; font-weight: normal }
 strong { font-weight: bold }
@@ -54,50 +35,29 @@ ul {
 
 /* LINKS */
 a {  
-    color: @colorLink; text-decoration: none; 
-    &:hover { color: @colorLinkHover; text-decoration: underline; }
+    text-decoration: none; 
+    &:hover { text-decoration: underline; }
     i { text-decoration: none; margin-right: 6px; }        
     img { border: none }
-    &.positive:hover, &.positive { color: @colorPositive }
-    &.negative:hover, &.negative { color: @colorNegative }
-
 }
 
 /* FORM CONTROLS */
-.control (@fg, @bg, @borderColor, @borderHighLight, @borderShadow) {
-    min-width:80px; color: @fg; background-color: @bg; border-top: 2px solid darken(@borderColor, @borderHighLight); border-right: 2px solid darken(@borderColor, @borderShadow);     
-    border-bottom: 2px solid darken(@borderColor, @borderShadow); border-left: 2px solid darken(@borderColor, @borderHighLight);
-    &:hover { background-color: darken(@bg, 2%);  }
+.control () {
+    min-width:80px; border-width: 2px; border-style: solid;
 }
 
-input, select, textarea { .fontBase; .control(@colorText, #fff, #fff, 12%, 24%); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
+input, select, textarea { .fontBase; .control(); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
     input[type="checkbox"] { margin-right: 4px; }
     input[type="file"] { padding: 0; border: none }
 
-label.alert-required { color: @colorNegative; }
-label.alert-required:after { content: '*' }
 
 button { 
-    .fontBase; .control(@colorText, #fff, #fff, 8%, 8%); border-radius: 30px; outline: none;
+    .fontBase; .control(); border-radius: 30px; outline: none;
     padding: 9px 12px 9px 12px; margin: 0 2px 0 0; font-weight: bold; text-transform: uppercase; cursor: pointer;     
 
     i { padding-right: 6px; }        
     &.textless i { padding-right: 0; }
 
-    &.positive { color: @colorPositive; border-color: @colorLightPositive  }
-    &.negative { color: @colorNegative; border-color: @colorLightNegative }
-}
-
-/* CUSTOM */
-.placeholder { 
-    color: #aaa; 
-    &.dim { color: #eee } 
-}
-
-.error { color: Red }
-.action { 
-    &.positive { color: @colorPositive }
-    &.negative { color: @colorNegative }    
 }
 
 .large-text {
@@ -105,8 +65,7 @@ button {
 }
 
 .sub-text {
-    color: @colorNeutral; font-style: italic; font-size: 0.9em;
-    a { color: @colorDark }
+    font-style: italic; font-size: 0.9em;
     i { font-size: 0.9em }
 }
 

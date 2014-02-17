@@ -1,0 +1,150 @@
+.make-theme(
+    @name, 
+    @colorLight: #ccc, 
+    @colorLighter: #eee, 
+    @colorLightest: #f6f6f6, 
+    @colorNeutral: #999, 
+    @colorDark: #666, 
+    @colorDarker: #333,
+    @colorDarkest: #111,
+    @colorLink: #6F6,
+    @colorLinkHover: #afa,
+    @colorPositive: #060,
+    @colorNegative: #600,
+    @textOpacity: 0.9
+) {
+    background: url("/images/themes/@{name}/bg.png") repeat;
+    color: @colorLight;
+
+    a { 
+        color: @colorLink; 
+        &:hover { @colorLinkHover;  }
+        &.positive:hover, &.positive { color: @colorPositive }
+        &.negative:hover, &.negative { color: @colorNegative }
+    }
+    
+    .subText {
+        color: @colorLight; 
+        a { color: @colorDark }
+    }
+    
+    .action { 
+        &.positive { color: @colorPositive }
+        &.negative { color: @colorNegative }    
+    }    
+    
+    /* CUSTOM */
+    .placeholder { 
+        color: ; 
+        &.dim { color: #eee } 
+    }
+
+    /* FORM CONTROLS */
+    .control (@fg, @bg, @borderColor) {
+        color: @fg; background-color: @bg; border-color: @borderColor;
+        &:hover { background-color: darken(@bg, 2%);  }
+    }
+    
+    input, select, textarea {
+        .control (@colorLight, @colorDark, @colorDarker)
+    }
+    
+    button {
+        .control (@colorLight, @colorDark, @colorDarker);
+        &.positive { color: @colorPositive; }
+        &.negative { color: @colorNegative; }    
+    }
+
+    /* Cards */    
+    .cards-mixin-common {
+        ul.cards {
+            > li {
+                > .card-face { 
+                    > .content-wrap { background: @colorLightest }
+                }
+            }
+        }
+    }
+    
+    .cards-alt-mixin(@minWidth) {
+        ul.cards {
+            &.alt {
+                > li {    
+                    background: @colorLightest;
+                }
+            }
+        }   
+    }    
+    
+    /*  CONTROLS.LESS */
+    .option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorLight; padding-bottom: 4px; margin: 0 0 16px 0; }
+
+    .nav {         
+        border-bottom-color: @colorLight;
+        ul {
+            li { 
+                color: @colorLight; 
+                &.selected { color: @colorLight }
+            }
+        }
+    }        
+
+    .dashboard-widgets {
+        > div {
+            background: @colorLightest; color: @colorLight;
+        }
+    }    
+    
+    
+    /* FORMS.LESS */
+    .form-standard-mixin (@spacing, @inputBaseWidth) {
+        form.standard {
+            &.single-col {
+                fieldset {
+                    legend { 
+                        border-bottom: 1px solid @colorDark; 
+                    }
+                }
+            }
+        }
+    }    
+    
+    /* EDITOR.LESS */
+    .editor {
+        .editor-inline-bar {
+            background: @colorDark; 
+            a { color: @colorLight; }
+        }
+        
+        ul.selectable {
+            > li {
+                background: @colorLightest; 
+                &:hover { background: @colorLighter }
+            }
+        }
+    }
+}
+
+
+/*  COLOR GROUPS */
+.color-groups (@c1, @c2, @c3, @c4) {
+    &.cg1 { background-color: @c1 }
+    &.cg2 { background-color: @c2 }
+    &.cg3 { background-color: @c3 }
+    &.cg4 { background-color: @c4 }       
+}
+
+/* CARDS */
+
+.paper-theme {
+    .make-theme('paper');
+}
+
+.black-paper-theme {
+    .make-theme('black-paper', '#FFF', '0.95')
+}
+
+.green-cup-theme {
+    .make-theme('green-cup', '#FFF', '0.95')
+}
+

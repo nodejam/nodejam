@@ -1,6 +1,18 @@
 mdparser = require('../lib/markdownutil').marked
 ForaModel = require('./foramodel').ForaModel
 
+class Theme extends ForaModel
+    @typeDefinition: {
+        name: 'theme',
+        schema: {
+            type: 'object',        
+            properties: {
+                bg: { type: 'string' }
+            },
+        },
+    }
+
+
 class Image extends ForaModel
     @typeDefinition: {
         name: 'image',
@@ -60,6 +72,7 @@ class TextContent extends ForaModel
             else
                 'Invalid format.'
 
+exports.Theme = Theme
 exports.Image = Image
 exports.Cover = Cover
 exports.TextContent = TextContent

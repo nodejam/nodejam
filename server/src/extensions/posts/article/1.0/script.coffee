@@ -9,6 +9,7 @@ exports.getTemplate = (name) ->*
         when 'standard'
             {
                 widget: "single-section-page",
+                theme: { theme: "@post.theme", field: "theme" }
                 cover: { widget: 'cover', cover: '@post.cover', field: 'cover' },
                 title: { widget: 'heading', title: '@post.title', field: 'title', size: 1 },
                 author: { widget: 'author', author: '@author', type: 'small' },

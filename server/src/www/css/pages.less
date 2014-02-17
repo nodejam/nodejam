@@ -41,7 +41,6 @@
                 background-size: cover; background-position: 50% 50%; height: 100%;
                 > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
                 > .content-wrap { 
-                    color: @colorNeutral; 
                     h1 { font-size: 2em; margin-bottom: .3em }
                     p { font-size: 1.3em }
                     
@@ -84,8 +83,10 @@
 */
 
 .large-single-section-page(@twoColPaneWidth, @topCoverHeight, @autoCoverWidth) {
-    .single-section-page {        
-        
+    .single-section-page {
+
+        margin-top: -64px; padding-top: 64px;
+                
         .cards-mixin-common;        
     
         &.single-column {

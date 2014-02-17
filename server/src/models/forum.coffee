@@ -72,6 +72,7 @@ class Forum extends ForaDbModel
                 postTypes: { type: 'array', items: { type: 'string' }, minItems: 1 },
                 settings: { $ref: 'forum-settings' },
                 cover: { $ref: 'cover' },
+                theme: { $ref: 'theme' },
                 snapshot: { 
                     type: 'object',
                     properties: {

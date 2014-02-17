@@ -29,8 +29,8 @@
 
 
     .editor-inline-bar {
-        .fontBase; padding: 8px !important; margin: -72px 0 0 0 !important; position: absolute; background: @colorDarker; z-index: 10; 
-        a { color: @colorLighter; font-size: 11px }
+        .fontBase; padding: 8px !important; margin: -72px 0 0 0 !important; position: absolute; z-index: 10; 
+        a { font-size: 11px }
     }
 
 
@@ -40,7 +40,7 @@
         margin-bottom: 20px;
 
         > li {
-            .rounded; margin:0 10px 10px 0; float: left; background: @colorLightest; width: 300px; padding: 10px; overflow: hidden; cursor: pointer;
+            .rounded; margin:0 10px 10px 0; float: left; width: 300px; padding: 10px; overflow: hidden; cursor: pointer;
             > div {
                 font-size: 0.8em;
             }        
@@ -51,7 +51,6 @@
                     margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
                 }
             }
-            &:hover { background: @colorLighter }
         }
         &.iconic {
             > li {
@@ -74,12 +73,12 @@
     .cover-editor {
         /* When Empty */
         > .add-cover {
-            padding: 24px; background: @colorLighter
+            padding: 24px; 
         }
 
         /* Not Empty */
         > .underlay { 
-            position: fixed; background: black; opacity: 0.4; height: 140px; width: 240px; margin: 0; padding: 16px; top: 20px; margin-left: 32px;border-radius: 3px; z-index: 2;    
+            position: fixed; background: black; opacity: 0.4; height: 140px; width: 240px; margin: 0; padding: 16px; top: 20px; margin-left: 32px; border-radius: 3px; z-index: 2;    
         }
         > .content-area {
             position: fixed; height: 140px; width: 240px; margin: 0; padding: 16px; top: 20px; margin-left: 32px; border-radius: 3px; z-index: 2;    
@@ -90,7 +89,7 @@
             span.colors {             
                 display:block; height: 20px; width: 220px; margin:auto; padding-top: 3px;
                 > span { 
-                    display: inline-block; height: 16px; width: 16px; border: 1px solid @colorDarker; border-radius: 100%; margin-right: 5px; cursor: pointer;
+                    display: inline-block; height: 16px; width: 16px; border: 1px solid @sysColorDark; border-radius: 100%; margin-right: 5px; cursor: pointer;
                     &:hover { border-color: white }
                     &.selected { border-color: yellow }
                 }
