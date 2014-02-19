@@ -5,19 +5,14 @@ class Post
             @editable = app.getUser()?.id is @post.createdBy.id
             if @editable
                 $('.main-pane').prepend '                
-                    <p class="option-bar">
+                    <p class="button-bar">
                         <button><i class="settings icon-cog"></i>Settings</button>
                         <button class="edit positive">Edit Post</button>
                     </p>'
             
             @attachEvents()
             
-            if @editable
-                mode = Fora.getUrlParams 'mode'
-                if mode is 'edit'
-                    @onEdit()                
-        
-        
+
         
     attachEvents: =>
         if @editable
@@ -26,7 +21,7 @@ class Post
 
 
     onEdit: =>
-        editor = new Fora.Editing.Editor($ '.item')
+        editor = new Fora.Editing.Editor $('.button-bar'), $('.item')
 
         $('.edit-options').hide()
 

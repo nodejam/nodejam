@@ -36,6 +36,10 @@ class MultiSectionPage extends Widget
         result.html = SingleSectionPage.template { html }
             
         result
+        
+
+
+    getTheme: =>        
     
         
         

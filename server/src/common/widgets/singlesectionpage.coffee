@@ -39,7 +39,11 @@ class SingleSectionPage extends Widget
             html += item.render data
         
         SingleSectionPage.template { cover, html }
-    
+
+
+
+    getTheme: =>
+            
         
         
 exports.SingleSectionPage = SingleSectionPage

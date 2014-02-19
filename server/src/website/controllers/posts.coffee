@@ -17,6 +17,7 @@ exports.item = auth.handler (forum, post) ->*
             yield @renderPage 'posts/post', { 
                 pageName: 'post-page',
                 json: JSON.stringify(post),
+                theme: pageTemplate.getTheme() ? forum.theme
                 typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
                 html: pageTemplate.render { post, author, forum }
             }

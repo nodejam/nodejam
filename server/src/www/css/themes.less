@@ -5,14 +5,16 @@
     @colorBrightest: #f6f6f6, 
     @colorNeutral: #999, 
     @colorDark: #666,
-    @colorDarker: #333,
-    @colorDarkest: #111,
+    @colorDarker: #444,
+    @colorDarkest: #333,
     @colorStandout: yellow,
     @colorMaxBright: white,
-    @colorLink: #012463,
-    @colorLinkHover: #022E82,
+    @colorLink: #446,
+    @colorLinkHover: #668,
     @colorPositive: #060,
+    @colorLightPositive: #aca,
     @colorNegative: #600,
+    @colorLightNegative: #caa,
     @textOpacity: 0.9,
 ) {
     background: url("/images/themes/@{name}/bg.png") repeat;
@@ -25,8 +27,8 @@
         &.negative:hover, &.negative { color: @colorNegative }
     }
     
-    .subText {
-        color: @colorBright; 
+    .sub-text {
+        color: @colorDark; 
         a { color: @colorDark }
     }
     
@@ -44,7 +46,6 @@
     /* FORM CONTROLS */
     .control (@fg, @bg, @borderColor) {
         color: @fg; background-color: @bg; border-color: @borderColor;
-        &:hover { background-color: darken(@bg, 2%);  }
     }
     
     input, select, textarea {
@@ -52,12 +53,30 @@
     }
     
     button {
-        .control (@colorBright, @colorDark, @colorDarker);
-        &.positive { color: @colorPositive; }
-        &.negative { color: @colorNegative; }    
+        .control (@colorNeutral, @colorBrightest, @colorBright);
+        &:hover { color: @colorDark; background-color: @colorBright; border-color: @colorBright }
+        &.positive { 
+            color: @colorPositive; 
+            &:hover { background-color: @colorLightPositive; border-color: @colorLightPositive }
+        }
+        &.negative { 
+            color: @colorNegative; 
+            &:hover { background-color: @colorLightNegative; border-color: @colorLightNegative }
+        }    
+    }
+    
+    /* PAGES.LESS */
+    .single-section-page {
+        .inline-cover+.main-pane {
+            .content-area {
+                &.item {
+                    background: @colorMaxBright;
+                }
+            }
+        }
     }
 
-    /* Cards */    
+    /* CARDS.LESS */    
     .cards-mixin-common {
         ul.cards {
             > li {
@@ -92,15 +111,21 @@
     }        
 
     .site-options {
+        background: @colorDarkest; 
         ul {
             color: @colorBrighter;
-            li {                
+            li {              
+                border-bottom-color: @colorDarker;  
                 a { 
                     color: @colorBrighter; 
                     &:hover { color: @colorMaxBright }
                 }
             }
         }
+    }
+    
+    #login-box {
+        background: @colorBrighter;
     }
 
     .dashboard-widgets {

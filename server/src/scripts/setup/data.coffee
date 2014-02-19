@@ -85,6 +85,7 @@ rawNerve = {
     permission: 'public',
     type: 'public',
     category: 'life',
+    theme: 'paper-theme',
     _about: 'about-raw-nerve.md',
     _message: 'message-raw-nerve.md',
     _createdBy: 'aaronsw'   

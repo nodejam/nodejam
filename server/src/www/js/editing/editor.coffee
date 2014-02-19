@@ -1,6 +1,6 @@
 class Editor
     
-    constructor: (@container) ->
+    constructor: (@buttonBar, @container) ->
         @container.addClass 'editor'
         if @container.attr('data-field-type')
             editables = @container

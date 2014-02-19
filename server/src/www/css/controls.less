@@ -7,7 +7,14 @@
     }    
 }
 
-.option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; padding-bottom: 4px; margin: 0 0 16px 0; }
+.option-bar { 
+    height: 24px; .fontBase; font-weight: bold; font-size: 12px; padding-bottom: 4px; margin: 0 0 16px 0; 
+    
+}
+
+.button-bar {
+    .option-bar; position: absolute; top: 12px; right: 12px;
+}
 
 .nav {         
     .option-bar; clear: both;
@@ -34,12 +41,12 @@
 
 /* Left side pane */
 .site-options {
-    height: 100%; position: absolute; top: 0; left: 0; display: none; z-index: 99; background: #333; 
+    height: 100%; position: absolute; top: 0; left: 0; display: none; z-index: 99; 
                         
     ul {
         opacity: 0.96; width: 220px; padding-top: 12px; font-size: 12px; font-weight: bold; 
         li {                
-            border-bottom: 1px solid #222; clear: both; display: table; width: 100%;
+            border-bottom-width: 1px; border-bottom-style: solid; clear: both; display: table; width: 100%;
             a { 
                 display: block; padding: 10px 4px 10px 20px; float: left; min-width: 120px;
                 i { 
@@ -105,7 +112,7 @@ div.content {
 /* Dynamically created login */
 .login-box-mixin (@width, @spacing, @fontSize) {
     #login-box {
-        .rounded; background: #eee; padding: @spacing (2 * @spacing); width: @width; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; 
+        .rounded; padding: @spacing (2 * @spacing); width: @width; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; 
         h2 { clear: both; margin: 0 }
         li {
             font-size: @fontSize; clear: both; height: (@fontSize * 2.3);
@@ -138,5 +145,5 @@ div.content {
 }
 
 /* LEAN MODAL - Thanks to http://leanmodal.finelysliced.com.au/ */
-#lean_overlay { position: fixed; z-index:100; top: 0px; left: 0px; height:100%; width:100%; background: #000; display: none; }
+#lean_overlay { position: fixed; z-index:100; top: 0px; left: 0px; height:100%; width:100%; display: none; }
 
