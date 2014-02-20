@@ -77,31 +77,26 @@
     }
 
     /* CARDS.LESS */    
-    .cards-mixin-common {
-        ul.cards {
-            > li {
-                > .card-face { 
-                    > .content-wrap { background: @colorBrightest }
-                }
+    ul.cards {
+        > li {
+            > .card-face { 
+                > .content-wrap { background: @colorBrightest }
+            }
+        }
+
+        &.float {
+            > li {    
+                background: @colorBrightest;
             }
         }
     }
-    
-    .cards-alt-mixin(@minWidth) {
-        ul.cards {
-            &.alt {
-                > li {    
-                    background: @colorBrightest;
-                }
-            }
-        }   
-    }    
+       
     
     /*  CONTROLS.LESS */
     .option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorBright; padding-bottom: 4px; margin: 0 0 16px 0; }
 
     .nav {         
-        border-bottom-color: @colorBright;
+        border-bottom-color: @colorBrighter;
         ul {
             li { 
                 color: @colorNeutral; 
