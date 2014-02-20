@@ -7,7 +7,7 @@ class Post
                 $('.main-pane').prepend '                
                     <p class="button-bar">
                         <button><i class="settings icon-cog"></i>Settings</button>
-                        <button class="edit positive">Edit Post</button>
+                        <button class="edit">Edit Post</button>
                     </p>'
             
             @attachEvents()

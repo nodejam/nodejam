@@ -9,6 +9,7 @@
     @colorDarkest: #333,
     @colorStandout: yellow,
     @colorMaxBright: white,
+    @colorMaxDark: black,
     @colorLink: #446,
     @colorLinkHover: #668,
     @colorPositive: #060,
@@ -53,7 +54,7 @@
     }
     
     button {
-        .control (@colorNeutral, @colorBrightest, @colorBright);
+        .control (@colorNeutral, transparent, @colorBright);
         &:hover { color: @colorDark; background-color: @colorBright; border-color: @colorBright }
         &.positive { 
             color: @colorPositive; 
@@ -122,6 +123,8 @@
     #login-box {
         background: @colorBrighter;
     }
+    
+    #lean_overlay { background: black }
 
     .dashboard-widgets {
         > div {
