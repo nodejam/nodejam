@@ -29,17 +29,7 @@ class Text
                 @e.empty()
 
         if @e.data('field-type') is 'text'
-            config = { 
-                toolbar: [ { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Link', 'BulletedList', 'NumberedList', 'Blockquote' ] } ],
-                forcePasteAsPlainText: true
-            }
-            
-            config.on = {
-                instanceReady: (evt) => 
-                    @handleEmpty()
-            }
-            
-            ckeditor = CKEDITOR.inline @e[0], config  
+             editor = new MediumEditor(@e)
 
         else    
             @handleEmpty()

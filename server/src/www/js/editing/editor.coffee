@@ -60,6 +60,4 @@ class Editor
     
 
 
-CKEDITOR.disableAutoInline = true
-
 window.Fora.Editing.Editor = Editor

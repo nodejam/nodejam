@@ -1,40 +1,45 @@
 <script type="text/javascript">
     page = new Fora.Views.Forums.Item({{{forumJson}}});
 </script>
-<div class="main-pane">
-    <div class="nav alt">
-        <ul>
-            <li class="selected">
-                Popular
-            </li>
-            <li>
-                <a href="/{{forum.stub}}/about">About</a>
-            </li>          
-        </ul>
-        {{#if user}}
-        <ul class="alt buttons">
-            {{#unless options.isMember}}
-            <li>
-                <a href="#" class="positive join-forum"><i class="fa fa-user"></i>Join Forum</a>
-            </li>
-            {{else}}
-            <li>
-                <a href="#" class="positive new-post"><i class="fa fa-plus"></i>New {{options.primaryPostType}}</a>
-            </li>
-            {{/unless}}
-        </ul>
-        {{/if}}
-    </div>
-    <div class="content-area">   
-        {{#if posts}}
-            <ul class="cards standard">
-            {{#each posts}}
-                <li>
-                {{{html}}}
-                </li>
-            {{/each}}
-            </ul>
-        {{/if}}   
-    </div>
-</div>
+<div class="single-section-page">
 
+    {{> cover coverInfo}}
+
+    <div class="main-pane">
+        <div class="nav alt">
+            <ul>
+                <li class="selected">
+                    Popular
+                </li>
+                <li>
+                    <a href="/{{forum.stub}}/about">About</a>
+                </li>          
+            </ul>
+            {{#if user}}
+            <ul class="alt buttons">
+                {{#unless options.isMember}}
+                <li>
+                    <a href="#" class="positive join-forum"><i class="fa fa-user"></i>Join Forum</a>
+                </li>
+                {{else}}
+                <li>
+                    <a href="#" class="positive new-post"><i class="fa fa-plus"></i>New {{options.primaryPostType}}</a>
+                </li>
+                {{/unless}}
+            </ul>
+            {{/if}}
+        </div>
+        <div class="content-area">   
+            {{#if posts}}
+                <ul class="cards standard">
+                {{#each posts}}
+                    <li>
+                    {{{html}}}
+                    </li>
+                {{/each}}
+                </ul>
+            {{/if}}   
+        </div>
+    </div>
+    
+</div>
