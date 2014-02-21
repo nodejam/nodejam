@@ -7,8 +7,6 @@ class DatabaseModel extends BaseModel
 
     constructor: (params) ->
         utils.extend(this, params)
-        if @_id
-            @_id = databaseModule.ObjectId(@_id)
 
 
 
@@ -50,7 +48,7 @@ class DatabaseModel extends BaseModel
            
     @getById: (id, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        result = yield db.findOne(typeDefinition.collection, { _id: databaseModule.ObjectId(id) })
+        result = yield db.findOne(typeDefinition.collection, { _id: db.ObjectId(id) })
         if result then yield @constructModel(result, typeDefinition, context, db)
             
 

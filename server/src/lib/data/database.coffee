@@ -1,80 +1,57 @@
 Mongo = require 'mongodb'
-utils = require '../utils'
 thunkify = require 'thunkify'
 
 class Database
+
     constructor: (@conf) ->
+        switch @conf.type
+            when 'mongodb'
+                Mongo = require('./backends/mongodb')                
+                @db = new Mongo @conf
 
 
     getDb: =>*
-        if not @db
-            client = new Mongo.Db(@conf.name, new Mongo.Server(@conf.host, @conf.port, {}), { safe: true })
-            @db = yield thunkify(client.open).call client
-        @db
+        yield @db.getDb()
 
 
 
     insert: (collectionName, document) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
-        result = yield thunkify(collection.insert).call collection, document, { safe: true }
-        result[0]
+        yield @db.insert(collectionName, document)
         
         
 
     update: (collectionName, params, document) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
-        yield thunkify(collection.update).call collection, params, document, { safe: true, multi: false }
+        yield @db.update(collectionName, params, document)
 
 
 
     updateAll: (collectionName, params, document) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
-        yield thunkify(collection.update).call collection, params, document, { safe: true, multi: true }
+        yield @db.updateAll(collectionName, params, document)
 
 
 
     find: (collectionName, query) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
-        collection.find query
+        yield @db.find(collectionName, query)
 
 
 
     findWithOptions: (collectionName, query, options) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
-        collection.find query, options
+        yield @db.findWithOptions(collectionName, query, options)
         
 
 
     findOne: (collectionName, query) =>*
-        cursor = yield @find(collectionName, query)
-        yield thunkify(cursor.nextObject).call cursor
+        yield @db.findOne(collectionName, query)
 
 
 
     remove: (collectionName, params) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
-        yield thunkify(collection.remove).call collection, params, { safe:true }
+        yield @db.remove(collectionName, params)
 
 
                     
-    incrementCounter: (key) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, '_counters'
-        yield thunkify(collection.findAndModify).call collection, { key: key }, {}, { $inc: { value: 1 } }, {}
-
-
-
-    @ObjectId: (id) =>
-        if id
-            if typeof id is "string" then new Mongo.ObjectID(id) else id
-        else
-            new Mongo.ObjectID()
+    ObjectId: (id) =>
+        @db.ObjectId(id)
 
 
 exports.Database = Database
