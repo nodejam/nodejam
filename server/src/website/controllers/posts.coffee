@@ -12,7 +12,7 @@ exports.item = auth.handler (forum, post) ->*
         if post
             author = yield models.User.getById post.createdBy.id, {}, db
     
-            pageTemplate = widgets.parse yield post.getTemplate 'standard'            
+            pageTemplate = widgets.parse yield post.getTemplate 'item'            
             
             yield @renderPage 'posts/post', { 
                 pageName: 'post-page',

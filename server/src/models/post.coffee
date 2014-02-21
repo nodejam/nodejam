@@ -110,7 +110,7 @@ class Post extends ForaDbModel
         
         if @state is 'published'
             forum = yield models.Forum.getById @forumId, context, db
-            yield forum.refreshSnapshot()
+            yield forum.refreshCache()
         
         result
         
@@ -134,7 +134,7 @@ class Post extends ForaDbModel
         switch typeDef.extensionType 
             when 'builtin'
                 [name, version] = typeDef.name.split '/'
-                require "../extensions/posts/#{name}/#{version}/script"
+                require "../typedefinitions/posts/#{name}/#{version}/script"
             else
                 throw new Error "Unsupported extension type"
         

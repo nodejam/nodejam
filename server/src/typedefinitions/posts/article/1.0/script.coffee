@@ -6,7 +6,7 @@ exports.save = ->*
 exports.getTemplate = (name) ->*
     switch name
     
-        when 'standard'
+        when 'item'
             {
                 widget: "single-section-page",
                 theme: { theme: "@post.theme", field: "theme" }
@@ -36,14 +36,12 @@ exports.getTemplate = (name) ->*
                     { widget: "heading", size: 2, title: '@post.title', link: "/#{@forum.stub}/#{@stub}" },
                 ]
             }
-        else
-            throw new Error "Unknown template type"
             
 
 
 exports.getView = (name) ->*
-    switch name
-        when "snapshot"
+    switch name    
+        when "concise"
             {
                 image: @cover?.image.small,
                 @title,
@@ -51,5 +49,4 @@ exports.getView = (name) ->*
                 id: @_id.toString(),
                 @stub
             }
-        else
-            throw new Error "Unknown snapshot type"
+

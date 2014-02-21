@@ -57,8 +57,8 @@ users = [tributeToAaron, jeswin, ebin, anupk7]
 poetry = {
     name: 'Poetry',
     description: 'Selected Poetry from around the world.',
-    cover_image_src: 'https://twimg0-a.akamaihd.net/profile_images/2926658252/11c12e7e2f293194c95c6a5ba3f4d707.jpeg',
-    cover_image_small: 'https://twimg0-a.akamaihd.net/profile_images/2926658252/11c12e7e2f293194c95c6a5ba3f4d707.jpeg',    
+    cover_image_src: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',
+    cover_image_small: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',    
     permission: 'public',
     type: 'public',
     category: 'literature',
@@ -94,8 +94,8 @@ rawNerve = {
 itsMyLife = {
     name: 'It\'s my life',
     description: 'Everyday life from corners of the world.',
-    cover_image_src: 'https://twimg0-a.akamaihd.net/profile_images/2371312033/image.jpg',
-    cover_image_small: 'https://twimg0-a.akamaihd.net/profile_images/2371312033/image.jpg',
+    cover_image_src: 'http://www.dangerouslybored.com/wp-content/uploads/2012/10/clown-7.jpg',
+    cover_image_small: 'http://www.dangerouslybored.com/wp-content/uploads/2012/10/clown-7.jpg',
     permission: 'public',
     type: 'public',
     category: 'life',
@@ -219,8 +219,8 @@ darkKnight = {
     title: 'Dark Knight',
     type: "article/1.0",
     _content: 'dark-knight.md',
-    cover_image_src: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
-    cover_image_small: 'http://www.geeksofdoom.com/GoD/img/2008/09/2008-09-11-dark_knight.jpg',
+    cover_image_src: 'http://www.everyjoe.com/wp-content/uploads/2013/07/the-dark-knight.jpg',
+    cover_image_small: 'http://www.everyjoe.com/wp-content/uploads/2013/07/the-dark-knight.jpg',
     _forum: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
