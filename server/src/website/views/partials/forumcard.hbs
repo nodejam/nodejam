@@ -4,9 +4,9 @@
     </div>
     <div class="card-content">
         <h2><a href="/{{stub}}">{{name}}</a></h2>
-        {{#if snapshot.posts}}
+        {{#if cache.posts}}
         <ul class="text-block content">
-            {{#each snapshot.posts}}                
+            {{#each cache.posts}}                
             <li>
                 <a href="/{{../stub}}/{{stub}}">{{title}}</a><br />
                 <p class="sub-text">by {{createdBy.name}}</p> 

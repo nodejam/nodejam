@@ -141,7 +141,7 @@ class Forum extends ForaDbModel
         
         
         
-    getView: (name) =>
+    getView: (name) =>*
         switch name
             when 'card'
                 {

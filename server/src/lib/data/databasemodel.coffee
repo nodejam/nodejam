@@ -113,7 +113,7 @@ class DatabaseModel extends BaseModel
             result = yield @constructModelFields obj, typeDefinition.schema.properties, context, db
 
             fnCtor = (_o, _ctx, _db) ->*
-                if typeDefinition.ctor then new typeDefinition.ctor _o, _ctx, _db else {}
+                if typeDefinition.ctor then new typeDefinition.ctor _o, _ctx, _db else _o
             yield makeResult result, fnCtor, context, db                
                 
 
@@ -132,7 +132,7 @@ class DatabaseModel extends BaseModel
                         arr = []
                         if def.items.typeDefinition
                             for item in value
-                                arr.push yield @constructModel item, def.items.typeDefinition
+                                arr.push yield @constructModel item, def.items.typeDefinition, context, db
                         else
                             arr = value
                         result[name] = arr
@@ -141,7 +141,7 @@ class DatabaseModel extends BaseModel
             else
                 if def.typeDefinition #Known type definition
                     if value
-                        result[name] = yield @constructModel value, def.typeDefinition
+                        result[name] = yield @constructModel value, def.typeDefinition, context, db
                 else #Object of any structure
                     result[name] = value
         
