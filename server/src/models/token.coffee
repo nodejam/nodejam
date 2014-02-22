@@ -17,6 +17,7 @@ class Token extends ForaDbModel
             }
             required: ['type', 'key', 'value']
         },
+        indexes: [{ 'key': 1 }],
     }
     
     

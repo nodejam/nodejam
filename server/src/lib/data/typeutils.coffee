@@ -1,6 +1,5 @@
 utils = require '../utils'
 
-
 class TypeUtils
     
 
@@ -62,23 +61,33 @@ class TypeUtils
                 yield fn value, def.schema.properties[property]
         
 
+    
+    buildTypeCache: =>*
+        TypeUtils.typeCache = {}
+        
+        if @getCacheItems
+            items = yield @getCacheItems()
+
+            for modelName, def of items                    
+                TypeUtils.typeCache[modelName] = def        
+        
+            yield @resolveReferences()
+
+
+
+    getTypeCache: =>
+        TypeUtils.typeCache
+            
+    
 
     getTypeDefinition: (name, dynamicResolutionContext = {}) =>*
         #We must initialize the cache first.
         if not TypeUtils.typeCache
-            TypeUtils.typeCache = {}
+            yield @buildTypeCache()
             
-            if @getCacheItems
-                items = yield @getCacheItems()
-
-                for modelName, def of items                    
-                    TypeUtils.typeCache[modelName] = def        
-            
-                yield @resolveReferences()
-        
         #First check if it resolves in type cache
         #Then check if it resolves in the context
-        #Otherwise build
+        #Otherwise build dynamic typedef
         return (TypeUtils.typeCache[name] ? dynamicResolutionContext[name]) ? yield @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
 
     

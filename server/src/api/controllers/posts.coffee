@@ -1,7 +1,7 @@
 conf = require '../../conf'
 db = new (require '../../lib/data/database').Database(conf.db)
 models = require '../../models'
-typeUtils = require('../../models/foratypeutils').ForaTypeUtils
+typeUtils = require('../../models/foratypeutils').typeUtils
 utils = require '../../lib/utils'
 auth = require '../../common/web/auth'
 

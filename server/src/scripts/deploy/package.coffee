@@ -64,7 +64,6 @@ if opt isnt '--debug'
         tempPath: '../temp/',
         fileIn: [
             'app/www/js/lib/jquery-min.js', 
-            'app/www/js/lib/angular-min.js'
         ],
         fileOut: 'app/www/js/lib-base.js',
         callback: (err) -> 

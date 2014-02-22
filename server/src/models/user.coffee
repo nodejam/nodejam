@@ -45,6 +45,7 @@ class User extends ForaDbModel
             },
             required: ['username', 'name', 'assets', 'followerCount', 'email', 'lastLogin']
         },
+        indexes: [{ 'username': 1 }],
         links: {
             credentials: { type: 'credentials', field: 'userId', multiplicity: 'one' }
             info: { type: 'user-info', field: 'userId', multiplicity: 'one' }

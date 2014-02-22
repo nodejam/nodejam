@@ -1,9 +1,11 @@
+co = require 'co'
 conf = require '../../conf'
 db = new (require '../../lib/data/database').Database(conf.db)
 utils = require '../../lib/utils'
 fs = require 'fs'
 path = require 'path'
 fsutils = require '../../common/fsutils'
+typeUtils = require('../../models/foratypeutils').typeUtils
 
 #create directories
 today = Date.now()
@@ -20,32 +22,13 @@ for p in (fsutils.getBasePath(x) for x in ['assets', 'images', 'originalimages']
                         utils.log "#{newPath} exists"
     
 #Ensure indexes.
-db.getDb (err, db) ->
-    db.forum 'sessions', (_, coll) ->
-        coll.ensureIndex { passkey: 1 }, ->
-        coll.ensureIndex { accessToken: 1 }, ->
-
-    db.forum 'users', (_, coll) ->
-        coll.ensureIndex { 'username': 1 }, ->
-
-    db.forum 'forums', (_, coll) ->
-        coll.ensureIndex { 'network': 1 }, ->
-        coll.ensureIndex { 'createdById': 1, 'network': 1 }, ->
-        coll.ensureIndex { 'createdBy.username': 1, 'network': 1 }, ->
-        coll.ensureIndex { 'stub': 1, 'network': 1 }, ->
-
-    db.forum 'posts', (_, coll) ->
-        coll.ensureIndex { state: 1, 'forum.stub': 1 }, ->
-        coll.ensureIndex { state: 1, 'forumId': 1 }, ->
-        coll.ensureIndex { state: 1, savedAt: 1, 'forum.stub': 1 }, ->
-        coll.ensureIndex { state: 1, savedAt: 1, 'forumId': 1 }, ->
-        coll.ensureIndex { 'createdById': 1 }, ->
-        coll.ensureIndex { 'createdBy.username': 1 }, ->
-        
-    db.forum 'messages', (_, coll) ->
-        coll.ensureIndex { userId: 1 }, ->
-        
-    db.forum 'tokens', (_, coll) ->
-        coll.ensureIndex { key: 1 }, ->
+(co ->*
+    yield typeUtils.buildTypeCache()
+    indexes = {}
+    for name, typeDefinition of typeUtils.getTypeCache()
+        if typeDefinition.indexes
+            indexes[typeDefinition.collection] = typeDefinition.indexes
+    yield db.setupIndexes indexes
+)()   
 
 setTimeout (-> process.exit()), 5000

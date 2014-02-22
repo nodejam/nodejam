@@ -1,19 +1,19 @@
 BaseModel = require('../lib/data/basemodel').BaseModel
 DatabaseModel = require('../lib/data/databasemodel').DatabaseModel
-ForaTypeUtils = require('./foratypeutils').ForaTypeUtils
+typeUtils = require('./foratypeutils').typeUtils
                                         
 
 class ForaModel extends BaseModel
     
     @getTypeUtils: ->
-        ForaTypeUtils
+        typeUtils
 
 
 
 class ForaDbModel extends DatabaseModel
 
     @getTypeUtils: ->
-        ForaTypeUtils
+        typeUtils
 
 
 exports.ForaModel = ForaModel

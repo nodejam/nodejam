@@ -1,5 +1,6 @@
 Mongo = require 'mongodb'
 thunkify = require 'thunkify'
+utils = require '../../../utils'
 
 class Database
     constructor: (@conf) ->
@@ -61,6 +62,19 @@ class Database
         yield thunkify(collection.remove).call collection, params, { safe:true }
 
 
+
+    setupIndexes: (indexes) =>*        
+        db = yield @getDb()
+        utils.log "Setting up indexes for mongodb"
+        for collectionName, list of indexes
+            collection = yield thunkify(db.collection).call db, collectionName
+            for index in list
+                yield thunkify(collection.ensureIndex).call collection, index
+
+            utils.log JSON.stringify yield thunkify(collection.indexInformation).call collection                
+        return
+        
+    
                     
     ObjectId: (id) =>
         if id

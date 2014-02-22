@@ -32,6 +32,13 @@ class Post extends ForaDbModel
                 },
                 required: ['type', 'forumId', 'forum', 'createdById', 'createdBy', 'meta', 'tags', 'stub', 'recommendations', 'state', 'savedAt']
             },
+            indexes: [
+                { 'state': 1, 'forum.stub': 1 },
+                { 'state': 1, 'forumId': 1 },
+                { 'state': 1, 'createdAt': 1, 'forum.stub': 1 }, 
+                { 'createdById' : 1 },
+                { 'createdBy.username': 1 }
+            ],
             links: {
                 forum: { type: 'forum', key: 'forumId' }
             }

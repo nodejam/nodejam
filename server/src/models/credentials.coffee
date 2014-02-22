@@ -26,6 +26,10 @@ class Credentials extends ForaDbModel
             createdAt: { event: 'created' },
             updatedAt: { event: 'updated' }
         },
+        indexes: [
+            { 'username': 1 },
+            { 'token': 1 }
+        ],
         validate: (fields) ->*
             errors = []
             if @builtin and not (@builtin.method is 'PBKDF2' and @builtin.username and @builtin.hash and @builtin.salt)

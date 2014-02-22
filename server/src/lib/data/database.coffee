@@ -49,6 +49,11 @@ class Database
         yield @db.remove(collectionName, params)
 
 
+
+    setupIndexes: (indexes) =>*
+        yield @db.setupIndexes(indexes)
+        
+        
                     
     ObjectId: (id) =>
         @db.ObjectId(id)

@@ -100,4 +100,4 @@ class ForaTypeUtils extends TypeUtils
         console.log "Missing " + JSON.stringify name
         
         
-exports.ForaTypeUtils = new ForaTypeUtils()
+exports.typeUtils = new ForaTypeUtils()
