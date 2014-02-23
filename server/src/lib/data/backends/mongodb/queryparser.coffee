@@ -2,6 +2,8 @@
     MongoDb parser really doesn't need to do much, because we use a subset of the same query syntax.
     1. Make sure queries use only supported operators
     2. We do not support comparing fields with complex type. eg (of invalid): { company: { name: 'fora', location: 'india' } }
+    
+    TODO: Warn when queries are not operating on indexes, but checking typeDefinitions
 ###
 
 class MongoDbQueryParser
@@ -10,7 +12,7 @@ class MongoDbQueryParser
         
     
 
-    parse: (node = {}) =>
+    parse: (node = {}, typeDefinition) =>
         @visit_NODE node, {}, []
         node
 

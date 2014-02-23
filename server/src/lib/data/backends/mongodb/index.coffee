@@ -12,7 +12,7 @@ class MongoDb
         if not @db
             client = new Mongo.Db(@conf.name, new Mongo.Server(@conf.host, @conf.port, {}), { safe: true })
             @db = yield thunkify(client.open).call client
-            @parser = new Parser()
+            @parser = new Parser(@typeDefinitions)
         @db
 
 
@@ -27,7 +27,7 @@ class MongoDb
 
     update: (typeDefinition, query, document) =>*
         db = yield @getDb()
-        query = @parser.parse(query)
+        query = @parser.parse(query, typeDefinition)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
         yield thunkify(collection.update).call collection, query, document, { safe: true, multi: false }
 
@@ -35,7 +35,7 @@ class MongoDb
 
     updateAll: (typeDefinition, query, document) =>*
         db = yield @getDb()
-        query = @parser.parse(query)
+        query = @parser.parse(query, typeDefinition)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
         yield thunkify(collection.update).call collection, query, document, { safe: true, multi: true }
 
@@ -61,7 +61,7 @@ class MongoDb
 
     remove: (typeDefinition, query, options = {}) =>*
         db = yield @getDb()
-        query = @parser.parse(query)
+        query = @parser.parse(query, typeDefinition)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
         yield thunkify(collection.remove).call collection, query, { safe:true }
 
@@ -98,7 +98,7 @@ class MongoDb
 
     getCursor: (typeDefinition, query, options = {}) =>*
         db = yield @getDb()
-        query = @parser.parse(query)
+        query = @parser.parse(query, typeDefinition)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
         cursor = collection.find query
         if options.sort
