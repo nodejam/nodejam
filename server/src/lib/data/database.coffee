@@ -34,14 +34,14 @@ class Database
 
 
 
+    count: (typeDefinition, query) =>*
+        yield @db.count(typeDefinition, query)
+        
+
+
     find: (typeDefinition, query) =>*
         yield @db.find(typeDefinition, query)
 
-
-
-    findWithOptions: (typeDefinition, query, options) =>*
-        yield @db.findWithOptions(typeDefinition, query, options)
-        
 
 
     findOne: (typeDefinition, query) =>*

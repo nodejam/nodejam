@@ -180,7 +180,7 @@ class Forum extends ForaDbModel
 
     getPosts: (limit, sort, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Post.find({ 'forumId': @_id.toString(), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+        yield models.Post.find({ 'forumId': @_id.toString(), state: 'published' },  { sort, limit }, context, db)
         
 
     
@@ -214,7 +214,7 @@ class Forum extends ForaDbModel
                                 
     getMemberships: (roles, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Membership.find { 'forumId': @_id.toString(), roles: { $in: roles } }, ((cursor) -> cursor.sort({ id: -1 }).limit 200), context, db
+        yield models.Membership.find { 'forumId': @_id.toString(), roles: { $in: roles } }, { sort: { id: -1 }, limit: 200 }, context, db
         
       
             
@@ -227,8 +227,7 @@ class Forum extends ForaDbModel
             for p in posts
                 @cache.posts.push yield p.getView("concise")
 
-            cursor = yield models.Post.getCursor({ 'forumId': @_id.toString() , state: 'published' }, context, db)
-            @stats.posts = yield thunkify(cursor.count).call cursor
+            @stats.posts = yield models.Post.count({ 'forumId': @_id.toString() , state: 'published' }, context, db)
             @stats.lastPost = posts[0].savedAt
             yield @save context, db
 

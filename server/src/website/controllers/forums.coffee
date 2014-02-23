@@ -9,7 +9,7 @@ widgets = require '../../common/widgets'
 
 
 exports.index = auth.handler ->*
-    featured = yield models.Forum.find({ network: @network.stub }, ((cursor) -> cursor.sort({ 'stats.lastPost': -1 }).limit 32), {}, db)
+    featured = yield models.Forum.find({ network: @network.stub }, { sort: { 'stats.lastPost': -1 }, limit: 32 }, {}, db)
     for forum in featured
         forum.summary = yield forum.getView("card")
     

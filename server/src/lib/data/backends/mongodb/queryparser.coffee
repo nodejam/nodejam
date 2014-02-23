@@ -11,6 +11,8 @@ class MongoDbQueryParser
     
     
     parse: (node, current, parents) =>
+        return node
+        
         #eg: value(ie, RHS) in { name: 'jeswin' }
         if node is null or ['string', 'number', 'boolean'].indexOf(typeof v) > -1 
             node

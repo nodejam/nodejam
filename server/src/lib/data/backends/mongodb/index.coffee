@@ -12,6 +12,7 @@ class MongoDb
         if not @db
             client = new Mongo.Db(@conf.name, new Mongo.Server(@conf.host, @conf.port, {}), { safe: true })
             @db = yield thunkify(client.open).call client
+            @parser = new Parser()
         @db
 
 
@@ -24,44 +25,51 @@ class MongoDb
         
         
 
-    update: (typeDefinition, params, document) =>*
+    update: (typeDefinition, query, document) =>*
         db = yield @getDb()
+        query = @parser.parse(query)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
-        yield thunkify(collection.update).call collection, params, document, { safe: true, multi: false }
+        yield thunkify(collection.update).call collection, query, document, { safe: true, multi: false }
 
 
 
-    updateAll: (typeDefinition, params, document) =>*
+    updateAll: (typeDefinition, query, document) =>*
         db = yield @getDb()
+        query = @parser.parse(query)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
-        yield thunkify(collection.update).call collection, params, document, { safe: true, multi: true }
+        yield thunkify(collection.update).call collection, query, document, { safe: true, multi: true }
 
 
 
-    find: (typeDefinition, query) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, typeDefinition.collection
-        collection.find query
-
-
-
-    findWithOptions: (typeDefinition, query, options) =>*
-        db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, typeDefinition.collection
-        collection.find query, options
+    count: (typeDefinition, query) =>*
+        cursor = yield @getCursor typeDefinition, query
+        yield thunkify(cursor.count).call cursor
         
+        
+    
+    find: (typeDefinition, query, options = {}) =>*
+        cursor = yield @getCursor typeDefinition, query
+
+        if options.sort
+            cursor.sort options.sort
+        if cursor.limit
+            cursor.limit options.limit
+
+        yield thunkify(cursor.toArray).call cursor            
+
 
 
     findOne: (typeDefinition, query) =>*
-        cursor = yield @find(typeDefinition, query)
-        yield thunkify(cursor.nextObject).call cursor
+        cursor = yield @getCursor typeDefinition, query
+        yield thunkify(cursor.nextObject).call cursor            
 
 
 
-    remove: (typeDefinition, params) =>*
+    remove: (typeDefinition, query) =>*
         db = yield @getDb()
+        query = @parser.parse(query)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
-        yield thunkify(collection.remove).call collection, params, { safe:true }
+        yield thunkify(collection.remove).call collection, query, { safe:true }
 
 
 
@@ -91,6 +99,15 @@ class MongoDb
             if typeof id is "string" then new Mongo.ObjectID(id) else id
         else
             new Mongo.ObjectID()
+
+
+
+    getCursor: (typeDefinition, query) =>*
+        db = yield @getDb()
+        query = @parser.parse(query)
+        collection = yield thunkify(db.collection).call db, typeDefinition.collection
+        collection.find query
+    
 
 
 module.exports = MongoDb

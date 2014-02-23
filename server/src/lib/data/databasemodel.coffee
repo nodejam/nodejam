@@ -9,17 +9,16 @@ class DatabaseModel extends BaseModel
 
 
 
-    @get: (params, context, db) ->*
+    @get: (query, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        result = yield db.findOne(typeDefinition, params)
+        result = yield db.findOne(typeDefinition, query)
         if result then yield @constructModel(result, typeDefinition, context, db)
                 
 
 
-    @getAll: (params, context, db) ->*
+    @getAll: (query, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        cursor = yield db.find(typeDefinition, params)
-        items = yield thunkify(cursor.toArray).call cursor
+        items = yield db.find(typeDefinition, query)
         if items.length
             (yield @constructModel(item, typeDefinition, context, db) for item in items)
         else
@@ -27,11 +26,9 @@ class DatabaseModel extends BaseModel
                     
 
     
-    @find: (params, fnCursor, context, db) ->*
+    @find: (query, options, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        cursor = yield db.find(typeDefinition, params)
-        fnCursor cursor
-        items = yield thunkify(cursor.toArray).call cursor
+        items = yield db.find typeDefinition, query, options
         if items.length
             (yield @constructModel(item, typeDefinition, context, db) for item in items)
         else
@@ -39,12 +36,12 @@ class DatabaseModel extends BaseModel
 
 
 
-    @getCursor: (params, context, db) ->*
+    @count: (query, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        yield db.find typeDefinition, params
+        yield db.count typeDefinition, query
 
 
-           
+
     @getById: (id, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
         result = yield db.findOne(typeDefinition, { _id: db.ObjectId(id) })
@@ -52,12 +49,12 @@ class DatabaseModel extends BaseModel
             
 
 
-    @destroyAll: (params, db) ->*
+    @destroyAll: (query, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        if typeDefinition.canDestroyAll?(params)
-            yield db.remove(typeDefinition, params)
+        if typeDefinition.canDestroyAll?(query)
+            yield db.remove(typeDefinition, query)
         else
-            throw new Error "Call to destroyAll must pass safety checks on params."
+            throw new Error "Call to destroyAll must pass safety checks on query."
             
             
         
