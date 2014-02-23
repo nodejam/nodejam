@@ -1,5 +1,5 @@
-utils = require('../utils')
-Validator = require('./validator')
+utils = require '../utils'
+Validator = require './validator'
 
 class BaseModel
 

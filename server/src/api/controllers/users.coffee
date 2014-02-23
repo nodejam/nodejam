@@ -3,7 +3,7 @@ co = require 'co'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-utils = require('../../lib/utils')
+utils = require '../../lib/utils'
 auth = require '../../common/web/auth'
     
 exports.create = auth.handler ->*

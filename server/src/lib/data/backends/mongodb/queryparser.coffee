@@ -9,33 +9,32 @@ class MongoDbQueryParser
     constructor: (@typeDefinitions) ->
         
     
+
+    parse: (node = {}) =>
+        @visit_NODE node, {}, []
+        node
+
     
-    parse: (node, current, parents) =>
-        return node
-        
+    
+    visit_NODE: (node, current, parents) =>
         #eg: value(ie, RHS) in { name: 'jeswin' }
-        if node is null or ['string', 'number', 'boolean'].indexOf(typeof v) > -1 
-            node
+        if node is null or ['string', 'number', 'boolean'].indexOf(typeof node) > -1 
+            return
 
         #eg: value(ie, RHS) in { $or: [ {obj1}, {obj2} ] } 
         else if node instanceof Array                    
             for item in node
-                @parse item, current, parents
+                @visit_NODE item, current, parents
+            return
 
         #eg 1: { name: { $or: [ {obj1}, {obj2} ] } 
         #eg 2: { age: { $lt: 20 } }
-        else 
+        else
             parents.push current
             for k, v of node            
-                handler = switch k
-                    when k[0] isnt "$"
-                        @parse_FIELD
-                    else
-                        @parse_OPERATOR
-                        
-                handler k, node, parents
+                (if k[0] isnt "$" then @visit_FIELD else @visit_OPERATOR) k, node, parents
             parents.pop()
-            
+            return
             
 
     ###
@@ -43,8 +42,8 @@ class MongoDbQueryParser
         A value; eg: { username: 'jeswin' }
     ###
     
-    parse_FIELD: (k, param, root) =>
-        param[k] = parse param[k]
+    visit_FIELD: (k, current, parents) =>
+        @visit_NODE current[k], current, parents
         
     
     
@@ -72,14 +71,14 @@ class MongoDbQueryParser
         $nor	Joins query clauses with a logical NOR returns all documents that fail to match both clauses.                
     ###
     
-    parse_OPERATOR: (k, param, root) =>
+    visit_OPERATOR: (k, current, parents) =>
         #Is a comparison operator? Nothing to do then.
         if ['$gt', '$gte', '$lt', '$lte', '$ne', '$in', '$nin'].indexOf(k) > -1
             return
         else if ['$or', '$and', '$not', '$nor'].indexOf(k) > -1
-            param[k] = parse param[k]
+            @visit_NODE current[k], current, parents
         else
-            throw new Error "Unknown operator"
+            throw new Error "Unknown operator #{k}"
        
         
 
