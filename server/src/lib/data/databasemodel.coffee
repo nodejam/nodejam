@@ -12,14 +12,14 @@ class DatabaseModel extends BaseModel
 
     @get: (params, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        result = yield db.findOne(typeDefinition.collection, params)
+        result = yield db.findOne(typeDefinition, params)
         if result then yield @constructModel(result, typeDefinition, context, db)
                 
 
 
     @getAll: (params, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        cursor = yield db.find(typeDefinition.collection, params)
+        cursor = yield db.find(typeDefinition, params)
         items = yield thunkify(cursor.toArray).call cursor
         if items.length
             (yield @constructModel(item, typeDefinition, context, db) for item in items)
@@ -30,7 +30,7 @@ class DatabaseModel extends BaseModel
     
     @find: (params, fnCursor, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        cursor = yield db.find(typeDefinition.collection, params)
+        cursor = yield db.find(typeDefinition, params)
         fnCursor cursor
         items = yield thunkify(cursor.toArray).call cursor
         if items.length
@@ -42,13 +42,13 @@ class DatabaseModel extends BaseModel
 
     @getCursor: (params, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        yield db.find typeDefinition.collection, params
+        yield db.find typeDefinition, params
 
 
            
     @getById: (id, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
-        result = yield db.findOne(typeDefinition.collection, { _id: db.ObjectId(id) })
+        result = yield db.findOne(typeDefinition, { _id: db.ObjectId(id) })
         if result then yield @constructModel(result, typeDefinition, context, db)
             
 
@@ -56,7 +56,7 @@ class DatabaseModel extends BaseModel
     @destroyAll: (params, db) ->*
         typeDefinition = yield @getTypeDefinition()
         if typeDefinition.canDestroyAll?(params)
-            yield db.remove(typeDefinition.collection, params)
+            yield db.remove(typeDefinition, params)
         else
             throw new Error "Call to destroyAll must pass safety checks on params."
             
@@ -194,7 +194,7 @@ class DatabaseModel extends BaseModel
                         data: @
                     }
                     db.insert('events', event)                            
-                result = yield db.insert(typeDefinition.collection, @)
+                result = yield db.insert(typeDefinition, @)
                 result = yield @constructor.constructModel(result, typeDefinition, context, db)
             else
                 if typeDefinition.logging?.onUpdate
@@ -203,7 +203,7 @@ class DatabaseModel extends BaseModel
                         data: @
                     }
                     db.insert('events', event)
-                yield db.update(typeDefinition.collection, { @_id }, @)
+                yield db.update(typeDefinition, { @_id }, @)
                 attachSystemFields @, context, db
                 result = @
 
@@ -211,9 +211,9 @@ class DatabaseModel extends BaseModel
                                   
         else
             if @_id
-                details = "Invalid record with id #{@_id} in #{typeDefinition.collection}.\n"
+                details = "Invalid record with id #{@_id} in #{typeDefinition}.\n"
             else
-                details = "Validation failed while creating a new record in #{typeDefinition.collection}.\n"
+                details = "Validation failed while creating a new record in #{typeDefinition}.\n"
             
             details += "#{errors.length} errors generated at #{Date().toString('yyyy-MM-dd')}"
             details = "#{details}: #{errors.join(', ')}"
@@ -231,7 +231,7 @@ class DatabaseModel extends BaseModel
             throw new Error "Invalid context or db"
 
         typeDefinition = yield @getTypeDefinition()
-        db.remove typeDefinition.collection, { _id: @_id }
+        db.remove typeDefinition, { _id: @_id }
 
 
     

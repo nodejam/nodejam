@@ -26,7 +26,7 @@ for p in (fsutils.getBasePath(x) for x in ['assets', 'images', 'originalimages']
     yield typeUtils.buildTypeCache()
     indexes = {}
     for name, typeDefinition of typeUtils.getTypeCache()
-        if typeDefinition.indexes
+        if typeDefinition.indexes            
             indexes[typeDefinition.collection] = typeDefinition.indexes
     yield db.setupIndexes indexes
 )()   

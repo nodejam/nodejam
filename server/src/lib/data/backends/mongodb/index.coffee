@@ -14,51 +14,51 @@ class Database
 
 
 
-    insert: (collectionName, document) =>*
+    insert: (typeDefinition, document) =>*
         db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
+        collection = yield thunkify(db.collection).call db, typeDefinition.collection
         result = yield thunkify(collection.insert).call collection, document, { safe: true }
         result[0]
         
         
 
-    update: (collectionName, params, document) =>*
+    update: (typeDefinition, params, document) =>*
         db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
+        collection = yield thunkify(db.collection).call db, typeDefinition.collection
         yield thunkify(collection.update).call collection, params, document, { safe: true, multi: false }
 
 
 
-    updateAll: (collectionName, params, document) =>*
+    updateAll: (typeDefinition, params, document) =>*
         db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
+        collection = yield thunkify(db.collection).call db, typeDefinition.collection
         yield thunkify(collection.update).call collection, params, document, { safe: true, multi: true }
 
 
 
-    find: (collectionName, query) =>*
+    find: (typeDefinition, query) =>*
         db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
+        collection = yield thunkify(db.collection).call db, typeDefinition.collection
         collection.find query
 
 
 
-    findWithOptions: (collectionName, query, options) =>*
+    findWithOptions: (typeDefinition, query, options) =>*
         db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
+        collection = yield thunkify(db.collection).call db, typeDefinition.collection
         collection.find query, options
         
 
 
-    findOne: (collectionName, query) =>*
-        cursor = yield @find(collectionName, query)
+    findOne: (typeDefinition, query) =>*
+        cursor = yield @find(typeDefinition, query)
         yield thunkify(cursor.nextObject).call cursor
 
 
 
-    remove: (collectionName, params) =>*
+    remove: (typeDefinition, params) =>*
         db = yield @getDb()
-        collection = yield thunkify(db.collection).call db, collectionName
+        collection = yield thunkify(db.collection).call db, typeDefinition.collection
         yield thunkify(collection.remove).call collection, params, { safe:true }
 
 
@@ -66,12 +66,12 @@ class Database
     setupIndexes: (indexes) =>*        
         db = yield @getDb()
         utils.log "Setting up indexes for mongodb"
-        for collectionName, list of indexes
-            collection = yield thunkify(db.collection).call db, collectionName
+        for typeDefinition, list of indexes
+            collection = yield thunkify(db.collection).call db, typeDefinition.collection
             for index in list
                 yield thunkify(collection.ensureIndex).call collection, index
 
-            utils.log JSON.stringify yield thunkify(collection.indexInformation).call collection                
+            utils.log typeDefinition + ": " + JSON.stringify yield thunkify(collection.indexInformation).call collection         
         return
         
     

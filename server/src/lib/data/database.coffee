@@ -15,38 +15,38 @@ class Database
 
 
 
-    insert: (collectionName, document) =>*
-        yield @db.insert(collectionName, document)
+    insert: (typeDefinition, document) =>*
+        yield @db.insert(typeDefinition, document)
         
         
 
-    update: (collectionName, params, document) =>*
-        yield @db.update(collectionName, params, document)
+    update: (typeDefinition, params, document) =>*
+        yield @db.update(typeDefinition, params, document)
 
 
 
-    updateAll: (collectionName, params, document) =>*
-        yield @db.updateAll(collectionName, params, document)
+    updateAll: (typeDefinition, params, document) =>*
+        yield @db.updateAll(typeDefinition, params, document)
 
 
 
-    find: (collectionName, query) =>*
-        yield @db.find(collectionName, query)
+    find: (typeDefinition, query) =>*
+        yield @db.find(typeDefinition, query)
 
 
 
-    findWithOptions: (collectionName, query, options) =>*
-        yield @db.findWithOptions(collectionName, query, options)
+    findWithOptions: (typeDefinition, query, options) =>*
+        yield @db.findWithOptions(typeDefinition, query, options)
         
 
 
-    findOne: (collectionName, query) =>*
-        yield @db.findOne(collectionName, query)
+    findOne: (typeDefinition, query) =>*
+        yield @db.findOne(typeDefinition, query)
 
 
 
-    remove: (collectionName, params) =>*
-        yield @db.remove(collectionName, params)
+    remove: (typeDefinition, params) =>*
+        yield @db.remove(typeDefinition, params)
 
 
 
