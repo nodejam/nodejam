@@ -84,5 +84,5 @@ class Validator
             return list
 
 
-exports.Validator = Validator
+module.exports = Validator
         

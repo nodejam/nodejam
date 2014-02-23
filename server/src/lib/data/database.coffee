@@ -9,8 +9,8 @@ class Database
             
         switch @conf.type
             when 'mongodb'
-                Mongo = require('./backends/mongodb')                
-                @db = new Mongo @conf, @typeDefinitions
+                Parser = require('./backends/mongodb')
+                @db = new Parser @conf, @typeDefinitions
 
 
 
@@ -67,4 +67,4 @@ class Database
         @db.ObjectId(id)
 
 
-exports.Database = Database
+module.exports = Database

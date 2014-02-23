@@ -1,6 +1,5 @@
-databaseModule = require('./database').Database
 utils = require('../utils')
-Validator = require('./validator').Validator
+Validator = require('./validator')
 
 class BaseModel
 
@@ -57,4 +56,4 @@ class BaseModel
 
 
 
-exports.BaseModel = BaseModel
+module.exports = BaseModel

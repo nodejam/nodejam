@@ -1,7 +1,6 @@
 thunkify = require 'thunkify'
-databaseModule = require('./database').Database
-utils = require('../utils')
-BaseModel = require('./basemodel').BaseModel
+utils = require '../utils'
+BaseModel = require './basemodel'
 
 class DatabaseModel extends BaseModel
 
@@ -281,5 +280,5 @@ class DatabaseModel extends BaseModel
         { context: context ? @__context, db: db ? @__db }
 
 
-exports.DatabaseModel = DatabaseModel
+module.exports = DatabaseModel
 

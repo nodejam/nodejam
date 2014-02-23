@@ -21,7 +21,9 @@ utils.log "Setup will connect to #{HOST}:#{PORT}"
 init = ->*
     typeUtils = require('../../models/foratypeutils').typeUtils
     yield typeUtils.init()
-    database = new (require '../../lib/data/database').Database(conf.db, typeUtils.getTypeDefinitions())
+
+    Database = require '../../lib/data/database'
+    database = new Database conf.db, typeUtils.getTypeDefinitions()
 
     _globals = {}
     

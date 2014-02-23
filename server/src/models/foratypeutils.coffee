@@ -1,4 +1,4 @@
-TypeUtils = require('../lib/data/typeutils').TypeUtils
+TypeUtils = require('../lib/data/typeutils')
 
 class ForaTypeUtils extends TypeUtils
 

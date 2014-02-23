@@ -1,8 +1,9 @@
 Mongo = require 'mongodb'
 thunkify = require 'thunkify'
 utils = require '../../../utils'
+Parser = require './queryparser'
 
-class Database
+class MongoDb
     constructor: (@conf, @typeDefinitions) ->
 
 
@@ -92,4 +93,4 @@ class Database
             new Mongo.ObjectID()
 
 
-module.exports = Database
+module.exports = MongoDb

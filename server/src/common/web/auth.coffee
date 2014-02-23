@@ -2,9 +2,10 @@ path = require 'path'
 co = require 'co'
 conf = require '../../conf'
 typeUtils = require('../../models/foratypeutils').typeUtils
-db = new (require '../../lib/data/database').Database(conf.db, typeUtils.getTypeDefinitions())
+Database = require '../../lib/data/database'
 utils = require '../../lib/utils'
 models = require '../../models'
+db = new Database(conf.db, typeUtils.getTypeDefinitions())
 
 handler = ->
     if arguments.length is 1

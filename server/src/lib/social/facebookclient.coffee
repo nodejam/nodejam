@@ -76,4 +76,4 @@ class FaceBookClient
 
             
     
-exports.FaceBookClient = FaceBookClient
+module.exports = FaceBookClient

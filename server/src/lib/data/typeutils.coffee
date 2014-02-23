@@ -98,4 +98,4 @@ class TypeUtils
 
 
 
-exports.TypeUtils = TypeUtils
+module.exports = TypeUtils

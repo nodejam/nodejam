@@ -9,7 +9,8 @@ typeUtils = require('../models/foratypeutils').typeUtils
     
 (co ->*
     yield typeUtils.init()
-    exports.db = new (require '../lib/data/database').Database(conf.db, typeUtils.getTypeDefinitions())
+    Database = require '../lib/data/database'
+    exports.db = new Database(conf.db, typeUtils.getTypeDefinitions())
     
     process.chdir __dirname
 
