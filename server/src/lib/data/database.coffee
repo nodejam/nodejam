@@ -24,13 +24,13 @@ class Database
         
         
 
-    update: (typeDefinition, params, document) =>*
-        yield @db.update(typeDefinition, params, document)
+    update: (typeDefinition, query, document) =>*
+        yield @db.update(typeDefinition, query, document)
 
 
 
-    updateAll: (typeDefinition, params, document) =>*
-        yield @db.updateAll(typeDefinition, params, document)
+    updateAll: (typeDefinition, query, document) =>*
+        yield @db.updateAll(typeDefinition, query, document)
 
 
 
@@ -39,18 +39,18 @@ class Database
         
 
 
-    find: (typeDefinition, query) =>*
-        yield @db.find(typeDefinition, query)
+    find: (typeDefinition, query, options) =>*
+        yield @db.find(typeDefinition, query, options)
 
 
 
-    findOne: (typeDefinition, query) =>*
-        yield @db.findOne(typeDefinition, query)
+    findOne: (typeDefinition, query, options) =>*
+        yield @db.findOne(typeDefinition, query, options)
 
 
 
-    remove: (typeDefinition, params) =>*
-        yield @db.remove(typeDefinition, params)
+    remove: (typeDefinition, query) =>*
+        yield @db.remove(typeDefinition, query)
 
 
 

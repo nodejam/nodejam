@@ -7,7 +7,7 @@ widgets = require '../../common/widgets'
 
 
 exports.index = auth.handler ->*
-    editorsPicks = yield models.Post.find { meta: 'pick', 'forum.network': @network.stub }, { sort: { _id: -1 }, limit: 1 }, {}, db
+    editorsPicks = yield models.Post.find { meta: 'pick', 'forum.network': @network.stub }, { sort: { _id: -1, limit: 1 } }, {}, db
     featured = yield models.Post.find { meta: 'featured', 'forum.network': @network.stub }, { sort: { _id: -1 }, limit: 12 }, {}, db
     featured = (f for f in featured when (x._id for x in editorsPicks).indexOf(f._id) is -1)
 

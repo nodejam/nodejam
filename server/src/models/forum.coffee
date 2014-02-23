@@ -20,7 +20,7 @@ class Forum extends ForaDbModel
 
     @Settings: Settings
 
-    class Summary extends ForaModel   
+    class Summary extends ForaModel
         @typeDefinition: {
             name: "forum-summary",
             schema: {

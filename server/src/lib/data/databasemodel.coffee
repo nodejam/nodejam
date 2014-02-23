@@ -36,6 +36,13 @@ class DatabaseModel extends BaseModel
 
 
 
+    @findOne: (query, options, context, db) ->*
+        typeDefinition = yield @getTypeDefinition()
+        result = yield db.findOne typeDefinition, query, options
+        if result then yield @constructModel(result, typeDefinition, context, db)
+
+
+
     @count: (query, context, db) ->*
         typeDefinition = yield @getTypeDefinition()
         yield db.count typeDefinition, query

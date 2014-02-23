@@ -48,24 +48,18 @@ class MongoDb
         
     
     find: (typeDefinition, query, options = {}) =>*
-        cursor = yield @getCursor typeDefinition, query
-
-        if options.sort
-            cursor.sort options.sort
-        if cursor.limit
-            cursor.limit options.limit
-
+        cursor = yield @getCursor typeDefinition, query, options
         yield thunkify(cursor.toArray).call cursor            
 
 
 
-    findOne: (typeDefinition, query) =>*
-        cursor = yield @getCursor typeDefinition, query
+    findOne: (typeDefinition, query, options = {}) =>*
+        cursor = yield @getCursor typeDefinition, query, options
         yield thunkify(cursor.nextObject).call cursor            
 
 
 
-    remove: (typeDefinition, query) =>*
+    remove: (typeDefinition, query, options = {}) =>*
         db = yield @getDb()
         query = @parser.parse(query)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
@@ -102,12 +96,17 @@ class MongoDb
 
 
 
-    getCursor: (typeDefinition, query) =>*
+    getCursor: (typeDefinition, query, options = {}) =>*
         db = yield @getDb()
         query = @parser.parse(query)
         collection = yield thunkify(db.collection).call db, typeDefinition.collection
-        collection.find query
-    
+        cursor = collection.find query
+        if options.sort
+            cursor = cursor.sort options.sort
+        if cursor.limit
+            cursor = cursor.limit options.limit
+        cursor
+
 
 
 module.exports = MongoDb
