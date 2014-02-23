@@ -75,22 +75,23 @@ class TypeUtils
 
 
 
-    getTypeCache: =>
+    getTypeDefinitions: =>
         TypeUtils.typeCache
             
     
 
     getTypeDefinition: (name, dynamicResolutionContext = {}) =>*
-        #We must initialize the cache first.
-        if not TypeUtils.typeCache
-            yield @buildTypeCache()
-            
         #First check if it resolves in type cache
         #Then check if it resolves in the context
         #Otherwise build dynamic typedef
         return (TypeUtils.typeCache[name] ? dynamicResolutionContext[name]) ? yield @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
 
     
+
+    init: (name) =>*
+        throw new Error "MUST_OVERRIDE"
+
+
 
     resolveDynamicTypeDefinition: (name) =>*
         throw new Error "MUST_OVERRIDE"

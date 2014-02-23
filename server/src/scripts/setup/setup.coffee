@@ -8,8 +8,6 @@ utils = require '../../lib/utils'
 data = require './data'
 conf = require '../../conf'
 
-database = new (require '../../lib/data/database').Database(conf.db)
-
 utils.log "Setup started at #{new Date}"
 utils.log "NODE_ENV is #{process.env.NODE_ENV}"
 utils.log "Setup will connect to database #{conf.db.name} on #{conf.db.host}"
@@ -20,14 +18,17 @@ PORT = if argv.port then parseInt(argv.port) else 80
 
 utils.log "Setup will connect to #{HOST}:#{PORT}"
 
-init = () ->*
+init = ->*
+    typeUtils = require('../../models/foratypeutils').typeUtils
+    yield typeUtils.init()
+    database = new (require '../../lib/data/database').Database(conf.db, typeUtils.getTypeDefinitions())
+
     _globals = {}
     
     del = ->*
             if process.env.NODE_ENV is 'development'
                 utils.log 'Deleting main database.'
-                db = yield database.getDb()
-                result = yield (thunkify db.dropDatabase).call(db)
+                db = yield database.deleteDatabase()
                 utils.log 'Everything is gone now.'
             else
                 utils.log "Delete database can only be used if NODE_ENV is 'development'"

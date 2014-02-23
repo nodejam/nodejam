@@ -1,6 +1,5 @@
 co = require 'co'
 conf = require '../../conf'
-db = new (require '../../lib/data/database').Database(conf.db)
 utils = require '../../lib/utils'
 fs = require 'fs'
 path = require 'path'
@@ -23,12 +22,9 @@ for p in (fsutils.getBasePath(x) for x in ['assets', 'images', 'originalimages']
     
 #Ensure indexes.
 (co ->*
-    yield typeUtils.buildTypeCache()
-    indexes = {}
-    for name, typeDefinition of typeUtils.getTypeCache()
-        if typeDefinition.indexes            
-            indexes[typeDefinition.collection] = typeDefinition.indexes
-    yield db.setupIndexes indexes
-)()   
+    yield typeUtils.init()
+    db = new (require '../../lib/data/database').Database(conf.db, typeUtils.getTypeDefinitions())
+    yield db.setupIndexes()
+)()
 
 setTimeout (-> process.exit()), 5000

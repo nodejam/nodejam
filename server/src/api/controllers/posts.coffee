@@ -1,5 +1,5 @@
 conf = require '../../conf'
-db = new (require '../../lib/data/database').Database(conf.db)
+db = require('../app').db
 models = require '../../models'
 typeUtils = require('../../models/foratypeutils').typeUtils
 utils = require '../../lib/utils'

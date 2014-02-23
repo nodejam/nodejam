@@ -8,8 +8,8 @@ utils = require '../../lib/utils'
 netutils = require '../../common/netutils'
 fsutils = require '../../common/fsutils'
 conf = require '../../conf'
+db = require('../app').db
 models = require '../../models'
-db = new (require '../../lib/data/database').Database(conf.db)
 auth = require '../../common/web/auth'
 
 
@@ -23,6 +23,7 @@ oa = new OAuth(
 	conf.auth.twitter.TWITTER_CALLBACK,	
 	"HMAC-SHA1"
 )
+
 
 
 thunk_getOAuthRequestToken = ->

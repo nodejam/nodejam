@@ -2,6 +2,11 @@ TypeUtils = require('../lib/data/typeutils').TypeUtils
 
 class ForaTypeUtils extends TypeUtils
 
+    init: =>*
+        yield @buildTypeCache()
+        
+        
+
     getCacheItems: =>*
         definitions = {}
         

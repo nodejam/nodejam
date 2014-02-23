@@ -3,11 +3,15 @@ thunkify = require 'thunkify'
 
 class Database
 
-    constructor: (@conf) ->
+    constructor: (@conf, @typeDefinitions) ->
+        if not @typeDefinitions
+            throw new Error "Pass typeDefinitions to the database backend"
+            
         switch @conf.type
             when 'mongodb'
                 Mongo = require('./backends/mongodb')                
-                @db = new Mongo @conf
+                @db = new Mongo @conf, @typeDefinitions
+
 
 
     getDb: =>*
@@ -50,8 +54,12 @@ class Database
 
 
 
-    setupIndexes: (indexes) =>*
-        yield @db.setupIndexes(indexes)
+    deleteDatabase: =>*
+        yield @db.deleteDatabase()    
+
+
+    setupIndexes: =>*
+        yield @db.setupIndexes()
         
         
                     

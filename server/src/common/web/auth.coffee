@@ -1,7 +1,8 @@
 path = require 'path'
 co = require 'co'
 conf = require '../../conf'
-db = new (require '../../lib/data/database').Database(conf.db)
+typeUtils = require('../../models/foratypeutils').typeUtils
+db = new (require '../../lib/data/database').Database(conf.db, typeUtils.getTypeDefinitions())
 utils = require '../../lib/utils'
 models = require '../../models'
 

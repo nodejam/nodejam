@@ -1,9 +1,10 @@
 conf = require '../../conf'
-db = new (require '../../lib/data/database').Database(conf.db)
+db = require('../app').db
 models = require '../../models'
 utils = require('../../lib/utils')
 auth = require '../../common/web/auth'
 widgets = require '../../common/widgets'
+
 
 exports.index = auth.handler ->*
     editorsPicks = yield models.Post.find { meta: 'pick', 'forum.network': @network.stub }, ((cursor) -> cursor.sort({ _id: -1 }).limit 1), {}, db

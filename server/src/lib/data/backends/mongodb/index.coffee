@@ -3,7 +3,8 @@ thunkify = require 'thunkify'
 utils = require '../../../utils'
 
 class Database
-    constructor: (@conf) ->
+    constructor: (@conf, @typeDefinitions) ->
+
 
 
     getDb: =>*
@@ -63,15 +64,23 @@ class Database
 
 
 
-    setupIndexes: (indexes) =>*        
+    deleteDatabase: =>*
+        db = yield @getDb()
+        yield (thunkify db.dropDatabase).call(db)
+
+
+
+    setupIndexes: =>*        
         db = yield @getDb()
         utils.log "Setting up indexes for mongodb"
-        for typeDefinition, list of indexes
-            collection = yield thunkify(db.collection).call db, typeDefinition.collection
-            for index in list
-                yield thunkify(collection.ensureIndex).call collection, index
 
-            utils.log typeDefinition + ": " + JSON.stringify yield thunkify(collection.indexInformation).call collection         
+        for name, typeDefinition of @typeDefinitions
+            if typeDefinition.indexes
+                collection = yield thunkify(db.collection).call db, typeDefinition.collection
+                for index in typeDefinition.indexes
+                    yield thunkify(collection.ensureIndex).call collection, index
+
+                utils.log typeDefinition.collection + ": " + JSON.stringify yield thunkify(collection.indexInformation).call collection         
         return
         
     
