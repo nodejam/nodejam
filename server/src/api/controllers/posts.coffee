@@ -37,9 +37,9 @@ exports.edit = auth.handler { session: true }, (forum, post) ->*
             post = yield post.save()
             this.body = post
         else
-            this.body = 'ACCESS_DENIED'
+            this.body = 'Access denied'
     else
-        this.body = 'ACCESS_DENIED'
+        this.body = 'Access denied'
 
 
 
@@ -70,9 +70,9 @@ exports.remove = auth.handler { session: true }, (post) ->*
             post = yield post.destroy()
             this.body = post
         else
-            this.body = 'ACCESS_DENIED'
+            this.body = 'Access denied'
     else
-        this.body = 'INVALID_POST'
+        this.body = 'Invalid Post'
                  
 
         
@@ -99,5 +99,5 @@ exports.admin_update = auth.handler { admin: true }, (id) ->*
             post = yield post.addMetaList meta.split(',')
         this.body = post
     else
-        this.body = 'INVALID_POST'
+        this.body = 'Invalid Post'
 

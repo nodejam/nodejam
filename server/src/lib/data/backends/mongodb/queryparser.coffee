@@ -3,7 +3,7 @@
     1. Make sure queries use only supported operators
     2. We do not support comparing fields with complex type. eg (of invalid): { company: { name: 'fora', location: 'india' } }
     
-    TODO: Warn when queries are not operating on indexes, but checking typeDefinitions
+    TODO: Warn when queries are not operating on indexes by checking typeDefinitions
 ###
 
 class MongoDbQueryParser

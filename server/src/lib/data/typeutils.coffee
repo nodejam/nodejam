@@ -89,12 +89,12 @@ class TypeUtils
     
 
     init: (name) =>*
-        throw new Error "MUST_OVERRIDE"
+        throw new Error "This method must be overridden in derived class"
 
 
 
     resolveDynamicTypeDefinition: (name) =>*
-        throw new Error "MUST_OVERRIDE"
+        throw new Error "This method must be overridden in derived class"
 
 
 

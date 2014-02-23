@@ -46,7 +46,7 @@ class Validator
             else
                 typeCheck = (fn) ->
                     if not fn()
-                        errors.push "#{fieldName}: expected #{fieldDef.type} but is #{JSON.stringify value}"
+                        errors.push "#{fieldName}: expected #{fieldDef.type} but got #{JSON.stringify value}"
                     
                 switch fieldDef.type
                     when 'integer'

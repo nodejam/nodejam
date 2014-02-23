@@ -10,7 +10,7 @@ exports.create = auth.handler { session: true }, ->*
     stub = (yield @parser.body 'name').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
     forum = yield models.Forum.get({ network: @network.stub, $or: [{ stub }, { name: yield @parser.body('name') }] }, creds, db)
     if forum
-        throw new Error "FORUM_EXISTS"
+        throw new Error "Forum exists"
     else
         forum = new models.Forum
         forum.network = @network.stub
@@ -42,7 +42,7 @@ exports.edit = auth.handler { session: true }, (stub) ->*
         forum = yield forum.save()
         this.body = forum
     else
-        throw new Error "ACCESS_DENIED"
+        throw new Error "Access denied"
                     
           
                     
@@ -52,7 +52,7 @@ exports.remove = auth.handler { session: true }, (stub) ->*
         yield forum.destroy()
         this.body = { success: true }
     else
-        throw new Error "ACCESS_DENIED"
+        throw new Error "Access denied"
 
 
 
