@@ -39,8 +39,8 @@ handler = ->
 
 getUserWithToken = (token) ->*
     if token
-        user = yield models.User.get({ token }, {}, db)
-        user?.summarize()
+        session = yield models.Session.get({ token }, {}, db)
+        session?.user
     
 
 exports.handler = handler

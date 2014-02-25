@@ -23,11 +23,12 @@ class RequestParser
     
     
     
-    body: (name, def) =>*
-        def ?= { type: 'string' }
+    body: (name, def = { type: 'string' }) =>*
         if typeof def is 'string'
             def = { type: def }
-        @parseSimpleType @rawBody[name], name, def
+        value = @rawBody[name]
+        if value
+            @parseSimpleType value, name, def
 
     
     

@@ -43,10 +43,39 @@ init = ->*
 
             _doHttpRequest = thunkify(doHttpRequest)
             for user in data.users
-                utils.log "Creating #{user.username}..." 
-                user.secret = conf.auth.adminkeys.default
+                utils.log "Creating a credential for #{user.username}..."
+                    
+                cred = {
+                    secret: conf.auth.adminkeys.default,
+                    type: user.credential_type
+                }
+                
+                switch cred.type
+                    when 'builtin'
+                        cred.username = user.credential_username
+                        cred.password = user.credential_password
+                    when 'twitter'
+                        cred.username = user.credential_username
+                        cred.id = user.credential_id
+                        cred.accessToken = user.credential_accessToken
+                        cred.accessTokenSecret = user.credential_accessTokenSecret
+
+                resp = yield _doHttpRequest '/api/credentials', querystring.stringify(cred), 'post'            
+                credentialId = JSON.parse(resp).id
+                
+                user = {
+                    username: user.username,
+                    credentialId,
+                    name: user.name,
+                    email: user.email,
+                    location: user.location,
+                    picture: user.picture,
+                    thumbnail: user.thumbnail,
+                    about: user.about
+                }
+                
                 resp = yield _doHttpRequest '/api/users', querystring.stringify(user), 'post'            
-                resp = JSON.parse resp             
+                resp = JSON.parse resp       
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
 

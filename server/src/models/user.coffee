@@ -1,8 +1,6 @@
-thunkify = require 'thunkify'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 utils = require '../lib/utils'
-hasher = require('../lib/hasher')
 models = require './'
 conf = require '../conf'
 
@@ -35,7 +33,6 @@ class User extends ForaDbModel
             type: 'object',      
             properties: {
                 credentialId: { type: 'string' },
-                token: { type: 'string' },
                 username: { type: 'string' },
                 name: { type: 'string' },
                 assets: { type: 'string' },
@@ -45,7 +42,7 @@ class User extends ForaDbModel
                 lastLogin: { type: 'number' },
                 about: { type: 'string' }
             },
-            required: ['credentialId', 'token', 'username', 'name', 'assets', 'followingCount', 'followerCount', 'lastLogin']
+            required: ['credentialId', 'username', 'name', 'assets', 'followingCount', 'followerCount', 'lastLogin']
         },
         indexes: [
             { 'credentialId': 1 },
@@ -61,21 +58,30 @@ class User extends ForaDbModel
 
    
     save: (context, db) =>*
+        { context, db } = @getContext context, db
+        
         if not @_id
             existing = yield User.get { @username }, context, db
             if not existing
-                @token = utils.uniqueId(24)
+                @assets = "#{utils.getHashCode(@username) % conf.userDirCount}"
                 @lastLogin = 0
                 @followingCount = 0
                 @followerCount = 0
+                yield super 
             else
                 throw new Error "User(#{@username}) already exists"
         else
-            super
+            yield super 
     
-        required: ['credentialId', 'token', 'username', 'name', 'assets', 'followingCount', 'followerCount', 'lastLogin']
 
+    
+    updateSession: (context, db) =>*
+        session = yield models.Session.get { userId: @_id.toString() }, context, db
+        session ?= new models.Session { userId: @_id.toString(), token: utils.uniqueId(24) }
+        session.user = @summarize()
+        yield session.save context, db
 
+                  
                                                             
     getPosts:(limit, sort, context, db) =>*
         { context, db } = @getContext context, db
