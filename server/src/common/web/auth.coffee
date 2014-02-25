@@ -39,10 +39,8 @@ handler = ->
 
 getUserWithToken = (token) ->*
     if token
-        credentials = yield models.Credentials.get({ token }, {}, db)
-        if credentials
-            user = yield credentials.link('user', {}, db)
-            user?.summarize()
+        user = yield models.User.get({ token }, {}, db)
+        user?.summarize()
     
 
 exports.handler = handler

@@ -1,6 +1,6 @@
 modules = {
     user: 'User',
-    credentials: 'Credentials',
+    credential: 'Credential',
     forum: 'Forum',
     foruminfo: 'ForumInfo',
     post: 'Post',

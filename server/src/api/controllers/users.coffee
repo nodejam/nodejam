@@ -7,7 +7,12 @@ utils = require '../../lib/utils'
 auth = require '../../common/web/auth'
     
 exports.create = auth.handler ->*
-    cred_type = yield @parser.body('credentials_type')
+    user = new models.User {
+        username: yield @parser.body 'username'            
+        assets: {}
+    }
+
+    cred_type = yield @parser.body('credential_type')
     switch cred_type
         when 'builtin'
             if (yield @parser.body 'secret') is conf.auth.adminkeys.default
@@ -18,7 +23,7 @@ exports.create = auth.handler ->*
                 }                
                 yield updateUser user, @parser
                 
-                authInfo = { type: 'builtin', value: { password: yield @parser.body('credentials_password') } }
+                authInfo = { type: 'builtin', value: { password: yield @parser.body('credential_password') } }
                 result = yield user.create authInfo, { user: @session?.user }, db    
                 @body = { userId: result.user._id, username: result.user.username, name: result.user.name, token: result.token }
 
@@ -31,10 +36,10 @@ exports.create = auth.handler ->*
             authInfo = { 
                 type: 'twitter', 
                 value: { 
-                    id: yield @parser.body('credentials_id'), 
-                    username: yield @parser.body('credentials_username'),    
-                    accessToken: yield @parser.body('credentials_accessToken'), 
-                    accessTokenSecret: yield @parser.body('credentials_accessTokenSecret')
+                    id: yield @parser.body('credential_id'), 
+                    username: yield @parser.body('credential_username'),    
+                    accessToken: yield @parser.body('credential_accessToken'), 
+                    accessTokenSecret: yield @parser.body('credential_accessTokenSecret')
                 } 
             }
             result = yield user.create authInfo, { user: @parser.user }, db

@@ -25,12 +25,15 @@ typeUtils = require('../models/foratypeutils').typeUtils
     init app
 
     #Routes
+    m_credentials = require './controllers/credentials'
     m_users = require './controllers/users'
     m_forums = require './controllers/forums'
     m_posts = require './controllers/posts'
     m_images = require './controllers/images'
 
     app.use route.get '/api/healthcheck', -> this.body { jacksparrow: "alive" }
+
+    app.use route.post '/api/credentials', m_credentials.create
 
     app.use route.post '/api/users', m_users.create
     app.use route.get '/api/users/:username', m_users.item

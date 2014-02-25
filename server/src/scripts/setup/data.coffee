@@ -3,9 +3,9 @@ tributeToAaron = {
     username: 'aaronsw', 
     name: 'Aaron Swartz Tribute', 
     location: 'Brooklyn, NYC',
-    credentials_type: 'builtin',
-    credentials_username: 'aaronsw',
-    credentials_password: 'liks345F',
+    credential_type: 'builtin',
+    credential_username: 'aaronsw',
+    credential_password: 'liks345F',
     email: 'me@aaronsw.com',
     picture: '/images/site/user.jpg',
     thumbnail: '/images/site/user.jpg',
@@ -16,11 +16,11 @@ jeswin = {
     username: 'jeswin', 
     name: 'Jeswin', 
     location: 'Bangalore, India',
-    credentials_type: 'twitter',
-    credentials_id: '15833712',
-    credentials_username: 'jeswin',
-    credentials_accessToken: 'invalid_token',
-    credentials_accessTokenSecret: 'invalid_token_secret',
+    credential_type: 'twitter',
+    credential_id: '15833712',
+    credential_username: 'jeswin',
+    credential_accessToken: 'invalid_token',
+    credential_accessTokenSecret: 'invalid_token_secret',
     email: 'jeswinpk@agilehead.com',
     picture: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.96.gif?r=3',
     thumbnail: 'https://dge9rmgqjs8m1.cloudfront.net/global/6de4c55ef2bc00dfc5c521507ef2a42e6510b7a50114395442e00553d379b851cff71cf95e2bf3cb6a3b3bc3fbdb504c12c4d71779b248f5409e350ddf47eb54f9f7f8d7d4b1eafe8a95cd7825b9c9da/avatar.40.gif?r=3',
@@ -31,9 +31,9 @@ ebin = {
     username: 'ebin', 
     name: 'Ebin John', 
     location: 'Bangalore, India',
-    credentials_type: 'builtin',
-    credentials_username: 'ebin'
-    credentials_password: 'liks345F'
+    credential_type: 'builtin',
+    credential_username: 'ebin'
+    credential_password: 'liks345F'
     email: 'ebin.john@outlook.com',
     picture: 'https://lh4.googleusercontent.com/-SyoIfkRItqE/AAAAAAAAAAI/AAAAAAAAAw0/nxHk4Nqrpm8/s120-c/photo.jpg',
     thumbnail: 'https://lh4.googleusercontent.com/-SyoIfkRItqE/AAAAAAAAAAI/AAAAAAAAAw0/nxHk4Nqrpm8/s120-c/photo.jpg'
@@ -43,9 +43,9 @@ anupk7 = {
     username: 'anupk7', 
     name: 'Anup Kesavan', 
     location: 'Bangalore, India',
-    credentials_type: 'builtin',
-    credentials_username: 'anupk7'
-    credentials_password: 'liks345F'
+    credential_type: 'builtin',
+    credential_username: 'anupk7'
+    credential_password: 'liks345F'
     email: 'anupk7@gmail.com',
     picture: 'http://m.c.lnkd.licdn.com/mpr/pub/image-JLwJ9fTJBTv3Ur9xL18X4Ph00ExD3ZziHjwE4tuK0R2-tCRVJLwEuu6J0rLm3Zhhd9sr/anup-kesavan-ponnarassery.jpg',
     thumbnail: 'http://m.c.lnkd.licdn.com/mpr/pub/image-JLwJ9fTJBTv3Ur9xL18X4Ph00ExD3ZziHjwE4tuK0R2-tCRVJLwEuu6J0rLm3Zhhd9sr/anup-kesavan-ponnarassery.jpg',

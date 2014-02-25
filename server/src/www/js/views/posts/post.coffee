@@ -6,8 +6,7 @@ class Post
             if @editable
                 $('.main-pane').prepend '                
                     <p class="button-bar">
-                        <button><i class="settings icon-cog"></i>Settings</button>
-                        <button class="edit">Edit Post</button>
+                        <button class="edit">Edit</button>
                     </p>'
             
             @attachEvents()

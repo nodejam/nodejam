@@ -5,7 +5,7 @@ utils = require '../lib/utils'
 hasher = require('../lib/hasher')
 models = require './'
 conf = require '../conf'
-emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
 
 class User extends ForaDbModel
 
@@ -34,75 +34,49 @@ class User extends ForaDbModel
         schema: {
             type: 'object',      
             properties: {
+                credentialId: { type: 'string' },
+                token: { type: 'string' },
                 username: { type: 'string' },
                 name: { type: 'string' },
                 assets: { type: 'string' },
                 location: { type: 'string' },
+                followingCount: { type: 'integer' }, 
                 followerCount: { type: 'integer' },
-                email: { type: 'string' },
-                lastLogin: { type: 'number' }
-                about: { type: 'string' },
+                lastLogin: { type: 'number' },
+                about: { type: 'string' }
             },
-            required: ['username', 'name', 'assets', 'followerCount', 'email', 'lastLogin']
+            required: ['credentialId', 'token', 'username', 'name', 'assets', 'followingCount', 'followerCount', 'lastLogin']
         },
-        indexes: [{ 'username': 1 }],
+        indexes: [
+            { 'credentialId': 1 },
+            { 'token': 1 },
+            { 'userId': 1 },
+            { 'username': 1 }
+        ],
         links: {
-            credentials: { type: 'credentials', field: 'userId', multiplicity: 'one' }
             info: { type: 'user-info', field: 'userId', multiplicity: 'one' }
-        },
-        validate: ->*
-            if not emailRegex.test(@email)
-                ['Invalid email']            
-        logging: {
-            onInsert: 'NEW_USER'
         }
     }
        
 
    
-    create: (authInfo, context, db) =>*
-        #We can't create a new user with an existing username.
-        if not @_id and not (yield User.get { @username }, context, db)
-            @preferences = { canEmail: true }
-
-            @assets = "#{utils.getHashCode(@username) % conf.userDirCount}"
-            user = yield @save context, db
-            
-            #Also create a userinfo
-            userinfo = new (models.UserInfo) {
-                userId: @_id.toString(),
-            }
-            userinfo = yield userinfo.save context, db
-
-            credentials = new (models.Credentials) {
-                userId: user._id.toString(),
-                @username,
-                token: utils.uniqueId(24)                    
-            }
-
-            switch authInfo.type
-                when 'builtin'
-                    result = yield thunkify(hasher) { plaintext: authInfo.value.password }
-                    salt = result.salt.toString 'hex'
-                    hash = result.key.toString 'hex'
-                    credentials.builtin = { method: 'PBKDF2', @username, hash, salt }
-                when 'twitter'
-                    credentials.twitter = authInfo.value
-            
-            credentials = yield credentials.save context, db
-                    
-            { user, token: credentials.token }
+    save: (context, db) =>*
+        if not @_id
+            existing = yield User.get { @username }, context, db
+            if not existing
+                @token = utils.uniqueId(24)
+                @lastLogin = 0
+                @followingCount = 0
+                @followerCount = 0
+            else
+                throw new Error "User(#{@username}) already exists"
         else
-            { success: false, error: "User aready exists" }
-            
+            super
+    
+        required: ['credentialId', 'token', 'username', 'name', 'assets', 'followingCount', 'followerCount', 'lastLogin']
+
 
                                                             
-    constructor: (params) ->
-        @followerCount ?= 0
-        super
-
-
-
     getPosts:(limit, sort, context, db) =>*
         { context, db } = @getContext context, db
         yield models.Post.find({ 'createdById': @_id.toString(), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)

@@ -248,7 +248,6 @@ class DatabaseModel extends BaseModel
         
         if link.key
             #This is the child record
-            #make sure there is a link back
             switch typeDef.schema.properties[link.key].type
                 when 'string'
                     if @[link.key]
