@@ -76,7 +76,7 @@
     }
 
     .top-cover { 
-        height: 500px; position: relative;
+        position: relative;
 
         .content-wrap {
             position: absolute; bottom: 0px; padding:0 0 32px 32px; max-width: 600px;                
@@ -111,7 +111,11 @@
         .inline-cover {
             width: @contentAreaWidth + 0px; margin: 64px auto 12px auto;
         }
-                
+        
+        .top-cover { 
+            height: @topCoverHeight + 0px;
+        }
+        
         .full-cover.fixed, .inline-cover {
             + .main-pane {
                 .content-area {
