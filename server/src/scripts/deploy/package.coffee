@@ -98,7 +98,7 @@ if opt isnt '--debug'
             'app/www/js/main.js',
             'app/www/js/views/validator.js',
             'app/www/js/views/baseview.js',
-            'app/www/js/views/users/selectusername.js',
+            'app/www/js/views/users/login.js',
             'app/www/js/views/forums/item.js'
             'app/www/js/views/posts/post.js'
         ],

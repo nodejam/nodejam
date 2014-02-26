@@ -54,8 +54,8 @@ typeUtils = require('../models/foratypeutils').typeUtils
     app.use route.get '/forums', m_forums.index
     app.use route.get '/forums/new', m_forums.create
 
-    app.use route.get '/users/selectusername', m_users.selectUsernameForm
-    app.use route.post '/users/selectusername', m_users.selectUsername
+    app.use route.get '/users/login', m_users.loginForm
+    app.use route.post '/users/login', m_users.login
     app.use route.get '/~:username', m_users.item
 
     app.use route.get '/:forum', m_forums.item

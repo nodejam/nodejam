@@ -72,13 +72,14 @@ class User extends ForaDbModel
                 throw new Error "User(#{@username}) already exists"
         else
             yield super 
-    
 
-    
-    updateSession: (context, db) =>*
-        session = yield models.Session.get { userId: @_id.toString() }, context, db
-        session ?= new models.Session { userId: @_id.toString(), token: utils.uniqueId(24) }
+
+
+    #Upgrade a credential token to a user-session token
+    upgradeSession: (session, context, db) =>*
+        session.userId = @_id.toString()        
         session.user = @summarize()
+        session.token = utils.uniqueId(24)
         yield session.save context, db
 
                   

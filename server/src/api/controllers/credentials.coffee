@@ -12,11 +12,11 @@ exports.create = auth.handler ->*
         type = yield @parser.body('type')
 
         credential = new models.Credential {                    
-            email: 'unknown@4ah.org',                    
+            email: yield @parser.body('email'),
             preferences: { canEmail: true }
-        }    
+        }
         
-        switch type
+        switch type        
             when 'builtin'
                 username = yield @parser.body 'username'
                 password = yield @parser.body 'password'                
@@ -28,6 +28,7 @@ exports.create = auth.handler ->*
                 accessToken = yield @parser.body 'accessToken'
                 accessTokenSecret = yield @parser.body 'accessTokenSecret'
                 credential = yield credential.addTwitter id, username, accessToken, accessTokenSecret, {}, db
-
-        @body = { id: credential._id, token: credential.token }
+                
+        session = yield credential.createSession {}, db
+        @body = { token: session.token }
 

@@ -50,7 +50,7 @@
     }
     
     input, select, textarea {
-        .control (@colorBright, @colorDark, @colorDarker)
+        .control (@colorDarker, @colorBrightest, @colorBright)
     }
     
     button {
@@ -66,9 +66,10 @@
         }    
     }
     
+
     /* PAGES.LESS */
     .single-section-page {
-        .inline-cover+.main-pane {
+        .inline-cover+.main-pane, .full-cover.fixed+.main-pane {
             .content-area {
                 &.item {
                     background: @colorMaxBright;
@@ -76,6 +77,7 @@
             }
         }
     }
+    
 
     /* CARDS.LESS */    
     ul.cards {

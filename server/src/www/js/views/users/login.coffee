@@ -1,4 +1,4 @@
-class SelectUsername extends window.Fora.Views.BaseView
+class Login extends window.Fora.Views.BaseView
 
     constructor: ->
         $(document).ready @attachEvents
@@ -34,4 +34,4 @@ class SelectUsername extends window.Fora.Views.BaseView
             cb if data then "Not available" else true
         
             
-window.Fora.Views.Users.SelectUsername = SelectUsername
+window.Fora.Views.Users.Login = Login

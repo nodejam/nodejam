@@ -54,24 +54,26 @@ init = ->*
                     when 'builtin'
                         cred.username = user.credential_username
                         cred.password = user.credential_password
+                        cred.email = user.email
                     when 'twitter'
                         cred.username = user.credential_username
                         cred.id = user.credential_id
                         cred.accessToken = user.credential_accessToken
                         cred.accessTokenSecret = user.credential_accessTokenSecret
+                        cred.email = user.email
 
                 resp = yield _doHttpRequest '/api/credentials', querystring.stringify(cred), 'post'            
-                credentialId = JSON.parse(resp).id
+                token = JSON.parse(resp).token
                 
                 user = {
                     username: user.username,
-                    credentialId,
                     name: user.name,
                     email: user.email,
                     location: user.location,
                     picture: user.picture,
                     thumbnail: user.thumbnail,
-                    about: user.about
+                    about: user.about,
+                    token
                 }
                 
                 resp = yield _doHttpRequest '/api/users', querystring.stringify(user), 'post'            

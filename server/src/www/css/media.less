@@ -1,15 +1,7 @@
 /* 
     We have the following width classes:
-        (Tiny)
-        tiny: < 720px
-
-        (Standard)
-        small: 720px - 1023px
-        standard: 1024 - 1279px
-
-        (Large)
-        large: 1280 - 1719px
-        xlarge: > 1720px
+        small: < 940px
+        large: >= 940px 
 */
 
 @media (min-width: 3200px) { 
@@ -36,100 +28,24 @@
     .large-pages(1200);    
 }
 
-@media (min-width: 1200px) { 
+@media (min-width: 940px) and (max-width: 1199px) { 
+    .large-pages(940);    
+}
+
+@media (min-width: 940px) { 
     .large-pages-common();
 }
 
-@media (min-width: 720px) and (max-width: 1199px) { 
+@media (min-width: 720px) and (max-width: 939px) { 
     .small-pages(720);    
-    .small-pages-common();
-}
-
-
-@media (min-width: 720px) { 
-    .login-box-mixin(400px, 16px, 24px)
-}
-
-
-        
-/*
-.*-cover-page-mixin (@minWidth, @colCount, @colWidth, @colSpacing) 
-@media (min-width: 1760px) { 
-    .large-cover-page-mixin(1760; 3; 360; 40);    
-    .cards-mixin(360; 40; 22; 16; 220; 500);
-}
-
-@media (min-width: 1600px) and (max-width: 1759px) { 
-    .large-cover-page-mixin(1600; 3; 300; 40);
-    .cards-mixin(300; 40; 22; 14; 220; 500);
-}
-
-@media (min-width: 1380px) and (max-width: 1599px) { 
-    .large-cover-page-mixin(1380; 3; 280; 32);
-    .cards-mixin(280; 32; 22; 14; 220; 500);
-}
-
-@media (min-width: 1200px) and (max-width: 1379px) { 
-    .small-cover-page-mixin(1200; 3; 300; 40);
-    .cards-mixin(300; 40; 22; 14; 220; 500);
-}
-
-@media (min-width: 1200px) { 
-    .large-std-page-mixin();
-    .page-sections-base-mixin(18);
-}
-
-@media (min-width: 1024px) and (max-width: 1199px) { 
-    .small-cover-page-mixin(1024; 3; 292; 32);
-    .cards-mixin(292; 32; 22; 16; 220; 500);
-}
-
-@media (min-width: 960px) and (max-width: 1023px) { 
-    .small-cover-page-mixin(960; 3; 280; 32);
-    .cards-mixin(280; 32; 22; 16; 220; 500);
-}
-
-@media (min-width: 960px) and (max-width: 1199px) { 
-    .small-std-page-mixin(640, 640);
-}
-
-@media (min-width: 720px) and (max-width: 959px) { 
-    .small-cover-page-mixin(720; 2; 300; 32);
-    .cards-mixin(300; 32; 22; 16; 220; 380);
-}
-
-@media (min-width: 720px) and (max-width: 959px) { 
-    .small-std-page-mixin(600, 600);
-}
-
-@media (min-width: 720px) and (max-width: 1199px) { 
-    .page-sections-base-mixin(18);
-}
-
-@media (min-width: 720px) { 
-    .login-box-mixin(400px, 16px, 24px)
 }
 
 @media (max-width: 719px) { 
-    .page-sections-base-mixin(16);
-    .login-box-mixin(280px, 8px, 16px)
+    .small-pages(0);
 }
 
-@media (min-width: 580px) and (max-width: 719px) { 
-    .tiny-cover-page-mixin(540);
-    .tiny-std-page-mixin();    
-    .cards-mixin(100%; 32; 22; 16; 220; 380);
+@media (min-width: 0px) { 
+    .small-pages-common();
 }
 
-@media (min-width: 480px) and (max-width: 579px) { 
-    .tiny-std-page-mixin();    
-    .tiny-cover-page-mixin(440);
-    .cards-mixin(100%; 32; 22; 16; 220; 380);
-}
-
-@media (max-width: 479px) { 
-    .tiny-std-page-mixin();    
-    .tiny-cover-page-mixin(100%);
-    .cards-mixin(100%; 32; 22; 14; 220; 380);
-}
-*/
+.pages-common();

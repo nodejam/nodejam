@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    new Fora.Views.Users.Login();
+</script>
+
+<div class="single-section-page">
+
+    <div class="cover full-cover fixed">
+        <div class="image" style="background-image:url(/images/cover.jpg)">
+            <div class="underlay" style=""></div>
+            <div class="content-wrap">
+                
+                <div class="content" style="">
+                <h1>Editor's Picks</h1> <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-pane">
+        <div class="content-area item">
+            <form class="standard" method="POST" action="/users/login?token={{token}}">
+                <fieldset>
+                    <legend>A few more details...</legend>
+                    <label for="username">Username</label>
+                    <input name="username" id="username" type="text" data-validation="required,userExists()" placeholder="username" value="{{username}}" />
+                    <label for="name">Name</label>
+                    <input name="name" id="name" type="text" data-validation="required" placeholder="{{name}}" value="{{name}}" />
+                    <label for="email">Email</label>
+                    <input name="email" id="email" type="text" data-validation="required,email" placeholder="you@example.com" value="{{email}}" />
+                </fieldset>
+                <button>Create Account</button>
+            </form>    
+        </div>
+    </div>
+    
+</div>
+
+

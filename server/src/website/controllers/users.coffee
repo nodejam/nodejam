@@ -7,11 +7,11 @@ fields = require '../../models/fields'
 widgets = require '../../common/widgets'
 
 
-exports.selectUsernameForm = ->*
-    token = yield models.Token.get({ key: @query('token') }, {}, db)
-    @renderPage 'users/selectusername', { 
-        username: token.value.userDetails.username,
-        name: token.value.userDetails.name,
+exports.loginForm = (token) ->*
+    token = yield models.Token.get { key: @query.token }, {}, db
+    yield @renderPage 'users/login', { 
+        username: token.value.twitterUser.username,
+        name: token.value.twitterUser.name,
         pageName: 'select-username-page', 
         token: token.key
     }
@@ -29,12 +29,14 @@ exports.selectUsername = ->*
         res.cookie "userId", result.user._id.toString()
         res.cookie "username", result.user.username
         res.cookie "fullName", result.user.name
+        res.cookie "assets", result.user.assets
         res.cookie "token", result.token
         res.redirect "/"
     else
         next new Error "Could not save user"
         
     token.destroy {}, db       
+    
     
     
 exports.item = auth.handler (username) ->*

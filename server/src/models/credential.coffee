@@ -1,7 +1,8 @@
 thunkify = require 'thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
-hasher = require('../lib/hasher')
-models = require('./')
+hasher = require '../lib/hasher'
+utils = require '../lib/utils'
+models = require './'
 
 
 class Credential extends ForaDbModel
@@ -73,6 +74,7 @@ class Credential extends ForaDbModel
     
     
     addBuiltin: (username, password, context, db) =>*
+        { context, db } = @getContext context, db
         existing = yield models.Credential.get({ "builtin.username": username }, context, db)
         if not existing
             hashed = yield thunkify(hasher) { plaintext: password }
@@ -89,6 +91,7 @@ class Credential extends ForaDbModel
 
         
     addTwitter: (id, username, accessToken, accessTokenSecret, context, db) =>*
+        { context, db } = @getContext context, db
         existing = yield models.Credential.get({ "twitter.id": id }, context, db)
         if not existing
             @twitter = {
@@ -101,6 +104,13 @@ class Credential extends ForaDbModel
         else
             throw new Error "Twitter credential with the same id already exists"
 
+
+
+    createSession: (context, db) =>*
+        { context, db } = @getContext context, db
+        session = new models.Session { credentialId: @_id.toString(), token: utils.uniqueId(24) }
+        yield session.save context, db
+        
     
     
     @authenticateBuiltin: (username, password, context, db) ->*
