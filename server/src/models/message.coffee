@@ -1,6 +1,6 @@
-moment = require('../lib/moment')
+moment = require '../lib/moment'
 ForaDbModel = require('./foramodel').ForaDbModel
-models = require('./')
+models = require './'
 
 class Message extends ForaDbModel
     

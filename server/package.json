@@ -1,0 +1,21 @@
+{
+  "name": "fora-server",
+  "preferGlobal": true,
+  "version": "0.7.0",
+  "author": "Jeswin Kumar <jeswinpk@agilehead.com>",
+  "description": "The Fora Server",
+  "contributors": [ 
+    {
+      "name": "Jeswin Kumar",
+      "email": "jeswinpk@agilehead.com"
+    } 
+  ],
+  "keywords": [
+    "fora",
+    "server"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.11"
+  }
+}

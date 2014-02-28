@@ -1,4 +1,5 @@
 #!/bin/bash
+
 help() {
 echo "usage: ./compile [options]"
 echo "options: --debug, --es5, --dont-delete"
@@ -71,16 +72,23 @@ compile_to_es5() {
 
 if ! $skip_es5_transform; then
     echo Running regenerator..
-    compile_to_es5 "app/api"
-    compile_to_es5 "app/common"
-    compile_to_es5 "app/conf"
-    compile_to_es5 "app/lib"
-    compile_to_es5 "app/models"
+    compile_to_es5 "app/www/js"
     compile_to_es5 "app/scripts"
-    compile_to_es5 "app/typedefinitions"
-    compile_to_es5 "app/website"
 fi
 
+echo "Running LESS.."
+lessc src/www/css/main.less app/www/css/main.css
+
 if $debug; then
-    cp src/website/views/layouts/default-debug.hbs app/website/views/layouts/default.hbs
+    if ! $skip_es5_transform; then
+        node app/scripts/package.js --debug
+    else
+        node --harmony app/scripts/package.js --debug
+    fi
+else
+    if ! $skip_es5_transform; then
+        node app/scripts/package.js
+    else
+        node --harmony app/scripts/package.js
+    fi
 fi

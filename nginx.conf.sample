@@ -4,23 +4,23 @@ server {
     client_max_body_size 20M;
 
     location /public {
-        alias /path/to/fora/server/public;
+        alias /path/to/fora/www-public;
     }
 
     location /css {
-        alias /path/to/fora/server/app/www/css;
+        alias /path/to/fora/www-client/app/www/css;
     }
 
     location /images {
-        alias /path/to/fora/server/app/www/images;
+        alias /path/to/fora/www-client/app/www/images;
     }
 
     location /js {
-        alias /path/to/fora/server/app/www/js;
+        alias /path/to/fora/www-client/app/www/js;
     }
 
     location /lib {
-        alias /path/to/fora/server/app/www/lib;
+        alias /path/to/fora/www-client/app/www/lib;
     }
 
     location / {

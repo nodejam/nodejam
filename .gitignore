@@ -10,6 +10,7 @@ temp/*
 !temp/placeholder
 
 server/app
+www-client/app
 
 server/src/website/views/_custom/*
 !server/src/website/views/_custom/placeholder
@@ -18,16 +19,16 @@ server/src/conf/*
 !server/src/conf/index.conf
 !server/src/conf/*.sample
 
-server/public/assets/*
-!server/public/assets/placeholder
-server/public/images/*
-!server/public/images/cover.jpg
-!server/public/images/cover-experience.jpg
-!server/public/images/placeholder
-server/public/originalimages/*
-!server/public/originalimages/placeholder
-server/public/temp/*
-!server/public/temp/placeholder
+www-public/assets/*
+!www-public/assets/placeholder
+www-public/images/*
+!www-public/images/cover.jpg
+!www-public/images/cover-experience.jpg
+!www-public/images/placeholder
+www-public/originalimages/*
+!www-public/originalimages/placeholder
+www-public/temp/*
+!www-public/temp/placeholder
 
 Thumbs.db
 

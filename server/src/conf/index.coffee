@@ -14,7 +14,7 @@ for file in files
         else
             networks.push new models.Network(contents)
 
-settings.pubdir ?= path.resolve __dirname, '../../public'
+settings.pubdir ?= path.resolve __dirname, '../../../www-public'
 
 exports.app = settings.app
 exports.db = settings.db

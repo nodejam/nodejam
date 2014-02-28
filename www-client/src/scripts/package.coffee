@@ -1,5 +1,5 @@
-utils = require '../../lib/utils'
-compressor = require('node-minify')
+utils = require '../lib/utils'
+compressor = require 'node-minify'
 
 if process.argv.length > 2
     opt = process.argv[2]

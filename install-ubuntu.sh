@@ -312,9 +312,10 @@ if $nginx_conf ; then
     if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
 	    sudo sh -c "cat nginx.conf.sample | sed -e 's_/path/to/fora_"$PWD"_g' -e 's_fora.host.name_"$hostname"_g' > /etc/nginx/sites-available/fora.conf"
         sudo ln -s /etc/nginx/sites-available/fora.conf /etc/nginx/sites-enabled/fora.conf
+        echo "fora.conf copied to /etc/nginx/sites-available and symlinked in sites-enabled"
         sudo /etc/init.d/nginx restart
     else
-        echo "/etc/nginx/sites-available/fora.conf exists. Will not overwrite, you must delete it manually."
+        echo "fora.conf exists in /etc/nginx/sites-*/. Will not overwrite, you must delete them manually."
     fi
 fi
 
@@ -394,6 +395,10 @@ if $node_modules ; then
     npm install optimist
     npm install multiparty
     cd ..
+    
+    cd www-client
+    npm install node-minify
+    cd ..    
 fi
 
 
