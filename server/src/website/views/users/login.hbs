@@ -19,18 +19,21 @@
     
     <div class="main-pane">
         <div class="content-area item">
-            <form class="standard" method="POST" action="/users/login?token={{token}}">
-                <fieldset>
-                    <legend>A few more details...</legend>
-                    <label for="username">Username</label>
-                    <input name="username" id="username" type="text" data-validation="required,userExists()" placeholder="username" value="{{username}}" />
-                    <label for="name">Name</label>
-                    <input name="name" id="name" type="text" data-validation="required" placeholder="{{name}}" value="{{name}}" />
-                    <label for="email">Email</label>
-                    <input name="email" id="email" type="text" data-validation="required,email" placeholder="you@example.com" value="{{email}}" />
-                </fieldset>
-                <button>Create Account</button>
-            </form>    
+            <h2>Welcome, you are...</h2>
+            <p>
+                Since you are logging in for the first time, create a persona below.
+            </p>
+            <div class="form">
+                <img src="#" style="float: left" />
+                <div>
+                    <p>
+                        Your Name
+                    </p>
+                    <p>
+                        Write something about yourself
+                    </p>
+                </div>                
+            </div>
         </div>
     </div>
     

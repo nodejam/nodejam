@@ -49,26 +49,27 @@ If you aren't running the script, you'll have to do these manually:
 ```
 npm install -g less
 npm install -g regenerator
+npm install -g react-tools
+
 npm install koa
 npm install koa-route
 npm install koa-favicon
-npm install koa-hbs
+npm install koa-hbs    
 npm install co
 npm install co-body
 npm install co-multipart
-npm install thunkify
-npm install mongodb  
-npm install validator  
-npm install sanitizer  
-npm install handlebars  
-npm install hbs  
-npm install fs-extra  
-npm install gm  
-npm install node-minify  
-npm install oauth  
-npm install marked  
-npm install optimist  
-npm install multiparty  
+npm install thunkify    
+npm install mongodb
+npm install validator
+npm install sanitizer
+npm install handlebars
+npm install fs-extra
+npm install gm
+npm install node-minify
+npm install oauth
+npm install marked
+npm install optimist
+npm install multiparty
 ```
 
 Step 2: Configuration

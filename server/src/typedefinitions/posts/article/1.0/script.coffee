@@ -4,6 +4,26 @@ exports.save = ->*
     
 
 exports.getTemplate = (name) ->*
+    ###
+    <Page type="single-section" theme="theme">
+        <Cover field="cover" />
+        <Heading size="1" field="title" />
+        <Author field="author" />
+        <Html field="content" />
+    </Page>
+
+
+    <Card>
+        <CardFace>
+            <Image field="cover.image" />
+        </CardFace>
+        <CardContent>
+            <Heading size="2" field="title" />
+            <Html field="content" />
+        </CardContent>
+    </Card>
+    ###
+
     switch name
     
         when 'item'
