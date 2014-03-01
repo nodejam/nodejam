@@ -49,7 +49,7 @@ else
 fi
 
 temp=`mktemp -d`
-echo "Copying src to app (using tmp dir $temp)"
+echo "Copying src to app.."
 cp -r src/* $temp
 find $temp -name '*.coffee' | xargs rm -rf
 find $temp -name '*.less' | xargs rm -rf
@@ -60,6 +60,9 @@ rm -rf $temp
 # echo Compiling coffee to js
 echo "Compiling CoffeeScript files.."
 coffee -o app/ -c src/
+echo "Compiling JSX files.."
+jsx src/common/widgets app/common/widgets
+jsx src/typedefinitions app/typedefinitions
 
 #Run it through generator.
 #This step is unnecessary if we are using node --harmony

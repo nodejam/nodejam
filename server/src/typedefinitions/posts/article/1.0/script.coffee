@@ -1,7 +1,6 @@
 exports.save = ->*
     @cover?.type ?= 'inline-cover'
     
-    
 
 exports.getTemplate = (name) ->*
     ###
@@ -59,14 +58,4 @@ exports.getTemplate = (name) ->*
             
 
 
-exports.getView = (name) ->*
-    switch name    
-        when "concise"
-            {
-                image: @cover?.image.small,
-                @title,
-                @createdBy,
-                id: @_id.toString(),
-                @stub
-            }
 

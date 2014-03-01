@@ -394,6 +394,7 @@ if $node_modules ; then
     npm install marked
     npm install optimist
     npm install multiparty
+    npm install react
     cd ..
     
     cd www-client

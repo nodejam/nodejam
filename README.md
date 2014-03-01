@@ -51,6 +51,7 @@ npm install -g less
 npm install -g regenerator
 npm install -g react-tools
 
+cd server
 npm install koa
 npm install koa-route
 npm install koa-favicon
@@ -70,6 +71,12 @@ npm install oauth
 npm install marked
 npm install optimist
 npm install multiparty
+npm install react
+cd ..
+
+cd www-client
+npm install node-minify
+cd ..    
 ```
 
 Step 2: Configuration
