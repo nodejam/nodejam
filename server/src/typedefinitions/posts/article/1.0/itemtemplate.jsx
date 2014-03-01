@@ -2,11 +2,11 @@
 var React = require("react");
 
 //fugly code until we get destructuring in ES6
-var _ = require("../../../common/widgets");
+var _ = require("../../../../common/widgets");
 var Page = _.Page, Cover = _.Cover, Heading = _.Heading, Author = _.Author, Html = _.Html;
 
 
-exports.ItemTemplate = React.createClass({
+module.exports = React.createClass({
     render: function() {
         return (
             <Page theme={this.props.theme} cover={this.props.post.cover}>

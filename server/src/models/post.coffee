@@ -1,3 +1,4 @@
+React = require 'react'
 utils = require '../lib/utils'
 models = require './'
 widgets = require '../common/widgets'
@@ -5,6 +6,8 @@ ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
 class Post extends ForaDbModel
+
+    @builtinExtensionCache = {}
     
     @typeDefinition: ->
         {
@@ -106,10 +109,9 @@ class Post extends ForaDbModel
     save: (context, db) =>*
         { context, db } = @getContext context, db
         
-        typeDef = yield @getTypeDefinition()
-        extension = @getExtension typeDef
-        yield extension.save.call @
-        
+        extensions = yield Post.getExtensions yield @getTypeDefinition()
+        yield extensions.model.save.call @
+
         #If the stub has changed, we need to check if it's unique
         @stub ?= utils.uniqueId(16)
 
@@ -120,30 +122,36 @@ class Post extends ForaDbModel
             yield forum.refreshCache()
         
         result
-        
-        
-        
-    getTemplate: (name) =>*
-        typeDef = yield @getTypeDefinition()
-        extension = @getExtension typeDef
-        yield extension.getTemplate.call @, name
-        
+
 
 
     getView: (name) =>*
-        typeDef = yield @getTypeDefinition()
-        extension = @getExtension typeDef
-        yield extension.getView.call @, name
+        extensions = yield Post.getExtensions yield @getTypeDefinition()
+        yield extensions.model.view.call @, name
                 
 
 
-    getExtension: (typeDef) =>
+    @render: (template, post, forum, author) =>*
+        extensions = yield Post.getExtensions yield post.getTypeDefinition()
+        component = extensions.templates[template]
+        React.renderComponentToString component({post, forum, author})
+    
+
+        
+    @getExtensions: (typeDef) =>*
         switch typeDef.extensionType 
             when 'builtin'
-                [name, version] = typeDef.name.split '/'
-                require "../typedefinitions/posts/#{name}/#{version}/script"
+                if not @builtinExtensionCache[typeDef.name]
+                    @builtinExtensionCache[typeDef.name] = {
+                        model: require("../typedefinitions/posts/#{typeDef.name}/model"),
+                        templates: {
+                            card: require("../typedefinitions/posts/#{typeDef.name}/cardtemplate"),
+                            item: require("../typedefinitions/posts/#{typeDef.name}/itemtemplate")
+                        }
+                    }
+                @builtinExtensionCache[typeDef.name]
             else
                 throw new Error "Unsupported extension type"
-        
+
     
 exports.Post = Post

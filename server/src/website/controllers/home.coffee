@@ -3,7 +3,6 @@ db = require('../app').db
 models = require '../../models'
 utils = require('../../lib/utils')
 auth = require '../../common/web/auth'
-widgets = require '../../common/widgets'
 
 
 exports.index = auth.handler ->*
@@ -12,11 +11,7 @@ exports.index = auth.handler ->*
     featured = (f for f in featured when (x._id for x in editorsPicks).indexOf(f._id) is -1)
 
     for post in editorsPicks.concat(featured)
-        template = widgets.parse yield post.getTemplate 'card'
-        post.html = template.render {
-            post,
-            forum: post.forum,
-        }
+        post.html = yield models.Post.render 'card', post, post.forum, post.createdBy
         
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
