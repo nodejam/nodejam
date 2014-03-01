@@ -3,19 +3,20 @@ var React = require("react");
 
 exports.Cover = React.createClass({
     render: function() {
-        if (this.props.cover) {
-
-            classString = ['cover', this.props.cover.type].join(' ');
-            imageStyle = { "background-image": "url(" + this.props.cover.image.src + ")" };
+        cover = this.props.cover;
+        
+        if (cover) {
+            classString = ['cover', cover.type].join(' ');
+            imageStyle = { "background-image": "url(" + cover.image.src + ")" };
             underlayStyle = {
-                background: this.props.cover.bgColor, 
-                opacity: this.props.cover.opacity, 
-                color: this.props.cover.foreColor
+                background: cover.bgColor, 
+                opacity: cover.opacity, 
+                color: cover.foreColor
             };
             
-            if (this.props.cover.type !== "inline") {
+            if (cover.type !== "inline-cover") {
                 return (
-                    <div className={classString} data-field-type="cover" data-field-name={this.props.field} data-cover-format={this.props.cover.type} data-small-image={this.cover.image.small}>
+                    <div className={classString} data-field-type="cover" data-field-name={this.props.field} data-cover-format={cover.type} data-small-image={cover.image.small}>
                         <div className="image" style={imageStyle}>
                             <div className="underlay" style={underlayStyle}></div>
                             <div className="content-wrap">
@@ -33,13 +34,14 @@ exports.Cover = React.createClass({
             }
             else {
                 return (
-                    <div className={classString} data-field-type="cover" data-field-name={this.props.field} data-cover-format={this.props.cover.type} data-small-image={this.cover.image.small}>
-                        <img src={this.props.cover.image.src} />
+                    <div className={classString} data-field-type="cover" data-field-name={this.props.field} data-cover-format={cover.type} data-small-image={cover.image.small}>
+                        <img src={cover.image.src} />
                     </div>
                 );
             }      
         }
         else {
+            console.log("No cover");
             return (<div></div>);
         }
     }

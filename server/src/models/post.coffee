@@ -131,10 +131,10 @@ class Post extends ForaDbModel
                 
 
 
-    @render: (template, post, forum, author) =>*
+    @render: (template, { post, forum, author, layout }) =>*        
         extensions = yield Post.getExtensions yield post.getTypeDefinition()
         component = extensions.templates[template]
-        React.renderComponentToString component({post, forum, author})
+        React.renderComponentToString component({post, forum, author, layout})
     
 
         

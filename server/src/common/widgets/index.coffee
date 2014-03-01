@@ -1,6 +1,6 @@
 modules = {
-    page: 'page',
-    cover: 'cover',
+    page: 'Page',
+    cover: 'Cover',
     heading: 'Heading',
     html: 'Html',
     author: 'Author',

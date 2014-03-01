@@ -7,7 +7,7 @@ exports.Author = React.createClass({
         
         switch(this.props.type) {
             case "full":
-                img = assets + "/" + this.props.author.username + ".jpg";
+                img = assets + "/" + this.props.author.username + "_t.jpg";
                 return (
                     <div className="header stamp-block">
                         <img src={img} alt={this.props.author.name} />
@@ -16,14 +16,24 @@ exports.Author = React.createClass({
                         <p><span className="light-text">Yesterday in <a href={this.props.forum.stub}>{this.props.forum.name}</a></span></p>     
                     </div>        
                 );
-            default:
+            case "text":
                 return (
                     <div className="content">            
                         <p className="sub-text">
                             <a href={"/~" + this.props.author.username}>{this.props.author.name}</a>
                             <span> in </span><a href={this.props.forum.stub}>{this.props.forum.name}</a><br />
-                            <i className="fa fa-comment"></i> 93 comments
                         </p>
+                    </div>
+                );
+            default:
+                img = assets + "/" + this.props.author.username + "_t.jpg";
+                return (
+                    <div className="icon-block">
+                        <img src={img} alt={this.props.author.name} />
+                        <div className="text">
+                            <h4><a href={"/~" + this.props.author.username}>{this.props.author.name}</a></h4>
+                            <span className="sub-text"> in <a href={this.props.forum.stub}>{this.props.forum.name}</a></span>
+                        </div>
                     </div>
                 );
         }                

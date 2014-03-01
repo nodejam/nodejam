@@ -1,12 +1,15 @@
 /** @jsx React.DOM */
 var React = require("react");
 
+//fugly code until we get destructuring in ES6
+Cover = require('./cover').Cover;
+
 exports.Page = React.createClass({
     render: function() {
-
-        if(this.props.post.cover) {
-            cover = <Cover field="cover" value={this.props.post.cover} />
-        }
+        var cover;
+        
+        if (this.props.cover)
+            cover = <Cover cover={this.props.cover} />
         
         return (
             <div className="single-section-page single-column">

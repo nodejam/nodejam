@@ -11,15 +11,12 @@ exports.item = auth.handler (forum, post) ->*
         post = yield models.Post.get({ 'forum.id': forum._id.toString(), stub: post }, {}, db)
         if post
             author = yield models.User.getById post.createdBy.id, {}, db
-    
-            pageTemplate = widgets.parse yield post.getTemplate 'item'            
-            
             yield @renderPage 'posts/post', { 
                 pageName: 'post-page',
+                theme: forum.theme,
                 json: JSON.stringify(post),
-                theme: pageTemplate.getTheme() ? forum.theme
                 typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
-                html: pageTemplate.render { post, author, forum }
+                html: yield models.Post.render 'item', { post, forum: post.forum, author, layout: { theme: forum.theme } }
             }
     
    

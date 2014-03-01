@@ -12,7 +12,7 @@ exports.Html = React.createClass({
         }
         
         return (
-            <div className="content" data-field-type={type} data-field-name={field} data-placeholder={placeholder} dangerouslySetInnerHTML={{__html: this.props.value}}>
+            <div className="content" dangerouslySetInnerHTML={{__html: this.props.html}}>
             </div>
         );        
     }
