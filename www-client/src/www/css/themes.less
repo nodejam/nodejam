@@ -69,11 +69,9 @@
 
     /* PAGES.LESS */
     .single-section-page {
-        .inline-cover+.main-pane, .full-cover.fixed+.main-pane {
-            .content-area {
-                &.item {
-                    background: @colorMaxBright;
-                }
+        .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
+           &.item {
+                background: @colorMaxBright;
             }
         }
     }
@@ -202,23 +200,36 @@
 }
 
 /* THEMES */
-.default-theme {
-    .make-theme('default');
-    .color-groups();
+.themes-common () {
+    .default-theme {
+        .make-theme('default');
+        .color-groups();
+    }
+
+    .paper-theme {
+        .make-theme('paper');
+        .color-groups();
+    }
+
+    .black-paper-theme {
+        .make-theme('black-paper');
+        .color-groups();
+    }
+
+    .green-cup-theme {
+        .make-theme('green-cup');
+        .color-groups();
+    }
 }
 
-.paper-theme {
-    .make-theme('paper');
-    .color-groups();
-}
 
-.black-paper-theme {
-    .make-theme('black-paper');
-    .color-groups();
+.themes-tiny () {
+    /* PAGES.LESS */
+    .single-section-page {
+        .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
+           &.item {
+                background: none !important;
+            }
+        }
+    }    
 }
-
-.green-cup-theme {
-    .make-theme('green-cup');
-    .color-groups();
-}
-

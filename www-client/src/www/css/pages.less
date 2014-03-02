@@ -34,7 +34,7 @@
     .auto-cover, .top-cover, .full-cover {
         .image {
             background-size: cover; background-position: 50% 50%; height: 100%;
-            > .underlay { opacity: 0.5; width: 100%; position: fixed; height: 100%; }
+            > .underlay { opacity: 0.5; }
             > .content-wrap { 
                 h1 { font-size: 2em; margin-bottom: .3em }
                 p { font-size: 1.3em }
@@ -55,10 +55,16 @@
     }
 
     .inline-cover { 
-        padding-left: 24px; padding-right: 24px;
+        max-width: 720px; margin-bottom: 20px; margin-left: auto; margin-right: auto;
         img { width: 100% }
     }
-
+    
+    .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
+        font-size: 0.9em;
+        &.item {
+            max-width: 720px; padding: 20px 32px; box-sizing: border-box; -moz-box-sizing: border-box; 
+        }
+    }    
 }
 
 /* Large Pages */
@@ -69,12 +75,13 @@
     .auto-cover {
         position: fixed; height: 100%; top: 0; right: 0;
         .image {
+            > .underlay { width: 100%; position: fixed; height: 100%; }
             > .content-wrap { 
                 left: 32px; bottom: 20px; position: absolute; max-width: 500px;
             }
         }
-    }
-
+    }    
+    
     .top-cover { 
         position: relative;
 
@@ -99,6 +106,14 @@
 
         margin-top: -64px; padding-top: 64px;
 
+        .top-cover {
+            height: @topCoverHeight + 0px;
+        }
+        
+        .inline-cover {
+            width: @contentAreaWidth; max-width: 720px; 
+        }
+
         .main-pane {
             .page-content-area(@contentAreaWidth, 720px);
         }                
@@ -106,27 +121,13 @@
         .alt-pane { 
             .page-content-area(@altContentAreaWidth, 720px);
         }
-        
-        /* Inline covers have the same width as content area. Position on top */
-        .inline-cover {
-            width: @contentAreaWidth + 0px; margin: 64px auto 12px auto;
-        }
-        
-        .top-cover { 
-            height: @topCoverHeight + 0px;
-        }
-        
-        .full-cover.fixed, .inline-cover {
-            + .main-pane {
-                .content-area {
-                    font-size: 0.9em;
-                    &.item {
-                        padding: 20px 32px; box-sizing: border-box; -moz-box-sizing: border-box; 
-                    }
-                }
+            
+        .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
+            &.item {
+                width: 720px;
             }
-        }
-
+        }            
+        
         ul.cards {
             &.float {
                 > li {
@@ -137,12 +138,6 @@
     }
 
     .single-section-page {
-
-        /* No cover. 100% main-page width */
-        .main-pane:first-child { 
-            width: 100%; 
-        }
-
         /* Auto cover in large pages position on the side. Adjust main-pane width */
         .auto-cover {
             width: @autoCoverWidth; left: (100% - @autoCoverWidth); 
@@ -150,13 +145,25 @@
                 width: (100% - @autoCoverWidth); 
             }
         }
-        
-        /* Top, full and inline covers have 100% main-pane width */
-        .top-cover, .full-cover, .inline-cover {
+
+        /* Top and full covers have 100% main-pane width */
+        .top-cover, .full-cover {
             + .main-pane { 
-                width: 100%; 
+                width: 100%;                
+                .page-content-area(720, 720px)
             }
         }              
+
+        .main-pane {
+            /* No cover. 100% main-page width */
+            &:first-child { 
+                width: 100%; 
+            }
+        }                
+    }
+    
+    .multi-section-page {
+     
     }
 }
 
@@ -227,22 +234,7 @@
             .content-wrap {
                 position: absolute; bottom: 0px; padding: 0 0 16px 16px; max-width: 400px;                
             }
-        }
-       
-        .inline-cover {
-            width: 100%; margin: 64px auto 12px auto;
-        }
-         
-        .full-cover.fixed, .inline-cover {
-            + .main-pane {
-                .content-area {
-                    font-size: 0.9em;
-                    &.item {
-                        padding: 20px 32px; box-sizing: border-box; -moz-box-sizing: border-box; 
-                    }
-                }
-            }
-        }
+        }       
     }
 }
 
@@ -259,7 +251,7 @@
 }
 
 .small-pages(@minWidth) when (@minWidth < 720) {  
-    .single-section-page, .multi-section-page {                
+    .single-section-page, .multi-section-page {                    
         ul.cards {
             &.float {
                 > li {
@@ -267,5 +259,16 @@
                 }
             }
         }  
+    }
+}
+
+.small-pages(@minWidth) when (@minWidth < 479) {  
+    .single-section-page, .multi-section-page {                
+    
+        .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
+            &.item {
+                padding: 20px 0;
+            }
+        }        
     }
 }

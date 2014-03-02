@@ -20,8 +20,11 @@ module.exports = React.createClass({
         if (post.synopsis)
             synopsis = post.synopsis;
         else {
+            /*
+                If it markdown formatted, take the first line.
+                If the first line is very short, take the second line too.
+            */
             if (post.content && post.content.format === 'markdown') {
-                //Take the first two lines if synopsis is empty.
                 sentence = post.content.text.match(/[^\.]+\./);
                 if (sentence) {
                     synopsis = sentence[0];
@@ -36,6 +39,7 @@ module.exports = React.createClass({
             }
         }
         
+        //If synopsus isn't found just use content text. This is going to be truncated while displaying.        
         if (typeof synopsis === "undefined")
             synopsis = post.content.text;
         

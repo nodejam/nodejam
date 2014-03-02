@@ -28,7 +28,8 @@ exports.item = auth.handler (stub) ->*
         posts = yield forum.getPosts(12, { _id: -1 })
 
         for post in posts
-            post.html = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
+            renderResult = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
+            post.html = renderResult.html
 
         options = {}
         if @session.user

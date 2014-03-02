@@ -41,7 +41,11 @@
     .small-pages(720);    
 }
 
-@media (max-width: 719px) { 
+@media (min-width: 480px) and (max-width: 719px) { 
+    .small-pages(480);
+}
+
+@media (max-width: 479px) { 
     .small-pages(0);
 }
 
@@ -50,3 +54,11 @@
 }
 
 .pages-common();
+
+
+/* THEMES */
+.themes-common();
+
+@media (max-width: 479px) { 
+    .themes-tiny();
+}

@@ -133,13 +133,15 @@ class Post extends ForaDbModel
 
     @render: (template, { post, forum, author, layout }) =>*        
         extensions = yield Post.getExtensions yield post.getTypeDefinition()
-        component = extensions.templates[template]
-        React.renderComponentToString component({post, forum, author, layout})
-    
+        component = extensions.templates[template] { post, forum, author, layout }
+        html = React.renderComponentToString component
+        cover = component.getCover?()
+        { html, cover }
+        
 
         
     @getExtensions: (typeDef) =>*
-        switch typeDef.extensionType 
+        switch typeDef.extensionType
             when 'builtin'
                 if not @builtinExtensionCache[typeDef.name]
                     @builtinExtensionCache[typeDef.name] = {

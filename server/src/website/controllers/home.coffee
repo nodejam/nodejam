@@ -11,7 +11,8 @@ exports.index = auth.handler ->*
     featured = (f for f in featured when (x._id for x in editorsPicks).indexOf(f._id) is -1)
 
     for post in editorsPicks.concat(featured)
-        post.html = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
+        renderResult = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
+        post.html = renderResult.html
         
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"

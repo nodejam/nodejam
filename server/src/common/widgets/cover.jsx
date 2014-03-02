@@ -41,7 +41,6 @@ exports.Cover = React.createClass({
             }      
         }
         else {
-            console.log("No cover");
             return (<div></div>);
         }
     }
