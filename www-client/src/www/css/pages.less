@@ -55,11 +55,11 @@
     }
 
     .inline-cover { 
-        max-width: 720px; margin-bottom: 20px; margin-left: auto; margin-right: auto;
+        margin: 64px auto 20px auto;
         img { width: 100% }
     }
     
-    .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
+    .inline-cover + .main-pane .content-area:first-child {
         font-size: 0.9em;
         &.item {
             max-width: 720px; padding: 20px 32px; box-sizing: border-box; -moz-box-sizing: border-box; 
@@ -122,12 +122,6 @@
             .page-content-area(@altContentAreaWidth, 720px);
         }
             
-        .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
-            &.item {
-                width: 720px;
-            }
-        }            
-        
         ul.cards {
             &.float {
                 > li {
@@ -159,6 +153,12 @@
             &:first-child { 
                 width: 100%; 
             }
+
+            .content-area:first-child {
+                &.item {
+                    width: 720px;
+                }
+            }          
         }                
     }
     
@@ -262,10 +262,10 @@
     }
 }
 
-.small-pages(@minWidth) when (@minWidth < 479) {  
+.small-pages(@minWidth) when (@minWidth < 480) {  
     .single-section-page, .multi-section-page {                
     
-        .full-cover.fixed + .main-pane .content-area:first-child, .main-pane .inline-cover + .content-area {
+        .inline-cover + .main-pane .content-area:first-child {
             &.item {
                 padding: 20px 0;
             }

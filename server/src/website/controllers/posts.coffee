@@ -12,17 +12,12 @@ exports.item = auth.handler (forum, post) ->*
         if post
             author = yield models.User.getById post.createdBy.id, {}, db
 
-            renderResult = yield models.Post.render('item', { post, forum: post.forum, author, layout: { theme: forum.theme } })
-            if renderResult.cover
-                coverInfo = { cover: renderResult.cover }
-
             yield @renderPage 'posts/post', { 
                 pageName: 'post-page',
                 theme: forum.theme,
                 json: JSON.stringify(post),
                 typeDefinition: JSON.stringify(yield post.getTypeDefinition()),
-                html: renderResult.html
-                coverInfo
+                html: yield models.Post.render('item', { post, forum: post.forum, author, layout: { theme: forum.theme } })
             }
     
    

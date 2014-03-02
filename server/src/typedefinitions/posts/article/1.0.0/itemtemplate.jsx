@@ -7,10 +7,6 @@ var Page = _.Page, Heading = _.Heading, Author = _.Author, Html = _.Html;
 
 
 module.exports = React.createClass({
-    getCover: function() {
-        return this.props.post.cover;
-    },
-
     render: function() {
         return (
             <Page cover={this.props.post.cover}>

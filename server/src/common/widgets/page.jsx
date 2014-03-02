@@ -6,15 +6,12 @@ Cover = require('./cover').Cover;
 
 exports.Page = React.createClass({
     render: function() {
-        var cover;
-        
-        if (this.props.cover && this.props.cover.type === 'inline-cover')
-            cover = <Cover cover={this.props.cover} />
+        var cover = <Cover cover={this.props.cover} />
         
         return (
             <div className="single-section-page single-column">
+                {cover}                
                 <div className="main-pane">
-                    {cover}                
                     <div className="content-area upsize item">
                         {this.props.children}
                     </div>
