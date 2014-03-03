@@ -12,7 +12,7 @@ exports.Page = React.createClass({
             <div className="single-section-page single-column">
                 {cover}                
                 <div className="main-pane">
-                    <div className="content-area upsize item">
+                    <div className="content-area upsize-text item">
                         {this.props.children}
                     </div>
                 </div>

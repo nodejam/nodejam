@@ -35,36 +35,37 @@
     ul.selectable {
         .fontBase;
 
-        margin-bottom: 20px;
+        &.cells {
+            margin-bottom: 20px;
 
-        > li {
-            .rounded; margin:0 10px 10px 0; float: left; width: 300px; padding: 10px; overflow: hidden; cursor: pointer;
-            > div {
-                font-size: 0.8em;
-            }        
-            &.selected {
-                > i { position: absolute; margin: -4px }
-                &:before {
-                    content: ""; height: 60px; width: 60px; display: block; transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); 
-                    margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
-                }
-            }
-        }
-        &.iconic {
             > li {
-                > div.icon {
-                    width: 40px; height: 40px; margin-right: 12px; background: gray;
-                }
-                > div.text {
-                    width: 240px; margin-left: 56px; margin-top: -40px;
+                .rounded; margin:0 10px 10px 0; padding: 10px; float: left; overflow: hidden; cursor: pointer; height: 80px;
+                &:hover, &.selected {
+                    > i { position: absolute; margin: -4px }
+                    &:before {
+                        content: ""; height: 60px; width: 60px; display: block; transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); 
+                        margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
+                    }
                 }
             }
+            
+            &.iconic {
+                > li {
+                    > div.icon {
+                        float: left; padding-right: 12px;
+                    }
+                    > div.text {
+                        overflow: hidden;
+                    }
+                }
+            }
+            
+            &.unfloat {
+                > li { float: none }
+            }
+            
+            &:after { content: ""; display:block; clear: both }
         }
-        &.medium-height {
-            > li { height: 80px; }
-        }
-        
-        &:after { content: ""; display:block; clear: both }
     }
 
 

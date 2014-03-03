@@ -66,6 +66,9 @@ class Credential extends ForaDbModel
         indexes: [
             { 'type': 1, 'email': 1 },
         ],
+        links: {
+            users: { type: 'user', field: 'credentialId' }
+        },
         validate: (fields) ->*
             if not emailRegex.test(@email)
                 ['Invalid email']            
@@ -106,13 +109,6 @@ class Credential extends ForaDbModel
 
 
 
-    createSession: (context, db) =>*
-        { context, db } = @getContext context, db
-        session = new models.Session { credentialId: @_id.toString(), token: utils.uniqueId(24) }
-        yield session.save context, db
-        
-    
-    
     @authenticateBuiltin: (username, password, context, db) ->*
         credential = yield models.credential.get({ "builtin.username": username }, context, db)
         if credential

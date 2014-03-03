@@ -77,12 +77,10 @@ exports.twitterCallback = ->*
                 credential = new models.Credential()
                 credential = yield credential.addTwitter twitterUser.id, twitterUser.username, token.value.token, token.value.token_secret, {}, db                
 
-            session = yield credential.createSession()
-            
             _token = new models.Token {
-                type: 'twitter-tokens',
+                type: 'twitter-login-token',
                 key: utils.uniqueId(24),
-                value: { twitterUser, token: session.token }
+                value: { twitterUser }
             }                                        
             _token = yield _token.save({}, db)
     

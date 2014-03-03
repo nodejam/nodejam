@@ -7,14 +7,23 @@ fields = require '../../models/fields'
 widgets = require '../../common/widgets'
 
 
-exports.loginForm = (token) ->*
+exports.loginForm = ->*
     token = yield models.Token.get { key: @query.token }, {}, db
-    yield @renderPage 'users/login', { 
-        username: token.value.twitterUser.username,
-        name: token.value.twitterUser.name,
-        pageName: 'select-username-page', 
-        token: token.key
+    
+    if token.type is 'twitter-login-token'
+        twitterUsername = token.value.twitterUser.username
+        credential = yield models.Credential.get { 'twitter.username': twitterUsername }, {}, db
+        users = yield credential.link 'users'
+    
+    for user in users
+        user.image = user.getAssetUrl() + "/" + user.username + "_t.jpg"
+    
+    yield @renderPage 'users/login', {
+        pageName: 'login-page', 
+        users
     }
+    
+    yield token.destroy()
 
 
 

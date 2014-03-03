@@ -5,8 +5,6 @@ exports.Cover = React.createClass({
     render: function() {
         cover = this.props.cover;
         
-        console.log(cover);
-        
         if (cover) {
             classString = ['cover', cover.type].join(' ');
             imageStyle = { "background-image": "url(" + cover.image.src + ")" };

@@ -22,6 +22,14 @@ class User extends ForaDbModel
             }
         }
         
+        getUrl: =>
+            "/~#{@username}"
+
+
+        getAssetUrl: =>
+            "/public/assets/#{@assets}"
+        
+        
     @Summary: Summary
     
     @childModels: { Summary }
@@ -51,6 +59,7 @@ class User extends ForaDbModel
             { 'username': 1 }
         ],
         links: {
+            credential: { type: 'credential', key: 'credentialId' },
             info: { type: 'user-info', field: 'userId', multiplicity: 'one' }
         }
     }
@@ -75,11 +84,13 @@ class User extends ForaDbModel
 
 
 
-    #Upgrade a credential token to a user-session token
-    upgradeSession: (session, context, db) =>*
+    createSession: (context, db) =>*
+        session = new models.Session { 
+            credentialId: @credentialId, 
+            token: utils.uniqueId(24) 
+        }    
         session.userId = @_id.toString()        
         session.user = @summarize()
-        session.token = utils.uniqueId(24)
         yield session.save context, db
 
                   

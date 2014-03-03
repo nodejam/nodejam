@@ -28,11 +28,6 @@
         &.negative:hover, &.negative { color: @colorNegative }
     }
     
-    .sub-text {
-        color: @colorDark; 
-        a { color: @colorDark }
-    }
-    
     .action { 
         &.positive { color: @colorPositive }
         &.negative { color: @colorNegative }    
@@ -69,9 +64,11 @@
 
     /* PAGES.LESS */
     .single-section-page {
-        .inline-cover + .main-pane .content-area:first-child {
-           &.item {
-                background: @colorMaxBright;
+        .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
+            .content-area:first-child {
+               &.item {
+                    background: @colorMaxBright;
+                }            
             }
         }
     }
@@ -162,8 +159,17 @@
             > li {
                 background: @colorBrightest; 
                 
-                &.selected {
+                &:hover, &.selected {
                     > i { color: @colorMaxBright; }
+                }
+
+                &:hover {
+                    &:before {
+                        background: orange;
+                    }
+                }
+
+                &.selected {
                     &:before {
                         background: green;
                     }
