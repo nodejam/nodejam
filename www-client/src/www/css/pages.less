@@ -4,7 +4,31 @@
         &.wide {
             width: 100%; max-width: 100%;
         }
+        
+        &.item {
+            &:after { content: ""; display:block; clear: both }
+        }
     }
+}
+
+.spans-impl(@a, @b, @c) {
+    /* Column spans */
+    .half-span, .two-thirds-span, .one-thirds-span { 
+        box-sizing: border-box; float: left; 
+        &:after { content: ""; display:block; clear: both } 
+    }
+
+    .half-span { width: @a; }
+    .two-thirds-span { width: @b; margin-right: (100% - (@b + @c)) }
+    .one-thirds-span { width: @c; }
+}
+
+.spans(@width) when (@width >= 720) {  
+    .spans-impl(50%, 60%, 34%);
+}
+
+.spans(@width) when (@width < 720) {  
+    .spans-impl(100%, 100%, 100%);
 }
 
 /* Pages-Common */
@@ -83,7 +107,9 @@
 
     .auto-cover+.main-pane {
         > .nav:first-child { margin-left: 40px; }
-    }
+    }    
+
+    .spans(1200);
 }
 
 .large-page-type(
@@ -202,9 +228,6 @@
 /* Small Pages */
 .small-pages-common() {
 
-    .large-page-element .tiny-page-element { display: none; }
-    .small-page-element { display: block !important; }    
-
     .single-section-page, .multi-section-page {
         margin-top: -64px; padding-top: 64px;
 
@@ -230,6 +253,9 @@
 }
 
 .small-pages(@minWidth) when (@minWidth >= 720) {  
+    .large-page-element .tiny-page-element { display: none; }
+    .small-page-element { display: block !important; }    
+
     .single-section-page, .multi-section-page {                
         ul.cards {
             &.float {
@@ -239,9 +265,14 @@
             }
         }  
     }
+ 
+    .spans(720);
 }
 
 .small-pages(@minWidth) when (@minWidth < 720) {  
+    .large-page-element .small-page-element { display: none; }
+    .tiny-page-element { display: block !important; }    
+
     .single-section-page, .multi-section-page {                    
         ul.cards {
             &.float {
@@ -251,6 +282,8 @@
             }
         }  
     }
+
+    .spans(0);
 }
 
 .small-pages(@minWidth) when (@minWidth < 480) {  
@@ -261,5 +294,5 @@
                 padding: 20px 0;
             }
         }        
-    }
+    }   
 }

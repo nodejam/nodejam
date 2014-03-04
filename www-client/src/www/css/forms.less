@@ -1,26 +1,7 @@
 /* The standard Form */
-.form-standard-mixin (@spacing, @inputBaseWidth) {
-    form.standard {
-        .rounded; background: #f6f6f6; padding: (@spacing/2) 0 @spacing 0;
-        
-        input, textarea { width: @inputBaseWidth }
-        label, input, button, textarea { margin-left: @spacing }                
-
-        &.single-col {
-            fieldset {
-                border: none; margin: 0 0 (@spacing/1.5) 0; padding: 0; 
-                legend { 
-                    font-size: 1.2em; margin-bottom: (@spacing/1.5); font-weight: bold; padding-left: @spacing;
-                    padding-left: @spacing; border-bottom-width: 1px; border-bottom-style: solid; display: block; box-sizing: border-box; -moz-box-sizing: border-box; width: 100%; padding-bottom: (@spacing/4);
-                }
-                label {
-                    font-size: 0.8em; font-weight: bold; display: block;
-                }
-                input {
-                    margin-bottom: 12px; display: block;
-                    &:last-child { margin-bottom: 0 }
-                }
-            }
-        }
-    }
+form, div.form {
+    &.lined-fields {
+        > li, > p { }
+    }    
 }
+

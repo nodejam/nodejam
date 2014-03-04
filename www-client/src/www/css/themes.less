@@ -133,19 +133,6 @@
     }    
     
     
-    /* FORMS.LESS */
-    .form-standard-mixin (@spacing, @inputBaseWidth) {
-        form.standard {
-            &.single-col {
-                fieldset {
-                    legend { 
-                        border-bottom: 1px solid @colorDark; 
-                    }
-                }
-            }
-        }
-    }    
-    
     /* EDITOR.LESS */
     .editor {
         .highlight { background-color: @colorMaxBright !important; opacity: 0.8}
@@ -192,6 +179,18 @@
                     }
                 }
             }
+        }
+        
+        .lined-fields {
+            > li, > p, > div { border-bottom: 2px dotted @colorBright }
+        }    
+        
+    }
+    
+    .fancy {
+        &.quote {
+            i { color: red; }
+            color: @colorNeutral;
         }
     }
 }

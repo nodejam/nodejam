@@ -16,6 +16,7 @@ class Credential extends ForaDbModel
             type: 'object',        
             properties: {
                 email: { type: 'string' },                
+                emailIsVerified: { type: 'boolean' },
                 preferences: { 
                     type: 'object',
                     schema: {
@@ -70,7 +71,7 @@ class Credential extends ForaDbModel
             users: { type: 'user', field: 'credentialId' }
         },
         validate: (fields) ->*
-            if not emailRegex.test(@email)
+            if @email and not emailRegex.test(@email)
                 ['Invalid email']            
     }
     

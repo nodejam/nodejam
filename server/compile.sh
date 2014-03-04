@@ -52,7 +52,6 @@ temp=`mktemp -d`
 echo "Copying src to app.."
 cp -r src/* $temp
 find $temp -name '*.coffee' | xargs rm -rf
-find $temp -name '*.less' | xargs rm -rf
 find $temp -name '*.jsx' | xargs rm -rf
 find $temp -name '*.*~' | xargs rm -rf
 cp -r $temp/* app

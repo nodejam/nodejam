@@ -1,4 +1,4 @@
-.editor {
+.editable {
 
     .unhighlight {
         background-color: transparent;
@@ -31,44 +31,6 @@
         a { font-size: 11px }
     }
 
-
-    ul.selectable {
-        .fontBase;
-
-        &.cells {
-            margin-bottom: 20px;
-
-            > li {
-                .rounded; margin:0 10px 10px 0; padding: 10px; float: left; overflow: hidden; cursor: pointer; height: 80px;
-                &:hover, &.selected {
-                    > i { position: absolute; margin: -4px }
-                    &:before {
-                        content: ""; height: 60px; width: 60px; display: block; transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); 
-                        margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
-                    }
-                }
-            }
-            
-            &.iconic {
-                > li {
-                    > div.icon {
-                        float: left; padding-right: 12px;
-                    }
-                    > div.text {
-                        overflow: hidden;
-                    }
-                }
-            }
-            
-            &.unfloat {
-                > li { float: none }
-            }
-            
-            &:after { content: ""; display:block; clear: both }
-        }
-    }
-
-
     .cover-editor {
         /* When Empty */
         > .add-cover {
@@ -91,6 +53,45 @@
                 }
             }            
         }
+    }    
+
+    ul.selectable {
+        .fontBase;
+
+        &.cells {
+            margin-bottom: 20px;
+
+            > li {
+                .rounded; padding: 10px; overflow: hidden; cursor: pointer; box-shadow: inset 0 0 10px #eee;
+                &:hover, &.selected {
+                    > i { position: absolute; margin: -4px }
+                    &:before {
+                        content: ""; height: 60px; width: 60px; display: block; transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); 
+                        margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
+                    }
+                }
+            }
+
+            &.float-layout {
+                > li { 
+                    float: left;
+                    margin:0 10px 10px 0; 
+                }
+            }
+            
+            &.row-layout {
+                > li { 
+                    float: none;
+                    margin:0 0 10px 0; 
+                }
+            }
+            
+            &:after { content: ""; display:block; clear: both }
+        }
     }
+
+    .lined-fields {
+        > li, > p { margin-bottom: 0.6em }
+    }    
 }
 

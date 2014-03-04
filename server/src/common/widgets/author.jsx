@@ -29,8 +29,10 @@ exports.Author = React.createClass({
                 img = assets + "/" + this.props.author.username + "_t.jpg";
                 return (
                     <div className="icon-block">
-                        <img src={img} alt={this.props.author.name} />
-                        <div className="text downsize-text">
+                        <div className="icon">
+                            <img className="seal downsize" src={img} alt={this.props.author.name} />
+                        </div>
+                        <div className="text xdownsize-text">
                             <h4><a href={"/~" + this.props.author.username}>{this.props.author.name}</a></h4>
                             <p className="italics downsize-text"> in <a href={this.props.forum.stub}>{this.props.forum.name}</a></p>
                         </div>
