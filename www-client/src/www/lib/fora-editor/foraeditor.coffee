@@ -1,20 +1,18 @@
 class ForaEditor
     
-    constructor: (@typeDef, @bindings, @options, @container) ->
+    constructor: (@typeDef, @options, @container) ->
         @container = $(@container)
         @container.addClass 'editable'
-
         @editedElements = []
-        
-        for fieldName, binding of @bindings
-            elem = @container.find binding.element
-            control = @bind elem, fieldName, @typeDef.schema.properties[fieldName], binding
-            elem.data control
-            @editedElements.push elem
-            
-    
 
-    exit: =>
+
+        
+    addBinding: (fieldName, binding) =>
+        elem = @container.find binding.element
+        control = @bind elem, fieldName, @typeDef.schema.properties[fieldName], binding
+        elem.data control
+        @editedElements.push elem
+        return control
         
 
 
@@ -42,10 +40,10 @@ class ForaEditor
 
 
     bind: (elem, fieldName, fieldProperties, binding) =>
-        type = binding.type ? "plain-text"
+        binding.type ?= "text"
         
-        control = switch type
-            when 'heading', 'text', 'plain-text'
+        control = switch binding.type
+            when 'text', 'html'
                 ForaEditor.Text 
             when 'selectable'
                 ForaEditor.Selectable

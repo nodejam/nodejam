@@ -16,7 +16,7 @@
     @colorLinkHover: #668,
     @colorPositive: #060,
     @colorLightPositive: #aca,
-    @colorNegative: #600,
+    @colorNegative: #c00,
     @colorLightNegative: #caa,
     @textOpacity: 0.9,
 ) {
@@ -84,7 +84,7 @@
             }
         }
 
-        &.float {
+        &.float-layout {
             > li {    
                 background: @colorXXBright; border-bottom-color: #eee;
             }
@@ -186,6 +186,12 @@
         
         .editor-field-title {
             font-style: italic; color: @colorNeutral;
+        }
+
+        .editor-field-message {
+            font-style: italic; 
+            
+            &.error { color: @colorNegative; }
         }
         
         .lined-fields {
