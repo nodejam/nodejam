@@ -66,12 +66,11 @@
 
 /* Generic sections. */
 .content { 
-    .fontContent;
+    .fontContent; font-size: 1.1em;
 }
 
 div.content { 
-    .fontContent;
-    h1, h2, h3 { .fontContentHeading }
+    h1, h2, h3, h4 { .fontContentHeading; font-size: 1em }
 }
 
 .text-block {
@@ -98,10 +97,16 @@ img {
 */
 .icon-block, .icon-block > li  {
     > .icon {
-        float: left; padding-right: 12px; padding-top: 4px;
+        float: left; padding-right: 20px; padding-top: 4px; text-align: center; font-size: 0.8em; line-height: 1.2em;
     }
     > .text {
         overflow: hidden;
+    }
+    
+    &.small {
+        > .icon {
+            float: left; padding-right: 12px; padding-top: 4px;
+        }
     }
 }
 
@@ -153,6 +158,43 @@ img {
         &.half { width: 40%; padding: 20px 4% 12px 4%; margin: 0 2% 20px 0 }
     }
 }
+
+
+/* Selectable Blocks */
+ul.selectable {
+
+    &.cells {
+        margin-bottom: 20px;
+
+        > li {
+            .rounded; padding: 10px; overflow: hidden; cursor: pointer; 
+            &:hover, &.selected {
+                > i { position: absolute; margin: -4px }
+                &:before {
+                    content: ""; height: 60px; width: 60px; display: block; transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); 
+                    margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
+                }
+            }
+        }
+
+        &.float-layout {
+            > li { 
+                float: left;
+                margin:0 10px 10px 0; 
+            }
+        }
+        
+        &.row-layout {
+            > li { 
+                float: none;
+                margin:0 0 10px 0; 
+            }
+        }
+        
+        &:after { content: ""; display:block; clear: both }
+    }
+}
+
 
 /* LEAN MODAL - Thanks to http://leanmodal.finelysliced.com.au/ */
 #lean_overlay { position: fixed; z-index:100; top: 0px; left: 0px; height:100%; width:100%; display: none; }

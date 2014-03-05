@@ -22,4 +22,4 @@ class Selectable
         fieldName = @e.data('field-name')
         record[fieldName] = selected.data('field-value')
 
-window.Fora.Editing.Selectable = Selectable
+window.ForaEditor.Selectable = Selectable

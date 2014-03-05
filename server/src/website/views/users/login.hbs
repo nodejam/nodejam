@@ -11,7 +11,7 @@
                 
                 <div class="content" style="">
                 <p>
-                    &ldquo;On the internet, nobody knows you are a dog.&rdquo;
+                    &ldquo;Lorem ipsum dollar generator.&rdquo;
                 </p>
                 </div>
                 
@@ -21,51 +21,48 @@
     
     <div class="main-pane">
         <div class="content-area item">
+
             <div class="two-thirds-span">
                 {{#if users}}
-                    <h2>Choose a persona</h2>
-                    <ul class="selectable icon-block cells row-layout">
-                    {{#each users}}
-                        <li>
-                            <div class="icon">
-                                <img class="seal upsize" src="{{image}}">
-                            </div>
-                            <div class="text downsize-text">
-                                <h3>{{name}}</h3>
-                                <p>{{about}}</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="icon">
-                                <img class="seal upsize" src="{{image}}">
-                            </div>
-                            <div class="text downsize-text">
-                                <h3>{{name}}</h3>
-                                <p>{{about}}</p>
-                            </div>
-                        </li>
-                    {{/each}}
-                    </ul>
-                    <h2>...or create another</h2>                    
-                {{else}}            
-                    <h2>Create an identity...</h2>
-                    <div class="icon-block">
+                <h2>Choose a persona</h2>
+                <ul class="selectable icon-block cells row-layout">
+                {{#each users}}
+                    <li>
                         <div class="icon">
                             <img class="seal upsize" src="{{image}}">
                         </div>
-                        <div id="create-user-form" class="text upsize-text content">
-                            <ul class="lined-fields">
-                                <li data-edit-type="plain-text" data-edit-field="username" data-edit-="" data-edit-title="Nickname" data-edit-placeholder="Type a nickname">
-                                </li>
-                                <li data-edit-type="plain-text" data-edit-field="name" data-edit-placeholder="Your name">
-                                </li>
-                                <li data-edit-type="plain-text" data-edit-field="about" data-edit-placeholder="And a fancy tag line...">
-                                </li>
-                            </ul>
+                        <div class="text content">
+                            <h3>{{name}}</h3>
+                            <p>{{about}}</p>
                         </div>
-                    </div>
+                    </li>
+                {{/each}}
+                </ul>
+                <h2>...or create another</h2>                    
+                {{else}}            
+                <h2>Create an identity...</h2>
                 {{/if}}
+                <div class="icon-block">
+                    <div class="icon">
+                        <img class="seal upsize" src="/images/user-default_t.jpg"><br />
+                        <a href="#">change</a>
+                    </div>
+                    <div id="create-user-form" class="text xupsize-text content">
+                        <ul class="lined-fields">
+                            <li class="username">
+                            </li>
+                            <li class="fullname">
+                            </li>
+                            <li class="about">
+                            </li>
+                        </ul>
+                        <p>
+                            <button>Create</button>
+                        </p>
+                    </div>
+                </div>                
             </div>
+            
             <div class="content one-thirds-span fancy quote large-page-element small-page-element">
                 <p>
                     <i class="fa fa-quote-left"></i> 

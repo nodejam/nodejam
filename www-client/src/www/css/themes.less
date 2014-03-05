@@ -1,12 +1,14 @@
 .make-theme(
     @name, 
     @colorBright: #ccc, 
-    @colorBrighter: #eee, 
-    @colorBrightest: #f6f6f6, 
+    @colorXBright: #eee, 
+    @colorXXBright: #f6f6f6,
+    @colorBrightNeutral: #aaa, 
     @colorNeutral: #999, 
+    @colorDarkNeutral: #888, 
     @colorDark: #666,
-    @colorDarker: #444,
-    @colorDarkest: #333,
+    @colorXDark: #444,
+    @colorXXDark: #333,
     @colorStandout: yellow,
     @colorMaxBright: white,
     @colorMaxDark: black,
@@ -19,7 +21,7 @@
     @textOpacity: 0.9,
 ) {
     background: url("/images/themes/@{name}/bg.png") repeat;
-    color: @colorDarker;
+    color: @colorXDark;
 
     a { 
         color: @colorLink; 
@@ -35,8 +37,8 @@
     
     /* CUSTOM */
     .placeholder { 
-        color: @colorBright; 
-        &.dim { color: @colorBrighter } 
+        color: @colorBrightNeutral; 
+        &.dim { color: @colorXBright } 
     }
 
     /* FORM CONTROLS */
@@ -45,7 +47,7 @@
     }
     
     input, select, textarea {
-        .control (@colorDarker, @colorBrightest, @colorBright)
+        .control (@colorXDark, @colorXXBright, @colorBright)
     }
     
     button {
@@ -78,13 +80,13 @@
     ul.cards {
         > li {
             > .card-face { 
-                > .content-wrap { background: @colorBrightest }
+                > .content-wrap { background: @colorXXBright }
             }
         }
 
         &.float {
             > li {    
-                background: @colorBrightest; border-bottom-color: #eee;
+                background: @colorXXBright; border-bottom-color: #eee;
             }
         }
     }
@@ -94,7 +96,7 @@
     .option-bar { height: 24px; .fontBase; font-weight: bold; font-size: 12px; color: @colorBright; padding-bottom: 4px; margin: 0 0 16px 0; }
 
     .nav {         
-        border-bottom-color: @colorBrighter;
+        border-bottom-color: @colorXBright;
         ul {
             li { 
                 color: @colorNeutral; 
@@ -107,13 +109,13 @@
     }        
 
     .site-options {
-        background: @colorDarkest; 
+        background: @colorXXDark; 
         ul {
-            color: @colorBrighter;
+            color: @colorXBright;
             li {              
-                border-bottom-color: @colorDarker;  
+                border-bottom-color: @colorXDark;  
                 a { 
-                    color: @colorBrighter; 
+                    color: @colorXBright; 
                     &:hover { color: @colorMaxBright }
                 }
             }
@@ -121,49 +123,50 @@
     }
     
     #login-box {
-        background: @colorBrighter;
+        background: @colorXBright;
+    }
+    
+    
+    ul.selectable {
+        > li {
+            background: @colorXXBright; box-shadow: inset 0 0 16px @colorXBright;
+            
+            &:hover, &.selected {
+                > i { color: @colorMaxBright; }
+            }
+
+            &:hover {
+                &:before {
+                    background: orange;
+                }
+            }
+
+            &.selected {
+                &:before {
+                    background: green;
+                }
+            }
+            
+            &:hover { background: @colorXBright }
+        }
     }
     
     #lean_overlay { background: black }
 
     .dashboard-widgets {
         > div {
-            background: @colorBrightest; color: @colorBright;
+            background: @colorXXBright; color: @colorBright;
         }
     }    
     
     
     /* EDITOR.LESS */
-    .editor {
+    .editable {
         .highlight { background-color: @colorMaxBright !important; opacity: 0.8}
 
         .editor-inline-bar {
             background: @colorDark; 
             a { color: @colorBright; }
-        }
-        
-        ul.selectable {
-            > li {
-                background: @colorBrightest; 
-                
-                &:hover, &.selected {
-                    > i { color: @colorMaxBright; }
-                }
-
-                &:hover {
-                    &:before {
-                        background: orange;
-                    }
-                }
-
-                &.selected {
-                    &:before {
-                        background: green;
-                    }
-                }
-                
-                &:hover { background: @colorBrighter }
-            }
         }
         
         .cover-editor {
@@ -179,6 +182,10 @@
                     }
                 }
             }
+        }
+        
+        .editor-field-title {
+            font-style: italic; color: @colorNeutral;
         }
         
         .lined-fields {

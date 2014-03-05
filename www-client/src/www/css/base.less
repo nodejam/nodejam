@@ -24,7 +24,7 @@ h1, h2, h3, h4 { padding: 0; font-weight: 700 }
     h1 { font-size: 1.4em; margin:0 0 0.8em 0; }
     h2 { font-size: 1.2em; margin:0 0 0.8em 0; }
     h3 { font-size: 1.1em; margin:0 0 0.4em 0; }
-    h4 { font-size: 1em; margin:0 0 0 0; }
+    h4 { font-size: 1em; margin: 0; line-height: 1em }
 
 p { margin:0 0 1em 0; padding: 0 }
 
@@ -43,23 +43,24 @@ a {
 
 /* FORM CONTROLS */
 .control () {
-    min-width:80px; border-width: 2px; border-style: solid;
+    min-width:80px; border-style: solid;
 }
 
 fieldset { border: none }
 
-input, select, textarea { .fontBase; .control(); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; }
+input, select, textarea { .fontBase; .control(); .rounded; padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; border-width: 2px; }
     input[type="checkbox"] { margin-right: 4px; }
     input[type="file"] { padding: 0; border: none }
 
 
 button { 
-    .fontBase; .control(); border-radius: 30px; outline: none;
-    padding: 9px 12px 9px 12px; margin: 0 2px 0 0; font-weight: bold; text-transform: uppercase; cursor: pointer;     
+    .fontBase; .control(); border-radius: 30px; outline: none; border-width: 1px; 
+    padding: 9px 12px 9px 12px; margin: 6px 2px 0 0; font-weight: bold; text-transform: uppercase; cursor: pointer;     
 
     i { padding-right: 6px; }        
     &.textless i { padding-right: 0; }
-
+    
+    &:focus { border-width: 2px }
 }
 
 .rounded { border-radius: 2px; }
@@ -68,7 +69,9 @@ button {
 
 .upsize-text { font-size: 1.3em !important }
 .downsize-text { font-size: 0.9em !important }
+.xupsize-text { font-size: 1.5em !important }
 .xdownsize-text { font-size: 0.7em !important }
+
 .italics { font-style: italic; }
 
 

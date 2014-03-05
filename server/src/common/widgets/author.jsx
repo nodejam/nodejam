@@ -28,7 +28,7 @@ exports.Author = React.createClass({
             default:
                 img = assets + "/" + this.props.author.username + "_t.jpg";
                 return (
-                    <div className="icon-block">
+                    <div className="icon-block small">
                         <div className="icon">
                             <img className="seal downsize" src={img} alt={this.props.author.name} />
                         </div>

@@ -68,4 +68,4 @@ class Cover
 
 
 
-window.Fora.Editing.Cover = Cover
+window.ForaEditor.Cover = Cover

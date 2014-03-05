@@ -1,15 +1,14 @@
-class Editor
+class ForaEditor
     
-    constructor: (@typeDef, @bindings, @container, @options) ->
+    constructor: (@typeDef, @bindings, @options, @container) ->
         @container = $(@container)
         @container.addClass 'editable'
 
         @editedElements = []
         
-        for (fieldName, binding of @bindings)
+        for fieldName, binding of @bindings
             elem = @container.find binding.element
-            elem.highlight()
-            control = @getControl elem, @typeDef.schema.properties[fieldName], binding
+            control = @bind elem, fieldName, @typeDef.schema.properties[fieldName], binding
             elem.data control
             @editedElements.push elem
             
@@ -42,17 +41,19 @@ class Editor
 
 
 
-    getControl: (elem, field, binding) =>
-        if not 
-        switch binding.type
-            switch type
-                when 'heading', 'text', 'plain-text'
-                    Fora.Editing.Text
-                when 'selectable'
-                    Fora.Editing.Selectable
-                when 'cover'
-                    Fora.Editing.Cover
+    bind: (elem, fieldName, fieldProperties, binding) =>
+        type = binding.type ? "plain-text"
+        
+        control = switch type
+            when 'heading', 'text', 'plain-text'
+                ForaEditor.Text 
+            when 'selectable'
+                ForaEditor.Selectable
+            when 'cover'
+                ForaEditor.Cover
+                
+        new control elem, fieldName, fieldProperties, binding, this
     
 
 
-window.Fora.Editor = Editor
+window.ForaEditor = ForaEditor

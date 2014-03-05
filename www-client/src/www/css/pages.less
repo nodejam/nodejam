@@ -1,6 +1,6 @@
 .page-content-area(@contentAreaWidth, @maxWidth) {
     .content-area {
-        width: @contentAreaWidth + 0px; max-width: @maxWidth; margin: auto;
+        width: @contentAreaWidth + 0px; max-width: @maxWidth; margin: auto; line-height: 1.6em;
         &.wide {
             width: 100%; max-width: 100%;
         }
@@ -84,7 +84,7 @@
 
 /* Large Pages */
 .large-pages-common() {
-    .small-page-element .tiny-page-element { display: none; }
+    .small-page-element, .tiny-page-element { display: none; }
     .large-page-element { display: block !important; }
 
     .auto-cover {
@@ -240,7 +240,7 @@
         }
         
         .auto-cover, .top-cover, .full-cover {
-            font-size: 0.7em;
+            font-size: 0.9em;
         }
         
         .auto-cover, .top-cover { 
@@ -252,8 +252,8 @@
     }
 }
 
-.small-pages(@minWidth) when (@minWidth >= 720) {  
-    .large-page-element .tiny-page-element { display: none; }
+.small-pages(@minWidth) when (@minWidth >= 720) {      
+    .large-page-element, .tiny-page-element { display: none; }
     .small-page-element { display: block !important; }    
 
     .single-section-page, .multi-section-page {                
@@ -270,7 +270,9 @@
 }
 
 .small-pages(@minWidth) when (@minWidth < 720) {  
-    .large-page-element .small-page-element { display: none; }
+    body { font-size: 0.9em }
+    
+    .large-page-element, .small-page-element { display: none; }
     .tiny-page-element { display: block !important; }    
 
     .single-section-page, .multi-section-page {                    
