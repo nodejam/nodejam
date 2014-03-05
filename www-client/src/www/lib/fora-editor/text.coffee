@@ -11,9 +11,9 @@ class Text
         if @binding.type is 'text' and not @binding.multiline
             @element.attr 'spellcheck', false
         
-        @element.click @onFocus
+        @element.mousedown @onClick
+        @element.bind 'touchstart', @onClick
         @element.focus @onFocus             
-        @element.bind 'touch', @onFocus
         @element.blur @onBlur        
         @element.keydown @onKeydown
         @element.keyup @onKeyup
@@ -30,12 +30,23 @@ class Text
             @evalControlState()
             
     
+
+    onClick: =>
+        @focusReason = 'click'
+        
+        
     
     onFocus: =>
-        @state.event = "focus"
-        @state.empty = @isEmpty()
-        @evalControlState()
-        @binding.events?.focus? this, arguments
+        console.log "focused:" + Date.now()
+        #if this is already the active element, pretend nothing happened.
+        #This happens when the user clicks the same element with a mouse.
+        if this isnt @editor.activeControl
+            @editor.activeControl = this
+            @state.event = "focus"
+            @state.empty = @isEmpty()
+            @evalControlState()            
+            @binding.events?.focus? this, arguments
+            @focusReason = null
 
 
 
@@ -94,7 +105,9 @@ class Text
                     placeholder.addClass 'dim'         
                     @setCaretPosition 'start'       
             else
-                @selectText()
+                #If focus reason is click or touch, then we shouldn't select the text.
+                if @focusReason isnt 'click'
+                    @selectText()
 
             
         if @state.event is 'keypress'
