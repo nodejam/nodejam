@@ -22,12 +22,12 @@ class Login extends window.Fora.Views.BaseView
         @editor = new ForaEditor typeDefinition, { titles: "inline" }, "#create-user-form"
 
         #username
-        usernameRegex = new RegExp '^[A-Za-z][A-Za-z0-9]*$'
+        usernameRegex = new RegExp '^[A-Za-z][A-Za-z0-9_]*$'
         usernameValidate = (control) ->
             #alphabets and numbers only
             username = control.value()
             if username and not usernameRegex.test username
-                control.showMessage "alphabets and numbers only", "error"
+                control.showMessage "alphabets, numbers or underscores", "error"
             else
                 control.clearMessage()
                 
@@ -46,7 +46,7 @@ class Login extends window.Fora.Views.BaseView
             title: 'nickname', 
             placeholder: 'type a nickname', 
             events: { 
-                keypress: usernameValidate,
+                keyup: usernameValidate,
                 blur: usernameValidate
             } 
         } 

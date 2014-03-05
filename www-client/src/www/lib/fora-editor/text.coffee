@@ -7,11 +7,16 @@ class Text
 
     setup: =>
         @element.attr 'contenteditable', true
-
+        
+        if @binding.type is 'text' and not @binding.multiline
+            @element.attr 'spellcheck', false
+        
         @element.click @onFocus
         @element.focus @onFocus             
         @element.bind 'touch', @onFocus
         @element.blur @onBlur        
+        @element.keydown @onKeydown
+        @element.keyup @onKeyup
         @element.keypress @onKeypress
 
         @state = { 
@@ -31,6 +36,16 @@ class Text
         @state.empty = @isEmpty()
         @evalControlState()
         @binding.events?.focus? this, arguments
+
+
+
+    onKeydown: (e) =>
+        @binding.events?.keydown? this, arguments
+
+
+
+    onKeyup: (e) =>
+        @binding.events?.keyup? this, arguments
 
 
     
@@ -108,6 +123,7 @@ class Text
 
     showMessage: (msg, type) =>
         @clearMessage()
+        @element.addClass type
         @messageElement = $("<span class=\"editor-field-message #{type}\">#{msg}</span>")
         @editor.container.append @messageElement
         @messageElement.css {
@@ -118,6 +134,8 @@ class Text
 
 
     clearMessage: =>
+        for type in ['error', 'warn', 'success']
+            @element.removeClass type 
         @messageElement?.remove()
         @messageElement = null
 

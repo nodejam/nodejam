@@ -52,7 +52,7 @@
     
     button {
         .control (@colorNeutral, transparent, @colorBright);
-        &:hover { color: @colorDark; background-color: @colorBright; border-color: @colorBright }
+        &:hover, &:focus { color: @colorDark; background-color: @colorBright; border-color: @colorBright }
         &.positive { 
             color: @colorPositive; 
             &:hover { background-color: @colorLightPositive; border-color: @colorLightPositive }
@@ -195,7 +195,10 @@
         }
         
         .lined-fields {
-            > li, > p, > div { border-bottom: 2px dotted @colorBright }
+            > li, > p, > div { 
+                border-bottom: 2px dotted @colorBright;
+                &.error { border-bottom-color: @colorNegative }
+            }
         }    
         
     }

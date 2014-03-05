@@ -1,0 +1,72 @@
+/* Small Pages */
+.small-pages-common() {
+    .single-section-page, .multi-section-page {
+        margin-top: -64px; padding-top: 64px;
+
+        .main-pane {
+            .page-content-area(100%, 720px);
+        }                
+
+        .alt-pane { 
+            .page-content-area(100%, 720px);
+        }
+        
+        .auto-cover, .top-cover, .full-cover {
+            font-size: 0.9em;
+        }
+        
+        .auto-cover, .top-cover { 
+            height: 400px; position: relative;
+            .content-wrap {
+                position: absolute; bottom: 0px; padding: 0 0 16px 16px; max-width: 400px;                
+            }
+        }       
+    }
+}
+
+.small-pages(@minWidth) when (@minWidth >= 720) {      
+    .large-page-element, .tiny-page-element { display: none; }
+    .small-page-element { display: block !important; }    
+
+    .single-section-page, .multi-section-page {                
+        ul.cards {
+            &.float-layout {
+                > li {
+                    width: ((100 / floor((@minWidth - 40) / 300)) - 2) + 0%
+                }
+            }
+        }  
+    }
+ 
+    .spans(720);
+}
+
+.small-pages(@minWidth) when (@minWidth < 720) {  
+    body { font-size: 0.9em }
+    
+    .large-page-element, .small-page-element { display: none; }
+    .tiny-page-element { display: block !important; }    
+
+    .single-section-page, .multi-section-page {                    
+        ul.cards {
+            &.float-layout {
+                > li {
+                    width: 100%;
+                }
+            }
+        }  
+    }
+
+    .spans(0);
+}
+
+.small-pages(@minWidth) when (@minWidth < 480) {  
+    .single-section-page, .multi-section-page {                
+    
+        .inline-cover + .main-pane .content-area:first-child {
+            &.item {
+                padding: 20px 0;
+            }
+        }        
+    }   
+}

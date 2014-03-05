@@ -20,59 +20,45 @@
     </div>
     
     <div class="main-pane">
-        <div class="content-area item">
-
-            <div class="two-thirds-span">
-                {{#if users}}
-                <h2>Choose a persona</h2>
-                <ul class="selectable icon-block cells row-layout">
-                {{#each users}}
-                    <li>
-                        <div class="icon">
-                            <img class="seal upsize" src="{{image}}">
-                        </div>
-                        <div class="text content">
-                            <h3>{{name}}</h3>
-                            <p>{{about}}</p>
-                        </div>
-                    </li>
-                {{/each}}
-                </ul>
-                <h2>...or create another</h2>                    
-                {{else}}            
-                <h2>Create an identity...</h2>
-                {{/if}}
-                <div class="icon-block">
+        <div class="content-area item small">
+            {{#if users}}
+            <h2>Choose a persona</h2>
+            <ul class="selectable icon-block cells row-layout">
+            {{#each users}}
+                <li>
                     <div class="icon">
-                        <img class="seal upsize" src="/images/user-default_t.jpg"><br />
-                        <a href="#">change</a>
+                        <img class="seal upsize" src="{{image}}">
                     </div>
-                    <div id="create-user-form" class="text xupsize-text content">
-                        <ul class="lined-fields">
-                            <li class="username">
-                            </li>
-                            <li class="fullname">
-                            </li>
-                            <li class="about">
-                            </li>
-                        </ul>
-                        <p>
-                            <button class="create">Create</button>
-                        </p>
+                    <div class="text content">
+                        <h3>{{name}}</h3>
+                        <p>{{about}}</p>
                     </div>
-                </div>                
-            </div>
-            
-            <div class="content one-thirds-span fancy quote large-page-element small-page-element">
-                <p>
-                    <i class="fa fa-quote-left"></i> 
-                    On the internet, nobody knows you're a dog.
-                </p>
-                <p class="italics who">
-                    Peter Steiner, 1993<br /> 
-                    The New Yorker
-                </p>
-            </div>            
+                </li>
+            {{/each}}
+            </ul>
+            <h2>...or create another</h2>                    
+            {{else}}            
+            <h2>Create an identity...</h2>
+            {{/if}}
+            <div class="icon-block">
+                <div class="icon">
+                    <img class="seal upsize" src="/images/user-default_t.jpg"><br />
+                    <a href="#">change</a>
+                </div>
+                <div id="create-user-form" class="text xupsize-text content">
+                    <ul class="lined-fields">
+                        <li class="username">
+                        </li>
+                        <li class="fullname">
+                        </li>
+                        <li class="about">
+                        </li>
+                    </ul>
+                    <p>
+                        <button class="create">Create</button>
+                    </p>
+                </div>
+            </div>                                        
         </div>     
     </div>    
 </div>

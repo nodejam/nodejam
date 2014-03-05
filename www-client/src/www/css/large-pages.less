@@ -1,0 +1,201 @@
+/* Large Pages */
+.large-pages-common() {
+    .small-page-element, .tiny-page-element { display: none; }
+    .large-page-element { display: block !important; }
+
+    .auto-cover {
+        position: fixed; height: 100%; top: 0; right: 0;
+        .image {
+            > .underlay { width: 100%; position: fixed; height: 100%; }
+            > .content-wrap { 
+                left: 32px; bottom: 20px; position: absolute; width: 70%; max-width: 400px;
+            }
+        }
+    }    
+    
+    .top-cover { 
+        position: relative;
+
+        .content-wrap {
+            position: absolute; bottom: 0px; padding:0 0 32px 32px; max-width: 600px;                
+        }        
+    } 
+
+    .auto-cover+.main-pane {
+        > .nav:first-child { margin-left: 40px; }
+    }    
+
+    .spans(1200);
+}
+
+
+.large-page-type-common(@minWidth) {
+    ul.cards {
+        &.float-layout {
+            > li {
+                width: ((100 / floor((@minWidth - 160) / 300)) - 2) + 0%
+            }
+        }
+    }
+}
+
+
+.large-single-section-page-type(
+    @minWidth,
+    @contentAreaWidth,
+    @topCoverHeight, 
+    @autoCoverWidth
+) {
+    .single-section-page {
+
+        .set-font-size(@w) when (@w >= 1400) {
+            font-size: 1em;
+        }
+
+        .set-font-size(@w) when (@w < 1400) {
+            font-size: 0.9em;
+        }
+        
+        .set-font-size(@minWidth);
+
+        margin-top: -64px; padding-top: 64px;
+
+        /* Top and full covers have 100% main-pane width */
+        .top-cover, .full-cover {
+            + .main-pane { 
+                width: 100%;                
+                .page-content-area(@contentAreaWidth, 720px)
+            }
+        }              
+
+        .top-cover {
+            height: @topCoverHeight + 0px;
+        }
+        
+        .inline-cover {
+            width: @contentAreaWidth; max-width: 720px; 
+        }
+
+        /* Auto cover in large pages position on the side. Adjust main-pane width */
+        .auto-cover {
+            width: @autoCoverWidth; left: (100% - @autoCoverWidth); 
+            + .main-pane { 
+                width: (100% - @autoCoverWidth); 
+                .page-content-area((@contentAreaWidth * (@minWidth /  1400)), 720px)
+            }
+        }
+
+        .main-pane {
+            /* No cover. 100% main-page width */
+            &:first-child { 
+                width: 100%; 
+            }
+
+            .page-content-area(@contentAreaWidth, 720px);
+        }
+        
+        .large-page-type-common(@minWidth);
+        
+    }
+}
+
+
+.large-multi-section-page-type(
+    @minWidth,
+    @contentAreaWidth,
+    @altContentAreaWidth,
+    @topCoverHeight, 
+    @autoCoverWidth
+) {
+    .multi-section-page {
+
+        margin-top: -64px; padding-top: 64px;
+
+        .top-cover {
+            height: @topCoverHeight + 0px;
+        }
+        
+        .inline-cover {
+            width: @contentAreaWidth; max-width: 720px; 
+        }
+
+        .main-pane {
+            .page-content-area(@contentAreaWidth, 720px);
+        }                
+
+        .alt-pane { 
+            .page-content-area(@altContentAreaWidth, 720px);
+        }
+            
+        .large-page-type-common(@minWidth);
+    }
+}
+
+
+
+/* Large page guards */
+.large-pages(@minWidth) when (@minWidth >= 1720) {  
+    .large-single-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 720,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 50%
+    );
+    .large-multi-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 720,
+        @altContentAreaWidth: 720,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 50%
+    );
+}
+
+.large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {  
+    .large-single-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 720,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 40%
+    );
+    .large-multi-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 720,
+        @altContentAreaWidth: 520,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 40%
+    );
+}
+
+.large-pages(@minWidth) when (@minWidth >= 1200) and (@minWidth < 1400) {  
+    .large-single-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 720,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 40%
+    );
+    .large-multi-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 600,
+        @altContentAreaWidth: 400,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 40%
+    );
+}
+
+.large-pages(@minWidth) when (@minWidth < 1200) {  
+    .large-single-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 720,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 36%
+    );
+    .large-multi-section-page-type(
+        @minWidth,
+        @contentAreaWidth: 500,
+        @altContentAreaWidth: 300,
+        @topCoverHeight: 400px, 
+        @autoCoverWidth: 36%
+    );
+}
+
+
