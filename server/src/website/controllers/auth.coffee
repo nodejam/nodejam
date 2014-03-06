@@ -71,16 +71,22 @@ exports.twitterCallback = ->*
         
         if data.length and data[0]?
             twitterUser = parseTwitterResponse data[0]                                                                    
-            credential = yield models.Credential.get({ "twitter.id": db.getRowId(results.user) }, {}, db)        
+            credential = yield models.Credential.get({ "twitter.id": results.user_id }, {}, db)        
             
             if not credential
                 credential = new models.Credential()
                 credential = yield credential.addTwitter twitterUser.id, twitterUser.username, token.value.token, token.value.token_secret, {}, db                
 
+            userDetails = {
+                username: twitterUser.username,
+                name: twitterUser.name,
+                picture: twitterUser.pictureUrl
+            }
+            
             _token = new models.Token {
                 type: 'twitter-login-token',
                 key: utils.uniqueId(24),
-                value: { twitterUser }
+                value: { userDetails }
             }                                        
             _token = yield _token.save({}, db)
     

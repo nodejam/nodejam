@@ -81,7 +81,8 @@ class Text
 
 
     value: =>
-        @element.clone().children('.placeholder').remove().end().text().trim()
+        val = @element.clone().children('.placeholder').remove().end().text().trim()
+        val.replace /&nbsp;/, ''
         
 
 
@@ -93,9 +94,7 @@ class Text
     evalControlState: =>
         if @state.event is 'blur' 
             if @state.empty
-                @element.html "<span class=\"placeholder\">#{@binding.placeholder}</span>"
-            else
-                @element.find('.placeholder').removeClass 'dim'
+                @element.html "<span class=\"placeholder\"><span class=\"caret\">&nbsp;</span><span class=\"placeholder-text\">#{@binding.placeholder}</span>"
                 
         if @state.event is 'focus'
             if @state.empty
@@ -114,22 +113,23 @@ class Text
             
 
         if @editor.options.titles is "inline" and @binding.title
-            if @state.event is 'keypress' or @state.event is 'focus'
-                if not @titleElement
-                    @titleElement = $("<span class=\"editor-field-title\">#{@binding.title}</span>")
-                    @editor.container.append @titleElement
-                    @titleElement.css {
-                        left: @element.position().left + @element.outerWidth() - @titleElement.width(),
-                        top: @element.position().top + @element.height() - @titleElement.height()
-                    }
-                else                
-                    top = @element.position().top + @element.height() - @titleElement.height()        
-                    if @titleElement.position().top isnt top
-                        @titleElement.css { top }
-            else
+            if not (@state.event is 'keypress' or @state.event is 'focus')
                 if @state.empty
                     @titleElement?.remove()
                     @titleElement = null
+                    
+        if not @state.empty or (@state.event is 'keypress' or @state.event is 'focus')
+            if not @titleElement
+                @titleElement = $("<span class=\"editor-field-title\">#{@binding.title}</span>")
+                @editor.container.append @titleElement
+                @titleElement.css {
+                    left: @element.position().left + @element.outerWidth() - @titleElement.width(),
+                    top: @element.position().top + @element.height() - @titleElement.height()
+                }
+            else                
+                top = @element.position().top + @element.height() - @titleElement.height()        
+                if @titleElement.position().top isnt top
+                    @titleElement.css { top }
                 
                 
 
@@ -154,12 +154,13 @@ class Text
         
 
     setCaretPosition: (position) =>
-        range = document.createRange()
-        range.selectNodeContents(@element[0])
-        range.collapse position is 'start'
-        selection = window.getSelection()
-        selection.removeAllRanges()
-        selection.addRange(range);
+       setTimeout (=>
+            range = document.createRange()
+            range.selectNodeContents(@element[0])
+            range.collapse position is 'start'
+            selection = window.getSelection()
+            selection.removeAllRanges()
+            selection.addRange(range)), 0.2
 
     
     

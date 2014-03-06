@@ -48,8 +48,10 @@
                 <div id="create-user-form" class="text xupsize-text content">
                     <ul class="lined-fields">
                         <li class="username">
+                            {{#unless users}}{{userDetails.username}}{{/unless}}
                         </li>
                         <li class="fullname">
+                            {{#unless users}}{{userDetails.name}}{{/unless}}
                         </li>
                         <li class="about">
                         </li>

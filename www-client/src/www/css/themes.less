@@ -36,9 +36,12 @@
     }    
     
     /* CUSTOM */
-    .placeholder { 
-        color: @colorBrightNeutral; 
-        &.dim { color: @colorXBright } 
+    .placeholder {
+        .caret { color: @colorMaxDark }
+        .placeholder-text { color: @colorBrightNeutral; }
+        &.dim { 
+            .placeholder-text { color: @colorXBright }
+        }
     }
 
     /* FORM CONTROLS */
