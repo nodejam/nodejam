@@ -11,7 +11,7 @@ widgets = require '../../common/widgets'
 exports.index = auth.handler ->*
     featured = yield models.Forum.find({ network: @network.stub }, { sort: { 'stats.lastPost': -1 }, limit: 32 }, {}, db)
     for forum in featured
-        forum.summary = yield forum.getView("card")
+        forum.summary = yield forum.getView("card", {}, db)
     
     yield @renderPage 'forums/index', { 
         pageName: 'forums-page',

@@ -145,7 +145,7 @@ class Forum extends ForaDbModel
         
         
         
-    getView: (name) =>*
+    getView: (name, context, db) =>*
         switch name
             when 'card'
                 {
@@ -225,7 +225,7 @@ class Forum extends ForaDbModel
 
         if posts.length 
             for p in posts
-                @cache.posts.push yield p.getView("concise")
+                @cache.posts.push yield p.getView("concise", context, db)
 
             @stats.posts = yield models.Post.count({ 'forumId': db.getRowId(@) , state: 'published' }, context, db)
             @stats.lastPost = posts[0].savedAt
