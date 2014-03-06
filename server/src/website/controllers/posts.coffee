@@ -8,7 +8,7 @@ widgets = require '../../common/widgets'
 exports.item = auth.handler (forum, post) ->*
     forum = yield models.Forum.get({ stub: forum, network: @network.stub }, {}, db)
     if forum
-        post = yield models.Post.get({ 'forum.id': forum._id.toString(), stub: post }, {}, db)
+        post = yield models.Post.get({ 'forum.id': db.getRowId(forum), stub: post }, {}, db)
         if post
             author = yield models.User.getById post.createdBy.id, {}, db
 

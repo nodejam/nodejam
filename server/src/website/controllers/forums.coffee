@@ -25,14 +25,14 @@ exports.item = auth.handler (stub) ->*
     info = yield forum.link 'info'
 
     if forum
-        posts = yield forum.getPosts(12, { _id: -1 })
+        posts = yield forum.getPosts(12, db.setRowId({}, -1))
 
         for post in posts
             post.html = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
 
         options = {}
         if @session.user
-            membership = yield models.Membership.get { 'forum.id': forum._id.toString(), 'user.username': @session.user.username }, {}, db
+            membership = yield models.Membership.get { 'forum.id': db.getRowId(forum), 'user.username': @session.user.username }, {}, db
             if membership
                 options.isMember = true
                 options.primaryPostType = forum.postTypes[0]

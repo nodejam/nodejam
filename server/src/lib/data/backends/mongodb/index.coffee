@@ -12,7 +12,7 @@ class MongoDb
         if not @db
             client = new Mongo.Db(@conf.name, new Mongo.Server(@conf.host, @conf.port, {}), { safe: true })
             @db = yield thunkify(client.open).call client
-            @parser = new Parser(@typeDefinitions)
+            @parser = new Parser @typeDefinitions, @conf
         @db
 
 

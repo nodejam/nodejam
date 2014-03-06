@@ -81,6 +81,7 @@ init = ->*
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
 
+            forums = {}
             for forum in data.forums
                 token = _globals.sessions[forum._createdBy].token
                 utils.log "Creating a new forum #{forum.name} with token #{token}...."
@@ -94,11 +95,12 @@ init = ->*
                 forum.posttypes = "article/1.0,events/1.0"
                 resp = yield _doHttpRequest "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
                 forumJson = JSON.parse resp
+                forums[forumJson.stub] = forumJson
                 utils.log "Created #{forumJson.name}"
                 
                 for u, uToken of _globals.sessions
                     if uToken.token isnt token
-                        resp = yield _doHttpRequest "/api/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
+                        resp = yield _doHttpRequest "/api/forums/#{forumJson._id}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
                         resp = JSON.parse resp
                         utils.log "#{u} joined #{forum.name}"
             
@@ -112,8 +114,7 @@ init = ->*
                 article.content_text = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
                 article.content_format = 'markdown'
                 article.state = 'published'
-                forum = article._forum
-                
+                forum = forums[article._forum]._id
                 meta = article._meta
                             
                 delete article._forum

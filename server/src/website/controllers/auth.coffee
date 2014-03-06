@@ -71,7 +71,7 @@ exports.twitterCallback = ->*
         
         if data.length and data[0]?
             twitterUser = parseTwitterResponse data[0]                                                                    
-            credential = yield models.Credential.get({ "twitter.id": results.user_id }, {}, db)        
+            credential = yield models.Credential.get({ "twitter.id": db.getRowId(results.user) }, {}, db)        
             
             if not credential
                 credential = new models.Credential()

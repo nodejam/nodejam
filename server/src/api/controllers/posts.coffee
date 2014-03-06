@@ -7,7 +7,8 @@ auth = require '../../common/web/auth'
 
 
 exports.create = auth.handler { session: true }, (forum) ->*
-    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
+    query = db.setRowId { network: @network.stub }, forum
+    forum = yield models.Forum.get query, { user: @session.user }, db
 
     post = yield models.Post.create {
         type: yield @parser.body('type'),
@@ -25,8 +26,10 @@ exports.create = auth.handler { session: true }, (forum) ->*
 
 
 exports.edit = auth.handler { session: true }, (forum, post) ->*
-    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-    post = yield models.Post.getById(post, { user: @session.user }, db)
+    query = db.setRowId { network: @network.stub }, forum
+    forum = yield models.Forum.get query, { user: @session.user }, db
+
+    post = yield models.Post.getById post, { user: @session.user }, db
     
     if post
         if (post.createdBy.username is @session.user.username) 
@@ -76,20 +79,6 @@ exports.remove = auth.handler { session: true }, (post) ->*
                  
 
         
-exports.addComment = auth.handler { session: true }, (id) ->*
-    contentType = forum.settings?.comments?.contentType ? 'text'
-    if contentType is 'text'
-        post = yield models.Post.getById(id, { user: @session.user }, db)
-        comment = new models.Comment()
-        comment.createdBy = @session.user
-        comment.forum = forum.stub
-        comment.itemid = post._id.toString()
-        comment.data = yield @parser.body('data')
-        comment = yield comment.save({ user: @session.user }, db)
-        this.body = comment
-
-
-
 #Admin Features
 exports.admin_update = auth.handler { admin: true }, (id) ->*
     post = yield models.Post.getById(id, { user: @session.user }, db)

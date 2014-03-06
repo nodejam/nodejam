@@ -6,11 +6,14 @@
     TODO: Warn when queries are not operating on indexes by checking typeDefinitions
 ###
 
+Mongo = require 'mongodb'
+
 class MongoDbQueryParser
 
-    constructor: (@typeDefinitions) ->
-        
+    constructor: (@typeDefinitions, @conf) ->
+        @rowId = @conf.rowId ? "_id"
     
+
 
     parse: (node = {}, typeDefinition) =>
         @visit_NODE node, {}, []
@@ -42,8 +45,7 @@ class MongoDbQueryParser
     ###
         The value part of a field can be
         A value; eg: { username: 'jeswin' }
-    ###
-    
+    ###    
     visit_FIELD: (k, current, parents) =>
         @visit_NODE current[k], current, parents
         

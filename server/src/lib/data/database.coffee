@@ -11,7 +11,7 @@ class Database
             when 'mongodb'
                 Parser = require('./backends/mongodb')
                 @db = new Parser @conf, @typeDefinitions
-
+                @rowId = @conf.rowId ? '_id'
 
 
     getDb: =>*
@@ -58,13 +58,23 @@ class Database
         yield @db.deleteDatabase()    
 
 
+
     setupIndexes: =>*
         yield @db.setupIndexes()
         
+    
+    
+    getRowId: (obj) =>
+        obj[@rowId]?.toString()
         
-                    
-    ObjectId: (id) =>
-        @db.ObjectId(id)
-
-
+        
+    
+    setRowId: (obj, val) =>
+        if val
+            if typeof val is 'string'
+                val = @db.ObjectId val
+            obj[@rowId] = val
+        return obj
+        
+    
 module.exports = Database

@@ -37,7 +37,6 @@ class Text
         
     
     onFocus: =>
-        console.log "focused:" + Date.now()
         #if this is already the active element, pretend nothing happened.
         #This happens when the user clicks the same element with a mouse.
         if this isnt @editor.activeControl

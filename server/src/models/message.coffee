@@ -62,7 +62,7 @@ class Message extends ForaDbModel
                                 verb: "published",
                                 object: {
                                     name: @data.post.title,
-                                    link: "/#{@data.post.forum.stub}/#{@data.post._id}"
+                                    link: "/#{@data.post.forum.stub}/#{db.getRowId(@data.post)}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }                   

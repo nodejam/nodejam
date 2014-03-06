@@ -122,7 +122,7 @@ class Forum extends ForaDbModel
     
     save: (context, db) =>*
         { context, db } = @getContext context, db
-        if not @_id
+        if not db.getRowId(@)
             @stats = new Stats {
                 posts: 0,
                 members: 1,
@@ -134,9 +134,9 @@ class Forum extends ForaDbModel
 
 
         
-    summarize: =>        
+    summarize: (context, db) =>        
         summary = new Summary {
-            id: @_id.toString(),
+            id: db.getRowId(@),
             network: @network,
             name: @name,
             stub: @stub,
@@ -149,7 +149,7 @@ class Forum extends ForaDbModel
         switch name
             when 'card'
                 {
-                    id: @_id.toString()
+                    id: db.getRowId(@)
                     @network,
                     @name,
                     @description,
@@ -172,26 +172,26 @@ class Forum extends ForaDbModel
         
     addPost: (post, context, db) =>*
         { context, db } = @getContext context, db
-        post.forumId = @_id.toString()
-        post.forum = @summarize()
+        post.forumId = db.getRowId(@)
+        post.forum = @summarize context, db
         yield post.save context, db
         
 
 
     getPosts: (limit, sort, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Post.find({ 'forumId': @_id.toString(), state: 'published' },  { sort, limit }, context, db)
+        yield models.Post.find({ 'forumId': db.getRowId(@), state: 'published' },  { sort, limit }, context, db)
         
 
     
     addRole: (user, role, context, db) =>*
         { context, db } = @getContext context, db
         
-        membership = yield models.Membership.get { 'forumId': @_id.toString(), 'user.username': user.username }, context, db
+        membership = yield models.Membership.get { 'forumId': db.getRowId(@), 'user.username': user.username }, context, db
         if not membership
             membership = new (models.Membership) {
-                forumId: @_id.toString(),
-                forum: @summarize(),
+                forumId: db.getRowId(@),
+                forum: @summarize(context, db),
                 userId: user.id,
                 user,
                 roles: [role]
@@ -206,7 +206,7 @@ class Forum extends ForaDbModel
     removeRole: (user, role, context, db) =>*
         { context, db } = @getContext context, db
         
-        membership = yield models.Membership.get { 'forumId': @_id.toString(), 'user.username': user.username }, context, db
+        membership = yield models.Membership.get { 'forumId': db.getRowId(@), 'user.username': user.username }, context, db
         membership.roles = (r for r in membership.roles when r isnt role)
         yield if membership.roles.length then membership.save() else membership.destroy()
                 
@@ -214,20 +214,20 @@ class Forum extends ForaDbModel
                                 
     getMemberships: (roles, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Membership.find { 'forumId': @_id.toString(), roles: { $in: roles } }, { sort: { id: -1 }, limit: 200 }, context, db
+        yield models.Membership.find { 'forumId': db.getRowId(@), roles: { $in: roles } }, { sort: { id: -1 }, limit: 200 }, context, db
         
       
             
     refreshCache: (context, db) =>*
         { context, db } = @getContext context, db
-        posts = yield @getPosts 10, { _id: -1 }, context, db
+        posts = yield @getPosts 10, db.setRowId({}, -1), context, db
         @cache = { posts: [] }
 
         if posts.length 
             for p in posts
                 @cache.posts.push yield p.getView("concise")
 
-            @stats.posts = yield models.Post.count({ 'forumId': @_id.toString() , state: 'published' }, context, db)
+            @stats.posts = yield models.Post.count({ 'forumId': db.getRowId(@) , state: 'published' }, context, db)
             @stats.lastPost = posts[0].savedAt
             yield @save context, db
 

@@ -69,7 +69,7 @@ class User extends ForaDbModel
     save: (context, db) =>*
         { context, db } = @getContext context, db
         
-        if not @_id
+        if not db.getRowId(@)
             existing = yield User.get { @username }, context, db
             if not existing
                 @assets = "#{utils.getHashCode(@username) % conf.userDirCount}"
@@ -84,20 +84,20 @@ class User extends ForaDbModel
 
 
 
-    createSession: (context, db) =>*
-        session = new models.Session { 
-            credentialId: @credentialId, 
-            token: utils.uniqueId(24) 
-        }    
-        session.userId = @_id.toString()        
-        session.user = @summarize()
+    #Upgrades a credential token to a user token. 
+    #User tokens can be used to login to the app.
+    upgradeSession: (session, context, db) =>*        
+        { context, db } = @getContext context, db        
+        session.token = utils.uniqueId(24) 
+        session.userId = db.getRowId(@)
+        session.user = @summarize context, db
         yield session.save context, db
 
                   
                                                             
     getPosts:(limit, sort, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Post.find({ 'createdById': @_id.toString(), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+        yield models.Post.find({ 'createdById': db.getRowId(@), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
     
     
     
@@ -111,9 +111,9 @@ class User extends ForaDbModel
 
 
 
-    summarize: =>
+    summarize: (context, db) =>
         new Summary {
-            id: @_id.toString(),
+            id: db.getRowId(@),
             @username,
             @name,
             @assets

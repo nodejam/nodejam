@@ -35,7 +35,7 @@ exports.selectUsername = ->*
     result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
     if result?.success isnt false
         res.clearCookie "twitter_oauth_process_key"
-        res.cookie "userId", result.user._id.toString()
+        res.cookie "userId", db.getRowId(result.user)
         res.cookie "username", result.user.username
         res.cookie "fullName", result.user.name
         res.cookie "assets", result.user.assets
@@ -52,7 +52,7 @@ exports.item = auth.handler (username) ->*
     user = yield models.User.get { username }, {}, db
     
     if user
-        posts = yield user.getPosts 12, { _id: -1 }
+        posts = yield user.getPosts 12, db.setRowId({}, -1)
         
         for post in posts
             template = widgets.parse yield post.getTemplate 'card'

@@ -75,6 +75,17 @@ class Credential extends ForaDbModel
                 ['Invalid email']            
     }
     
+
+
+    #Create a credential token.
+    #This can be used to upgrade to a user token, which is then used for login.
+    createSession: (context, db) =>*
+        session = new models.Session { 
+            credentialId: db.getRowId(@), 
+            token: utils.uniqueId(24) 
+        }    
+        yield session.save context, db
+
     
     
     addBuiltin: (username, password, context, db) =>*

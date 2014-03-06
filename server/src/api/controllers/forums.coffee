@@ -25,7 +25,7 @@ exports.create = auth.handler { session: true }, ->*
         yield forum.addRole @session.user, 'admin'
         
         info = new models.ForumInfo {
-            forumId: forum._id.toString(),
+            forumId: db.getRowId(forum),
             message: yield @parser.body('message'),
             about: yield @parser.body('about')
         }
@@ -34,8 +34,9 @@ exports.create = auth.handler { session: true }, ->*
 
 
                 
-exports.edit = auth.handler { session: true }, (stub) ->*
-    forum = yield models.Forum.get({ stub, network: @network.stub }, { user: @session.user }, db)
+exports.edit = auth.handler { session: true }, (forum) ->*
+    query = db.setRowId({ network: @network.stub }, forum)
+    forum = yield models.Forum.get query, { user: @session.user }, db
     if (@session.user.username is forum.createdBy.username) or @session.admin
         forum.description = yield @parser.body('description')
         yield @parser.map forum, ['description', 'postTypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']     
@@ -43,21 +44,12 @@ exports.edit = auth.handler { session: true }, (stub) ->*
         this.body = forum
     else
         throw new Error "Access denied"
-                    
-          
-                    
-exports.remove = auth.handler { session: true }, (stub) ->*
-    forum = yield models.Forum.get({ stub, network: @network.stub }, { user: @session.user }, db)
-    if @session.admin
-        yield forum.destroy()
-        this.body = { success: true }
-    else
-        throw new Error "Access denied"
 
 
 
-exports.join = auth.handler { session: true }, (stub) ->*
-    forum = yield models.Forum.get({ stub, network: @network.stub }, { user: @session.user }, db)
+exports.join = auth.handler { session: true }, (forum) ->*
+    query = db.setRowId({ network: @network.stub }, forum)
+    forum = yield models.Forum.get query, { user: @session.user }, db
     yield forum.join @session.user
     this.body = { success: true }
                         
