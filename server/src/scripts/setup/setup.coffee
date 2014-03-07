@@ -64,18 +64,8 @@ init = ->*
 
                 resp = yield _doHttpRequest '/api/v1/credentials', querystring.stringify(cred), 'post'            
                 token = JSON.parse(resp).token
-                
-                user = {
-                    username: user.username,
-                    name: user.name,
-                    email: user.email,
-                    location: user.location,
-                    picture: user.picture,
-                    thumbnail: user.thumbnail,
-                    about: user.about,
-                    token
-                }
-                
+
+                user.token = token                
                 resp = yield _doHttpRequest '/api/v1/users', querystring.stringify(user), 'post'            
                 resp = JSON.parse resp       
                 utils.log "Created #{resp.username}"

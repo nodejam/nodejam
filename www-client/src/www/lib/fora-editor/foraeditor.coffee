@@ -35,7 +35,7 @@ class ForaEditor
         
 
     getRandomElementId: =>
-        "e#{Fora.uniqueId()}"
+        "e#{@uniqueId()}"
 
 
 
@@ -45,10 +45,10 @@ class ForaEditor
         control = switch binding.type
             when 'text'
                 ForaEditor.Text 
+            when 'image'
+                ForaEditor.Image
             when 'selectable'
                 ForaEditor.Selectable
-            when 'cover'
-                ForaEditor.Cover
                 
         new control elem, fieldName, fieldProperties, binding, this
     
@@ -61,4 +61,15 @@ class ForaEditor
 
         return obj
         
+        
+        
+    uniqueId: (length = 16) =>
+      id = ""
+      id += Math.random().toString(36).substr(2) while id.length < length
+      id.substr 0, length     
+         
+         
+                     
 window.ForaEditor = ForaEditor
+
+

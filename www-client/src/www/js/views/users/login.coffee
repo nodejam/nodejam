@@ -78,10 +78,10 @@ class Login extends window.Fora.Views.BaseView
         } 
         
         #profile picture
-        imageControl = {
-            element: '.profile-pic',
+        imageControl = @editor.addBinding 'image', {
             uploadUrl: '',
-            
+            events: {
+            }            
         }
         
         

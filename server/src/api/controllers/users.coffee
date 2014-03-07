@@ -19,8 +19,10 @@ exports.create = auth.handler ->*
             credentialId: session.credentialId,
             name: yield @parser.body('name'),
             location: yield @parser.body('location'),
-            picture: yield @parser.body('picture'),
-            thumbnail: yield @parser.body('thumbnail'),
+            picture: {
+                src: yield @parser.body('picture_src'),
+                small: yield @parser.body('picture_small'),
+            },
             email: (yield @parser.body('email') ? 'unknown@foraproject.org'),
             about: yield @parser.body('about')
             lastLogin: Date.now(),

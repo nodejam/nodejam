@@ -43,7 +43,7 @@ typeUtils = require('../models/foratypeutils').typeUtils
     app.use route.post '/api/v1/forums/:forum', m_posts.create
     app.use route.put '/api/v1/forums/:forum/posts/:post', m_posts.edit
 
-    app.use route.post '/api/v1/image', m_images.upload
+    app.use route.post '/api/v1/images', m_images.upload
 
     app.use route.put "/api/v1/admin/posts/:id", m_posts.admin_update
 
