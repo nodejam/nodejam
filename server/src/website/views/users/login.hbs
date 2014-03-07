@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    new Fora.Views.Users.Login();
+    new Fora.Views.Users.Login("{{token}}");
 </script>
 
 <div class="single-section-page">
@@ -11,7 +11,7 @@
                 
                 <div class="content" style="">
                 <p>
-                    &ldquo;Lorem ipsum dollar generator.&rdquo;
+                    &ldquo;On the Internet, nobody knows you're a dog.&rdquo;
                 </p>
                 </div>
                 
@@ -47,11 +47,9 @@
                 </div>
                 <div id="create-user-form" class="text xupsize-text content">
                     <ul class="lined-fields">
-                        <li class="username">
-                            {{#unless users}}{{userDetails.username}}{{/unless}}
+                        <li class="username" data-suggestion="{{nickname}}">
                         </li>
                         <li class="fullname">
-                            {{#unless users}}{{userDetails.name}}{{/unless}}
                         </li>
                         <li class="about">
                         </li>

@@ -62,7 +62,7 @@ init = ->*
                         cred.accessTokenSecret = user.credential_accessTokenSecret
                         cred.email = user.email
 
-                resp = yield _doHttpRequest '/api/credentials', querystring.stringify(cred), 'post'            
+                resp = yield _doHttpRequest '/api/v1/credentials', querystring.stringify(cred), 'post'            
                 token = JSON.parse(resp).token
                 
                 user = {
@@ -76,7 +76,7 @@ init = ->*
                     token
                 }
                 
-                resp = yield _doHttpRequest '/api/users', querystring.stringify(user), 'post'            
+                resp = yield _doHttpRequest '/api/v1/users', querystring.stringify(user), 'post'            
                 resp = JSON.parse resp       
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
@@ -93,14 +93,14 @@ init = ->*
                     forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'                    
                 delete forum._about
                 forum.posttypes = "article/1.0,events/1.0"
-                resp = yield _doHttpRequest "/api/forums?token=#{token}", querystring.stringify(forum), 'post'
+                resp = yield _doHttpRequest "/api/v1/forums?token=#{token}", querystring.stringify(forum), 'post'
                 forumJson = JSON.parse resp
                 forums[forumJson.stub] = forumJson
                 utils.log "Created #{forumJson.name}"
                 
                 for u, uToken of _globals.sessions
                     if uToken.token isnt token
-                        resp = yield _doHttpRequest "/api/forums/#{forumJson._id}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
+                        resp = yield _doHttpRequest "/api/v1/forums/#{forumJson._id}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
                         resp = JSON.parse resp
                         utils.log "#{u} joined #{forum.name}"
             
@@ -123,12 +123,12 @@ init = ->*
                 delete article._meta
                 
                 
-                resp = yield _doHttpRequest "/api/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'            
+                resp = yield _doHttpRequest "/api/v1/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'            
                 resp = JSON.parse resp
                 utils.log "Created #{resp.title} with id #{resp._id}"
                 
                 for metaTag in meta.split(',')
-                    resp = yield _doHttpRequest "/api/admin/posts/#{resp._id}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'        
+                    resp = yield _doHttpRequest "/api/v1/admin/posts/#{resp._id}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'        
                     resp = JSON.parse resp
                     utils.log "Added #{metaTag} tag to article #{resp.title}."
                     

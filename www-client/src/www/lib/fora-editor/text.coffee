@@ -8,7 +8,7 @@ class Text
     setup: =>
         @element.attr 'contenteditable', true
         
-        if @binding.type is 'text' and not @binding.multiline
+        if not @binding.multiline
             @element.attr 'spellcheck', false
         
         @element.mousedown @onClick
@@ -24,10 +24,7 @@ class Text
             empty: @isEmpty()
         }
 
-        if @binding.type is 'html'
-             new MediumEditor @element
-        else    
-            @evalControlState()
+        @evalControlState()
             
     
 
@@ -60,10 +57,9 @@ class Text
 
     
     onKeypress: (e) =>        
-        if @binding.type is 'text'
-            if not @binding.multiline
-                if e.keyCode is 13
-                    return e.preventDefault()
+        if not @binding.multiline
+            if e.keyCode is 13
+                return e.preventDefault()
     
         @state.event = "keypress"        
         @state.empty = false
@@ -176,5 +172,7 @@ class Text
                 range = document.body.createTextRange()
                 range.moveToElementText(@element[0])
                 range.select()), 0.2
-                        
+                
+                
+
 window.ForaEditor.Text = Text

@@ -64,7 +64,7 @@
         .top-cover, .full-cover {
             + .main-pane { 
                 width: 100%;                
-                .page-content-area(@contentAreaWidth, 720px)
+                .page-content-area(100%, 720px)
             }
         }              
 
@@ -81,7 +81,7 @@
             width: @autoCoverWidth; left: (100% - @autoCoverWidth); 
             + .main-pane { 
                 width: (100% - @autoCoverWidth); 
-                .page-content-area((@contentAreaWidth * (@minWidth /  1400)), 720px)
+                .page-content-area(100%, 720px)
             }
         }
 
@@ -91,7 +91,7 @@
                 width: 100%; 
             }
 
-            .page-content-area(@contentAreaWidth, 720px);
+            .page-content-area(100%, 720px);
         }
         
         .large-page-type-common(@minWidth);

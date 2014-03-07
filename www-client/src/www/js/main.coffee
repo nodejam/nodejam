@@ -90,10 +90,14 @@ class App
     loadScript: (src) =>
         $('head').append "<script src=\"#{src}\"></script>"        
 
+
+    
+    api: (url, settings) =>
+        url = "/api/v1/" + url
+        $.ajax url, settings
+    
+
 window.app = new App
-
-
-
 
 
 

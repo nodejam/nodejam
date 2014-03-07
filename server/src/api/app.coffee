@@ -31,21 +31,21 @@ typeUtils = require('../models/foratypeutils').typeUtils
     m_posts = require './controllers/posts'
     m_images = require './controllers/images'
 
-    app.use route.get '/api/healthcheck', -> this.body { jacksparrow: "alive" }
+    app.use route.get '/api/v1/healthcheck', -> this.body { jacksparrow: "alive" }
 
-    app.use route.post '/api/credentials', m_credentials.create
+    app.use route.post '/api/v1/credentials', m_credentials.create
 
-    app.use route.post '/api/users', m_users.create
-    app.use route.get '/api/users/:username', m_users.item
+    app.use route.post '/api/v1/users', m_users.create
+    app.use route.get '/api/v1/users/:username', m_users.item
 
-    app.use route.post '/api/forums', m_forums.create
-    app.use route.post '/api/forums/:forum/members', m_forums.join
-    app.use route.post '/api/forums/:forum', m_posts.create
-    app.use route.put '/api/forums/:forum/posts/:post', m_posts.edit
+    app.use route.post '/api/v1/forums', m_forums.create
+    app.use route.post '/api/v1/forums/:forum/members', m_forums.join
+    app.use route.post '/api/v1/forums/:forum', m_posts.create
+    app.use route.put '/api/v1/forums/:forum/posts/:post', m_posts.edit
 
-    app.use route.post '/api/image', m_images.upload
+    app.use route.post '/api/v1/image', m_images.upload
 
-    app.use route.put "/api/admin/posts/:id", m_posts.admin_update
+    app.use route.put "/api/v1/admin/posts/:id", m_posts.admin_update
 
     #Start
     app.listen port

@@ -10,7 +10,7 @@ class ForaEditor
     addBinding: (fieldName, binding) =>
         elem = @container.find binding.element
         control = @bind elem, fieldName, @typeDef.schema.properties[fieldName], binding
-        elem.data control
+        elem.data 'control', control
         @editedElements.push elem
         return control
         
@@ -43,7 +43,7 @@ class ForaEditor
         binding.type ?= "text"
         
         control = switch binding.type
-            when 'text', 'html'
+            when 'text'
                 ForaEditor.Text 
             when 'selectable'
                 ForaEditor.Selectable
@@ -54,4 +54,11 @@ class ForaEditor
     
 
 
+    value: (obj = {}) =>
+        for elem in @editedElements
+            control = elem.data('control')
+            obj[control.fieldName] = control.value()
+
+        return obj
+        
 window.ForaEditor = ForaEditor

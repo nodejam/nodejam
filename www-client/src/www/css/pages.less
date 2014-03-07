@@ -1,6 +1,6 @@
-.page-content-area(@contentAreaWidth, @maxWidth) {
+.page-content-area(@contentAreaWidth, @maxContentAreaWidth) {
     .content-area {
-        width: @contentAreaWidth + 0px; max-width: @maxWidth; margin: auto; line-height: 1.6em;
+        width: @contentAreaWidth; max-width: @maxContentAreaWidth; margin: auto; line-height: 1.6em;
         &.wide {
             width: 100%; max-width: 100%;
         }
@@ -77,8 +77,8 @@
     .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
         .content-area:first-child {
             &.item {
-                font-size: 0.9em; padding: 20px 32px 20px 24px; box-sizing: border-box; -moz-box-sizing: border-box; 
-                &.small { max-width: 480px; }
+                font-size: 0.9em; padding: 20px 32px; box-sizing: border-box; -moz-box-sizing: border-box; 
+                &.small { max-width: 480px; padding: 20px 32px 20px 24px; }
             }            
         }
     }    

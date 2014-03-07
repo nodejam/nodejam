@@ -18,10 +18,14 @@ exports.loginForm = ->*
         for user in users
             user.image = user.getAssetUrl() + "/" + user.username + "_t.jpg"
         
+        if not users.length
+            nickname = token.value.userDetails.username
+        
         yield @renderPage 'users/login', {
             pageName: 'login-page', 
             users,
-            userDetails: token.value.userDetails
+            nickname,
+            token: token.key
         }
         
         yield token.destroy()
