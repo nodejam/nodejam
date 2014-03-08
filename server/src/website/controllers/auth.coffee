@@ -90,6 +90,7 @@ exports.twitterCallback = ->*
             }                                        
             _token = yield _token.save({}, db)
     
+            @cookies.set 'twitter_oauth_process_key', ''
             @redirect "/users/login?token=#{_token.key}"
             
         else

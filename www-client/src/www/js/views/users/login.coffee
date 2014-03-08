@@ -15,7 +15,8 @@ class Login extends window.Fora.Views.BaseView
                 properties: {
                     username: { type: 'string', maxLength: 20 }                        
                     name: { type: 'string', maxLength: 20, pattern: '' }                        
-                    about: { type: 'string', maxLength: 20, pattern: '' }                        
+                    about: { type: 'string', maxLength: 20, pattern: '' }
+                    picture: { type: 'image' }                        
                 }
             }
         }
@@ -78,9 +79,13 @@ class Login extends window.Fora.Views.BaseView
         } 
         
         #profile picture
-        imageControl = @editor.addBinding 'image', {
-            uploadUrl: '',
+        imageControl = @editor.addBinding 'picture', {
+            type: 'image',
+            element: '.picture',
+            uploadUrl: app.apiUrl('images?src_size=192x192&small_size=96x96'),
             events: {
+                change: (control, data) ->
+                    alert JSON.stringify data
             }            
         }
         

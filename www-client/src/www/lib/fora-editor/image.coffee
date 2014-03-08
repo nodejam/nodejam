@@ -6,20 +6,27 @@ class Image
 
 
     setup: =>
+        @element.css { cursor: 'pointer' }
+        @element.click => @uploadImage @change
+        
+        
+    
+    change: (src, small) =>
+        @binding.events?.change? this, { src, small }
         
 
 
     #uploads an image, takes a callback
-    uploadImage = (fn) ->
+    uploadImage: (fn) =>
         frameId = @editor.uniqueId()
 
         form = $ "
-            <form style=\"display:none;width:0;height:0\" enctype=\"multipart/form-data\" action=\"/api/images\" target=\"#{frameId}\" method=\"POST\" style=\"display:none\">
+            <form style=\"display:none;width:0;height:0\" enctype=\"multipart/form-data\" action=\"#{@binding.uploadUrl}\" target=\"#{frameId}\" method=\"POST\" style=\"display:none\">
                 <input name=\"file\" type=\"file\" />
                 <iframe name=\"#{frameId}\"></iframe>
             </form>"
         
-        $('body').append formId
+        $('body').append form
         
         form.find("input").change ->
             if form.find("input").val()

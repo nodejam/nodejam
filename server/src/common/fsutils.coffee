@@ -3,9 +3,6 @@ fs = require 'fs'
 utils = require '../lib/utils'
 conf = require '../conf'
 
-conf = ->
-    require '../conf'
-
 
 dirsAreValid = (dirs) ->
     regex = /[a-zA-z0-9][a-zA-z0-9\-]*/
@@ -24,17 +21,17 @@ filenameIsValid = (file) ->
 getDirPath = (dirs, options) ->
     if ['assets', 'images', 'originalimages'].indexOf(dirs[0]) > -1
         if dirsAreValid(dirs)
-            path.join.apply null, [conf().pubdir].concat dirs        
+            path.join.apply null, [conf.pubdir].concat dirs        
         else
-            console.log "Invalid directory"
+            utils.log "Invalid directory"
     else
-        console.log "dir[0] must be one of assets, images or originalimages"
+        utils.log "dir[0] must be one of assets, images or originalimages"
 
 
 getRandomFilePath = (file, dirs, options) ->
-    random = Date.now() % conf.userDirCount
+    random = (Date.now() % conf.userDirCount).toString()
     if ['assets', 'images', 'originalimages'].indexOf dirs[0] > -1 and dirsAreValid(dirs) and filenameIsValid(file)
-        path.join.apply null, [conf().pubdir].concat(dirs).concat(file)
+        path.join.apply null, [conf.pubdir].concat(dirs).concat [random, file]
         
 
 copyFile = (src, dest, cb) ->

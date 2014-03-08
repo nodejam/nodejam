@@ -91,6 +91,11 @@ class App
         $('head').append "<script src=\"#{src}\"></script>"        
 
 
+
+    apiUrl: (url) =>
+        "/api/v1/" + url
+        
+        
     
     api: (url, settings) =>
         url = "/api/v1/" + url

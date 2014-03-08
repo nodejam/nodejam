@@ -16,14 +16,11 @@ class RequestParser
 
 
     
-    init: ->*
-        if not initted
-            @rawBody = yield body @ctx
-            initted = true            
-    
-    
-    
     body: (name, def = { type: 'string' }) =>*
+        if not @initted
+            @rawBody = yield body @ctx
+            @initted = true            
+
         if typeof def is 'string'
             def = { type: def }
         value = @rawBody[name]
@@ -44,7 +41,6 @@ class RequestParser
 
 
     map_impl: (target, whitelist, options, parents) =>*
-        @init()
         typeDef = yield target.getTypeDefinition()     
         for fieldName, def of typeDef.schema.properties
             fieldWhiteList = (a for a in whitelist when a[0] is fieldName)        

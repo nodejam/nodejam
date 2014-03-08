@@ -12,7 +12,6 @@ for p in ['assets', 'images', 'originalimages']
     for i in [0..999] by 1
         do (p, i) ->
             newPath = fsutils.getDirPath [p, i.toString()]
-            console.log newPath
             fs.exists newPath, (exists) ->
                 if not exists
                     fs.mkdir newPath, ->

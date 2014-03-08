@@ -7,7 +7,6 @@ module.exports = (app) ->
 
         if @method is 'POST' or @method is 'PUT' or @method is 'PATCH'
             @parser =  new parser.RequestParser(@, typeUtils)
-            yield @parser.init()
 
         network = (n for n in conf.networks when n.domains.indexOf(@host) isnt -1)
         if network.length
