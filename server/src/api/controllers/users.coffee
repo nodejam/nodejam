@@ -7,48 +7,39 @@ utils = require '../../lib/utils'
 auth = require '../../common/web/auth'
 
     
-exports.create = auth.handler ->*
+exports.create = auth.handler { session: 'credential' }, ->*
 
-    token = yield @parser.body('token')
-    session = yield models.Session.get { token }, {}, db
+    user = new models.User {
+        username: yield @parser.body('username'),
+        credentialId: @session.credentialId,
+        name: yield @parser.body('name'),
+        location: yield @parser.body('location'),
+        picture: {
+            src: yield @parser.body('picture_src'),
+            small: yield @parser.body('picture_small'),
+        },
+        email: (yield @parser.body('email') ? 'unknown@foraproject.org'),
+        about: yield @parser.body('about')
+        lastLogin: Date.now(),
+    }
 
-    if session
+    user = yield user.save {}, db
+    @body = user.summarize {}, db
 
-        user = new models.User {
-            username: yield @parser.body('username'),
-            credentialId: session.credentialId,
-            name: yield @parser.body('name'),
-            location: yield @parser.body('location'),
-            picture: {
-                src: yield @parser.body('picture_src'),
-                small: yield @parser.body('picture_small'),
-            },
-            email: (yield @parser.body('email') ? 'unknown@foraproject.org'),
-            about: yield @parser.body('about')
-            lastLogin: Date.now(),
-        }
+
+
+exports.login = auth.handler { session: 'credential' }, ->*
+    session = yield @session.upgrade yield @parser.body('username')
     
-        user = yield user.save {}, db
-        @body = user.summarize {}, db
-        
-
-
-exports.login = auth.handler ->*    
-    token = yield @parser.body('token')    
+    user = session.user
+    user.token = session.token
     
-    session = yield models.Session.get { token }, {}, db
-    if session
-        session = yield session.upgrade yield @parser.body('username')
-        
-        user = session.user
-        user.token = session.token
-        
-        @cookies.set "userId", user.id.toString(), { httpOnly: false }
-        @cookies.set "username", user.username, { httpOnly: false }
-        @cookies.set "fullName", user.name, { httpOnly: false }
-        @cookies.set "token", session.token
-        
-        @body = user
+    @cookies.set "userId", user.id.toString(), { httpOnly: false }
+    @cookies.set "username", user.username, { httpOnly: false }
+    @cookies.set "fullName", user.name, { httpOnly: false }
+    @cookies.set "token", session.token
+    
+    @body = user
     
 
 

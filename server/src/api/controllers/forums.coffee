@@ -5,11 +5,11 @@ fields = require '../../models/fields'
 utils = require '../../lib/utils'
 auth = require '../../common/web/auth'
 
-exports.create = auth.handler { session: true }, ->*
+exports.create = auth.handler { session: 'user' }, ->*
     creds = { user: @session.user }
     stub = (yield @parser.body 'name').toLowerCase().trim()
     if conf.reservedNames.indexOf(stub) > -1
-        stub = "_" + stub
+        stub = stub + "-forum"
     stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')    
     forum = yield models.Forum.get({ network: @network.stub, $or: [{ stub }, { name: yield @parser.body('name') }] }, creds, db)
     if forum
@@ -37,7 +37,7 @@ exports.create = auth.handler { session: true }, ->*
 
 
                 
-exports.edit = auth.handler { session: true }, (forum) ->*
+exports.edit = auth.handler { session: 'user' }, (forum) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     if (@session.user.username is forum.createdBy.username) or @session.admin
         forum.description = yield @parser.body('description')
@@ -49,7 +49,7 @@ exports.edit = auth.handler { session: true }, (forum) ->*
 
 
 
-exports.join = auth.handler { session: true }, (forum) ->*
+exports.join = auth.handler { session: 'user' }, (forum) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     yield forum.join @session.user
     this.body = { success: true }

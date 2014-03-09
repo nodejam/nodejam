@@ -6,7 +6,7 @@ utils = require '../../lib/utils'
 auth = require '../../common/web/auth'
 
 
-exports.create = auth.handler { session: true }, (forum) ->*
+exports.create = auth.handler { session: 'user' }, (forum) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
 
     post = yield models.Post.create {
@@ -20,11 +20,11 @@ exports.create = auth.handler { session: true }, (forum) ->*
     
     yield @parser.map post, yield getMappableFields yield post.getTypeDefinition()
     post = yield forum.addPost post
-    this.body = post
+    @body = post
 
 
 
-exports.edit = auth.handler { session: true }, (forum, post) ->*
+exports.edit = auth.handler { session: 'user' }, (forum, post) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     post = yield models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
     
@@ -35,11 +35,11 @@ exports.edit = auth.handler { session: true }, (forum, post) ->*
             if yield @parser.body('state') is 'published'
                 post.state = 'published'
             post = yield post.save()
-            this.body = post
+            @body = post
         else
-            this.body = 'Access denied'
+            @throw 'access denied', 403
     else
-        this.body = 'Access denied'
+        @throw 'access denied', 403
 
 
 
@@ -62,23 +62,24 @@ getMappableFields = (typeDef, acc = [], prefix = []) ->*
                     prefix.pop field 
     acc
 
+
     
-exports.remove = auth.handler { session: true }, (forum, post) ->*
+exports.remove = auth.handler { session: 'user' }, (forum, post) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     post = yield models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
     if post
         if (post.createdBy.username is @session.user.username) or @session.admin
             post = yield post.destroy()
-            this.body = post
+            @body = post
         else
-            this.body = 'Access denied'
+            @throw 'access denied', 403
     else
-        this.body = 'Invalid Post'
+        @throw 'invalid post', 400
                  
 
         
 #Admin Features
-exports.admin_update = auth.handler { admin: true }, (forum, post) ->*
+exports.admin_update = auth.handler { session: 'admin' }, (forum, post) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     post = yield models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
 
@@ -86,7 +87,9 @@ exports.admin_update = auth.handler { admin: true }, (forum, post) ->*
         meta = yield @parser.body('meta')
         if meta
             post = yield post.addMetaList meta.split(',')
-        this.body = post
+        @body = post
     else
-        this.body = 'Invalid Post'
+        @throw 'invalid post', 400
+
+
 

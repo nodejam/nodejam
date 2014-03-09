@@ -55,17 +55,19 @@ class ForaEditor
 
 
     value: (obj = {}) =>
+        valid = true
+        
         for elem in @editedElements
             control = elem.data('control')
             value = control.value()
 
             if @typeDef.schema.required.indexOf(control.fieldName) > -1 and not value
                 control.showMessage "required", "error"
-                return
+                valid = false
 
             obj[control.fieldName] = control.value()
 
-        return obj
+        if valid then obj
         
         
         

@@ -8,7 +8,8 @@ checkVersion = ->
         $.get '/system/build.txt', (data) -> 
             if window.DEBUG_CLIENT_BUILD and data isnt window.DEBUG_CLIENT_BUILD
                 #First make an ajax request to check if server is ready. (Some builds cause server restarts)
-                app.api 'healthcheck', {
+                $.ajax '/healthcheck', {
+                    type: 'get',
                     success: (data) ->
                         #All OK. Reload()
                         window.location.reload()

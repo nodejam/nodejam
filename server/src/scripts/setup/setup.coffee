@@ -65,14 +65,13 @@ init = ->*
                 resp = yield _doHttpRequest '/api/v1/credentials', querystring.stringify(cred), 'post'            
                 token = JSON.parse(resp).token
 
-                user.token = token                
-                resp = yield _doHttpRequest '/api/v1/users', querystring.stringify(user), 'post'            
+                resp = yield _doHttpRequest "/api/v1/users?token=#{token}", querystring.stringify(user), 'post'            
                 resp = JSON.parse resp       
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
                 
                 utils.log "Creating session for #{resp.username}"
-                resp = yield _doHttpRequest '/api/v1/login', querystring.stringify({ token, username: user.username }), 'post'            
+                resp = yield _doHttpRequest "/api/v1/login?token=#{token}", querystring.stringify({ token, username: user.username }), 'post'            
                 _globals.sessions[user.username].token = JSON.parse(resp).token
 
             forums = {}

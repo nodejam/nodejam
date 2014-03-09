@@ -7,7 +7,7 @@ auth = require '../../common/web/auth'
 
 validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp']
 
-exports.upload = auth.handler ->*
+exports.upload = auth.handler { session: 'any' }, ->*
     if @query.src_size
         [srcWidth, srcHeight] = (parseInt(x) for x in @query.src_size.split('x'))
 

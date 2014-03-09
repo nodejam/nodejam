@@ -8,7 +8,8 @@ models = require '../../models'
 auth = require '../../common/web/auth'
     
 exports.create = auth.handler ->*
-    if (yield @parser.body 'secret') is conf.auth.adminkeys.default
+
+    if (yield @parser.body 'secret') is conf.auth.adminkeys.default    
         type = yield @parser.body('type')
 
         credential = new models.Credential {                    

@@ -106,7 +106,7 @@ class Text
             
         if @state.event is 'keypress'
             @element.find('.placeholder').remove()
-            
+            @clearMessage()
 
         if @editor.options.titles is "inline" and @binding.title
             if not (@state.event is 'keypress' or @state.event is 'focus')
@@ -118,15 +118,19 @@ class Text
             if not @titleElement
                 @titleElement = $("<span class=\"editor-field-title\">#{@binding.title}</span>")
                 @editor.container.append @titleElement
-                @titleElement.css {
-                    left: @element.position().left + @element.outerWidth() - @titleElement.width(),
-                    top: @element.position().top + @element.height() - @titleElement.height()
-                }
+
+                #Allow time for rendering. 50ms seems alright.
+                setTimeout (=> 
+                    @titleElement.css {
+                        left: @element.position().left + @element.outerWidth() - @titleElement.outerWidth() - 6,
+                        top: @element.position().top + @element.outerHeight() - @titleElement.outerHeight()
+                    }), 50
+
             else                
-                top = @element.position().top + @element.height() - @titleElement.height()        
+                top = @element.position().top + @element.outerHeight() - @titleElement.outerHeight()        
                 if @titleElement.position().top isnt top
                     @titleElement.css { top }
-                
+
                 
 
     showMessage: (msg, type) =>
