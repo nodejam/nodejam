@@ -1,28 +1,36 @@
 node_modules
 
 *~
-!placeholder
+
+server/app
+www-client/app
 
 backups/*
 !backups/backup.sh
 
 temp/*
-
-server/app
-www-client/app
+!temp/placeholder
 
 server/src/website/views/_custom/*
+!server/src/website/views/_custom/placeholder
 
 server/src/conf/*
 !server/src/conf/index.conf
 !server/src/conf/*.sample
 
 www-public/assets/*
+!www-public/assets/placeholder
+
 www-public/images/*
 !www-public/images/cover.jpg
 !www-public/images/cover-experience.jpg
+!www-public/images/placeholder
+
 www-public/originalimages/*
+!www-public/originalimages/placeholder
+
 www-public/temp/*
+!www-public/temp/placeholder
 
 Thumbs.db
 
