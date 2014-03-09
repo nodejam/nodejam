@@ -29,7 +29,7 @@ typeUtils = require('../models/foratypeutils').typeUtils
         instance = utils.uniqueId()
         since = Date.now()
     else
-        instance = '000000000'
+        instance = '00000000'
         since = 0
 
     app.use route.get '/api/v1/healthcheck', ->* 
