@@ -12,6 +12,8 @@ class Image
         
     
     change: (src, small) =>
+        $(@element).data 'src', src
+        $(@element).data 'small', small
         @binding.events?.change? this, { src, small }
         
 
@@ -42,5 +44,11 @@ class Image
         form.find("input").click()    
 
 
+
+    value: =>
+        { 
+            src: @element.data('src'),
+            small: @element.data('small')
+        }
 
 window.ForaEditor.Image = Image

@@ -7,8 +7,7 @@ auth = require '../../common/web/auth'
 
 
 exports.create = auth.handler { session: true }, (forum) ->*
-    query = db.setRowId { network: @network.stub }, forum
-    forum = yield models.Forum.get query, { user: @session.user }, db
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
 
     post = yield models.Post.create {
         type: yield @parser.body('type'),
@@ -26,10 +25,8 @@ exports.create = auth.handler { session: true }, (forum) ->*
 
 
 exports.edit = auth.handler { session: true }, (forum, post) ->*
-    query = db.setRowId { network: @network.stub }, forum
-    forum = yield models.Forum.get query, { user: @session.user }, db
-
-    post = yield models.Post.getById post, { user: @session.user }, db
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
+    post = yield models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
     
     if post
         if (post.createdBy.username is @session.user.username) 
@@ -66,8 +63,9 @@ getMappableFields = (typeDef, acc = [], prefix = []) ->*
     acc
 
     
-exports.remove = auth.handler { session: true }, (post) ->*
-    post = yield models.Post.getById(post, { user: @session.user }, db)
+exports.remove = auth.handler { session: true }, (forum, post) ->*
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
+    post = yield models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
     if post
         if (post.createdBy.username is @session.user.username) or @session.admin
             post = yield post.destroy()
@@ -80,8 +78,10 @@ exports.remove = auth.handler { session: true }, (post) ->*
 
         
 #Admin Features
-exports.admin_update = auth.handler { admin: true }, (id) ->*
-    post = yield models.Post.getById(id, { user: @session.user }, db)
+exports.admin_update = auth.handler { admin: true }, (forum, post) ->*
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
+    post = yield models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
+
     if post 
         meta = yield @parser.body('meta')
         if meta

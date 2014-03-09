@@ -82,17 +82,6 @@ class User extends ForaDbModel
         else
             yield super 
 
-
-
-    #Upgrades a credential token to a user token. 
-    #User tokens can be used to login to the app.
-    upgradeSession: (session, context, db) =>*        
-        { context, db } = @getContext context, db        
-        session.token = utils.uniqueId(24) 
-        session.userId = db.getRowId(@)
-        session.user = @summarize context, db
-        yield session.save context, db
-
                   
                                                             
     getPosts:(limit, sort, context, db) =>*

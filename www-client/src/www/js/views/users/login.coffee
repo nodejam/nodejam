@@ -85,19 +85,19 @@ class Login extends window.Fora.Views.BaseView
             uploadUrl: app.apiUrl('images?src_size=192x192&small_size=96x96'),
             events: {
                 change: (control, data) ->
-                    alert JSON.stringify data
+                    $('.picture').data 'src', data.src
+                    $('.picture').data 'small', data.small
             }            
         }
         
         
         
     createUser: =>
-        data = @editor.value()        
-        alert JSON.stringify data
-        #app.api "users", {
-        #    data: @editor.value(),
-        #    success: (data) -> alert(data)
-        #}
+        app.api "users", {
+            data: @editor.value(),
+            type: 'post',
+            success: (data) -> alert(data)
+        }
              
 
 

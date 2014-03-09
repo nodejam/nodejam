@@ -10,8 +10,8 @@ auth = require '../../common/web/auth'
 exports.create = auth.handler ->*
 
     token = yield @parser.body('token')
-
     session = yield models.Session.get { token }, {}, db
+
     if session
 
         user = new models.User {
@@ -29,16 +29,31 @@ exports.create = auth.handler ->*
         }
     
         user = yield user.save {}, db
-        session = yield user.upgradeSession session, {}, db
-
-        @body = { id: db.getRowId(user), username: user.username, name: user.name, assets: user.assets, token: session.token }
+        @body = user.summarize {}, db
         
+
+
+exports.login = auth.handler ->*    
+    token = yield @parser.body('token')    
+    
+    session = yield models.Session.get { token }, {}, db
+    if session
+        session = yield session.upgrade yield @parser.body('username')
+        
+        user = session.user
+        user.token = session.token
+        
+        @cookies.set "userId", user.id.toString(), { httpOnly: false }
+        @cookies.set "username", user.username, { httpOnly: false }
+        @cookies.set "fullName", user.name, { httpOnly: false }
+        @cookies.set "token", session.token
+        
+        @body = user
+    
 
 
 exports.item = auth.handler (username) ->*
     user = yield models.User.get { username }, {}, db        
     if user
         @body = user.summarize {}, db
-        
-
 

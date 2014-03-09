@@ -35,8 +35,7 @@ exports.create = auth.handler { session: true }, ->*
 
                 
 exports.edit = auth.handler { session: true }, (forum) ->*
-    query = db.setRowId({ network: @network.stub }, forum)
-    forum = yield models.Forum.get query, { user: @session.user }, db
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     if (@session.user.username is forum.createdBy.username) or @session.admin
         forum.description = yield @parser.body('description')
         yield @parser.map forum, ['description', 'postTypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']     
@@ -48,8 +47,7 @@ exports.edit = auth.handler { session: true }, (forum) ->*
 
 
 exports.join = auth.handler { session: true }, (forum) ->*
-    query = db.setRowId({ network: @network.stub }, forum)
-    forum = yield models.Forum.get query, { user: @session.user }, db
+    forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     yield forum.join @session.user
     this.body = { success: true }
                         

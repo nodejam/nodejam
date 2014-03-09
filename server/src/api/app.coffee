@@ -34,8 +34,9 @@ typeUtils = require('../models/foratypeutils').typeUtils
     app.use route.get '/api/v1/healthcheck', -> this.body { jacksparrow: "alive" }
 
     app.use route.post '/api/v1/credentials', m_credentials.create
-
     app.use route.post '/api/v1/users', m_users.create
+    app.use route.post '/api/v1/login', m_users.login
+    
     app.use route.get '/api/v1/users/:username', m_users.item
 
     app.use route.post '/api/v1/forums', m_forums.create
@@ -45,7 +46,7 @@ typeUtils = require('../models/foratypeutils').typeUtils
 
     app.use route.post '/api/v1/images', m_images.upload
 
-    app.use route.put "/api/v1/admin/posts/:id", m_posts.admin_update
+    app.use route.put "/api/v1/admin/forums/:forum/posts/:post", m_posts.admin_update
 
     #Start
     app.listen port

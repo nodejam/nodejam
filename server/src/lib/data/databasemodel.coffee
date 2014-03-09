@@ -248,30 +248,51 @@ class DatabaseModel extends BaseModel
         link = typeDef.links[name]
         otherTypeDef = yield typeUtils.getTypeDefinition(link.type)        
         
-        if link.key
-            #This is the child record
-            switch typeDef.schema.properties[link.key].type
-                when 'string'
-                    if @[link.key]
+        if link.key #This is the child record
+            #this handles simple keys mapping to the id of target, eg: 'credentialId'
+            if typeof link.key is 'string'
+                switch typeDef.schema.properties[link.key].type
+                    when 'string'
                         yield otherTypeDef.ctor.getById @[link.key], context, db    
-                when 'array'
-                    throw new Error "Array keys are not implemented"
-                    
-        else if link.field
-            #Parent record
-            switch otherTypeDef.schema.properties[link.field].type
-                when 'string'
-                    params = {}
-                    params["#{link.field}"] = db.getRowId(@)
-                    result = yield otherTypeDef.ctor.getAll params, context, db
+                    when 'array'
+                        throw new Error "Array keys are not implemented"
 
-                    if link.multiplicity is "one"
-                        if result.length then result[0]
-                    else
-                        result
-                when 'array'
-                    throw new Error "Array keys are not implemented"
-                                
+            #this handles keys of the type [{credentialId: _id}, {username: username}]
+            else if link.key instanceof Array
+                query = {}
+                for {k, v} in link.key
+                    query[v] = @[k]
+                yield otherTypeDef.ctor.get query, context, db    
+
+            else
+                throw new Error "Cannot parse this key"
+                    
+        else if link.field #Parent record
+            #this handles simple keys mapping to the id of target, eg: 'credentialId'
+            if typeof link.field is 'string'
+                switch otherTypeDef.schema.properties[link.field].type
+                    when 'string'
+                        params = {}
+                        params["#{link.field}"] = db.getRowId(@)
+                        result = yield otherTypeDef.ctor.getAll params, context, db
+
+                        if link.multiplicity is "one"
+                            if result.length then result[0]
+                        else
+                            result
+                    when 'array'
+                        throw new Error "Array keys are not implemented"
+
+            #this handles keys of the type [{credentialId: _id}, {username: username}]
+            else if link.field instanceof Array
+                query = {}
+                for {k, v} in link.field
+                    query[k] = @[v]
+                yield otherTypeDef.ctor.get query, context, db    
+
+            else
+                throw new Error "Cannot parse this key"
+                                        
         else
             throw new Error "Invalid link #{name} in #{typeDef.name}"
         

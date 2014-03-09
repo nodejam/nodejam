@@ -70,6 +70,10 @@ init = ->*
                 resp = JSON.parse resp       
                 utils.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
+                
+                utils.log "Creating session for #{resp.username}"
+                resp = yield _doHttpRequest '/api/v1/login', querystring.stringify({ token, username: user.username }), 'post'            
+                _globals.sessions[user.username].token = JSON.parse(resp).token
 
             forums = {}
             for forum in data.forums
@@ -90,7 +94,7 @@ init = ->*
                 
                 for u, uToken of _globals.sessions
                     if uToken.token isnt token
-                        resp = yield _doHttpRequest "/api/v1/forums/#{forumJson._id}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
+                        resp = yield _doHttpRequest "/api/v1/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
                         resp = JSON.parse resp
                         utils.log "#{u} joined #{forum.name}"
             
@@ -104,7 +108,7 @@ init = ->*
                 article.content_text = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
                 article.content_format = 'markdown'
                 article.state = 'published'
-                forum = forums[article._forum]._id
+                forum = article._forum
                 meta = article._meta
                             
                 delete article._forum
@@ -115,10 +119,10 @@ init = ->*
                 
                 resp = yield _doHttpRequest "/api/v1/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'            
                 resp = JSON.parse resp
-                utils.log "Created #{resp.title} with id #{resp._id}"
+                utils.log "Created #{resp.title} with stub #{resp.stub}"
                 
                 for metaTag in meta.split(',')
-                    resp = yield _doHttpRequest "/api/v1/admin/posts/#{resp._id}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'        
+                    resp = yield _doHttpRequest "/api/v1/admin/forums/#{forum}/posts/#{resp.stub}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'        
                     resp = JSON.parse resp
                     utils.log "Added #{metaTag} tag to article #{resp.title}."
                     

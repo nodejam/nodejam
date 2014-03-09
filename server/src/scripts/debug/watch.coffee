@@ -32,7 +32,7 @@ isExecuting = false
 
 linux = ->*
     print "Watching...."
-    notify = spawn 'inotifywait', '-r -m src'.split ' '
+    notify = spawn 'inotifywait', '-r -m src ../www-client/src'.split ' '
     
     notify.stdout.on 'data', (data) ->
         if not isExecuting
@@ -63,13 +63,18 @@ processEvents = (events) ->
         if not matches.length
             src = "#{ev.dir}#{ev.file}"        
             ext = path.extname src
-            dest = src.replace(/^src/, "app")
+
+            if /^src\//.test src
+                dest = src.replace /^src\//, 'app/'
+            else if /^\..\/www-client\/src\//.test src
+                dest = src.replace(/^\..\/www-client\/src\//, '..www-client/app/'
+            
             eventNames = ev.event.split ','
 
             if not ('ISDIR' in eventNames)  #We won't handle directory level events. This needs full compile.
 
                 #Handle only known extensions and ignore hidden files
-                if (not /^\./.test ev.file) and (ext in ['.htm', '.html', '.coffee', '.css', '.less', '.js', '.hbs', '.config'])
+                if (not /^\./.test ev.file) and (ext in ['.coffee', '.htm', '.html', '.hbs', '.css', '.less', '.js', '.config'])
                 
                     if ("DELETE" in eventNames)
                         action = ->*
@@ -80,14 +85,17 @@ processEvents = (events) ->
                     else if not ("OPEN" in eventNames)
 
                         if ext is '.coffee'
-                            cmd = "coffee -cs <#{src} >#{src.replace(/^src/, 'app').replace(/\.coffee$/, '.js')}"
+                            if /^src\//.test src
+                                cmd = "coffee -cs <#{src} >#{dest.replace(/\.coffee$/, '.js')}"
+                            else if /^\..\/www-client\/src\//.test src
+                                cmd = "coffee -cs <#{src} >#{dest.replace(/\.coffee$/, '.js')}"
                             action = ->*
                                 print cmd
                                 print yield exec cmd
 
                         else if ext is '.less'
                             action = ->*
-                                cmd = "lessc src/www/css/main.less app/www/css/main.less"
+                                cmd = "lessc #{src} #{dest}"
                                 print cmd
                                 print yield exec cmd
                                         
@@ -101,11 +109,16 @@ processEvents = (events) ->
             if action
                 actions.push action
                 
-                #All changes in other folders will require a restart of app (for eg: a new coffee script file)
-                for dir in ['www', 'scripts']
-                    regex = new RegExp "^app/#{dir}/"
-                    if not regex.test src
-                        restart = true    
+                #If the change is in the node app, we need a restart
+                skipRestartFor = [
+                    /^\..\/www-client\/src\//, 
+                    /^src\/scripts\//
+                ]
+                restart = true
+                
+                for skip in skipRestartFor
+                    if skip.test src
+                        restart = false
                 
         
 
