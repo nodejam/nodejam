@@ -67,7 +67,7 @@ processEvents = (events) ->
             if /^src\//.test src
                 dest = src.replace /^src\//, 'app/'
             else if /^\..\/www-client\/src\//.test src
-                dest = src.replace(/^\..\/www-client\/src\//, '..www-client/app/'
+                dest = src.replace /^\..\/www-client\/src\//, '../www-client/app/'
             
             eventNames = ev.event.split ','
 

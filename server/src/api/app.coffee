@@ -23,6 +23,18 @@ typeUtils = require('../models/foratypeutils').typeUtils
     app = koa()
     init = require '../common/web/init'
     init app
+    
+    #monitoring and debugging
+    if process.env.NODE_ENV is 'development'
+        instance = utils.uniqueId()
+        since = Date.now()
+    else
+        instance = '000000000'
+        since = 0
+
+    app.use route.get '/api/v1/healthcheck', ->* 
+        uptime = parseInt((Date.now() - since)/1000) + "s"
+        @body = { jacksparrow: "alive", instance, since, uptime }
 
     #Routes
     m_credentials = require './controllers/credentials'
@@ -31,21 +43,22 @@ typeUtils = require('../models/foratypeutils').typeUtils
     m_posts = require './controllers/posts'
     m_images = require './controllers/images'
 
-    app.use route.get '/api/v1/healthcheck', -> this.body { jacksparrow: "alive" }
-
+    #credentials and users
     app.use route.post '/api/v1/credentials', m_credentials.create
     app.use route.post '/api/v1/users', m_users.create
-    app.use route.post '/api/v1/login', m_users.login
-    
+    app.use route.post '/api/v1/login', m_users.login    
     app.use route.get '/api/v1/users/:username', m_users.item
 
+    #forums
     app.use route.post '/api/v1/forums', m_forums.create
     app.use route.post '/api/v1/forums/:forum/members', m_forums.join
     app.use route.post '/api/v1/forums/:forum', m_posts.create
     app.use route.put '/api/v1/forums/:forum/posts/:post', m_posts.edit
 
+    #images
     app.use route.post '/api/v1/images', m_images.upload
 
+    #admin
     app.use route.put "/api/v1/admin/forums/:forum/posts/:post", m_posts.admin_update
 
     #Start

@@ -101,10 +101,4 @@ class Login extends window.Fora.Views.BaseView
              
 
 
-    onSubmit: (e) =>
-        
-    
-            
-        
-            
 window.Fora.Views.Users.Login = Login

@@ -36,6 +36,18 @@ typeUtils = require('../models/foratypeutils').typeUtils
       defaultLayout: 'default'
     }
 
+    #monitoring and debugging
+    if process.env.NODE_ENV is 'development'
+        instance = utils.uniqueId()
+        since = Date.now()
+    else
+        instance = '000000000'
+        since = 0
+
+    app.use route.get '/healthcheck', ->* 
+        uptime = parseInt((Date.now() - since)/1000) + "s"
+        @body = { jacksparrow: "alive", instance, since, uptime }
+
     #Routes
     m_home = require './controllers/home'
     m_auth = require './controllers/auth'
@@ -45,23 +57,26 @@ typeUtils = require('../models/foratypeutils').typeUtils
 
     app.use route.get '/healthcheck', -> this.body { "Jack Sparrow is alive" }
 
+    #home
     app.use route.get '/', m_home.index
+    
+    #login
     app.use route.get '/login', m_home.login
-
     app.use route.get '/auth/twitter', m_auth.twitter
     app.use route.get '/auth/twitter/callback', m_auth.twitterCallback
-
-    app.use route.get '/forums', m_forums.index
-    app.use route.get '/forums/new', m_forums.create
-
     app.use route.get '/users/login', m_users.loginForm
     app.use route.post '/users/login', m_users.login
+
+    #users
     app.use route.get '/~:username', m_users.item
 
+    #forums
+    app.use route.get '/forums', m_forums.index
+    app.use route.get '/forums/new', m_forums.create
     app.use route.get '/:forum', m_forums.item
     app.use route.get '/:forum/about', m_forums.about
     app.use route.get '/:forum/:post', m_posts.item
-        
+
     #Register templates, helpers etc.
     require("./hbshelpers").register()
 
