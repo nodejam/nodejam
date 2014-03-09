@@ -62,6 +62,8 @@ printError = (err) ->
 printStack = ->
     err = new Error
     log err.stack
+    
+    
 
 exports.clone = clone
 exports.deepCloneObject = deepCloneObject

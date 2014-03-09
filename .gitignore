@@ -22,15 +22,18 @@ www-client/system/*
 !www-client/system/placeholder
 
 www-public/assets/*
-!www-public/assets/placeholder
+!www-public/assets/0
+!www-public/assets/0/placeholder
 
 www-public/images/*
-!www-public/images/cover.jpg
-!www-public/images/cover-experience.jpg
-!www-public/images/placeholder
+!www-public/images/0
+!www-public/images/0/placeholder
+!www-public/images/0/user.jpg
+!www-public/images/0/user_t.jpg
 
-www-public/originalimages/*
-!www-public/originalimages/placeholder
+www-public/original-images/*
+!www-public/original-images/0
+!www-public/original-images/0/placeholder
 
 www-public/temp/*
 !www-public/temp/placeholder

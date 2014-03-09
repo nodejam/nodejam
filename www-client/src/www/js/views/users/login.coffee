@@ -94,12 +94,23 @@ class Login extends window.Fora.Views.BaseView
         
         
     createUser: =>
-        alert JSON.stringify @editor.value()
-        app.api "users", {
-            data: @editor.value(),
+        data = Fora.Utils.flatten @editor.value()
+        app.api "users?token=#{@token}", {
+            data,
             type: 'post',
-            success: (data) -> alert(data)
+            success: @loginUser
         }
+        
+        
+        
+    loginUser: =>
+        data = Fora.Utils.flatten @editor.value()
+        app.api "login?token=#{@token}", {
+            type: 'post',
+            data,
+            success: ->
+                window.location.href = "/"
+        }  
              
 
 

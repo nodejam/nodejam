@@ -4,6 +4,37 @@ window.Fora.Utils.uniqueId = (length = 16) ->
   id += Math.random().toString(36).substr(2) while id.length < length
   id.substr 0, length
 
+
+
+window.Fora.Utils.flatten = (obj, seperator = "_", prefixes = [], result = {}) ->    
+    if typeof obj is 'object'
+        for k, v of obj
+            if typeof v is 'object'
+                prefixes.push k
+                if v instanceof Array
+                    counter = 1
+                    for item in v
+                        prefixes.push counter
+                        window.Fora.Utils.flatten item, seperator, prefixes, result
+                        prefixes.pop()
+                        counter++
+
+                else if v instanceof Date
+                    result[prefixes.join(seperator)] = v
+                    
+                else if typeof v isnt 'function'
+                    window.Fora.Utils.flatten v, seperator, prefixes, result
+                prefixes.pop()
+            else
+                result[prefixes.concat(k).join(seperator)] = v
+    else
+        if not prefixes.length
+            throw new Error "Invalid object"    
+        
+        result[prefixes.join(seperator)] = obj
+     
+    return result  
+        
     
 #get params by parsing the url. Decaf. 
 `

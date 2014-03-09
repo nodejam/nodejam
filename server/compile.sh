@@ -62,7 +62,7 @@ echo "Compiling CoffeeScript files.."
 coffee -o app/ -c src/
 echo "Compiling JSX files.."
 jsx -x jsx src/common/widgets app/common/widgets
-jsx -x jsx src/typedefinitions app/typedefinitions
+jsx -x jsx src/type-definitions app/type-definitions
 
 #Run it through generator.
 #This step is unnecessary if we are using node --harmony

@@ -37,11 +37,11 @@ exports.upload = auth.handler { session: 'any' }, ->*
             filename = "#{utils.uniqueId(8)}_#{timestamp}.#{extension}"
             
             #copy to originals directory
-            original = fsutils.getRandomFilePath filename, ['originalimages']
+            original = fsutils.getRandomFilePath 'original-images', filename, 
             yield thunkify(fsutils.copyFile).call null, file.path, original
 
-            image = fsutils.getRandomFilePath filename, ['images']
-            smallImage = fsutils.getRandomFilePath "small_#{filename}", ['images']
+            image = fsutils.getRandomFilePath 'images', filename
+            smallImage = fsutils.getRandomFilePath 'images', "small_#{filename}"
 
             #resize
             yield resizeImage original, image, { width: srcWidth, height: srcHeight, gravity }

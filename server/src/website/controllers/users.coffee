@@ -8,12 +8,14 @@ widgets = require '../../common/widgets'
 
 
 exports.loginForm = ->*
-    token = yield models.Token.get { key: @query.token }, {}, db
+    token = yield models.Token.get { key: @query.key }, {}, db
     
     if token
         if token.type is 'twitter-login-token'
             credential = yield models.Credential.get { 'twitter.username': token.value.userDetails.username }, {}, db
             users = yield credential.link 'users'
+        
+        session = yield credential.createSession {}, db
         
         for user in users
             user.image = user.getAssetUrl() + "/" + user.username + "_t.jpg"
@@ -25,34 +27,13 @@ exports.loginForm = ->*
             pageName: 'login-page', 
             users,
             nickname,
-            token: token.key
+            token: session.token
         }
         
         yield token.destroy()
 
 
 
-exports.selectUsername = ->*
-    token = yield models.Token.get({ key: @query('token') }, {}, db)     
-    token.value.userDetails.username = yield @parser.body 'username'
-    token.value.userDetails.name = yield @parser.body 'name'
-    token.value.userDetails.email = yield @parser.body 'email'
-    result = yield models.User.create(token.value.userDetails, token.value.credentials, {}, db)
-    if result?.success isnt false
-        res.clearCookie "twitter_oauth_process_key"
-        res.cookie "userId", db.getRowId(result.user)
-        res.cookie "username", result.user.username
-        res.cookie "fullName", result.user.name
-        res.cookie "assets", result.user.assets
-        res.cookie "token", result.token
-        res.redirect "/"
-    else
-        next new Error "Could not save user"
-        
-    token.destroy {}, db       
-    
-    
-    
 exports.item = auth.handler (username) ->*
     user = yield models.User.get { username }, {}, db
     

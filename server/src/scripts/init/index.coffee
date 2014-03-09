@@ -8,10 +8,10 @@ typeUtils = require('../../models/foratypeutils').typeUtils
 
 #create directories
 today = Date.now()
-for p in ['assets', 'images', 'originalimages']
+for p in ['assets', 'images', 'original-images']
     for i in [0..999] by 1
         do (p, i) ->
-            newPath = fsutils.getDirPath [p, i.toString()]
+            newPath = fsutils.getDirPath p, i.toString()
             fs.exists newPath, (exists) ->
                 if not exists
                     fs.mkdir newPath, ->

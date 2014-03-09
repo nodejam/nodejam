@@ -91,10 +91,10 @@ exports.twitterCallback = ->*
             _token = yield _token.save({}, db)
     
             @cookies.set 'twitter_oauth_process_key', ''
-            @redirect "/users/login?token=#{_token.key}"
+            @redirect "/users/login?key=#{_token.key}"
             
         else
-            @body = "INVALID_TWITTER_RESPONSE"
+            @throw 'invalid twitter response', 400
                     
         yield token.destroy {}, db
                                             

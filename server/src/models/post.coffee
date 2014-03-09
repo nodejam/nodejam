@@ -143,10 +143,10 @@ class Post extends ForaDbModel
             when 'builtin'
                 if not @builtinExtensionCache[typeDef.name]
                     @builtinExtensionCache[typeDef.name] = {
-                        model: require("../typedefinitions/posts/#{typeDef.name}/model"),
+                        model: require("../type-definitions/posts/#{typeDef.name}/model"),
                         templates: {
-                            card: require("../typedefinitions/posts/#{typeDef.name}/cardtemplate"),
-                            item: require("../typedefinitions/posts/#{typeDef.name}/itemtemplate")
+                            card: require("../type-definitions/posts/#{typeDef.name}/cardtemplate"),
+                            item: require("../type-definitions/posts/#{typeDef.name}/itemtemplate")
                         }
                     }
                 @builtinExtensionCache[typeDef.name]
