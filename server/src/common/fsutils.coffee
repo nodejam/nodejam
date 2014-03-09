@@ -1,5 +1,6 @@
 path = require 'path'
 fs = require 'fs'
+thunkify = require 'thunkify'
 utils = require '../lib/utils'
 conf = require '../conf'
 
@@ -41,22 +42,20 @@ getFilePath = (dir, subdir, file) ->
 
 
 getRandomFilePath = (dir, file) ->
-    if dirsAreValid [dir] and filenameIsValid(file)
+    if dirsAreValid([dir]) and filenameIsValid(file)
         random = (Date.now() % conf.userDirCount).toString()
-        if (['assets', 'images', 'original-images'].indexOf dir > -1) and dirsAreValid([dirs]) and filenameIsValid(file)
-            path.join.apply null, [conf.pubdir].concat [dir, random, file]
+        if ['assets', 'images', 'original-images'].indexOf(dir) > -1
+            return path.join.apply null, [conf.pubdir].concat [dir, random, file]
 
     throw new Error "Invalid path #{dir}/#{file}"
             
 
 
-copyFile = (src, dest, cb) ->*
+copyFile = (src, dest) ->*
     src = fs.createReadStream src
     dest = fs.createWriteStream dest
     src.pipe dest
-    if cb
-        src.on 'end', cb
-        src.on 'error', cb 
+    yield thunkify(src.on).call src, 'end'
 
 
 

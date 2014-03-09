@@ -28,6 +28,7 @@ exports.upload = auth.handler { session: 'any' }, ->*
         return
             
     files = yield @parser.files()
+    
     if files.length    
         file = files[0]
         timestamp = Date.now()
@@ -35,11 +36,11 @@ exports.upload = auth.handler { session: 'any' }, ->*
         #Validate the extension                
         if validExtensions.indexOf(extension) isnt -1
             filename = "#{utils.uniqueId(8)}_#{timestamp}.#{extension}"
-            
+    
             #copy to originals directory
-            original = fsutils.getRandomFilePath 'original-images', filename, 
-            yield thunkify(fsutils.copyFile).call null, file.path, original
-
+            original = fsutils.getRandomFilePath 'original-images', filename
+            yield fsutils.copyFile file.path, original
+    
             image = fsutils.getRandomFilePath 'images', filename
             smallImage = fsutils.getRandomFilePath 'images', "small_#{filename}"
 
