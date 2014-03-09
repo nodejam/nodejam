@@ -7,7 +7,10 @@ auth = require '../../common/web/auth'
 
 exports.create = auth.handler { session: true }, ->*
     creds = { user: @session.user }
-    stub = (yield @parser.body 'name').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')
+    stub = (yield @parser.body 'name').toLowerCase().trim()
+    if conf.reservedNames.indexOf(stub) > -1
+        stub = "_" + stub
+    stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')    
     forum = yield models.Forum.get({ network: @network.stub, $or: [{ stub }, { name: yield @parser.body('name') }] }, creds, db)
     if forum
         throw new Error "Forum exists"

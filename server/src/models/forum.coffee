@@ -126,7 +126,7 @@ class Forum extends ForaDbModel
         
         #if stub is a reserved name, change it
         if conf.reservedNames.indexOf(@stub) > -1
-            @stub = "_" + @stub
+            throw new Error "Forum name cannot be #{@stub}, it is reserved"
         
         if not db.getRowId(@)
             @stats = new Stats {
