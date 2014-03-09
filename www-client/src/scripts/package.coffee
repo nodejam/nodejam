@@ -12,7 +12,7 @@ if opt isnt '--debug'
         #type: 'no-compress',
         type: 'sqwish',
         buffer: 1000 * 1024,
-        tempPath: '../temp/',
+        tempPath: '../temp',
         fileIn: [
             'src/www/lib/font-awesome/css/font-awesome.css',
         ],
@@ -28,7 +28,7 @@ if opt isnt '--debug'
         #type: 'no-compress',
         type: 'sqwish',
         buffer: 1000 * 1024,
-        tempPath: '../temp/',
+        tempPath: '../temp',
         fileIn: [
             'app/www/css/HINT.css',
             'app/www/css/toggle-switch.css'
@@ -45,7 +45,7 @@ if opt isnt '--debug'
         #type: 'no-compress',
         type: 'sqwish',
         buffer: 1000 * 1024,
-        tempPath: '../temp/',
+        tempPath: '../temp',
         fileIn: [
             'app/www/css/main.css'
         ],
@@ -61,9 +61,9 @@ if opt isnt '--debug'
     c = new compressor.minify {
         type: 'no-compress',
         buffer: 1000 * 1024,
-        tempPath: '../temp/',
+        tempPath: '../temp',
         fileIn: [
-            'app/www/js/lib/jquery-min.js', 
+            'app/www/lib/jquery-min.js', 
         ],
         fileOut: 'app/www/js/lib-base.js',
         callback: (err) -> 
@@ -77,10 +77,10 @@ if opt isnt '--debug'
     c = new compressor.minify {
         type: 'no-compress',
         buffer: 1000 * 1024,
-        tempPath: '../temp/',
+        tempPath: '../temp',
         fileIn: [
-            'app/www/js/lib/jquery-cookie.js',
-            'app/www/js/lib/leanmodal.js',
+            'app/www/lib/jquery-cookie.js',
+            'app/www/lib/leanmodal.js',
         ],
         fileOut: 'app/www/js/lib.js',
         callback: (err) -> 
@@ -93,7 +93,7 @@ if opt isnt '--debug'
     c = new compressor.minify {
         type: 'no-compress',
         buffer: 1000 * 1024,
-        tempPath: '../temp/',
+        tempPath: '../temp',
         fileIn: [
             'app/www/js/main.js',
             'app/www/js/views/validator.js',
