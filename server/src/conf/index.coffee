@@ -21,5 +21,6 @@ exports.db = settings.db
 exports.auth = settings.auth
 exports.admins = settings.admins
 exports.pubdir = settings.pubdir
+exports.reservedNames = settings.reservedNames
 exports.networks = networks
 exports.userDirCount = 100

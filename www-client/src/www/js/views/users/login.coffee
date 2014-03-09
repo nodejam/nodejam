@@ -17,7 +17,8 @@ class Login extends window.Fora.Views.BaseView
                     name: { type: 'string', maxLength: 20, pattern: '' }                        
                     about: { type: 'string', maxLength: 20, pattern: '' }
                     picture: { type: 'image' }                        
-                }
+                },
+                required: ['username', 'name']
             }
         }
         

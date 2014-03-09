@@ -3,6 +3,7 @@ ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 utils = require('../lib/utils')
 models = require('./')
+conf = require '../conf'
 
 class Forum extends ForaDbModel
 
@@ -122,6 +123,11 @@ class Forum extends ForaDbModel
     
     save: (context, db) =>*
         { context, db } = @getContext context, db
+        
+        #if stub is a reserved name, change it
+        if conf.reservedNames.indexOf(@stub) > -1
+            @stub = "_" + @stub
+        
         if not db.getRowId(@)
             @stats = new Stats {
                 posts: 0,
