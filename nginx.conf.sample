@@ -27,6 +27,10 @@ server {
         alias /path/to/fora/www-client/app/www/lib;
     }
 
+    location /system {
+        alias /path/to/fora/www-client/app/www/system;
+    }
+
     location / {
         proxy_pass http://localhost:10981;
         proxy_set_header   Host         $host;

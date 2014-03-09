@@ -1,6 +1,7 @@
 path = require 'path'
 co = require 'co'
 thunkify = require 'thunkify'
+utils = require '../../lib/utils'
 
 _exec = require('child_process').exec
 spawn = require('child_process').spawn
@@ -63,7 +64,7 @@ processEvents = (events) ->
         if not matches.length
             src = "#{ev.dir}#{ev.file}"        
             ext = path.extname src
-
+            
             if /^src\//.test src
                 dest = src.replace /^src\//, 'app/'
             else if /^\..\/www-client\/src\//.test src
@@ -74,7 +75,7 @@ processEvents = (events) ->
             if not ('ISDIR' in eventNames)  #We won't handle directory level events. This needs full compile.
 
                 #Handle only known extensions and ignore hidden files
-                if (not /^\./.test ev.file) and (ext in ['.coffee', '.htm', '.html', '.hbs', '.css', '.less', '.js', '.config'])
+                if (not /^\./.test ev.file) and (ext in ['.coffee', '.htm', '.html', '.hbs', '.css', '.less', '.js', '.txt', '.json', '.config'])
                 
                     if ("DELETE" in eventNames)
                         action = ->*
@@ -120,7 +121,10 @@ processEvents = (events) ->
                     if skip.test src
                         restart = false
                 
-        
+
+genBuildNumber = ->*
+    yield exec "echo #{utils.uniqueId()} > ../www-client/app/www/system/build.txt"
+
 
 executeActions = ->*
     isExecuting = true
@@ -134,12 +138,15 @@ executeActions = ->*
             script = spawn "sh", ["run.sh"]
             script.stdout.on "data", print
             script.stderr.on "data", print
-
+                
+        #Regenerate the build number    
+        yield genBuildNumber()
+            
     isExecuting = false        
     setTimeout (-> co(executeActions)()), 1000
     
     
-
+co(genBuildNumber)()
 setTimeout (-> co(executeActions)()), 1000
             
     

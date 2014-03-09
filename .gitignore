@@ -18,6 +18,9 @@ server/src/conf/*
 !server/src/conf/index.conf
 !server/src/conf/*.sample
 
+www-client/system/*
+!www-client/system/placeholder
+
 www-public/assets/*
 !www-public/assets/placeholder
 
