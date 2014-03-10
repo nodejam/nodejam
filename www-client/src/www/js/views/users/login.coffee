@@ -83,7 +83,7 @@ class Login extends window.Fora.Views.BaseView
         imageControl = @editor.addBinding 'picture', {
             type: 'image',
             element: '.picture',
-            uploadUrl: app.apiUrl("images?token=#{@token}&src_size=192x192&small_size=96x96"),
+            uploadUrl: app.apiUrl("images?token=#{@token}&type=thumbnail&gravity=Center&src_size=192x192&small_size=96x96"),
             events: {
                 change: (control, data) ->
                     $('.picture').data 'src', data.src

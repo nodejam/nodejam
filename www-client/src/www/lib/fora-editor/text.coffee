@@ -127,9 +127,12 @@ class Text
                     }), 50
 
             else                
-                top = @element.position().top + @element.outerHeight() - @titleElement.outerHeight()        
-                if @titleElement.position().top isnt top
-                    @titleElement.css { top }
+                #Allow time for rendering. 50ms seems alright.
+                setTimeout (=> 
+                    top = @element.position().top + @element.outerHeight() - @titleElement.outerHeight()        
+                    if @titleElement.position().top isnt top
+                        @titleElement.css { top }
+                    ), 50
 
                 
 

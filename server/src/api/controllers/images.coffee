@@ -16,12 +16,16 @@ exports.upload = auth.handler { session: 'any' }, ->*
     
     #validations
     if @query.gravity
-        validGravity = ['center']
+        validGravity = ['Center']
         if validGravity.indexOf(@query.gravity) isnt -1
+            gravity = @query.gravity
+        else
             utils.log "Gravity must be one of #{JSON.stringify validGravity}"
             return
-        else
-            gravity = @query.gravity
+            
+    
+    if @query.type
+        imageType = @query.type
     
     if srcWidth > 4000 or srcHeight > 4000 or smallWidth > 4000 or smallHeight > 4000
         utils.log "Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}"
@@ -42,11 +46,11 @@ exports.upload = auth.handler { session: 'any' }, ->*
             yield fsutils.copyFile file.path, original
     
             image = fsutils.getRandomFilePath 'images', filename
-            smallImage = fsutils.getRandomFilePath 'images', "small_#{filename}"
+            smallImage = image.replace /(.*)\//,"$1/small_"
 
             #resize
-            yield resizeImage original, image, { width: srcWidth, height: srcHeight, gravity }
-            yield resizeImage original, smallImage, { width: smallWidth, height: smallHeight, gravity }
+            yield resizeImage original, image, { width: srcWidth, height: srcHeight, gravity, imageType }
+            yield resizeImage original, smallImage, { width: smallWidth, height: smallHeight, gravity, imageType }
 
             [x..., dir, filename] = image.split '/'
             src = "/public/images/#{dir}/#{filename}"
@@ -61,9 +65,17 @@ exports.upload = auth.handler { session: 'any' }, ->*
 resizeImage = (src, dest, options, cb) ->*
     utils.log "Resizing #{src}..."
     img = gm(src)
+
     if options.gravity
         img = img.gravity(options.gravity)
-    img.resize(options.width, options.height)    
+    
+    switch options.imageType
+        when 'thumbnail'
+            img = img.resize(options.width, options.height + "^")
+            img = img.crop options.width, options.height
+        else
+            img = img.resize(options.width, options.height)    
+    
     yield thunkify(img.write).call img, dest
-    utils.log "Resized #{src} to #{dest}"
+    utils.log "Resized #{src} to #{dest} [#{JSON.stringify options}]"
     
