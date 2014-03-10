@@ -86,6 +86,10 @@
         img { width: 100% }
     }
     
+    .top-cover + .main-pane, .inline-cover + .main-pane {
+        > .content-area:first-child { margin-top: 0px }
+    }
+    
     .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
         .content-area:first-child {
             &.item {

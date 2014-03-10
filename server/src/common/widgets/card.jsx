@@ -8,13 +8,12 @@ exports.Card = React.createClass({
             style = { 'background-image': 'url(' + this.props.image.src + ')' };
             
         return (
-            <li>
-                <div className="card-face">
-                    { this.props.image ? 
-                        <div className="image" style={style}></div> 
-                        : ''
-                    }
-                </div>
+            <li>                
+                { 
+                    this.props.image ? 
+                    <div className="card-face"><div className="image" style={style}></div></div>
+                    : <div className="card-face empty"></div>
+                }
                 <div className="card-content">
                     {this.props.children}            
                 </div>
