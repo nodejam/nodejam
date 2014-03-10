@@ -96,12 +96,18 @@ processEvents = (events) ->
 
                         else if ext is '.less'
                             action = ->*
+                                #For less, always compile the main file
+                                src = src.replace /(.*)\/.*\.less/, '$1/main.less'
+                                dest = dest.replace /(.*)\/.*\.less/, '$1/main.css'
                                 cmd = "lessc #{src} #{dest}"
                                 print cmd
                                 print yield exec cmd
                                         
                         else
                             action = ->*
+                                #Replace the debug.hbs extensions in hbs templates
+                                dest = dest.replace /-debug\.hbs$/, '.hbs'
+            
                                 cmd = "cp #{src} #{dest}"
                                 print cmd
                                 print yield exec cmd
@@ -127,23 +133,27 @@ genBuildNumber = ->*
 
 
 executeActions = ->*
-    isExecuting = true
+    try
+        isExecuting = true
 
-    if actions.length
-        while (action = actions.shift())                
-            yield action()
+        if actions.length
+            while (action = actions.shift())                
+                yield action()
+                        
+            if restart
+                restart = false
+                script = spawn "sh", ["run.sh"]
+                script.stdout.on "data", print
+                script.stderr.on "data", print
                     
-        if restart
-            restart = false
-            script = spawn "sh", ["run.sh"]
-            script.stdout.on "data", print
-            script.stderr.on "data", print
+            #Regenerate the build number    
+            yield genBuildNumber()
                 
-        #Regenerate the build number    
-        yield genBuildNumber()
-            
-    isExecuting = false        
-    setTimeout (-> co(executeActions)()), 1000
+        isExecuting = false        
+        setTimeout (-> co(executeActions)()), 1000
+
+    catch err
+        console.log err    
     
     
 co(genBuildNumber)()

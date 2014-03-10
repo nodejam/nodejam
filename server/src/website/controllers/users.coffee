@@ -7,7 +7,7 @@ fields = require '../../models/fields'
 widgets = require '../../common/widgets'
 
 
-exports.loginForm = ->*
+exports.login = ->*
     token = yield models.Token.get { key: @query.key }, {}, db
     
     if token
@@ -23,11 +23,14 @@ exports.loginForm = ->*
         if not users.length
             nickname = token.value.userDetails.username
         
+        single = users.length is 1
+        
         yield @renderPage 'users/login', {
             pageName: 'login-page', 
             users,
             nickname,
-            token: session.token
+            token: session.token,
+            single
         }
         
         yield token.destroy()

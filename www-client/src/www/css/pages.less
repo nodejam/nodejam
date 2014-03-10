@@ -13,25 +13,36 @@
     }
 }
 
-.spans-impl(@a, @b, @c) {
-    /* Column spans */
-    .half-span, .two-thirds-span, .one-thirds-span { 
-        box-sizing: border-box; float: left; 
-        &:after { content: ""; display:block; clear: both } 
+.spans(@width) when (@width >= 480) {  
+    .col-span { 
+        box-sizing: border-box; margin-right: 16px;
+        &.span1 { width: 200px; }
+        &.span2 { width: 260px; }
+        &.span3 { width: 340px; }
+        
+        &.height1 { height: 120px;  }
+        &.height2 { height: 160px;  }
+        &.height3 { height: 200px;  }
+        &.height4 { height: 280px;  }
+        &.height5 { height: 360px;  }                
     }
-
-    .half-span { width: @a; }
-    .two-thirds-span { width: @b; margin-right: (100% - (@b + @c)) }
-    .one-thirds-span { width: @c; }
 }
 
-.spans(@width) when (@width >= 720) {  
-    .spans-impl(50%, 60%, 34%);
+.spans(@width) when (@width < 480) {  
+    .col-span { 
+        box-sizing: border-box; margin-right: 16px;
+        &.span1 { width: 140px; }
+        &.span2 { width: 100%; }
+        &.span3 { width: 100%; }
+
+        &.height1 { height: 120px;  }
+        &.height2 { height: 160px;  }
+        &.height3 { height: 200px;  }
+        &.height4 { height: 280px;  }
+        &.height5 { height: 360px;  }                
+    }
 }
 
-.spans(@width) when (@width < 720) {  
-    .spans-impl(100%, 100%, 100%);
-}
 
 /* Pages-Common */
 .pages-common() {
@@ -40,6 +51,7 @@
         > .nav {            
             &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
         }
+        > .content-area:first-child { margin-top: 64px }
     }
     
     .main-pane {

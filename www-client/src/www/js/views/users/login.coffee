@@ -16,8 +16,8 @@ class Login extends window.Fora.Views.BaseView
             schema: {
                 properties: {
                     username: { type: 'string', maxLength: 20 }                        
-                    name: { type: 'string', maxLength: 20, pattern: '' }                        
-                    about: { type: 'string', maxLength: 20, pattern: '' }
+                    name: { type: 'string', maxLength: 20 }                        
+                    about: { type: 'string', maxLength: 20 }
                     picture: { type: 'image' }                        
                 },
                 required: ['username', 'name']

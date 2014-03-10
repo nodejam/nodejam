@@ -12,7 +12,7 @@ exports.Card = React.createClass({
                 <div className="card-face">
                     { this.props.image ? 
                         <div className="image" style={style}></div> 
-                        : <span>Hello world</span>
+                        : ''
                     }
                 </div>
                 <div className="card-content">

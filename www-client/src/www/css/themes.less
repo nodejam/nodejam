@@ -44,6 +44,8 @@
         }
     }
 
+    .subtext { color: @colorNeutral; }
+
     /* FORM CONTROLS */
     .control (@fg, @bg, @borderColor) {
         color: @fg; background-color: @bg; border-color: @borderColor;
@@ -84,6 +86,9 @@
         > li {
             > .card-face { 
                 > .content-wrap { background: @colorXXBright }
+            }
+            > .card-content {
+                border-bottom: 2px solid @colorXXBright;
             }
         }
 

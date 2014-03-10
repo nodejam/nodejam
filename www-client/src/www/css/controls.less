@@ -124,6 +124,33 @@ img {
     &.square { border-radius: none; }
 }
 
+/*
+       Concise
+     Icon Block
+    ************
+    *   img    *
+    ************
+    *   text   *
+    *   here   *
+    ************
+    
+    This is only for uls
+*/
+ul.concise-icon-block  {
+    width: 100%;
+    li {
+        width: 10em; text-align: center; float: left;
+        
+        > .icon {
+            padding-top: 4px; text-align: center; font-size: 0.8em; line-height: 1.2em; 
+        }
+        > .text {
+            overflow: hidden; margin-top: 12px;
+        }   
+    } 
+}
+
+
 /* Dynamically created login */
 .login-box-mixin (@width, @spacing, @fontSize) {
     #login-box {

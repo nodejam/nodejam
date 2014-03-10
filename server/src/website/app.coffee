@@ -64,8 +64,7 @@ typeUtils = require('../models/foratypeutils').typeUtils
     app.use route.get '/login', m_home.login
     app.use route.get '/auth/twitter', m_auth.twitter
     app.use route.get '/auth/twitter/callback', m_auth.twitterCallback
-    app.use route.get '/users/login', m_users.loginForm
-    app.use route.post '/users/login', m_users.login
+    app.use route.get '/users/login', m_users.login
 
     #users
     app.use route.get '/~:username', m_users.item

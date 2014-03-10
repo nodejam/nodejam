@@ -19,7 +19,6 @@ exports.create = auth.handler { session: 'user' }, ->*
         forum.network = @network.stub
         forum.stub = stub
         yield @parser.map forum, ['name', 'type', 'description', 'theme', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
-        forum.postTypes = (yield @parser.body 'posttypes').split(',')
         
         forum.createdById = @session.user.id
         forum.createdBy = @session.user
@@ -41,7 +40,7 @@ exports.edit = auth.handler { session: 'user' }, (forum) ->*
     forum = yield models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
     if (@session.user.username is forum.createdBy.username) or @session.admin
         forum.description = yield @parser.body('description')
-        yield @parser.map forum, ['description', 'postTypes', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']     
+        yield @parser.map forum, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']     
         forum = yield forum.save()
         this.body = forum
     else

@@ -23,7 +23,10 @@
         <div class="content-area item small">
             {{#if users}}
             <h2>Sign in as</h2>
-            <ul class="selectable icon-block cells row-layout">
+
+
+            {{#if single}}
+            <ul class="selectable icon-block row-layout cells">
             {{#each users}}
                 <li data-username="{{username}}">
                     <div class="icon">
@@ -36,13 +39,30 @@
                 </li>
             {{/each}}
             </ul>
+            {{else}}
+            <ul class="selectable concise-icon-block float-layout cells">
+            {{#each users}}
+                <li data-username="{{username}}" class="col-span span1 height2">
+                    <div class="icon">
+                        <img class="seal upsize" src="{{image}}">
+                    </div>
+                    <div class="text content">
+                        <h4>{{username}}</h4>
+                        <p class="subtext">{{name}}</p>
+                    </div>
+                </li>
+            {{/each}}
+            </ul>
+            {{/if}}
+
+
             <h2>...or create another</h2>                    
             {{else}}            
             <h2>Create a new persona...</h2>
             {{/if}}
             <div class="icon-block xupsize-text content" id="create-user-form" >
                 <div class="icon picture" data-src="/public/images/0/user.jpg" data-small="/public/images/0/user_t.jpg">
-                    <img class="seal upsize" src="/public/images/0/user_t.jpg"><br />
+                    <img class="seal upsize" src="/images/user-default.png"><br />
                     <a href="#">change</a>
                 </div>
                 <div class="text">

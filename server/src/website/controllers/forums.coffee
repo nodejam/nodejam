@@ -35,7 +35,6 @@ exports.item = auth.handler (stub) ->*
             membership = yield models.Membership.get { 'forum.id': db.getRowId(forum), 'user.username': @session.user.username }, {}, db
             if membership
                 options.isMember = true
-                options.primaryPostType = forum.postTypes[0]
         
         coverContent = "
             <h1>#{forum.name}</h1>
@@ -60,7 +59,7 @@ exports.item = auth.handler (stub) ->*
 
 
 exports.create = ->*
-    yield @renderPage 'forums/create', { 
+    yield @renderPage 'forums/new', { 
         pageName: 'create-forum-page', 
         pageLayout: {
             type: 'single-section-page fixed-width'
