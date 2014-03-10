@@ -3,8 +3,10 @@ class Login extends window.Fora.Views.BaseView
     constructor: (@token) ->
 
         $(document).ready =>
+            me = this
             @setupEditor()
-            $('button.create').click @createUser
+            $('button.create').click me.createUser
+            $('ul.selectable li').click -> me.loginUser $(@).data 'username'
                             
                 
         
@@ -99,16 +101,15 @@ class Login extends window.Fora.Views.BaseView
         app.api "users?token=#{@token}", {
             data,
             type: 'post',
-            success: @loginUser
+            success: => @loginUser(data.username)
         }
         
         
         
-    loginUser: =>
-        data = Fora.Utils.flatten @editor.value()
+    loginUser: (username) =>
         app.api "login?token=#{@token}", {
             type: 'post',
-            data,
+            data: { username },
             success: ->
                 window.location.href = "/"
         }  
