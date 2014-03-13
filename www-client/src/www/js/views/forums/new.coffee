@@ -19,7 +19,7 @@ class New extends window.Fora.Views.BaseView
             }
         }
         
-        @editor = new ForaEditor typeDefinition, { titles: "inline" }, "#create-forum-form"
+        @editor = new ForaEditor typeDefinition, {}, "#create-forum-form"
 
         #name
         nameControl = @editor.addBinding 'name', { 
@@ -32,7 +32,10 @@ class New extends window.Fora.Views.BaseView
         aboutControl = @editor.addBinding 'description', { 
             element: '.description', 
             title: 'description', 
-            placeholder: 'Describe what the forum is about. Not more than two short lines...' 
+            placeholder: 'Add a tagline....' 
         }     
-            
+        
+        nameControl.focus()
+        
+        
 window.Fora.Views.Forums.New = New

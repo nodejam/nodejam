@@ -1,5 +1,6 @@
 {
     "type": "post",
+    "author": "Fora",
     "schema": {
         "type": "object",
         "properties": {
@@ -10,5 +11,5 @@
             "content": { "$ref": "text-content" }
         },
         "required": ["title"]
-    }    
+    }
 }

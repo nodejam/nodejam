@@ -1,9 +1,9 @@
 thunkify = require 'thunkify'
-ForaModel = require('./foramodel').ForaModel
-ForaDbModel = require('./foramodel').ForaDbModel
 utils = require('../lib/utils')
 models = require('./')
 conf = require '../conf'
+ForaModel = require('./foramodel').ForaModel
+ForaDbModel = require('./foramodel').ForaDbModel
 
 class Forum extends ForaDbModel
 
@@ -122,7 +122,11 @@ class Forum extends ForaDbModel
         
         #if stub is a reserved name, change it
         if conf.reservedNames.indexOf(@stub) > -1
-            throw new Error "Forum name cannot be #{@stub}, it is reserved"
+            throw new Error "Stub cannot be #{@stub}, it is reserved"
+        
+            regex = '[a-z][a-z0-9|-]*'
+            if not regex.text @stub
+                throw new Error "Stub is invalid"
         
         if not db.getRowId(@)
             @stats = new Stats {

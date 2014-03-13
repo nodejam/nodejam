@@ -2,6 +2,7 @@ React = require 'react'
 utils = require '../lib/utils'
 models = require './'
 widgets = require '../common/widgets'
+conf = require '../conf'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
@@ -108,12 +109,20 @@ class Post extends ForaDbModel
 
     save: (context, db) =>*
         { context, db } = @getContext context, db
-        
+
         extensions = yield Post.getExtensions yield @getTypeDefinition()
         yield extensions.model.save.call @
 
-        #If the stub has changed, we need to check if it's unique
-        @stub ?= utils.uniqueId(16)
+        #if stub is a reserved name, change it
+        if @stub
+            if conf.reservedNames.indexOf(@stub) > -1
+                throw new Error "Stub cannot be #{@stub}, it is reserved"
+            
+                regex = '[a-z][a-z0-9|-]*'
+                if not regex.text @stub
+                    throw new Error "Stub is invalid"
+        else
+            @stub ?= utils.uniqueId(16)
 
         result = yield super(context, db)
         

@@ -26,6 +26,11 @@ class Text
 
         @evalControlState()
             
+
+
+    focus: =>
+        @onFocus()
+        
     
 
     onClick: =>
@@ -88,11 +93,13 @@ class Text
 
 
     evalControlState: =>
+    
         if @state.event is 'blur' 
             if @state.empty
                 @element.html "<span class=\"placeholder\"><span class=\"caret\">&nbsp;</span><span class=\"placeholder-text\">#{@binding.placeholder}</span>"
                 
-        if @state.event is 'focus'
+        else if @state.event is 'focus'
+        
             if @state.empty
                 placeholder = @element.find('.placeholder')
                 if placeholder.length
@@ -103,36 +110,37 @@ class Text
                 if @focusReason isnt 'click'
                     @selectText()
 
-            
-        if @state.event is 'keypress'
+        else if @state.event is 'keypress'
             @element.find('.placeholder').remove()
             @clearMessage()
+            
 
         if @editor.options.titles is "inline" and @binding.title
+        
             if not (@state.event is 'keypress' or @state.event is 'focus')
                 if @state.empty
                     @titleElement?.remove()
                     @titleElement = null
                     
-        if not @state.empty or (@state.event is 'keypress' or @state.event is 'focus')
-            if not @titleElement
-                @titleElement = $("<span class=\"editor-field-title\">#{@binding.title}</span>")
-                @editor.container.append @titleElement
+            if not @state.empty or (@state.event is 'keypress' or @state.event is 'focus')
+                if not @titleElement
+                    @titleElement = $("<span class=\"editor-field-title\">#{@binding.title}</span>")
+                    @editor.container.append @titleElement
 
-                #Allow time for rendering. 50ms seems alright.
-                setTimeout (=> 
-                    @titleElement.css {
-                        left: @element.position().left + @element.outerWidth() - @titleElement.outerWidth() - 6,
-                        top: @element.position().top + @element.outerHeight() - @titleElement.outerHeight()
-                    }), 50
+                    #Allow time for rendering. 50ms seems alright.
+                    setTimeout (=> 
+                        @titleElement.css {
+                            left: @element.position().left + @element.outerWidth() - @titleElement.outerWidth() - 6,
+                            top: @element.position().top + @element.outerHeight() - @titleElement.outerHeight()
+                        }), 50
 
-            else                
-                #Allow time for rendering. 50ms seems alright.
-                setTimeout (=> 
-                    top = @element.position().top + @element.outerHeight() - @titleElement.outerHeight()        
-                    if @titleElement.position().top isnt top
-                        @titleElement.css { top }
-                    ), 50
+                else                
+                    #Allow time for rendering. 50ms seems alright.
+                    setTimeout (=> 
+                        top = @element.position().top + @element.outerHeight() - @titleElement.outerHeight()        
+                        if @titleElement.position().top isnt top
+                            @titleElement.css { top }
+                        ), 50
 
                 
 
@@ -163,7 +171,7 @@ class Text
             range.collapse position is 'start'
             selection = window.getSelection()
             selection.removeAllRanges()
-            selection.addRange(range)), 0.2
+            selection.addRange(range)), 50
 
     
     
@@ -178,7 +186,7 @@ class Text
             else if (document.body.createTextRange)
                 range = document.body.createTextRange()
                 range.moveToElementText(@element[0])
-                range.select()), 0.2
+                range.select()), 50
                 
                 
 
