@@ -5,8 +5,9 @@ widgets = require '../common/widgets'
 conf = require '../conf'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
+ForaExtensibleModel = require('./foramodel').ForaExtensibleModel
 
-class Post extends ForaDbModel
+class Post extends ForaExtensibleModel
 
     @builtinExtensionCache = {}
     
@@ -110,7 +111,7 @@ class Post extends ForaDbModel
     save: (context, db) =>*
         { context, db } = @getContext context, db
 
-        extensions = yield Post.getExtensions yield @getTypeDefinition()
+        extensions = yield Post.getUserDefinedType yield @getTypeDefinition()
         yield extensions.model.save.call @
 
         #if stub is a reserved name, change it
@@ -135,32 +136,16 @@ class Post extends ForaDbModel
 
 
     getView: (name) =>*
-        extensions = yield Post.getExtensions yield @getTypeDefinition()
+        extensions = yield Post.getUserDefinedType yield @getTypeDefinition()
         yield extensions.model.view.call @, name
                 
 
 
-    @render: (template, { post, forum, author, layout }) =>*        
-        extensions = yield Post.getExtensions yield post.getTypeDefinition()
+    @render: (template, { post, forum, author, layout }) =>*     
+        extensions = yield Post.getUserDefinedType yield post.getTypeDefinition()
         component = extensions.templates[template] { post, forum, author, layout }
         React.renderComponentToString component
-        
 
-        
-    @getExtensions: (typeDef) =>*
-        switch typeDef.extensionType
-            when 'builtin'
-                if not @builtinExtensionCache[typeDef.name]
-                    @builtinExtensionCache[typeDef.name] = {
-                        model: require("../type-definitions/posts/#{typeDef.name}/model"),
-                        templates: {
-                            card: require("../type-definitions/posts/#{typeDef.name}/cardtemplate"),
-                            item: require("../type-definitions/posts/#{typeDef.name}/itemtemplate")
-                        }
-                    }
-                @builtinExtensionCache[typeDef.name]
-            else
-                throw new Error "Unsupported extension type"
 
     
 exports.Post = Post

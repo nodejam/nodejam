@@ -114,9 +114,9 @@ class Forum extends ForaDbModel
                 onInsert: 'NEW_FORUM'
         }
     }
-        
-    
-    
+
+
+
     save: (context, db) =>*
         { context, db } = @getContext context, db
         
@@ -139,8 +139,8 @@ class Forum extends ForaDbModel
         yield super(context, db)
 
 
-        
-    summarize: (context, db) =>        
+
+    summarize: (context, db) =>
         summary = new Summary {
             id: db.getRowId(@),
             network: @network,
@@ -148,9 +148,9 @@ class Forum extends ForaDbModel
             stub: @stub,
             createdBy: @createdBy
         }
-        
-        
-        
+
+
+
     getView: (name, context, db) =>*
         switch name
             when 'card'
@@ -173,9 +173,9 @@ class Forum extends ForaDbModel
             yield @addRole user, 'member', context, db
         else
             throw new Error "Access denied"
-        
-        
-        
+
+
+
     addPost: (post, context, db) =>*
         { context, db } = @getContext context, db
         post.forumId = db.getRowId(@)

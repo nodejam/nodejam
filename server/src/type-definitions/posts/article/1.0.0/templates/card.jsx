@@ -2,7 +2,7 @@
 var React = require("react");
 
 //fugly code until we get destructuring in ES6
-var _ = require("../../../../common/widgets");
+var _ = require("../../../../../common/widgets");
 var Card = _.Card, Heading = _.Heading, Author = _.Author, Html = _.Html;
 
 
