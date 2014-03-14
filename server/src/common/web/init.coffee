@@ -1,5 +1,6 @@
 parser = require '../../lib/web/requestparser'
-typeUtils = require('../../models/foratypeutils').typeUtils
+ForaTypeUtils = require('../../models/foratypeutils').ForaTypeUtils
+typeUtils = new ForaTypeUtils()
 conf = require '../../conf'
 
 module.exports = (app) ->

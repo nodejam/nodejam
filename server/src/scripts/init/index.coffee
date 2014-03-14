@@ -4,7 +4,8 @@ utils = require '../../lib/utils'
 fs = require 'fs'
 path = require 'path'
 fsutils = require '../../common/fsutils'
-typeUtils = require('../../models/foratypeutils').typeUtils
+ForaTypeUtils = require('../../models/foratypeutils').ForaTypeUtils
+typeUtils = new ForaTypeUtils()
 
 #create directories
 today = Date.now()

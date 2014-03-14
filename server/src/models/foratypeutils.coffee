@@ -1,4 +1,10 @@
 TypeUtils = require('../lib/data/typeutils')
+fs = require 'fs'
+path = require 'path'
+thunkify = require 'thunkify'
+readdir = thunkify fs.readdir
+stat = thunkify fs.stat
+readfile = thunkify fs.readFile
 
 class ForaTypeUtils extends TypeUtils
 
@@ -10,7 +16,7 @@ class ForaTypeUtils extends TypeUtils
     getCacheItems: =>*
         definitions = {}
         
-        for defs in [yield @getModelTypeDefinitions(), yield @getTrustedPostExtensions()]
+        for defs in [yield @getModelTypeDefinitions(), yield @getTrustedUserTypes()]
             for name, def of defs
                 definitions[name] ?= def    
         
@@ -43,37 +49,19 @@ class ForaTypeUtils extends TypeUtils
         
     
     
-    getTrustedPostExtensions: =>*
-        fs = require 'fs'
-        path = require 'path'
-        thunkify = require 'thunkify'
-        readdir = thunkify fs.readdir
-        stat = thunkify fs.stat
-        readfile = thunkify fs.readFile
-        
-        getDirs = (dir) ->*
-            dirs = []
-            files = yield readdir dir
-            for file, index in files
-                filePath = "#{dir}/#{file}"
-                entry = yield stat filePath
-                if entry.isDirectory()
-                    dirs.push(file)
-            dirs            
-        
+    getTrustedUserTypes: =>*
         definitions = {}
-        
-        ForaModel = require('./foramodel').ForaModel
-        foramodelTypeDef = {}
         
         Post = require('./post').Post
         postTypeDef = if typeof Post.typeDefinition is "function" then Post.typeDefinition() else Post.typeDefinition
         
-        for ext in yield getDirs path.join __dirname, '../type-definitions/posts'
-            for version in yield getDirs path.join __dirname, '../type-definitions/posts', ext
-                def = JSON.parse yield readfile path.join __dirname, '../type-definitions/posts', ext, version, 'model.json'
-                def.name = "#{ext}/#{version}"
-                definitions["#{ext}/#{version}"] ?= def
+        for userType in yield @getUserTypeDirectories path.join __dirname, '../type-definitions/posts'
+            for version in yield @getUserTypeDirectories path.join __dirname, '../type-definitions/posts', userType
+                def = JSON.parse yield readfile path.join __dirname, '../type-definitions/posts', userType, version, 'model.json'
+                def.identifier = "posts/#{userType}/#{version}"
+                def.name = userType
+                def.version = version
+                definitions["posts/#{userType}/#{version}"] ?= def
 
                 def.extensionType = 'builtin'
                 
@@ -94,6 +82,18 @@ class ForaTypeUtils extends TypeUtils
 
         definitions
 
+
+
+    getUserTypeDirectories: (dir) =>*
+        dirs = []
+        files = yield readdir dir
+        for file, index in files
+            filePath = "#{dir}/#{file}"
+            entry = yield stat filePath
+            if entry.isDirectory()
+                dirs.push(file)
+        dirs      
+
         
         
     resolveDynamicTypeDefinition: (name) =>*
@@ -103,4 +103,4 @@ class ForaTypeUtils extends TypeUtils
         console.log "Missing " + JSON.stringify name
         
         
-exports.typeUtils = new ForaTypeUtils()
+exports.ForaTypeUtils = ForaTypeUtils

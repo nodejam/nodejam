@@ -1,10 +1,11 @@
 path = require 'path'
 co = require 'co'
 conf = require '../../conf'
-typeUtils = require('../../models/foratypeutils').typeUtils
-Database = require '../../lib/data/database'
 utils = require '../../lib/utils'
 models = require '../../models'
+ForaTypeUtils = require('../../models/foratypeutils').ForaTypeUtils
+typeUtils = new ForaTypeUtils()
+Database = require '../../lib/data/database'
 db = new Database(conf.db, typeUtils.getTypeDefinitions())
 
 handler = ->

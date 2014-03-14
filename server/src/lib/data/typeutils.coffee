@@ -77,8 +77,8 @@ class TypeUtils
 
     getTypeDefinitions: =>
         TypeUtils.typeCache
-            
-    
+
+
 
     getTypeDefinition: (name, dynamicResolutionContext = {}) =>*
         #First check if it resolves in type cache

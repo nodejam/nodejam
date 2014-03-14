@@ -21,7 +21,8 @@ PORT = if argv.port then parseInt(argv.port) else 80
 utils.log "Setup will connect to #{HOST}:#{PORT}"
 
 init = ->*
-    typeUtils = require('../../models/foratypeutils').typeUtils
+    ForaTypeUtils = require('../../models/foratypeutils').ForaTypeUtils
+    typeUtils = new ForaTypeUtils()
     yield typeUtils.init()
 
     Database = require '../../lib/data/database'

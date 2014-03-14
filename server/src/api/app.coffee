@@ -3,7 +3,8 @@ koa = require 'koa'
 route = require 'koa-route'
 utils = require '../lib/utils'
 conf = require '../conf'
-typeUtils = require('../models/foratypeutils').typeUtils
+ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
+typeUtils = new ForaTypeUtils()
     
 (co ->*
     yield typeUtils.init()
