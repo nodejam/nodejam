@@ -1,11 +1,6 @@
 {
-    "app": {
-        "websiteHost": "localhost",
-        "websitePort": 10981,
-        "apiHost": "localhost",
-        "apiPort": 10982
-    },
-    "db": { 
+    "db": {
+        "type": "mongodb",
         "name": "fora-dev-db", 
         "host": "127.0.0.1", 
         "port": 27017 
@@ -24,5 +19,14 @@
     
     "admins": ["jeswin"],
     
-    "defaultNetwork": "foraproject.org"
+    "defaultNetwork": "foraproject.org",
+    
+    "reservedNames": [
+        "account", "accounts", "admin", "administrator", "api", "app", "apps", "config", "configuration", "credential", "credentials",
+        "css", "db", "data", "database", "edit", "edits", "email", "feed", "feeds", "file", "files", "fonts", "fora", "forum", "forums",
+        "group", "groups", "htm", "html", "image", "images", "js", "lib", "login", "logout", "mail", "mails", "messages", "messages",
+        "post", "posts", "pub", "public", "records", "rss", "script", "scripts", "setup", "session", "sessions", "subscribe", "subscriptions",
+        "settings", "signup", "sitemap", "status", "sys", "system", "tag", "tags", "update", "updates",
+        "terms", "user", "users", "wiki"
+    ]    
 }
