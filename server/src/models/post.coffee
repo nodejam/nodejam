@@ -141,7 +141,7 @@ class Post extends ForaExtensibleModel
                 
 
 
-    @render: (template, { post, forum, author, layout }) =>*     
+    @render: (template, { post, forum, author, layout }) =>*
         extensions = yield Post.getExtensions yield post.getTypeDefinition()
         component = extensions.templates[template] { post, forum, author, layout }
         React.renderComponentToString component

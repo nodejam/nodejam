@@ -21,34 +21,43 @@ class ForaDbModel extends DatabaseModel
 
 class ForaExtensibleModel extends DatabaseModel
 
-    @builtinExtensionCache = {}
-    
-
     @getTypeUtils: ->
         typeUtils
 
 
     @getExtensions: (typeDef) =>*
-        [parent, name, version] = typeDef.identifier.split '/'
+
+        if not @builtinExtensionCache
+            @builtinExtensionCache = {}
+    
+        parent = typeDef.identifier.split('/')[0]
         
         if parent isnt 'posts' and parent isnt 'forums'
             throw new Error "User defined type must be a post or a forum, parent was #{parent}"
         
         switch typeDef.extensionType
             when 'builtin'
-                if not @builtinExtensionCache[typeDef.name]
+                if not @builtinExtensionCache[typeDef.identifier]
 
-                    @builtinExtensionCache[typeDef.name] = {
-                        model: require("../type-definitions/#{parent}/#{name}/#{version}/model"),
+                    #We redefine the require() function inside the extension                    
+                    modules = {
+                        "react": require("react"),
+                        "widgets": require("../common/widgets")
+                    }
+                    requireProxy = (name) -> modules[name]
+                    
+                    @builtinExtensionCache[typeDef.identifier] = {
+                        model: require("../type-definitions/#{typeDef.identifier}/model")(requireProxy),
                         templates: {}
                     }
-                    
-                    files = yield thunkify(fs.readdir).call fs, "../type-definitions/#{parent}/#{name}/#{version}/templates"
+
+                    files = yield thunkify(fs.readdir).call fs, "../type-definitions/#{typeDef.identifier}/templates"
                     for file in files
                         template = file.match /[a-z]*/
-                        @builtinExtensionCache[typeDef.name].templates[template] = require("../type-definitions/#{parent}/#{name}/#{version}/templates/#{template}")
+                        instance = require("../type-definitions/#{typeDef.identifier}/templates/#{template}") 
+                        @builtinExtensionCache[typeDef.identifier].templates[template] = instance requireProxy
 
-                @builtinExtensionCache[typeDef.name]
+                @builtinExtensionCache[typeDef.identifier]
             else
                 throw new Error "Unsupported extension type"
 

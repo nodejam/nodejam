@@ -79,7 +79,7 @@ typeUtils = new ForaTypeUtils()
 
     #Register templates, helpers etc.
     require("./hbshelpers").register()
-
+    
     #Start
     app.listen port
 )()

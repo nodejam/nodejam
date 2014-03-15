@@ -60,6 +60,13 @@ class Forum extends ForaDbModel
     @typeDefinition: -> {
         name: 'forum',
         collection: 'forums',
+        ###
+        discriminator: (obj) ->*
+            def = yield Forum.getTypeUtils().getTypeDefinition(obj.type)
+            if def.ctor isnt Forum
+                throw new Error "Forum type definitions must have ctor set to Forum"
+            def        
+        ###
         schema: {
             type: 'object',        
             properties: {
