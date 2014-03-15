@@ -77,7 +77,7 @@ if ! $skip_es5_transform; then
 fi
 
 echo "Running LESS.."
-lessc src/www/css/main.less app/www/css/main.css
+lessc --verbose src/www/css/main.less app/www/css/main.css
 
 if $debug; then
     if ! $skip_es5_transform; then

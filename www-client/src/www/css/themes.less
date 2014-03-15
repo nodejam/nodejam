@@ -18,14 +18,14 @@
     @colorLightPositive: #aca,
     @colorNegative: #c00,
     @colorLightNegative: #caa,
-    @textOpacity: 0.9,
+    @textOpacity: 0.9
 ) {
     background: url("/images/themes/@{name}/bg.png") repeat;
     color: @colorXDark;
 
     a { 
         color: @colorLink; 
-        &:hover { @colorLinkHover;  }
+        &:hover { color: @colorLinkHover;  }
         &.positive:hover, &.positive { color: @colorPositive }
         &.negative:hover, &.negative { color: @colorNegative }
     }

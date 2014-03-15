@@ -3,8 +3,11 @@ module.exports = function(require) {
     var React = require("react");
 
     //fugly code until we get destructuring in ES6
-    var _ = require("widgets");
-    var Page = _.Page, Heading = _.Heading, Author = _.Author, Html = _.Html;
+    var widgets = require("widgets");
+    var Page = widgets.Page,
+        Heading = widgets.Heading,
+        Author = widgets.Author, 
+        Html = widgets.Html;
 
     return React.createClass({
         render: function() {
