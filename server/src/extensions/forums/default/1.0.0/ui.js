@@ -1,14 +1,22 @@
 module.exports = function(require) {
-    return {
-        save: function*() {
-            //By default, use inline cover.
-            if (this.cover && !this.cover.type) {
-                this.cover.type = "inline-cover";
-            }    
-        },        
-    }
-}
 
+    return {
+
+        router: function(routes) {
+            routes.add("", "index");
+            routes.about("", "about");
+        },
+        
+        index: function(context) {
+            forum = context.forum;
+            posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
+            for post in posts
+            context.render()
+        },
+    
+    }
+
+}
 
 /*
 exports.addRoutes = function(table) {

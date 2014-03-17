@@ -61,8 +61,8 @@ rm -rf $temp
 echo "Compiling CoffeeScript files.."
 coffee -o app/ -c src/
 echo "Compiling JSX files.."
-jsx -x jsx src/common/widgets app/common/widgets
-jsx -x jsx src/type-definitions app/type-definitions
+jsx -x jsx src/app-libs/widgets app/app-libs/widgets
+jsx -x jsx src/extensions app/extensions
 
 #Run it through generator.
 #This step is unnecessary if we are using node --harmony
@@ -80,7 +80,7 @@ if ! $skip_es5_transform; then
     compile_to_es5 "app/lib"
     compile_to_es5 "app/models"
     compile_to_es5 "app/scripts"
-    compile_to_es5 "app/typedefinitions"
+    compile_to_es5 "app/extensions"
     compile_to_es5 "app/website"
 fi
 

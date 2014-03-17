@@ -1,4 +1,5 @@
 module.exports = function(require) {
+
     return {
         /* 
             save: Gives you a hook to make changes to the post before it gets saved.

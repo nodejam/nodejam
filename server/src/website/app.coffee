@@ -25,7 +25,7 @@ typeUtils = new ForaTypeUtils()
     utils.log "Fora Website started at #{new Date} on #{host}:#{port}"
 
     app = koa()
-    init = require '../common/web/init'
+    init = require '../app-libs/web/init'
     init app
 
     app.use favicon()

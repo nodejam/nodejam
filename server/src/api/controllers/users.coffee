@@ -4,8 +4,8 @@ conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
 utils = require '../../lib/utils'
-auth = require '../../common/web/auth'
-fsutils = require '../../common/fsutils'
+auth = require '../../app-libs/web/auth'
+fsutils = require '../../app-libs/fsutils'
 
     
 exports.create = auth.handler { session: 'credential' }, ->*

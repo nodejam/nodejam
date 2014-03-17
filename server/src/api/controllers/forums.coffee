@@ -3,17 +3,17 @@ db = require('../app').db
 models = require '../../models'
 fields = require '../../models/fields'
 utils = require '../../lib/utils'
-auth = require '../../common/web/auth'
+auth = require '../../app-libs/web/auth'
 
 exports.create = auth.handler { session: 'user' }, ->*
-    creds = { user: @session.user }
+    context = { user: @session.user }
     stub = (yield @parser.body 'name').toLowerCase().trim()
     
     if conf.reservedNames.indexOf(stub) > -1
         stub = stub + "-forum"
     stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'')    
     
-    forum = yield models.Forum.get({ network: @network.stub, $or: [{ stub }, { name: yield @parser.body('name') }] }, creds, db)
+    forum = yield models.Forum.get({ network: @network.stub, $or: [{ stub }, { name: yield @parser.body('name') }] }, context, db)
     if forum
         throw new Error "Forum exists"
     else
@@ -25,7 +25,7 @@ exports.create = auth.handler { session: 'user' }, ->*
         forum.createdById = @session.user.id
         forum.createdBy = @session.user
         
-        forum = yield forum.save creds, db
+        forum = yield forum.save context, db
         yield forum.addRole @session.user, 'admin'
         
         info = new models.ForumInfo {
@@ -33,7 +33,7 @@ exports.create = auth.handler { session: 'user' }, ->*
             message: yield @parser.body('message'),
             about: yield @parser.body('about')
         }
-        yield info.save creds, db        
+        yield info.save context, db        
         this.body = forum
 
 

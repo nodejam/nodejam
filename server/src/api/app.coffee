@@ -22,7 +22,7 @@ typeUtils = new ForaTypeUtils()
     utils.log "Fora API started at #{new Date} on #{host}:#{port}"
 
     app = koa()
-    init = require '../common/web/init'
+    init = require '../app-libs/web/init'
     init app
     
     #monitoring and debugging

@@ -1,7 +1,7 @@
 React = require 'react'
 utils = require '../lib/utils'
 models = require './'
-widgets = require '../common/widgets'
+widgets = require '../app-libs/widgets'
 conf = require '../conf'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel

@@ -2,8 +2,8 @@ conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
 utils = require '../../lib/utils'
-auth = require '../../common/web/auth'
-widgets = require '../../common/widgets'
+auth = require '../../app-libs/web/auth'
+widgets = require '../../app-libs/widgets'
 
 exports.item = auth.handler (forum, post) ->*
     forum = yield models.Forum.get({ stub: forum, network: @network.stub }, {}, db)

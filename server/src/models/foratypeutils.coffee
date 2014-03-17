@@ -55,9 +55,9 @@ class ForaTypeUtils extends TypeUtils
         Post = require('./post').Post
         postTypeDef = if typeof Post.typeDefinition is "function" then Post.typeDefinition() else Post.typeDefinition
         
-        for userType in yield @getUserTypeDirectories path.join __dirname, '../type-definitions/posts'
-            for version in yield @getUserTypeDirectories path.join __dirname, '../type-definitions/posts', userType
-                def = JSON.parse yield readfile path.join __dirname, '../type-definitions/posts', userType, version, 'model.json'
+        for userType in yield @getUserTypeDirectories path.join __dirname, '../extensions/posts'
+            for version in yield @getUserTypeDirectories path.join __dirname, '../extensions/posts', userType
+                def = JSON.parse yield readfile path.join __dirname, '../extensions/posts', userType, version, 'model.json'
                 def.identifier = "posts/#{userType}/#{version}"
                 def.name = userType
                 def.version = version

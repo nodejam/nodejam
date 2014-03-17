@@ -42,19 +42,19 @@ class ForaExtensibleModel extends DatabaseModel
                     #We redefine the require() function inside the extension                    
                     modules = {
                         "react": require("react"),
-                        "widgets": require("../common/widgets")
+                        "widgets": require("../app-libs/widgets")
                     }
                     requireProxy = (name) -> modules[name]
                     
                     @builtinExtensionCache[typeDef.identifier] = {
-                        model: require("../type-definitions/#{typeDef.identifier}/model")(requireProxy),
+                        model: require("../extensions/#{typeDef.identifier}/model")(requireProxy),
                         templates: {}
                     }
 
-                    files = yield thunkify(fs.readdir).call fs, "../type-definitions/#{typeDef.identifier}/templates"
+                    files = yield thunkify(fs.readdir).call fs, "../extensions/#{typeDef.identifier}/templates"
                     for file in files
                         template = file.match /[a-z]*/
-                        instance = require("../type-definitions/#{typeDef.identifier}/templates/#{template}") 
+                        instance = require("../extensions/#{typeDef.identifier}/templates/#{template}") 
                         @builtinExtensionCache[typeDef.identifier].templates[template] = instance requireProxy
 
                 @builtinExtensionCache[typeDef.identifier]

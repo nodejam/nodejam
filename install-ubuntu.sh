@@ -358,7 +358,7 @@ if $gm ; then
     sudo apt-get install graphicsmagick
 fi
 
-#Install all node modules we need
+#Install config files
 if $config_files ; then
     if [ ! -f server/src/conf/settings.config ]; then
         cp server/src/conf/settings.config.sample server/src/conf/settings.config

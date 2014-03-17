@@ -4,8 +4,8 @@ models = require '../../models'
 fields = require '../../models/fields'
 utils = require '../../lib/utils'
 mdparser = require('../../lib/markdownutil').marked
-auth = require '../../common/web/auth'
-widgets = require '../../common/widgets'
+auth = require '../../app-libs/web/auth'
+widgets = require '../../app-libs/widgets'
 
 
 exports.index = auth.handler ->*

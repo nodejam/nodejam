@@ -3,7 +3,7 @@ conf = require '../../conf'
 utils = require '../../lib/utils'
 fs = require 'fs'
 path = require 'path'
-fsutils = require '../../common/fsutils'
+fsutils = require '../../app-libs/fsutils'
 ForaTypeUtils = require('../../models/foratypeutils').ForaTypeUtils
 typeUtils = new ForaTypeUtils()
 

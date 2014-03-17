@@ -3,7 +3,7 @@ db = require('../app').db
 models = require '../../models'
 typeUtils = require('../../models/foratypeutils').typeUtils
 utils = require '../../lib/utils'
-auth = require '../../common/web/auth'
+auth = require '../../app-libs/web/auth'
 
 
 exports.create = auth.handler { session: 'user' }, (forum) ->*
