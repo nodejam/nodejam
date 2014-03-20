@@ -86,7 +86,7 @@ Run this once to setup directories and indexes
 ```
 cd server
 ./compile.sh
-node --harmony app/scripts/init/index.js
+node --harmony app/scripts/init/create.js
 ```  
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
 

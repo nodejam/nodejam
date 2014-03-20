@@ -30,14 +30,14 @@ class ForaExtensibleModel extends DatabaseModel
         if not @builtinExtensionCache
             @builtinExtensionCache = {}
     
-        parent = typeDef.identifier.split('/')[0]
+        parent = typeDef.name.split('/')[0]
         
         if parent isnt 'posts' and parent isnt 'forums'
             throw new Error "User defined type must be a post or a forum, parent was #{parent}"
         
         switch typeDef.extensionType
             when 'builtin'
-                if not @builtinExtensionCache[typeDef.identifier]
+                if not @builtinExtensionCache[typeDef.name]
 
                     #We redefine the require() function inside the extension                    
                     modules = {
@@ -46,18 +46,18 @@ class ForaExtensibleModel extends DatabaseModel
                     }
                     requireProxy = (name) -> modules[name]
                     
-                    @builtinExtensionCache[typeDef.identifier] = {
-                        model: require("../extensions/#{typeDef.identifier}/model")(requireProxy),
+                    @builtinExtensionCache[typeDef.name] = {
+                        model: require("../extensions/#{typeDef.name}/model")(requireProxy),
                         templates: {}
                     }
 
-                    files = yield thunkify(fs.readdir).call fs, "../extensions/#{typeDef.identifier}/templates"
+                    files = yield thunkify(fs.readdir).call fs, "../extensions/#{typeDef.name}/templates"
                     for file in files
                         template = file.match /[a-z]*/
-                        instance = require("../extensions/#{typeDef.identifier}/templates/#{template}") 
+                        instance = require("../extensions/#{typeDef.name}/templates/#{template}") 
                         @builtinExtensionCache[typeDef.identifier].templates[template] = instance requireProxy
 
-                @builtinExtensionCache[typeDef.identifier]
+                @builtinExtensionCache[typeDef.name]
             else
                 throw new Error "Unsupported extension type"
 

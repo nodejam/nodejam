@@ -1,20 +1,15 @@
-module.exports = function(require) {
+module.exports.index = function(context) {
+    forum = context.forum;
+    posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
+    for post in posts
+        context.render()
+}
 
-    return {
+module.exports.post = function(context) {
 
-        router: function(routes) {
-            routes.add("", "index");
-            routes.about("", "about");
-        },
-        
-        index: function(context) {
-            forum = context.forum;
-            posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
-            for post in posts
-            context.render()
-        },
-    
-    }
+}
+
+module.exports.about = function(context) {
 
 }
 

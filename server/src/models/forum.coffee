@@ -60,21 +60,20 @@ class Forum extends ForaDbModel
     @typeDefinition: -> {
         name: 'forum',
         collection: 'forums',
-        ###
         discriminator: (obj) ->*
             def = yield Forum.getTypeUtils().getTypeDefinition(obj.type)
             if def.ctor isnt Forum
                 throw new Error "Forum type definitions must have ctor set to Forum"
             def        
-        ###
         schema: {
-            type: 'object',        
+            type: 'object',
             properties: {
+                type: { type: 'string' },
                 network: { type: 'string' },
                 name: { type: 'string' },
                 description: { type: 'string' },
                 stub: { type: 'string' },
-                type: { type: 'string', enum: ['public', 'protected', 'private'] },
+                access: { type: 'string', enum: ['public', 'protected', 'private'] },
                 createdById: { type: 'string' }
                 createdBy: { $ref: 'user-summary' },
                 settings: { $ref: 'forum-settings' },
@@ -102,7 +101,7 @@ class Forum extends ForaDbModel
                 }
                 stats: { $ref: 'forum-stats' },
             }
-            required: ['network', 'name', 'description', 'stub', 'type', 'createdById', 'createdBy', 'cache', 'stats']
+            required: ['type', 'network', 'name', 'description', 'stub', 'access', 'createdById', 'createdBy', 'cache', 'stats']
         },
         indexes: [
             { 'createdById': 1, 'network': 1 },
@@ -176,7 +175,7 @@ class Forum extends ForaDbModel
 
     join: (user, token, context, db) =>*
         { context, db } = @getContext context, db
-        if @type is 'public'
+        if @access is 'public'
             yield @addRole user, 'member', context, db
         else
             throw new Error "Access denied"

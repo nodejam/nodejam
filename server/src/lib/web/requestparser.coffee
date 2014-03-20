@@ -153,4 +153,4 @@ class RequestParser
                 else      
                     throw new Error "#{def.type} #{fieldName} is not a primitive type or is an array. Cannot parse."
 
-exports.RequestParser = RequestParser
+module.exports = RequestParser

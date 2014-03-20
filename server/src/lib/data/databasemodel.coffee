@@ -99,10 +99,12 @@ class DatabaseModel extends BaseModel
             original = yield @_constructModel_impl(clone, effectiveTypeDef, context, db)
             result.getOriginalModel = ->
                 original
-        
+                
         if effectiveTypeDef isnt typeDefinition
-            result.getTypeDefinition = original.getTypeDefinition = ->* effectiveTypeDef
-        
+            result.getTypeDefinition = ->* effectiveTypeDef
+            if effectiveTypeDef.trackChanges
+                original.getTypeDefinition = ->* effectiveTypeDef
+                
         result
         
         

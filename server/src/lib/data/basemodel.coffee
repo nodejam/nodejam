@@ -8,6 +8,20 @@ class BaseModel
 
 
 
+    @create: (params) ->*
+        typeDef = yield @getTypeDefinition()
+        
+        if typeDef.discriminator
+            actualTypeDef = yield typeDef.discriminator params            
+            obj = new actualTypeDef.ctor params            
+            obj.getTypeDefinition = ->*
+                actualTypeDef    
+        else
+            obj = new typeDef.ctor params
+        
+        obj
+
+
     @getTypeDefinition: ->*
         if not @__typeDefinition
             typeDef = if typeof @typeDefinition is "function" then @typeDefinition() else @typeDefinition

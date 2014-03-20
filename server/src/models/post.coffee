@@ -77,15 +77,6 @@ class Post extends ForaExtensibleModel
                 result = max
         result    
         
-    
-    
-    @create: (params) ->*
-        typeDef = yield (yield @getTypeDefinition()).discriminator params
-        post = new Post params
-        post.getTypeDefinition = ->*
-            typeDef
-        post
-
 
     
     constructor: (params) ->

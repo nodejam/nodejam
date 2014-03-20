@@ -5,7 +5,7 @@
         "type": "object",
         "properties": {
             "about": { "type": "string", "maxLength": 2000 },
-            "message": { "type": "string", "maxLength": 2000 },
+            "message": { "type": "string", "maxLength": 2000 }
         }
     }
 }

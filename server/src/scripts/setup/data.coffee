@@ -60,7 +60,7 @@ poetry = {
     cover_image_src: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',
     cover_image_small: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',    
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'literature',
     _createdBy: 'jeswin',
     posttypes: 'haiku,article'
@@ -72,7 +72,7 @@ movies = {
     cover_image_src: 'http://fc01.deviantart.net/fs71/i/2012/224/8/6/charlie_chaplin_02__conceptual_fashion__by_lastwishes-d5au8rm.jpg',
     cover_image_small: 'http://fc01.deviantart.net/fs71/i/2012/224/8/6/charlie_chaplin_02__conceptual_fashion__by_lastwishes-d5au8rm.jpg',
     permission: 'public',    
-    type: 'public',
+    access: 'public',
     category: 'movies',
     _createdBy: 'jeswin'       
 }
@@ -83,7 +83,7 @@ rawNerve = {
     cover_image_src: 'http://blogs-images.forbes.com/singularity/files/2013/01/Aaron_Swartz.jpg',
     cover_image_small: 'http://blogs-images.forbes.com/singularity/files/2013/01/Aaron_Swartz.jpg',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'life',
     theme: 'paper-theme',
     _about: 'about-raw-nerve.md',
@@ -97,7 +97,7 @@ itsMyLife = {
     cover_image_src: 'http://www.dangerouslybored.com/wp-content/uploads/2012/10/clown-7.jpg',
     cover_image_small: 'http://www.dangerouslybored.com/wp-content/uploads/2012/10/clown-7.jpg',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'life',
     _createdBy: 'jeswin'   
 }
@@ -108,7 +108,7 @@ makingStuff =  {
     cover_image_src: 'http://cdnimg.visualizeus.com/thumbs/aa/06/colors,colours,costume,derro,fancy,dress,festival-aa06d899eec02dec6f84cb017ea3bf80_h.jpg',
     cover_image_small: 'http://cdnimg.visualizeus.com/thumbs/aa/06/colors,colours,costume,derro,fancy,dress,festival-aa06d899eec02dec6f84cb017ea3bf80_h.jpg',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'life',
     _createdBy: 'jeswin'   
 }
@@ -119,7 +119,7 @@ travel = {
     cover_image_src: 'http://farm4.staticflickr.com/3016/3008866354_7481cc3f70_z.jpg',
     cover_image_small: 'http://farm4.staticflickr.com/3016/3008866354_7481cc3f70_z.jpg',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'travel',
     _createdBy: 'jeswin'   
 }
@@ -130,7 +130,7 @@ computers = {
     cover_image_src: 'http://cdn-static.zdnet.com/i/r/story/70/00/016684/apple-wwdc-mac-pro-0596610x488-610x488.jpg?hash=MTZjLGH0AT&upscale=1',
     cover_image_small: 'http://cdn-static.zdnet.com/i/r/story/70/00/016684/apple-wwdc-mac-pro-0596610x488-610x488.jpg?hash=MTZjLGH0AT&upscale=1',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'technology',
     _createdBy: 'jeswin'   
 }
@@ -141,7 +141,7 @@ theGreatMasters = {
     cover_image_src: 'http://www.claude-monet.com/images/paintings/impression-sunrise.jpg',
     cover_image_small: 'http://www.claude-monet.com/images/paintings/impression-sunrise.jpg',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'art',
     _createdBy: 'jeswin'   
 }
@@ -152,7 +152,7 @@ streetFood = {
     cover_image_src: 'http://shecookshecleans.files.wordpress.com/2011/07/korean-chic-skewers.jpg?w=500',
     cover_image_small: 'http://shecookshecleans.files.wordpress.com/2011/07/korean-chic-skewers.jpg?w=500',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'food-and-drinks'
     _createdBy: 'jeswin'   
 }
@@ -163,7 +163,7 @@ guzzlers = {
     cover_image_src: 'http://media.tumblr.com/tumblr_mdlnc6eBsm1qd0jy3.jpg',
     cover_image_small: 'http://media.tumblr.com/tumblr_mdlnc6eBsm1qd0jy3.jpg',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'food-and-drinks'
     _createdBy: 'jeswin'   
 }
@@ -174,7 +174,7 @@ earlyMornings = {
     cover_image_src: 'http://www.minigallery.co.uk/Erica_Kirkpatrick/images/20120426093259079_l/large/Misty_Pond_Landscape_42.jpg',
     cover_image_small: 'http://www.minigallery.co.uk/Erica_Kirkpatrick/images/20120426093259079_l/large/Misty_Pond_Landscape_42.jpg',
     permission: 'public',
-    type: 'public',
+    access: 'public',
     category: 'life',
     _createdBy: 'jeswin'  
 }
