@@ -6,7 +6,7 @@ utils = require '../../lib/utils'
 mdparser = require('../../lib/markdownutil').marked
 auth = require '../../app-libs/web/auth'
 widgets = require '../../app-libs/widgets'
-extensionLoader = require '../../app-libs/extensions/loader'
+ExtensionLoader = require '../../app-libs/extensions/loader'
 
 
 exports.index = auth.handler ->*
@@ -22,10 +22,11 @@ exports.index = auth.handler ->*
 
 
 exports.page = auth.handler (stub) ->*
-    forum = yield models.Forum.get({ stub, network: @network.stub }, {}, db)
+    forum = yield models.Forum.get { stub, network: @network.stub }, {}, db
     if forum
-        extension = yield extensionLoader.load forum.typeDefinition()
-        script = yield extension.loadScript 'index.js'
+        loader = new ExtensionLoader forum.typeDefinition()
+        script = yield loader.getScript('index')
+        yield script arguments, { forum }
         @body = yield script.run arguments, { forum }
 
 

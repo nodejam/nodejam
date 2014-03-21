@@ -1,10 +1,13 @@
+BuiltInExtension = require './builtin'
+UntrustedExtension = require './untrusted'
+
 class Loader
 
     load: (typeDefinition) ->
         switch typeDefinition.extensionType
             when 'builtin'
-                new BuiltInProxy typeDefinition
+                new BuiltInExtension typeDefinition
             else
-                new UntrustedProxy typeDefinition
+                new UntrustedExtension typeDefinition
     
 modile.exports = Loader
