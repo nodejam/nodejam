@@ -10,4 +10,4 @@ class Loader
             else
                 new UntrustedExtension typeDefinition
     
-modile.exports = Loader
+module.exports = Loader
