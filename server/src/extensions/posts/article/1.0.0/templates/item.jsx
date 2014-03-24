@@ -1,8 +1,7 @@
 /** @jsx React.DOM */
 var React = require("react");
-
-//fugly code until we get destructuring in ES6
 var widgets = require("widgets");
+
 var Page = widgets.Page,
     Heading = widgets.Heading,
     Author = widgets.Author, 

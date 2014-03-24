@@ -1,25 +1,25 @@
-index = function(context) {
+index = function*(context) {
     forum = context.forum;
     posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
-    for post in posts
+    for (i = 0; i < posts.length; i++)
         context.render()
 }
 
 
-post = function(context) {
+post = function*(context) {
 
 }
 
 
-about = function(context) {
+about = function*(context) {
 
 }
 
 
 module.exports.init = function*(context) {
-    context.pages.add("", pages.index);
-    context.pages.add(":post", pages.post);
-    context.pages.add("about", pages.about);        
+    context.pages.add("", index);
+    context.pages.add(":post", post);
+    context.pages.add("about", about);        
 }
 
 

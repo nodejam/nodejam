@@ -73,7 +73,7 @@ class TypeUtils
         
             yield @resolveReferences()
             
-        utils.log 'Type loading complete'
+        utils.log 'Types loaded'
 
 
 

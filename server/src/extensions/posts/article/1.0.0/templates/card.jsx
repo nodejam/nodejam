@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var React = require("React");
+var React = require("react");
 var widgets = require("widgets");
 
 var Card = widgets.Card,

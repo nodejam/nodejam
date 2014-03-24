@@ -10,6 +10,8 @@ loader = new Loader()
     
 (co ->*
     yield typeUtils.init()
+    yield loader.init()
+    
     Database = require '../lib/data/database'
     exports.db = new Database(conf.db, typeUtils.getTypeDefinitions())
     
