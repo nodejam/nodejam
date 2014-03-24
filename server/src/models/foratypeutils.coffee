@@ -1,4 +1,5 @@
 TypeUtils = require('../lib/data/typeutils')
+conf = require('../conf')
 fs = require 'fs'
 path = require 'path'
 thunkify = require 'thunkify'
@@ -65,9 +66,9 @@ class ForaTypeUtils extends TypeUtils
     addTrustedUserTypes: (ctor, baseTypeName, dir, definitions) =>*
         typeDef = if typeof ctor.typeDefinition is "function" then ctor.typeDefinition() else ctor.typeDefinition
         
-        for typeName in yield @getUserTypeDirectories path.join __dirname, "../extensions/#{dir}"
-            for version in yield @getUserTypeDirectories path.join __dirname, "../extensions/#{dir}", typeName
-                def = JSON.parse yield readfile path.join __dirname, "../extensions/#{dir}", typeName, version, 'model.json'
+        for typeName in yield @getUserTypeDirectories path.join conf.extensionsDir, dir
+            for version in yield @getUserTypeDirectories path.join conf.extensionsDir, dir, typeName
+                def = JSON.parse yield readfile path.join conf.extensionsDir, dir, typeName, version, 'model.json'
                 def.type = baseTypeName
                 def.name = "#{dir}/#{typeName}/#{version}"
                 def.version = version
@@ -109,4 +110,4 @@ class ForaTypeUtils extends TypeUtils
         console.log "Missing " + JSON.stringify name
         
         
-exports.ForaTypeUtils = ForaTypeUtils
+module.exports = ForaTypeUtils

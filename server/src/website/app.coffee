@@ -5,11 +5,15 @@ route = require 'koa-route'
 hbs = require 'koa-hbs'
 utils = require '../lib/utils'
 conf = require '../conf'
-ForaTypeUtils = require('../models/foratypeutils').ForaTypeUtils
+ForaTypeUtils = require('../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
+Loader = require('../app-libs/extensions/loader')
+loader = new Loader()
     
 (co ->*
     yield typeUtils.init()
+    yield loader.init()
+    
     Database = require '../lib/data/database'
     exports.db = new Database(conf.db, typeUtils.getTypeDefinitions())
     

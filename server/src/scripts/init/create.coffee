@@ -4,7 +4,7 @@ utils = require '../../lib/utils'
 fs = require 'fs'
 path = require 'path'
 fsutils = require '../../app-libs/fsutils'
-ForaTypeUtils = require('../../models/foratypeutils').ForaTypeUtils
+ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 
 #create directories

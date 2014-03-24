@@ -72,6 +72,8 @@ class TypeUtils
                 TypeUtils.typeCache[modelName] = def        
         
             yield @resolveReferences()
+            
+        utils.log 'Type loading complete'
 
 
 

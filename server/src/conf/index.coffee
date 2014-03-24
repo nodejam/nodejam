@@ -21,6 +21,7 @@ exports.db = settings.db
 exports.auth = settings.auth
 exports.admins = settings.admins
 exports.pubdir = settings.pubdir
+exports.extensionsDir = path.resolve __dirname, '../extensions'
 exports.reservedNames = settings.reservedNames
 exports.networks = networks
 exports.userDirCount = 100

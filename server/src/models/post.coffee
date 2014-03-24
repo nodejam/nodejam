@@ -5,11 +5,11 @@ widgets = require '../app-libs/widgets'
 conf = require '../conf'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
-ForaExtensibleModel = require('./foramodel').ForaExtensibleModel
-ForaTypeUtils = require('./foratypeutils').ForaTypeUtils
+ForaTypeUtils = require('./foratypeutils')
+Loader = require('../app-libs/extensions/loader')
+extensionLoader = new Loader()
 
-
-class Post extends ForaExtensibleModel
+class Post extends ForaDbModel
 
     @typeDefinition: ->
         {
@@ -102,8 +102,8 @@ class Post extends ForaExtensibleModel
     save: (context, db) =>*
         { context, db } = @getContext context, db
 
-        extensions = yield Post.getExtensions yield @getTypeDefinition()
-        yield extensions.model.save.call @
+        extensions = yield extensionLoader.load yield @getTypeDefinition()
+        yield extensions.getModel().save.call @
 
         #if stub is a reserved name, change it
         if @stub
@@ -127,14 +127,14 @@ class Post extends ForaExtensibleModel
 
 
     getView: (name) =>*
-        extensions = yield Post.getExtensions yield @getTypeDefinition()
-        yield extensions.model.view.call @, name
+        extensions = yield extensionLoader.load yield @getTypeDefinition()
+        yield extensions.getModel().view.call @, name
                 
 
 
     @render: (template, { post, forum, author, layout }) =>*
-        extensions = yield Post.getExtensions yield post.getTypeDefinition()
-        component = extensions.templates[template] { post, forum, author, layout }
+        extensions = yield extensionLoader.load yield @getTypeDefinition()
+        component = extensions.getTemplates()[template] { post, forum, author, layout }
         React.renderComponentToString component
 
 

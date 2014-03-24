@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 var React = require("React");
 var widgets = require("widgets");
+
 var Card = widgets.Card,
     Heading = widgets.Heading,
     Author = widgets.Author, 

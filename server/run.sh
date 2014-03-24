@@ -20,6 +20,8 @@ do
     esac
 done
 
+export NODE_PATH=$NODE_PATH:app/app-libs
+
 start_processes() {
     #fora_website and fora_api are simply identifiers, so that we can find and kill
     echo Killing all running fora processes...

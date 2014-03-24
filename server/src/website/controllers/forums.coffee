@@ -24,10 +24,10 @@ exports.index = auth.handler ->*
 exports.page = auth.handler (stub) ->*
     forum = yield models.Forum.get { stub, network: @network.stub }, {}, db
     if forum
-        loader = new ExtensionLoader forum.typeDefinition()
-        script = yield loader.getScript('index')
-        yield script arguments, { forum }
-        @body = yield script.run arguments, { forum }
+        loader = new ExtensionLoader()
+        extension = yield loader.load forum.typeDefinition()
+        pages = yield extension.getPages()
+        @body = yield pages.handle arguments, { forum }
 
 
 
