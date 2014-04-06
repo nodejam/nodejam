@@ -6,11 +6,20 @@ Cover = require('./cover').Cover;
 
 exports.Page = React.createClass({
     render: function() {
-        var cover = <Cover cover={this.props.cover} />
+        if (this.props.type === "post") {
+            json = JSON.stringify(this.props.post);
+            typeDefinition = JSON.stringify(this.props.typeDefinition);
+            script = "new Fora.Views.Posts.Post(\"" + json + "\", \"" + typeDefinition + "\");";
+            script = <script type="text/javascript"  dangerouslySetInnerHTML={{__html: script}}></script>;
+        }
+        else {
+            script = '';
+        }
         
         return (
             <div className="single-section-page single-column">
-                {cover}                
+                {script}
+                <Cover cover={this.props.cover} />                
                 <div className="main-pane">
                     <div className="content-area upsize-text item">
                         {this.props.children}

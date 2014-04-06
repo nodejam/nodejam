@@ -3,8 +3,9 @@ modules = {
     cover: 'Cover',
     heading: 'Heading',
     html: 'Html',
+    text: 'Text',
     author: 'Author',
-    card: 'Card',
+    card: 'Card'
 }
 
 for k, v of modules

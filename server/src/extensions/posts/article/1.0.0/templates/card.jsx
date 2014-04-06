@@ -5,7 +5,8 @@ var widgets = require("widgets");
 var Card = widgets.Card,
     Heading = widgets.Heading,
     Author = widgets.Author, 
-    Html = widgets.Html;
+    Html = widgets.Html,
+    Text = widgets.Text;
 
 module.exports = React.createClass({
     render: function() {
@@ -47,7 +48,7 @@ module.exports = React.createClass({
         return (
             <Card image={image} text={text}>
                 <Heading size="h2" link={"/" + this.props.forum.stub + "/" + post.stub } title={post.title} />
-                <Html html={synopsis} />
+                <Text text={synopsis} />
                 <Author type="text" forum={this.props.forum} author={this.props.author} />
             </Card>
         );

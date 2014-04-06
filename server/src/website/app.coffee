@@ -77,9 +77,8 @@ loader = new Loader()
     #forums
     app.use route.get '/forums', m_forums.index
     app.use route.get '/forums/new', m_forums.create
-    app.use route.get '/:forum', m_forums.item
-    app.use route.get '/:forum/about', m_forums.about
-    app.use route.get '/:forum/:post', m_posts.item
+    app.use route.get '/:forum', m_forums.page
+    app.use route.get '/:forum/:page', m_forums.page
 
     #Register templates, helpers etc.
     require("./hbshelpers").register()

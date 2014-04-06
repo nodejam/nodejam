@@ -1,3 +1,4 @@
+React = require 'react'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
@@ -7,6 +8,32 @@ mdparser = require('../../lib/markdownutil').marked
 auth = require '../../app-libs/web/auth'
 widgets = require '../../app-libs/widgets'
 ExtensionLoader = require '../../app-libs/extensions/loader'
+loader = new ExtensionLoader()
+
+
+class ForumContext
+
+    constructor: (@context, @forum) ->
+    
+    
+    getForum: ->* @forum
+    
+    
+    getExtension: (object) ->*
+        yield loader.load yield object.getTypeDefinition()
+                      
+        
+    renderPage: ->*
+    
+    
+    renderPost: (data) ->*
+        yield @context.renderPage 'posts/post', { 
+            pageName: 'post-page',
+            theme: data.forum.theme,
+            json: JSON.stringify(data.post),
+            typeDefinition: JSON.stringify(yield data.post.getTypeDefinition()),
+            html: data.html
+        }
 
 
 exports.index = auth.handler ->*
@@ -24,10 +51,14 @@ exports.index = auth.handler ->*
 exports.page = auth.handler (stub) ->*
     forum = yield models.Forum.get { stub, network: @network.stub }, {}, db
     if forum
-        loader = new ExtensionLoader()
-        extension = yield loader.load forum.typeDefinition()
+        extension = yield loader.load yield forum.getTypeDefinition()
         pages = yield extension.getPages()
-        @body = yield pages.handle arguments, { forum }
+        component = yield pages.handle new ForumContext(@, forum)
+        html = React.renderComponentToString component
+        yield @renderPage 'posts/post', { 
+            pageName: 'post-page',
+            html
+        }
 
 
 

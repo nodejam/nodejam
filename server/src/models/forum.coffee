@@ -190,6 +190,12 @@ class Forum extends ForaDbModel
         
 
 
+    getPost: (stub, context, db) =>*
+        { context, db } = @getContext context, db
+        yield models.Post.get({ 'forumId': db.getRowId(@), stub: post }, {}, db)
+        
+
+
     getPosts: (limit, sort, context, db) =>*
         { context, db } = @getContext context, db
         yield models.Post.find({ 'forumId': db.getRowId(@), state: 'published' },  { sort, limit }, context, db)
@@ -217,11 +223,16 @@ class Forum extends ForaDbModel
 
     removeRole: (user, role, context, db) =>*
         { context, db } = @getContext context, db
-        
         membership = yield models.Membership.get { 'forumId': db.getRowId(@), 'user.username': user.username }, context, db
         membership.roles = (r for r in membership.roles when r isnt role)
         yield if membership.roles.length then membership.save() else membership.destroy()
                 
+
+
+    getMembership: (username, context, db) =>*
+        { context, db } = @getContext context, db
+        yield models.Membership.get { 'forum.id': db.getRowId(@), 'user.username': username }, {}, db
+        
     
                                 
     getMemberships: (roles, context, db) =>*

@@ -395,6 +395,7 @@ if $node_modules ; then
     npm install optimist
     npm install multiparty
     npm install react
+    npm install path-to-regexp
     cd ..
     
     cd www-client

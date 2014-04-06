@@ -21,12 +21,17 @@ class Post
                     
             
     
-    getTemplates: =>
+    getTemplate: (name) =>*
+        @templates[name]
+    
+    
+    
+    getTemplates: =>*
         @templates
         
         
         
-    getModel: =>
+    getModel: =>*
         @model
         
         

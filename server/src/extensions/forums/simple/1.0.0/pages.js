@@ -1,13 +1,58 @@
 index = function*(context) {
-    forum = context.forum;
-    posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
-    for (i = 0; i < posts.length; i++)
-        context.render()
+    var forum = context.forum;
+    var posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
+    posts.forEach(function*(post) {
+        post.html = yield post.render('card', { forum: post.forum, author: post.createdBy });
+    });
+    
+    var options = {};
+    
+    if (this.session.user) {
+        var membership = yield forum.getMembership(this.session.user.username);
+        if (membership)
+            options.isMember = true;
+    }
+        
+    var coverContent = " \
+        <h1>#{forum.name}</h1> \
+        <p data-field-type=\"plain-text\" data-field-name=\"description\">#{forum.description}</p> \
+        <div class=\"option-bar\"><button class=\"edit\">Edit</button></div>"
+        
+    if (!forum.cover) {
+        forum.cover = new fields.Cover({ 
+            image: new fields.Image({ 
+                src: '/images/forum-cover.jpg', 
+                small: '/images/forum-cover-small.jpg', 
+                alt: forum.name
+            })
+        });
+    }
+     
+    yield this.renderPage('forums/item', { 
+        forum: forum,
+        forumJson: JSON.stringify(forum),
+        message: forum.message ? mdparser(forum.message) : "",
+        posts: posts, 
+        options: options,
+        pageName: 'forum-page', 
+        coverInfo: {
+            cover: forum.cover,
+            content: coverContent
+        }
+    });    
 }
 
 
-post = function*(context) {
-
+post = function*(context, stub) {
+    forum = yield context.getForum();
+    post = yield forum.getPost(stub);
+    author = yield post.getAuthor();
+    typeDefinition = yield post.getTypeDefinition();
+    
+    extension = yield context.getExtension(post);
+    template = yield extension.getTemplate('item');
+    component = template({ post: post, forum: forum, author: author, typeDefinition: typeDefinition });
+    return React.renderComponentToString(component);
 }
 
 
@@ -18,61 +63,8 @@ about = function*(context) {
 
 module.exports.init = function*(context) {
     context.pages.add("", index);
-    context.pages.add(":post", post);
     context.pages.add("about", about);        
+    context.pages.add(":post", post);
+    return
 }
 
-
-
-
-/*
-exports.addRoutes = function(table) {
-    table.add("/")
-}
-
-exports.item = function() {
-    forum = yield api.getForum()
-    posts = yield forum.getPosts 12, { sort: "_id, desc" }
-    user = yield 
-    
-    db.setRowId({}, -1))
-    
-    
-
-    forum = yield models.Forum.get({ stub, network: @network.stub }, {}, db)
-    info = yield forum.link 'info'
-
-    if forum
-        posts = yield forum.getPosts(12, db.setRowId({}, -1))
-
-        for post in posts
-            post.html = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
-
-        options = {}
-        if @session.user
-            membership = yield models.Membership.get { 'forum.id': db.getRowId(forum), 'user.username': @session.user.username }, {}, db
-            if membership
-                options.isMember = true
-        
-        coverContent = "
-            <h1>#{forum.name}</h1>
-            <p data-field-type=\"plain-text\" data-field-name=\"description\">#{forum.description}</p>
-            <div class=\"option-bar\"><button class=\"edit\">Edit</button></div>"
-            
-        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/images/forum-cover.jpg', small: '/images/forum-cover-small.jpg', alt: forum.name } }
-        
-        yield @renderPage 'forums/item', { 
-            forum,
-            forumJson: JSON.stringify(forum),
-            message: if info.message then mdparser(info.message),
-            posts, 
-            options,
-            pageName: 'forum-page', 
-            coverInfo: {
-                cover: forum.cover,
-                content: coverContent
-            }
-        }
-    
-}
-*/

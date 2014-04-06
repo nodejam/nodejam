@@ -103,7 +103,8 @@ class Post extends ForaDbModel
         { context, db } = @getContext context, db
 
         extensions = yield extensionLoader.load yield @getTypeDefinition()
-        yield extensions.getModel().save.call @
+        model = yield extensions.getModel()
+        yield model.save.call @
 
         #if stub is a reserved name, change it
         if @stub
@@ -126,15 +127,22 @@ class Post extends ForaDbModel
 
 
 
+    getAuthor: =>*
+        { context, db } = @getContext context, db
+        yield models.User.getById post.createdById, {}, db
+                
+
+
     getView: (name) =>*
         extensions = yield extensionLoader.load yield @getTypeDefinition()
-        yield extensions.getModel().view.call @, name
+        model = yield extensions.getModel()
+        yield model.view.call @, name
                 
 
 
     @render: (template, { post, forum, author, layout }) =>*
-        extensions = yield extensionLoader.load yield @getTypeDefinition()
-        component = extensions.getTemplates()[template] { post, forum, author, layout }
+        extensions = yield extensionLoader.load yield post.getTypeDefinition()
+        component = (yield extensions.getTemplates())[template] { post, forum, author, layout }
         React.renderComponentToString component
 
 
