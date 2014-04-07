@@ -1,5 +1,5 @@
-w = require('widgets');
 indexTemplate = require('./templates/index');
+React = require('react');
 
 index = function*() {
     forum = this.forum;

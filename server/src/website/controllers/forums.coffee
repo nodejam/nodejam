@@ -50,10 +50,9 @@ exports.page = auth.handler (stub) ->*
     if forum
         extension = yield loader.load yield forum.getTypeDefinition()
         pages = yield extension.getPages()
-        component = yield pages.handle new ForumContext(@, forum)
-        html = React.renderComponentToString component
-        yield @renderPage 'posts/post', { 
-            pageName: 'post-page',
+        html = yield pages.handle new ForumContext(@, forum)
+        yield @renderPage 'forums/page', { 
+            pageName: 'forum-page',
             html
         }
 

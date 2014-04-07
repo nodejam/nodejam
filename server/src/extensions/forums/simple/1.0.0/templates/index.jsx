@@ -23,7 +23,7 @@ module.exports = React.createClass({
         }
     
         createCard = function(post) {
-            this.props.template({ post: post, forum: post.forum, author: post.createdBy });
+            return post.template({ post: post, forum: post.forum, author: post.createdBy });
         };
     
         return (

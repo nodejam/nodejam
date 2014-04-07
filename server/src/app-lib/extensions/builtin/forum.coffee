@@ -43,9 +43,9 @@ class Forum
                 m = route.re.exec url
                 if m
                     args = m.slice(1)
-                    yield route.handler.apply req, args
-                    return            
-     
+                    result = yield route.handler.apply req, args
+                    return result
+                    
 
     constructor: (@typeDefinition, @loader) ->
         
