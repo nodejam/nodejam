@@ -9,14 +9,16 @@ class Forum
     
     class PagesContext
 
-        routingTable: []
+        constructor: ->
+            @routingTable = []
+            
     
-        add: ->
+        add: =>
             if arguments.length is 3
                 [url, method, handler] = arguments
             else
                 [url, handler] = arguments
-                method = 'get'
+                method = 'GET'
             
             method = method.toUpperCase()
             re = pathToRegexp(url)
@@ -27,15 +29,16 @@ class Forum
         
         constructor: (@context) ->
 
-        handle: (req) ->*
+        handle: (req) =>*
             for route in @context.pages.routingTable
                 if route.method isnt req.context.request.method
                     continue
             
-                m = route.re.exec(req.context.request.url)
+                url = req.context.request.url.split('/').slice(2).join("/")
+                m = route.re.exec url
                 if m
                     args = m.slice(1)
-                    yield route.handler.apply [context].concat args
+                    yield route.handler.apply req, args
                     return            
      
 
@@ -45,16 +48,15 @@ class Forum
         
     init: =>*
         extDir = path.join conf.extensionsDir, @typeDefinition.name
-        
         pages = require("#{extDir}/pages")
         context = {
             pages: new PagesContext()
         }
-        yield pages.init context
+        yield pages.init.call context
         @pages = new Router context
         
         @model = require("#{extDir}/model")
-            
+                    
     
     
     getPages: =>*

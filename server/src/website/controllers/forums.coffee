@@ -16,9 +16,6 @@ class ForumContext
     constructor: (@context, @forum) ->
     
     
-    getForum: ->* @forum
-    
-    
     getExtension: (object) ->*
         yield loader.load yield object.getTypeDefinition()
                       
@@ -58,44 +55,6 @@ exports.page = auth.handler (stub) ->*
         yield @renderPage 'posts/post', { 
             pageName: 'post-page',
             html
-        }
-
-
-
-exports.item = auth.handler (stub) ->*
-    forum = yield models.Forum.get({ stub, network: @network.stub }, {}, db)
-    info = yield forum.link 'info'
-
-    if forum
-        posts = yield forum.getPosts(12, db.setRowId({}, -1))
-
-        for post in posts
-            post.html = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
-
-        options = {}
-        if @session.user
-            membership = yield models.Membership.get { 'forum.id': db.getRowId(forum), 'user.username': @session.user.username }, {}, db
-            if membership
-                options.isMember = true
-        
-        coverContent = "
-            <h1>#{forum.name}</h1>
-            <p data-field-type=\"plain-text\" data-field-name=\"description\">#{forum.description}</p>
-            <div class=\"option-bar\"><button class=\"edit\">Edit</button></div>"
-            
-        forum.cover ?= new fields.Cover { image: new fields.Image { src: '/images/forum-cover.jpg', small: '/images/forum-cover-small.jpg', alt: forum.name } }
-        
-        yield @renderPage 'forums/item', { 
-            forum,
-            forumJson: JSON.stringify(forum),
-            message: if info.message then mdparser(info.message),
-            posts, 
-            options,
-            pageName: 'forum-page', 
-            coverInfo: {
-                cover: forum.cover,
-                content: coverContent
-            }
         }
 
 

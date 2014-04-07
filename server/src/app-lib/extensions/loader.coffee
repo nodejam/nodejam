@@ -23,10 +23,12 @@ class Loader
         defs = typeUtils.getTypeDefinitions()
         for name, def of defs
             if def.extensionType is 'builtin'
-                ext = new builtin[def.type] def
+                ctor = builtin[def.type]
+                ext = new ctor def
+                console.log "loading builtin extension " + def.name
                 yield ext.init()
                 Loader.builtinExtensionCache[def.name] = ext
-        utils.log 'Extensions loaded'
+        utils.log 'Extension loading complete'
         return
     
     

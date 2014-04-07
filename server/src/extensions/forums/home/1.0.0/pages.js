@@ -1,26 +1,14 @@
-index = function*(context) {
-    forum = context.forum;
-    posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
+index = function*() {
+    throw new Error("UNIMPLEMENTED")
+    posts = yield this.forum.getPosts(12, { "sort": { "_id": -1 }});
     posts.forEach(function*(post) {
         yield post.render();
     });
 }
 
 
-post = function*(context) {
-    
-}
-
-
-about = function*(context) {
-
-}
-
-
-module.exports.init = function*(context) {
-    context.pages.add("", index);
-    context.pages.add(":post", post);
-    context.pages.add("about", about);        
+module.exports.init = function*() {
+    this.pages.add("", index);
 }
 
 

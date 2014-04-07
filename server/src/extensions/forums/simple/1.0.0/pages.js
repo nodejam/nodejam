@@ -1,5 +1,7 @@
-index = function*(context) {
-    var forum = context.forum;
+homeTemplate = require('./templates/home');
+
+index = function*() {
+    forum = this.forum;
     var posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
     posts.forEach(function*(post) {
         post.html = yield post.render('card', { forum: post.forum, author: post.createdBy });
@@ -7,64 +9,37 @@ index = function*(context) {
     
     var options = {};
     
-    if (this.session.user) {
-        var membership = yield forum.getMembership(this.session.user.username);
+    if (this.context.session) {
+        var membership = yield forum.getMembership(this.context.session.user.username);
         if (membership)
             options.isMember = true;
     }
-        
-    var coverContent = " \
-        <h1>#{forum.name}</h1> \
-        <p data-field-type=\"plain-text\" data-field-name=\"description\">#{forum.description}</p> \
-        <div class=\"option-bar\"><button class=\"edit\">Edit</button></div>"
-        
-    if (!forum.cover) {
-        forum.cover = new fields.Cover({ 
-            image: new fields.Image({ 
-                src: '/images/forum-cover.jpg', 
-                small: '/images/forum-cover-small.jpg', 
-                alt: forum.name
-            })
-        });
-    }
-     
-    yield this.renderPage('forums/item', { 
-        forum: forum,
-        forumJson: JSON.stringify(forum),
-        message: forum.message ? mdparser(forum.message) : "",
-        posts: posts, 
-        options: options,
-        pageName: 'forum-page', 
-        coverInfo: {
-            cover: forum.cover,
-            content: coverContent
-        }
-    });    
+    
+    component = homeTemplate({ posts: posts, forum: forum });
+    return React.renderComponentToString(component);
 }
 
 
-post = function*(context, stub) {
-    forum = yield context.getForum();
+post = function*(stub) {
+    forum = yield this.getForum();
     post = yield forum.getPost(stub);
     author = yield post.getAuthor();
     typeDefinition = yield post.getTypeDefinition();
     
-    extension = yield context.getExtension(post);
+    extension = yield this.getExtension(post);
     template = yield extension.getTemplate('item');
     component = template({ post: post, forum: forum, author: author, typeDefinition: typeDefinition });
     return React.renderComponentToString(component);
 }
 
 
-about = function*(context) {
+about = function*() {
 
 }
 
-
-module.exports.init = function*(context) {
-    context.pages.add("", index);
-    context.pages.add("about", about);        
-    context.pages.add(":post", post);
-    return
+module.exports.init = function*() {
+    this.pages.add("", index);
+    this.pages.add("about", about);        
+    this.pages.add(":post", post);
 }
 

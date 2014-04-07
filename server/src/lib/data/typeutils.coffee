@@ -68,12 +68,13 @@ class TypeUtils
         if @getCacheItems
             items = yield @getCacheItems()
 
-            for modelName, def of items                    
+            for modelName, def of items
+                utils.log "loading type #{modelName}"     
                 TypeUtils.typeCache[modelName] = def        
         
             yield @resolveReferences()
             
-        utils.log 'Types loaded'
+        utils.log 'Type loading complete'
 
 
 
