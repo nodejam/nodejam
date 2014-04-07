@@ -1,12 +1,12 @@
 React = require 'react'
 utils = require '../lib/utils'
 models = require './'
-widgets = require '../app-libs/widgets'
+widgets = require '../app-lib/widgets'
 conf = require '../conf'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 ForaTypeUtils = require('./foratypeutils')
-Loader = require('../app-libs/extensions/loader')
+Loader = require('../app-lib/extensions/loader')
 extensionLoader = new Loader()
 
 class Post extends ForaDbModel
@@ -140,9 +140,10 @@ class Post extends ForaDbModel
                 
 
 
-    @render: (template, { post, forum, author, layout }) =>*
+    @render: (templateName, { post, forum, author, layout }) =>*
         extensions = yield extensionLoader.load yield post.getTypeDefinition()
-        component = (yield extensions.getTemplates())[template] { post, forum, author, layout }
+        template = yield extensions.getTemplate(templateName)
+        component = template { post, forum, author, layout }
         React.renderComponentToString component
 
 

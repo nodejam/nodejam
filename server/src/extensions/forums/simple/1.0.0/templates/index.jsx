@@ -11,6 +11,7 @@ module.exports = React.createClass({
     render: function() {
         forum = this.props.forum;
 
+        //If the cover is missing, use default
         if (!forum.cover) {
             forum.cover = {
                 image: { 
@@ -22,17 +23,18 @@ module.exports = React.createClass({
         }
     
         createCard = function(post) {
-                
+            this.props.template({ post: post, forum: post.forum, author: post.createdBy });
         };
     
         return (
-            <Page cover={this.props.forum.cover} type="forum" posts={this.props.posts} forum={this.props.forum}>
-                
-                <h1>Hello</h1>
-                <Heading size="h1" field="title" title={this.props.post.title} />
-                <Author type="small" forum={this.props.forum} author={this.props.author} />
-                <Html field="content" html={this.props.post.content.formatContent()} />
-            </Page>
+            <div className="single-section-page single-column">
+                <Cover cover={forum.cover} />
+                <div className="main-pane">
+                    <div className="content-area upsize-text item">
+                        {this.props.posts.map(createCard)}
+                    </div>
+                </div>
+            </div>
         );
     }
 });   

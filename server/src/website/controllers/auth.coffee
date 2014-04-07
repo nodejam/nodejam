@@ -5,12 +5,12 @@ thunkify = require 'thunkify'
 vOAuth = require('oauth').OAuth
 fs = require 'fs-extra'
 utils = require '../../lib/utils'
-netutils = require '../../app-libs/netutils'
-fsutils = require '../../app-libs/fsutils'
+netutils = require '../../app-lib/netutils'
+fsutils = require '../../app-lib/fsutils'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-auth = require '../../app-libs/web/auth'
+auth = require '../../app-lib/web/auth'
 
 
 OAuth = require('oauth').OAuth

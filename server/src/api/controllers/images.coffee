@@ -1,8 +1,8 @@
 gm = require 'gm'
 thunkify = require 'thunkify'
 utils = require '../../lib/utils'
-fsutils = require '../../app-libs/fsutils'
-auth = require '../../app-libs/web/auth'
+fsutils = require '../../app-lib/fsutils'
+auth = require '../../app-lib/web/auth'
 
 
 validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp']

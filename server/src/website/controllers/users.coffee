@@ -2,9 +2,9 @@ conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
 utils = require '../../lib/utils'
-auth = require '../../app-libs/web/auth'
+auth = require '../../app-lib/web/auth'
 fields = require '../../models/fields'
-widgets = require '../../app-libs/widgets'
+widgets = require '../../app-lib/widgets'
 
 
 exports.login = ->*

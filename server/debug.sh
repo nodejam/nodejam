@@ -3,6 +3,6 @@
 cd ../www-client
 ./compile.sh --debug
 cd ../server
+export NODE_PATH=$NODE_PATH:app/app-lib
 ./run.sh
-export NODE_PATH=$NODE_PATH:app/app-libs
 node --harmony app/scripts/debug/watch.js

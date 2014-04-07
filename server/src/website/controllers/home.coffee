@@ -2,7 +2,7 @@ conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
 utils = require('../../lib/utils')
-auth = require '../../app-libs/web/auth'
+auth = require '../../app-lib/web/auth'
 
 
 exports.index = auth.handler ->*

@@ -27,9 +27,14 @@ class Forum
     
     class Router
         
-        constructor: (@context) ->
+        constructor: (@context, @loader) ->
+
 
         handle: (req) =>*
+            req.api = {
+                extensionLoader: @loader
+            }
+            
             for route in @context.pages.routingTable
                 if route.method isnt req.context.request.method
                     continue
@@ -42,7 +47,7 @@ class Forum
                     return            
      
 
-    constructor: (@typeDefinition) ->
+    constructor: (@typeDefinition, @loader) ->
         
         
         
@@ -53,7 +58,7 @@ class Forum
             pages: new PagesContext()
         }
         yield pages.init.call context
-        @pages = new Router context
+        @pages = new Router context, @loader
         
         @model = require("#{extDir}/model")
                     

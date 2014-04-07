@@ -90,7 +90,7 @@ cd server
 node --harmony app/scripts/init/create.js
 ```  
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
-Add app/app-libs to NODE_PATH. Check server/debug.sh for an example. 
+Add app/app-lib to NODE_PATH. Check server/debug.sh for an example. 
 
 
 Step 3: Running Fora

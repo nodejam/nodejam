@@ -5,7 +5,7 @@ thunkify = require('thunkify')
 
 class Post
 
-    constructor: (@typeDefinition) ->
+    constructor: (@typeDefinition, @loader) ->
         
         
         
@@ -26,11 +26,6 @@ class Post
     
     
     
-    getTemplates: =>*
-        @templates
-        
-        
-        
     getModel: =>*
         @model
         

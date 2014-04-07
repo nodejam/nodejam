@@ -5,7 +5,7 @@ utils = require '../lib/utils'
 conf = require '../conf'
 ForaTypeUtils = require('../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
-Loader = require('../app-libs/extensions/loader')
+Loader = require('../app-lib/extensions/loader')
 loader = new Loader()
     
 (co ->*
@@ -26,7 +26,7 @@ loader = new Loader()
     utils.log "Fora API started at #{new Date} on #{host}:#{port}"
 
     app = koa()
-    init = require '../app-libs/web/init'
+    init = require '../app-lib/web/init'
     init app
     
     #monitoring and debugging

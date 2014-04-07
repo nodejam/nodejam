@@ -5,7 +5,7 @@ hasher = require '../../lib/hasher'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-auth = require '../../app-libs/web/auth'
+auth = require '../../app-lib/web/auth'
     
 exports.create = auth.handler ->*
 

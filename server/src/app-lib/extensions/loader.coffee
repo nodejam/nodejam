@@ -24,7 +24,7 @@ class Loader
         for name, def of defs
             if def.extensionType is 'builtin'
                 ctor = builtin[def.type]
-                ext = new ctor def
+                ext = new ctor def, this
                 console.log "loading builtin extension " + def.name
                 yield ext.init()
                 Loader.builtinExtensionCache[def.name] = ext

@@ -1,21 +1,23 @@
-homeTemplate = require('./templates/home');
+w = require('widgets');
+indexTemplate = require('./templates/index');
 
 index = function*() {
     forum = this.forum;
     var posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
-    posts.forEach(function*(post) {
-        post.html = yield post.render('card', { forum: post.forum, author: post.createdBy });
-    });
-    
+
+    for (i = 0; i < posts.length; i++) {
+        extensions = yield this.api.extensionLoader.load(yield posts[i].getTypeDefinition());
+        posts[i].template = yield extensions.getTemplate('card');
+    }
+        
     var options = {};
-    
     if (this.context.session) {
         var membership = yield forum.getMembership(this.context.session.user.username);
         if (membership)
             options.isMember = true;
     }
-    
-    component = homeTemplate({ posts: posts, forum: forum });
+
+    component = indexTemplate({ posts: posts, forum: forum, options: options });
     return React.renderComponentToString(component);
 }
 
