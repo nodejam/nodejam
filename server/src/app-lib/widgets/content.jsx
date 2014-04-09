@@ -5,7 +5,7 @@ exports.Content = React.createClass({
     render: function() {
         content = this.props.content.formatContent();
         return (
-            <div dangerouslySetInnerHTML={{__html: content}}>
+            <div className="content" dangerouslySetInnerHTML={{__html: content}}>
                 {this.props.children}                
             </div>
         );

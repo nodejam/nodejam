@@ -192,7 +192,7 @@ class Forum extends ForaDbModel
 
     getPost: (stub, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Post.get({ 'forumId': db.getRowId(@), stub: post }, {}, db)
+        yield models.Post.get({ 'forumId': db.getRowId(@), stub }, {}, db)
         
 
 
