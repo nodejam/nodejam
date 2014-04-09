@@ -1,37 +1,29 @@
-indexTemplate = require('./templates/index');
+IndexView = require('./templates/index');
+PostView = require('./templates/post');
 React = require('react');
+widgets = require('widgets');
 
 index = function*() {
-    forum = this.forum;
-    var posts = yield forum.getPosts(12, { "sort": { "_id": -1 }});
+    var posts = yield this.forum.getPosts(12, { "sort": { "_id": -1 }});
 
-    for (i = 0; i < posts.length; i++) {
-        extensions = yield this.api.extensionLoader.load(yield posts[i].getTypeDefinition());
-        posts[i].template = yield extensions.getTemplate('card');
-    }
-        
-    var options = {};
-    if (this.context.session) {
-        var membership = yield forum.getMembership(this.context.session.user.username);
-        if (membership)
-            options.isMember = true;
-    }
-
-    component = indexTemplate({ posts: posts, forum: forum, options: options });
-    return React.renderComponentToString(component);
+    return yield widgets.helpers.renderForum({
+        template: IndexView,
+        forum: this.forum,
+        posts: posts,
+        postTemplate: 'card'
+    }, this);
 }
 
 
 post = function*(stub) {
-    forum = yield this.getForum();
-    post = yield forum.getPost(stub);
-    author = yield post.getAuthor();
-    typeDefinition = yield post.getTypeDefinition();
+    post = yield this.forum.getPost(stub);
     
-    extension = yield this.getExtension(post);
-    template = yield extension.getTemplate('item');
-    component = template({ post: post, forum: forum, author: author, typeDefinition: typeDefinition });
-    return React.renderComponentToString(component);
+    return yield widgets.helpers.renderPost({
+        template: PostView,
+        post: post,
+        forum: this.forum,
+        postTemplate: 'item'
+    }, this);    
 }
 
 
