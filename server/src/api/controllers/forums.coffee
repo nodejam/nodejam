@@ -33,6 +33,7 @@ exports.create = auth.handler { session: 'user' }, ->*
             createdBy: @session.user,
         }
         
+        yield @parser.map forum, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']     
         yield @parser.map forum, yield mapper.getMappableFields yield forum.getTypeDefinition()        
         forum = yield forum.save context, db
         yield forum.addRole @session.user, 'admin'

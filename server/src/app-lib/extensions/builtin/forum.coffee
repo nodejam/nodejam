@@ -60,8 +60,9 @@ class Forum
         yield pages.init.call context
         @pages = new Router context, @loader
         
-        @model = require("#{extDir}/model")
-                    
+        if fs.existsSync "#{extDir}/model.js"
+            @model = require("#{extDir}/model")
+
     
     
     getPages: =>*

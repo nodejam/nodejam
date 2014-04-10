@@ -34,7 +34,7 @@ exports.Author = React.createClass({
                         </div>
                         <div className="text xdownsize-text">
                             <h4><a href={"/~" + this.props.author.username}>{this.props.author.name}</a></h4>
-                            <p className="italics downsize-text"> in <a href={this.props.forum.stub}>{this.props.forum.name}</a></p>
+                            <p className="italics downsize-text"> in <a href={"/" + this.props.forum.stub}>{this.props.forum.name}</a></p>
                         </div>
                     </div>
                 );

@@ -17,6 +17,7 @@ index = function*() {
 
 post = function*(stub) {
     post = yield this.forum.getPost(stub);
+    
     return yield widgets.helpers.renderPost({
         template: PostView,
         post: post,
