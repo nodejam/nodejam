@@ -4,7 +4,6 @@ models = require '../../models'
 utils = require '../../lib/utils'
 auth = require '../../app-lib/web/auth'
 fields = require '../../models/fields'
-widgets = require '../../app-lib/widgets'
 
 
 exports.login = ->*

@@ -6,7 +6,6 @@ fields = require '../../models/fields'
 utils = require '../../lib/utils'
 mdparser = require('../../lib/markdownutil').marked
 auth = require '../../app-lib/web/auth'
-widgets = require '../../app-lib/widgets'
 ExtensionLoader = require '../../app-lib/extensions/loader'
 loader = new ExtensionLoader()
 

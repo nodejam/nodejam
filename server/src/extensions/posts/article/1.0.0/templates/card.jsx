@@ -1,12 +1,12 @@
 /** @jsx React.DOM */
 var React = require("react");
-var widgets = require("widgets");
+var controls = require("controls");
 
-var Card = widgets.Card,
-    Heading = widgets.Heading,
-    Author = widgets.Author, 
-    Html = widgets.Html,
-    Text = widgets.Text;
+var Card = controls.Card,
+    Heading = controls.Heading,
+    Author = controls.Author, 
+    Html = controls.Html,
+    Text = controls.Text;
 
 module.exports = React.createClass({
     render: function() {

@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require("react");
-var widgets = require('widgets');
-var Post = widgets.Post;
+var controls = require('controls');
+var Post = controls.Post;
 
 module.exports = React.createClass({
     render: function() {

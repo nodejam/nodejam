@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require("react");
-var widgets = require("widgets");
-var Forum = widgets.Forum;
+var controls = require("controls");
+var Forum = controls.Forum;
 
 module.exports = React.createClass({
     render: function() {        

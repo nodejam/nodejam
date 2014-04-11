@@ -58,7 +58,6 @@ loader = new Loader()
     m_auth = require './controllers/auth'
     m_users = require './controllers/users'
     m_forums = require './controllers/forums'
-    m_posts = require './controllers/posts'
 
     app.use route.get '/healthcheck', -> this.body { "Jack Sparrow is alive" }
 

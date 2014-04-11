@@ -4,7 +4,7 @@ var React = require("react");
 exports.Content = React.createClass({
     render: function() {
     
-        if (typeof this.props.content != "string")            
+        if (this.props.content.formatContent)            
             content = this.props.content.formatContent();
         else
             content = this.props.content;

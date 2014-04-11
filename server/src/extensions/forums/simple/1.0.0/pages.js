@@ -1,12 +1,12 @@
 IndexView = require('./templates/index');
 PostView = require('./templates/post');
 React = require('react');
-widgets = require('widgets');
+controls = require('controls');
 
 index = function*() {
     var posts = yield this.forum.getPosts(12, { "sort": { "_id": -1 }});
 
-    return yield widgets.helpers.renderForum({
+    return yield controls.helpers.renderForum({
         template: IndexView,
         forum: this.forum,
         posts: posts,
@@ -18,7 +18,7 @@ index = function*() {
 post = function*(stub) {
     post = yield this.forum.getPost(stub);
     
-    return yield widgets.helpers.renderPost({
+    return yield controls.helpers.renderPost({
         template: PostView,
         post: post,
         forum: this.forum,
