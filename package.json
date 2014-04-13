@@ -1,0 +1,45 @@
+{
+  "name": "fora",
+  "version": "0.0.1",
+  "description": "Fill something here",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeswin/fora"
+  },
+  "author": "",
+  "license": "GNU GPL",
+  "bugs": {
+    "url": "https://github.com/jeswin/fora/issues"
+  },
+  "dependencies": {
+	"less": "*",
+	"regenerator": "*",
+	"react-tools": "*",
+	"koa": "*",
+	"koa-route": "*",
+	"koa-favicon": "*",
+	"koa-hbs    ": "*",
+	"co": "*",
+	"co-body": "*",
+	"co-multipart": "*",
+	"thunkify    ": "*",
+	"mongodb": "*",
+	"validator": "*",
+	"sanitizer": "*",
+	"handlebars": "*",
+	"fs-extra": "*",
+	"gm": "*",
+	"node-minify": "*",
+	"oauth": "*",
+	"marked": "*",
+	"optimist": "*",
+	"multiparty": "*",
+	"react": "*",
+	"path-to-regexp": "*",
+	"node-minify": "*"
+  }
+}
