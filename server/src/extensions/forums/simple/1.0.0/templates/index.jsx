@@ -1,9 +1,9 @@
-/** @jsx React.DOM */
-var React = require("react");
+/** @jsx ui.DOM */
+var ui = require("fora-ui");
 var controls = require("controls");
 var Forum = controls.Forum;
 
-module.exports = React.createClass({
+module.exports = ui.createClass({
     render: function() {        
         createCard = function(post) {
             return post.template({ post: post, forum: post.forum, author: post.createdBy });

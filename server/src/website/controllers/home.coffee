@@ -1,8 +1,11 @@
+React = require 'react'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
 utils = require('../../lib/utils')
 auth = require '../../app-lib/web/auth'
+ExtensionLoader = require '../../app-lib/extensions/loader'
+loader = new ExtensionLoader()
 
 
 exports.index = auth.handler ->*
@@ -11,7 +14,10 @@ exports.index = auth.handler ->*
     featured = (f for f in featured when (db.getRowId(x) for x in editorsPicks).indexOf(db.getRowId(f)) is -1)
 
     for post in editorsPicks.concat(featured)
-        post.html = yield models.Post.render 'card', { post, forum: post.forum, author: post.createdBy }
+        extension = yield loader.load yield post.getTypeDefinition()
+        template = yield extension.getTemplate 'card'
+        component = template { post: post, forum: post.forum, author: post.createdBy }
+        post.html = React.renderComponentToString component
         
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
@@ -27,9 +33,9 @@ exports.index = auth.handler ->*
             content: coverContent
         }
     }
-
-
-
+    
+    
+    
 exports.login = ->*
     yield @renderPage 'home/login', { 
         pageName: 'login-page'

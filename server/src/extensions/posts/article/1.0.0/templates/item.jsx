@@ -1,5 +1,5 @@
-/** @jsx React.DOM */
-var React = require("react");
+/** @jsx ui.DOM */
+var ui = require("fora-ui");
 var controls = require("controls");
 
 var Item = controls.Item,
@@ -7,7 +7,7 @@ var Item = controls.Item,
     Author = controls.Author, 
     Content = controls.Content;
 
-module.exports = React.createClass({
+module.exports = ui.createClass({
     render: function() {
         return (
             <Item>

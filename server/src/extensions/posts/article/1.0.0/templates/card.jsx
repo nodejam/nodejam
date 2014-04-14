@@ -1,5 +1,5 @@
-/** @jsx React.DOM */
-var React = require("react");
+/** @jsx ui.DOM */
+var ui = require("fora-ui");
 var controls = require("controls");
 
 var Card = controls.Card,
@@ -8,7 +8,7 @@ var Card = controls.Card,
     Html = controls.Html,
     Text = controls.Text;
 
-module.exports = React.createClass({
+module.exports = ui.createClass({
     render: function() {
         var post = this.props.post;
 
@@ -47,6 +47,7 @@ module.exports = React.createClass({
         
         return (
             <Card image={image} text={text}>
+                <p>Hello</p>
                 <Heading size="h2" link={"/" + this.props.forum.stub + "/" + post.stub } title={post.title} />
                 <Text text={synopsis} />
                 <Author type="text" forum={this.props.forum} author={this.props.author} />

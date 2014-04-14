@@ -1,9 +1,10 @@
-/** @jsx React.DOM */
-var React = require("react");
+/** @jsx ui.DOM */
+var ui = require("fora-ui");
+
 var controls = require('controls');
 var Post = controls.Post;
 
-module.exports = React.createClass({
+module.exports = ui.createClass({
     render: function() {
         return (
             <Post post={this.props.post} typeDefinition={this.props.typeDefinition}>
