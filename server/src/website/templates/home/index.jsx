@@ -15,7 +15,7 @@ module.exports = ui.createClass({
                 <Content>
                     <nav>
                         <ul>
-                            <li class="selected">
+                            <li className="selected">
                                 Posts
                             </li>
                             <li>

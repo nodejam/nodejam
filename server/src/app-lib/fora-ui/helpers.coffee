@@ -11,6 +11,7 @@ exports.renderForum = (data, ctx) ->*
         membership = yield data.forum.getMembership ctx.context.session.user.username
         if membership
             options.isMember = true
+            options.primaryPostType = "Article"
 
     component = data.template { posts: data.posts, forum: data.forum, options }
     return React.renderComponentToString component

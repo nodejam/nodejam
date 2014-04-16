@@ -26,10 +26,40 @@ module.exports = ui.createClass({
             return post.template({ post: post, forum: post.forum, author: post.createdBy });
         };    
     
+
+        options = this.props.options;
+        buttons = null;
+        
+        if (options.loggedIn) {
+            if (options.isMember)
+                action = <a href="#" className="positive new-post"><i className="fa fa-plus"></i>New {options.primaryPostType}</a>
+            else
+                action = <a href="#" className="positive join-forum"><i className="fa fa-user"></i>Join Forum</a>
+
+            buttons = (
+                <ul className="alt buttons">
+                    <li>
+                        {action}
+                    </li>
+                </ul>
+            );          
+        }
+
         return (
             <Page>
                 <Cover cover={forum.cover} />                
                 <Content>
+                    <nav>
+                        <ul>
+                            <li className="selected">
+                                Popular
+                            </li>
+                            <li>
+                                <a href="/{{forum.stub}}/about">About</a>
+                            </li>          
+                        </ul>
+                        {buttons}
+                    </nav>    
                     <div className="content-area">
                         <ul className="articles default-view">
                             {this.props.posts.map(createCard)}     

@@ -2,7 +2,7 @@ React = require('react')
 
 tags = [
     'div', 'p', 'h1', 'h2', 'h3', 'ul', 'ol', 'li', 'span', 'a', 'em', 'strong', 'table', 'th', 'tr', 'td',
-    'nav', 'section', 'article', 'header', 'footer', 'br', 'hr', 'img'
+    'nav', 'section', 'article', 'header', 'footer', 'br', 'hr', 'img', 'i'
 ]
 
 DOM = {}
