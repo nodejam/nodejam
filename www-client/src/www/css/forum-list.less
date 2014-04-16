@@ -1,0 +1,20 @@
+.articles (@contentAreaWidth) {        
+    ul.forums {
+        &.fixed-size {
+            float: left; 
+        }
+
+        > li {    
+            margin-left: 1%; margin-right: 1%; margin-bottom: 40px; float: left; border-bottom-style: solid; border-bottom-width: 4px;
+            
+            > .card-face {
+                width: 100%; 
+                .image { height: 200px; }
+            }      
+            > .card-content {
+                padding: 20px 20px 20px 12px; height: 264px; overflow: hidden; 
+                h2 { font-size: 1.1em }
+            }
+        }
+    }
+}

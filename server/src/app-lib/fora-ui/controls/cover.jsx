@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require("react");
 
-exports.Cover = React.createClass({
+module.exports = React.createClass({
     render: function() {
         cover = this.props.cover;
         

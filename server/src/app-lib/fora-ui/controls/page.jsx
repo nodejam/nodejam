@@ -2,12 +2,12 @@
 var React = require("react");
 
 //fugly code until we get destructuring in ES6
-Cover = require('./cover').Cover;
+Cover = require('./cover');
 
-exports.Page = React.createClass({
+module.exports = React.createClass({
     render: function() {
         return (
-            <div className="single-section-page single-column">
+            <div className="single-section-page">
                 <Cover cover={this.props.cover} />
                 <div className="main-pane">
                     {this.props.children}

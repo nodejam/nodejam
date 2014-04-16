@@ -61,7 +61,7 @@ rm -rf $temp
 echo "Compiling CoffeeScript files.."
 coffee -o app/ -c src/
 echo "Compiling JSX files.."
-jsx -x jsx src/app-lib/controls app/app-lib/controls
+jsx -x jsx src/app-lib/fora-ui app/app-lib/fora-ui
 jsx -x jsx src/extensions app/extensions
 
 #Run it through generator.

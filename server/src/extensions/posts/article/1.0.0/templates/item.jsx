@@ -1,20 +1,17 @@
 /** @jsx ui.DOM */
 var ui = require("fora-ui");
-var controls = require("controls");
-
-var Item = controls.Item,
-    Heading = controls.Heading,
-    Author = controls.Author, 
-    Content = controls.Content;
+var PostEditor = ui.controls.PostEditor;
 
 module.exports = ui.createClass({
     render: function() {
         return (
-            <Item>
-                <Heading size="h1" field="title" title={this.props.post.title} />
-                <Author type="small" forum={this.props.forum} author={this.props.author} />
-                <Content field="content" content={this.props.post.content} />
-            </Item>
+            <article>
+                <PostEditor post={this.props.post} />
+                <h1>{this.props.post.title}</h1>
+                <section className="author"></section>
+                <section className="content" dangerouslySetInnerHTML={{ __html:this.props.post.content.formatContent() }}>
+                </section>
+            </article>            
         );
     }
 });

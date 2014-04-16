@@ -1,43 +1,11 @@
 /* Common for all pages */
-.header {
+header.site {
     .logo {
         .fontAlt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left; 
         text-transform: uppercase; position: absolute; top: 6px; left: 6px; position: absolute; z-index: 100;
         &:hover { background: #333; }
     }    
 }
-
-.option-bar { 
-    height: 24px; .fontBase; font-weight: normal; font-size: 12px; padding-bottom: 4px; margin: 0 0 24px 0; 
-    
-}
-
-.button-bar {
-    .option-bar; position: absolute; top: 12px; right: 12px;
-}
-
-nav {         
-    .option-bar; clear: both;
-    border-bottom-width: 2px; border-bottom-style: solid;
-    ul {
-        float: left; 
-        li { 
-            float: left; padding-right: 12px; 
-            &.selected { }
-            a { text-decoration: underline; }
-            i { text-decoration: none }
-        }
-        &.alt { float: right; }
-    }
-    &.buttons {
-        padding-bottom: 24px;
-        ul {
-            float: right;
-            li { padding-right: 4px; }
-        }
-    }
-}
-
 
 /* Left side pane */
 .site-options {
@@ -64,13 +32,37 @@ nav {
     }
 }
 
-/* Generic sections. */
-.content { 
-    .fontContent; font-size: 1.1em;
+
+nav {         
+    height: 24px; .fontBase; font-weight: normal; font-size: 12px; padding-bottom: 4px; margin: 0 0 24px 0; clear: both;
+    border-bottom-width: 2px; border-bottom-style: solid;
+    ul {
+        float: left; 
+        li { 
+            float: left; padding-right: 12px; 
+            &.selected { }
+            a { text-decoration: underline; }
+            i { text-decoration: none }
+        }
+        &.alt { float: right; }
+    }
+    &.buttons {
+        padding-bottom: 24px;
+        ul {
+            float: right;
+            li { padding-right: 4px; }
+        }
+    }
 }
 
-div.content { 
-    h1, h2, h3, h4 { .fontContentHeading; font-size: 1em }
+/* Generic sections. */
+article { 
+    .fontContent; .textsize-L;
+    h1, h2, h3, h4 { .fontContentHeading; }
+}
+
+article + footer {
+    .fontContent; .textsize-M; font-style: italic;
 }
 
 .text-block {

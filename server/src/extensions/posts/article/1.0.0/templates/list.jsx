@@ -1,22 +1,9 @@
 /** @jsx ui.DOM */
 var ui = require("fora-ui");
-var controls = require("controls");
-
-var Card = controls.Card,
-    Heading = controls.Heading,
-    Author = controls.Author, 
-    Html = controls.Html,
-    Text = controls.Text;
 
 module.exports = ui.createClass({
     render: function() {
         var post = this.props.post;
-
-        var image, text; 
-        if(post.cover)
-            image = post.cover.image;
-        else
-            text = "No-image!";
 
         //If synopsis is not given, try to auto-generate it.
         if (post.synopsis)
@@ -45,13 +32,28 @@ module.exports = ui.createClass({
         if (typeof synopsis === "undefined")
             synopsis = post.content.text;
         
+        if (post.cover) {
+            style = {
+                backgroundImage: "url(" + post.cover.image.small + ")"
+            };
+            image = <div className="image" style={style}></div>
+        }
+        else
+            image = null;
+            
         return (
-            <Card image={image} text={text}>
-                <p>Hello</p>
-                <Heading size="h2" link={"/" + this.props.forum.stub + "/" + post.stub } title={post.title} />
-                <Text text={synopsis} />
-                <Author type="text" forum={this.props.forum} author={this.props.author} />
-            </Card>
+            <li>
+                {image}
+                <article>
+                    <h2><a href={"/" + this.props.forum.stub + "/" + post.stub}>{post.title}</a></h2>
+                    <p>{synopsis}</p>
+                    <section className="author">
+                    </section>
+                </article>
+                <footer>
+                    <a href={"/~" + this.props.author.username}>{this.props.author.name}</a> in <a href={this.props.forum.stub}>{this.props.forum.name}</a>
+                </footer>
+            </li>
         );
     }
 });

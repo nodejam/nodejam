@@ -1,0 +1,27 @@
+.articles (@contentAreaWidth) {        
+    ul.articles.default-view {
+        > li {
+            margin-bottom: 20px; padding-bottom: 20px;
+            div.image { background-size: cover; background-position: 50% 50%; float: right; border-radius: 100% }
+            article { max-height: 10.2em; overflow: hidden; }        
+            &:after { content: ""; display:block; clear: both }
+        }
+
+        .do() when (ispixel(@contentAreaWidth)) {
+            @imageSize: (@contentAreaWidth / 6);
+            @imageMargin: (@contentAreaWidth / 20);
+            > li {            
+                div.image { width: @imageSize; height: @imageSize; margin-left: @imageMargin; }
+            }
+        }
+
+        /* percentage is an attempt to fill available width on smaller screens */
+        .do() when (ispercentage(@contentAreaWidth)) {
+            > li {            
+                div.image { width: 84px; height: 84px; margin-left: 20px; }
+            }
+        }
+
+        .do();
+    }
+}

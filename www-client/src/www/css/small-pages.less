@@ -3,14 +3,6 @@
     .single-section-page, .multi-section-page {
         margin-top: -64px; padding-top: 64px;
 
-        .main-pane {
-            .page-content-area(100%, 720px);
-        }                
-
-        .alt-pane { 
-            .page-content-area(100%, 720px);
-        }
-        
         .auto-cover, .top-cover, .full-cover {
             font-size: 0.9em;
         }
@@ -29,15 +21,16 @@
     .small-page-element { display: block !important; }    
 
     .single-section-page, .multi-section-page {                
-        ul.cards {
-            &.row-layout {
-                > li {            
-                    > .card-face { 
-                        .image { width: 96px; height: 96px; }
-                    }
-                }
-            }        
 
+        .main-pane {
+            .page-content-area(720px);
+        }                
+
+        .alt-pane { 
+            .page-content-area(720px);
+        }
+
+        ul.cards {
             &.float-layout {
                 > li {
                     width: ((100 / floor((@minWidth - 40) / 300)) - 2) + 0%
@@ -56,14 +49,15 @@
     .tiny-page-element { display: block !important; }    
 
     .single-section-page, .multi-section-page {                    
-        ul.cards {
-            &.row-layout {
-                > li {            
-                    > .card-face { display: none }
-                    > .card-content { min-height: 0 }
-                }
-            }        
+        .main-pane {
+            .page-content-area(100%);
+        }                
 
+        .alt-pane { 
+            .page-content-area(100%);
+        }
+
+        ul.cards {
             &.float-layout {
                 > li {
                     width: 100%;
@@ -72,6 +66,9 @@
         }  
     }
 
+}
+
+.small-pages(@minWidth) when (@minWidth >= 480) and (@minWidth < 720) {  
     .spans(480);
 }
 
@@ -83,6 +80,7 @@
                 padding: 20px 0;
             }
         }        
-    }   
+    }
+    
     .spans(0);    
 }

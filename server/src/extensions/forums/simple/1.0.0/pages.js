@@ -1,16 +1,16 @@
 IndexView = require('./templates/index');
 PostView = require('./templates/post');
 React = require('react');
-controls = require('controls');
+ui = require('fora-ui');
 
 index = function*() {
     var posts = yield this.forum.getPosts(12, { "sort": { "_id": -1 }});
 
-    return yield controls.helpers.renderForum({
+    return yield ui.helpers.renderForum({
         template: IndexView,
         forum: this.forum,
         posts: posts,
-        postTemplate: 'card'
+        postTemplate: 'list'
     }, this);
 }
 
@@ -18,7 +18,7 @@ index = function*() {
 post = function*(stub) {
     post = yield this.forum.getPost(stub);
     
-    return yield controls.helpers.renderPost({
+    return yield ui.helpers.renderPost({
         template: PostView,
         post: post,
         forum: this.forum,

@@ -1,8 +1,9 @@
-.page-content-area(@contentAreaWidth, @maxContentAreaWidth) {
+.page-content-area(@contentAreaWidth) {
     .content-area {
-        width: @contentAreaWidth; max-width: @maxContentAreaWidth; margin-left: auto; margin-right: auto; line-height: 1.6em;
+        width: @contentAreaWidth; margin-left: auto; margin-right: auto; line-height: 1.6em;
+        
         &.wide {
-            width: 100%; max-width: 100%;
+            width: 100%; 
         }
         
         /* Item will occupy full content-area */
@@ -10,6 +11,8 @@
             &:after { content: ""; display:block; clear: both }            
             &.small { max-width: 480px; }
         }
+
+        .articles(@contentAreaWidth);
     }
 }
 
@@ -51,15 +54,17 @@
         > nav {            
             &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
         }
-        > .content-area:first-child { margin-top: 64px }
+        > .content-area:first-child { margin-top: 24px }
     }
     
+    /* If main-pane is the top element and nav is the first element within it, apply left margin to accomondate hamburger button */
     .main-pane {
         &:first-child {
             > nav:first-child { margin-left: 40px; }
         }
     }
     
+    /* Set cover background image properties */
     .auto-cover, .top-cover, .full-cover {
         .image {
             background-size: cover; background-position: 50% 50%; height: 100%;
@@ -86,10 +91,7 @@
         img { width: 100% }
     }
     
-    .top-cover + .main-pane, .inline-cover + .main-pane {
-        > .content-area:first-child { margin-top: 0px }
-    }
-    
+    /* item is used when we have a single objective on the page, such as an article or post */    
     .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
         .content-area:first-child {
             &.item {

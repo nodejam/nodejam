@@ -15,7 +15,7 @@ exports.index = auth.handler ->*
 
     for post in editorsPicks.concat(featured)
         extension = yield loader.load yield post.getTypeDefinition()
-        template = yield extension.getTemplate 'card'
+        template = yield extension.getTemplate 'list'
         component = template { post: post, forum: post.forum, author: post.createdBy }
         post.html = React.renderComponentToString component
         
