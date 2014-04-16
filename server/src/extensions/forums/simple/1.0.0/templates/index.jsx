@@ -1,6 +1,7 @@
 /** @jsx ui.DOM */
 var ui = require("fora-ui");
-var Page = ui.controls.Page;
+var Page = ui.controls.Page,
+    Content = ui.controls.Content;
 
 module.exports = ui.createClass({
     render: function() {        
@@ -26,12 +27,15 @@ module.exports = ui.createClass({
         };    
     
         return (
-            <Page cover={forum.cover}>
-                <div className="content-area">
-                    <ul className="articles default-view">
-                        {this.props.posts.map(createCard)}     
-                    </ul>
-                </div>
+            <Page>
+                <Cover cover={forum.cover} />                
+                <Content>
+                    <div className="content-area">
+                        <ul className="articles default-view">
+                            {this.props.posts.map(createCard)}     
+                        </ul>
+                    </div>
+                </Content>
             </Page>        
         );
     }

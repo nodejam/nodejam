@@ -50,7 +50,7 @@ exports.page = auth.handler (stub) ->*
         extension = yield loader.load yield forum.getTypeDefinition()
         pages = yield extension.getPages()
         html = yield pages.handle new ForumContext(@, forum)
-        yield @renderPage 'forums/page', { 
+        yield @renderPage 'page', { 
             pageName: 'forum-page',
             html
         }

@@ -6,7 +6,7 @@ utils = require('../../lib/utils')
 auth = require '../../app-lib/web/auth'
 ExtensionLoader = require '../../app-lib/extensions/loader'
 loader = new ExtensionLoader()
-
+IndexView = require('../templates/home/index')
 
 exports.index = auth.handler ->*
     editorsPicks = yield models.Post.find { meta: 'pick', 'forum.network': @network.stub }, { sort: db.setRowId({}, -1) , limit: 1 }, {}, db
@@ -15,23 +15,18 @@ exports.index = auth.handler ->*
 
     for post in editorsPicks.concat(featured)
         extension = yield loader.load yield post.getTypeDefinition()
-        template = yield extension.getTemplate 'list'
-        component = template { post: post, forum: post.forum, author: post.createdBy }
-        post.html = React.renderComponentToString component
-        
+        post.template = yield extension.getTemplate 'list'
+    
+    cover = {
+        image: { src: '/images/cover.jpg' },
+    }
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
 
-    yield @renderPage 'home/index', { 
+    component = IndexView { editorsPicks, featured, cover, coverContent }    
+    yield @renderPage 'page', { 
         pageName: 'home-page',
-        editorsPicks,
-        featured,
-        coverInfo: {
-            cover: {
-                image: { src: '/images/cover.jpg' },
-            },
-            content: coverContent
-        }
+        html: React.renderComponentToString component
     }
     
     

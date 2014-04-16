@@ -1,13 +1,14 @@
 /** @jsx React.DOM */
 var React = require("react");
 
-//fugly code until we get destructuring in ES6
-Cover = require('./cover');
-
 module.exports = React.createClass({
     render: function() {
+        if (!this.props.type)
+            className = "main-pane";
+        else
+            className = this.props.type + "-" + pane;
         return (
-            <div className="single-section-page">
+            <div className={className}>
                 {this.props.children}
             </div>
         );        

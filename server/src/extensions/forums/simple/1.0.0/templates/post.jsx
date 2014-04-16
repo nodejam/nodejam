@@ -6,15 +6,18 @@ module.exports = ui.createClass({
     render: function() {
         return (
             <Page cover={this.props.post.cover}>
-                <div className="content-area item">
-                    {
-                        this.props.template({
-                            post: this.props.post,
-                            forum: this.props.forum,
-                            author: this.props.author        
-                        })
-                    }
-                </div>
+                <Cover cover={forum.cover} />                
+                <Content>            
+                    <div className="content-area item">
+                        {
+                            this.props.template({
+                                post: this.props.post,
+                                forum: this.props.forum,
+                                author: this.props.author        
+                            })
+                        }
+                    </div>
+                </Content>
             </Page>
         );
     }

@@ -6,6 +6,9 @@ module.exports = React.createClass({
         cover = this.props.cover;
         
         if (cover) {
+            if (!cover.type)
+               cover.type = "auto-cover";
+                
             classString = ['cover', cover.type].join(' ');
             imageStyle = { "background-image": "url(" + cover.image.src + ")" };
             underlayStyle = {
@@ -19,14 +22,7 @@ module.exports = React.createClass({
                     <div className={classString} data-field-type="cover" data-field-name={this.props.field} data-cover-format={cover.type} data-small-image={cover.image.small}>
                         <div className="image" style={imageStyle}>
                             <div className="underlay" style={underlayStyle}></div>
-                            <div className="content-wrap">
-                                { 
-                                    this.props.children ? 
-                                    <div className="content">
-                                        this.props.children
-                                    </div> 
-                                    : null
-                                }
+                            <div className="content-wrap" dangerouslySetInnerHTML={{__html: this.props.coverContent}}>
                             </div>
                         </div>
                     </div>
