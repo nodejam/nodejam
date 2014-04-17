@@ -6,7 +6,7 @@ utils = require('../../lib/utils')
 auth = require '../../app-lib/web/auth'
 ExtensionLoader = require '../../app-lib/extensions/loader'
 loader = new ExtensionLoader()
-IndexView = require('../templates/home/index')
+IndexView = require('../views/home/index')
 
 exports.index = auth.handler ->*
     editorsPicks = yield models.Post.find { meta: 'pick', 'forum.network': @network.stub }, { sort: db.setRowId({}, -1) , limit: 1 }, {}, db

@@ -63,7 +63,7 @@ coffee -o app/ -c src/
 echo "Compiling JSX files.."
 jsx -x jsx src/app-lib/fora-ui app/app-lib/fora-ui
 jsx -x jsx src/extensions app/extensions
-jsx -x jsx src/website/templates app/website/templates
+jsx -x jsx src/website/views app/website/views
 
 #Run it through generator.
 #This step is unnecessary if we are using node --harmony

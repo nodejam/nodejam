@@ -4,7 +4,7 @@ models = require '../../models'
 utils = require '../../lib/utils'
 auth = require '../../app-lib/web/auth'
 fields = require '../../models/fields'
-
+LoginView = require('../views/users/login')
 
 exports.login = ->*
     token = yield models.Token.get { key: @query.key }, {}, db
@@ -22,18 +22,20 @@ exports.login = ->*
         if not users.length
             nickname = token.value.userDetails.username
         
-        single = users.length is 1
+        cover = {
+            type: "fixed full-cover",
+            image: { src: '/images/cover.jpg' },
+        }
+        coverContent = "<p>On the internet nobody knows you are a dog.</p>"
+
+        component = LoginView { users, cover, coverContent, nickname, token: session.token }    
         
-        yield @renderPage 'users/login', {
-            pageName: 'login-page', 
-            users,
-            nickname,
+        yield @renderPage 'users/login', { 
+            pageName: 'login-page',
             token: session.token,
-            single
+            html: React.renderComponentToString component
         }
         
-        yield token.destroy()
-
 
 
 exports.item = auth.handler (username) ->*
