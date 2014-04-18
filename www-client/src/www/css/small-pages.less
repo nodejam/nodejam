@@ -38,8 +38,7 @@
             }
         }  
     }
- 
-    .spans(720);
+    .spans(80px);
 }
 
 .small-pages(@minWidth) when (@minWidth < 720) {  
@@ -69,7 +68,7 @@
 }
 
 .small-pages(@minWidth) when (@minWidth >= 480) and (@minWidth < 720) {  
-    .spans(480);
+    .spans(64px);
 }
 
 .small-pages(@minWidth) when (@minWidth < 480) {  
@@ -82,5 +81,5 @@
         }        
     }
     
-    .spans(0);    
+    .spans(100%);    
 }

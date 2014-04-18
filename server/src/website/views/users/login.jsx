@@ -7,6 +7,10 @@ module.exports = ui.createClass({
     render: function() {        
         self = this;
         
+        if (!self.props.users.length)
+            createMessage = "Create an identity";
+        else
+            createMessage = "Or create another identity";
         return (
             <Page>
                 <Cover cover={self.props.cover} coverContent={self.props.coverContent} />
@@ -35,18 +39,19 @@ module.exports = ui.createClass({
                                             } else {
                                                 return (
                                                     <ul className="selectable concise-icon-block float-layout cells">                                                
-                                                    {function(){
-                                                    for(i = 0; i < self.props.users.length; i++)
-                                                        return
-                                                            <li data-username={self.props.users[i].username} className="col-span span1 height2">
-                                                                <div className="icon">
-                                                                    <img className="seal upsize" src={self.props.users[i].image} />
-                                                                </div>
-                                                                <div className="text content">
-                                                                    <h4>{self.props.users[i].username}</h4>
-                                                                    <p className="subtext">{self.props.users[i].name}</p>
-                                                                </div>
-                                                            </li>
+                                                    {function() {
+                                                        return self.props.users.map(function(user) {
+                                                            return (
+                                                                <li data-username={user.username} className="col-span span1 height2">
+                                                                    <div className="icon">
+                                                                        <img className="seal upsize" src={user.image} />
+                                                                    </div>
+                                                                    <div className="text content">
+                                                                        <h4>{user.username}</h4>
+                                                                        <p className="subtext">{user.name}</p>
+                                                                    </div>
+                                                                </li> );
+                                                        });
                                                     }()}                                                
                                                     </ul> );
                                             }                                                    
@@ -55,7 +60,7 @@ module.exports = ui.createClass({
                         }()}
  
                         <section>
-                            <h2>Create a new persona...</h2>            
+                            <h2>{createMessage}</h2>            
                             <div className="icon-block content" id="create-user-form" >
                                 <div className="icon picture" data-src="/public/images/0/user.jpg" data-small="/public/images/0/user_t.jpg">
                                     <img className="seal upsize" src="/images/user-default.png" /><br />

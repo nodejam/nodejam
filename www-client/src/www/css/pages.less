@@ -16,36 +16,40 @@
     }
 }
 
-.spans(@width) when (@width >= 480) {  
-    .col-span { 
-        box-sizing: border-box; margin-right: 16px;
-        &.span1 { width: 200px; }
-        &.span2 { width: 260px; }
-        &.span3 { width: 340px; }
-        
-        &.height1 { height: 120px;  }
-        &.height2 { height: 160px;  }
-        &.height3 { height: 200px;  }
-        &.height4 { height: 280px;  }
-        &.height5 { height: 360px;  }                
+.spans(@wUnit) {
+    .do() when (ispixel(@wUnit)) {
+        .col-span {
+            .span-common { box-sizing: border-box; margin-right: 16px; }
+            &.span1 { .span-common; width: (@wUnit); }
+            &.span2 { .span-common; width: (@wUnit * 2); }
+            &.span3 { .span-common; width: (@wUnit * 3); }
+            &.span4 { .span-common; width: (@wUnit * 4); }
+            &.span5 { .span-common; width: (@wUnit * 5); }
+            &.span6 { .span-common; width: (@wUnit * 6); }
+            &.span7 { .span-common; width: (@wUnit * 7); }
+            &.span8 { .span-common; width: (@wUnit * 8); }
+            &.span9 { .span-common; width: (@wUnit * 9); }
+        }
     }
-}
 
-.spans(@width) when (@width < 480) {  
-    .col-span { 
-        box-sizing: border-box; margin-right: 16px;
-        &.span1 { width: 140px; }
-        &.span2 { width: 100%; }
-        &.span3 { width: 100%; }
-
-        &.height1 { height: 120px;  }
-        &.height2 { height: 160px;  }
-        &.height3 { height: 200px;  }
-        &.height4 { height: 280px;  }
-        &.height5 { height: 360px;  }                
+    /* percentage is an attempt to fill available width on smaller screens */
+    .do() when (ispercentage(@wUnit)) {
+        .col-span {
+            .span-common { box-sizing: border-box; margin-right: 16px; width: 100%; }
+            &.span1 { .span-common; width: 80px }
+            &.span2 { .span-common; width: 160px }
+            &.span3 { .span-common; width: 100% }
+            &.span4 { .span-common; width: 100% }
+            &.span5 { .span-common; width: 100% }
+            &.span6 { .span-common; width: 100% }
+            &.span7 { .span-common; width: 100% }
+            &.span8 { .span-common; width: 100% }
+            &.span9 { .span-common; width: 100% }
+        }
     }
-}
 
+    .do();
+}
 
 /* Pages-Common */
 .pages-common() {

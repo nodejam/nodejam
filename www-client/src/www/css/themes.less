@@ -81,12 +81,21 @@
     }
     
 
-    /* ARTICLE-LIST.LESS */    
-    ul.articles {
+    /* CARDS.LESS */    
+    ul.articles.default-view {
         > li {
             border-bottom: 2px solid @colorXXBright;
         }
     }
+    
+    ul.articles.card-view {
+        > li {        
+            article { 
+                border-bottom: 12px solid @colorXBright; background: @colorXXBright;
+            }        
+        }
+    }    
+    
 
     
     /*  CONTROLS.LESS */

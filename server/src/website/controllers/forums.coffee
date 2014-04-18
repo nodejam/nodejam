@@ -9,6 +9,8 @@ auth = require '../../app-lib/web/auth'
 ExtensionLoader = require '../../app-lib/extensions/loader'
 loader = new ExtensionLoader()
 
+#views
+IndexView = require '../views/forums/index'
 
 class ForumContext
 
@@ -32,14 +34,17 @@ class ForumContext
         }
 
 
+
 exports.index = auth.handler ->*
-    featured = yield models.Forum.find({ network: @network.stub }, { sort: { 'stats.lastPost': -1 }, limit: 32 }, {}, db)
-    for forum in featured
+    forums = yield models.Forum.find({ network: @network.stub }, { sort: { 'stats.lastPost': -1 }, limit: 32 }, {}, db)
+    for forum in forums
         forum.summary = yield forum.getView("card", {}, db)
+
+    component = IndexView { forums }
     
-    yield @renderPage 'forums/index', { 
+    yield @renderPage 'page', { 
         pageName: 'forums-page',
-        featured
+        html: React.renderComponentToString component
     }
 
 

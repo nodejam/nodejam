@@ -22,7 +22,7 @@ module.exports = ui.createClass({
             forum.cover.type = "auto-cover"
         }    
     
-        createCard = function(post) {
+        createItem = function(post) {
             return post.template({ post: post, forum: post.forum, author: post.createdBy });
         };    
     
@@ -62,7 +62,7 @@ module.exports = ui.createClass({
                     </nav>    
                     <div className="content-area">
                         <ul className="articles default-view">
-                            {this.props.posts.map(createCard)}     
+                            {this.props.posts.map(createItem)}     
                         </ul>
                     </div>
                 </Content>

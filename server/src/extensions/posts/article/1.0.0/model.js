@@ -17,6 +17,7 @@ exports.view = function*(name) {
         image: this.cover ? this.cover.image.small : null,
         title: this.title,
         createdBy: this.createdBy,
+        createdAt: this.createdAt,
         id: this._id.toString(),
         stub: this.stub
     }

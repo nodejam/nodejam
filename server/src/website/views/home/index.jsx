@@ -5,7 +5,7 @@ var Page = ui.controls.Page,
 
 module.exports = ui.createClass({
     render: function() {        
-        createCard = function(post) {
+        createItem = function(post) {
             return post.template({ post: post, forum: post.forum, author: post.createdBy });
         };    
     
@@ -25,10 +25,10 @@ module.exports = ui.createClass({
                     </nav>
                     <div className="content-area">
                         <ul className="articles default-view">
-                            {this.props.editorsPicks.map(createCard)}     
+                            {this.props.editorsPicks.map(createItem)}     
                         </ul>
                         <ul className="articles default-view">
-                            {this.props.featured.map(createCard)}     
+                            {this.props.featured.map(createItem)}     
                         </ul>
                     </div>
                 </Content>

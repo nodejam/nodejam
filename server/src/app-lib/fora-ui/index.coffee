@@ -1,7 +1,7 @@
 React = require('react')
 
 tags = [
-    'div', 'p', 'h1', 'h2', 'h3', 'ul', 'ol', 'li', 'span', 'a', 'em', 'strong', 'table', 'th', 'tr', 'td',
+    'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'span', 'a', 'em', 'strong', 'table', 'th', 'tr', 'td',
     'nav', 'section', 'article', 'header', 'footer', 'br', 'hr', 'img', 'i', 'button', 'input', 'textarea'
 ]
 

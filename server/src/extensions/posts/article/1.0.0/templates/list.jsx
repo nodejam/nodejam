@@ -47,8 +47,6 @@ module.exports = ui.createClass({
                 <article>
                     <h2><a href={"/" + this.props.forum.stub + "/" + post.stub}>{post.title}</a></h2>
                     <p>{synopsis}</p>
-                    <section className="author">
-                    </section>
                 </article>
                 <footer>
                     <a href={"/~" + this.props.author.username}>{this.props.author.name}</a> in <a href={this.props.forum.stub}>{this.props.forum.name}</a>
