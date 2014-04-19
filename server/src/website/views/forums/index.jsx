@@ -40,7 +40,6 @@ module.exports = ui.createClass({
 
         return (
             <Page>
-                <Cover cover={this.props.cover} coverContent={this.props.coverContent} />
                 <Content>
                     <nav>
                         <ul>
