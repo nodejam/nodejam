@@ -1,18 +1,17 @@
 thunkify = require 'thunkify'
 fs = require 'fs'
-BaseModel = require '../lib/data/basemodel'
-DatabaseModel = require '../lib/data/databasemodel'
+orm = require('../lib/fora-orm')
 ForaTypeUtils = require('./foratypeutils')
 typeUtils = new ForaTypeUtils()
                                         
-class ForaModel extends BaseModel
+class ForaModel extends orm.BaseModel
     
     @getTypeUtils: ->
         typeUtils
 
 
 
-class ForaDbModel extends DatabaseModel
+class ForaDbModel extends orm.DatabaseModel
 
     @getTypeUtils: ->
         typeUtils
