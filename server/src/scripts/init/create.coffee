@@ -23,8 +23,8 @@ for p in ['assets', 'images', 'original-images']
 #ensure indexes.
 (co ->*
     yield typeUtils.init()
-    Database = require '../../lib/data/database'
-    db = new Database conf.db, typeUtils.getTypeDefinitions()
+    odm = require '../../lib/fora-odm'
+    db = new odm.Database conf.db, typeUtils.getTypeDefinitions()
     yield db.setupIndexes()
 )()
 

@@ -5,8 +5,8 @@ utils = require '../../lib/utils'
 models = require '../../models'
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
-orm = require '../../lib/fora-orm'
-db = new orm.Database(conf.db, typeUtils.getTypeDefinitions())
+odm = require '../../lib/fora-odm'
+db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
 
 handler = ->
     if arguments.length is 1

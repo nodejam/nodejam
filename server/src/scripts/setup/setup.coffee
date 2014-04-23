@@ -25,8 +25,8 @@ init = ->*
     typeUtils = new ForaTypeUtils()
     yield typeUtils.init()
 
-    orm = require '../../lib/fora-orm'
-    database = new orm.Database conf.db, typeUtils.getTypeDefinitions()
+    odm = require '../../lib/fora-odm'
+    database = new odm.Database conf.db, typeUtils.getTypeDefinitions()
 
     _globals = {}
     

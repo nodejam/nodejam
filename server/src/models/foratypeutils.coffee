@@ -1,4 +1,4 @@
-orm = require('../lib/fora-orm')
+odm = require('../lib/fora-odm')
 conf = require('../conf')
 fs = require 'fs'
 path = require 'path'
@@ -7,7 +7,7 @@ readdir = thunkify fs.readdir
 stat = thunkify fs.stat
 readfile = thunkify fs.readFile
 
-class ForaTypeUtils extends orm.TypeUtils
+class ForaTypeUtils extends odm.TypeUtils
 
     init: =>*
         yield @buildTypeCache()

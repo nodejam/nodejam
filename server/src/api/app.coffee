@@ -12,8 +12,8 @@ loader = new Loader()
     yield typeUtils.init()
     yield loader.init()
     
-    orm = require('../lib/fora-orm')
-    exports.db = new orm.Database(conf.db, typeUtils.getTypeDefinitions())
+    odm = require('../lib/fora-odm')
+    exports.db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
     
     process.chdir __dirname
     host = process.argv[2]
