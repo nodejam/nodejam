@@ -203,7 +203,7 @@ fi
 
 
 install_node() {
-    VERSION=0.11.8
+    VERSION=0.11.12
     PLATFORM=linux
     if [ x86_64 ] ; then
         ARCH=x64
