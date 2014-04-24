@@ -1,7 +1,8 @@
-/** @jsx ui.DOM */
+/** @jsx React.DOM */
+var React = require("reactjs-sandbox");
 var ui = require("fora-ui");
 
-module.exports = ui.createClass({
+module.exports = React.createClass({
     render: function() {
         var post = this.props.post;
 
@@ -44,7 +45,7 @@ module.exports = ui.createClass({
         return (
             <li>
                 {image}
-                <article>
+                <article onClick={function(){ alert("hello"); }}>
                     <h2><a href={"/" + this.props.forum.stub + "/" + post.stub}>{post.title}</a></h2>
                     <p>{synopsis}</p>
                 </article>

@@ -1,9 +1,10 @@
-/** @jsx ui.DOM */
+/** @jsx React.DOM */
+var React = require("reactjs-sandbox");
 var ui = require("fora-ui");
 var Page = ui.controls.Page,
     Content = ui.controls.Content;
 
-module.exports = ui.createClass({
+module.exports = React.createClass({
     render: function() {
         return (
             <Page cover={this.props.post.cover}>
