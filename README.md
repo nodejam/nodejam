@@ -1,6 +1,25 @@
 fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 
+Fora is not in a usable state right now.
+Below are expected completion dates.
+
+Development Plan
+================
+- Sandboxed environment for running client side JSX components (26th April)
+- Fix Installers for other distros (28th April)
+- Post Editing (29th April)
+- Sandboxed environment for server side extensions (29th April)
+- Create Forum, New UI (30th April)
+- Forum Settings (1st May)
+- Login, Permissions and Members (3rd May)
+- Users Profile Page (4th May)
+- Following and Followers (5th May)
+- Facebook and Twitter Posting (6th May)
+- RSS (7th May)
+- Testing and Enhancements (14th May)
+- Public Alpha (15th May)
+
 
 Installation
 ============
