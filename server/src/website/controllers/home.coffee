@@ -1,4 +1,4 @@
-React = require 'react'
+Sandbox = require 'react-sandbox'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
@@ -26,7 +26,7 @@ exports.index = auth.handler ->*
     component = IndexView { editorsPicks, featured, cover, coverContent }    
     yield @renderPage 'page', { 
         pageName: 'home-page',
-        html: React.renderComponentToString component
+        html: Sandbox.renderComponentToString component
     }
     
     

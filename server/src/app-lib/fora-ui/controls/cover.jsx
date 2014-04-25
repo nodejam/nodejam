@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var React = require("react");
+var React = require("react-sandbox");
 
 module.exports = React.createClass({
     render: function() {

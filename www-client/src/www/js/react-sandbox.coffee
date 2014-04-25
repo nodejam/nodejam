@@ -14,9 +14,7 @@ $ ->
         
         window.addEventListener 'message', (e) ->
             if e.data is 'LOAD'
-                iFrame.contentWindow.postMessage('alert(200);', '*');
-            else
-                alert e.data
+                iFrame.contentWindow.postMessage('a = 10;', '*');
                 
         iFrame = createIFrame()
         

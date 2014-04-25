@@ -1,4 +1,4 @@
-React = require('react')
+React = require('react-sandbox')
 
 exports.renderForum = (data, ctx) ->*
     for post in data.posts

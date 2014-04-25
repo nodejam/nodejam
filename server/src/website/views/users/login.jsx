@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var React = require("reactjs-sandbox");
+var React = require("react-sandbox");
 var ui = require("fora-ui");
 var Page = ui.controls.Page,
     Content = ui.controls.Content;

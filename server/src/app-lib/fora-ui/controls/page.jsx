@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var React = require("react");
+var React = require("react-sandbox");
 
 //fugly code until we get destructuring in ES6
 Cover = require('./cover');

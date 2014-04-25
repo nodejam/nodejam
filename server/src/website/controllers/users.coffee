@@ -1,3 +1,4 @@
+Sandbox = require 'react-sandbox'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
@@ -33,7 +34,7 @@ exports.login = ->*
         yield @renderPage 'users/login', { 
             pageName: 'login-page',
             token: session.token,
-            html: React.renderComponentToString component
+            html: Sandbox.renderComponentToString component
         }
         
 

@@ -1,4 +1,4 @@
-React = require 'react'
+Sandbox = require 'react-sandbox'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
@@ -44,7 +44,7 @@ exports.index = auth.handler ->*
     
     yield @renderPage 'page', { 
         pageName: 'forums-page',
-        html: React.renderComponentToString component
+        html: Sandbox.renderComponentToString component
     }
 
 

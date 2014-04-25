@@ -23,5 +23,6 @@ for tag in tags
 
 module.exports = {
     DOM,
-    createClass: React.createClass
+    createClass: React.createClass,
+    renderComponentToString: React.renderComponentToString
 }
