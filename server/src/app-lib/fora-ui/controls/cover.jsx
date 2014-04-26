@@ -1,7 +1,11 @@
 /** @jsx React.DOM */
-var React = require("react-sandbox");
+var root = (typeof exports !== "undefined" && exports !== null) ? exports : this.ForaUI;
 
-module.exports = React.createClass({
+if (typeof exports !== "undefined" && exports !== null) {
+    var React = require("react-sandbox");
+}
+
+root.Cover = React.createClass({
     render: function() {
         cover = this.props.cover;
         

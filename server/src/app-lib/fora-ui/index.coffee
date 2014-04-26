@@ -1,9 +1,7 @@
 module.exports = {
-    controls: {
-        Cover: require('./controls/cover'),
-        Page: require('./controls/page'),
-        Content: require('./controls/content'),
-        PostEditor: require('./controls/posteditor')
-    },
-    helpers: require('./helpers'),
+    Cover: require('./controls/cover').Cover,
+    Page: require('./controls/page').Page,
+    Content: require('./controls/content').Content,
+    PostEditor: require('./controls/posteditor').PostEditor,
+    helpers: require('./helpers')
 }

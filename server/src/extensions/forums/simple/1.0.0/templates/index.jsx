@@ -1,10 +1,15 @@
 /** @jsx React.DOM */
-var React = require("react-sandbox");
-var ui = require("fora-ui");
-var Page = ui.controls.Page,
-    Content = ui.controls.Content;
+var root = (typeof exports !== "undefined" && exports !== null) ? exports : this;
 
-module.exports = React.createClass({
+if (typeof exports !== "undefined" && exports !== null) {
+    var React = require("react-sandbox");
+    var ForaUI = require("fora-ui");
+}
+
+var Page = ForaUI.Page,
+    Content = ForaUI.Content;
+
+root.Index = React.createClass({
     render: function() {        
         forum = this.props.forum;
         

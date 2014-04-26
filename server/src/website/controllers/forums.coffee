@@ -10,7 +10,7 @@ ExtensionLoader = require '../../app-lib/extensions/loader'
 loader = new ExtensionLoader()
 
 #views
-IndexView = require '../views/forums/index'
+IndexView = require('../views/forums/index').Index
 
 class ForumContext
 

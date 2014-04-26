@@ -13,16 +13,16 @@ class Post
         extDir = path.join conf.extensionsDir, @typeDefinition.name
         @model = require("#{extDir}/model")
         
-        @templates = {}
+        @templateModules = {}
         files = yield thunkify(fs.readdir).call fs, "#{extDir}/templates"
         for file in files
             template = file.match /[a-z]*/
-            @templates[template] = require("#{extDir}/templates/#{template}")
+            @templateModules[template] = require("#{extDir}/templates/#{template}")
                     
             
     
-    getTemplate: (name) =>*
-        @templates[name]
+    getTemplateModule: (name) =>*
+        @templateModules[name]
     
     
     

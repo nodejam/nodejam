@@ -2,8 +2,10 @@ React = require('react-sandbox')
 
 exports.renderForum = (data, ctx) ->*
     for post in data.posts
-        extension = yield ctx.api.extensionLoader.load yield post.getTypeDefinition()
-        post.template = yield extension.getTemplate(data.postTemplate)
+        typeDefinition = yield post.getTypeDefinition()
+        extension = yield ctx.api.extensionLoader.load typeDefinition
+        templateModule = yield extension.getTemplateModule data.postTemplateFile
+        post.template = templateModule[data.postTemplateName]
         
     options = {}
     if ctx.context.session
@@ -21,8 +23,9 @@ exports.renderPost = (data, ctx) ->*
     author = yield data.post.getAuthor()
     typeDefinition = yield post.getTypeDefinition()
     
-    extension = yield ctx.api.extensionLoader.load(typeDefinition)
-    template = yield extension.getTemplate(data.postTemplate)
+    extension = yield ctx.api.extensionLoader.load typeDefinition
+    templateModule = yield extension.getTemplateModule data.postTemplateFile
+    template = templateModule[data.postTemplateName]
     component = data.template { 
         post: data.post, 
         forum: data.forum, 

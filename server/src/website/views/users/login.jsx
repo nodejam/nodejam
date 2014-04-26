@@ -1,10 +1,10 @@
 /** @jsx React.DOM */
 var React = require("react-sandbox");
-var ui = require("fora-ui");
-var Page = ui.controls.Page,
-    Content = ui.controls.Content;
+var ForaUI = require("fora-ui");
+var Page = ForaUI.Page,
+    Content = ForaUI.Content;
 
-module.exports = React.createClass({
+exports.Login = React.createClass({
     render: function() {        
         self = this;
         

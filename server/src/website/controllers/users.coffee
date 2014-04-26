@@ -5,7 +5,7 @@ models = require '../../models'
 utils = require '../../lib/utils'
 auth = require '../../app-lib/web/auth'
 fields = require '../../models/fields'
-LoginView = require('../views/users/login')
+LoginView = require('../views/users/login').Login
 
 exports.login = ->*
     token = yield models.Token.get { key: @query.key }, {}, db
@@ -37,32 +37,3 @@ exports.login = ->*
             html: Sandbox.renderComponentToString component
         }
         
-
-
-exports.item = auth.handler (username) ->*
-    user = yield models.User.get { username }, {}, db
-    
-    if user
-        posts = yield user.getPosts 12, db.setRowId({}, -1)
-        
-        for post in posts
-            template = widgets.parse yield post.getTemplate 'card'
-            post.html = template.render {
-                post,
-                forum: post.forum,
-            }
-
-        coverContent = "
-            <h1>#{user.name}</h1>"
-            
-        user.cover ?= new fields.Cover { image: new fields.Image { src: '/images/user-cover.jpg', small: '/images/user-cover-small.jpg', alt: user.name } }
-        
-        yield @renderPage 'forums/item', { 
-            posts,
-            user,            
-            pageName: 'user-page',
-            coverInfo: {
-                cover: user.cover,
-                content: coverContent
-            }
-        }

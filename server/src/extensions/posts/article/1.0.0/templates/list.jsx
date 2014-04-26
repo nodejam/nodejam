@@ -1,8 +1,12 @@
 /** @jsx React.DOM */
-var React = require("react-sandbox");
-var ui = require("fora-ui");
+var root = (typeof exports !== "undefined" && exports !== null) ? exports : this;
 
-module.exports = React.createClass({
+if (typeof exports !== "undefined" && exports !== null) {
+    var React = require("react-sandbox");
+    var ForaUI = require("fora-ui");
+}
+
+root.List = React.createClass({
     render: function() {
         var post = this.props.post;
 

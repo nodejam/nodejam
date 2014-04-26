@@ -8,7 +8,7 @@ if (typeof exports !== "undefined" && exports !== null) {
 
 var PostEditor = ForaUI.PostEditor;
 
-module.exports = React.createClass({
+root.Item = React.createClass({
     render: function() {
         return (
             <article>
