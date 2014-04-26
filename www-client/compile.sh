@@ -79,6 +79,9 @@ fi
 echo "Running LESS.."
 lessc --verbose src/www/css/main.less app/www/css/main.css
 
+echo "Copying built-in JSX components"
+mkdir 
+
 if $debug; then
     if ! $skip_es5_transform; then
         node app/scripts/package.js --debug

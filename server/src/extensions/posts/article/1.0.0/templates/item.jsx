@@ -1,7 +1,12 @@
 /** @jsx React.DOM */
-var React = require("react-sandbox");
-var ui = require("fora-ui");
-var PostEditor = ui.controls.PostEditor;
+var root = (typeof exports !== "undefined" && exports !== null) ? exports : this;
+
+if (typeof exports !== "undefined" && exports !== null) {
+    var React = require("react-sandbox");
+    var ForaUI = require("fora-ui");
+}
+
+var PostEditor = ForaUI.PostEditor;
 
 module.exports = React.createClass({
     render: function() {
