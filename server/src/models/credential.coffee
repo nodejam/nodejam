@@ -1,7 +1,7 @@
 thunkify = require 'thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
-hasher = require '../lib/hasher'
-utils = require '../lib/utils'
+hasher = require '../app-lib/hasher'
+utils = require '../app-lib/utils'
 models = require './'
 
 

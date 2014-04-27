@@ -3,7 +3,6 @@
     This allows us to sanitize those fields when requested.    
 ###
 
-utils = require '../utils'
 validator = require 'validator'
 sanitizer = require 'sanitizer'
 co = require 'co'

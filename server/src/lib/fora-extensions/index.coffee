@@ -1,5 +1,4 @@
 co = require 'co'
-utils = require('../../lib/utils')
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 
@@ -28,7 +27,6 @@ class Loader
                 console.log "loading builtin extension " + def.name
                 yield ext.init()
                 Loader.builtinExtensionCache[def.name] = ext
-        utils.log 'Extension loading complete'
         return
     
     
@@ -42,4 +40,4 @@ class Loader
             return ext
             
 
-module.exports = Loader
+exports.Loader = Loader

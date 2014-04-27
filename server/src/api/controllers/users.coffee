@@ -3,7 +3,7 @@ co = require 'co'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-utils = require '../../lib/utils'
+utils = require '../../app-lib/utils'
 auth = require '../../app-lib/web/auth'
 fsutils = require '../../app-lib/fsutils'
 

@@ -1,5 +1,5 @@
 thunkify = require 'thunkify'
-utils = require '../utils'
+utils = require './utils'
 BaseModel = require './basemodel'
 
 class DatabaseModel extends BaseModel

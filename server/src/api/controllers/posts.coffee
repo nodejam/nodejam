@@ -1,7 +1,7 @@
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-utils = require '../../lib/utils'
+utils = require '../../app-lib/utils'
 auth = require '../../app-lib/web/auth'
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()

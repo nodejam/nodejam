@@ -109,7 +109,7 @@ cd server
 node --harmony app/scripts/init/create.js
 ```  
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
-Add app/app-lib to NODE_PATH. Check server/debug.sh for an example. 
+For production, run source node_path.sh to setup NODE_PATH. (./run.sh does this automatically)
 
 
 Step 3: Running Fora
@@ -138,6 +138,7 @@ ES6 to ES5 transformation is done with Regenerator (https://github.com/facebook/
 
 Step 4 (Optional): Want some test data?
 -------------------------------------
+Before using this, run source node_path.sh to setup NODE_PATH
 ```
 usage: node --harmony app/scripts/setup/setup.js options
 

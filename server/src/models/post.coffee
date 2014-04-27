@@ -1,11 +1,11 @@
 React = require 'react'
-utils = require '../lib/utils'
+utils = require '../app-lib/utils'
 models = require './'
 conf = require '../conf'
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 ForaTypeUtils = require('./foratypeutils')
-Loader = require('../app-lib/extensions/loader')
+Loader = require('fora-extensions').Loader
 extensionLoader = new Loader()
 
 class Post extends ForaDbModel

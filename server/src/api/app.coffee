@@ -1,18 +1,18 @@
 co = require 'co'
 koa = require 'koa'
 route = require 'koa-route'
-utils = require '../lib/utils'
+utils = require '../app-lib/utils'
 conf = require '../conf'
 ForaTypeUtils = require('../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
-Loader = require('../app-lib/extensions/loader')
+Loader = require('fora-extensions').Loader
 loader = new Loader()
     
 (co ->*
     yield typeUtils.init()
     yield loader.init()
     
-    odm = require('../lib/fora-odm')
+    odm = require('fora-odm')
     exports.db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
     
     process.chdir __dirname

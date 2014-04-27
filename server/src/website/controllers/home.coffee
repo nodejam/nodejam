@@ -2,9 +2,9 @@ Sandbox = require 'react-sandbox'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-utils = require('../../lib/utils')
+utils = require('../../app-lib/utils')
 auth = require '../../app-lib/web/auth'
-ExtensionLoader = require '../../app-lib/extensions/loader'
+ExtensionLoader = require('fora-extensions').Loader
 loader = new ExtensionLoader()
 IndexView = require('../views/home/index').Index
 

@@ -1,6 +1,6 @@
 co = require 'co'
 conf = require '../../conf'
-utils = require '../../lib/utils'
+utils = require '../../app-lib/utils'
 fs = require 'fs'
 path = require 'path'
 fsutils = require '../../app-lib/fsutils'
@@ -23,7 +23,7 @@ for p in ['assets', 'images', 'original-images']
 #ensure indexes.
 (co ->*
     yield typeUtils.init()
-    odm = require '../../lib/fora-odm'
+    odm = require('fora-odm')
     db = new odm.Database conf.db, typeUtils.getTypeDefinitions()
     yield db.setupIndexes()
 )()

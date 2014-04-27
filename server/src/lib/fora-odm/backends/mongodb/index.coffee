@@ -1,6 +1,5 @@
 Mongo = require 'mongodb'
 thunkify = require 'thunkify'
-utils = require '../../../utils'
 Parser = require './queryparser'
 
 class MongoDb
@@ -75,7 +74,6 @@ class MongoDb
 
     setupIndexes: =>*        
         db = yield @getDb()
-        utils.log "Setting up indexes for mongodb"
 
         for name, typeDefinition of @typeDefinitions
             if typeDefinition.indexes
@@ -83,7 +81,6 @@ class MongoDb
                 for index in typeDefinition.indexes
                     yield thunkify(collection.ensureIndex).call collection, index
 
-                utils.log typeDefinition.collection + ": " + JSON.stringify yield thunkify(collection.indexInformation).call collection         
         return
         
     

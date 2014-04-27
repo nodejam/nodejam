@@ -3,10 +3,10 @@ conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
 fields = require '../../models/fields'
-utils = require '../../lib/utils'
-mdparser = require('../../lib/markdownutil').marked
+utils = require '../../app-lib/utils'
+mdparser = require('../../app-lib/markdownutil').marked
 auth = require '../../app-lib/web/auth'
-ExtensionLoader = require '../../app-lib/extensions/loader'
+ExtensionLoader = require('fora-extensions').Loader
 loader = new ExtensionLoader()
 
 #views

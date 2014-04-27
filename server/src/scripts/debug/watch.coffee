@@ -1,7 +1,7 @@
 path = require 'path'
 co = require 'co'
 thunkify = require 'thunkify'
-utils = require '../../lib/utils'
+utils = require '../../app-lib/utils'
 
 _exec = require('child_process').exec
 spawn = require('child_process').spawn

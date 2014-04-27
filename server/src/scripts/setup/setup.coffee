@@ -6,7 +6,7 @@ fs = require 'fs'
 querystring = require 'querystring'
 co = require 'co'
 thunkify = require 'thunkify'
-utils = require '../../lib/utils'
+utils = require '../../app-lib/utils'
 data = require './data'
 conf = require '../../conf'
 
@@ -25,7 +25,7 @@ init = ->*
     typeUtils = new ForaTypeUtils()
     yield typeUtils.init()
 
-    odm = require '../../lib/fora-odm'
+    odm = require('fora-odm')
     database = new odm.Database conf.db, typeUtils.getTypeDefinitions()
 
     _globals = {}

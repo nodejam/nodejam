@@ -1,6 +1,6 @@
 gm = require 'gm'
 thunkify = require 'thunkify'
-utils = require '../../lib/utils'
+utils = require '../../app-lib/utils'
 fsutils = require '../../app-lib/fsutils'
 auth = require '../../app-lib/web/auth'
 

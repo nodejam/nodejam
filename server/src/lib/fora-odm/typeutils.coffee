@@ -1,4 +1,4 @@
-utils = require '../utils'
+utils = require './utils'
 
 class TypeUtils
     

@@ -1,7 +1,7 @@
 co = require 'co'
 thunkify = require 'thunkify'
-utils = require '../../lib/utils'
-hasher = require '../../lib/hasher'
+utils = require '../../app-lib/utils'
+hasher = require '../../app-lib/hasher'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'

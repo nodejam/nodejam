@@ -1,7 +1,7 @@
 thunkify = require 'thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
-utils = require '../lib/utils'
+utils = require '../app-lib/utils'
 
 ###
     A session token starts life as a credential token.

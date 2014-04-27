@@ -1,4 +1,4 @@
-mdparser = require('../lib/markdownutil').marked
+mdparser = require('../app-lib/markdownutil').marked
 ForaModel = require('./foramodel').ForaModel
 
 class Image extends ForaModel

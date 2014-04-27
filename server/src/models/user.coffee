@@ -1,6 +1,6 @@
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
-utils = require '../lib/utils'
+utils = require '../app-lib/utils'
 models = require './'
 conf = require '../conf'
 
