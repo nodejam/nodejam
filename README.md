@@ -23,6 +23,7 @@ Development Plan
 
 Installation
 ============
+The installer script works only on Ubuntu right now. Other distros and Mac is coming soon.
 
 Step 1: Install pre-requisites
 ------------------------------
