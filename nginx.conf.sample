@@ -7,6 +7,10 @@ server {
         alias /path/to/fora/www-public;
     }
 
+    location /extensions {
+        alias /path/to/fora/www-client/app/www/extensions;
+    }
+
     location /css {
         alias /path/to/fora/www-client/app/www/css;
     }

@@ -79,8 +79,6 @@ fi
 echo "Running LESS.."
 lessc --verbose src/www/css/main.less app/www/css/main.css
 
-echo "Copying built-in JSX components"
-mkdir 
 
 if $debug; then
     if ! $skip_es5_transform; then
@@ -95,5 +93,13 @@ else
         node --harmony app/scripts/package.js
     fi
 fi
+
+#We have to copy the builtin React components into the client folder; they need to be served to browsers
+echo copy client-side extensions...
+mkdir app/www/extensions/builtin -p
+mkdir app/www/extensions/builtin/forums
+mkdir app/www/extensions/builtin/posts
+cp ../server/app/extensions/forums/* app/www/extensions/builtin/forums -r -v
+cp ../server/app/extensions/posts/* app/www/extensions/builtin/posts -r -v
 
 
