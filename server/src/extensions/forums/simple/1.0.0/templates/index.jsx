@@ -1,15 +1,16 @@
 /** @jsx React.DOM */
-var root = (typeof exports !== "undefined" && exports !== null) ? exports : this;
-
 if (typeof exports !== "undefined" && exports !== null) {
     var React = require("react");
     var ForaUI = require("fora-ui");
+    root = exports;
+} else {
+    root = this;
 }
 
 var Page = ForaUI.Page,
     Content = ForaUI.Content;
 
-root.Index = React.createClass({
+root.IndexView = React.createClass({
     render: function() {        
         forum = this.props.forum;
         

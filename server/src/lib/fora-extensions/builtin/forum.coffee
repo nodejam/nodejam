@@ -63,6 +63,14 @@ class Forum
         if fs.existsSync "#{extDir}/model.js"
             @model = require("#{extDir}/model")
 
+        @templateModules = {}
+        @templateSource = {}
+        files = yield thunkify(fs.readdir).call fs, "#{extDir}/templates"
+        for file in files
+            template = file.match /[a-z]*/
+            @templateModules[template] = require "#{extDir}/templates/#{template}"
+            @templateSource[template] = fs.readFileSync "#{extDir}/templates/#{template}.js"
+
     
     
     getPages: =>*
@@ -77,6 +85,16 @@ class Forum
 
     getModel: =>*
         @model
+        
+
+
+    getTemplateModule: (name) =>*
+        @templateModules[name]
+    
+    
+    
+    getClientScript: (name) =>*
+        @templateSource[name]           
         
     
     

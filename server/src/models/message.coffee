@@ -1,4 +1,4 @@
-moment = require '../ext-lib/moment'
+moment = require '../vendor/moment'
 ForaDbModel = require('./foramodel').ForaDbModel
 models = require './'
 

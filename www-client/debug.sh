@@ -1,3 +1,3 @@
 #!/bin/bash
-./compile.sh --debug
+./build.sh --debug
 node --harmony app/scripts/debug/watch.js

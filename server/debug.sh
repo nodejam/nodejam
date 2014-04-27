@@ -1,7 +1,7 @@
 #!/bin/bash
-./compile.sh --debug
+./build.sh --debug
 cd ../www-client
-./compile.sh --debug
+./build.sh --debug
 cd ../server
 ./run.sh
 node --harmony app/scripts/debug/watch.js

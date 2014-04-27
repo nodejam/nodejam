@@ -22,16 +22,16 @@ class Post
             @templateSource[template] = fs.readFileSync "#{extDir}/templates/#{template}.js"
             
     
-    getTemplateModule: (name) =>*
-        @templateModules[name]
-    
-    
-    
     getModel: =>*
         @model
         
         
         
+    getTemplateModule: (name) =>*
+        @templateModules[name]
+    
+    
+    
     getClientScript: (name) =>*
         @templateSource[name]        
         

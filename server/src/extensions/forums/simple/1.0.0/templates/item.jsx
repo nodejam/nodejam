@@ -9,7 +9,7 @@ if (typeof exports !== "undefined" && exports !== null) {
 var Page = ForaUI.Page,
     Content = ForaUI.Content;
 
-root.Post = React.createClass({
+root.ItemView = React.createClass({
     render: function() {
         return (
             <Page cover={this.props.post.cover}>
