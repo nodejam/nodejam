@@ -16,7 +16,7 @@ exports.renderForum = (data, ctx) ->*
             options.primaryPostType = "Article"
 
     component = data.template { posts: data.posts, forum: data.forum, options }
-    return React.renderComponentToString component
+    React.renderComponentToString(component)
     
     
 exports.renderPost = (data, ctx) ->*
@@ -27,11 +27,12 @@ exports.renderPost = (data, ctx) ->*
     templateModule = yield extension.getTemplateModule data.postTemplateFile
     template = templateModule[data.postTemplateName]
     component = data.template { 
-        post: data.post, 
+        post: data.post,
         forum: data.forum, 
         author, 
         typeDefinition,
         template: template, 
     }
-    return React.renderComponentToString component
+    React.renderComponentToString(component)
+
 

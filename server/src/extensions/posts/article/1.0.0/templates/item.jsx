@@ -25,6 +25,7 @@ component = React.createClass({
 if (typeof exports !== "undefined" && exports !== null) {
     exports.Item = component;
 } else {
-    this.Article_1_0_0_Item = component;
+    //The fully qualified name because builtin components will not run in a sandbox.
+    //So we must ensure there are no conflicts.
+    this.Extensions.Posts.Article_1_0_0_Item = component;
 }
-

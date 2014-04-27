@@ -9,7 +9,6 @@ auth = require '../../app-lib/web/auth'
 ExtensionLoader = require('fora-extensions').Loader
 loader = new ExtensionLoader()
 
-#views
 IndexView = require('../views/forums/index').Index
 
 class ForumContext
@@ -67,7 +66,7 @@ exports.create = ->*
         pageName: 'create-forum-page', 
         pageLayout: {
             type: 'single-section-page fixed-width'
-        }                        
+        }
     }        
 
 

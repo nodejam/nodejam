@@ -96,10 +96,7 @@ fi
 
 #We have to copy the builtin React components into the client folder; they need to be served to browsers
 echo copy client-side extensions...
-mkdir app/www/extensions/builtin -p
-mkdir app/www/extensions/builtin/forums
-mkdir app/www/extensions/builtin/posts
-cp ../server/app/extensions/forums/* app/www/extensions/builtin/forums -r -v
-cp ../server/app/extensions/posts/* app/www/extensions/builtin/posts -r -v
+cp ../server/app/extensions/forums/* app/www/extensions/forums -r -v
+cp ../server/app/extensions/posts/* app/www/extensions/posts -r -v
 
 
