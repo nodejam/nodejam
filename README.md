@@ -6,19 +6,19 @@ Below are expected completion dates.
 
 Development Plan
 ================
-- Sandboxed environment for running client side JSX components (26th April)
-- Fix Installers for other distros (28th April)
-- Post Editing (29th April)
-- Sandboxed environment for server side extensions (29th April)
-- Create Forum, New UI (30th April)
-- Forum Settings (1st May)
-- Login, Permissions and Members (3rd May)
-- Users Profile Page (4th May)
-- Following and Followers (5th May)
-- Facebook and Twitter Posting (6th May)
-- RSS (7th May)
-- Testing and Enhancements (14th May)
-- Public Alpha (15th May)
+- Sandboxed environment for running client side JSX components (28 April)
+- Fix Installers for other distros (30 April)
+- Post Editing (2 May)
+- Sandboxed environment for server side extensions (1 May)
+- Create Forum, New UI (2 May)
+- Forum Settings (3 May)
+- Login, Permissions and Members (5 May)
+- Users Profile Page (6 May)
+- Following and Followers (7 May)
+- Facebook and Twitter Posting (8 May)
+- RSS (9 May)
+- Testing and Enhancements (14 May)
+- Public Alpha (15 May)
 
 
 Installation
