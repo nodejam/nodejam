@@ -2,7 +2,7 @@
 var root = (typeof exports !== "undefined" && exports !== null) ? exports : this.ForaUI;
 
 if (typeof exports !== "undefined" && exports !== null) {
-    var React = require("react-sandbox");
+    var React = require("react");
 }
 
 root.Content = React.createClass({
