@@ -8,7 +8,7 @@ if (typeof exports !== "undefined" && exports !== null) {
 
 var PostEditor = ForaUI.PostEditor;
 
-root.Item = React.createClass({
+component = React.createClass({
     render: function() {
         return (
             <article>
@@ -21,3 +21,10 @@ root.Item = React.createClass({
         );
     }
 });
+
+if (typeof exports !== "undefined" && exports !== null) {
+    exports.Item = component;
+} else {
+    this.Article_1_0_0_Item = component;
+}
+

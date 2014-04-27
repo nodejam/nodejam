@@ -6,7 +6,7 @@ if (typeof exports !== "undefined" && exports !== null) {
     var ForaUI = require("fora-ui");
 }
 
-root.List = React.createClass({
+component = React.createClass({
     render: function() {
         var post = this.props.post;
 
@@ -60,4 +60,11 @@ root.List = React.createClass({
         );
     }
 });
+
+if (typeof exports !== "undefined" && exports !== null) {
+    exports.List = component;
+} else {
+    this.Article_1_0_0_List = component;
+}
+
 

@@ -1,6 +1,4 @@
 /** @jsx React.DOM */
-var root = (typeof exports !== "undefined" && exports !== null) ? exports : this;
-
 if (typeof exports !== "undefined" && exports !== null) {
     var React = require("react");
     var ForaUI = require("fora-ui");
@@ -9,7 +7,7 @@ if (typeof exports !== "undefined" && exports !== null) {
 var Page = ForaUI.Page,
     Content = ForaUI.Content;
 
-root.ItemView = React.createClass({
+component = React.createClass({
     render: function() {
         return (
             <Page cover={this.props.post.cover}>
@@ -29,3 +27,9 @@ root.ItemView = React.createClass({
         );
     }
 });
+
+if (typeof exports !== "undefined" && exports !== null) {
+    exports.ItemView = component;
+} else {
+    this.Simple_1_0_0_Item = component;
+}

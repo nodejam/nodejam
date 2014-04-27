@@ -2,15 +2,12 @@
 if (typeof exports !== "undefined" && exports !== null) {
     var React = require("react");
     var ForaUI = require("fora-ui");
-    root = exports;
-} else {
-    root = this;
 }
 
 var Page = ForaUI.Page,
     Content = ForaUI.Content;
 
-root.IndexView = React.createClass({
+component = React.createClass({
     render: function() {        
         forum = this.props.forum;
         
@@ -77,3 +74,11 @@ root.IndexView = React.createClass({
         );
     }
 });
+
+if (typeof exports !== "undefined" && exports !== null) {
+    exports.IndexView = component;
+} else {
+    this.Simple_1_0_0_Index = component;
+}
+
+
