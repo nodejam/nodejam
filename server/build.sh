@@ -77,7 +77,6 @@ if ! $skip_es5_transform; then
     echo Running regenerator..
     compile_to_es5 "app/api"
     compile_to_es5 "app/app-lib"
-    compile_to_es5 "app/common"
     compile_to_es5 "app/conf"
     compile_to_es5 "app/lib"
     compile_to_es5 "app/models"

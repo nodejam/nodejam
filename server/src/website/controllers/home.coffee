@@ -26,7 +26,8 @@ exports.index = auth.handler ->*
     component = IndexView { editorsPicks, featured, cover, coverContent }    
     yield @renderPage 'page', { 
         pageName: 'home-page',
-        html: Sandbox.renderComponentToString component
+        html: Sandbox.renderComponentToString(component),
+        scripts: ['/views/home/index.js']
     }
     
     

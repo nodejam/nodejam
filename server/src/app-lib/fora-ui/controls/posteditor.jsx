@@ -15,7 +15,7 @@ loader = function(definition) {
     if (typeof exports === "object")
         module.exports = definition(require('react'));
     else
-        define(['react'], definition);
+        window.ForaUI.PostEditor = definition(React);
 }
 
 loader(fn);

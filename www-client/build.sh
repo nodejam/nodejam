@@ -98,5 +98,7 @@ fi
 echo copy client-side extensions...
 cp ../server/app/extensions/forums/* app/www/extensions/forums -r -v
 cp ../server/app/extensions/posts/* app/www/extensions/posts -r -v
+cp ../server/app/website/views/* app/www/views -r -v
+cp ../server/app/app-lib/fora-ui/controls/* app/www/js/fora-ui/ -r -v
 
 

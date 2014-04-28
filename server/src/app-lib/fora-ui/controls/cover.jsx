@@ -46,10 +46,8 @@ loader = function(definition) {
     if (typeof exports === "object")
         module.exports = definition(require('react'));
     else
-        define(['react'], definition);
+        window.ForaUI.Cover = definition(React);
 }
 
 loader(fn);
-
-
 

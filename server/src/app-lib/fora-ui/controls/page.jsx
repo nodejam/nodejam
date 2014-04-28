@@ -16,7 +16,7 @@ loader = function(definition) {
     if (typeof exports === "object")
         module.exports = definition(require('react'));
     else
-        define(['react'], definition);
+        window.ForaUI.Page = definition(React);
 }
 
 loader(fn);
