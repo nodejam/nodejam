@@ -4,8 +4,7 @@ exports.renderForum = (data, ctx) ->*
     for post in data.posts
         typeDefinition = yield post.getTypeDefinition()
         extension = yield ctx.api.extensionLoader.load typeDefinition
-        templateModule = yield extension.getTemplateModule data.postTemplateFile
-        post.template = templateModule[data.postTemplateName]
+        post.template = yield extension.getTemplateModule data.postTemplateFile
         
     options = {}
     if ctx.context.session
@@ -24,14 +23,13 @@ exports.renderPost = (data, ctx) ->*
     typeDefinition = yield post.getTypeDefinition()
     
     extension = yield ctx.api.extensionLoader.load typeDefinition
-    templateModule = yield extension.getTemplateModule data.postTemplateFile
-    template = templateModule[data.postTemplateName]
+    template = yield extension.getTemplateModule data.postTemplateFile
     component = data.template { 
         post: data.post,
         forum: data.forum, 
         author, 
         typeDefinition,
-        template: template, 
+        template, 
     }
     React.renderComponentToString(component)
 

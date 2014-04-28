@@ -9,7 +9,7 @@ auth = require '../../app-lib/web/auth'
 ExtensionLoader = require('fora-extensions').Loader
 loader = new ExtensionLoader()
 
-IndexView = require('../views/forums/index').Index
+IndexView = require('../views/forums/index')
 
 class ForumContext
 

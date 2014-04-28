@@ -1,86 +1,86 @@
 /** @jsx React.DOM */
-if (typeof exports !== "undefined" && exports !== null) {
-    var React = require("react");
-    var ForaUI = require("fora-ui");
+fn = function(React, ForaUI) {
+    var Page = ForaUI.Page,
+        Content = ForaUI.Content,
+        Cover = ForaUI.Cover;
+
+    return React.createClass({
+        render: function() {        
+            forum = this.props.forum;
+            
+            //If the cover is missing, use default
+            if (!forum.cover) {
+                forum.cover = {
+                    image: { 
+                        src: '/images/forum-cover.jpg', 
+                        small: '/images/forum-cover-small.jpg', 
+                        alt: forum.name
+                    }
+                };
+            }
+            
+            if (!forum.cover.type) {
+                forum.cover.type = "auto-cover"
+            }    
+        
+            createItem = function(post) {
+                return post.template({ post: post, forum: post.forum, author: post.createdBy });
+            };    
+        
+
+            options = this.props.options;
+            buttons = null;
+            
+            if (options.loggedIn) {
+                if (options.isMember)
+                    action = <a href="#" className="positive new-post"><i className="fa fa-plus"></i>New {options.primaryPostType}</a>
+                else
+                    action = <a href="#" className="positive join-forum"><i className="fa fa-user"></i>Join Forum</a>
+
+                buttons = (
+                    <ul className="alt buttons">
+                        <li>
+                            {action}
+                        </li>
+                    </ul>
+                );          
+            }
+
+            return (
+                <Page>
+                    <Cover cover={forum.cover} />                
+                    <Content>
+                        <nav>
+                            <ul>
+                                <li className="selected">
+                                    Popular
+                                </li>
+                                <li>
+                                    <a href="/{{forum.stub}}/about">About</a>
+                                </li>          
+                            </ul>
+                            {buttons}
+                        </nav>    
+                        <div className="content-area">
+                            <ul className="articles default-view">
+                                {this.props.posts.map(createItem)}     
+                            </ul>
+                        </div>
+                    </Content>
+                </Page>        
+            );
+        }
+    });
+};
+
+
+loader = function(definition) {
+    if (typeof exports === "object")
+        module.exports = definition(require('react'), require('fora-ui'));
+    else
+        define(['react', 'fora-ui'], definition);
 }
 
-var Page = ForaUI.Page,
-    Content = ForaUI.Content;
-
-component = React.createClass({
-    render: function() {        
-        forum = this.props.forum;
-        
-        //If the cover is missing, use default
-        if (!forum.cover) {
-            forum.cover = {
-                image: { 
-                    src: '/images/forum-cover.jpg', 
-                    small: '/images/forum-cover-small.jpg', 
-                    alt: forum.name
-                }
-            };
-        }
-        
-        if (!forum.cover.type) {
-            forum.cover.type = "auto-cover"
-        }    
-    
-        createItem = function(post) {
-            return post.template({ post: post, forum: post.forum, author: post.createdBy });
-        };    
-    
-
-        options = this.props.options;
-        buttons = null;
-        
-        if (options.loggedIn) {
-            if (options.isMember)
-                action = <a href="#" className="positive new-post"><i className="fa fa-plus"></i>New {options.primaryPostType}</a>
-            else
-                action = <a href="#" className="positive join-forum"><i className="fa fa-user"></i>Join Forum</a>
-
-            buttons = (
-                <ul className="alt buttons">
-                    <li>
-                        {action}
-                    </li>
-                </ul>
-            );          
-        }
-
-        return (
-            <Page>
-                <Cover cover={forum.cover} />                
-                <Content>
-                    <nav>
-                        <ul>
-                            <li className="selected">
-                                Popular
-                            </li>
-                            <li>
-                                <a href="/{{forum.stub}}/about">About</a>
-                            </li>          
-                        </ul>
-                        {buttons}
-                    </nav>    
-                    <div className="content-area">
-                        <ul className="articles default-view">
-                            {this.props.posts.map(createItem)}     
-                        </ul>
-                    </div>
-                </Content>
-            </Page>        
-        );
-    }
-});
-
-if (typeof exports !== "undefined" && exports !== null) {
-    exports.IndexView = component;
-} else {
-    //The fully qualified name because builtin components will not run in a sandbox.
-    //So we must ensure there are no conflicts.
-    this.Extensions.Forums.Simple_1_0_0_Index = component;
-}
+loader(fn);
 
 

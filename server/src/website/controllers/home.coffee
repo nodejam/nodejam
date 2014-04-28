@@ -6,7 +6,7 @@ utils = require('../../app-lib/utils')
 auth = require '../../app-lib/web/auth'
 ExtensionLoader = require('fora-extensions').Loader
 loader = new ExtensionLoader()
-IndexView = require('../views/home/index').Index
+IndexView = require('../views/home/index')
 
 exports.index = auth.handler ->*
     editorsPicks = yield models.Post.find { meta: 'pick', 'forum.network': @network.stub }, { sort: db.setRowId({}, -1) , limit: 1 }, {}, db
@@ -15,8 +15,7 @@ exports.index = auth.handler ->*
 
     for post in editorsPicks.concat(featured)
         extension = yield loader.load yield post.getTypeDefinition()
-        templateModule = yield extension.getTemplateModule 'list'
-        post.template = templateModule.List
+        post.template = yield extension.getTemplateModule 'list'
     
     cover = {
         image: { src: '/images/cover.jpg' },

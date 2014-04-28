@@ -1,8 +1,8 @@
 React = require('react');
 ForaUI = require('fora-ui');
 
-IndexView = require('./templates/index').IndexView;
-ItemView = require('./templates/item').ItemView;
+IndexView = require('./templates/index');
+ItemView = require('./templates/item');
 
 index = function*() {
     var posts = yield this.forum.getPosts(12, { "sort": { "_id": -1 }});
@@ -11,8 +11,7 @@ index = function*() {
         template: IndexView,
         forum: this.forum,
         posts: posts,
-        postTemplateFile: 'list',
-        postTemplateName: 'List'
+        postTemplateFile: 'list'
     }, this);
 }
 
@@ -24,8 +23,7 @@ post = function*(stub) {
         template: ItemView,
         post: post,
         forum: this.forum,
-        postTemplateFile: 'item',
-        postTemplateName: 'Item'
+        postTemplateFile: 'item'
     }, this);    
 }
 

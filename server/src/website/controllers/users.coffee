@@ -5,7 +5,7 @@ models = require '../../models'
 utils = require '../../app-lib/utils'
 auth = require '../../app-lib/web/auth'
 fields = require '../../models/fields'
-LoginView = require('../views/users/login').Login
+LoginView = require('../views/users/login')
 
 exports.login = ->*
     token = yield models.Token.get { key: @query.key }, {}, db
