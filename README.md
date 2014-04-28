@@ -6,18 +6,18 @@ Below are expected completion dates.
 
 Development Plan
 ================
-- Sandboxed environment for running client side JSX components (28 April)
-- Fix Installers for other distros (30 April)
-- Post Editing (2 May)
-- Sandboxed environment for server side extensions (1 May)
-- Create Forum, New UI (2 May)
-- Forum Settings (3 May)
-- Login, Permissions and Members (5 May)
-- Users Profile Page (6 May)
-- Following and Followers (7 May)
-- Facebook and Twitter Posting (8 May)
-- RSS (9 May)
-- Testing and Enhancements (14 May)
+- Sandboxed environment for running client side JSX components (30 April)
+- Fix Installers for other distros (2 May)
+- Post Editing (4 May)
+- Sandboxed environment for server side extensions (3 May)
+- Create Forum, New UI (4 May)
+- Forum Settings (5 May)
+- Login, Permissions and Members (7 May)
+- Users Profile Page (8 May)
+- Following and Followers (9 May)
+- Facebook and Twitter Posting (10 May)
+- RSS (11 May)
+- Testing and fixes (14 May)
 - Public Alpha (15 May)
 
 
@@ -86,13 +86,14 @@ npm install sanitizer
 npm install handlebars
 npm install fs-extra
 npm install gm
-npm install node-minify
 npm install oauth
 npm install marked
 npm install optimist
 npm install multiparty
 npm install react
 npm install path-to-regexp
+npm install node-minify
+npm install requirejs    
 cd ..
 
 cd www-client

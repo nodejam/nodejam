@@ -389,13 +389,14 @@ if $node_modules ; then
     npm install handlebars
     npm install fs-extra
     npm install gm
-    npm install node-minify
     npm install oauth
     npm install marked
     npm install optimist
     npm install multiparty
     npm install react
     npm install path-to-regexp
+    npm install node-minify
+    npm install requirejs
     cd ..
     
     cd www-client

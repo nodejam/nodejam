@@ -40,6 +40,7 @@
 	"multiparty": "*",
 	"react": "*",
 	"path-to-regexp": "*",
-	"node-minify": "*"
+	"node-minify": "*",
+	"requirejs": "*"
   }
 }

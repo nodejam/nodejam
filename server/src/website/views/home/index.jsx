@@ -1,8 +1,10 @@
 /** @jsx React.DOM */
 var React = require("react-sandbox");
 var ForaUI = require("fora-ui");
+
 var Page = ForaUI.Page,
-    Content = ForaUI.Content;
+    Content = ForaUI.Content,
+    Cover = ForaUI.Cover;
 
 exports.Index = React.createClass({
     render: function() {        

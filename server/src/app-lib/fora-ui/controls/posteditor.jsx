@@ -1,17 +1,21 @@
 /** @jsx React.DOM */
-var root = (typeof exports !== "undefined" && exports !== null) ? exports : this.ForaUI;
-
-if (typeof exports !== "undefined" && exports !== null) {
-    var React = require("react");
+fn = function(React) {
+    return React.createClass({
+        render: function() {
+            json = JSON.stringify(this.props.post);
+            typeDefinition = JSON.stringify(this.props.typeDefinition);
+            script = "new Fora.Views.Posts.Post(\"" + json + "\", \"" + typeDefinition + "\");";
+            script = <script type="text/javascript" dangerouslySetInnerHTML={{__html: script}}></script>;        
+            return script;   
+        }
+    });
 }
 
-root.PostEditor = React.createClass({
-    render: function() {
-        json = JSON.stringify(this.props.post);
-        typeDefinition = JSON.stringify(this.props.typeDefinition);
-        script = "new Fora.Views.Posts.Post(\"" + json + "\", \"" + typeDefinition + "\");";
-        script = <script type="text/javascript" dangerouslySetInnerHTML={{__html: script}}></script>;        
-        return script;   
-    }
-});
+loader = function(definition) {
+    if (typeof exports === "object")
+        module.exports = definition(require('react'));
+    else
+        define(['react'], definition);
+}
 
+loader(fn);
