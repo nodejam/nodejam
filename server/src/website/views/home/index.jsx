@@ -43,7 +43,7 @@ loader = function(definition) {
     if (typeof exports === "object")
         module.exports = definition(require('react'), require('fora-ui'));
     else
-        require([], function() { return definition(React, ForaUI); });
+        define([], function() { return definition(React, ForaUI); });
 }
 
 loader(fn);
