@@ -20,7 +20,7 @@ Development Plan
 - RSS anup kesavan · Sun, May 11
 - Improve Install Experience on Mac and Linux anup kesavan 
 - Add support for Persona.org login anup kesavan 
-
+- 0.1 Alpha, Thu May 15
 
 Installation
 ============
