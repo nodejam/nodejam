@@ -23,11 +23,19 @@ exports.index = auth.handler ->*
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
 
-    component = IndexView { editorsPicks, featured, cover, coverContent }    
+    component = IndexView { editorsPicks, featured, cover, coverContent } 
+    
+    script = "
+        var data = #{JSON.stringify({ editorsPicks, featured, cover, coverContent })};
+        require(['/views/home/index.js'], function(IndexView) {
+            component = IndexView(data);
+            React.renderComponent(component, $('.single-section-page')[0])
+        });"
+       
     yield @renderPage 'page', { 
         pageName: 'home-page',
         html: Sandbox.renderComponentToString(component),
-        scripts: ['/views/home/index.js']
+        script
     }
     
     
