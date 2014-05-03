@@ -62,6 +62,13 @@ rm -rf $temp
 echo "Compiling CoffeeScript files.."
 coffee -o app/ -c src/
 
+#We have to copy the builtin React components into the client folder; they need to be served to browsers
+echo copy client-side extensions...
+cp ../server/app/extensions/forums/* app/www/shared/extensions/forums -r -v
+cp ../server/app/extensions/posts/* app/www/shared/extensions/posts -r -v
+cp ../server/app/website/views/* app/www/shared/views -r -v
+cp ../server/app/app-lib/fora-ui/controls/* app/www/shared/app-lib/fora-ui/controls -r -v
+
 #Run it through generator.
 #This step is unnecessary if we are using node --harmony
 compile_to_es5() {
@@ -93,12 +100,4 @@ else
         node --harmony app/scripts/package.js
     fi
 fi
-
-#We have to copy the builtin React components into the client folder; they need to be served to browsers
-echo copy client-side extensions...
-cp ../server/app/extensions/forums/* app/www/extensions/forums -r -v
-cp ../server/app/extensions/posts/* app/www/extensions/posts -r -v
-cp ../server/app/website/views/* app/www/views -r -v
-cp ../server/app/app-lib/fora-ui/controls/* app/www/js/fora-ui/ -r -v
-
 

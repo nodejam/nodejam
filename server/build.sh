@@ -61,9 +61,9 @@ rm -rf $temp
 echo "Compiling CoffeeScript files.."
 coffee -o app/ -c src/
 echo "Compiling JSX files.."
-jsx -x jsx src/app-lib/fora-ui app/app-lib/fora-ui
-jsx -x jsx src/extensions app/extensions
-jsx -x jsx src/website/views app/website/views
+jsx --harmony -x jsx src/app-lib/fora-ui app/app-lib/fora-ui
+jsx --harmony -x jsx src/extensions app/extensions
+jsx --harmony -x jsx src/website/views app/website/views
 
 #Run it through generator.
 #This step is unnecessary if we are using node --harmony

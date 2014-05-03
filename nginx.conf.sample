@@ -7,12 +7,8 @@ server {
         alias /path/to/fora/www-public;
     }
 
-    location /extensions {
-        alias /path/to/fora/www-client/app/www/extensions;
-    }
-
-    location /views {
-        alias /path/to/fora/www-client/app/www/views;
+    location /shared {
+        alias /path/to/fora/www-client/app/www/shared;
     }
 
     location /css {
@@ -48,4 +44,4 @@ server {
         proxy_pass http://localhost:10982;
         proxy_set_header   Host         $host;
     }
-} 
+}

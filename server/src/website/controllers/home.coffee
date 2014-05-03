@@ -13,10 +13,11 @@ exports.index = auth.handler ->*
     featured = yield models.Post.find { meta: 'featured', 'forum.network': @network.stub }, { sort: db.setRowId({}, -1) , limit: 12 }, {}, db
     featured = (f for f in featured when (db.getRowId(x) for x in editorsPicks).indexOf(db.getRowId(f)) is -1)
 
-    for post in editorsPicks.concat(featured)
+    for post in featured.concat editorsPicks
         extension = yield loader.load yield post.getTypeDefinition()
         post.template = yield extension.getTemplateModule 'list'
     
+
     cover = {
         image: { src: '/images/cover.jpg' },
     }
