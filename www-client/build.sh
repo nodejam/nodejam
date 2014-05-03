@@ -73,15 +73,24 @@ cp ../server/app/app-lib/fora-ui/controls/* app/www/shared/app-lib/fora-ui/contr
 #This step is unnecessary if we are using node --harmony
 compile_to_es5() {
     dir=`pwd`/$1
-    echo Processing $dir
-    find $dir -name *.js -type f -exec cp {} {}.es6 \; -exec sh -c 'regenerator --include-runtime {}.es6 > {}' \; 
+    if $2; then
+        echo "Processing $dir (regenerator --include-runtime)"
+        find $dir -name *.js -type f -exec sh -c 'regenerator --include-runtime {} > {}' \; 
+    else
+        echo "Processing $dir (regenerator)"
+        find $dir -name *.js -type f -exec cp {} {}.es6 \; -exec sh -c 'regenerator {}.es6 > {}' \;
+        #find $dir -name *.js -type f -exec sh -c 'regenerator {} > {}' \; 
+    fi
 }
 
 if ! $skip_es5_transform; then
-    echo Running regenerator..
-    compile_to_es5 "app/www/js"
-    compile_to_es5 "app/scripts"
+    echo Running regenerator on app/scripts..
+    compile_to_es5 "app/scripts" true
 fi
+
+echo Running regenerator on app/www/js..
+compile_to_es5 "app/www/js" false
+compile_to_es5 "app/www/shared" false
 
 echo "Running LESS.."
 lessc --verbose src/www/css/main.less app/www/css/main.css
