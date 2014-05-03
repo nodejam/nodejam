@@ -66,7 +66,7 @@ coffee -o app/ -c src/
 echo copy client-side extensions...
 cp ../server/app/extensions/forums/* app/www/shared/extensions/forums -r -v
 cp ../server/app/extensions/posts/* app/www/shared/extensions/posts -r -v
-cp ../server/app/website/views/* app/www/shared/views -r -v
+cp ../server/app/website/views/* app/www/shared/website/views -r -v
 cp ../server/app/app-lib/fora-ui/controls/* app/www/shared/app-lib/fora-ui/controls -r -v
 
 #Run it through generator.

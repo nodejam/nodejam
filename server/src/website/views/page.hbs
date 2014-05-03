@@ -1,6 +1,4 @@
-{{#if script}}
-<script type="text/javascript">
-    {{{script}}}
-</script>
-{{/if}}
+{{#each scripts}}
+<script src="{{this}}" type="text/javascript"></script>
+{{/each}}
 {{{html}}}

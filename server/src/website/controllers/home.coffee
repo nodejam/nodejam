@@ -26,17 +26,21 @@ exports.index = auth.handler ->*
 
     component = IndexView { editorsPicks, featured, cover, coverContent } 
     
+    scripts = ["/js/views/home/index.js"]
+    
     script = "
-        var data = #{JSON.stringify({ editorsPicks, featured, cover, coverContent })};
-        require(['/views/home/index.js'], function(IndexView) {
-            component = IndexView(data);
-            React.renderComponent(component, $('.single-section-page')[0])
-        });"
-       
+        <script>
+            var view = new Fora.Views.Home.Index(#{JSON.stringify({ editorsPicks, featured, cover, coverContent })});
+        </script>"
+    
+    html = "
+        #{script}
+        #{Sandbox.renderComponentToString(component)}"
+    
     yield @renderPage 'page', { 
         pageName: 'home-page',
-        html: Sandbox.renderComponentToString(component),
-        script
+        html,
+        scripts
     }
     
     
