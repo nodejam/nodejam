@@ -1,1 +1,4 @@
+class ForaUI
+
+
 window.ForaUI = {}
