@@ -2,9 +2,12 @@ path = require 'path'
 co = require 'co'
 thunkify = require 'thunkify'
 utils = require '../../app-lib/utils'
+fs = require 'fs'
 
 _exec = require('child_process').exec
 spawn = require('child_process').spawn
+
+react = require('react-tools')
 
 print = (msg) ->
     if msg then console.log "#{msg}".trim()
@@ -75,7 +78,7 @@ processEvents = (events) ->
             if not ('ISDIR' in eventNames)  #We won't handle directory level events. This needs full compile.
 
                 #Handle only known extensions and ignore hidden files
-                if (not /^\./.test ev.file) and (ext in ['.coffee', '.htm', '.html', '.hbs', '.css', '.less', '.js', '.txt', '.json', '.config'])
+                if (not /^\./.test ev.file) and (ext in ['.coffee', '.htm', '.html', '.hbs', '.css', '.less', '.js', '.jsx', '.txt', '.json', '.config'])
                 
                     if ("DELETE" in eventNames)
                         action = ->*
@@ -102,7 +105,18 @@ processEvents = (events) ->
                                 cmd = "lessc #{src} #{dest}"
                                 print cmd
                                 print yield exec cmd
-                                        
+                                
+                        else if ext is '.jsx'
+                            action = ->*
+                                dest = dest.replace /.jsx$/, '.js'   
+                                print "JSX transform #{src} -> #{dest}"
+                                contents = fs.readFileSync src
+                                result = react.transform contents.toString()
+                                fs.writeFileSync dest, result
+                                cmd = "cp #{dest} #{dest.replace /^app\//, '../www-client/app/www/shared/'}"
+                                print cmd
+                                print yield exec cmd
+
                         else
                             action = ->*
                                 #Replace the debug.hbs extensions in hbs templates
