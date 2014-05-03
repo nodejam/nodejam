@@ -1,4 +1,6 @@
 #Generate a random identifier
+window.Fora.Utils = {}
+
 window.Fora.Utils.uniqueId = (length = 16) ->
   id = ""
   id += Math.random().toString(36).substr(2) while id.length < length

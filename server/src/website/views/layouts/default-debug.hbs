@@ -6,34 +6,40 @@
     {{else}}
     <title>The Fora Project</title>
     {{/if}}
-    <!-- CSS -->
+    <!-- 3rd Party CSS -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,700|Crimson+Text:400,600,400italic|Oswald' rel='stylesheet' type='text/css' />
-    <link href="/lib/font-awesome/css/font-awesome.css" rel="stylesheet" media="screen" />
-    <link href="/css/HINT.css" rel="stylesheet" media="screen" />
-    <link href="/css/toggle-switch.css" rel="stylesheet" media="screen" />
+    <link href="/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" media="screen" />
+    <link href="/vendor/HINT.css" rel="stylesheet" media="screen" />
+    <link href="/vendor/toggle-switch.css" rel="stylesheet" media="screen" />
+    <link href="/vendor/medium-editor/css/medium-editor.css" rel="stylesheet" media="screen" />
+    <link href="/vendor/medium-editor/css/themes/default.css" rel="stylesheet" media="screen" />
+
+    <!-- CSS -->
     <link href="/css/main.css" rel="stylesheet" media="screen" />
-    <link href="/lib/medium-editor/css/medium-editor.css" rel="stylesheet" media="screen" />
-    <link href="/lib/medium-editor/css/themes/default.css" rel="stylesheet" media="screen" />
     
-    <!-- other JS -->
-    <script src="/lib/jquery-min.js"></script>
-    <script src="/lib/leanmodal.js"></script>
-    <script src="/lib/jquery-cookie.js"></script>
-    <script src="/lib/react.js"></script>
-    <script src="/lib/require.js"></script>
+    <!-- 3rd Party JS -->
+    <script src="/vendor/jquery-min.js"></script>
+    <script src="/vendor/leanmodal.js"></script>
+    <script src="/vendor/jquery-cookie.js"></script>
+    <script src="/vendor/react.js"></script>
+    <script src="/vendor/require.js"></script>
 
     <!-- App -->
     <script src="/js/css.js"></script>
     <script src="/js/debug.js"></script>    
-    <script src="/js/main.js"></script>   
+    <script src="/js/app.js"></script>   
     <script src="/js/react-sandbox.js"></script> 
     <script src="/js/jquery-extensions.js"></script>    
     <script src="/js/utils.js"></script>    
 
     <!-- Models -->
+    <script src="/js/models/index.js"></script>
     <script src="/js/models/user.js"></script>
     <script src="/js/models/forum.js"></script>
     <script src="/js/models/post.js"></script>
+
+    <!-- Views -->
+    <script src="/js/views/index.js"></script>    
         
     <!-- ForaUI -->
     <script src="/js/app-lib/fora-ui/index.js"></script>    
@@ -42,13 +48,15 @@
     <script src="/shared/app-lib/fora-ui/controls/page.js"></script>    
     <script src="/shared/app-lib/fora-ui/controls/posteditor.js"></script>    
 
+    <!-- ForaExtensions -->
+    <script src="/js/app-lib/fora-extensions/index.js"></script>    
 
     <!-- Fora Editor -->
-    <script src="/lib/medium-editor/js/medium-editor.js"></script>
-    <script src="/lib/fora-editor/foraeditor.js"></script>
-    <script src="/lib/fora-editor/text.js"></script>
-    <script src="/lib/fora-editor/image.js"></script>
-    <script src="/lib/fora-editor/selectable.js"></script>
+    <script src="/vendor/medium-editor/js/medium-editor.js"></script>
+    <script src="/js/lib/fora-editor/foraeditor.js"></script>
+    <script src="/js/lib/fora-editor/text.js"></script>
+    <script src="/js/lib/fora-editor/image.js"></script>
+    <script src="/js/lib/fora-editor/selectable.js"></script>
   
     <!-- Views
     <script src="/js/views/validator.js"></script>

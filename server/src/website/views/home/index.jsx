@@ -53,7 +53,7 @@ loader = function(definition) {
     if (typeof exports === "object")
         module.exports = definition(require('react'), require('fora-ui'), require('fora-extensions').Loader);
     else
-        define([], function() { return definition(React, ForaUI); });
+        define([], function() { return definition(React, ForaUI, ForaExtensions.Loader); });
 }
 
 loader(fn);

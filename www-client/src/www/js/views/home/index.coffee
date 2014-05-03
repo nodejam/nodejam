@@ -5,6 +5,7 @@ class Index
 
         require ['/shared/website/views/home/index.js'], (IndexView) ->
             component = IndexView(data)
+            
             React.renderComponent component, $('.single-section-page')[0]
 
         

@@ -7,8 +7,12 @@ server {
         alias /path/to/fora/www-public;
     }
 
-    location /shared {
-        alias /path/to/fora/www-client/app/www/shared;
+    location /js {
+        alias /path/to/fora/www-client/app/www/js;
+    }
+
+    location /vendor {
+        alias /path/to/fora/www-client/app/www/vendor;
     }
 
     location /css {
@@ -23,16 +27,8 @@ server {
         alias /path/to/fora/www-client/app/www/images;
     }
 
-    location /js {
-        alias /path/to/fora/www-client/app/www/js;
-    }
-
-    location /lib {
-        alias /path/to/fora/www-client/app/www/lib;
-    }
-
-    location /system {
-        alias /path/to/fora/www-client/app/www/system;
+    location /shared {
+        alias /path/to/fora/www-client/app/www/shared;
     }
 
     location / {

@@ -1,13 +1,4 @@
-window.Fora = {
-    Views: {
-        Home: {},
-        Forums: {},
-        Users: {},
-        Posts: {},
-    },
-    Editing: {},
-    Utils: {}
-}
+window.Fora = {}
 
 class App
 

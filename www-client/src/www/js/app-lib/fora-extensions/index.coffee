@@ -1,0 +1,4 @@
+class ForaExtensions
+
+
+window.ForaExtensions = {}
