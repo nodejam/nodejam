@@ -1,4 +1,0 @@
-class ForaExtensions
-
-
-window.ForaExtensions = {}

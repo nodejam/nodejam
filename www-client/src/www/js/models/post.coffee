@@ -1,7 +1,11 @@
-class Post
+class Post extends Fora.Models.BaseModel
 
-    constructor: (data, typeDefinition) ->
+    constructor: (data) ->
+        super
+        
     
+    getTypeDefinition: =>*
+        @typeDefinition
     
 
 window.Fora.Models.Post = Post

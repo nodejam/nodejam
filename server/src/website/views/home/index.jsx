@@ -4,20 +4,22 @@ fn = function(React, ForaUI, ExtensionLoader) {
         Content = ForaUI.Content,
         Cover = ForaUI.Cover;
 
+    var loader = new ExtensionLoader();
+
     return React.createClass({
-        
-        componentInit: function*() {
-            loader = new ExtensionLoader();
-            posts = this.props.featured.concat(this.props.editorsPicks);
-            for (i = 0; i < posts.length; i++) {
-                extension = yield loader.load(yield posts[i].getTypeDefinition());
-                posts[i].template = yield extension.getTemplateModule('list');
+        statics: {
+            componentInit: function*(component) {
+                posts = component.props.featured.concat(component.props.editorsPicks);
+                for (i = 0; i < posts.length; i++) {
+                    extension = yield loader.load(yield posts[i].getTypeDefinition());
+                    posts[i].template = yield extension.getTemplateModule('list');
+                }
             }
         },
     
         render: function() {        
             createItem = function(post) {
-                return post.template({ post: post, forum: post.forum, author: post.createdBy });
+                return post.template({ key: post._id, post: post, forum: post.forum, author: post.createdBy });
             };    
         
             return (

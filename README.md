@@ -127,6 +127,7 @@ cd server
 
 For production
 ```
+cd server
 ./compile.sh [--es5]
 ```
 And run with monitoring tools such as upstart and monit.  

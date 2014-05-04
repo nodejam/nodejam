@@ -81,9 +81,7 @@ class DatabaseModel extends BaseModel
 
     makeResult = (obj, fnConstructor, typeDefinition, context, db) ->*
         result = yield fnConstructor(obj, context, db)
-        attachSystemFields(result, context, db)
-        if typeDefinition.initialize
-            yield typeDefinition.initialize(result)
+        attachSystemFields(result, context, db)        
         result
         
     
@@ -107,6 +105,9 @@ class DatabaseModel extends BaseModel
             if effectiveTypeDef.trackChanges
                 original.getTypeDefinition = ->* effectiveTypeDef
                 
+        if typeDefinition.initialize        
+            yield typeDefinition.initialize(result)
+
         result
         
         
