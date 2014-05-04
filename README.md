@@ -109,10 +109,9 @@ Run this once to setup directories and indexes
 ```
 cd server
 ./compile.sh
-node --harmony app/scripts/init/create.js
+./runscript.sh --harmony app/scripts/init/create.js
 ```  
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
-For production, run source node_path.sh to setup NODE_PATH. (./run.sh does this automatically)
 
 
 Step 3: Running Fora
@@ -141,9 +140,9 @@ ES6 to ES5 transformation is done with Regenerator (https://github.com/facebook/
 
 Step 4 (Optional): Want some test data?
 -------------------------------------
-Before using this, run source node_path.sh to setup NODE_PATH
 ```
-usage: node --harmony app/scripts/setup/setup.js options
+cd server
+./runscript.sh --harmony app/scripts/setup/setup.js options
 
 options:
     --create            Creates the database

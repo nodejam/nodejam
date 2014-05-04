@@ -79,9 +79,11 @@ class DatabaseModel extends BaseModel
             model.__db = undefined
 
 
-    makeResult = (obj, fnConstructor, context, db) ->*
+    makeResult = (obj, fnConstructor, typeDefinition, context, db) ->*
         result = yield fnConstructor(obj, context, db)
         attachSystemFields(result, context, db)
+        if typeDefinition.initialize
+            yield typeDefinition.initialize(result)
         result
         
     
@@ -112,13 +114,13 @@ class DatabaseModel extends BaseModel
     @_constructModel_impl: (obj, typeDefinition, context, db) ->*
         if typeDefinition.customConstructor
             fnCtor = (_o, _ctx, _db) ->* yield typeDefinition.customConstructor _o, _ctx, _db
-            yield makeResult obj, fnCtor, context, db
+            yield makeResult obj, fnCtor, typeDefinition, context, db
         else
             result = yield @constructModelFields obj, typeDefinition, context, db
 
             fnCtor = (_o, _ctx, _db) ->*
                 if typeDefinition.ctor then new typeDefinition.ctor _o, _ctx, _db else _o
-            yield makeResult result, fnCtor, context, db                
+            yield makeResult result, fnCtor, typeDefinition, context, db                
                 
 
     

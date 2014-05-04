@@ -19,6 +19,8 @@ class Post extends ForaDbModel
                 if def.ctor isnt Post                    
                     throw new Error "Post type definitions must have ctor set to Post"
                 def
+            initialize: (obj) ->*
+                yield obj.initialize()
             schema: {
                 type: 'object',        
                 properties: {

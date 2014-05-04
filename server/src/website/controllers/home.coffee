@@ -17,6 +17,8 @@ exports.index = auth.handler ->*
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
 
+    console.log JSON.stringify featured[0]
+
     component = IndexView { editorsPicks, featured, cover, coverContent }
     if component.componentInit
         yield component.componentInit()

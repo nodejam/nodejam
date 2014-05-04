@@ -7,7 +7,7 @@ fn = function(React, ForaUI, ExtensionLoader) {
     return React.createClass({
         
         componentInit: function*() {
-            loader = new ExtensionLoader()
+            loader = new ExtensionLoader();
             posts = this.props.featured.concat(this.props.editorsPicks);
             for (i = 0; i < posts.length; i++) {
                 extension = yield loader.load(yield posts[i].getTypeDefinition());
