@@ -43,7 +43,7 @@ fn = function(React, ForaUI) {
             return (
                 <li>
                     {image}
-                    <article onClick={function(){ alert("hello"); }}>
+                    <article}>
                         <h2><a href={"/" + this.props.forum.stub + "/" + post.stub}>{post.title}</a></h2>
                         <p>{synopsis}</p>
                     </article>

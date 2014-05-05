@@ -8,12 +8,23 @@ fn = function(React, ForaUI, ExtensionLoader) {
 
     return React.createClass({
         statics: {
-            componentInit: function*(component) {
+            componentInit: function*(component) {           
+                
+            
+            
+                [component.props.featured, component.props.editorsPicks].foreach(function
+            
+            
+                (function(postsArrays) {
+                    for (i = 0; i < posts.length; i++) {
+                        posts[i] = new Fora.Models.Post(posts[i]);
+                        extension = yield loader.load(yield posts[i].getTypeDefinition());
+                        posts[i].template = yield extension.getTemplateModule('list');
+                    }
+                })();
+                                 
                 posts = component.props.featured.concat(component.props.editorsPicks);
-                for (i = 0; i < posts.length; i++) {
-                    extension = yield loader.load(yield posts[i].getTypeDefinition());
-                    posts[i].template = yield extension.getTemplateModule('list');
-                }
+
             }
         },
     

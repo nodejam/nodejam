@@ -20,11 +20,12 @@ exports.index = auth.handler ->*
     component = IndexView { editorsPicks, featured, cover, coverContent }
     yield component.type.componentInit(component)
     
-    scripts = ["/js/views/home/index.js"]
-    
     script = "
         <script>
-            var view = new Fora.Views.Home.Index(#{JSON.stringify({ editorsPicks, featured, cover, coverContent })});
+            var page = new Fora.Views.Page(
+                #{JSON.stringify({ editorsPicks, featured, cover, coverContent })},
+                '/shared/website/views/home/index.js'
+            );
         </script>"
     
     html = "
@@ -33,8 +34,7 @@ exports.index = auth.handler ->*
     
     yield @renderPage 'page', { 
         pageName: 'home-page',
-        html,
-        scripts
+        html
     }
     
     
