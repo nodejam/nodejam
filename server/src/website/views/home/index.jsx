@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-fn = function(React, ForaUI, ExtensionLoader) {
+fn = function(React, ForaUI, ExtensionLoader, Models) {
     var Page = ForaUI.Page,
         Content = ForaUI.Content,
         Cover = ForaUI.Cover;
@@ -10,14 +10,15 @@ fn = function(React, ForaUI, ExtensionLoader) {
         statics: {
             componentInit: function*(component) {           
                 /* Convert the JSON into Post objects and attach the templates */
-                loadPosts = function(posts) {
+                postsData = [component.props.featured, component.props.editorsPicks];
+                for(_i = 0; _i < postsData.length; _i++) {
+                    posts = postsData[_i];
                     for (i = 0; i < posts.length; i++) {
-                        posts[i] = new Fora.Models.Post(posts[i]);
+                        posts[i] = new Models.Post(posts[i]);
                         extension = yield loader.load(yield posts[i].getTypeDefinition());
                         posts[i].template = yield extension.getTemplateModule('list');
                     }
-                };                
-                [component.props.featured, component.props.editorsPicks].forEach(loadPosts);                
+                }
             }
         },
     
@@ -57,9 +58,14 @@ fn = function(React, ForaUI, ExtensionLoader) {
 
 loader = function(definition) {
     if (typeof exports === "object")
-        module.exports = definition(require('react'), require('fora-ui'), require('fora-extensions').Loader);
+        module.exports = definition(
+            require('react'), 
+            require('fora-ui'), 
+            require('fora-extensions').Loader, 
+            require('../../../models')
+        );
     else
-        define([], function() { return definition(React, ForaUI, ForaExtensions.Loader); });
+        define([], function() { return definition(React, ForaUI, ForaExtensions.Loader, Fora.Models); });
 }
 
 loader(fn);

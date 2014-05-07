@@ -23,8 +23,8 @@ exports.index = auth.handler ->*
     script = "
         <script>
             var page = new Fora.Views.Page(
-                #{JSON.stringify({ editorsPicks, featured, cover, coverContent })},
-                '/shared/website/views/home/index.js'
+                '/shared/website/views/home/index.js',
+                #{JSON.stringify({ editorsPicks, featured, cover, coverContent })}
             );
         </script>"
     
