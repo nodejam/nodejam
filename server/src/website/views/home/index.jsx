@@ -9,22 +9,15 @@ fn = function(React, ForaUI, ExtensionLoader) {
     return React.createClass({
         statics: {
             componentInit: function*(component) {           
-                
-            
-            
-                [component.props.featured, component.props.editorsPicks].foreach(function
-            
-            
-                (function(postsArrays) {
+                /* Convert the JSON into Post objects and attach the templates */
+                loadPosts = function(posts) {
                     for (i = 0; i < posts.length; i++) {
                         posts[i] = new Fora.Models.Post(posts[i]);
                         extension = yield loader.load(yield posts[i].getTypeDefinition());
                         posts[i].template = yield extension.getTemplateModule('list');
                     }
-                })();
-                                 
-                posts = component.props.featured.concat(component.props.editorsPicks);
-
+                };                
+                [component.props.featured, component.props.editorsPicks].forEach(loadPosts);                
             }
         },
     
