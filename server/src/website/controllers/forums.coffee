@@ -13,14 +13,18 @@ IndexView = require('../views/forums/index')
 
 class ForumContext
 
-    constructor: (@context, @forum) ->
+    constructor: (@context, @forum, @forumExtension) ->
     
     
-    getExtension: (object) ->*
+    getForumExtension: =>*
+        @forumExtension
+        
+    
+    getExtension: (object) =>*
         yield loader.load yield object.getTypeDefinition()
                       
         
-    renderPage: ->*
+    renderPage: =>*
     
     
     renderPost: (data) ->*
@@ -64,11 +68,12 @@ exports.page = auth.handler (stub) ->*
     if forum
         extension = yield loader.load yield forum.getTypeDefinition()
         pages = yield extension.getPages()
-        html = yield pages.handle new ForumContext(@, forum)
-        yield @renderPage 'page', { 
-            pageName: 'forum-page',
-            html
-        }
+        html = yield pages.handle new ForumContext(@, forum, extension)
+        
+    yield @renderPage 'page', { 
+        pageName: 'forum-page',
+        html
+    }
 
 
 
@@ -81,7 +86,8 @@ exports.create = ->*
     }        
 
 
-
+###
+    This code doesn't work. Move to extension
 exports.about = (stub) ->*
     forum = yield models.Forum.get({ stub, network: @network.stub }, {}, db)        
     about = (yield forum.link 'info').about
@@ -105,4 +111,5 @@ exports.about = (stub) ->*
             },
         }
     }
+###
 

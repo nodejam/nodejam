@@ -10,7 +10,7 @@ class Page
         (co =>*
             component = Component @data
             if component.type.componentInit
-                yield component.type.componentInit(component)
+                yield component.type.componentInit(component, true)
             React.renderComponent component, $('#page-container')[0]
         )()
         

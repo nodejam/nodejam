@@ -5,6 +5,18 @@ fn = function(React, ForaUI) {
         Cover = ForaUI.Cover;
 
     return React.createClass({
+        statics: {
+            componentInit: function*(component, isBrowser) {           
+                /* Convert the JSON into Post objects and attach the templates */
+                for (i = 0; i < component.props.posts.length; i++) {
+                    if (isBrowser)
+                        posts[i] = new Models.Post(posts[i]);
+                    extension = yield loader.load(yield posts[i].getTypeDefinition());
+                    posts[i].template = yield extension.getTemplateModule('list');
+                }
+            }
+        },
+            
         render: function() {        
             forum = this.props.forum;
             

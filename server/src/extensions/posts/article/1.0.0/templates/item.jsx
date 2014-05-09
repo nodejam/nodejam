@@ -7,7 +7,6 @@ fn = function(React, ForaUI) {
         render: function() {
             return (
                 <article>
-                    <PostEditor post={this.props.post} />
                     <h1>{this.props.post.title}</h1>
                     <section className="author"></section>
                     <section className="content" dangerouslySetInnerHTML={{ __html: this.props.post.content.formatContent()}}>

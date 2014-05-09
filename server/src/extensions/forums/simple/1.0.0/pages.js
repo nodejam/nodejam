@@ -8,10 +8,10 @@ index = function*() {
     var posts = yield this.forum.getPosts(12, { "sort": { "_id": -1 }});
 
     return yield ForaUI.helpers.renderForum({
-        template: IndexView,
         forum: this.forum,
         posts: posts,
-        postTemplateFile: 'list'
+        forumTemplate: 'index',
+        postTemplate: 'list'
     }, this);
 }
 
@@ -23,7 +23,8 @@ post = function*(stub) {
         template: ItemView,
         post: post,
         forum: this.forum,
-        postTemplateFile: 'item'
+        forumTemplate: 'item',
+        postTemplate: 'item'
     }, this);    
 }
 

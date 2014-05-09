@@ -8,13 +8,14 @@ fn = function(React, ForaUI, ExtensionLoader, Models) {
 
     return React.createClass({
         statics: {
-            componentInit: function*(component) {           
+            componentInit: function*(component, isBrowser) {           
                 /* Convert the JSON into Post objects and attach the templates */
                 postsData = [component.props.featured, component.props.editorsPicks];
                 for(_i = 0; _i < postsData.length; _i++) {
                     posts = postsData[_i];
                     for (i = 0; i < posts.length; i++) {
-                        posts[i] = new Models.Post(posts[i]);
+                        if (isBrowser)
+                            posts[i] = new Models.Post(posts[i]);
                         extension = yield loader.load(yield posts[i].getTypeDefinition());
                         posts[i].template = yield extension.getTemplateModule('list');
                     }
