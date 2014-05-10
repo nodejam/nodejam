@@ -45,17 +45,6 @@ exports.index = auth.handler ->*
 
     component = IndexView { forums }
 
-    scripts = ["/js/views/home/index.js"]
-    
-    script = "
-        <script>
-            var view = new Fora.Views.Home.Index(#{JSON.stringify({ editorsPicks, featured, cover, coverContent })});
-        </script>"
-    
-    html = "
-        #{script}
-        #{Sandbox.renderComponentToString(component)}"
-    
     yield @renderPage 'page', { 
         pageName: 'forums-page',
         html: Sandbox.renderComponentToString component

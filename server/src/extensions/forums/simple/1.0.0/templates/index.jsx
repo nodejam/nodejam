@@ -12,6 +12,7 @@ fn = function(React, ForaUI) {
                     if (isBrowser)
                         posts[i] = new Models.Post(posts[i]);
                     extension = yield loader.load(yield posts[i].getTypeDefinition());
+                    console.log(extension);
                     posts[i].template = yield extension.getTemplateModule('list');
                 }
             }

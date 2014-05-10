@@ -1,10 +1,8 @@
-Sandbox = require 'react-sandbox'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
 utils = require('../../app-lib/utils')
 auth = require '../../app-lib/web/auth'
-IndexView = require('../views/home/index')
 
 exports.index = auth.handler ->*
     editorsPicks = yield models.Post.find { meta: 'pick', 'forum.network': @network.stub }, { sort: db.setRowId({}, -1) , limit: 1 }, {}, db
@@ -15,9 +13,12 @@ exports.index = auth.handler ->*
         image: { src: '/images/cover.jpg' },
     }
     coverContent = "<h1>Editor's Picks</h1>
-                    <p>Fora is a place to share ideas. To Discuss and to debate. Everything on Fora is free. Right?</p>"
+                    <p>Fora is a place to share ideas. Lorem Ipsum Bacon?</p>"
 
-    component = IndexView { editorsPicks, featured, cover, coverContent }
+    yield @renderView('home/index', { editorsPicks, featured, cover, coverContent })
+
+    ###
+    component = IndexView 
     yield component.type.componentInit(component)
     
     script = "
@@ -36,7 +37,7 @@ exports.index = auth.handler ->*
         pageName: 'home-page',
         html
     }
-    
+    ###
     
     
 exports.login = ->*
