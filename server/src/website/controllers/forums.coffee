@@ -1,30 +1,16 @@
-Sandbox = require 'react-sandbox'
-conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-fields = require '../../models/fields'
-utils = require '../../app-lib/utils'
-mdparser = require('../../app-lib/markdownutil').marked
 auth = require '../../app-lib/web/auth'
 ExtensionLoader = require('fora-extensions').Loader
 loader = new ExtensionLoader()
 
-IndexView = require('../views/forums/index')
 
-class ForumContext
+###
+    The data structure passed to forum extensions.
+###
+class ForumExtensionContext
 
-    constructor: (@context, @forum, @forumExtension) ->
-    
-    
-    getForumExtension: =>*
-        @forumExtension
-        
-    
-    getExtension: (object) =>*
-        yield loader.load yield object.getTypeDefinition()
-                      
-        
-    renderPage: =>*
+    constructor: (@forum, @extension, @client) ->
     
     
     renderPost: (data) ->*
@@ -38,34 +24,34 @@ class ForumContext
 
 
 
+###
+    Display a list of forums.
+###
 exports.index = auth.handler ->*
     forums = yield models.Forum.find({ network: @network.stub }, { sort: { 'stats.lastPost': -1 }, limit: 32 }, {}, db)
+
     for forum in forums
         forum.summary = yield forum.getView("card", {}, db)
 
-    component = IndexView { forums }
-
-    yield @renderPage 'page', { 
-        pageName: 'forums-page',
-        html: Sandbox.renderComponentToString component
-    }
+    yield @renderView 'forums/index', { forums }
 
 
 
+###
+    Load the forum's extension and pass control to it.
+###
 exports.page = auth.handler (stub) ->*
     forum = yield models.Forum.get { stub, network: @network.stub }, {}, db
     if forum
         extension = yield loader.load yield forum.getTypeDefinition()
         pages = yield extension.getPages()
-        html = yield pages.handle new ForumContext(@, forum, extension)
-        
-    yield @renderPage 'page', { 
-        pageName: 'forum-page',
-        html
-    }
+        yield pages.handle new ForumExtensionContext(forum, extension, @)
 
 
 
+###
+    Create a new forum
+###
 exports.create = ->*
     yield @renderPage 'forums/new', { 
         pageName: 'create-forum-page', 
@@ -73,6 +59,7 @@ exports.create = ->*
             type: 'single-section-page fixed-width'
         }
     }        
+
 
 
 ###

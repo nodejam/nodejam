@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-fn = function(React, ForaUI) {
+fn = function(React, ForaUI, ExtensionLoader, Models) {
     var Page = ForaUI.Page,
         Content = ForaUI.Content;
 
@@ -64,9 +64,14 @@ fn = function(React, ForaUI) {
 
 loader = function(definition) {
     if (typeof exports === "object")
-        module.exports = definition(require('react'), require('fora-ui'));
+        module.exports = definition(
+            require('react'), 
+            require('fora-ui'), 
+            require('fora-extensions').Loader, 
+            require('../../../models')
+        );
     else
-        define([], function() { return definition(React, ForaUI); });
+        define([], function() { return definition(React, ForaUI, ForaExtensions.Loader, Fora.Models); });
 }
 
 loader(fn);

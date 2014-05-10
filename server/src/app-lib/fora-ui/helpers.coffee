@@ -1,55 +1,76 @@
 React = require('react-sandbox')
 
-exports.renderForum = (data, ctx) ->*
+exports.renderForum = (data, context) ->*
+    typeDefinition = yield context.forum.getTypeDefinition()
+    
     options = {}
-    if ctx.context.session
+
+    if context.client.session
         options.loggedIn = true
-        membership = yield data.forum.getMembership ctx.context.session.user.username
+        membership = yield context.forum.getMembership context.client.session.user.username
         if membership
             options.isMember = true
             options.primaryPostType = "Article" #TODO: This makes no sense
+            
+    template = yield context.extension.getTemplateModule(data.forumTemplate)
 
-    typeDefinition = yield data.forum.getTypeDefinition()
-    forumExtension = yield ctx.getForumExtension()
-    template = require("../../extensions/#{typeDefinition.name}/templates/#{data.forumTemplate}")
-    component = template { posts: data.posts, forum: data.forum, options }
+    component = template { posts: data.posts, forum: context.forum, postTemplate: data.postTemplate, options }
+    if component.type.componentInit and not component.__isInitted
+        yield component.type.componentInit component
+
+    script = "
+        <script>
+            var page = new Fora.Views.Page(
+                '/shared/extensions/#{typeDefinition.name}/templates/#{data.forumTemplate}.js',
+                #{JSON.stringify({ posts: data.posts, forum: context.forum, postTemplate: data.postTemplate, options })}
+            );
+        </script>"
+
+    params = {
+        html: "#{script} #{React.renderComponentToString(component)}",  
+        pageName: "forum-item-page",
+    }
+    params.theme ?= context.client.network.theme         
+    params.coverInfo?.class ?= "auto-cover"                            
+
+    if context.client.session
+        params._session ?= context.client.session.user
+
+    yield context.client.render "page", params
+
+    
+    
+exports.renderPost = (data, context) ->*
+    typeDefinition = yield context.forum.getTypeDefinition()
+    author = yield data.post.getAuthor()
+
+    options = {}
+    if context.client.session
+        options.loggedIn = true
+
+    template = yield context.extension.getTemplateModule(data.forumTemplate)
+
+    component = template { post: data.post, forum: context.forum, author, postTemplate: data.postTemplate }
+    if component.type.componentInit and not component.__isInitted
+        yield component.type.componentInit component
     
     script = "
         <script>
             var page = new Fora.Views.Page(
-                '/shared/extensions/#{forumExtension.name}/templates/#{data.forumTemplate}.js',
-                #{JSON.stringify({ posts: data.posts, forum: data.forum, options })}
+                '/shared/extensions/#{typeDefinition.name}/templates/#{data.forumTemplate}.js',
+                #{JSON.stringify({ post: data.post, forum: context.forum, author, postTemplate: data.postTemplate })}
             );
         </script>"
-    
-    html = "
-        #{script}
-        #{React.renderComponentToString(component)}    
-    "
-    
-    
-    
-exports.renderPost = (data, ctx) ->*
-    author = yield data.post.getAuthor()
-    typeDefinition = yield post.getTypeDefinition()
-    
-    extension = yield ctx.getForumExtension()
-    template = yield extension.getTemplateModule data.postTemplate
-    component = data.template { 
-        post: data.post,
-        forum: data.forum, 
-        author, 
-        typeDefinition,
-        template,
-    }
-    return "
-        <script>
-            var page = new Fora.Views.Page(
-                '/shared/extensions/#{extension.name}/templates/index.js',
-                #{JSON.stringify({ editorsPicks, featured, cover, coverContent })}
-            );
-        </script>
-        #{React.renderComponentToString(component)}
-    "
 
+    params = {
+        html: "#{script} #{React.renderComponentToString(component)}",  
+        pageName: "forum-item-page",
+    }
+    params.theme ?= context.client.network.theme         
+    params.coverInfo?.class ?= "auto-cover"                            
+
+    if context.client.session
+        params._session ?= context.client.session.user
+
+    yield context.client.render "page", params
 

@@ -7,7 +7,7 @@ pathToRegexp = require 'path-to-regexp'
 class Forum
 
     
-    class PagesContext
+    class Routes
 
         constructor: ->
             @routingTable = []
@@ -27,23 +27,23 @@ class Forum
     
     class Router
         
-        constructor: (@context, @loader) ->
+        constructor: (@routes, @loader) ->
 
 
-        handle: (req) =>*
-            req.api = {
+        handle: (context) =>*
+            context.api = {
                 extensionLoader: @loader
             }
             
-            for route in @context.pages.routingTable
-                if route.method isnt req.context.request.method
+            for route in @routes.pages.routingTable
+                if route.method isnt context.client.request.method
                     continue
             
-                url = req.context.request.url.split('/').slice(2).join("/")
+                url = context.client.request.url.split('/').slice(2).join("/")
                 m = route.re.exec url
                 if m
                     args = m.slice(1)
-                    result = yield route.handler.apply req, args
+                    result = yield route.handler.apply context, args
                     return result
                     
 
@@ -53,12 +53,16 @@ class Forum
         
     init: =>*
         extDir = path.join conf.extensionsDir, @typeDefinition.name
-        pages = require("#{extDir}/pages")
-        context = {
-            pages: new PagesContext()
+
+        extensionSetup = {
+            routes: {
+                pages: new Routes()
+            }
         }
-        yield pages.init.call context
-        @pages = new Router context, @loader
+
+        pages = require("#{extDir}/pages")
+        yield pages.init.call extensionSetup
+        @pages = new Router extensionSetup.routes, @loader
         
         if fs.existsSync "#{extDir}/model.js"
             @model = require("#{extDir}/model")
