@@ -256,7 +256,7 @@ install_coffee() {
     npm install coffee-script
     export PATH=$PATH:$PWD/node_modules/coffee-script/bin
     temp_new_cs=`mktemp -d`
-    git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
+    git clone https://github.com/jeswin/coffee-script.git $temp_new_cs
     cd $temp_new_cs
     echo "Switching to earlier version (1e377ed59bc4f679863b7543f0c33d1f89dbf6ac), until a parser bug is fixed.."
     git checkout 1e377ed59bc4f679863b7543f0c33d1f89dbf6ac

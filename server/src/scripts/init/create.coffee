@@ -23,7 +23,7 @@ for p in ['assets', 'images', 'original-images']
 #ensure indexes.
 (co ->*
     yield typeUtils.init()
-    odm = require('fora-odm')
+    odm = require('fora-models')
     db = new odm.Database conf.db, typeUtils.getTypeDefinitions()
     yield db.setupIndexes()
 )()

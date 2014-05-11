@@ -1,8 +1,11 @@
 db = require('../app').db
 models = require '../../models'
 auth = require '../../app-lib/web/auth'
-ExtensionLoader = require('fora-extensions').Loader
-loader = new ExtensionLoader()
+conf = require '../../conf'
+ForaTypeUtils = require('../../models/foratypeutils')
+typeUtils = new ForaTypeUtils()
+Loader = require('fora-extensions').Loader
+extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
 
 
 ###
@@ -43,7 +46,7 @@ exports.index = auth.handler ->*
 exports.page = auth.handler (stub) ->*
     forum = yield models.Forum.get { stub, network: @network.stub }, {}, db
     if forum
-        extension = yield loader.load yield forum.getTypeDefinition()
+        extension = yield extensionLoader.load yield forum.getTypeDefinition()
         pages = yield extension.getPages()
         yield pages.handle new ForumExtensionContext(forum, extension, @)
 

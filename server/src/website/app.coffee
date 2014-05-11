@@ -8,13 +8,13 @@ conf = require '../conf'
 ForaTypeUtils = require('../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
-loader = new Loader()
+extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
     
 (co ->*
     yield typeUtils.init()
-    yield loader.init()
+    yield extensionLoader.init()
     
-    odm = require('fora-odm')
+    odm = require('fora-models')
     exports.db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
     
     process.chdir __dirname

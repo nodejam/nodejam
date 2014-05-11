@@ -5,7 +5,7 @@ utils = require '../../app-lib/utils'
 models = require '../../models'
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
-odm = require('fora-odm')
+odm = require('fora-models')
 db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
 
 handler = ->

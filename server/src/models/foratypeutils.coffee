@@ -1,4 +1,4 @@
-odm = require('fora-odm')
+odm = require('fora-models')
 conf = require('../conf')
 fs = require 'fs'
 path = require 'path'

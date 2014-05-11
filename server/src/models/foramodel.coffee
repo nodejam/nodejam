@@ -1,6 +1,6 @@
 thunkify = require 'thunkify'
 fs = require 'fs'
-odm = require('fora-odm')
+odm = require('fora-models')
 ForaTypeUtils = require('./foratypeutils')
 typeUtils = new ForaTypeUtils()
                                         
