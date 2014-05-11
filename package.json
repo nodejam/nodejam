@@ -35,7 +35,7 @@
 	"gm": "*",
 	"node-minify": "*",
 	"oauth": "*",
-	"marked": "*",
+	"markdown": "*",
 	"optimist": "*",
 	"multiparty": "*",
 	"react": "*",

@@ -88,7 +88,7 @@ npm install handlebars
 npm install fs-extra
 npm install gm
 npm install oauth
-npm install marked
+npm install markdown
 npm install optimist
 npm install multiparty
 npm install react

@@ -1,4 +1,4 @@
-mdparser = require('../app-lib/markdownutil').marked
+markdown = require('markdown').markdown
 ForaModel = require('./foramodel').ForaModel
 
 class Image extends ForaModel
@@ -54,7 +54,7 @@ class TextContent extends ForaModel
     formatContent: =>
         switch @format
             when 'markdown'
-                if @text then mdparser(@text) else ''
+                if @text then markdown.toHTML(@text) else ''
             when 'html', 'text'
                 @text
             else
