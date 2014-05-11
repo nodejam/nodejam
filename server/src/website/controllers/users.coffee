@@ -1,4 +1,4 @@
-React = require 'react-sandbox'
+React = require 'fora-react-sandbox'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'

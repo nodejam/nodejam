@@ -1,4 +1,4 @@
-React = require('react-sandbox')
+React = require('fora-react-sandbox')
 
 exports.renderForum = (data, context) ->*
     typeDefinition = yield context.forum.getTypeDefinition()

@@ -1,4 +1,4 @@
-React = require 'react-sandbox'
+React = require 'fora-react-sandbox'
 RequestParser = require('fora-webrequestparser')
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()

@@ -1,7 +1,6 @@
 path = require 'path'
 co = require 'co'
 thunkify = require 'thunkify'
-utils = require '../../app-lib/utils'
 fs = require 'fs'
 
 _exec = require('child_process').exec
@@ -143,7 +142,9 @@ processEvents = (events) ->
                 
 
 genBuildNumber = ->*
-    yield exec "echo #{utils.uniqueId()} > ../www-client/app/www/system/build.txt"
+    id = ""
+    id += Math.random().toString(36).substr(2) while id.length <= 24
+    yield exec "echo #{id} > ../www-client/app/www/system/build.txt"
 
 
 executeActions = ->*
