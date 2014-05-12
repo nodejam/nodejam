@@ -19,6 +19,10 @@
     react = require('react-tools');
 
     module.exports = function(config) {
+        
+        //So that we can minify everything in production
+        var jsFiles = [];
+        
 
         ensureDirExists = function*(file) {
             var dir = path.dirname(file);
@@ -45,6 +49,7 @@
             var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
             yield ensureDirExists(dest);
             yield exec("coffee -cs < " + filePath + " > " + dest);
+            jsFiles.push(dest);
         });
 
             
@@ -52,9 +57,10 @@
             Compile all JSX files from the server directory.
         */
         config.files(["../server/app/app-lib/fora-ui/*.js", "../server/app/extensions/*.js", "../server/app/website/views/*.js"], function*(filePath) {
-            var clientDest = filePath.replace(/^\.\.\/server\/app\//, "app/www/shared/");            
-            yield ensureDirExists(clientDest);
-            yield exec("cp " + filePath + " " + clientDest);
+            var dest = filePath.replace(/^\.\.\/server\/app\//, "app/www/shared/");            
+            yield ensureDirExists(dest);
+            yield exec("cp " + filePath + " " + dest);
+            jsFiles.push(dest);
         });
         
         
@@ -66,16 +72,15 @@
                 var dest = filePath.replace(/^src\//, 'app/');
                 yield ensureDirExists(dest);
                 yield exec("cp " + filePath + " " + dest);
-                yield appRestart.call(this);
             }
         });
         
         /*
-            Compile less files
+            Compile less files. Schedule it at the end.
         */
         config.files(["src/www/css/*.less"], function*(filePath) {
-            if (!this.state.lessCompilationPending) {
-                this.state.lessCompilationPending = true;
+            if (!this.state.lesscQueued) {
+                this.state.lesscQueued = true;
                 this.onComplete(function*() {
                     yield exec("lessc --verbose src/www/css/main.less app/www/css/main.css");
                 });
@@ -89,6 +94,23 @@
         config.files(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
             result = yield exec("regenerator " + filePath);
             fs.writeFileSync(filePath, result);
+        });
+
+        
+        /*
+            If debug, include all unminified js files. Otherwise minify.
+            Finally, go back and change debug.hbs
+        */
+        config.onComplete(function*() {
+            var jsInclude = "";
+            if (argv.debug) {
+                jsFiles.forEach(function(file) {
+                    jsInclude += "<script src=\"" + file.replace(/^app\/www/, '') + "\" type=\"text/javascript\"></script>\r\n"            
+                });
+            } else {
+                jsInclude = "<script src=\"/js/fora.js\" type=\"text/javascript\"></script>"           
+            }
+            console.log(jsInclude);
         });
     }
 }());

@@ -86,14 +86,26 @@ module.exports = function(config) {
     });
        
     /*
-        Copy all hbs files
-        Remove -debug if it exists
+        Copy all hbs files, except layouts/default.hbs and layouts/default-debug.hbs
     */
     config.files(["src/website/views/*.hbs"], function*(filePath) {
-        var dest = filePath.replace(/^src\//, 'app/').replace(/-debug\.hbs$/, '.hbs');
+        if (!(/layouts\/default.hbs$/).test(filePath) && !(/layouts\/default-debug.hbs$/).test(filePath)) {
+            var dest = filePath.replace(/^src\//, 'app/');
+            yield ensureDirExists(dest);
+            yield exec("cp " + filePath + " " + dest);
+            yield appRestart.call(this);
+        }
+    });
+    
+    /*
+        Copy layouts/default.hbs OR layouts/default-debug.hbs
+    */
+    var layoutFile = argv.debug ? "src/website/views/layouts/default-debug.hbs" : "src/website/views/layouts/default.hbs";
+    config.files([layoutFile], function*(filePath) {
+        var dest = "app/website/views/layouts/default.hbs";
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
         yield appRestart.call(this);
-    });
+    });        
 }
 
