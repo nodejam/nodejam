@@ -22,11 +22,11 @@ module.exports = function(config) {
         App restart task
     */
     appRestart = function*() {
-        if (!this.state.queuedRestart) {
+        if (!this.state.restartPending) {
+            this.state.restartPending = true;
             this.onComplete(function*() {
                 //var script = spawn("sh", ["run.sh"]);
             });
-            this.state.queuedRestart = true;
         }
     }
     
@@ -60,7 +60,7 @@ module.exports = function(config) {
         
     /*
         Compile all JSX files
-        Copy the final scripts to the www-client directory for browsers
+        Use the React Tools API for this; there is no way to do this from the command line
     */
     config.files(["src/app-lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.jsx$/, '.js');
