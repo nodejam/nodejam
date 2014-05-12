@@ -87,7 +87,8 @@
             Do regeneator transform on all client side js files
         */
         config.files(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
-            yield exec("regenerator " + filePath + " > " + filePath);
+            result = yield exec("regenerator " + filePath);
+            fs.writeFileSync(filePath, result);
         });
     }
 }());
