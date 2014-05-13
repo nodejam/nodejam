@@ -44,25 +44,25 @@ module.exports = function(config) {
         console.log("Started fora/server build");
         yield exec("rm app -rf");
         yield exec("mkdir app");        
-    });
+    }, "server_build_start");
     
     /*
         Compile all coffee-script files
         Coffee doesn't do coffee {src} {dest} yet, hence the redirection.
     */
-    config.files(["src/*.coffee"], function*(filePath) {
+    config.watch(["src/*.coffee"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
         yield ensureDirExists(dest);
         yield exec("coffee -cs < " + filePath + " > " + dest);
         yield appRestart.call(this);
-    });
+    }, "server_coffee_compile");
 
         
     /*
         Compile all JSX files
         Use the React Tools API for this; there is no way to do this from the command line
     */
-    config.files(["src/app-lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
+    config.watch(["src/app-lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.jsx$/, '.js');
         var clientDest = dest.replace(/^app\//, "../www-client/app/www/shared/");
         yield ensureDirExists(dest);
@@ -73,39 +73,39 @@ module.exports = function(config) {
         fs.writeFileSync(dest, result);
         yield exec("cp " + dest + " " + clientDest);
         yield appRestart.call(this);
-    });
+    }, "server_jsx_compile");
     
     /*
         Copy other files
     */
-    config.files(["src/vendor/*.*", "src/conf/*.config", "src/extensions/*.json", "src/extensions/*.js"], function*(filePath) {
+    config.watch(["src/vendor/*.*", "src/conf/*.config", "src/extensions/*.json", "src/extensions/*.js"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/');
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
         yield appRestart.call(this);
-    });
+    }, "server_files_copy");
        
     /*
         Copy all hbs files, except layouts/default.hbs and layouts/default-debug.hbs
     */
-    config.files(["src/website/views/*.hbs"], function*(filePath) {
+    config.watch(["src/website/views/*.hbs"], function*(filePath) {
         if (!(/layouts\/default.hbs$/).test(filePath) && !(/layouts\/default-debug.hbs$/).test(filePath)) {
             var dest = filePath.replace(/^src\//, 'app/');
             yield ensureDirExists(dest);
             yield exec("cp " + filePath + " " + dest);
             yield appRestart.call(this);
         }
-    });
+    }, "server_hbs_copy");
     
     /*
         Copy layouts/default.hbs OR layouts/default-debug.hbs
     */
     var layoutFile = argv.debug ? "src/website/views/layouts/default-debug.hbs" : "src/website/views/layouts/default.hbs";
-    config.files([layoutFile], function*(filePath) {
+    config.watch([layoutFile], function*(filePath) {
         var dest = "app/website/views/layouts/default.hbs";
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
         yield appRestart.call(this);
-    });        
+    }, "server_hbs_layout_copy");
 }
 

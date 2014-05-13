@@ -1,3 +1,6 @@
+Does Not Work Right Now
+=======================
+
 fora is licensed under the GPL3 license.
 You can find it here: http://gplv3.fsf.org/
 

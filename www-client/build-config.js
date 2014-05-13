@@ -38,63 +38,63 @@
             console.log("Started fora/www-client build");
             yield exec("rm app -rf");
             yield exec("mkdir app");        
-        });
+        }, "client_build_start");
         
 
         /*
             Compile all coffee-script files
             Coffee doesn't do coffee {src} {dest} yet, hence the redirection.
         */
-        config.files(["src/*.coffee"], function*(filePath) {
+        config.watch(["src/*.coffee"], function*(filePath) {
             var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
             yield ensureDirExists(dest);
             yield exec("coffee -cs < " + filePath + " > " + dest);
             jsFiles.push(dest);
-        });
+        }, "client_coffee_compile");
 
             
         /*
             Compile all JSX files from the server directory.
         */
-        config.files(["../server/app/app-lib/fora-ui/*.js", "../server/app/extensions/*.js", "../server/app/website/views/*.js"], function*(filePath) {
+        config.watch(["../server/app/app-lib/fora-ui/*.js", "../server/app/extensions/*.js", "../server/app/website/views/*.js"], function*(filePath) {
             var dest = filePath.replace(/^\.\.\/server\/app\//, "app/www/shared/");            
             yield ensureDirExists(dest);
             yield exec("cp " + filePath + " " + dest);
             jsFiles.push(dest);
-        });
+        }, "client_jsx_copy");
         
         
         /*
             Copy other files, except .coffee and .less
         */
-        config.files(["src/www/*.*"], function*(filePath) {
+        config.watch(["src/www/*.*"], function*(filePath) {
             if (['.coffee', '.less'].indexOf(path.extname(filePath)) === -1) {
                 var dest = filePath.replace(/^src\//, 'app/');
                 yield ensureDirExists(dest);
                 yield exec("cp " + filePath + " " + dest);
             }
-        });
+        }, "client_files_copy");
         
         /*
             Compile less files. Schedule it at the end.
         */
-        config.files(["src/www/css/*.less"], function*(filePath) {
+        config.watch(["src/www/css/*.less"], function*(filePath) {
             if (!this.state.lesscQueued) {
                 this.state.lesscQueued = true;
                 this.onComplete(function*() {
                     yield exec("lessc --verbose src/www/css/main.less app/www/css/main.css");
                 });
             }
-        });
+        }, "client_less_compile");
         
         
         /*
-            Do regeneator transform on all client side js files
+            Do regenerator transform on all client side js files
         */
-        config.files(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
+        config.watch(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
             result = yield exec("regenerator " + filePath);
             fs.writeFileSync(filePath, result);
-        });
+        }, "client_regenerator_transform");
 
         
         /*
@@ -111,7 +111,7 @@
                 jsInclude = "<script src=\"/js/fora.js\" type=\"text/javascript\"></script>"           
             }
             console.log(jsInclude);
-        });
+        }, "client_build_complete");
     }
 }());
 
