@@ -94,7 +94,7 @@
         config.watch(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
             result = yield exec("regenerator " + filePath);
             fs.writeFileSync(filePath, result);
-        }, "client_regenerator_transform");
+        }, "client_regenerator_transform", ["client_coffee_compile", "client_jsx_copy", "client_less_compile"]);
 
         
         /*

@@ -1,6 +1,6 @@
 start = Date.now();
 
-build = require('../fora-build').create({ parallel: 8 });
+build = require('../fora-build').create({ threads: 8 });
 argv = require('optimist').argv
 
 serverConfig = require('./server/build-config');
