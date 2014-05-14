@@ -68,33 +68,12 @@ If you aren't running the script, you'll have to do these manually:
 - install these modules with npm
 
 ```
-npm install -g less
-npm install -g regenerator
-npm install -g react-tools
+npm install -g less regenerator react-tools
 
 cd server
-npm install koa
-npm install koa-route
-npm install koa-favicon
-npm install koa-hbs    
-npm install co
-npm install co-body
-npm install co-multipart
-npm install thunkify    
-npm install mongodb
-npm install validator
-npm install sanitizer
-npm install handlebars
-npm install fs-extra
-npm install gm
-npm install oauth
-npm install markdown
-npm install optimist
-npm install multiparty
-npm install react
-npm install path-to-regexp
-npm install node-minify
-npm install requirejs    
+npm install koa koa-route koa-favicon koa-hbs co co-body co-multipart \
+    thunkify mongodb validator sanitizer handlebars fs-extra gm oauth \
+    markdown optimist multiparty react path-to-regexp node-minify requirejs
 cd ..
 
 cd www-client
