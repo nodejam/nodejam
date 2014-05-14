@@ -36,6 +36,7 @@
         */
         config.onStart(function*() {
             console.log("Started fora/www-client build");
+            this.state.start = Date.now();
             yield exec("rm app -rf");
             yield exec("mkdir app");        
         }, "client_build_start");
@@ -75,6 +76,16 @@
             }
         }, "client_files_copy");
         
+
+        /*
+            Do facebook regenerator transform on all client side js files
+        */
+        config.watch(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
+            result = yield exec("regenerator " + filePath);
+            fs.writeFileSync(filePath, result);
+        }, "client_regenerator_transform", ["client_coffee_compile", "client_jsx_copy"]);
+
+
         /*
             Compile less files. Schedule it at the end.
         */
@@ -89,15 +100,6 @@
         
         
         /*
-            Do regenerator transform on all client side js files
-        */
-        config.watch(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
-            result = yield exec("regenerator " + filePath);
-            fs.writeFileSync(filePath, result);
-        }, "client_regenerator_transform", ["client_coffee_compile", "client_jsx_copy", "client_less_compile"]);
-
-        
-        /*
             If debug, include all unminified js files. Otherwise minify.
             Finally, go back and change debug.hbs
         */
@@ -110,6 +112,7 @@
             } else {
                 jsInclude = "<script src=\"/js/fora.js\" type=\"text/javascript\"></script>"           
             }
+            this.state.end = Date.now();
         }, "client_build_complete");
     }
 }());

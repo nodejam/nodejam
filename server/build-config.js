@@ -9,7 +9,6 @@ argv = require('optimist').argv;
 spawn = require('child_process').spawn;
 _exec = require('child_process').exec
 exec = thunkify(function(cmd, cb) {
-    console.log(cmd);
     _exec(cmd, function(err, stdout, stderr) {
         cb(err, stdout.substring(0, stdout.length - 1));
     });
@@ -19,9 +18,10 @@ react = require('react-tools');
 
 module.exports = function(config) {
     /*
-        App restart task
+        App restart task. 
+        When files on the server change, a restart is necessary.
     */
-    appRestart = function*() {
+    restartNeeded = function*() {
         if (!this.state.restartPending) {
             this.state.restartPending = true;
             this.onComplete(function*() {
@@ -30,6 +30,9 @@ module.exports = function(config) {
         }
     }
     
+    /*
+        Make sure directory exists for path
+    */
     ensureDirExists = function*(file) {
         var dir = path.dirname(file);
         if (!fs.existsSync(dir)) {
@@ -37,15 +40,18 @@ module.exports = function(config) {
         } 
     }
     
+
     /*
         When the build starts, recreate the app directory
     */
     config.onStart(function*() {
         console.log("Started fora/server build");
+        this.state.start = Date.now(); //Note the time
         yield exec("rm app -rf");
         yield exec("mkdir app");        
     }, "server_build_start");
     
+
     /*
         Compile all coffee-script files
         Coffee doesn't do coffee {src} {dest} yet, hence the redirection.
@@ -54,7 +60,7 @@ module.exports = function(config) {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
         yield ensureDirExists(dest);
         yield exec("coffee -cs < " + filePath + " > " + dest);
-        yield appRestart.call(this);
+        yield restartNeeded.call(this);
     }, "server_coffee_compile");
 
         
@@ -72,9 +78,10 @@ module.exports = function(config) {
         var result = react.transform(contents.toString());
         fs.writeFileSync(dest, result);
         yield exec("cp " + dest + " " + clientDest);
-        yield appRestart.call(this);
+        yield restartNeeded.call(this);
     }, "server_jsx_compile");
     
+
     /*
         Copy other files
     */
@@ -82,9 +89,10 @@ module.exports = function(config) {
         var dest = filePath.replace(/^src\//, 'app/');
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
-        yield appRestart.call(this);
+        yield restartNeeded.call(this);
     }, "server_files_copy");
        
+
     /*
         Copy all hbs files, except layouts/default.hbs and layouts/default-debug.hbs
     */
@@ -93,10 +101,11 @@ module.exports = function(config) {
             var dest = filePath.replace(/^src\//, 'app/');
             yield ensureDirExists(dest);
             yield exec("cp " + filePath + " " + dest);
-            yield appRestart.call(this);
+            yield restartNeeded.call(this);
         }
     }, "server_hbs_copy");
     
+
     /*
         Copy layouts/default.hbs OR layouts/default-debug.hbs
     */
@@ -105,7 +114,16 @@ module.exports = function(config) {
         var dest = "app/website/views/layouts/default.hbs";
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
-        yield appRestart.call(this);
+        yield restartNeeded.call(this);
     }, "server_hbs_layout_copy");
+    
+
+    /*
+        Just to note when it finished
+    */
+    config.onComplete(function*() {
+        this.state.end = Date.now();
+    }, "server_build_complete");
+    
 }
 

@@ -1,16 +1,17 @@
 start = Date.now();
 
-build = require('fora-build').create({ threads: 6 });
+build = require('../fora-build').create({ threads: 6 });
 argv = require('optimist').argv
 
 serverConfig = require('./server/build-config');
 clientConfig = require('./www-client/build-config');
 
-build.configure(serverConfig, 'server');
-build.configure(clientConfig, 'www-client');
+server = build.configure(serverConfig, 'server');
+client = build.configure(clientConfig, 'www-client');
+
 build.run(true, function() {
-    elapsed = Date.now() - start;
-    console.log("Build took " + (elapsed/1000) + " seconds");    
+    var elapsed = Date.now() - start;
+    var serverTime = (server.state.end - server.state.start)/1000;
+    var clientTime = (client.state.end - client.state.start)/1000;
+    console.log("Build took " + (elapsed/1000) + " seconds (server: " + serverTime + "s, client: " + clientTime + "s)");    
 });
-
-
