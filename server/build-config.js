@@ -21,14 +21,10 @@ module.exports = function(config) {
         App restart task. 
         When files on the server change, a restart is necessary.
     */
-    restartNeeded = function*() {
-        if (!this.state.restartPending) {
-            this.state.restartPending = true;
-            this.onComplete(function*() {
-                //var script = spawn("sh", ["run.sh"]);
-            });
-        }
-    }
+    config.task(function*() {
+        //var script = spawn("sh", ["run.sh"]);
+    }, "restart_server");
+
     
     /*
         Make sure directory exists for path
@@ -44,7 +40,7 @@ module.exports = function(config) {
     /*
         When the build starts, recreate the app directory
     */
-    config.onStart(function*() {
+    config.onBuildStart(function*() {
         console.log("Started fora/server build");
         this.state.start = Date.now(); //Note the time
         yield exec("rm app -rf");
@@ -60,7 +56,7 @@ module.exports = function(config) {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
         yield ensureDirExists(dest);
         yield exec("coffee -cs < " + filePath + " > " + dest);
-        yield restartNeeded.call(this);
+        this.queue('restart_server');
     }, "server_coffee_compile");
 
         
@@ -78,7 +74,7 @@ module.exports = function(config) {
         var result = react.transform(contents.toString());
         fs.writeFileSync(dest, result);
         yield exec("cp " + dest + " " + clientDest);
-        yield restartNeeded.call(this);
+        this.queue('restart_server');
     }, "server_jsx_compile");
     
 
@@ -89,7 +85,7 @@ module.exports = function(config) {
         var dest = filePath.replace(/^src\//, 'app/');
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
-        yield restartNeeded.call(this);
+        this.queue('restart_server');
     }, "server_files_copy");
        
 
@@ -101,7 +97,7 @@ module.exports = function(config) {
             var dest = filePath.replace(/^src\//, 'app/');
             yield ensureDirExists(dest);
             yield exec("cp " + filePath + " " + dest);
-            yield restartNeeded.call(this);
+            this.queue('restart_server');
         }
     }, "server_hbs_copy");
     
@@ -114,14 +110,14 @@ module.exports = function(config) {
         var dest = "app/website/views/layouts/default.hbs";
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
-        yield restartNeeded.call(this);
+        this.queue('restart_server');
     }, "server_hbs_layout_copy");
     
 
     /*
         Just to note when it finished
     */
-    config.onComplete(function*() {
+    config.onBuildComplete(function*() {
         this.state.end = Date.now();
     }, "server_build_complete");
     

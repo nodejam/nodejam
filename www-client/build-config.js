@@ -34,7 +34,7 @@
         /*
             When the build starts, recreate the app directory
         */
-        config.onStart(function*() {
+        config.onBuildStart(function*() {
             console.log("Started fora/www-client build");
             this.state.start = Date.now();
             yield exec("rm app -rf");
@@ -92,7 +92,7 @@
         config.watch(["src/www/css/*.less"], function*(filePath) {
             if (!this.state.lesscQueued) {
                 this.state.lesscQueued = true;
-                this.onComplete(function*() {
+                this.onBuildComplete(function*() {
                     yield exec("lessc --verbose src/www/css/main.less app/www/css/main.css");
                 });
             }
@@ -103,7 +103,7 @@
             If debug, include all unminified js files. Otherwise minify.
             Finally, go back and change debug.hbs
         */
-        config.onComplete(function*() {
+        config.onBuildComplete(function*() {
             var jsInclude = "";
             if (argv.debug) {
                 jsFiles.forEach(function(file) {
