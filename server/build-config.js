@@ -18,10 +18,11 @@ react = require('react-tools');
 
 module.exports = function(config) {
     /*
-        App restart task. 
+        App restart job. 
         When files on the server change, a restart is necessary.
     */
-    config.task(function*() {
+    config.job(function*() {
+        console.log("hello.....");
         //var script = spawn("sh", ["run.sh"]);
     }, "restart_server");
 
