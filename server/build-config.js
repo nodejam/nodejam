@@ -22,11 +22,11 @@ module.exports = function(config) {
         When files on the server change, a restart is necessary.
     */
     config.job(function*() {
-        console.log("hello.....");
+        console.log("Restarting the server.....");
         //var script = spawn("sh", ["run.sh"]);
     }, "restart_server");
 
-    
+
     /*
         Make sure directory exists for path
     */

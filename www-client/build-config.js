@@ -92,7 +92,7 @@
         config.watch(["src/www/css/*.less"], function*(filePath) {
             if (!this.state.lesscQueued) {
                 this.state.lesscQueued = true;
-                this.onBuildComplete(function*() {
+                this.queue(function*() {
                     yield exec("lessc --verbose src/www/css/main.less app/www/css/main.css");
                 });
             }
