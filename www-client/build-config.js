@@ -110,7 +110,6 @@
             } else {
                 jsInclude = "<script src=\"/js/fora.js\" type=\"text/javascript\"></script>"           
             }
-            console.log(jsInclude);
         }, "client_build_complete");
     }
 }());
