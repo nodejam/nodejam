@@ -1,5 +1,3 @@
-"option strict"
-
 co = require('co');
 thunkify = require('thunkify');
 fs = require('fs');
@@ -16,14 +14,19 @@ exec = thunkify(function(cmd, cb) {
 
 react = require('react-tools');
 
-module.exports = function(config) {
+module.exports = function() {
     /*
         App restart job. 
         When files on the server change, a restart is necessary.
     */
-    config.job(function*() {
-        console.log("Restarting the server.....");
-        //var script = spawn("sh", ["run.sh"]);
+    this.job(function*() {
+        if (!argv.client && !argv.server && !argv.norun && this.build.isMonitoring) {
+            console.log("Restarting the server.....");
+            var script = spawn("sh", ["run.sh"]);
+            script.stdout.on('data', function (data) {
+              console.log(data.toString());
+            });
+        }
     }, "restart_server");
 
 
@@ -41,7 +44,7 @@ module.exports = function(config) {
     /*
         When the build starts, recreate the app directory
     */
-    config.onBuildStart(function*() {
+    this.onBuildStart(function*() {
         console.log("Started fora/server build");
         this.state.start = Date.now(); //Note the time
         yield exec("rm app -rf");
@@ -53,7 +56,7 @@ module.exports = function(config) {
         Compile all coffee-script files
         Coffee doesn't do coffee {src} {dest} yet, hence the redirection.
     */
-    config.watch(["src/*.coffee"], function*(filePath) {
+    this.watch(["src/*.coffee"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
         yield ensureDirExists(dest);
         yield exec("coffee -cs < " + filePath + " > " + dest);
@@ -65,7 +68,7 @@ module.exports = function(config) {
         Compile all JSX files
         Use the React Tools API for this; there is no way to do this from the command line
     */
-    config.watch(["src/app-lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
+    this.watch(["src/app-lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.jsx$/, '.js');
         var clientDest = dest.replace(/^app\//, "../www-client/app/www/shared/");
         yield ensureDirExists(dest);
@@ -82,7 +85,7 @@ module.exports = function(config) {
     /*
         Copy other files
     */
-    config.watch(["src/vendor/*.*", "src/conf/*.config", "src/extensions/*.json", "src/extensions/*.js"], function*(filePath) {
+    this.watch(["src/vendor/*.*", "src/conf/*.config", "src/extensions/*.json", "src/extensions/*.js"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/');
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
@@ -93,7 +96,7 @@ module.exports = function(config) {
     /*
         Copy all hbs files, except layouts/default.hbs and layouts/default-debug.hbs
     */
-    config.watch(["src/website/views/*.hbs"], function*(filePath) {
+    this.watch(["src/website/views/*.hbs"], function*(filePath) {
         if (!(/layouts\/default.hbs$/).test(filePath) && !(/layouts\/default-debug.hbs$/).test(filePath)) {
             var dest = filePath.replace(/^src\//, 'app/');
             yield ensureDirExists(dest);
@@ -107,7 +110,7 @@ module.exports = function(config) {
         Copy layouts/default.hbs OR layouts/default-debug.hbs
     */
     var layoutFile = argv.debug ? "src/website/views/layouts/default-debug.hbs" : "src/website/views/layouts/default.hbs";
-    config.watch([layoutFile], function*(filePath) {
+    this.watch([layoutFile], function*(filePath) {
         var dest = "app/website/views/layouts/default.hbs";
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
@@ -116,9 +119,10 @@ module.exports = function(config) {
     
 
     /*
-        Just to note when it finished
+        Run the server
+        Also note the time.
     */
-    config.onBuildComplete(function*() {
+    this.onBuildComplete(function*() {        
         this.state.end = Date.now();
     }, "server_build_complete");
     

@@ -11,8 +11,21 @@ if (!argv.client)
     server = build.configure(serverConfig, 'server');
 if (!argv.server)
     client = build.configure(clientConfig, 'www-client');
+    
 
-build.start(true, function() {
+if (!argv.client && !argv.server && !argv.norun) {
+    build.onBuildComplete(function*() {
+        console.log("Restarting the server.....");
+        var script = require('child_process').spawn("sh", ["server/run.sh"]);
+        script.stdout.on('data', function (data) {
+          console.log(data.toString());
+        });
+    });
+}
+
+monitor = !argv.client && !argv.server && !argv.norun;
+
+build.start(monitor, function() {
     var elapsed = Date.now() - start;
     
     if (!argv.client) {
