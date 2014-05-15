@@ -69,7 +69,7 @@
             Copy other files, except .coffee and .less
         */
         config.watch(["src/www/*.*"], function*(filePath) {
-            if (['.coffee', '.less'].indexOf(path.extname(filePath)) === -1) {
+            if (/(\.coffee$)|(\.less$)/.test(path.extname(filePath)) === -1) {
                 var dest = filePath.replace(/^src\//, 'app/');
                 yield ensureDirExists(dest);
                 yield exec("cp " + filePath + " " + dest);
