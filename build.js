@@ -2,7 +2,7 @@ start = Date.now();
 
 argv = require('optimist').argv;
 threads = argv.threads ? parseInt(argv.threads) : 8;
-build = require('../fora-build').create({ threads: threads });
+build = require('fora-build').create({ threads: threads });
 
 serverConfig = require('./server/build-config');
 clientConfig = require('./www-client/build-config');
