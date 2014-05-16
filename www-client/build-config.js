@@ -3,6 +3,7 @@ thunkify = require('thunkify');
 fs = require('fs');
 path = require('path');
 argv = require('optimist').argv;
+compressor = require('node-minify');
 
 spawn = require('child_process').spawn;
 _exec = require('child_process').exec
@@ -40,6 +41,18 @@ module.exports = function() {
     
 
     /*
+        Copy all files, except .coffee and .less
+    */
+    this.watch(["src/www/css/*.*", "src/www/fonts/*.*", "src/www/images/*.*", "src/www/js/*.js", "src/www/vendor/*.*"], function*(filePath) {
+        if (!/(\.coffee$)|(\.less$)/.test(path.extname(filePath))) {
+            var dest = filePath.replace(/^src\//, 'app/');
+            yield ensureDirExists(dest);
+            yield exec("cp " + filePath + " " + dest);
+        }
+    }, "client_files_copy");
+    
+
+    /*
         Compile all coffee-script files
         Coffee doesn't do coffee {src} {dest} yet, hence the redirection.
     */
@@ -63,18 +76,6 @@ module.exports = function() {
     
     
     /*
-        Copy other files, except .coffee and .less
-    */
-    this.watch(["src/www/*.*"], function*(filePath) {
-        if (/(\.coffee$)|(\.less$)/.test(path.extname(filePath)) === -1) {
-            var dest = filePath.replace(/^src\//, 'app/');
-            yield ensureDirExists(dest);
-            yield exec("cp " + filePath + " " + dest);
-        }
-    }, "client_files_copy");
-    
-
-    /*
         Do facebook regenerator transform on all client side js files
     */
     this.watch(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
@@ -97,19 +98,55 @@ module.exports = function() {
     
     
     /*
+        Bundle all files.
+    */
+    this.onBuildComplete(function*() {
+        if (!argv.debug)
+            minify = function(options) {
+                return function(cb) {
+                    new compressor.minify(options, cb);
+                }
+            };
+
+            console.log("Minifying CSS to lib.css");
+            yield minify({
+                type: 'sqwish',
+                buffer: 1000 * 1024,
+                tempPath: '../temp',
+                fileIn: [
+                    'app/www/vendor/font-awesome/css/font-awesome.css',
+                    'app/www/vendor/HINT.css',
+                    'app/www/vendor/toggle-switch.css',
+                    'app/www/vendor/medium-editor/css/medium-editor.css',
+                    'app/www/vendor/medium-editor/css/themes/default.css',                    
+                ],
+                fileOut: 'app/www/css/lib.css'
+            });
+
+            console.log("Minifying JS to lib.js");
+            yield minify({
+                type: 'no-compress',
+                buffer: 1000 * 2048,
+                tempPath: '../temp',
+                fileIn: [
+                    'app/www/vendor/jquery.min.js',
+                    'app/www/vendor/jquery-cookie.js',
+                    'app/www/vendor/markdown.min.js',
+                    'app/www/vendor/setImmediate.js',
+                    'app/www/vendor/regenerator-runtime.js',
+                    'app/www/vendor/react.min.js'
+                ],
+                fileOut: 'app/www/css/lib.js'
+            });
+            
+    }, "client_bundle_files");
+
+
+   /*
         If debug, include all unminified js files. Otherwise minify.
         Finally, go back and change debug.hbs
     */
     this.onBuildComplete(function*() {
-        var jsInclude = "";
-        if (argv.debug) {
-            jsFiles.forEach(function(file) {
-                jsInclude += "<script src=\"" + file.replace(/^app\/www/, '') + "\" type=\"text/javascript\"></script>\r\n"            
-            });
-        } else {
-            //TODO: minify
-            jsInclude = "<script src=\"/js/fora.js\" type=\"text/javascript\"></script>"           
-        }
         this.state.end = Date.now();
-    }, "client_build_complete");
+    }, "client_build_complete", ["client_bundle_files"]);    
 }

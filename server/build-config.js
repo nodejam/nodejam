@@ -20,7 +20,7 @@ module.exports = function() {
         When files on the server change, a restart is necessary.
     */
     this.job(function*() {
-        if (!argv.client && !argv.server && !argv.norun && this.build.isMonitoring) {
+        if (!argv.client && !argv.server && !argv.norun && this.build.monitoring) {
             console.log("Restarting the server.....");
             var script = spawn("sh", ["run.sh"]);
             script.stdout.on('data', function (data) {
@@ -94,28 +94,14 @@ module.exports = function() {
        
 
     /*
-        Copy all hbs files, except layouts/default.hbs and layouts/default-debug.hbs
+        Copy all hbs files
     */
     this.watch(["src/website/views/*.hbs"], function*(filePath) {
-        if (!(/layouts\/default.hbs$/).test(filePath) && !(/layouts\/default-debug.hbs$/).test(filePath)) {
-            var dest = filePath.replace(/^src\//, 'app/');
-            yield ensureDirExists(dest);
-            yield exec("cp " + filePath + " " + dest);
-            this.queue('restart_server');
-        }
-    }, "server_hbs_copy");
-    
-
-    /*
-        Copy layouts/default.hbs OR layouts/default-debug.hbs
-    */
-    var layoutFile = argv.debug ? "src/website/views/layouts/default-debug.hbs" : "src/website/views/layouts/default.hbs";
-    this.watch([layoutFile], function*(filePath) {
-        var dest = "app/website/views/layouts/default.hbs";
+        var dest = filePath.replace(/^src\//, 'app/');
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
         this.queue('restart_server');
-    }, "server_hbs_layout_copy");
+    }, "server_hbs_copy");
     
 
     /*
