@@ -47,7 +47,9 @@ module.exports = function() {
     this.onBuildStart(function*() {
         console.log("Started fora/server build");
         this.state.start = Date.now(); //Note the time
-        yield exec("rm app -rf");
+        if(fs.existsSync('app')){
+            yield exec("rm app -rf");
+        }  
         yield exec("mkdir app");        
     }, "server_build_start");
     
