@@ -62,4 +62,4 @@ if (!norun) {
     });
 }
 
-build.start(!norun, { threads: argv.threads || 8 });
+build.start(!norun);

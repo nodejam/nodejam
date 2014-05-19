@@ -88,6 +88,7 @@ module.exports = function() {
         Compile less files. Schedule it at the end.
     */
     this.watch(["src/www/css/*.less"], function*(filePath) {
+        yield ensureDirExists('app/www/css/main.css');
         if (!this.state.lesscQueued) {
             this.state.lesscQueued = true;
             this.queue(function*() {
@@ -104,15 +105,16 @@ module.exports = function() {
         if (!argv.debug)
             minify = function(options) {
                 return function(cb) {
-                    new compressor.minify(options, cb);
+                    options.callback = cb;
+                    new compressor.minify(options);
                 }
             };
-
+            
             console.log("Minifying CSS to lib.css");
             yield minify({
                 type: 'sqwish',
                 buffer: 1000 * 1024,
-                tempPath: '../temp',
+                tempPath: '../temp/',
                 fileIn: [
                     'app/www/vendor/font-awesome/css/font-awesome.css',
                     'app/www/vendor/HINT.css',
@@ -127,7 +129,7 @@ module.exports = function() {
             yield minify({
                 type: 'no-compress',
                 buffer: 1000 * 2048,
-                tempPath: '../temp',
+                tempPath: '../temp/',
                 fileIn: [
                     'app/www/vendor/jquery.min.js',
                     'app/www/vendor/jquery-cookie.js',
@@ -136,13 +138,12 @@ module.exports = function() {
                     'app/www/vendor/regenerator-runtime.js',
                     'app/www/vendor/react.min.js'
                 ],
-                fileOut: 'app/www/css/lib.js'
-            });
-            
+                fileOut: 'app/www/js/lib.js'
+            });            
     }, "client_bundle_files");
 
 
-   /*
+    /*
         If debug, include all unminified js files. Otherwise minify.
         Finally, go back and change debug.hbs
     */
