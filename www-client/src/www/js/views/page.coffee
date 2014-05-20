@@ -14,4 +14,5 @@ class Page
             React.renderComponent component, $('#page-container')[0]
         )()
         
-window.Fora.Views.Page = Page
+        
+module.exports = Page

@@ -1,5 +1,3 @@
-window.Fora = {}
-
 class App
 
     constructor: ->
@@ -93,7 +91,6 @@ class App
         $.ajax url, settings
     
 
-window.app = new App
-
+module.exports = App
 
 

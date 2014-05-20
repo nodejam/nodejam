@@ -30,4 +30,5 @@ class Item extends window.Fora.Views.BaseView
             $.post "/api/forums/#{@forum.stub}", forum, (resp) =>
                 window.location.href = "/#{@forum.stub}/#{resp.stub}?mode=edit"            
             
-window.Fora.Views.Forums.Item = Item
+
+module.exports = Item            

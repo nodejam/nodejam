@@ -1,15 +1,18 @@
-$(document).ready ->
-    evaluateStyles()
-    $(window).resize evaluateStyles
+
+class CssStyles
+
+    $(document).ready ->
+        evaluateStyles()
+        $(window).resize evaluateStyles
 
 
-evaluateStyles = ->
-    handleCover()
+    evaluateStyles = ->
+        handleCover()
 
 
-handleCover = ->    
-    cover = $('.cover')
-    if cover.hasClass 'full-cover'
-        cover.height $(window).innerHeight()
+    handleCover = ->    
+        cover = $('.cover')
+        if cover.hasClass 'full-cover'
+            cover.height $(window).innerHeight()
 
-window.css_eval = evaluateStyles
+module.exports = CssEval

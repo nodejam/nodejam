@@ -102,7 +102,7 @@ module.exports = function() {
         Bundle all files.
     */
     this.onBuildComplete(function*() {
-        if (!argv.debug)
+        if (!argv.debug) {
             minify = function(options) {
                 return function(cb) {
                     options.callback = cb;
@@ -131,6 +131,7 @@ module.exports = function() {
                 buffer: 1000 * 2048,
                 tempPath: '../temp/',
                 fileIn: [
+                    'app/www/vendor/co.js',
                     'app/www/vendor/jquery.min.js',
                     'app/www/vendor/jquery-cookie.js',
                     'app/www/vendor/markdown.min.js',
@@ -139,7 +140,9 @@ module.exports = function() {
                     'app/www/vendor/react.min.js'
                 ],
                 fileOut: 'app/www/js/lib.js'
-            });            
+            });
+        }
+        
     }, "client_bundle_files");
 
 

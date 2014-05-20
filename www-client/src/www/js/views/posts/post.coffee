@@ -51,8 +51,5 @@ class Post
                         document.location.href = "/#{@post.forum.stub}/#{@post.stub}"
                 }
         
-        
-    
-    
 
-window.Fora.Views.Posts.Post = Post
+module.exports = Post

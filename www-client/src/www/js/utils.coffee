@@ -1,14 +1,12 @@
 #Generate a random identifier
-window.Fora.Utils = {}
-
-window.Fora.Utils.uniqueId = (length = 16) ->
+uniqueId = (length = 16) ->
   id = ""
   id += Math.random().toString(36).substr(2) while id.length < length
   id.substr 0, length
 
 
 
-window.Fora.Utils.flatten = (obj, seperator = "_", prefixes = [], result = {}) ->    
+flatten = (obj, seperator = "_", prefixes = [], result = {}) ->    
     if typeof obj is 'object'
         for k, v of obj
             if typeof v is 'object'
@@ -40,10 +38,16 @@ window.Fora.Utils.flatten = (obj, seperator = "_", prefixes = [], result = {}) -
     
 #get params by parsing the url. Decaf. 
 `
-window.Fora.Utils.getUrlParams = function (name) {
+getUrlParams = function (name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 `    
+
+module.exports = {
+    uniqueId,
+    flatten,
+    getUrlParams
+}

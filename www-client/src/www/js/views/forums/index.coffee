@@ -17,5 +17,4 @@ class Index
         )()
     
 
-        
-window.Fora.Views.Home.Index = Index
+module.exports = Index        

@@ -6,21 +6,21 @@ Below are expected completion dates.
 
 Development Plan
 ================
-- ReactJS Safe Scripts Jeswin Kumar · Sat, May 17
-- Post Editor Jeswin Kumar · Mon, May 19
-- Create Forum Jeswin Kumar · Tue, May 20
-- Forum Settings Jeswin Kumar · Tue, May 20
-- Permissions Jeswin Kumar · Wed, May 21
-- Forum Members Jeswin Kumar · Thu, May 22
-- User Landing Jeswin Kumar · Fri, May 23
-- User Followers Jeswin Kumar · Fri, May 23
-- User Following Jeswin Kumar · Fri, May 24
-- Twitter Posting anup kesavan · Sat, May 25
-- Facebook Posting anup kesavan · Sat, May 25
-- RSS anup kesavan · Sun, May 25
+- ReactJS Safe Scripts Jeswin Kumar · Sat, May 22
+- Post Editor Jeswin Kumar · Mon, May 23
+- Create Forum Jeswin Kumar · Tue, May 25
+- Forum Settings Jeswin Kumar · Tue, May 25
+- Permissions Jeswin Kumar · Wed, May 26
+- Forum Members Jeswin Kumar · Thu, May 28
+- User Landing Jeswin Kumar · Fri, May 29
+- User Followers Jeswin Kumar · Fri, May 29
+- User Following Jeswin Kumar · Fri, May 30
+- Twitter Posting anup kesavan · Sat, June 1
+- Facebook Posting anup kesavan · Sat, June 1
+- RSS anup kesavan · Sun, June 1
 - Improve Install Experience on Mac and Linux anup kesavan 
 - Add support for Persona.org login anup kesavan 
-- 0.1 Alpha, Thu May 29
+- 0.1 Alpha, Thu May June 5
 
 Installation
 ============
