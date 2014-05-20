@@ -25,7 +25,7 @@ module.exports = function() {
     ensureDirExists = function*(file) {
         var dir = path.dirname(file);
         if (!fs.existsSync(dir)) {
-            yield exec("mkdir " + dir + " -p");
+            yield exec("mkdir -p " + dir);
         } 
     }
     
@@ -35,7 +35,7 @@ module.exports = function() {
     this.onBuildStart(function*() {
         console.log("Started fora/www-client build");
         this.state.start = Date.now();
-        yield exec("rm app -rf");
+        yield exec("rm -rf app");
         yield exec("mkdir app");        
     }, "client_build_start");
     
