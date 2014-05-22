@@ -65,6 +65,17 @@ module.exports = function() {
 
         
     /*
+        Copy models from the server.
+    */
+    this.watch(["../server/app/models/*.js"], function*(filePath) {
+        var dest = filePath.replace(/^\.\.\/server\/app\//, "app/www/shared/");            
+        yield ensureDirExists(dest);
+        yield exec("cp " + filePath + " " + dest);
+        jsFiles.push(dest);
+    }, "client_models_copy");
+    
+    
+    /*
         Compile all JSX files from the server directory.
     */
     this.watch(["../server/app/app-lib/fora-ui/*.js", "../server/app/extensions/*.js", "../server/app/website/views/*.js"], function*(filePath) {
@@ -74,7 +85,7 @@ module.exports = function() {
         jsFiles.push(dest);
     }, "client_jsx_copy");
     
-    
+        
     /*
         Do facebook regenerator transform on all client side js files
     */

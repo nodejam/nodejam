@@ -7,23 +7,22 @@ Below are expected completion dates.
 Development Plan
 ================
 
-_There might be an additional week of delay; we are making everything isomorphic. Views, Models, other classes_
-
-- ReactJS Safe Scripts Jeswin Kumar · Sat, May 22
-- Post Editor Jeswin Kumar · Mon, May 23
-- Create Forum Jeswin Kumar · Tue, May 25
-- Forum Settings Jeswin Kumar · Tue, May 25
-- Permissions Jeswin Kumar · Wed, May 26
-- Forum Members Jeswin Kumar · Thu, May 28
-- User Landing Jeswin Kumar · Fri, May 29
-- User Followers Jeswin Kumar · Fri, May 29
-- User Following Jeswin Kumar · Fri, May 30
-- Twitter Posting anup kesavan · Sat, June 1
-- Facebook Posting anup kesavan · Sat, June 1
+- Make everything isomorphic - May 28
+- ReactJS Safe Scripts Jeswin Kumar · May 30
+- Post Editor Jeswin Kumar · June 1
+- Create Forum Jeswin Kumar · June 3
+- Forum Settings Jeswin Kumar · June 5
+- Permissions Jeswin Kumar · June 7
+- Forum Members Jeswin Kumar · June 8
+- User Landing Jeswin Kumar · June 10
+- User Followers Jeswin Kumar · June 11
+- User Following Jeswin Kumar · June 13
+- Twitter Posting anup kesavan · June 1
+- Facebook Posting anup kesavan · June 1
 - RSS anup kesavan · Sun, June 1
 - Improve Install Experience on Mac and Linux anup kesavan 
 - Add support for Persona.org login anup kesavan 
-- 0.1 Alpha, Thu May June 5
+- 0.1 Alpha, June 15
 
 Installation
 ============
