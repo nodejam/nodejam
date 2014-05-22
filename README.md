@@ -6,6 +6,9 @@ Below are expected completion dates.
 
 Development Plan
 ================
+
+_There might be an additional week of delay; we are making everything isomorphic. Views, Models, other classes_
+
 - ReactJS Safe Scripts Jeswin Kumar · Sat, May 22
 - Post Editor Jeswin Kumar · Mon, May 23
 - Create Forum Jeswin Kumar · Tue, May 25

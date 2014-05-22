@@ -38,4 +38,4 @@ class New extends window.Fora.Views.BaseView
         nameControl.focus()
         
         
-window.Fora.Views.Forums.New = New
+module.exports = New
