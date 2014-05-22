@@ -1,8 +1,6 @@
-fora is licensed under the GPL3 license.
-You can find it here: http://gplv3.fsf.org/
+This is __not ready__ to be forked yet. Our first priority is to get the foundation right.
 
-Fora is not in a usable state right now.
-Below are expected completion dates.
+The following dates are tentative and might change.
 
 Development Plan
 ================
