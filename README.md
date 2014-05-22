@@ -4,7 +4,7 @@ The following dates are tentative and might change.
 Some re-usable components of fora have been moved to separate packages.
 - Fora Build (The build system) https://github.com/jeswin/fora-build 
 - Fora Models (Object Data Mapper) https://github.com/jeswin/fora-models 
-- Fora Extensions (Plugin Loading etc) https://github.com/jeswin/fora 
+- Fora Extensions (Plugin Loading etc) https://github.com/jeswin/fora-extensions
 
 Development Plan
 ================
