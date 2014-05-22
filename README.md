@@ -1,6 +1,10 @@
 This is __not ready__ to be forked yet. Our first priority is to get the foundation right.
-
 The following dates are tentative and might change.
+
+Some re-usable components of fora have been moved to separate packages.
+- Fora Build (The build system) https://github.com/jeswin/fora-build 
+- Fora Models (Object Data Mapper) https://github.com/jeswin/fora-models 
+- Fora Extensions (Plugin Loading etc) https://github.com/jeswin/fora 
 
 Development Plan
 ================
