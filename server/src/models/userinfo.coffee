@@ -31,4 +31,4 @@ class UserInfo extends ForaDbModel
         
 
 
-exports.UserInfo = UserInfo
+module.exports = UserInfo

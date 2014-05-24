@@ -53,10 +53,10 @@ class ForaTypeUtils extends odm.TypeUtils
     getTrustedUserTypes: =>*
         definitions = {}
         
-        Forum = require('./forum').Forum
+        Forum = require('./forum')
         yield @addTrustedUserTypes Forum, 'forum', 'forums', definitions
 
-        Post = require('./post').Post
+        Post = require('./post')
         yield @addTrustedUserTypes Post, 'post', 'posts', definitions
 
         return definitions

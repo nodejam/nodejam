@@ -1,9 +1,9 @@
 co = require 'co'
 conf = require '../../conf'
-utils = require '../../app-lib/utils'
+logger = require '../../lib/logger'
 fs = require 'fs'
 path = require 'path'
-fsutils = require '../../app-lib/fsutils'
+fsutils = require '../../lib/fsutils'
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 
@@ -16,9 +16,9 @@ for p in ['assets', 'images', 'original-images']
             fs.exists newPath, (exists) ->
                 if not exists
                     fs.mkdir newPath, ->
-                    utils.log "Created #{newPath}"
+                    logger.log "Created #{newPath}"
                 else
-                    utils.log "#{newPath} exists"
+                    logger.log "#{newPath} exists"
     
 #ensure indexes.
 (co ->*

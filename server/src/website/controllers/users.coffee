@@ -2,8 +2,7 @@ React = require 'fora-react-sandbox'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-utils = require '../../app-lib/utils'
-auth = require '../../app-lib/web/auth'
+auth = require '../../lib/web/auth'
 fields = require '../../models/fields'
 LoginView = require('../views/users/login')
 

@@ -1,12 +1,14 @@
 co = require 'co'
 koa = require 'koa'
 route = require 'koa-route'
-utils = require '../app-lib/utils'
+logger = require '../lib/logger'
+randomizer = require '../lib/randomizer'
 conf = require '../conf'
 ForaTypeUtils = require('../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
 extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
+models = require '../models'
     
 (co ->*
     yield typeUtils.init()
@@ -20,18 +22,18 @@ extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
     port = process.argv[3]
 
     if not host or not port
-        utils.log "Usage: app.js host port"
+        logger.log "Usage: app.js host port"
         process.exit()
 
-    utils.log "Fora API started at #{new Date} on #{host}:#{port}"
+    logger.log "Fora API started at #{new Date} on #{host}:#{port}"
 
     app = koa()
-    init = require '../app-lib/web/init'
+    init = require '../lib/web/init'
     init app
     
     #monitoring and debugging
     if process.env.NODE_ENV is 'development'
-        instance = utils.uniqueId()
+        instance = randomizer.uniqueId()
         since = Date.now()
     else
         instance = '00000000'

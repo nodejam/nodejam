@@ -1,17 +1,14 @@
-modules = {
-    credential: 'Credential',
-    user: 'User',
-    session: 'Session',
-    forum: 'Forum',
-    foruminfo: 'ForumInfo',
-    post: 'Post',
-    token: 'Token',
-    userinfo: 'UserInfo',
-    message: 'Message',
-    network: 'Network',
-    membership: 'Membership',
+module.exports = {
+    Credential: require('./credential'),
+    User: require('./user'),
+    Session: require('./session'),
+    Forum: require('./forum'),
+    ForumInfo: require('./foruminfo'),
+    Post: require('./post'),
+    Token: require('./token'),
+    UserInfo: require('./userinfo'),
+    Message: require('./message'),
+    Network: require('./network'),
+    Membership: require('./membership')
 }
-
-for k, v of modules
-    exports[v] = require("./#{k}")[v]
 

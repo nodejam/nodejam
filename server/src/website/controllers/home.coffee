@@ -1,6 +1,6 @@
 db = require('../app').db
 models = require '../../models'
-auth = require '../../app-lib/web/auth'
+auth = require '../../lib/web/auth'
 
 
 ###

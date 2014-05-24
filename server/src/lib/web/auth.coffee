@@ -1,7 +1,6 @@
 path = require 'path'
 co = require 'co'
 conf = require '../../conf'
-utils = require '../../app-lib/utils'
 models = require '../../models'
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()

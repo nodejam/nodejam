@@ -1,7 +1,6 @@
 path = require 'path'
 fs = require 'fs'
 thunkify = require 'thunkify'
-utils = require '../app-lib/utils'
 conf = require '../conf'
 
 

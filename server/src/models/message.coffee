@@ -71,4 +71,4 @@ class Message extends ForaDbModel
             
             
     
-exports.Message = Message
+module.exports = Message

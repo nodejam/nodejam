@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    {{#if title}}
-    <title>{{title}}</title>
-    {{else}}
-    <title>The Fora Project</title>
-    {{/if}}
+    <head>
+        {{#if title}}
+        <title>{{title}}</title>
+        {{else}}
+        <title>The Fora Project</title>
+        {{/if}}
 
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|Lato:900|Crimson+Text:400,600,400italic|Oswald' rel='stylesheet' type='text/css' />
-    <link href="/css/lib.css" rel="stylesheet" media="screen" />
-    <link href="/css/main.css" rel="stylesheet" media="screen" />    
-    <script src="/js/lib.js"></script>
-    <script src="/js/main.js"></script>                 
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|Lato:900|Crimson+Text:400,600,400italic|Oswald' rel='stylesheet' type='text/css' />
+        <link href="/css/lib.css" rel="stylesheet" media="screen" />
+        <link href="/css/main.css" rel="stylesheet" media="screen" />    
+        <script src="/js/lib.js"></script>
+        <script src="/js/bundle.js"></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  </head>
-  <body class="{{pageName}} {{pageType}}">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        </head>
+    <body class="{{pageName}}{{#if theme}} {{theme}}{{/if}}">
 
     <!-- header -->
-    <div class="header">
+    <header class="site">
         <a href="#" class="logo">
             Fora
         </a>
-    </div>
-    
+    </header>
+
     <div class="site-options">    
         <ul>
-            <li><a href="/"><i class="icon-home"></i>Home</a></li>  
-            <li><a href="/forums"><i class="icon-comments"></i>Forums</a></li>              
+            <li><a href="/"><i class="fa fa-home"></i>Home</a></li>  
+            <li><a href="/forums"><i class="fa fa-list"></i>Forums</a></li>              
             <li class="account"></li>  
         </ul>
         <div class="transparent-overlay">
         </div>
     </div>
 
-    <!-- cover -->
-    {{#equals pageType "cover-page"}}
-    <div class="cover" style="background-image:url({{cover}})">
-    {{coverContent}}
-    </div>
-    {{/equals}}
-
-    <!-- content -->
-    <div class="container">
-        {{{body}}}
-        <div style="clear:both"></div>
-    </div>
-
-  </body>
+    {{{body}}}
+    
+    </body>
 </html>     

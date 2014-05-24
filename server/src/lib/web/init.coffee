@@ -42,7 +42,6 @@ renderView = (view, props = {}, params = {}) ->*
 
 module.exports = (app) ->
     app.use (next) ->*
-
         if @method is 'POST' or @method is 'PUT' or @method is 'PATCH'
             @parser =  new RequestParser(@, typeUtils)
 
@@ -55,4 +54,7 @@ module.exports = (app) ->
         @renderView = renderView        
             
         yield next
+        
+    app.on 'error', (err) ->
+        console.log(err)
             

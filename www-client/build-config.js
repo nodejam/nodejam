@@ -18,10 +18,6 @@ react = require('react-tools');
 
 module.exports = function() {
     
-    //So that we can minify everything in production
-    var jsFiles = [];
-    
-
     ensureDirExists = function*(file) {
         var dir = path.dirname(file);
         if (!fs.existsSync(dir)) {
@@ -33,7 +29,9 @@ module.exports = function() {
         When the build starts, recreate the app directory
     */
     this.onBuildStart(function*() {
+        console.log("*****************************");
         console.log("Started fora/www-client build");
+        console.log("*****************************");
         this.state.start = Date.now();
         yield exec("rm -rf app");
         yield exec("mkdir app");        
@@ -60,39 +58,26 @@ module.exports = function() {
         var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
         yield ensureDirExists(dest);
         yield exec("coffee -cs < " + filePath + " > " + dest);
-        jsFiles.push(dest);
     }, "client_coffee_compile");
 
         
     /*
-        Copy models from the server.
+        Watch everything under shared. Anything that moves, copy it.
     */
-    this.watch(["../server/app/models/*.js"], function*(filePath) {
-        var dest = filePath.replace(/^\.\.\/server\/app\//, "app/www/shared/");            
+    this.watch(["../shared/app/*.*"], function*(filePath) {
+        var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/www/js/')
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
-        jsFiles.push(dest);
-    }, "client_models_copy");
-    
-    
-    /*
-        Compile all JSX files from the server directory.
-    */
-    this.watch(["../server/app/app-lib/fora-ui/*.js", "../server/app/extensions/*.js", "../server/app/website/views/*.js"], function*(filePath) {
-        var dest = filePath.replace(/^\.\.\/server\/app\//, "app/www/shared/");            
-        yield ensureDirExists(dest);
-        yield exec("cp " + filePath + " " + dest);
-        jsFiles.push(dest);
-    }, "client_jsx_copy");
+    }, "client_shared_files_copy");
     
         
     /*
         Do facebook regenerator transform on all client side js files
     */
-    this.watch(["app/www/js/*.js", "app/www/shared/*.js"], function*(filePath) {
+    this.watch(["app/www/js/*.js"], function*(filePath) {
         result = yield exec("regenerator " + filePath);
         fs.writeFileSync(filePath, result);
-    }, "client_regenerator_transform", ["client_coffee_compile", "client_jsx_copy"]);
+    }, "client_regenerator_transform", ["client_coffee_compile", "client_shared_files_copy"]);
 
 
     /*
@@ -127,11 +112,11 @@ module.exports = function() {
                 buffer: 1000 * 1024,
                 tempPath: '../temp/',
                 fileIn: [
-                    'app/www/vendor/font-awesome/css/font-awesome.css',
-                    'app/www/vendor/HINT.css',
-                    'app/www/vendor/toggle-switch.css',
-                    'app/www/vendor/medium-editor/css/medium-editor.css',
-                    'app/www/vendor/medium-editor/css/themes/default.css',                    
+                    'app/www/vendor/components/font-awesome/css/font-awesome.css',
+                    'app/www/vendor/css/HINT.css',
+                    'app/www/vendor/css/toggle-switch.css',
+                    'app/www/vendor/components/medium-editor/css/medium-editor.css',
+                    'app/www/vendor/components/medium-editor/css/themes/default.css',                    
                 ],
                 fileOut: 'app/www/css/lib.css'
             });
@@ -142,16 +127,19 @@ module.exports = function() {
                 buffer: 1000 * 2048,
                 tempPath: '../temp/',
                 fileIn: [
-                    'app/www/vendor/co.js',
-                    'app/www/vendor/jquery.min.js',
-                    'app/www/vendor/jquery-cookie.js',
-                    'app/www/vendor/markdown.min.js',
-                    'app/www/vendor/setImmediate.js',
-                    'app/www/vendor/regenerator-runtime.js',
-                    'app/www/vendor/react.min.js'
+                    'app/www/vendor/js/co.js',
+                    'app/www/vendor/js/jquery.min.js',
+                    'app/www/vendor/js/jquery-cookie.js',
+                    'app/www/vendor/js/markdown.min.js',
+                    'app/www/vendor/js/setImmediate.js',
+                    'app/www/vendor/js/regenerator-runtime.js',
+                    'app/www/vendor/js/react.min.js'
                 ],
                 fileOut: 'app/www/js/lib.js'
             });
+            
+            //console.log("Running browserify");
+            //yield exec("browserify app/www/shared/models/index.js > app/www/js/bundle.js")
         }
         
     }, "client_bundle_files");

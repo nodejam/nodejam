@@ -30,4 +30,4 @@ class Network extends ForaDbModel
         super
             
 
-exports.Network = Network
+module.exports = Network

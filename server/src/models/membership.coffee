@@ -28,4 +28,4 @@ class Membership extends ForaDbModel
     }    
 
 
-exports.Membership = Membership
+module.exports = Membership

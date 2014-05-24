@@ -4,13 +4,13 @@ gm = require 'gm'
 thunkify = require 'thunkify'
 vOAuth = require('oauth').OAuth
 fs = require 'fs-extra'
-utils = require '../../app-lib/utils'
-netutils = require '../../app-lib/netutils'
-fsutils = require '../../app-lib/fsutils'
+randomizer = require '../../lib/randomizer'
+netutils = require '../../lib/netutils'
+fsutils = require '../../lib/fsutils'
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-auth = require '../../app-lib/web/auth'
+auth = require '../../lib/web/auth'
 
 
 OAuth = require('oauth').OAuth
@@ -33,7 +33,7 @@ exports.twitter = ->*
                 cb error, { oauth_token, oauth_token_secret, results }
 
     { oauth_token, oauth_token_secret, results } = yield thunk_getOAuthRequestToken()
-    oauthProcessKey = utils.uniqueId(24)
+    oauthProcessKey = randomizer.uniqueId(24)
     oauth = { token: oauth_token, token_secret: oauth_token_secret }
 
     token = new models.Token {
@@ -85,7 +85,7 @@ exports.twitterCallback = ->*
             
             _token = new models.Token {
                 type: 'twitter-login-token',
-                key: utils.uniqueId(24),
+                key: randomizer.uniqueId(24),
                 value: { userDetails }
             }                                        
             _token = yield _token.save({}, db)

@@ -1,7 +1,7 @@
 thunkify = require 'thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
-hasher = require '../app-lib/hasher'
-utils = require '../app-lib/utils'
+hasher = require '../lib/hasher'
+randomizer = require '../lib/randomizer'
 models = require './'
 
 
@@ -82,7 +82,7 @@ class Credential extends ForaDbModel
     createSession: (context, db) =>*
         session = new models.Session { 
             credentialId: db.getRowId(@), 
-            token: utils.uniqueId(24) 
+            token: randomizer.uniqueId(24) 
         }    
         yield session.save context, db
 
@@ -90,7 +90,7 @@ class Credential extends ForaDbModel
     
     addBuiltin: (username, password, context, db) =>*
         { context, db } = @getContext context, db
-        existing = yield models.Credential.get({ "builtin.username": username }, context, db)
+        existing = yield Credential.get({ "builtin.username": username }, context, db)
         if not existing
             hashed = yield thunkify(hasher) { plaintext: password }
             @builtin = {
@@ -107,7 +107,7 @@ class Credential extends ForaDbModel
         
     addTwitter: (id, username, accessToken, accessTokenSecret, context, db) =>*
         { context, db } = @getContext context, db
-        existing = yield models.Credential.get({ "twitter.id": id }, context, db)
+        existing = yield Credential.get({ "twitter.id": id }, context, db)
         if not existing
             @twitter = {
                 id,
@@ -122,7 +122,7 @@ class Credential extends ForaDbModel
 
 
     @authenticateBuiltin: (username, password, context, db) ->*
-        credential = yield models.credential.get({ "builtin.username": username }, context, db)
+        credential = yield Credential.get({ "builtin.username": username }, context, db)
         if credential
             salt = new Buffer credential.builtin.salt, 'hex'
             result = yield thunkify(hasher) {plaintext: password, salt}
@@ -134,4 +134,4 @@ class Credential extends ForaDbModel
             { success: false, error: "Invalid username or password" }
         
 
-exports.Credential = Credential
+module.exports = Credential

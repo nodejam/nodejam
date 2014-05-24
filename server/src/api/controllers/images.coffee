@@ -1,8 +1,9 @@
 gm = require 'gm'
 thunkify = require 'thunkify'
-utils = require '../../app-lib/utils'
-fsutils = require '../../app-lib/fsutils'
-auth = require '../../app-lib/web/auth'
+logger = require '../../lib/logger'
+randomizer = require '../../lib/randomizer'
+fsutils = require '../../lib/fsutils'
+auth = require '../../lib/web/auth'
 
 
 validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp']
@@ -20,7 +21,7 @@ exports.upload = auth.handler { session: 'any' }, ->*
         if validGravity.indexOf(@query.gravity) isnt -1
             gravity = @query.gravity
         else
-            utils.log "Gravity must be one of #{JSON.stringify validGravity}"
+            logger.log "Gravity must be one of #{JSON.stringify validGravity}"
             return
             
     
@@ -28,7 +29,7 @@ exports.upload = auth.handler { session: 'any' }, ->*
         imageType = @query.type
     
     if srcWidth > 4000 or srcHeight > 4000 or smallWidth > 4000 or smallHeight > 4000
-        utils.log "Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}"
+        logger.log "Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}"
         return
             
     files = yield @parser.files()
@@ -39,7 +40,7 @@ exports.upload = auth.handler { session: 'any' }, ->*
         extension = file.filename.split('.').pop().toLowerCase()
         #Validate the extension                
         if validExtensions.indexOf(extension) isnt -1
-            filename = "#{utils.uniqueId(8)}_#{timestamp}.#{extension}"
+            filename = "#{randomizer.uniqueId(8)}_#{timestamp}.#{extension}"
     
             #copy to originals directory
             original = fsutils.getRandomFilePath 'original-images', filename

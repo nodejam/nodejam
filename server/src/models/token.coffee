@@ -21,4 +21,4 @@ class Token extends ForaDbModel
     }
     
     
-exports.Token = Token
+module.exports = Token

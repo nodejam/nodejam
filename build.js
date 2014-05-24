@@ -12,8 +12,9 @@ optimist = require('optimist')
 argv = optimist.argv;
 
 threads = argv.threads ? parseInt(argv.threads) : 8;
-build = require('fora-build').create({ threads: threads });
+build = require('../fora-build').create({ threads: threads });
 
+sharedConfig = require('./shared/build-config');
 serverConfig = require('./server/build-config');
 clientConfig = require('./www-client/build-config');
 
@@ -32,13 +33,24 @@ if (argv.client || argv.server) {
     norun = argv.norun;
 }    
 
+shared = build.configure(sharedConfig, 'shared');
 if (buildServer)
     server = build.configure(serverConfig, 'server');
 if (buildClient)
     client = build.configure(clientConfig, 'www-client');
+
+
+build.onBuildStart(function*() {
+    this.buildClient = buildClient;
+    this.buildServer = buildServer;
+});
+
     
 build.onBuildComplete(function*() {
     var elapsed = Date.now() - start;
+
+    var sharedTime = (shared.state.end - shared.state.start)/1000;
+    console.log("Build(shared): " + sharedTime + "s");        
     
     if (buildServer) {
         var serverTime = (server.state.end - server.state.start)/1000;

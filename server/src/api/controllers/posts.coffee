@@ -1,11 +1,10 @@
 conf = require '../../conf'
 db = require('../app').db
 models = require '../../models'
-utils = require '../../app-lib/utils'
-auth = require '../../app-lib/web/auth'
+auth = require '../../lib/web/auth'
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
-Mapper = require '../../app-lib/web/mapper'
+Mapper = require '../../lib/web/mapper'
 mapper = new Mapper typeUtils
 
 exports.create = auth.handler { session: 'user' }, (forum) ->*

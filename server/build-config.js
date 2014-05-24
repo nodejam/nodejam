@@ -45,7 +45,9 @@ module.exports = function() {
         When the build starts, recreate the app directory
     */
     this.onBuildStart(function*() {
+        console.log("*************************");
         console.log("Started fora/server build");
+        console.log("*************************");
         this.state.start = Date.now(); //Note the time
         if(fs.existsSync('app')) {
             yield exec("rm -rf app");
@@ -67,32 +69,25 @@ module.exports = function() {
 
         
     /*
-        Compile all JSX files
-        Use the React Tools API for this; there is no way to do this from the command line
+        Watch everything under shared. Anything that moves, copy it.
     */
-    this.watch(["src/app-lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
-        var dest = filePath.replace(/^src\//, 'app/').replace(/\.jsx$/, '.js');
-        var clientDest = dest.replace(/^app\//, "../www-client/app/www/shared/");
+    this.watch(["../shared/app/*.*"], function*(filePath) {
+        var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/')
         yield ensureDirExists(dest);
-        yield ensureDirExists(clientDest);
-
-        var contents = fs.readFileSync(filePath);
-        var result = react.transform(contents.toString());
-        fs.writeFileSync(dest, result);
-        yield exec("cp " + dest + " " + clientDest);
-        this.queue('restart_server');
-    }, "server_jsx_compile");
+        yield exec("cp " + filePath + " " + dest);
+        this.queue('restart_server');        
+    }, "server_shared_files_copy");
     
 
     /*
-        Copy other files
+        Copy config
     */
-    this.watch(["src/vendor/*.*", "src/conf/*.config", "src/extensions/*.json", "src/extensions/*.js"], function*(filePath) {
+    this.watch(["src/conf/*.config"], function*(filePath) {
         var dest = filePath.replace(/^src\//, 'app/');
         yield ensureDirExists(dest);
         yield exec("cp " + filePath + " " + dest);
         this.queue('restart_server');
-    }, "server_files_copy");
+    }, "server_conf_files_copy");
        
 
     /*
@@ -105,12 +100,13 @@ module.exports = function() {
         this.queue('restart_server');
     }, "server_hbs_copy");
     
-
     /*
-        Run the server
+        if DEBUG, overwrite default.hbs with  default-debug.hbs
         Also note the time.
     */
     this.onBuildComplete(function*() {        
+        //Copy default-debug.hbs to default.hbs
+        yield exec("cp src/website/views/layouts/default-debug.hbs app/website/views/layouts/default.hbs");
         this.state.end = Date.now();
     }, "server_build_complete");
     
