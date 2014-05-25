@@ -131,6 +131,6 @@
 
   })(ForaDbModel);
 
-  module.exports = UserBase;
+  exports.UserBase = UserBase;
 
 }).call(this);

@@ -21,4 +21,4 @@ class ForumInfo extends ForaDbModel
     }
     
     
-module.exports = ForumInfo    
+exports.ForumInfo = ForumInfo    

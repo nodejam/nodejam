@@ -1,7 +1,7 @@
 models = require './'
 conf = require '../conf'
 objects = require '../lib/objects'
-UserBase = require './user-base'
+UserBase = require('./user-base').UserBase
 
 class User extends UserBase
 
@@ -40,7 +40,7 @@ class User extends UserBase
 
 
     summarize: (context, db) =>
-        new Summary {
+        new User.Summary {
             id: db.getRowId(@),
             @username,
             @name,
@@ -48,4 +48,4 @@ class User extends UserBase
         }
         
     
-module.exports = User
+exports.User = User

@@ -2,10 +2,21 @@ thunkify = require 'thunkify'
 models = require('./')
 conf = require '../conf'
 
-ForumBase = require './forum-base'
+ForumBase = require('./forum-base').ForumBase
+models = require('./')
 
 class Forum extends ForumBase
 
+    @typeDefinition: ->
+        typeDef = ForumBase.typeDefinition()
+        typeDef.discriminator = (obj) ->*
+            def = yield Forum.getTypeUtils().getTypeDefinition(obj.type)
+            if def.ctor isnt Forum
+                throw new Error "Forum type definitions must have ctor set to Forum"
+            def
+        typeDef        
+            
+            
     save: (context, db) =>*
         { context, db } = @getContext context, db
         
@@ -18,7 +29,7 @@ class Forum extends ForumBase
                 throw new Error "Stub is invalid"
         
         if not db.getRowId(@)
-            @stats = new Stats {
+            @stats = new Forum.Stats {
                 posts: 0,
                 members: 1,
                 lastPost: 0
@@ -30,7 +41,7 @@ class Forum extends ForumBase
 
 
     summarize: (context, db) =>
-        summary = new Summary {
+        summary = new Forum.Summary {
             id: db.getRowId(@),
             network: @network,
             name: @name,
@@ -90,7 +101,7 @@ class Forum extends ForumBase
         
         membership = yield models.Membership.get { 'forumId': db.getRowId(@), 'user.username': user.username }, context, db
         if not membership
-            membership = new (models.Membership) {
+            membership = new models.Membership {
                 forumId: db.getRowId(@),
                 forum: @summarize(context, db),
                 userId: user.id,
@@ -137,5 +148,5 @@ class Forum extends ForumBase
             @stats.lastPost = posts[0].savedAt
             yield @save context, db
 
-module.exports = Forum
+exports.Forum = Forum
 

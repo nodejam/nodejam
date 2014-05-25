@@ -2,8 +2,7 @@ thunkify = require 'thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
 hasher = require '../lib/hasher'
 randomizer = require '../lib/randomizer'
-models = require './'
-
+models = require('./')
 
 class Credential extends ForaDbModel
     
@@ -134,4 +133,4 @@ class Credential extends ForaDbModel
             { success: false, error: "Invalid username or password" }
         
 
-module.exports = Credential
+exports.Credential = Credential

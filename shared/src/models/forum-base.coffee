@@ -55,12 +55,7 @@ class ForumBase extends ForaDbModel
 
     @typeDefinition: -> {
         name: 'forum',
-        collection: 'forums',
-        discriminator: (obj) ->*
-            def = yield Forum.getTypeUtils().getTypeDefinition(obj.type)
-            if def.ctor isnt Forum
-                throw new Error "Forum type definitions must have ctor set to Forum"
-            def        
+        collection: 'forums',    
         schema: {
             type: 'object',
             properties: {
@@ -118,5 +113,5 @@ class ForumBase extends ForaDbModel
     }
 
 
-module.exports = ForumBase
+exports.ForumBase = ForumBase
 

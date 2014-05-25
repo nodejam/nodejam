@@ -1,6 +1,7 @@
 thunkify = require 'thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
+randomizer = require('../lib/randomizer')
 
 ###
     A session token starts life as a credential token.
@@ -41,7 +42,7 @@ class Session extends ForaDbModel
         { context, db } = @getContext context, db
         user = yield models.User.get { username, credentialId: @credentialId }, context, db
         if user
-            @token = utils.uniqueId(24) 
+            @token = randomizer.uniqueId(24) 
             @userId = user._id.toString()
             @user = user.summarize context, db
             yield @save context, db
@@ -51,4 +52,4 @@ class Session extends ForaDbModel
 
     
     
-module.exports = Session
+exports.Session = Session

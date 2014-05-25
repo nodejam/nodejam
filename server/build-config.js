@@ -67,6 +67,17 @@ module.exports = function() {
         this.queue('restart_server');
     }, "server_coffee_compile");
 
+
+    /*
+        Copy everything under setup
+    */
+    this.watch(["src/scripts/setup/*.md"], function*(filePath) {
+        var dest = filePath.replace(/^src\//, 'app/');
+        yield ensureDirExists(dest);
+        yield exec("cp " + filePath + " " + dest);
+    }, "server_setup_data_copy");
+
+    
         
     /*
         Watch everything under shared. Anything that moves, copy it.

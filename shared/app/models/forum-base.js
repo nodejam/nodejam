@@ -125,14 +125,6 @@
       return {
         name: 'forum',
         collection: 'forums',
-        discriminator: function*(obj) {
-          var def;
-          def = yield Forum.getTypeUtils().getTypeDefinition(obj.type);
-          if (def.ctor !== Forum) {
-            throw new Error("Forum type definitions must have ctor set to Forum");
-          }
-          return def;
-        },
         schema: {
           type: 'object',
           properties: {
@@ -247,6 +239,6 @@
 
   })(ForaDbModel);
 
-  module.exports = ForumBase;
+  exports.ForumBase = ForumBase;
 
 }).call(this);

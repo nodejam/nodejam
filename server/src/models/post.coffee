@@ -6,10 +6,21 @@ typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
 extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
 
-PostBase = require './post-base'
+PostBase = require('./post-base').PostBase
+models = require('./')
 
 class Post extends PostBase
 
+    @typeDefinition: ->
+        typeDef = PostBase.typeDefinition()
+        typeDef.discriminator = (obj) ->*
+            def = yield Post.getTypeUtils().getTypeDefinition(obj.type)
+            if def.ctor isnt Post
+                throw new Error "Post type definitions must have ctor set to Post"
+            def
+        typeDef        
+        
+        
     @search: (criteria, settings, context, db) =>
         limit = @getLimit settings.limit, 100, 1000
                 
@@ -90,5 +101,6 @@ class Post extends PostBase
         model = yield extensions.getModel()
         yield model.view.call @, name
                 
-    
-module.exports = Post
+exports.Post = Post
+
+                

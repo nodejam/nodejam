@@ -6,11 +6,6 @@ class PostBase extends ForaDbModel
         {
             name: "post",
             collection: 'posts',
-            discriminator: (obj) ->*
-                def = yield Post.getTypeUtils().getTypeDefinition(obj.type)
-                if def.ctor isnt Post                    
-                    throw new Error "Post type definitions must have ctor set to Post"
-                def
             initialize: (obj) ->*
                 yield obj.initialize()
             schema: {
@@ -51,4 +46,4 @@ class PostBase extends ForaDbModel
         }
 
     
-module.exports = PostBase
+exports.PostBase = PostBase

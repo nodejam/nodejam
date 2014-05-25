@@ -1,14 +1,11 @@
-module.exports = {
-    Credential: require('./credential'),
-    User: require('./user'),
-    Session: require('./session'),
-    Forum: require('./forum'),
-    ForumInfo: require('./foruminfo'),
-    Post: require('./post'),
-    Token: require('./token'),
-    UserInfo: require('./userinfo'),
-    Message: require('./message'),
-    Network: require('./network'),
-    Membership: require('./membership')
-}
-
+exports.Credential = require('./credential').Credential
+exports.User = require('./user').User
+exports.Session = require('./session').Session
+exports.Forum = require('./forum').Forum
+exports.ForumInfo = require('./foruminfo').ForumInfo
+exports.Post = require('./post').Post
+exports.Token = require('./token').Token
+exports.UserInfo = require('./userinfo').UserInfo
+exports.Message = require('./message').Message
+exports.Network = require('./network').Network
+exports.Membership = require('./membership').Membership

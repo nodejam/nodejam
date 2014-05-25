@@ -61,4 +61,4 @@ class UserBase extends ForaDbModel
     }
        
     
-module.exports = UserBase
+exports.UserBase = UserBase

@@ -17,14 +17,6 @@
       return {
         name: "post",
         collection: 'posts',
-        discriminator: function*(obj) {
-          var def;
-          def = yield Post.getTypeUtils().getTypeDefinition(obj.type);
-          if (def.ctor !== Post) {
-            throw new Error("Post type definitions must have ctor set to Post");
-          }
-          return def;
-        },
         initialize: function*(obj) {
           return yield obj.initialize();
         },
@@ -119,6 +111,6 @@
 
   })(ForaDbModel);
 
-  module.exports = PostBase;
+  exports.PostBase = PostBase;
 
 }).call(this);
