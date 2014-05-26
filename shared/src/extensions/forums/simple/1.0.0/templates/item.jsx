@@ -4,6 +4,10 @@ ForaUI = require('fora-ui');
 ExtensionLoader = require('fora-extensions').Loader;
 Models = require('../../../../../models');
 
+Page = ForaUI.Page;
+Cover = ForaUI.Cover;
+Content = ForaUI.Content;
+
 var loader = new ExtensionLoader();
         
 module.exports = React.createClass({

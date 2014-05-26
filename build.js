@@ -1,70 +1,74 @@
 start = Date.now();
 
+foraBuild = require('../fora-build');
+
 optimist = require('optimist')
     .usage('Build the fora project.\nUsage: $0')
     .alias('h', 'help')
+    .describe('debug', 'Compile in debug mode')
+    .describe('client', "Build the client")
+    .describe('server', "Build the server")
     .describe('norun', "Do not start the server after building")
-    .describe('client', "Build the client and do not start the server")
-    .describe('server', "Build the server and do not start the server")
-    .describe('threads', "Number of threads to use for the build")
+    .describe('threads', "Number of threads to use for the build (default: 8)")
     .describe('help', 'Print this help screen');
 
 argv = optimist.argv;
-
-threads = argv.threads ? parseInt(argv.threads) : 8;
-build = require('../fora-build').create({ threads: threads });
-
-sharedConfig = require('./shared/build-config');
-serverConfig = require('./server/build-config');
-clientConfig = require('./www-client/build-config');
-
 if (argv.help || argv.h) {
     optimist.showHelp();
     process.exit(0);
 }
 
+/* Create the build */
+threads = argv.threads ? parseInt(argv.threads) : 8;
+build = foraBuild.create({ threads: threads });
+
+/* The three configs */
+sharedConfig = require('./shared/build-config')(foraBuild.tools);
+serverConfig = require('./server/build-config')(foraBuild.tools);
+clientConfig = require('./www-client/build-config')(foraBuild.tools);
+
+/* Set build parameters */
+build.state.monitor = !argv.norun;
+
 if (argv.client || argv.server) {
-    buildClient = argv.client;    
-    buildServer = argv.server;
-    norun = true;
+    build.state.buildClient = argv.client;    
+    build.state.buildServer = argv.server;
 } else {
-    buildClient = true;
-    buildServer = true;
-    norun = argv.norun;
+    build.state.buildClient = true;
+    build.state.buildServer = true;
 }    
 
+build.state.debug = argv.debug;
+
+/* Create configuration */
 shared = build.configure(sharedConfig, 'shared');
-if (buildServer)
+if (build.state.buildServer)
     server = build.configure(serverConfig, 'server');
-if (buildClient)
+if (build.state.buildClient)
     client = build.configure(clientConfig, 'www-client');
 
-
-build.onBuildStart(function*() {
-    this.buildClient = buildClient;
-    this.buildServer = buildServer;
-});
-
-    
+/* After all configs are built */
 build.onBuildComplete(function*() {
+    build.state.complete = true;
+
     var elapsed = Date.now() - start;
 
     var sharedTime = (shared.state.end - shared.state.start)/1000;
     console.log("Build(shared): " + sharedTime + "s");        
     
-    if (buildServer) {
+    if (build.state.buildServer) {
         var serverTime = (server.state.end - server.state.start)/1000;
         console.log("Build(server): " + serverTime + "s");        
     }
-    if (buildClient) {
+    if (build.state.buildClient) {
         var clientTime = (client.state.end - client.state.start)/1000;
         console.log("Build(client): " + clientTime + "s");
     }
     console.log("Build(total): " + (elapsed/1000) + "s");    
 });
 
-
-if (!norun) {
+/* Monitor? */
+if (build.state.monitor) {
     build.onBuildComplete(function*() {
         console.log("Restarting the server.....");
         var script = require('child_process').spawn("sh", ["server/run.sh"]);
@@ -74,4 +78,7 @@ if (!norun) {
     });
 }
 
-build.start(!norun);
+/* Start */
+build.start(build.state.monitor);
+
+
