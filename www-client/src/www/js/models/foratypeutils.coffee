@@ -1,16 +1,8 @@
-odm = require('fora-models')
-conf = require('../conf')
-fs = require 'fs'
-path = require 'path'
-thunkify = require 'thunkify'
-readdir = thunkify fs.readdir
-stat = thunkify fs.stat
-readfile = thunkify fs.readFile
+objects = require('../lib/objects')
 
 class ForaTypeUtils extends odm.TypeUtils
 
     init: =>*
-        yield @buildTypeCache()
         
         
 
@@ -64,14 +56,12 @@ class ForaTypeUtils extends odm.TypeUtils
 
 
     addTrustedUserTypes: (ctor, baseTypeName, dir, definitions) =>*
-        extensionsDir = require("path").resolve(__dirname, '../extensions')
-
         typeDef = if typeof ctor.typeDefinition is "function" then ctor.typeDefinition() else ctor.typeDefinition
         
-        for typeName in yield @getUserTypeDirectories path.join extensionsDir, dir
-            for version in yield @getUserTypeDirectories path.join extensionsDir, dir, typeName
-                ext = require(path.join extensionsDir, dir, typeName, version, 'model')
-                def = JSON.parse JSON.stringify ext.typeDefinition
+        for typeName in yield @getUserTypeDirectories path.join conf.extensionsDir, dir
+            for version in yield @getUserTypeDirectories path.join conf.extensionsDir, dir, typeName
+                ext = require(path.join conf.extensionsDir, dir, typeName, version, 'model')
+                def = objects.clone(ext.typeDefinition)
                 definitions["#{dir}/#{typeName}/#{version}"] ?= def
 
                 if typeDef.initialize

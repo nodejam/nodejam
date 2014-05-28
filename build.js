@@ -1,6 +1,6 @@
 start = Date.now();
 
-foraBuild = require('../fora-build');
+foraBuild = require('fora-build');
 
 optimist = require('optimist')
     .usage('Build the fora project.\nUsage: $0')

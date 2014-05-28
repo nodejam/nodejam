@@ -1,10 +1,12 @@
 randomizer = require '../lib/randomizer'
 models = require './'
 conf = require '../conf'
+
 ForaTypeUtils = require('../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
+
 Loader = require('fora-extensions').Loader
-extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
+extensionLoader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
 
 PostBase = require('./post-base').PostBase
 models = require('./')

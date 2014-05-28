@@ -7,9 +7,9 @@ conf = require '../conf'
 ForaTypeUtils = require('../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
-extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
+extensionLoader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
 models = require '../models'
-    
+
 (co ->*
     yield typeUtils.init()
     yield extensionLoader.init()

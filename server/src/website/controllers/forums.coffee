@@ -5,8 +5,7 @@ conf = require '../../conf'
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
-extensionLoader = new Loader(typeUtils, { extensionsDir: conf.extensionsDir })
-
+extensionLoader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../../extensions') })
 
 ###
     The data structure passed to forum extensions.
