@@ -1,31 +1,30 @@
 #!/bin/bash
 
 # Installs dependencies for Fora
-# Tested only in Osx. 
+# Tested only on ubuntu and osx
 
 help() {
-echo "usage: ./install-osx.sh options
+echo "usage: ./install-fora.sh options
 options:
-  --all               Same as --common --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
-  --latest            Same as --common --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
+  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
+  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
 
   --node              Install a pre-compiled version of node
   --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install nginx
   --nginx-conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
   --host hostname     Adds an entry into /etc/hosts. eg: --host test.myforaproj.com
-  --mongodb           Install a pre-compiled version of MongoDb
+  --mongodb           Install a pre-compiled version of MongoDb (for now this works only on ubuntu)
   --mongodb-latest    Compile and install the latest MongoDb  
   --gm                Install Graphics Magick
   --config-files      Creates config files if they don't exist
   --node-modules      Install Node Modules
-  --common            Install common libs. 1) inotify-tools
 
   --help              Print the help screen
 
 Examples:
-  ./install-osx.sh --all
-  ./install-osx.sh --node --coffee --gm --node-modules"
+  ./install-fora.sh --all
+  ./install-fora.sh --node --coffee --gm --node-modules"
 }
 
 if [ $# -eq 0 ]
@@ -92,14 +91,15 @@ else
     x86_64=false
 fi
 
-if [ ${PLATFORM} == 'Darwin' ]; then
-    install_command = 'brew install '
-else
-    install_command = 'sudo apt-get install '
-fi
-
-PLATFORM='uname'
+PLATFORM=`uname`
 echo "Detected $PLATFORM $MACHINE_TYPE"
+
+if [ "$PLATFORM" = "Darwin" ]; then
+    PLATFORM="darwin"
+    install_command='brew install '
+else
+    install_command='sudo apt-get install '
+fi
 
 while :
 do
@@ -131,10 +131,6 @@ do
             gm=true
             config_files=true
             node_modules=true
-            shift
-            ;;
-        --common)
-            common=true
             shift
             ;;
         --node)
@@ -193,8 +189,11 @@ do
 done
 
 install_brew(){
-    if [${PLATFORM} == "Darwin"]; then
-        ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+    if [ "$PLATFORM" = "darwin" ]; then
+        if ! command -v brew >/dev/null; then
+            ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+            brew doctor
+        fi
     fi
 }
 
@@ -208,7 +207,9 @@ install_node() {
         ARCH=x86
     fi
     PREFIX="/usr/local"
-    sudo apt-get install curl
+    if [ "$PLATFORM" != "darwin" ]; then
+        sudo apt-get install curl
+    fi
     sudo sh -c "mkdir -p \"$PREFIX\" && curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz | tar xzvf - --strip-components=1 -C \"$PREFIX\""
 }
 
@@ -231,14 +232,14 @@ if $node ; then
 fi
 
 install_coffee() {    
-    temp_cs=`mktemp -d`
+    temp_cs=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
     
     echo "Installing standard Coffee-Script compiler.. ($temp_cs)"
     cd $temp_cs
     npm install coffee-script
     export PATH=$PATH:$PWD/node_modules/coffee-script/bin
-    temp_new_cs=`mktemp -d`
-    git clone https://github.com/alubbe/ $temp_new_cs
+    temp_new_cs=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+    git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
     cd $temp_new_cs
     echo "Switching to earlier version (1e377ed59bc4f679863b7543f0c33d1f89dbf6ac), until a parser bug is fixed.."
     git checkout 1e377ed59bc4f679863b7543f0c33d1f89dbf6ac
@@ -291,18 +292,20 @@ fi
 
 #Install nginx configuration files under /etc/nginx
 if $nginx_conf ; then
-    if [ ${PLATFORM} == 'Darwin']; then
-        if [! -f /usr/local/etc/nginx/sites-available/fora.conf]; then
+    if [ "$PLATFORM" = "darwin" ]; then
+        if [ ! -f /usr/local/etc/nginx/sites-available/fora.conf ]; then
             mkdir -p /usr/local/etc/nginx/sites-available
             mkdir -p /usr/local/etc/nginx/sites-enabled
             sudo sh -c "cat nginx.conf.sample | sed -e 's_/path/to/fora_"$PWD"_g' -e 's_fora.host.name_"$hostname"_g' > /usr/local/etc/nginx/sites-available/fora.conf"
             sudo ln -s /usr/local/etc/nginx/sites-available/fora.conf /usr/local/etc/nginx/sites-enabled/fora.conf
             echo "fora.conf copied to /usr/local/etc/nginx/sites-available and symlinked in sites-enabled"
+            mkdir -p ~/Library/LaunchAgents
             sudo ln -sfv /usr/local/opt/nginx/*.plist ~/Library/LaunchAgents
             launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
             sudo launchctl start homebrew.mxcl.nginx
         else
             echo "fora.conf exists /usr/local/etc/nginx/sites-*/. Will not overwrite, you must delete them manually."
+        fi
     else 
         if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
             sudo sh -c "cat nginx.conf.sample | sed -e 's_/path/to/fora_"$PWD"_g' -e 's_fora.host.name_"$hostname"_g' > /etc/nginx/sites-available/fora.conf"
@@ -356,11 +359,11 @@ fi
 
 #Install config files
 if $config_files ; then
-    if [ ! -f server/src/conf/settings.config ]; then
-        cp server/src/conf/settings.config.sample server/src/conf/settings.config
+    if [ ! -f ../server/src/conf/settings.config ]; then
+        cp ../server/src/conf/settings.config.sample ../server/src/conf/settings.config
     fi
-    if [ ! -f server/src/conf/fora.config ]; then
-        sudo sh -c "cat server/src/conf/fora.config.sample | sed -e 's_fora.host.name_"$hostname"_g' > server/src/conf/fora.config"
+    if [ ! -f ../server/src/conf/fora.config ]; then
+        sudo sh -c "cat ../server/src/conf/fora.config.sample | sed -e 's_fora.host.name_"$hostname"_g' > ../server/src/conf/fora.config"
     fi
 fi
 

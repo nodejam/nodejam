@@ -28,15 +28,15 @@ Development Plan
 
 Installation
 ============
-The installer script works only on Ubuntu right now. Other distros and Mac is coming soon.
+The installer script works only on Ubuntu and Osx right now. Other distros coming soon.
 
 Step 1: Install pre-requisites
 ------------------------------
-Run ./install-ubuntu.sh --all (or see options below)  
+Run ./install.sh --all (or see options below)  
 WARNING: The install script upgrades node to a very new version.
 
 ```
-usage: ./install-ubuntu.sh options
+usage: ./install.sh options
 options:
   --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
   --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
@@ -56,8 +56,8 @@ options:
   --help              Print the help screen
 
 Examples:
-  ./install-ubuntu.sh --all
-  ./install-ubuntu.sh --node --coffee --gm --node-modules
+  ./install.sh --all
+  ./install.sh --node --coffee --gm --node-modules
 ```
 
 If you aren't running the script, you'll have to do these manually:
