@@ -371,7 +371,7 @@ fi
 #Install all node modules we need
 if $node_modules ; then
     cd ..
-    npm install
+    sudo npm install
     cd server
     npm install
 fi
