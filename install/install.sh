@@ -98,6 +98,7 @@ if [ "$PLATFORM" = "Darwin" ]; then
     PLATFORM="darwin"
     install_command='brew install '
 else
+    PLATFORM="linux"
     install_command='sudo apt-get install '
 fi
 
