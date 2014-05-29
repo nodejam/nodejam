@@ -28,8 +28,9 @@ models = require '../models'
     logger.log "Fora API started at #{new Date} on #{host}:#{port}"
 
     app = koa()
+    
     init = require '../lib/web/init'
-    init app
+    app.use init
     
     #monitoring and debugging
     if process.env.NODE_ENV is 'development'

@@ -10,6 +10,7 @@ typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
 extensionLoader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
 models = require '../models'
+argv = require('optimist').argv
     
 (co ->*
     yield typeUtils.init()
@@ -30,8 +31,20 @@ models = require '../models'
     logger.log "Fora Website started at #{new Date} on #{host}:#{port}"
 
     app = koa()
+    
     init = require '../lib/web/init'
-    init app
+    app.use init
+    
+    renderer = require './renderer'
+    app.use (next) ->*
+        if argv.debug
+            @render = renderer.render_DEBUG
+        else
+            @render = renderer.render
+        yield next
+
+    app.on 'error', (err) ->
+        console.log(err)
 
     app.use favicon()
 

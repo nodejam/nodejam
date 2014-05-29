@@ -13,8 +13,9 @@ module.exports = function(tools) {
         */
         this.job(function*() {
             if (this.build.state.complete && this.build.state.monitor) {
+                var runScript = !this.build.state.debug ? "run.sh" : "debug.sh";
                 console.log("Restarting the server.....");
-                spawn("sh", ["run.sh"]);
+                spawn("sh", [runScript]);
             }
         }, "restart_server");
 
