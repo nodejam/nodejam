@@ -2,7 +2,6 @@ co = require 'co'
 koa = require 'koa'
 favicon = require 'koa-favicon'
 route = require 'koa-route'
-hbs = require 'koa-hbs'
 logger = require '../lib/logger'
 conf = require '../conf'
 randomizer = require '../lib/randomizer'
@@ -35,13 +34,6 @@ models = require '../models'
     init app
 
     app.use favicon()
-
-    app.use hbs.middleware {
-      viewPath: __dirname + '/views',
-      partialsPath: __dirname + '/views/partials',
-      layoutsPath: __dirname + '/views/layouts',
-      defaultLayout: 'default'
-    }
 
     #monitoring and debugging
     if process.env.NODE_ENV is 'development'
@@ -81,9 +73,6 @@ models = require '../models'
     app.use route.get '/:forum', m_forums.page
     app.use route.get '/:forum/:page', m_forums.page
 
-    #Register templates, helpers etc.
-    require("./hbshelpers").register()
-    
     #Start
     app.listen port
 )()

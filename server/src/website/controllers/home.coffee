@@ -1,7 +1,7 @@
 db = require('../app').db
 models = require '../../models'
 auth = require '../../lib/web/auth'
-
+indexView = require('../views/home/index')
 
 ###
     Application home page
@@ -17,7 +17,7 @@ exports.index = auth.handler ->*
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. Lorem Ipsum Bacon?</p>"
 
-    yield @renderView 'home/index', { editorsPicks, featured, cover, coverContent }
+    @body = yield @render indexView, { editorsPicks, featured, cover, coverContent }
     
     
 

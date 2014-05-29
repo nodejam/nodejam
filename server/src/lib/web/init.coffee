@@ -4,39 +4,37 @@ ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
 conf = require '../../conf'
 
-templateModuleCache = {}
 
+render = (reactClass, props = {}, params = {}) ->*
+    component = reactClass(props)
+    if component.componentInit
+        yield component.componentInit()
 
-renderView = (view, props = {}, params = {}) ->*
-    if not templateModuleCache[view]
-        module = require("../../website/views/#{view}")
-        templateModuleCache[view] = module
+    title = props.title ? "The Fora Project"
+    pageName = props.pageName ? "default-page"
+    theme = props.theme ? "default-theme"
+    bodyClass = "#{pageName} #{theme}"
+        
+    return "
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>#{title}</title>
 
-    component = templateModuleCache[view] props
-    if component.type.componentInit and not component.__isInitted
-        yield component.type.componentInit component
+                <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700|Lato:900|Crimson+Text:400,600,400italic|Oswald' rel='stylesheet' type='text/css' />
+                <link href=\"/css/lib.css\" rel=\"stylesheet\" media=\"screen\" />
+                <link href=\"/css/main.css\" rel=\"stylesheet\" media=\"screen\" />    
+                <script src=\"/js/vendor.js\"></script>
+                <script src=\"/js/lib.js\"></script>
+                <script src=\"/js/bundle.js\"></script>
 
-    script = "
-        <script>
-            var page = new Fora.Views.Page(
-                '/shared/website/views/#{view}.js',
-                #{JSON.stringify(props)}
-            );
-        </script>"
+                <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>
+            </head>
 
-    params.html = "
-        #{script}
-        #{React.renderComponentToString(component)}"
-
-    params.pageName = view.split('/').join('-')
-    
-    params.theme ?= @network.theme         
-    params.coverInfo?.class ?= "auto-cover"                            
-
-    if @session
-        params._session ?= @session.user
-
-    yield @render "page", params
+            <body class=\"#{bodyClass}\">
+                #{React.renderComponentToString(component)}
+            </body>
+        </html>"
 
 
 
@@ -51,7 +49,7 @@ module.exports = (app) ->
         else
             throw new Error "Invalid network"
             
-        @renderView = renderView        
+        @render = render
             
         yield next
         

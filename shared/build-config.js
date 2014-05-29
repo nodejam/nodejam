@@ -41,6 +41,7 @@ module.exports = function(tools) {
             var dest = filePath.replace(/^src\//, 'app/').replace(/\.jsx$/, '.js');
             yield ensureDirExists(dest);
             var contents = fs.readFileSync(filePath);
+            console.log("jsx " + filePath);
             var result = react.transform(contents.toString());
             fs.writeFileSync(dest, result);
         }, "shared_jsx_compile");    
