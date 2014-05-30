@@ -35,12 +35,9 @@ argv = require('optimist').argv
     init = require '../lib/web/init'
     app.use init
     
-    renderer = require './renderer'
+    layout = require './layout'
     app.use (next) ->*
-        if argv.debug
-            @render = renderer.render_DEBUG
-        else
-            @render = renderer.render
+        @render = if argv.debug then layout.render_DEBUG else layout.render
         yield next
 
     app.on 'error', (err) ->
