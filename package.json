@@ -4,10 +4,7 @@
   "description": "A Forum Platform",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "npm install -g regenerator",
-    "preinstall": "npm install -g browserify",
-    "preinstall": "npm install -g less"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

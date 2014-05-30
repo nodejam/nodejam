@@ -370,6 +370,11 @@ fi
 
 #Install all node modules we need
 if $node_modules ; then
+   #global modules
+    sudo npm install -g regenerator
+    sudo npm install -g browserify
+    sudo npm install -g less
+    
     cd ..
     sudo npm install
     cd server
