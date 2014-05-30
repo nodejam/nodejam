@@ -38,7 +38,8 @@ module.exports = React.createClass({displayName: 'exports',
                                                                 React.DOM.p(null, self.props.users[0].about)
                                                             )
                                                         )
-                                                    ) );
+                                                    ) 
+                                                );
                                             } else {
                                                 return (
                                                     React.DOM.ul( {className:"selectable concise-icon-block float-layout cells"},                                                 
@@ -53,13 +54,16 @@ module.exports = React.createClass({displayName: 'exports',
                                                                         React.DOM.h4(null, user.username),
                                                                         React.DOM.p( {className:"subtext"}, user.name)
                                                                     )
-                                                                ) );
+                                                                ) 
+                                                            );
                                                         });
                                                     }()                                                
-                                                    ) );
+                                                    ) 
+                                                );
                                             }                                                    
                                         }()
-                                    ) );
+                                    ) 
+                                );
                         }(),
  
                         React.DOM.section(null, 
@@ -87,7 +91,8 @@ module.exports = React.createClass({displayName: 'exports',
                         
                     )                
                 )
-            ) );
+            ) 
+        );
     }
 });
 

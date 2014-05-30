@@ -8,8 +8,8 @@ start_processes() {
     echo Killing all running fora processes...
     kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}') 2>/dev/null
 
-    node --harmony app/website/app.js localhost 10981 fora_website &
-    node --harmony app/api/app.js localhost 10982 fora_api &
+    node --harmony app/website/app.js localhost 10981 fora_website --debug &
+    node --harmony app/api/app.js localhost 10982 fora_api --debug &
 }
 
 start_processes

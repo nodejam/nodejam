@@ -2,7 +2,6 @@ co = require 'co'
 koa = require 'koa'
 favicon = require 'koa-favicon'
 route = require 'koa-route'
-hbs = require 'koa-hbs'
 logger = require '../lib/logger'
 conf = require '../conf'
 randomizer = require '../lib/randomizer'
@@ -11,6 +10,7 @@ typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
 extensionLoader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
 models = require '../models'
+argv = require('optimist').argv
     
 (co ->*
     yield typeUtils.init()
@@ -31,17 +31,22 @@ models = require '../models'
     logger.log "Fora Website started at #{new Date} on #{host}:#{port}"
 
     app = koa()
+    
     init = require '../lib/web/init'
-    init app
+    app.use init
+    
+    renderer = require './renderer'
+    app.use (next) ->*
+        if argv.debug
+            @render = renderer.render_DEBUG
+        else
+            @render = renderer.render
+        yield next
+
+    app.on 'error', (err) ->
+        console.log(err)
 
     app.use favicon()
-
-    app.use hbs.middleware {
-      viewPath: __dirname + '/views',
-      partialsPath: __dirname + '/views/partials',
-      layoutsPath: __dirname + '/views/layouts',
-      defaultLayout: 'default'
-    }
 
     #monitoring and debugging
     if process.env.NODE_ENV is 'development'
@@ -81,9 +86,6 @@ models = require '../models'
     app.use route.get '/:forum', m_forums.page
     app.use route.get '/:forum/:page', m_forums.page
 
-    #Register templates, helpers etc.
-    require("./hbshelpers").register()
-    
     #Start
     app.listen port
 )()

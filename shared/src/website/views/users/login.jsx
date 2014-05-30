@@ -38,7 +38,8 @@ module.exports = React.createClass({
                                                                 <p>{self.props.users[0].about}</p>
                                                             </div>
                                                         </li>
-                                                    </ul> );
+                                                    </ul> 
+                                                );
                                             } else {
                                                 return (
                                                     <ul className="selectable concise-icon-block float-layout cells">                                                
@@ -53,13 +54,16 @@ module.exports = React.createClass({
                                                                         <h4>{user.username}</h4>
                                                                         <p className="subtext">{user.name}</p>
                                                                     </div>
-                                                                </li> );
+                                                                </li> 
+                                                            );
                                                         });
                                                     }()}                                                
-                                                    </ul> );
+                                                    </ul> 
+                                                );
                                             }                                                    
                                         }()}
-                                    </section> );
+                                    </section> 
+                                );
                         }()}
  
                         <section>
@@ -87,7 +91,8 @@ module.exports = React.createClass({
                         
                     </div>                
                 </Content>
-            </Page> );
+            </Page> 
+        );
     }
 });
 

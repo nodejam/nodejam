@@ -126,7 +126,8 @@ module.exports = function(tools) {
 
             } else {
                 console.log("Running browserify");
-                yield exec("browserify app/www/js/models/index.js > app/www/js/bundle.js --debug")
+                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models > app/www/js/lib.js")
+                yield exec("browserify -x fora-models -x fora-extensions app/www/js/models > app/www/js/bundle.js")
             }
             
         }, "client_bundle_files");

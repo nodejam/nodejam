@@ -70,8 +70,9 @@ build.onBuildComplete(function*() {
 /* Monitor? */
 if (build.state.monitor) {
     build.onBuildComplete(function*() {
+        var runScript = !build.state.debug ? "server/run.sh" : "server/debug.sh";
         console.log("Restarting the server.....");
-        var script = require('child_process').spawn("sh", ["server/run.sh"]);
+        var script = require('child_process').spawn("sh", [runScript]);
         script.stdout.on('data', function (data) {          
             process.stdout.write(data.toString());
         });
