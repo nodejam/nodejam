@@ -124,7 +124,7 @@ module.exports = function(tools) {
                 });
 
                 console.log("Running browserify");
-                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models -t [browserify-global-shim react React] > app/www/js/lib.js")
+                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models -t [browserify-global-shim -react React] > app/www/js/lib.js")
                 yield exec("browserify -x markdown -x fora-react-sandbox -x fora-models -x react -x fora-extensions -x fora-ui ./app/www/js/models ./app/www/js/website/app.js " + sharedJS.join(" ") + " > app/www/js/bundle.js --debug")
 
             } else {
