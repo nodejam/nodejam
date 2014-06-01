@@ -7,6 +7,8 @@ module.exports = function(tools) {
     react = require('react-tools');
     
     return function() {
+
+        var sharedJS = [];
         
         /*
             When the build starts, recreate the app directory
@@ -49,6 +51,7 @@ module.exports = function(tools) {
         */
         this.watch(["../shared/app/*.*"], function*(filePath) {
             var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/www/js/')
+            if (/\.js$/.test(dest)) sharedJS.push(dest);
             yield ensureDirExists(dest);
             yield exec("cp " + filePath + " " + dest);
         }, "client_shared_files_copy");
@@ -115,19 +118,17 @@ module.exports = function(tools) {
                         'app/www/vendor/js/markdown.min.js',
                         'app/www/vendor/js/setImmediate.js',
                         'app/www/vendor/js/regenerator-runtime.js',
-                        'app/www/vendor/js/react.min.js'
+                        'app/www/vendor/js/react.min.js',
                     ],
                     fileOut: 'app/www/js/vendor.js'
                 });
 
                 console.log("Running browserify");
-                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models > app/www/js/lib.js")
-                yield exec("browserify -x fora-models -x fora-extensions app/www/js/models > app/www/js/bundle.js")
+                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models -t [browserify-global-shim react React] > app/www/js/lib.js")
+                yield exec("browserify -x markdown -x fora-react-sandbox -x fora-models -x react -x fora-extensions -x fora-ui ./app/www/js/models ./app/www/js/website/app.js " + sharedJS.join(" ") + " > app/www/js/bundle.js --debug")
 
             } else {
-                console.log("Running browserify");
-                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models > app/www/js/lib.js")
-                yield exec("browserify -x fora-models -x fora-extensions app/www/js/models > app/www/js/bundle.js")
+                //TODO DEBUG MODE
             }
             
         }, "client_bundle_files");

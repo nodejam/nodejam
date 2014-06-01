@@ -15,7 +15,7 @@ module.exports = React.createClass({displayName: 'exports',
         for(_i = 0; _i < postsData.length; _i++) {
             posts = postsData[_i];
             for (i = 0; i < posts.length; i++) {
-                if (isBrowser)
+                if (!(posts[i] instanceof Models.Post))
                     posts[i] = new Models.Post(posts[i]);
                 extension = yield loader.load(yield posts[i].getTypeDefinition());
                 posts[i].template = yield extension.getTemplateModule('list');

@@ -17,7 +17,7 @@ exports.index = auth.handler ->*
     coverContent = "<h1>Editor's Picks</h1>
                     <p>Fora is a place to share ideas. Lorem Ipsum Bacon?</p>"
 
-    @body = yield @render indexView, { editorsPicks, featured, cover, coverContent }
+    @body = yield @render indexView, "home/index", { editorsPicks, featured, cover, coverContent }
     
     
 
