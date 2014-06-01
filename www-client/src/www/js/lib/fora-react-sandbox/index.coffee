@@ -1,30 +1,6 @@
+class React
 
-class ReactSandbox
-
-    constructor: ->
-        $ =>
-                
-            elements = $(document).find("[data-reactjs-sandbox-event]")
-            
-            if elements
-                
-                for e in elements
-                    e = $(e)
-                    events = e.data('reactjs-sandbox-event').split(',')
-                    for ev in events
-                        switch ev
-                            when 'click'
-                                e.click ->                         
-                
-                window.addEventListener 'message', (e) ->
-                    if e.data is 'LOAD'
-                        iFrame.contentWindow.postMessage('a = 10;', '*');
-                        
-                iFrame = @createIFrame()
-            
-                
-            
-    createIFrame: ->
+    init: ->
         iFrame = $ "
             <iFrame sandbox=\"allow-scripts\" 
                 srcdoc=\"
@@ -43,5 +19,7 @@ class ReactSandbox
             </iFrame>"
         $('body').append iFrame
         return iFrame[0]
-        
-module.exports = ReactSandbox
+                    
+
+
+module.exports = React

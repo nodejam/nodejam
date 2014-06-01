@@ -8,7 +8,7 @@ module.exports = function(tools) {
     
     return function() {
 
-        var sharedJS = [];
+        var reactPages = [];
         
         /*
             When the build starts, recreate the app directory
@@ -51,7 +51,7 @@ module.exports = function(tools) {
         */
         this.watch(["../shared/app/*.*"], function*(filePath) {
             var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/www/js/')
-            if (/\.js$/.test(dest)) sharedJS.push(dest);
+            if (/^app\/www\/js\/website\/views\//.test(dest)) reactPages.push(dest);
             yield ensureDirExists(dest);
             yield exec("cp " + filePath + " " + dest);
         }, "client_shared_files_copy");
@@ -118,14 +118,17 @@ module.exports = function(tools) {
                         'app/www/vendor/js/markdown.min.js',
                         'app/www/vendor/js/setImmediate.js',
                         'app/www/vendor/js/regenerator-runtime.js',
-                        'app/www/vendor/js/react.min.js',
+                        'app/www/vendor/js/react.min.js'
                     ],
                     fileOut: 'app/www/js/vendor.js'
                 });
 
                 console.log("Running browserify");
-                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models -t [browserify-global-shim -react React] > app/www/js/lib.js")
-                yield exec("browserify -x markdown -x fora-react-sandbox -x fora-models -x react -x fora-extensions -x fora-ui ./app/www/js/models ./app/www/js/website/app.js " + sharedJS.join(" ") + " > app/www/js/bundle.js --debug")
+                yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models -r ./app/www/vendor/js/shims/react.shim.js:react " +
+                             "-r ./app/www/js/lib/fora-extensions:fora-extensions -r ./app/www/js/app-lib/fora-ui:fora-ui " +
+                             "-r ./app/www/vendor/js/shims/co.shim.js:co -r ./app/www/vendor/js/shims/markdown.shim.js:markdown > app/www/js/lib.js")
+                yield exec("browserify -x markdown -x fora-models -x react -x fora-extensions -x fora-ui ./app/www/js/models ./app/www/js/website/app.js " + 
+                            reactPages.map(function(x) { return "./" + x; }).join(" ") + " > app/www/js/bundle.js --debug")
 
             } else {
                 //TODO DEBUG MODE

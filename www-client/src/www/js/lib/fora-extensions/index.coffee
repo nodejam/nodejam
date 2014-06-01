@@ -1,4 +1,3 @@
-
 class PostExtension
 
     constructor: (@typeDefinition, @loader) ->
@@ -38,7 +37,19 @@ class ExtensionLoader
     
 
 
+class Loader
 
-window.ForaExtensions = {
-    Loader: ExtensionLoader
-}
+    @builtinExtensionCache = {}
+
+
+    constructor: (@typeUtils, @settings) ->
+
+
+    init: =>*
+    
+    
+            
+    load: (typeDefinition) =>*
+            
+
+exports.Loader = Loader

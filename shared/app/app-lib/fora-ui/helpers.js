@@ -2,7 +2,7 @@
 (function() {
   var React;
 
-  React = require('fora-react-sandbox');
+  React = require('react');
 
   exports.renderForum = function*(data, context) {
     var component, membership, options, params, script, template, typeDefinition, _ref;
