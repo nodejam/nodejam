@@ -65,7 +65,7 @@ render = (debug) ->
             
         depsHtml += "
             <script>
-                app.initPage(\"#{pagePath}\", #{JSON.stringify(props)});
+                app.initPage(\"/js/website/views/#{pagePath}\", #{JSON.stringify(props)});
             </script>"
         
         return "
