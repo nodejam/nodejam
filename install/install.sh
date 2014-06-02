@@ -99,7 +99,16 @@ if [ "$PLATFORM" = "Darwin" ]; then
     install_command='brew install '
 else
     PLATFORM="linux"
-    install_command='sudo apt-get install '
+    
+    OS=$(lsb_release -si)
+    case "$OS" in
+        "Ubuntu" )
+            install_command='sudo apt-get install '
+            ;;
+        "CentOS" )
+            install_command='sudo yum install '
+            ;;
+    esac
 fi
 
 while :
