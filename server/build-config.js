@@ -1,6 +1,6 @@
 module.exports = function(tools) {
 
-    spawn = tools.process.spawn({ log: console.log });
+    spawn = tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
     exec = tools.process.exec({ log: console.log });
     ensureDirExists = tools.fs.ensureDirExists();
     react = require('react-tools');
