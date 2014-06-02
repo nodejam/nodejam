@@ -1,6 +1,7 @@
 start = Date.now();
 
 foraBuild = require('fora-build');
+spawn = foraBuild.tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
 
 optimist = require('optimist')
     .usage('Build the fora project.\nUsage: $0')
@@ -72,10 +73,7 @@ if (build.state.monitor) {
     build.onBuildComplete(function*() {
         var runScript = !build.state.debug ? "server/run.sh" : "server/debug.sh";
         console.log("Restarting the server.....");
-        var script = require('child_process').spawn("sh", [runScript]);
-        script.stdout.on('data', function (data) {          
-            process.stdout.write(data.toString());
-        });
+        var script = spawn("sh", [runScript]);
     });
 }
 
