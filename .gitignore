@@ -5,6 +5,7 @@ npm-debug.log
 
 server/app
 www-client/app
+shared/app
 
 backups/*
 !backups/backup.sh
