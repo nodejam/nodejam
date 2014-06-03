@@ -2,6 +2,7 @@
 var React = require('react');
 var ExtensionLoader = require('fora-extensions').Loader;
 var Models = require('../../../models');
+//var ForaUI = require();
 
 var Page = ForaUI.Page,
     Content = ForaUI.Content,

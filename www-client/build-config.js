@@ -126,7 +126,7 @@ module.exports = function(tools) {
                 console.log("Running browserify");
                 yield exec("browserify -r ./app/www/js/lib/fora-models:fora-models -r ./app/www/vendor/js/shims/react.shim.js:react " +
                              "-r ./app/www/js/lib/fora-extensions:fora-extensions -r ./app/www/js/app-lib/fora-ui:fora-ui " +
-                             "-r ./app/www/vendor/js/shims/co.shim.js:co -r ./app/www/vendor/js/shims/markdown.shim.js:markdown > app/www/js/lib.js")
+                             "-r ./app/www/vendor/js/shims/co.shim.js:co -r ./app/www/vendor/js/shims/markdown.shim.js:markdown > app/www/js/lib.js --debug")
                 yield exec("browserify -x markdown -x fora-models -x react -x fora-extensions -x fora-ui ./app/www/js/models ./app/www/js/website/app.js " + 
                             reactPages.map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
                             " > app/www/js/bundle.js --debug")

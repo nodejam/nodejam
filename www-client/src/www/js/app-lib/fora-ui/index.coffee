@@ -1,4 +1,0 @@
-class ForaUI
-
-
-window.ForaUI = {}
