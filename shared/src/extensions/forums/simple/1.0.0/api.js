@@ -1,3 +1,6 @@
-module.exports.init = function*(context) {
-}
+(function() {
+    "use strict"
 
+    exports.init = function*(context) {
+    }
+})();

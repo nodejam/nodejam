@@ -80,14 +80,11 @@
                 this.build.queue('restart_server');
             }, "server_hbs_copy");
             
+
             /*
-                if DEBUG, overwrite default.hbs with  default-debug.hbs
-                Also note the time.
+                Note the time.
             */
             this.onComplete(function*() {        
-                //Copy default-debug.hbs to default.hbs
-                if (this.build.state.debug)
-                    yield exec("cp src/website/views/layouts/default-debug.hbs app/website/views/layouts/default.hbs");
                 this.state.end = Date.now();
             }, "server_build_complete");
             

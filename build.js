@@ -54,11 +54,14 @@
         var client = build.configure(clientConfig, 'www-client');
 
     build.job(function*() {
-        var params = [!build.state.debug ? "server/run.sh" : "server/run.sh --debug"];
-        if (argv.debugapi) params.push("--debugapi");
-        if (argv.debugweb) params.push("--debugweb");
-        console.log("Restarting the server.....");
-        var script = spawn("sh", [params]);
+        if (this.state.monitor) {
+            var params = ["server/run.sh"];
+            if (build.state.debug) params.push("--debug");
+            if (argv.debugapi) params.push("--debugapi");
+            if (argv.debugweb) params.push("--debugweb");
+            console.log("Restarting the server.....");
+            var script = spawn("sh", params);
+        }
     }, "restart_server");
 
     /* After all configs are built */
