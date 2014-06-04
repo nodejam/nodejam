@@ -6,15 +6,15 @@
 
     module.exports = React.createClass({
         render: function() {
-            cover = this.props.cover;
+            var cover = this.props.cover;
             
             if (cover) {
                 if (!cover.type)
                    cover.type = "auto-cover";
                     
-                classString = ['cover', cover.type].join(' ');
-                imageStyle = { "background-image": "url(" + cover.image.src + ")" };
-                underlayStyle = {
+                var classString = ['cover', cover.type].join(' ');
+                var imageStyle = { "background-image": "url(" + cover.image.src + ")" };
+                var underlayStyle = {
                     background: cover.bgColor, 
                     opacity: cover.opacity, 
                     color: cover.foreColor

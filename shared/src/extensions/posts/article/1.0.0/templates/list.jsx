@@ -10,6 +10,7 @@
     module.exports = React.createClass({
         render: function() {
             var post = this.props.post;
+            var synopsis;
 
             //If synopsis is not given, try to auto-generate it.
             if (post.synopsis)
@@ -20,7 +21,7 @@
                     If the first line is very short, take the second line too.
                 */
                 if (post.content && post.content.format === 'markdown') {
-                    sentence = post.content.text.match(/[^\.]+\./);
+                    var sentence = post.content.text.match(/[^\.]+\./);
                     if (sentence) {
                         synopsis = sentence[0];
 
@@ -38,8 +39,9 @@
             if (typeof synopsis === "undefined")
                 synopsis = post.content.text;
             
+            var image;
             if (post.cover) {
-                style = {
+                var style = {
                     backgroundImage: "url(" + post.cover.image.small + ")"
                 };
                 image = <div className="image" style={style}></div>

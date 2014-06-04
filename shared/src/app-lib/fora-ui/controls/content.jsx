@@ -3,7 +3,8 @@
     "use strict"
 
     var React = require('react');
-
+    
+    var className;
     module.exports = React.createClass({
         render: function() {
             if (!this.props.type)
