@@ -1,4 +1,5 @@
 BaseModel = require './basemodel'
+utils = require './utils'
 
 class DatabaseModel extends BaseModel
 
