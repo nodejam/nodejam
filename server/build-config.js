@@ -1,5 +1,5 @@
 (function() {
-    "use strict"
+    "use strict";
     module.exports = function(tools) {
 
         var spawn = tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
