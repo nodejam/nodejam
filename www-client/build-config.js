@@ -112,7 +112,7 @@
                         fileOut: 'app/www/css/lib.css'
                     });
 
-                    console.log("Minifying JS to lib.js");
+                    console.log("Minifying JS to vendor.js");
                     yield minify({
                         type: 'no-compress',
                         buffer: 1000 * 2048,
