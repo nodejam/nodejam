@@ -218,7 +218,7 @@ install_node() {
     fi
     PREFIX="/usr/local"
     if [ "$PLATFORM" != "darwin" ]; then
-        sudo apt-get install curl
+        $install_command curl
     fi
     sudo sh -c "mkdir -p \"$PREFIX\" && curl http://nodejs.org/dist/v$VERSION/node-v$VERSION-$PLATFORM-$ARCH.tar.gz | tar xzvf - --strip-components=1 -C \"$PREFIX\""
 }

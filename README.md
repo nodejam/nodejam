@@ -28,10 +28,14 @@ Development Plan
 
 Installation
 ============
-The installer script works only on Ubuntu and Osx right now. Other distros coming soon.
+The installer script works only on Ubuntu, Fedora and  OsX right now. Other distros coming soon.
 
 Step 1: Install pre-requisites
 ------------------------------
+```
+cd fora/install
+```
+
 Run ./install.sh --all (or see options below)  
 WARNING: The install script upgrades node to a very new version.
 
