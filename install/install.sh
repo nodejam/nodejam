@@ -99,13 +99,13 @@ if [ "$PLATFORM" = "Darwin" ]; then
     install_command='brew install '
 else
     PLATFORM="linux"
-    
-    OS=$(lsb_release -si)
+    OS_ID=`cat /etc/os-release | grep ^ID=`
+    OS=${OS_ID:3}
     case "$OS" in
-        "Ubuntu" )
+        "ubuntu" )
             install_command='sudo apt-get install '
             ;;
-        "CentOS" )
+        "fedora" )
             install_command='sudo yum install '
             ;;
     esac
@@ -312,7 +312,7 @@ if $nginx_conf ; then
             mkdir -p ~/Library/LaunchAgents
             sudo ln -sfv /usr/local/opt/nginx/*.plist ~/Library/LaunchAgents
             launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
-            sudo launchctl start homebrew.mxcl.nginx
+            launchctl start homebrew.mxcl.nginx
         else
             echo "fora.conf exists /usr/local/etc/nginx/sites-*/. Will not overwrite, you must delete them manually."
         fi
