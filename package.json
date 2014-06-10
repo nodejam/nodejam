@@ -45,7 +45,7 @@
     "fora-models": "*",
     "fora-extensions": "*",
     "fora-react-sandbox": "*",    
-    "fora-webrequest-parser": "*"    
+    "fora-webrequestparser": "*"    
   },
   "devDependencies": {
     "browserify-global-shim": "^1.0.0"
