@@ -364,7 +364,7 @@ fi
 
 #Install graphicsmagick
 if $gm ; then
-    $install_command graphicsmagick
+    $install_command GraphicsMagick
 fi
 
 #Install config files
