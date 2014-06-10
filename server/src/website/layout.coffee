@@ -39,6 +39,7 @@ debug_deps ={
             '/vendor/js/setImmediate.js',
             '/vendor/js/regenerator-runtime.js',
             '/vendor/js/react.js',
+            '/js/lib.js',
             '/js/bundle.js'
         ]
     }

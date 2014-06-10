@@ -19,8 +19,7 @@
             for(var _i = 0; _i < postsData.length; _i++) {
                 var posts = postsData[_i];
                 for (var i = 0; i < posts.length; i++) {
-                    if (!(posts[i] instanceof Models.Post))
-                        posts[i] = new Models.Post(posts[i]);
+                    if (!(posts[i] instanceof Models.Post)) posts[i] = new Models.Post(posts[i]);
                     var typeDef = yield posts[i].getTypeDefinition();
                     var extension = yield loader.load(typeDef);
                     posts[i].template = yield extension.getTemplateModule('list');

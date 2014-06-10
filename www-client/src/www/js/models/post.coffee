@@ -1,6 +1,5 @@
 
 PostBase = require('./post-base').PostBase
-models = require('./')
 
 class Post extends PostBase
 

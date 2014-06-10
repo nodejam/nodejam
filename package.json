@@ -16,9 +16,6 @@
     "url": "https://github.com/jeswin/fora/issues"
   },
   "dependencies": {
-    "less": "*",
-    "regenerator": "*",
-    "react-tools": "*",
     "koa": "*",
     "koa-route": "*",
     "koa-favicon": "*",
