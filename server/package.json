@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "koa": "*",
+    "koa-route": "*",
+    "koa-favicon": "*",
+    "koa-hbs    ": "*",
+    "co": "*",
+    "co-body": "*",
+    "co-multipart": "*",
+    "thunkify    ": "*",
+    "mongodb": "*",
+    "validator": "*",
+    "sanitizer": "*",
+    "handlebars": "*",
+    "fs-extra": "*",
+    "gm": "*",
+    "oauth": "*",
+    "markdown": "*",
+    "optimist": "*",
+    "multiparty": "*",
+    "react": "*",
+    "path-to-regexp": "*",
+    "fora-models": "*",
+    "fora-extensions": "*",
+    "fora-react-sandbox": "*",    
+    "fora-webrequestparser": "*"    
+  }
+}

@@ -16,33 +16,9 @@
     "url": "https://github.com/jeswin/fora/issues"
   },
   "dependencies": {
-    "koa": "*",
-    "koa-route": "*",
-    "koa-favicon": "*",
-    "koa-hbs    ": "*",
-    "co": "*",
-    "co-body": "*",
-    "co-multipart": "*",
-    "thunkify    ": "*",
-    "mongodb": "*",
-    "validator": "*",
-    "sanitizer": "*",
-    "handlebars": "*",
-    "fs-extra": "*",
-    "gm": "*",
-    "node-minify": "*",
-    "oauth": "*",
-    "markdown": "*",
     "optimist": "*",
-    "multiparty": "*",
-    "react": "*",
-    "path-to-regexp": "*",
-    "requirejs": "*",
-    "fora-build": "*",
-    "fora-models": "*",
-    "fora-extensions": "*",
-    "fora-react-sandbox": "*",    
-    "fora-webrequestparser": "*"    
+    "node-minify": "*",
+    "fora-build": "*"
   },
   "devDependencies": {
     "browserify-global-shim": "^1.0.0"
