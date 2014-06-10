@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 (function() {
-    "use strict"
+    "use strict";
 
     var React = require('react'),
         SiteOptions = require('./siteoptions');

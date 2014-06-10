@@ -61,7 +61,7 @@ Examples:
 ```
 
 If you aren't running the script, you'll have to do these manually:
-- install nodejs, v0.11.5 or greater
+- install nodejs, v0.11.9 or greater
 - install nginx (via OS package manager)
 - setup nginx configuration, see nginx.config.sample
 - install a modified version of coffeescript to support the yield keyword, from https://github.com/alubbe/coffee-script.git

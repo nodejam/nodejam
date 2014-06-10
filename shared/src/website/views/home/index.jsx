@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 (function() {
-    "use strict"
+    "use strict";
+    
     var React = require('react'),
         ExtensionLoader = require('fora-extensions').Loader,
         ForaUI = require('fora-ui'),
@@ -20,7 +21,8 @@
                 for (var i = 0; i < posts.length; i++) {
                     if (!(posts[i] instanceof Models.Post))
                         posts[i] = new Models.Post(posts[i]);
-                    var extension = yield loader.load(yield posts[i].getTypeDefinition());
+                    var typeDef = yield posts[i].getTypeDefinition();
+                    var extension = yield loader.load(typeDef);
                     posts[i].template = yield extension.getTemplateModule('list');
                 }
             }

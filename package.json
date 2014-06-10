@@ -41,7 +41,11 @@
     "react": "*",
     "path-to-regexp": "*",
     "requirejs": "*",
-    "fora-build": "*"
+    "fora-build": "*",
+    "fora-models": "*",
+    "fora-extensions": "*",
+    "fora-react-sandbox": "*",    
+    "fora-webrequest-parser": "*"    
   },
   "devDependencies": {
     "browserify-global-shim": "^1.0.0"
