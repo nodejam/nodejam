@@ -387,6 +387,7 @@ if $node_modules ; then
         
     cd ..
     sudo npm install
+    cd install
 fi
 
 
