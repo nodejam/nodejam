@@ -1,4 +1,4 @@
-models = require '../models'
+Network = require('../models/network').Network
 
 #We will do everything synchronously.
 fs = require 'fs'
@@ -12,7 +12,7 @@ for file in files
         when 'settings.config'
             settings = contents
         else
-            networks.push new models.Network(contents)
+            networks.push new Network(contents)
 
 settings.pubdir ?= path.resolve __dirname, '../../../www-public'
 

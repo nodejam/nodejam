@@ -21,9 +21,13 @@ PORT = if argv.port then parseInt(argv.port) else 80
 logger.log "Setup will connect to #{HOST}:#{PORT}"
 
 init = ->*
+    models = require '../../models'
+    fields = require '../../models/fields'
+
     ForaTypeUtils = require('../../models/foratypeutils')
     typeUtils = new ForaTypeUtils()
-    yield typeUtils.init()
+    yield typeUtils.init([models, fields])
+
 
     odm = require('fora-models')
     database = new odm.Database conf.db, typeUtils.getTypeDefinitions()

@@ -4,8 +4,13 @@ logger = require '../../lib/logger'
 fs = require 'fs'
 path = require 'path'
 fsutils = require '../../lib/fsutils'
+
+models = require '../../models'
+fields = require '../../models/fields'
+
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
+yield typeUtils.init([models, fields])
 
 #create directories
 today = Date.now()

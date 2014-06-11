@@ -1,4 +1,4 @@
-odm = require('fora-models')
+ForaTypeUtilsBase = require('./foratypeutils-base').ForaTypeUtilsBase
 conf = require('../conf')
 fs = require 'fs'
 path = require 'path'
@@ -7,49 +7,10 @@ readdir = thunkify fs.readdir
 stat = thunkify fs.stat
 readfile = thunkify fs.readFile
 
-class ForaTypeUtils extends odm.TypeUtils
 
-    init: =>*
-        yield @buildTypeCache()
-        
-        
+class ForaTypeUtils extends ForaTypeUtilsBase
 
-    getCacheItems: =>*
-        definitions = {}
-        
-        for defs in [yield @getModelTypeDefinitions(), yield @getTrustedUserTypes()]
-            for name, def of defs
-                definitions[name] ?= def    
-        
-        return definitions
-        
-    
-    
-    getModelTypeDefinitions: =>*
-        #Get type definitions from models
-        models = []
 
-        fnAdd = (module) ->
-            for name, model of module
-                models.push model
-                if model.childModels                    
-                    fnAdd model.childModels
-
-        for moduleName in ['./', './fields']
-            fnAdd require moduleName
-
-        
-        definitions = {}
-        
-        for model in models            
-            def = if typeof model.typeDefinition is "function" then model.typeDefinition() else model.typeDefinition
-            def = @completeTypeDefinition(def, model)
-            definitions[def.name] ?= def
-        
-        definitions
-        
-    
-    
     getTrustedUserTypes: =>*
         definitions = {}
         
@@ -110,10 +71,6 @@ class ForaTypeUtils extends odm.TypeUtils
         dirs      
 
         
-        
-    resolveDynamicTypeDefinition: (name) =>*
-        #TODO: make sure we dont allow special characters in name, like '..'
-        console.log "Missing " + JSON.stringify name
         
         
 module.exports = ForaTypeUtils

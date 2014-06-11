@@ -13,6 +13,7 @@
         return function() {
 
             var reactPages = [];
+            var extensions = [];
             
             /*
                 When the build starts, recreate the app directory
@@ -56,6 +57,7 @@
             this.watch(["../shared/app/*.*"], function*(filePath) {
                 var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/www/js/')
                 if (/^app\/www\/js\/website\/views\//.test(dest)) reactPages.push(dest);
+                if (/^app\/www\/js\/extensions\//.test(dest)) extensions.push(dest);
                 yield ensureDirExists(dest);
                 yield exec("cp " + filePath + " " + dest);
             }, "client_shared_files_copy");
@@ -131,8 +133,9 @@
                     yield exec("browserify -r ./app/www/vendor/js/shims/react.shim.js:react -r ./app/www/vendor/js/shims/co.shim.js:co " +
                                  "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown -r ./app/www/js/lib/fora-extensions:fora-extensions " +
                                  "-r ./app/www/js/lib/fora-models:fora-models -r ./app/www/js/app-lib/fora-ui:fora-ui > app/www/js/lib.js --debug")
-                    yield exec("browserify -x markdown -x react -x co -x fora-extensions -x fora-models -x fora-ui ./app/www/js/models ./app/www/js/website/app.js " + 
-                                reactPages.map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
+                    yield exec("browserify -x markdown -x react -x co -x fora-extensions -x fora-models -x fora-ui " +
+                                "./app/www/js/models/foratypeutils ./app/www/js/models ./app/www/js/website/app.js " + 
+                                reactPages.concat(extensions).map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
                                 " > app/www/js/bundle.js --debug")
 
                 } else {

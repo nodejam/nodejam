@@ -2,7 +2,7 @@ randomizer = require '../lib/randomizer'
 models = require './'
 conf = require '../conf'
 
-ForaTypeUtils = require('../models/foratypeutils')
+ForaTypeUtils = require('./foratypeutils')
 typeUtils = new ForaTypeUtils()
 
 Loader = require('fora-extensions').Loader

@@ -1,8 +1,8 @@
-class ForaTypeUtils
-    
+ForaTypeUtilsBase = require('./foratypeutils-base').ForaTypeUtilsBase
 
-    getTypeDefinition: (name, dynamicResolutionContext = {}) =>*
-        {}
-        
+class ForaTypeUtils extends ForaTypeUtilsBase
+
+    getBuiltInModels: =>
+        [models, fields]
         
 module.exports = ForaTypeUtils
