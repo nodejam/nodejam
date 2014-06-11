@@ -5,6 +5,7 @@ export NODE_PATH=$NODE_PATH:`pwd`/app/app-lib
 
 debugapi=false
 debugweb=false
+debugclient=false
 
 while :
 do
@@ -15,6 +16,10 @@ do
             ;;
         --debugweb)
             debugweb=true
+            shift
+            ;;
+        --debugclient)
+            debugclient=true
             shift
             ;;
         -*)
@@ -39,11 +44,14 @@ start_processes() {
     fi
 
     if ! $debugweb ; then
-        node --harmony app/website/app.js localhost 10981 fora_website &
+        if ! $debugclient ; then
+            node --harmony app/website/app.js localhost 10981 fora_website &
+        else
+            node --harmony app/website/app.js localhost 10981 fora_website --debugclient &
+        fi
     else
         node --debug-brk --harmony app/website/app.js localhost 10981 fora_website &
     fi
-
 }
 
 start_processes

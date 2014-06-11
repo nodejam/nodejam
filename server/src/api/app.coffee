@@ -1,65 +1,76 @@
 co = require 'co'
+logger = require '../lib/logger'
+argv = require('optimist').argv
+
+
+host = process.argv[2]
+port = process.argv[3]
+
+if not host or not port
+    logger.log "Usage: app.js host port"
+    process.exit()
+
+process.chdir __dirname
+
 
 (co ->*
     koa = require 'koa'
     app = koa()
 
-    app.on 'error', (err) ->
-        console.log(err)
+    app.on 'error', (err) ->            
+        console.log err
+        console.log err.stack
     
     try
-        route = require 'koa-route'
-        logger = require '../lib/logger'
-        randomizer = require '../lib/randomizer'
+        #Conf, models, fields, typeUtils, loader
         conf = require '../conf'
-
         models = require '../models'
         fields = require '../models/fields'
         
         ForaTypeUtils = require('../models/foratypeutils')
         typeUtils = new ForaTypeUtils()
-        yield typeUtils.init([models, fields])
+        yield typeUtils.init([models, fields], models.Forum, models.Post)
 
         Loader = require('fora-extensions').Loader
-        extensionLoader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
-        yield extensionLoader.init()
+        loader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
+        yield loader.init()
 
         odm = require('fora-models')
-        exports.db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
+        db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
         
-        process.chdir __dirname
-        host = process.argv[2]
-        port = process.argv[3]
 
-        if not host or not port
-            logger.log "Usage: app.js host port"
-            process.exit()
+        #Mapper, auth
+        commonArgs = { typeUtils, models, fields, db, conf }
 
-        logger.log "Fora API started at #{new Date} on #{host}:#{port}"
-
-        app = koa()
-        
-        init = require '../lib/web/init'
+        init = require('../lib/web/init')(commonArgs)
         app.use init
+
+        auth = require('../lib/web/auth')(commonArgs)
+
+        Mapper = require('../lib/web/mapper')
+        mapper = new Mapper(typeUtils)
         
         #monitoring and debugging
         if process.env.NODE_ENV is 'development'
+            randomizer = require '../lib/randomizer'
             instance = randomizer.uniqueId()
             since = Date.now()
         else
             instance = '00000000'
             since = 0
 
+        #Routes
+        route = require 'koa-route'
         app.use route.get '/api/v1/healthcheck', ->* 
             uptime = parseInt((Date.now() - since)/1000) + "s"
             @body = { jacksparrow: "alive", instance, since, uptime }
 
-        #Routes
-        m_credentials = require './controllers/credentials'
-        m_users = require './controllers/users'
-        m_forums = require './controllers/forums'
-        m_posts = require './controllers/posts'
-        m_images = require './controllers/images'
+        conrollerArgs = {typeUtils, models, fields, db, conf, auth, mapper, loader }
+        m_credentials = require('./controllers/credentials') conrollerArgs
+        m_users = require('./controllers/users') conrollerArgs
+        m_forums = require('./controllers/forums') conrollerArgs
+        m_posts = require('./controllers/posts') conrollerArgs
+        m_images = require('./controllers/images') conrollerArgs
 
         #credentials and users
         app.use route.post '/api/v1/credentials', m_credentials.create
@@ -81,6 +92,8 @@ co = require 'co'
 
         #Start
         app.listen port
+
+        logger.log "Fora API started at #{new Date} on #{host}:#{port}"
 
     catch err
         console.log err

@@ -90,6 +90,12 @@
                 Bundle all files.
             */
             this.onComplete(function*() {
+
+                console.log("Writing out app/www/js/extensions/models.js");
+                fs.writeFileSync("app/www/js/extensions/models.json", JSON.stringify(
+                    extensions.filter(function(e) { return /model\.js$/.test(e); })
+                        .map(function(e) { return e.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); })
+                ));
                 
                 if (!this.build.state.debug) {
                     var minify = function(options) {
@@ -128,19 +134,25 @@
                         ],
                         fileOut: 'app/www/js/vendor.js'
                     });
-
-                    console.log("Running browserify");
-                    yield exec("browserify -r ./app/www/vendor/js/shims/react.shim.js:react -r ./app/www/vendor/js/shims/co.shim.js:co " +
-                                 "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown -r ./app/www/js/lib/fora-extensions:fora-extensions " +
-                                 "-r ./app/www/js/lib/fora-models:fora-models -r ./app/www/js/app-lib/fora-ui:fora-ui > app/www/js/lib.js --debug")
-                    yield exec("browserify -x markdown -x react -x co -x fora-extensions -x fora-models -x fora-ui " +
-                                "./app/www/js/models/foratypeutils ./app/www/js/models ./app/www/js/website/app.js " + 
-                                reactPages.concat(extensions).map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
-                                " > app/www/js/bundle.js --debug")
-
-                } else {
-                    //TODO DEBUG MODE
                 }
+
+                console.log("Running browserify");
+                var cmdMakeLib = "browserify -r ./app/www/vendor/js/shims/react.shim.js:react -r ./app/www/vendor/js/shims/co.shim.js:co " +
+                     "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown -r ./app/www/js/lib/fora-extensions:fora-extensions " +
+                     "-r ./app/www/js/lib/fora-models:fora-models -r ./app/www/js/app-lib/fora-ui:fora-ui > app/www/js/lib.js";
+                var cmdMakeBundle = "browserify -x markdown -x react -x co -x fora-extensions -x fora-models -x fora-ui " +
+                    "./app/www/js/models/foratypeutils ./app/www/js/models ./app/www/js/website/app " + "-r ./app/www/js/extensions/models:/js/extensions/models " + 
+                    reactPages.concat(extensions).map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
+                    " > app/www/js/bundle.js";
+                
+                if (this.build.state.debug) {
+                    cmdMakeLib += " --debug";
+                    cmdMakeBundle += " --debug";                    
+                }
+
+                yield exec(cmdMakeLib);
+                yield exec(cmdMakeBundle)
+
                 
             }, "client_bundle_files");
 

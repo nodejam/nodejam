@@ -1,43 +1,37 @@
 path = require 'path'
 co = require 'co'
-conf = require '../../conf'
-models = require '../../models'
-ForaTypeUtils = require('../../models/foratypeutils')
-typeUtils = new ForaTypeUtils()
-odm = require('fora-models')
-db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
 
-handler = ->
-    if arguments.length is 1
-        fn = arguments[0]
-    else
-        [options, fn] = arguments
-    
-    options ?= {}
-
-    ->*
-        token = @query.token ? @cookies.get('token')          
+module.exports = ({models, db, conf }) -> {
+    handler: ->
+        if arguments.length is 1
+            fn = arguments[0]
+        else
+            [options, fn] = arguments
         
-        if token
-            @session = yield models.Session.get { token }, {}, db
+        options ?= {}
 
-        switch options.session
-            when 'admin'                    
-                if not @session or not @session.user
-                    return @throw 'no session', 403
-                else if not (u for u in conf.admins when u is @session.user.username).length > 0
-                    return @throw 'not admin', 403                            
-                @session.admin = true
+        ->*
+            token = @query.token ? @cookies.get('token')          
             
-            when 'credential', 'any'
-                if not @session
-                    return @throw 'no session', 403
-                
-            when 'user'
-                if not @session or not @session.user
-                    return @throw 'no session', 403
-                    
-        yield fn.apply @, arguments                
-        
+            if token
+                @session = yield models.Session.get { token }, {}, db
 
-exports.handler = handler
+            switch options.session
+                when 'admin'                    
+                    if not @session or not @session.user
+                        return @throw 'no session', 403
+                    else if not (u for u in conf.admins when u is @session.user.username).length > 0
+                        return @throw 'not admin', 403                            
+                    @session.admin = true
+                
+                when 'credential', 'any'
+                    if not @session
+                        return @throw 'no session', 403
+                    
+                when 'user'
+                    if not @session or not @session.user
+                        return @throw 'no session', 403
+                        
+            yield fn.apply @, arguments                
+}
+

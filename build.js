@@ -12,6 +12,7 @@
         .describe('debug', 'Compile in debug mode')
         .describe('debugweb', 'Start debugger for web')
         .describe('debugapi', 'Start debugger for api')
+        .describe('debugclient', 'Enable client-side debugging')
         .describe('client', "Build the client")
         .describe('server', "Build the server")
         .describe('norun', "Do not start the server after building")
@@ -59,6 +60,7 @@
             if (build.state.debug) params.push("--debug");
             if (argv.debugapi) params.push("--debugapi");
             if (argv.debugweb) params.push("--debugweb");
+            if (argv.debugclient) params.push("--debugclient");
             console.log("Restarting the server.....");
             var script = spawn("sh", params);
         }
