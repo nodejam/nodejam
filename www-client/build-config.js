@@ -67,8 +67,11 @@
                 Do facebook regenerator transform on all client side js files
             */
             this.watch(["app/www/js/*.js"], function*(filePath) {
-                var result = yield exec("regenerator " + filePath);
-                fs.writeFileSync(filePath, result);
+                //Skip regenerator in es6 mode. Requires flags in browsers (as of June 2014)
+                if (!this.build.state.useES6) {
+                    var result = yield exec("regenerator " + filePath);
+                    fs.writeFileSync(filePath, result);
+                }
             }, "client_regenerator_transform", ["client_coffee_compile", "client_shared_files_copy"]);
 
 
@@ -97,7 +100,7 @@
                         .map(function(e) { return e.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); })
                 ));
                 
-                if (!this.build.state.debug) {
+                if (!this.build.state.debugclient) {
                     var minify = function(options) {
                         return function(cb) {
                             options.callback = cb;
@@ -137,6 +140,7 @@
                 }
 
                 console.log("Running browserify");
+                
                 var cmdMakeLib = "browserify -r ./app/www/vendor/js/shims/react.shim.js:react -r ./app/www/vendor/js/shims/co.shim.js:co " +
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown -r ./app/www/js/lib/fora-extensions:fora-extensions " +
                      "-r ./app/www/js/lib/fora-models:fora-models -r ./app/www/js/app-lib/fora-ui:fora-ui > app/www/js/lib.js";
@@ -145,7 +149,7 @@
                     reactPages.concat(extensions).map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
                     " > app/www/js/bundle.js";
                 
-                if (this.build.state.debug) {
+                if (this.build.state.debugclient) {
                     cmdMakeLib += " --debug";
                     cmdMakeBundle += " --debug";                    
                 }

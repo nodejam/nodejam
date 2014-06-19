@@ -45,8 +45,11 @@
         build.state.buildServer = true;
     }    
 
-    build.state.debug = argv.debug;
-    
+    if (argv.debugapi) build.state.debugapi = true;
+    if (argv.debugweb) build.state.debugweb = true;
+    if (argv.debugclient) build.state.debugclient = true;
+    if (argv.usees6) build.state.useES6 = true;
+
     /* Create configuration */
     var shared = build.configure(sharedConfig, 'shared');
     if (build.state.buildServer)
@@ -57,7 +60,6 @@
     build.job(function*() {
         if (this.state.monitor) {
             var params = ["server/run.sh"];
-            if (build.state.debug) params.push("--debug");
             if (argv.debugapi) params.push("--debugapi");
             if (argv.debugweb) params.push("--debugweb");
             if (argv.debugclient) params.push("--debugclient");

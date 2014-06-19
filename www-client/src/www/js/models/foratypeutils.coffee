@@ -17,6 +17,7 @@ class ForaTypeUtils extends ForaTypeUtilsBase
             definitions["#{dir}/#{typeName}/#{version}"] = @mergeUserTypeDefinition ext, ctor, baseTypeName, dir, typeName, version, typeDef
 
         return
+        yield false;
         
         
 module.exports = ForaTypeUtils

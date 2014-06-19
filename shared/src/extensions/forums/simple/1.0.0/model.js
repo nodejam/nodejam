@@ -1,5 +1,5 @@
 (function() {
-    "use strict"
+    "use strict;"
     
     /* 
         typeDefinition: Defines the various fields in the type

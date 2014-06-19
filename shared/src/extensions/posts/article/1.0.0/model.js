@@ -1,5 +1,5 @@
 (function() {
-    "use strict"
+    "use strict;"
 
     /* 
         typeDefinition: Defines the various fields in the type
@@ -27,7 +27,9 @@
         //If no cover was specified, use 'inline-cover'
         if (this.cover && !this.cover.type) {
             this.cover.type = "inline-cover";
-        }    
+        }
+        return;
+        yield false;
     }
 
 
@@ -44,5 +46,6 @@
             id: this._id.toString(),
             stub: this.stub
         }
+        yield false;
     }
 })();

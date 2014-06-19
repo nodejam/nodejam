@@ -383,6 +383,7 @@ if $node_modules ; then
     sudo npm install -g regenerator
     sudo npm install -g browserify
     sudo npm install -g less
+    sudo npm install -g react
     sudo npm install -g react-tools
         
     cd ..
