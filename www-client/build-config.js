@@ -71,7 +71,7 @@
                 if (!this.build.state.useES6) {
                     var result = yield exec("regenerator " + filePath);
                     fs.writeFileSync(filePath, result);
-                }
+                } 
             }, "client_regenerator_transform", ["client_coffee_compile", "client_shared_files_copy"]);
 
 
