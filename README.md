@@ -2,26 +2,25 @@ This is __not ready__ to be forked yet. Our first priority is to get the foundat
 The following dates are tentative and might change.
 
 Some re-usable components of fora have been moved to separate packages.
-- Fora Build (The build system) https://github.com/jeswin/fora-build 
-- Fora Models (Object Data Mapper) https://github.com/jeswin/fora-models 
-- Fora Extensions (Plugin Loading etc) https://github.com/jeswin/fora-extensions
+- Fora Build (The build system, stable) https://github.com/jeswin/fora-build 
+- Fora Models (Object Data Mapper, stable) https://github.com/jeswin/fora-models- Fora Extensions (Plugin Loading etc, stable) https://github.com/jeswin/fora-extensions
 
 Development Plan
 ================
 
-- Make everything isomorphic - June 11
-- ReactJS Safe Scripts Jeswin Kumar · May June 13
-- Post Editor Jeswin Kumar · June 16
-- Create Forum Jeswin Kumar · June 17
-- Forum Settings Jeswin Kumar · June 20
-- Permissions Jeswin Kumar · June 21
-- Forum Members Jeswin Kumar · June 22
-- User Landing Jeswin Kumar · June 24
-- User Followers Jeswin Kumar · June 25
-- User Following Jeswin Kumar · June 26
-- Twitter Posting anup kesavan · June 25
-- Facebook Posting anup kesavan · June 25
-- RSS anup kesavan · Sun, June 25
+- Make everything isomorphic - June 15
+- ReactJS Safe Scripts Jeswin Kumar · May June 17
+- Post Editor Jeswin Kumar · June 20
+- Create Forum Jeswin Kumar · June 21
+- Forum Settings Jeswin Kumar · June 24
+- Permissions Jeswin Kumar · June 25
+- Forum Members Jeswin Kumar · June 26
+- User Landing Jeswin Kumar · June 28
+- User Followers Jeswin Kumar · June 29
+- User Following Jeswin Kumar · June 29
+- Twitter Posting anup kesavan · June 26
+- Facebook Posting anup kesavan · June 26
+- RSS anup kesavan · Sun, June 27
 - Improve Install Experience on Mac and Linux anup kesavan 
 - Add support for Persona.org login anup kesavan 
 - 0.1 Alpha, June 30
