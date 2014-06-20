@@ -8,22 +8,22 @@ Some re-usable components of fora have been moved to separate packages.
 Development Plan
 ================
 
-- Make everything isomorphic - June 15
-- ReactJS Safe Scripts Jeswin Kumar · May June 17
-- Post Editor Jeswin Kumar · June 20
-- Create Forum Jeswin Kumar · June 21
-- Forum Settings Jeswin Kumar · June 24
-- Permissions Jeswin Kumar · June 25
-- Forum Members Jeswin Kumar · June 26
-- User Landing Jeswin Kumar · June 28
-- User Followers Jeswin Kumar · June 29
-- User Following Jeswin Kumar · June 29
-- Twitter Posting anup kesavan · June 26
-- Facebook Posting anup kesavan · June 26
-- RSS anup kesavan · Sun, June 27
+- Make everything isomorphic - June 30
+- ReactJS Safe Scripts Jeswin Kumar · July 4
+- Post Editor Jeswin Kumar · July 7
+- Create Forum Jeswin Kumar · July 9
+- Forum Settings Jeswin Kumar · July 11
+- Permissions Jeswin Kumar · July 13
+- Forum Members Jeswin Kumar · July 15
+- User Landing Jeswin Kumar · July 17
+- User Followers Jeswin Kumar · July 19
+- User Following Jeswin Kumar · July 21
+- Twitter Posting anup kesavan · July 15
+- Facebook Posting anup kesavan · July 15
+- RSS anup kesavan · Sun, July 15
 - Improve Install Experience on Mac and Linux anup kesavan 
 - Add support for Persona.org login anup kesavan 
-- 0.1 Alpha, June 30
+- 0.1 Alpha, July 23
 
 Installation
 ============
