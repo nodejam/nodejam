@@ -50,6 +50,6 @@ class Loader
     
             
     load: (typeDefinition) =>*
-            
+        debugger
 
 exports.Loader = Loader

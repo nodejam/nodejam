@@ -13,6 +13,7 @@
         .describe('debugweb', 'Start debugger for web')
         .describe('debugapi', 'Start debugger for api')
         .describe('debugclient', 'Enable client-side debugging')
+        .describe('usees6', 'Use es6 generators in browser (skips transpiler)')
         .describe('client', "Build the client")
         .describe('server', "Build the server")
         .describe('norun', "Do not start the server after building")
