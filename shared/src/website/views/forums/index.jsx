@@ -10,7 +10,7 @@
     var Page = ForaUI.Page,
         Content = ForaUI.Content;
 
-    module.exports = React.createClass({
+    var component = React.createClass({
         render: function() {        
             createItem = function(forum) {
                 if (forum.cover) {
@@ -67,4 +67,8 @@
             );
         }
     });
+    
+    module.exports = {
+        component: component
+    };
 })();

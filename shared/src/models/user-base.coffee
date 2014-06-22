@@ -59,6 +59,25 @@ class UserBase extends ForaDbModel
             info: { type: 'user-info', field: 'userId', multiplicity: 'one' }
         }
     }
+    
+    
+    getUrl: =>
+        "/~#{@username}"
+
+
+
+    getAssetUrl: =>
+        "/public/assets/#{@assets}"
+
+
+
+    summarize: (context, db) =>
+        new User.Summary {
+            id: db.getRowId(@),
+            @username,
+            @name,
+            @assets
+        }    
        
     
 exports.UserBase = UserBase

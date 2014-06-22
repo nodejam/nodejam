@@ -26,26 +26,7 @@ class User extends UserBase
     getPosts:(limit, sort, context, db) =>*
         { context, db } = @getContext context, db
         yield models.Post.find({ 'createdById': db.getRowId(@), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
-    
-    
-    
-    getUrl: =>
-        "/~#{@username}"
 
-
-
-    getAssetUrl: =>
-        "/public/assets/#{@assets}"
-
-
-
-    summarize: (context, db) =>
-        new User.Summary {
-            id: db.getRowId(@),
-            @username,
-            @name,
-            @assets
-        }
         
     
 exports.User = User
