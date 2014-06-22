@@ -12,11 +12,10 @@ class App
                 typeUtils = new ForaTypeUtils()
                 yield typeUtils.init([models, fields], models.Forum, models.Post)
 
-                reactClass = require(pageName)
-                props = props
-                component = reactClass(props)
-                if component.componentInit
-                    yield component.componentInit()
+                reactModule = require(pageName)
+                if reactModule.init
+                    props = yield reactModule.init props
+                component = reactModule.component(props)
             co(setupPage)()
     
             
