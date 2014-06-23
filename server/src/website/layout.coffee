@@ -45,12 +45,12 @@ debug_deps ={
     }
 
 render = (debug) ->
-    (reactModule, pagePath, props = {}, params = {}) ->*
+    (reactClass, pagePath, props = {}, params = {}) ->*
+        
+        if reactClass.componentInit
+            props = yield reactClass.componentInit(props)         
 
-        if reactModule.init
-            props = yield reactModule.init(props)         
-
-        component = reactModule.component(props)
+        component = reactClass(props)
 
         title = props.title ? "The Fora Project"
         pageName = props.pageName ? "default-page"

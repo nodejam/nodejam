@@ -13,15 +13,17 @@
 
     var loader = new ExtensionLoader();
 
-    var init = function*(component, isBrowser) {           
-        /* Convert the JSON into Post objects and attach the templates */
-        if (isBrowser)
-            component.props.post = new Models.Post(component.props.post);
-        extension = yield loader.load(yield component.props.post.getTypeDefinition());
-        component.props.post.template = yield extension.getTemplateModule(component.props.postTemplate);
-    }
-            
-    var component = React.createClass({
+    module.exports = React.createClass({
+        statics: {
+            componentInit: function*(data, isBrowser) {           
+                /* Convert the JSON into Post objects and attach the templates */
+                if (isBrowser)
+                    component.props.post = new Models.Post(component.props.post);
+                extension = yield loader.load(yield component.props.post.getTypeDefinition());
+                component.props.post.template = yield extension.getTemplateModule(component.props.postTemplate);
+            }
+        },
+
         render: function() {
             return (
                 <Page cover={this.props.post.cover}>
@@ -41,10 +43,5 @@
             );
         }
     });
-    
-    module.exports = {
-        init: init,
-        component: component
-    }
     
 })();

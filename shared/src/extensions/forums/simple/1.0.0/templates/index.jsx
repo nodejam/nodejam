@@ -13,19 +13,22 @@
 
     var loader = new ExtensionLoader();
         
-    var init = function*(data, isBrowser) {           
-        /* Convert the JSON into Post objects and attach the templates */
-        posts = data.posts;
-        for (i = 0; i < posts.length; i++) {
-            if (isBrowser)
-                posts[i] = new Models.Post(posts[i]);
-            extension = yield loader.load(yield posts[i].getTypeDefinition());
-            posts[i].template = yield extension.getTemplateModule(component.props.postTemplate);
-        }
-        return data;
-    };
 
-    var component = React.createClass({
+    module.exports = React.createClass({
+        statics: {
+            componentInit: function*(data, isBrowser) {           
+                /* Convert the JSON into Post objects and attach the templates */
+                posts = data.posts;
+                for (i = 0; i < posts.length; i++) {
+                    if (isBrowser)
+                        posts[i] = new Models.Post(posts[i]);
+                    extension = yield loader.load(yield posts[i].getTypeDefinition());
+                    posts[i].template = yield extension.getTemplateModule(component.props.postTemplate);
+                }
+                return data;
+            }
+        },
+    
         render: function() {        
             forum = this.props.forum;
             
@@ -92,10 +95,5 @@
             );
         }
     });
-    
-    module.exports = {
-        init: init,
-        component: component
-    };
     
 })();

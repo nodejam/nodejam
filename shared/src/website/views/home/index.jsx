@@ -12,22 +12,24 @@
         Cover = ForaUI.Cover,
         loader = new ExtensionLoader();
 
-    var init = function*(data) {           
-        /* Convert the JSON into Post objects and attach the templates */
-        var postsData = [data.featured, data.editorsPicks];
-        for(var _i = 0; _i < postsData.length; _i++) {
-            var posts = postsData[_i];
-            for (var i = 0; i < posts.length; i++) {
-                if (!(posts[i] instanceof Models.Post)) posts[i] = new Models.Post(posts[i]);
-                var typeDef = yield posts[i].getTypeDefinition();
-                var extension = yield loader.load(typeDef);
-                posts[i].template = yield extension.getTemplateModule('list');
-            }
-        }
-        return data;
-    };
 
-    var component = React.createClass({
+    module.exports = React.createClass({
+        statics: {
+            componentInit: function*(data) {           
+                /* Convert the JSON into Post objects and attach the templates */
+                var postsData = [data.featured, data.editorsPicks];
+                for(var _i = 0; _i < postsData.length; _i++) {
+                    var posts = postsData[_i];
+                    for (var i = 0; i < posts.length; i++) {
+                        if (!(posts[i] instanceof Models.Post)) posts[i] = new Models.Post(posts[i]);
+                        var typeDef = yield posts[i].getTypeDefinition();
+                        var extension = yield loader.load(typeDef);
+                        posts[i].template = yield extension.getTemplateModule('list');
+                    }
+                }
+                return data;
+            }     
+        },
         render: function() {        
             var createItem = function(post) {
                 return post.template({ key: post._id, post: post, forum: post.forum, author: post.createdBy });
@@ -60,9 +62,5 @@
             );
         }
     });
-
-    module.exports = {
-        init: init,
-        component: component        
-    }
+    
 })();
