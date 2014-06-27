@@ -10,9 +10,13 @@ class Forum extends ForumBase
             if def.ctor isnt Forum
                 throw new Error "Forum type definitions must have ctor set to Forum"
             def
-        typeDef           
-        
-        
-exports.Forum = Forum
+        typeDef
 
-                
+
+    getTypeDefinition: =>*
+        typeUtils = Forum.getTypeUtils()
+        yield typeUtils.getTypeDefinition(@type)
+
+
+
+exports.Forum = Forum

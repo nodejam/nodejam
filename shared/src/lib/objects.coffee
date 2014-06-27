@@ -14,14 +14,14 @@ deepCloneObject = (obj) ->
         for key, value of obj
             temp[key] = deepCloneObject(value)
         temp
-    
+
 
 extend = (target, source, fnCanCopy) ->
     for key, val of source
         if (not target.hasOwnProperty(key)) and ((not fnCanCopy) or fnCanCopy(key))
             target[key] = val
     target
-    
+
 
 getHashCode = (str) ->
     hash = 0
@@ -31,8 +31,8 @@ getHashCode = (str) ->
             hash = ((hash << 5) - hash) + char
             hash = hash & hash
     Math.abs hash
-    
-    
+
+
 module.exports = {
     clone,
     deepCloneObject,

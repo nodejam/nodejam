@@ -1,41 +1,5 @@
-class PostExtension
-
-    constructor: (@typeDefinition, @loader) ->
-    
-
-    getTemplateModule: (name) =>*
-
-        requireThunk = (name) =>
-            url = "/shared/extensions/#{@typeDefinition.name}/templates/#{name}.js"
-            return (cb) ->
-                require [url], ->
-                    cb null, arguments[0]
-    
-        yield requireThunk(name)
-
-    
-
-class ForumExtension
-
-
-
-class ExtensionLoader
-
-    constructor: ->
-    
-
-    load: (typeDefinition) =>*
-        if typeDefinition.extensionType is 'builtin'
-            switch typeDefinition.type
-                when 'forum'
-                    return new ForumExtension(typeDefinition, this)
-                when 'post'
-                    return new PostExtension(typeDefinition, this)                
-        else
-            throw new Error "Untrusted extensions are not implemented yet"
-        
-    
-
+PostExtension = require('./postextension')
+ForumExtension = require('./forumextension')
 
 class Loader
 
@@ -46,10 +10,20 @@ class Loader
 
 
     init: =>*
-    
-    
-            
+        return
+        yield false
+
+
     load: (typeDefinition) =>*
-        debugger
+        if typeDefinition.extensionType is 'builtin'
+            switch typeDefinition.type
+                when 'forum'
+                    return new ForumExtension(typeDefinition, this)
+                when 'post'
+                    return new PostExtension(typeDefinition, this)
+        else
+            throw new Error "Untrusted extensions are not implemented yet"
+            
+        yield false
 
 exports.Loader = Loader
