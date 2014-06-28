@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 (function() {
     "use strict";
-    
+
     var React = require('react'),
         ExtensionLoader = require('fora-extensions').Loader,
         ForaUI = require('fora-ui'),
@@ -15,7 +15,7 @@
 
     module.exports = React.createClass({
         statics: {
-            componentInit: function*(data) {           
+            componentInit: function*(data) {
                 /* Convert the JSON into Post objects and attach the templates */
                 var postsData = [data.featured, data.editorsPicks];
                 for(var _i = 0; _i < postsData.length; _i++) {
@@ -28,13 +28,13 @@
                     }
                 }
                 return data;
-            }     
+            }
         },
-        render: function() {        
+        render: function() {
             var createItem = function(post) {
                 return post.template({ key: post._id, post: post, forum: post.forum, author: post.createdBy });
-            };    
-        
+            };
+
             return (
                 <Page>
                     <Cover cover={this.props.cover} coverContent={this.props.coverContent} />
@@ -46,21 +46,21 @@
                                 </li>
                                 <li>
                                     <a href="/forums">Forums</a>
-                                </li>            
+                                </li>
                             </ul>
                         </nav>
                         <div className="content-area">
                             <ul className="articles default-view">
-                                {this.props.editorsPicks.map(createItem)}     
+                                {this.props.editorsPicks.map(createItem)}
                             </ul>
                             <ul className="articles default-view">
-                                {this.props.featured.map(createItem)}     
+                                {this.props.featured.map(createItem)}
                             </ul>
                         </div>
                     </Content>
-                </Page>        
+                </Page>
             );
         }
     });
-    
+
 })();

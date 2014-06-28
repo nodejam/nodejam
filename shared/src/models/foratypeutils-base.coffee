@@ -10,15 +10,15 @@ class ForaTypeUtilsBase extends odm.TypeUtils
 
     getCacheItems: =>*
         definitions = {}
-        
+
         for defs in [yield @getModelTypeDefinitions(), yield @getBuiltInUserTypes()]
             for name, def of defs
-                definitions[name] ?= def    
-        
+                definitions[name] ?= def
+
         return definitions
-        
-    
-    
+
+
+
     getModelTypeDefinitions: =>*
         #Get type definitions from models
         models = []
@@ -26,33 +26,33 @@ class ForaTypeUtilsBase extends odm.TypeUtils
         fnAdd = (module) ->
             for name, model of module
                 models.push model
-                if model.childModels                    
+                if model.childModels
                     fnAdd model.childModels
 
         for module in @builtinTypes
             fnAdd module
-        
+
         definitions = {}
-        
-        for model in models            
+
+        for model in models
             def = if typeof model.typeDefinition is "function" then model.typeDefinition() else model.typeDefinition
             def = @completeTypeDefinition(def, model)
             definitions[def.name] ?= def
-        
+
         definitions
-        
-    
-    
+
+
+
     getBuiltInUserTypes: =>*
         definitions = {}
-        
+
         yield @addTrustedUserTypes @ForumType, 'forum', 'forums', definitions
         yield @addTrustedUserTypes @PostType, 'post', 'posts', definitions
 
-        return definitions                                
+        return definitions
 
-    
-    
+
+
     addTrustedUserTypes: =>*
         throw new Error "addTrustedUserTypes() method must be overridden in derived class."
 
@@ -81,7 +81,7 @@ class ForaTypeUtilsBase extends odm.TypeUtils
         for req in typeDef.schema.required
             if def.schema.required?.indexOf(req) is -1
                 def.schema.required.push req
-        
+
         def
 
 
@@ -89,6 +89,6 @@ class ForaTypeUtilsBase extends odm.TypeUtils
     resolveDynamicTypeDefinition: (name) =>*
         #TODO: make sure we dont allow special characters in name, like '..'
         console.log "Missing " + JSON.stringify name
-        
-        
+
+
 exports.ForaTypeUtilsBase = ForaTypeUtilsBase

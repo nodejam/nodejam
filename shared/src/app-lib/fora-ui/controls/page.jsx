@@ -14,8 +14,8 @@
                         {this.props.children}
                     </div>
                 </div>
-            );        
+            );
         }
     });
-    
+
 })();

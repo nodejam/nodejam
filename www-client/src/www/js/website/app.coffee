@@ -1,4 +1,5 @@
 co = require('co');
+React = require('react')
 
 class App
 
@@ -16,9 +17,9 @@ class App
                 if reactClass.componentInit
                     props = yield reactClass.componentInit props
                 component = reactClass(props)
-                
-            co(setupPage)()
-    
-            
-window.app = new App()
+                React.renderComponent(component, document.getElementsByClassName("page-container")[0])
 
+            co(setupPage)()
+
+
+window.app = new App()
