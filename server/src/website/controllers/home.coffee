@@ -15,16 +15,15 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
         coverContent = "<h1>Editor's Picks</h1>
                         <p>Fora is a place to share ideas. Lorem Ipsum Bacon?</p>"
 
-        @body = yield @render indexView, "home/index", { editorsPicks, featured, cover, coverContent }
-            
-        
+        @body = yield @render indexView, "/js/website/views/home/index", { editorsPicks, featured, cover, coverContent }
+
+
 
     ###
         Login page
-    ### 
+    ###
     login: ->*
-        yield @renderPage 'home/login', { 
+        yield @renderPage 'home/login', {
             pageName: 'login-page'
         }
 }
-

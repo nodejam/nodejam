@@ -20,49 +20,49 @@ class Post extends PostBase
             if def.ctor isnt Post
                 throw new Error "Post type definitions must have ctor set to Post"
             def
-        typeDef        
-        
-        
+        typeDef
+
+
     @search: (criteria, settings, context, db) =>
         limit = @getLimit settings.limit, 100, 1000
-                
+
         params = {}
         for k, v of criteria
             params[k] = v
-        
-        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
-        
 
-        
+        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
+
+
+
     @getLimit: (limit, _default, max) ->
         result = _default
         if limit
             result = limit
             if result > max
                 result = max
-        result    
-        
+        result
 
-    
+
+
     constructor: (params) ->
         super
         @recommendations ?= []
         @meta ?= []
         @tags ?= []
-       
-    
-    
+
+
+
     addMetaList: (metaList) =>*
         @meta = @meta.concat (m for m in metaList when @meta.indexOf(m) is -1)
         yield @save()
-    
+
 
 
     removeMetaList: (metaList) =>*
         @meta = (m for m in @meta when metaList.indexOf(m) is -1)
         yield @save()
-        
-    
+
+
 
     save: (context, db) =>*
         { context, db } = @getContext context, db
@@ -75,7 +75,7 @@ class Post extends PostBase
         if @stub
             if conf.reservedNames.indexOf(@stub) > -1
                 throw new Error "Stub cannot be #{@stub}, it is reserved"
-            
+
                 regex = '[a-z][a-z0-9|-]*'
                 if not regex.text @stub
                     throw new Error "Stub is invalid"
@@ -83,26 +83,24 @@ class Post extends PostBase
             @stub ?= randomizer.uniqueId(16)
 
         result = yield super(context, db)
-        
+
         if @state is 'published'
             forum = yield models.Forum.getById @forumId, context, db
             yield forum.refreshCache()
-        
+
         result
 
 
 
     getAuthor: =>*
         { context, db } = @getContext context, db
-        yield models.User.getById post.createdById, {}, db
-                
+        yield models.User.getById @createdById, {}, db
+
 
 
     getView: (name) =>*
         extensions = yield extensionLoader.load yield @getTypeDefinition()
         model = yield extensions.getModel()
         yield model.view.call @, name
-                
-exports.Post = Post
 
-                
+exports.Post = Post

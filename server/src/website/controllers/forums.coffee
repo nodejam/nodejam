@@ -1,13 +1,16 @@
+indexView = require('../views/forums/index')
+
 ###
     The data structure passed to forum extensions.
 ###
+
 class ForumExtensionContext
 
     constructor: (@forum, @extension, @client) ->
-    
-    
+
+
     renderPost: (data) ->*
-        yield @context.renderPage 'posts/post', { 
+        yield @context.renderPage 'posts/post', {
             pageName: 'post-page',
             theme: data.forum.theme,
             json: JSON.stringify(data.post),
@@ -27,7 +30,7 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
         for forum in forums
             forum.summary = yield forum.getView("card", {}, db)
 
-        yield @renderView 'forums/index', { forums }
+        yield @renderView indexView, 'forums/index', { forums }
 
 
 
@@ -37,7 +40,7 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
     page: auth.handler (stub) ->*
         forum = yield models.Forum.get { stub, network: @network.stub }, {}, db
         if forum
-            extension = yield extensionLoader.load yield forum.getTypeDefinition()
+            extension = yield loader.load yield forum.getTypeDefinition()
             pages = yield extension.getPages()
             yield pages.handle new ForumExtensionContext(forum, extension, @)
 
@@ -47,11 +50,11 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
         Create a new forum
     ###
     create: ->*
-        yield @renderPage 'forums/new', { 
-            pageName: 'create-forum-page', 
+        yield @renderPage 'forums/new', {
+            pageName: 'create-forum-page',
             pageLayout: {
                 type: 'single-section-page fixed-width'
             }
-        }        
-        
+        }
+
 }

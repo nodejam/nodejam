@@ -15,26 +15,27 @@
 
     module.exports = React.createClass({
         statics: {
-            componentInit: function*(data, isBrowser) {           
-                /* Convert the JSON into Post objects and attach the templates */
-                if (isBrowser)
-                    component.props.post = new Models.Post(component.props.post);
-                extension = yield loader.load(yield component.props.post.getTypeDefinition());
-                component.props.post.template = yield extension.getTemplateModule(component.props.postTemplate);
+            componentInit: function*(props) {
+                /* Convert the JSON into a Post object and attach the templates */
+                if (!(props.post instanceof Models.Post)) props.post = new Models.Post(props.post);
+                var typeDef = yield props.post.getTypeDefinition();
+                var extension = yield loader.load(typeDef);
+                props.post.template = yield extension.getTemplateModule('list');
+                return props;
             }
         },
 
         render: function() {
             return (
                 <Page cover={this.props.post.cover}>
-                    <Cover cover={this.props.post.cover} />                
-                    <Content>            
+                    <Cover cover={this.props.post.cover} />
+                    <Content>
                         <div className="content-area item">
                             {
                                 this.props.post.template({
                                     post: this.props.post,
                                     forum: this.props.forum,
-                                    author: this.props.author        
+                                    author: this.props.author
                                 })
                             }
                         </div>
@@ -43,5 +44,5 @@
             );
         }
     });
-    
+
 })();
