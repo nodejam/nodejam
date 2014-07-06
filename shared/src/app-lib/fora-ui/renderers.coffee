@@ -6,47 +6,44 @@ module.exports = {
         ###
             Render a simple forum
         ###
-        forum: (data, context) ->*
+        forum: (props, context) ->*
             typeDefinition = yield context.forum.getTypeDefinition()
 
             options = {}
-            if context.client.session
+            if context.koaContext.session
                 options.loggedIn = true
-                membership = yield context.forum.getMembership context.client.session.user.username
+                membership = yield context.forum.getMembership context.koaContext.session.user.username
                 if membership
                     options.isMember = true
                     options.primaryPostType = "Article" #TODO: This makes no sense
 
-            template = yield context.extension.getTemplateModule(data.forumTemplate)
-            props = { posts: data.posts, forum: context.forum, postTemplate: data.postTemplate, options }
+            template = yield context.extension.getTemplateModule(props.forumTemplate)
+            props = { posts: props.posts, forum: context.forum, postTemplate: props.postTemplate, options }
 
             script = "
                 <script>
                     var page = new Fora.Views.Page(
-                        '/shared/extensions/#{typeDefinition.name}/templates/#{data.forumTemplate}.js',
-                        #{JSON.stringify({ posts: data.posts, forum: context.forum, postTemplate: data.postTemplate, options })}
+                        '/shared/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}.js',
+                        #{JSON.stringify({ posts: props.posts, forum: context.forum, postTemplate: props.postTemplate, options })}
                     );
                 </script>"
 
-            yield context.client.render template, "/shared/extensions/#{typeDefinition.name}/templates/#{data.forumTemplate}", props
-
+            context.koaContext.body = yield context.koaContext.render template, "/shared/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
 
         ###
             Render a simple post
         ###
-        post: (data, context) ->*
+        post: (props, context) ->*
             typeDefinition = yield context.forum.getTypeDefinition()
-            author = yield data.post.getAuthor()
+            author = yield props.post.getAuthor()
 
             options = {}
-            if context.client.session
+            if context.koaContext.session
                 options.loggedIn = true
 
-            template = yield context.extension.getTemplateModule(data.forumTemplate)
-            props = { post: data.post, forum: context.forum, author, postTemplate: data.postTemplate }
+            template = yield context.extension.getTemplateModule(props.forumTemplate)
+            props = { post: props.post, forum: context.forum, author, postTemplate: props.postTemplate }
 
-            yield context.client.render template, "/shared/extensions/#{typeDefinition.name}/templates/#{data.forumTemplate}", props
-
-
+            context.koaContext.body = yield context.koaContext.render template, "/shared/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
     }
 }

@@ -27,7 +27,7 @@
                         posts[i].template = yield extension.getTemplateModule('list');
                     }
                 }
-                return data;
+                return props;
             }
         },
 

@@ -20,7 +20,7 @@
                 if (!(props.post instanceof Models.Post)) props.post = new Models.Post(props.post);
                 var typeDef = yield props.post.getTypeDefinition();
                 var extension = yield loader.load(typeDef);
-                props.post.template = yield extension.getTemplateModule('list');
+                props.post.template = yield extension.getTemplateModule('item');
                 return props;
             }
         },

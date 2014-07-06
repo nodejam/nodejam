@@ -6,10 +6,10 @@ indexView = require('../views/forums/index')
 
 class ForumExtensionContext
 
-    constructor: (@forum, @extension, @client) ->
+    constructor: (@forum, @extension, @koaContext) ->
 
 
-    renderPost: (data) ->*
+    render: (data) ->*
         yield @context.renderPage 'posts/post', {
             pageName: 'post-page',
             theme: data.forum.theme,
@@ -30,7 +30,7 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
         for forum in forums
             forum.summary = yield forum.getView("card", {}, db)
 
-        yield @renderView indexView, 'forums/index', { forums }
+        yield @render indexView, 'forums/index', { forums }
 
 
 

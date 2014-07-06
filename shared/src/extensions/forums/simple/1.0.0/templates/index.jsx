@@ -18,7 +18,7 @@
         statics: {
             componentInit: function*(props) {
                 /* Convert the JSON into Post objects and attach the templates */
-                for (i = 0; i < props.posts.length; i++) {
+                for (var i = 0; i < props.posts.length; i++) {
                     if (!(props.posts[i] instanceof Models.Post)) props.posts[i] = new Models.Post(props.post);
                     var typeDef = yield props.posts[i].getTypeDefinition();
                     var extension = yield loader.load(yield props.posts[i].getTypeDefinition());
@@ -29,7 +29,7 @@
         },
 
         render: function() {
-            forum = this.props.forum;
+            var forum = this.props.forum;
 
             //If the cover is missing, use default
             if (!forum.cover) {
@@ -46,13 +46,13 @@
                 forum.cover.type = "auto-cover"
             }
 
-            createItem = function(post) {
+            var createItem = function(post) {
                 return post.template({ post: post, forum: post.forum, author: post.createdBy });
             };
 
 
-            options = this.props.options;
-            buttons = null;
+            var options = this.props.options;
+            var buttons = null;
 
             if (options.loggedIn) {
                 if (options.isMember)
