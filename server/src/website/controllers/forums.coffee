@@ -4,21 +4,6 @@ indexView = require('../views/forums/index')
     The data structure passed to forum extensions.
 ###
 
-class ForumExtensionContext
-
-    constructor: (@forum, @extension, @koaContext) ->
-
-
-    render: (data) ->*
-        yield @context.renderPage 'posts/post', {
-            pageName: 'post-page',
-            theme: data.forum.theme,
-            json: JSON.stringify(data.post),
-            typeDefinition: JSON.stringify(yield data.post.getTypeDefinition()),
-            html: data.html
-        }
-
-
 module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) -> {
 
     ###
@@ -42,8 +27,7 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
         if forum
             extension = yield loader.load yield forum.getTypeDefinition()
             pages = yield extension.getPages()
-            yield pages.handle new ForumExtensionContext(forum, extension, @)
-
+            yield pages.handle { forum, extension, koaContext: this }
 
 
     ###
