@@ -18,17 +18,17 @@ module.exports = {
                     options.primaryPostType = "Article" #TODO: This makes no sense
 
             template = yield context.extension.getTemplateModule(props.forumTemplate)
-            props = { posts: props.posts, forum: context.forum, postTemplate: props.postTemplate, options }
+            props = { posts: props.posts, forum: context.forum, forumTemplate: props.forumTemplate, postTemplate: props.postTemplate, options }
 
             script = "
                 <script>
                     var page = new Fora.Views.Page(
-                        '/shared/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}.js',
+                        '/js/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}.js',
                         #{JSON.stringify({ posts: props.posts, forum: context.forum, postTemplate: props.postTemplate, options })}
                     );
                 </script>"
 
-            context.koaContext.body = yield context.koaContext.render template, "/shared/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
+            context.koaContext.body = yield context.koaContext.render template, "/js/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
 
         ###
             Render a simple post

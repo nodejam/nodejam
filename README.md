@@ -1,29 +1,31 @@
+To know know Fora is about, see this https://slides.com/jeswin/fora/fullscreen#
+
 This is __not ready__ to be forked yet. Our first priority is to get the foundation right.
 The following dates are tentative and might change.
 
 Some re-usable components of fora have been moved to separate packages.
-- Fora Build (The build system, stable) https://github.com/jeswin/fora-build 
+- Fora Build (The build system, stable) https://github.com/jeswin/fora-build
 - Fora Models (Object Data Mapper, stable) https://github.com/jeswin/fora-models- Fora Extensions (Plugin Loading etc, stable) https://github.com/jeswin/fora-extensions
 
 Development Plan
 ================
 
-- Make everything isomorphic - June 30
-- ReactJS Safe Scripts Jeswin Kumar · July 4
-- Post Editor Jeswin Kumar · July 7
-- Create Forum Jeswin Kumar · July 9
-- Forum Settings Jeswin Kumar · July 11
-- Permissions Jeswin Kumar · July 13
-- Forum Members Jeswin Kumar · July 15
-- User Landing Jeswin Kumar · July 17
-- User Followers Jeswin Kumar · July 19
-- User Following Jeswin Kumar · July 21
+- Make everything isomorphic - July 14
+- ReactJS Safe Scripts Jeswin Kumar · July 18
+- Post Editor Jeswin Kumar · July 20
+- Create Forum Jeswin Kumar · July 21
+- Forum Settings Jeswin Kumar · July 22
+- Permissions Jeswin Kumar · July 24
+- Forum Members Jeswin Kumar · July 25
+- User Landing Jeswin Kumar · July 27
+- User Followers Jeswin Kumar · July 28
+- User Following Jeswin Kumar · July 29
 - Twitter Posting anup kesavan · July 15
 - Facebook Posting anup kesavan · July 15
 - RSS anup kesavan · Sun, July 15
-- Improve Install Experience on Mac and Linux anup kesavan 
-- Add support for Persona.org login anup kesavan 
-- 0.1 Alpha, July 23
+- Improve Install Experience on Mac and Linux anup kesavan
+- Add support for Persona.org login anup kesavan
+- 0.1 Alpha, July 31
 
 Installation
 ============
@@ -85,7 +87,7 @@ cd ..
 
 cd www-client
 npm install node-minify
-cd ..    
+cd ..
 ```
 
 Step 2: Configuration
@@ -107,8 +109,8 @@ To debug
 cd server
 ./debug.sh [--es5]
 ```
-- Attach reload=1 to url params for the page to refresh automatically when you make changes 
-- The --es5 option will transform ES6 code to ES5, allowing you to run on stable node. 
+- Attach reload=1 to url params for the page to refresh automatically when you make changes
+- The --es5 option will transform ES6 code to ES5, allowing you to run on stable node.
 - The --no-compile will skip compilation.
 
 For production
@@ -133,12 +135,11 @@ cd server
 
 options:
     --create            Creates the database
-    --delete            Deletes the database (Only available in NODE_ENV=development) 
+    --delete            Deletes the database (Only available in NODE_ENV=development)
     --recreate          Calls --delete and --create
-    
+
     --host hostname     Optional. If --host is not specified, local.foraproject.org is used.
     --post port         Optional. If --port is not specified, 80 is used.
 ```
 
-Open http://local.foraproject.org in your browser, if you haven't changed the host name. 
-
+Open http://local.foraproject.org in your browser, if you haven't changed the host name.
