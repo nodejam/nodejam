@@ -69,6 +69,8 @@ vercomp () {
     return 0
 }
 
+cd ../
+
 base_dir=$PWD
 dont_force=true
 common=false
@@ -247,7 +249,7 @@ install_coffee() {
     echo "Installing standard Coffee-Script compiler.. ($temp_cs)"
     cd $temp_cs
     npm install coffee-script
-    export PATH=$PATH:$PWD/node_modules/coffee-script/bin
+    export PATH=$PATH:$base_dir/node_modules/coffee-script/bin
     temp_new_cs=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
     git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
     cd $temp_new_cs
@@ -306,7 +308,7 @@ if $nginx_conf ; then
         if [ ! -f /usr/local/etc/nginx/sites-available/fora.conf ]; then
             mkdir -p /usr/local/etc/nginx/sites-available
             mkdir -p /usr/local/etc/nginx/sites-enabled
-            sudo sh -c "cat nginx.conf.sample | sed -e 's_/path/to/fora_"$PWD"_g' -e 's_fora.host.name_"$hostname"_g' > /usr/local/etc/nginx/sites-available/fora.conf"
+            sudo sh -c "cat install/nginx.conf.sample | sed -e 's_/path/to/fora_"$base_dir"_g' -e 's_fora.host.name_"$hostname"_g' > /usr/local/etc/nginx/sites-available/fora.conf"
             sudo ln -s /usr/local/etc/nginx/sites-available/fora.conf /usr/local/etc/nginx/sites-enabled/fora.conf
             echo "fora.conf copied to /usr/local/etc/nginx/sites-available and symlinked in sites-enabled"
             mkdir -p ~/Library/LaunchAgents
@@ -318,7 +320,7 @@ if $nginx_conf ; then
         fi
     else 
         if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
-            sudo sh -c "cat nginx.conf.sample | sed -e 's_/path/to/fora_"$PWD"_g' -e 's_fora.host.name_"$hostname"_g' > /etc/nginx/sites-available/fora.conf"
+            sudo sh -c "cat install/nginx.conf.sample | sed -e 's_/path/to/fora_"$base_dir"_g' -e 's_fora.host.name_"$hostname"_g' > /etc/nginx/sites-available/fora.conf"
             sudo ln -s /etc/nginx/sites-available/fora.conf /etc/nginx/sites-enabled/fora.conf
             echo "fora.conf copied to /etc/nginx/sites-available and symlinked in sites-enabled"
             sudo /etc/init.d/nginx restart
@@ -369,11 +371,11 @@ fi
 
 #Install config files
 if $config_files ; then
-    if [ ! -f ../server/src/conf/settings.config ]; then
-        cp ../server/src/conf/settings.config.sample ../server/src/conf/settings.config
+    if [ ! -f server/src/conf/settings.config ]; then
+        cp server/src/conf/settings.config.sample server/src/conf/settings.config
     fi
-    if [ ! -f ../server/src/conf/fora.config ]; then
-        sudo sh -c "cat ../server/src/conf/fora.config.sample | sed -e 's_fora.host.name_"$hostname"_g' > ../server/src/conf/fora.config"
+    if [ ! -f server/src/conf/fora.config ]; then
+        sudo sh -c "cat server/src/conf/fora.config.sample | sed -e 's_fora.host.name_"$hostname"_g' > server/src/conf/fora.config"
     fi
 fi
 
@@ -386,11 +388,10 @@ if $node_modules ; then
     sudo npm install -g react
     sudo npm install -g react-tools
         
-    cd ..
     sudo npm install
-	cd server
-	sudo npm install
-	cd ..
+    cd server
+    sudo npm install
+    cd ..
     cd install
 fi
 
