@@ -1,4 +1,4 @@
-To know know Fora is about, see this https://slides.com/jeswin/fora/fullscreen#
+To know what Fora is about, see this https://slides.com/jeswin/fora/fullscreen#
 
 This is __not ready__ to be forked yet. Our first priority is to get the foundation right.
 The following dates are tentative and might change.
