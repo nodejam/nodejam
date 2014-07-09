@@ -4,8 +4,9 @@ This is __not ready__ to be forked yet. Our first priority is to get the foundat
 The following dates are tentative and might change.
 
 Some re-usable components of fora have been moved to separate packages.
-- Fora Build (The build system, stable) https://github.com/jeswin/fora-build
-- Fora Models (Object Data Mapper, stable) https://github.com/jeswin/fora-models- Fora Extensions (Plugin Loading etc, stable) https://github.com/jeswin/fora-extensions
+- Fora Build (Build system, stable) https://github.com/jeswin/fora-build
+- Fora Models (Object Data Mapper, stable) https://github.com/jeswin/fora-models
+- Fora Extensions (Plugin Loading (Fora specific), stable) https://github.com/jeswin/fora-extensions
 
 Development Plan
 ================
