@@ -42,8 +42,8 @@ module.exports = {
                 options.loggedIn = true
 
             template = yield context.extension.getTemplateModule(props.forumTemplate)
-            props = { post: props.post, forum: context.forum, author, postTemplate: props.postTemplate }
+            props = { post: props.post, forum: context.forum, author, forumTemplate: props.forumTemplate, postTemplate: props.postTemplate }
 
-            context.koaContext.body = yield context.koaContext.render template, "/shared/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
+            context.koaContext.body = yield context.koaContext.render template, "/js/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
     }
 }

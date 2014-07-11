@@ -1,5 +1,6 @@
 
 PostBase = require('./post-base').PostBase
+TextContent = require('./fields').TextContent
 
 class Post extends PostBase
 
@@ -12,6 +13,11 @@ class Post extends PostBase
             def
         typeDef
 
+
+    constructor: (params) ->
+        super
+        if (!(@content instanceof TextContent))
+            @content = new TextContent(@content)
 
 
     getTypeDefinition: =>*

@@ -1,1 +1,1 @@
-module.exports = window.markdown;
+exports.markdown = window.markdown;
