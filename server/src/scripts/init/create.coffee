@@ -10,7 +10,6 @@ fields = require '../../models/fields'
 
 ForaTypeUtils = require('../../models/foratypeutils')
 typeUtils = new ForaTypeUtils()
-yield typeUtils.init([models, fields], models.Forum, models.Post)
 
 #create directories
 today = Date.now()
@@ -24,10 +23,11 @@ for p in ['assets', 'images', 'original-images']
                     logger.log "Created #{newPath}"
                 else
                     logger.log "#{newPath} exists"
-    
+
 #ensure indexes.
 (co ->*
     odm = require('fora-models')
+    yield typeUtils.init([models, fields], models.Forum, models.Post)
     db = new odm.Database conf.db, typeUtils.getTypeDefinitions()
     yield db.setupIndexes()
 )()

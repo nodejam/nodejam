@@ -3,11 +3,11 @@ ForaDbModel = require('./foramodel').ForaDbModel
 
 class UserBase extends ForaDbModel
 
-    class Summary extends ForaModel    
+    class Summary extends ForaModel
         @typeDefinition: {
             name: "user-summary",
             schema: {
-                type: 'object',        
+                type: 'object',
                 properties: {
                     id: { type: 'string' },
                     username: { type: 'string' },
@@ -17,31 +17,31 @@ class UserBase extends ForaDbModel
                 required: ['id', 'username', 'name', 'assets']
             }
         }
-        
+
         getUrl: =>
             "/~#{@username}"
 
 
         getAssetUrl: =>
             "/public/assets/#{@assets}"
-        
-        
+
+
     @Summary: Summary
-    
+
     @childModels: { Summary }
 
     @typeDefinition: {
         name: "user",
         collection: 'users',
         schema: {
-            type: 'object',      
+            type: 'object',
             properties: {
                 credentialId: { type: 'string' },
                 username: { type: 'string' },
                 name: { type: 'string' },
                 assets: { type: 'string' },
                 location: { type: 'string' },
-                followingCount: { type: 'integer' }, 
+                followingCount: { type: 'integer' },
                 followerCount: { type: 'integer' },
                 lastLogin: { type: 'number' },
                 about: { type: 'string' }
@@ -59,8 +59,8 @@ class UserBase extends ForaDbModel
             info: { type: 'user-info', field: 'userId', multiplicity: 'one' }
         }
     }
-    
-    
+
+
     getUrl: =>
         "/~#{@username}"
 
@@ -72,12 +72,12 @@ class UserBase extends ForaDbModel
 
 
     summarize: (context, db) =>
-        new User.Summary {
+        new UserBase.Summary {
             id: db.getRowId(@),
             @username,
             @name,
             @assets
-        }    
-       
-    
+        }
+
+
 exports.UserBase = UserBase
