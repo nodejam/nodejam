@@ -6,7 +6,7 @@ class Forum extends ForumBase
     @typeDefinition: ->
         typeDef = ForumBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield Forum.getTypeUtils().getTypeDefinition(obj.type)
+            def = yield* Forum.getTypeUtils().getTypeDefinition(obj.type)
             if def.ctor isnt Forum
                 throw new Error "Forum type definitions must have ctor set to Forum"
             def
@@ -15,7 +15,7 @@ class Forum extends ForumBase
 
     getTypeDefinition: =>*
         typeUtils = Forum.getTypeUtils()
-        yield typeUtils.getTypeDefinition(@type)
+        yield* typeUtils.getTypeDefinition(@type)
 
 
 

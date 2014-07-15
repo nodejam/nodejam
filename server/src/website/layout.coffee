@@ -48,7 +48,7 @@ render = (debug) ->
     (reactClass, pagePath, props = {}, params = {}) ->*
 
         if reactClass.componentInit
-            props = yield reactClass.componentInit(props)
+            props = yield* reactClass.componentInit(props)
 
         component = reactClass(props)
 

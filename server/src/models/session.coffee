@@ -1,4 +1,3 @@
-thunkify = require 'thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
 randomizer = require('../lib/randomizer')
@@ -8,12 +7,12 @@ randomizer = require('../lib/randomizer')
     A credential token can be converted into a user-session token.
 ###
 class Session extends ForaDbModel
-    
+
     @typeDefinition: {
         name: 'session',
         collection: 'sessions',
         schema: {
-            type: 'object',        
+            type: 'object',
             properties: {
                 credentialId: { type: 'string' }
                 userId: { type: 'string' },
@@ -33,23 +32,23 @@ class Session extends ForaDbModel
             { 'userId': 1, 'token': 1 },
         ]
     }
-    
 
 
-    #Upgrades a credential token to a user token. 
+
+    #Upgrades a credential token to a user token.
     #User tokens can be used to login to the app.
     upgrade: (username, context, db) =>*
         { context, db } = @getContext context, db
-        user = yield models.User.get { username, credentialId: @credentialId }, context, db
+        user = yield* models.User.get { username, credentialId: @credentialId }, context, db
         if user
-            @token = randomizer.uniqueId(24) 
+            @token = randomizer.uniqueId(24)
             @userId = user._id.toString()
             @user = user.summarize context, db
-            yield @save context, db
+            yield* @save context, db
         else
             throw new Error "User not found"
 
 
-    
-    
+
+
 exports.Session = Session

@@ -11,13 +11,12 @@ readfile = thunkify fs.readFile
 class ForaTypeUtils extends ForaTypeUtilsBase
 
 
-
     addTrustedUserTypes: (ctor, baseTypeName, dir, definitions) =>*
         extensionsDir = require("path").resolve(__dirname, '../extensions')
         typeDef = if typeof ctor.typeDefinition is "function" then ctor.typeDefinition() else ctor.typeDefinition
-        
-        for typeName in yield @getUserTypeDirectories path.join extensionsDir, dir
-            for version in yield @getUserTypeDirectories path.join extensionsDir, dir, typeName
+
+        for typeName in (yield* @getUserTypeDirectories path.join extensionsDir, dir)
+            for version in (yield* @getUserTypeDirectories path.join extensionsDir, dir, typeName)
                 ext = require(path.join extensionsDir, dir, typeName, version, 'model')
                 definitions["#{dir}/#{typeName}/#{version}"] = @mergeUserTypeDefinition ext, ctor, baseTypeName, dir, typeName, version, typeDef
         return
@@ -32,9 +31,9 @@ class ForaTypeUtils extends ForaTypeUtilsBase
             entry = yield stat filePath
             if entry.isDirectory()
                 dirs.push(file)
-        dirs      
+        dirs
 
-        
-        
-        
+
+
+
 module.exports = ForaTypeUtils

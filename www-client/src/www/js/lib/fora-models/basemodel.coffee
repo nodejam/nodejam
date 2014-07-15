@@ -9,10 +9,10 @@ class BaseModel
 
 
     @create: (params) ->*
-        typeDef = yield @getTypeDefinition()
+        typeDef = yield* @getTypeDefinition()
         
         if typeDef.discriminator
-            actualTypeDef = yield typeDef.discriminator params            
+            actualTypeDef = yield* typeDef.discriminator params            
             obj = new actualTypeDef.ctor params            
             obj.getTypeDefinition = ->*
                 actualTypeDef    
@@ -25,7 +25,7 @@ class BaseModel
     @getTypeDefinition: ->*
         if not @__typeDefinition
             typeDef = if typeof @typeDefinition is "function" then @typeDefinition() else @typeDefinition
-            @__typeDefinition = yield @getTypeUtils().getTypeDefinition(typeDef.name)
+            @__typeDefinition = yield* @getTypeUtils().getTypeDefinition(typeDef.name)
             if not @__typeDefinition
                 throw new Error "CANNOT_RESOLVE_TYPE_DEFINITION"
         @__typeDefinition
@@ -43,21 +43,21 @@ class BaseModel
 
 
     validate: (typeDefinition) ->*
-        typeDefinition ?= yield @getTypeDefinition()
+        typeDefinition ?= yield* @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
-        yield validator.validate @, typeDefinition
+        yield* validator.validate @, typeDefinition
             
 
 
     validateField: (value, fieldName, typeDefinition) ->*
-        typeDefinition ?= yield @getTypeDefinition()
+        typeDefinition ?= yield* @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
-        yield validator.validateField @, value, fieldName, typeDefinition
+        yield* validator.validateField @, value, fieldName, typeDefinition
         
 
     
     getTypeDefinition: =>*
-        yield @constructor.getTypeDefinition()
+        yield* @constructor.getTypeDefinition()
 
 
 

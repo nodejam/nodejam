@@ -7,7 +7,7 @@ class Post extends PostBase
     @typeDefinition: ->
         typeDef = PostBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield Post.getTypeUtils().getTypeDefinition(obj.type)
+            def = yield* Post.getTypeUtils().getTypeDefinition(obj.type)
             if def.ctor isnt Post
                 throw new Error "Post type definitions must have ctor set to Post"
             def
@@ -22,7 +22,7 @@ class Post extends PostBase
 
     getTypeDefinition: =>*
         typeUtils = Post.getTypeUtils()
-        yield typeUtils.getTypeDefinition(@type)
+        yield* typeUtils.getTypeDefinition(@type)
 
 
 exports.Post = Post

@@ -29,11 +29,11 @@ process.chdir __dirname
         
         ForaTypeUtils = require('../models/foratypeutils')
         typeUtils = new ForaTypeUtils()
-        yield typeUtils.init([models, fields], models.Forum, models.Post)
+        yield* typeUtils.init([models, fields], models.Forum, models.Post)
 
         Loader = require('fora-extensions').Loader
         loader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
-        yield loader.init()
+        yield* loader.init()
 
         odm = require('fora-models')
         db = new odm.Database(conf.db, typeUtils.getTypeDefinitions())
@@ -53,7 +53,7 @@ process.chdir __dirname
         layout = require './layout'
         app.use (next) ->*
             @render = if argv.debugclient then layout.render_DEBUG else layout.render
-            yield next
+            yield* next
 
         #monitoring and debugging
         if process.env.NODE_ENV is 'development'

@@ -14,7 +14,7 @@ module.exports = ({models, db, conf }) -> {
             token = @query.token ? @cookies.get('token')          
             
             if token
-                @session = yield models.Session.get { token }, {}, db
+                @session = yield* models.Session.get { token }, {}, db
 
             switch options.session
                 when 'admin'                    
@@ -32,6 +32,6 @@ module.exports = ({models, db, conf }) -> {
                     if not @session or not @session.user
                         return @throw 'no session', 403
                         
-            yield fn.apply @, arguments                
+            yield* fn.apply @, arguments                
 }
 

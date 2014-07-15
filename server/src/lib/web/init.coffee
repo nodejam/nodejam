@@ -11,6 +11,6 @@ module.exports = ({ typeUtils, conf }) ->
         else
             throw new Error "Invalid network"
             
-        yield next
+        yield* next
             
             

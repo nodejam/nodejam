@@ -5,18 +5,18 @@ randomizer = require '../lib/randomizer'
 models = require('./')
 
 class Credential extends ForaDbModel
-    
+
     emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     @typeDefinition: {
         name: 'credential',
         collection: 'credential',
         schema: {
-            type: 'object',        
+            type: 'object',
             properties: {
-                email: { type: 'string' },                
+                email: { type: 'string' },
                 emailIsVerified: { type: 'boolean' },
-                preferences: { 
+                preferences: {
                     type: 'object',
                     schema: {
                         properties: {
@@ -24,7 +24,7 @@ class Credential extends ForaDbModel
                         }
                     }
                 },
-                builtin: { 
+                builtin: {
                     type: 'object',
                     schema: {
                         properties: {
@@ -71,25 +71,25 @@ class Credential extends ForaDbModel
         },
         validate: (fields) ->*
             if @email and not emailRegex.test(@email)
-                ['Invalid email']            
+                ['Invalid email']
     }
-    
+
 
 
     #Create a credential token.
     #This can be used to upgrade to a user token, which is then used for login.
     createSession: (context, db) =>*
-        session = new models.Session { 
-            credentialId: db.getRowId(@), 
-            token: randomizer.uniqueId(24) 
-        }    
-        yield session.save context, db
+        session = new models.Session {
+            credentialId: db.getRowId(@),
+            token: randomizer.uniqueId(24)
+        }
+        yield* session.save context, db
 
-    
-    
+
+
     addBuiltin: (username, password, context, db) =>*
         { context, db } = @getContext context, db
-        existing = yield Credential.get({ "builtin.username": username }, context, db)
+        existing = yield* Credential.get({ "builtin.username": username }, context, db)
         if not existing
             hashed = yield thunkify(hasher) { plaintext: password }
             @builtin = {
@@ -98,15 +98,15 @@ class Credential extends ForaDbModel
                 salt: hashed.salt.toString('hex')
                 hash: hashed.key.toString('hex')
             }
-            yield @save context, db
+            yield* @save context, db
         else
             throw new Error "Built-in credential with the same username already exists"
-    
 
-        
+
+
     addTwitter: (id, username, accessToken, accessTokenSecret, context, db) =>*
         { context, db } = @getContext context, db
-        existing = yield Credential.get({ "twitter.id": id }, context, db)
+        existing = yield* Credential.get({ "twitter.id": id }, context, db)
         if not existing
             @twitter = {
                 id,
@@ -114,14 +114,14 @@ class Credential extends ForaDbModel
                 accessToken,
                 accessTokenSecret
             }
-            yield @save context, db
+            yield* @save context, db
         else
             throw new Error "Twitter credential with the same id already exists"
 
 
 
     @authenticateBuiltin: (username, password, context, db) ->*
-        credential = yield Credential.get({ "builtin.username": username }, context, db)
+        credential = yield* Credential.get({ "builtin.username": username }, context, db)
         if credential
             salt = new Buffer credential.builtin.salt, 'hex'
             result = yield thunkify(hasher) {plaintext: password, salt}
@@ -131,6 +131,6 @@ class Credential extends ForaDbModel
                 { success: false, error: "Invalid username or password" }
         else
             { success: false, error: "Invalid username or password" }
-        
+
 
 exports.Credential = Credential

@@ -27,9 +27,9 @@ for p in ['assets', 'images', 'original-images']
 #ensure indexes.
 (co ->*
     odm = require('fora-models')
-    yield typeUtils.init([models, fields], models.Forum, models.Post)
+    yield* typeUtils.init([models, fields], models.Forum, models.Post)
     db = new odm.Database conf.db, typeUtils.getTypeDefinitions()
-    yield db.setupIndexes()
+    yield* db.setupIndexes()
 )()
 
 setTimeout (-> process.exit()), 5000

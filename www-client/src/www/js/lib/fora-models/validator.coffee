@@ -7,7 +7,7 @@ class Validator
         errors = []
         
         for fieldName, def of typeDefinition.schema.properties                
-            @addError errors, fieldName, yield @validateField(obj, obj[fieldName], fieldName, def)
+            @addError errors, fieldName, yield* @validateField(obj, obj[fieldName], fieldName, def)
 
         if typeDefinition.schema.required?.length
             for field in typeDefinition.schema.required
@@ -15,7 +15,7 @@ class Validator
                     errors.push "#{field} is required"
 
         if typeDefinition.validate
-            customValidationResults = yield typeDefinition.validate.call obj
+            customValidationResults = yield* typeDefinition.validate.call obj
             return if customValidationResults?.length then errors.concat customValidationResults else errors
         else
             return errors
@@ -37,11 +37,11 @@ class Validator
                 for item in value
                     if @typeUtils.isCustomType(fieldDef.items.type)
                         if item.validate
-                            errors = errors.concat yield item.validate()
+                            errors = errors.concat yield* item.validate()
                         else if fieldDef.items.typeDefinition
-                            errors = errors.concat yield @validate item, fieldDef.items.typeDefinition
+                            errors = errors.concat yield* @validate item, fieldDef.items.typeDefinition
                     else
-                        errors = errors.concat yield @validateField obj, item, "[#{fieldName}]", fieldDef.items           
+                        errors = errors.concat yield* @validateField obj, item, "[#{fieldName}]", fieldDef.items           
             
             else
                 typeCheck = (fn) ->
@@ -60,9 +60,9 @@ class Validator
                     else
                         if @typeUtils.isCustomType(fieldDef.type)
                             if value.validate
-                                errors = errors.concat yield value.validate()
+                                errors = errors.concat yield* value.validate()
                             else if fieldDef.typeDefinition
-                                errors = errors.concat yield @validate value, fieldDef.typeDefinition
+                                errors = errors.concat yield* @validate value, fieldDef.typeDefinition
         
         errors            
 

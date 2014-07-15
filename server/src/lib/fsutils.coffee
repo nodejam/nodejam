@@ -12,7 +12,7 @@ dirsAreValid = (dirs) ->
                 return false
         return true
 
-    
+
 
 filenameIsValid = (file) ->
     #At the moment we allow only abcdef.xyz
@@ -21,11 +21,11 @@ filenameIsValid = (file) ->
 
 
 getDirPath = (dir, subdir) ->
-    if dirsAreValid [dir, subdir]    
+    if dirsAreValid [dir, subdir]
         if ['assets', 'images', 'original-images'].indexOf(dir) > -1
-            if not isNaN parseInt(subdir) 
+            if not isNaN parseInt(subdir)
                 return path.join.apply null, [conf.pubdir].concat [dir, subdir]
-    
+
     throw new Error "Invalid directory #{dir}/#{subdir}"
 
 
@@ -37,7 +37,7 @@ getFilePath = (dir, subdir, file) ->
                 return path.join.apply null, [conf.pubdir].concat [dir, subdir, file]
 
     throw new Error "Invalid path #{dir}/#{subdir}/#{file}"
-    
+
 
 
 getRandomFilePath = (dir, file) ->
@@ -47,7 +47,7 @@ getRandomFilePath = (dir, file) ->
             return path.join.apply null, [conf.pubdir].concat [dir, random, file]
 
     throw new Error "Invalid path #{dir}/#{file}"
-            
+
 
 
 copyFile = (src, dest) ->*
@@ -71,4 +71,3 @@ exports.getDirPath = getDirPath
 exports.getFilePath = getFilePath
 exports.getRandomFilePath = getRandomFilePath
 exports.copyFile = copyFile
-

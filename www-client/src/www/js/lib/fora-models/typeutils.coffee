@@ -31,7 +31,7 @@ class TypeUtils
     
     resolveReferences: =>*
         for name, def of TypeUtils.typeCache
-            yield @resolveReferencesInDef def
+            yield* @resolveReferencesInDef def
         return
         
     
@@ -49,16 +49,16 @@ class TypeUtils
                         }
                     }
                     prop.typeDefinition = subTypeDef
-                    yield @resolveReferencesInDef subTypeDef
+                    yield* @resolveReferencesInDef subTypeDef
             else if val.$ref
-                prop.typeDefinition = yield @getTypeDefinition val.$ref
+                prop.typeDefinition = yield* @getTypeDefinition val.$ref
         
         
         for property, value of def.schema.properties
             if value.type is 'array'
-                yield fn value.items, def.schema.properties[property].items
+                yield* fn value.items, def.schema.properties[property].items
             else
-                yield fn value, def.schema.properties[property]
+                yield* fn value, def.schema.properties[property]
         
 
     
@@ -67,12 +67,12 @@ class TypeUtils
             TypeUtils.typeCache = {}
             
             if @getCacheItems
-                items = yield @getCacheItems()
+                items = yield* @getCacheItems()
 
                 for modelName, def of items
                     TypeUtils.typeCache[modelName] = def        
             
-                yield @resolveReferences()
+                yield* @resolveReferences()
             
 
 
@@ -86,7 +86,7 @@ class TypeUtils
         #First check if it resolves in type cache
         #Then check if it resolves in the context
         #Otherwise build dynamic typedef
-        return (TypeUtils.typeCache[name] ? dynamicResolutionContext[name]) ? yield @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
+        return (TypeUtils.typeCache[name] ? dynamicResolutionContext[name]) ? yield* @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
 
     
 

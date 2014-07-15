@@ -3,14 +3,14 @@ LoginView = require('../views/users/login')
 
 module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) -> {
     login: ->*
-        token = yield models.Token.get { key: @query.key }, {}, db
+        token = yield* models.Token.get { key: @query.key }, {}, db
         
         if token
             if token.type is 'twitter-login-token'
-                credential = yield models.Credential.get { 'twitter.username': token.value.userDetails.username }, {}, db
-                users = yield credential.link 'users'
+                credential = yield* models.Credential.get { 'twitter.username': token.value.userDetails.username }, {}, db
+                users = yield* credential.link 'users'
             
-            session = yield credential.createSession {}, db
+            session = yield* credential.createSession {}, db
             
             for user in users
                 user.image = user.getAssetUrl() + "/" + user.username + "_t.jpg"
@@ -26,7 +26,7 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
 
             component = LoginView { users, cover, coverContent, nickname, token: session.token }    
             
-            yield @renderPage 'users/login', { 
+            yield* @renderPage 'users/login', { 
                 pageName: 'login-page',
                 token: session.token,
                 html: React.renderComponentToString component

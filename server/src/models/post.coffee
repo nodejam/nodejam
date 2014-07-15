@@ -16,7 +16,7 @@ class Post extends PostBase
     @typeDefinition: ->
         typeDef = PostBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield Post.getTypeUtils().getTypeDefinition(obj.type)
+            def = yield* Post.getTypeUtils().getTypeDefinition(obj.type)
             if def.ctor isnt Post
                 throw new Error "Post type definitions must have ctor set to Post"
             def
@@ -54,22 +54,22 @@ class Post extends PostBase
 
     addMetaList: (metaList) =>*
         @meta = @meta.concat (m for m in metaList when @meta.indexOf(m) is -1)
-        yield @save()
+        yield* @save()
 
 
 
     removeMetaList: (metaList) =>*
         @meta = (m for m in @meta when metaList.indexOf(m) is -1)
-        yield @save()
+        yield* @save()
 
 
 
     save: (context, db) =>*
         { context, db } = @getContext context, db
 
-        extensions = yield extensionLoader.load yield @getTypeDefinition()
-        model = yield extensions.getModel()
-        yield model.save.call @
+        extensions = yield* extensionLoader.load yield* @getTypeDefinition()
+        model = yield* extensions.getModel()
+        yield* model.save.call @
 
         #if stub is a reserved name, change it
         if @stub
@@ -82,11 +82,11 @@ class Post extends PostBase
         else
             @stub ?= randomizer.uniqueId(16)
 
-        result = yield super(context, db)
+        result = yield* super(context, db)
 
         if @state is 'published'
-            forum = yield models.Forum.getById @forumId, context, db
-            yield forum.refreshCache()
+            forum = yield* models.Forum.getById @forumId, context, db
+            yield* forum.refreshCache()
 
         result
 
@@ -94,13 +94,13 @@ class Post extends PostBase
 
     getAuthor: =>*
         { context, db } = @getContext context, db
-        yield models.User.getById @createdById, {}, db
+        yield* models.User.getById @createdById, {}, db
 
 
 
     getView: (name) =>*
-        extensions = yield extensionLoader.load yield @getTypeDefinition()
-        model = yield extensions.getModel()
-        yield model.view.call @, name
+        extensions = yield* extensionLoader.load yield* @getTypeDefinition()
+        model = yield* extensions.getModel()
+        yield* model.view.call @, name
 
 exports.Post = Post

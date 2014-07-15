@@ -9,23 +9,23 @@ class User extends UserBase
         { context, db } = @getContext context, db
         
         if not db.getRowId(@)
-            existing = yield User.get { @username }, context, db
+            existing = yield* User.get { @username }, context, db
             if not existing
                 @assets = "#{objects.getHashCode(@username) % conf.userDirCount}"
                 @lastLogin = 0
                 @followingCount = 0
                 @followerCount = 0
-                yield super 
+                yield* super 
             else
                 throw new Error "User(#{@username}) already exists"
         else
-            yield super 
+            yield* super 
 
                   
                                                             
     getPosts:(limit, sort, context, db) =>*
         { context, db } = @getContext context, db
-        yield models.Post.find({ 'createdById': db.getRowId(@), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+        yield* models.Post.find({ 'createdById': db.getRowId(@), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
 
         
     

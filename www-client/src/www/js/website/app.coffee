@@ -11,11 +11,11 @@ class App
                 fields = require('../models/fields')
                 ForaTypeUtils = require('../models/foratypeutils')
                 typeUtils = new ForaTypeUtils()
-                yield typeUtils.init([models, fields], models.Forum, models.Post)
+                yield* typeUtils.init([models, fields], models.Forum, models.Post)
 
                 reactClass = require(pageName)
                 if reactClass.componentInit
-                    props = yield reactClass.componentInit props
+                    props = yield* reactClass.componentInit props
                 component = reactClass(props)
                 React.renderComponent(component, document.getElementsByClassName("page-container")[0])
 
