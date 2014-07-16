@@ -5,29 +5,14 @@ export NODE_PATH=$NODE_PATH:`pwd`/app/app-lib
 
 debugapi=false
 debugweb=false
-debugclient=false
 
-while :
-do
-    case $1 in
+for i; do
+    case $i in
         --debugapi)
             debugapi=true
-            shift
             ;;
         --debugweb)
             debugweb=true
-            shift
-            ;;
-        --debugclient)
-            debugclient=true
-            shift
-            ;;
-        -*)
-            echo "WARN: Unknown option (ignored): $1" >&2
-            shift
-            ;;
-        *)  # no more options. Stop while loop        
-            break
             ;;
     esac
 done
@@ -38,21 +23,16 @@ start_processes() {
     kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}') 2>/dev/null
 
     if ! $debugapi ; then
-        node --harmony app/api/app.js localhost 10982 fora_api &
+        node --harmony app/api/app.js localhost 10982 fora_api "$@" 2> apierrors.log &
     else
-        node --debug-brk --harmony app/api/app.js localhost 10982 fora_api &
+        node --debug-brk --harmony app/api/app.js localhost 10982 fora_api "$@" 2> apierrors.log &
     fi
 
     if ! $debugweb ; then
-        if ! $debugclient ; then
-            node --harmony app/website/app.js localhost 10981 fora_website &
-        else
-            node --harmony app/website/app.js localhost 10981 fora_website --debugclient &
-        fi
+        node --harmony app/website/app.js localhost 10981 fora_website "$@" 2> weberrors.log &
     else
-        node --debug-brk --harmony app/website/app.js localhost 10981 fora_website &
+        node --debug-brk --harmony app/website/app.js localhost 10981 fora_website 2> weberrors.log &
     fi
 }
 
-start_processes
-
+start_processes $@

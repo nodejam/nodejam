@@ -1,6 +1,6 @@
 (function() {
     "use strict";
-    
+
     var start = Date.now();
 
     var foraBuild = require('fora-build');
@@ -9,10 +9,9 @@
     var optimist = require('optimist')
         .usage('Build the fora project.\nUsage: $0')
         .alias('h', 'help')
-        .describe('debug', 'Compile in debug mode')
         .describe('debugweb', 'Start debugger for web')
         .describe('debugapi', 'Start debugger for api')
-        .describe('debugclient', 'Enable client-side debugging')
+        .describe('args-someparam', 'Pass --someparam to api and web processes; eg: --args-showerrors, --args-debugclient')
         .describe('usees6', 'Use es6 generators in browser (skips transpiler)')
         .describe('client', "Build the client")
         .describe('server', "Build the server")
@@ -39,12 +38,12 @@
     build.state.monitor = !argv.norun;
 
     if (argv.client || argv.server) {
-        build.state.buildClient = argv.client;    
+        build.state.buildClient = argv.client;
         build.state.buildServer = argv.server;
     } else {
         build.state.buildClient = true;
         build.state.buildServer = true;
-    }    
+    }
 
     if (argv.debugapi) build.state.debugapi = true;
     if (argv.debugweb) build.state.debugweb = true;
@@ -63,7 +62,8 @@
             var params = ["server/run.sh"];
             if (argv.debugapi) params.push("--debugapi");
             if (argv.debugweb) params.push("--debugweb");
-            if (argv.debugclient) params.push("--debugclient");
+            var moreArgs = process.argv.filter(function(p) { return /^--args-/.test(p); }).map(function(p) { return p.replace(/^--args-/, '--') });
+            params = params.concat(moreArgs);
             console.log("Restarting the server.....");
             var script = spawn("sh", params);
         }
@@ -76,17 +76,17 @@
         var elapsed = Date.now() - start;
 
         var sharedTime = (shared.state.end - shared.state.start)/1000;
-        console.log("Build(shared): " + sharedTime + "s");        
-        
+        console.log("Build(shared): " + sharedTime + "s");
+
         if (this.state.buildServer) {
             var serverTime = (server.state.end - server.state.start)/1000;
-            console.log("Build(server): " + serverTime + "s");        
+            console.log("Build(server): " + serverTime + "s");
         }
         if (this.state.buildClient) {
             var clientTime = (client.state.end - client.state.start)/1000;
             console.log("Build(client): " + clientTime + "s");
         }
-        console.log("Build(total): " + (elapsed/1000) + "s");    
+        console.log("Build(total): " + (elapsed/1000) + "s");
     });
 
     /* Monitor? */

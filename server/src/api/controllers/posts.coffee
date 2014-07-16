@@ -11,7 +11,7 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
             rating: 0,
             savedAt: Date.now()
         }
-        
+
         yield* @parser.map post, yield* mapper.getMappableFields yield* post.getTypeDefinition()
         post = yield* forum.addPost post
         @body = post
@@ -20,10 +20,10 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
     edit: auth.handler { session: 'user' }, (forum, post) ->*
         forum = yield* models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
         post = yield* models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
-        
+
         if post
-            if (post.createdBy.username is @session.user.username) 
-                post.savedAt = Date.now()                       
+            if (post.createdBy.username is @session.user.username)
+                post.savedAt = Date.now()
                 yield* @parser.map post, yield* mapper.getMappableFields yield* post.getTypeDefinition()
                 if yield* @parser.body('state') is 'published'
                     post.state = 'published'
@@ -46,13 +46,13 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
                 @throw 'access denied', 403
         else
             @throw 'invalid post', 400
-                 
+
 
     admin_update: auth.handler { session: 'admin' }, (forum, post) ->*
         forum = yield* models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
         post = yield* models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
 
-        if post 
+        if post
             meta = yield* @parser.body('meta')
             if meta
                 post = yield* post.addMetaList meta.split(',')
@@ -60,5 +60,3 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
         else
             @throw 'invalid post', 400
 }
-
-
