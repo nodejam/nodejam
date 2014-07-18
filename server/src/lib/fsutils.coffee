@@ -1,6 +1,6 @@
 path = require 'path'
 fs = require 'fs'
-thunkify = require 'thunkify'
+thunkify = require 'fora-node-thunkify'
 conf = require '../conf'
 
 
@@ -54,7 +54,7 @@ copyFile = (src, dest) ->*
     src = fs.createReadStream src
     dest = fs.createWriteStream dest
     src.pipe dest
-    yield thunkify(src.on).call src, 'end'
+    yield* thunkify(src.on).call src, 'end'
 
 
 

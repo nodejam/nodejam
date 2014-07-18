@@ -1,5 +1,5 @@
 gm = require 'gm'
-thunkify = require 'thunkify'
+thunkify = require 'fora-node-thunkify'
 logger = require '../../lib/logger'
 randomizer = require '../../lib/randomizer'
 fsutils = require '../../lib/fsutils'
@@ -75,5 +75,5 @@ resizeImage = (src, dest, options) ->*
             else
                 img = img.resize(options.width, options.height)
 
-        yield thunkify(img.write).call img, dest
+        yield* thunkify(img.write).call img, dest
         utils.log "Resized #{src} to #{dest} [#{JSON.stringify options}]"

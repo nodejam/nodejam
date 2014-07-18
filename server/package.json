@@ -7,7 +7,7 @@
     "co": "*",
     "co-body": "*",
     "co-multipart": "*",
-    "thunkify    ": "*",
+    "fora-node-thunkify": "*",
     "mongodb": "*",
     "validator": "*",
     "sanitizer": "*",
@@ -22,7 +22,7 @@
     "path-to-regexp": "*",
     "fora-models": "*",
     "fora-extensions": "*",
-    "fora-react-sandbox": "*",    
-    "fora-webrequestparser": "*"    
+    "fora-react-sandbox": "*",
+    "fora-webrequestparser": "*"
   }
 }

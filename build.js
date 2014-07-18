@@ -3,20 +3,21 @@
 
     var start = Date.now();
 
-    var foraBuild = require('fora-build');
+    var foraBuild = require('../fora-build');
     var spawn = foraBuild.tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
 
     var optimist = require('optimist')
         .usage('Build the fora project.\nUsage: $0')
         .alias('h', 'help')
-        .describe('debugweb', 'Start debugger for web')
-        .describe('debugapi', 'Start debugger for api')
-        .describe('args-someparam', 'Pass --someparam to api and web processes; eg: --args-showerrors, --args-debugclient')
-        .describe('usees6', 'Use es6 generators in browser (skips transpiler)')
         .describe('client', "Build the client")
         .describe('server', "Build the server")
         .describe('norun', "Do not start the server after building")
         .describe('threads', "Number of threads to use for the build (default: 8)")
+        .describe('debugweb', 'Start debugger for web')
+        .describe('debugapi', 'Start debugger for api')
+        .describe('args-debugclient', 'Do not minify JS files sent to browser')
+        .describe('args-showerrors', 'Display errors in the console')
+        .describe('usees6', 'Use es6 generators in browser (skips transpiler)')
         .describe('help', 'Print this help screen');
 
     var argv = optimist.argv;

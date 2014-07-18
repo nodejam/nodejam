@@ -1,4 +1,4 @@
-thunkify = require 'thunkify'
+thunkify = require 'fora-node-thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
 hasher = require '../lib/hasher'
 randomizer = require '../lib/randomizer'
@@ -91,7 +91,7 @@ class Credential extends ForaDbModel
         { context, db } = @getContext context, db
         existing = yield* Credential.get({ "builtin.username": username }, context, db)
         if not existing
-            hashed = yield thunkify(hasher) { plaintext: password }
+            hashed = yield* thunkify(hasher) { plaintext: password }
             @builtin = {
                 method: 'PBKDF2'
                 username: username
@@ -124,7 +124,7 @@ class Credential extends ForaDbModel
         credential = yield* Credential.get({ "builtin.username": username }, context, db)
         if credential
             salt = new Buffer credential.builtin.salt, 'hex'
-            result = yield thunkify(hasher) {plaintext: password, salt}
+            result = yield* thunkify(hasher) {plaintext: password, salt}
             if credential.hash is result.key.toString 'hex'
                 { token: credential.token }
             else

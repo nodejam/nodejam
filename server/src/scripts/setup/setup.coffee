@@ -5,7 +5,7 @@ path = require 'path'
 fs = require 'fs'
 querystring = require 'querystring'
 co = require 'co'
-thunkify = require 'thunkify'
+thunkify = require 'fora-node-thunkify'
 logger = require '../../lib/logger'
 data = require './data'
 conf = require '../../conf'
@@ -26,7 +26,7 @@ init = ->*
 
     ForaTypeUtils = require('../../models/foratypeutils')
     typeUtils = new ForaTypeUtils()
-    yield typeUtils.init([models, fields], models.Forum, models.Post)
+    yield* typeUtils.init([models, fields], models.Forum, models.Post)
 
 
     odm = require('fora-models')
@@ -37,7 +37,7 @@ init = ->*
     del = ->*
             if process.env.NODE_ENV is 'development'
                 logger.log 'Deleting main database.'
-                db = yield database.deleteDatabase()
+                db = yield* database.deleteDatabase()
                 logger.log 'Everything is gone now.'
             else
                 logger.log "Delete database can only be used if NODE_ENV is 'development'"
@@ -69,16 +69,16 @@ init = ->*
                         cred.accessTokenSecret = user.credential_accessTokenSecret
                         cred.email = user.email
 
-                resp = yield _doHttpRequest '/api/v1/credentials', querystring.stringify(cred), 'post'
+                resp = yield* _doHttpRequest '/api/v1/credentials', querystring.stringify(cred), 'post'
                 token = JSON.parse(resp).token
 
-                resp = yield _doHttpRequest "/api/v1/users?token=#{token}", querystring.stringify(user), 'post'
+                resp = yield* _doHttpRequest "/api/v1/users?token=#{token}", querystring.stringify(user), 'post'
                 resp = JSON.parse resp
                 logger.log "Created #{resp.username}"
                 _globals.sessions[user.username] = resp
 
                 logger.log "Creating session for #{resp.username}"
-                resp = yield _doHttpRequest "/api/v1/login?token=#{token}", querystring.stringify({ token, username: user.username }), 'post'
+                resp = yield* _doHttpRequest "/api/v1/login?token=#{token}", querystring.stringify({ token, username: user.username }), 'post'
                 _globals.sessions[user.username].token = JSON.parse(resp).token
 
             forums = {}
@@ -93,14 +93,14 @@ init = ->*
                     forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'
                 delete forum._about
                 forum.type = 'forums/simple/1.0.0'
-                resp = yield _doHttpRequest "/api/v1/forums?token=#{token}", querystring.stringify(forum), 'post'
+                resp = yield* _doHttpRequest "/api/v1/forums?token=#{token}", querystring.stringify(forum), 'post'
                 forumJson = JSON.parse resp
                 forums[forumJson.stub] = forumJson
                 logger.log "Created #{forumJson.name}"
 
                 for u, uToken of _globals.sessions
                     if uToken.token isnt token
-                        resp = yield _doHttpRequest "/api/v1/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
+                        resp = yield* _doHttpRequest "/api/v1/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
                         resp = JSON.parse resp
                         logger.log "#{u} joined #{forum.name}"
 
@@ -123,12 +123,12 @@ init = ->*
                 delete article._meta
 
 
-                resp = yield _doHttpRequest "/api/v1/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'
+                resp = yield* _doHttpRequest "/api/v1/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'
                 resp = JSON.parse resp
                 logger.log "Created #{resp.title} with stub #{resp.stub}"
 
                 for metaTag in meta.split(',')
-                    resp = yield _doHttpRequest "/api/v1/admin/forums/#{forum}/posts/#{resp.stub}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'
+                    resp = yield* _doHttpRequest "/api/v1/admin/forums/#{forum}/posts/#{resp.stub}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'
                     resp = JSON.parse resp
                     logger.log "Added #{metaTag} tag to article #{resp.title}."
 
@@ -137,16 +137,16 @@ init = ->*
 
 
     if argv.delete
-        yield del()
+        yield* del()
         process.exit()
 
     else if argv.create
-        yield create()
+        yield* create()
         process.exit()
 
     else if argv.recreate
-            yield del()
-            yield create()
+            yield* del()
+            yield* create()
             process.exit()
     else
         logger.log 'Invalid option.'
@@ -181,5 +181,5 @@ doHttpRequest = (url, data, method, cb) ->
     req.end()
 
 (co ->*
-    yield init()
+    yield* init()
 )()
