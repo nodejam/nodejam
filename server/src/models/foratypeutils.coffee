@@ -25,10 +25,10 @@ class ForaTypeUtils extends ForaTypeUtilsBase
 
     getUserTypeDirectories: (dir) =>*
         dirs = []
-        files = yield readdir dir
+        files = yield* readdir dir
         for file, index in files
             filePath = "#{dir}/#{file}"
-            entry = yield stat filePath
+            entry = yield* stat filePath
             if entry.isDirectory()
                 dirs.push(file)
         dirs

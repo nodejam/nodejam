@@ -98,5 +98,10 @@
     }
 
     /* Start */
-    build.start(build.state.monitor);
+    try {
+        build.start(build.state.monitor);
+    } catch(e) {
+        console.log(e.stack);
+        if (e._inner) console.log(e.inner.stack);
+    }
 })();

@@ -4,9 +4,9 @@
     var ForaUI = require('fora-ui');
 
     var index = function*() {
-        var posts = yield this.forum.getPosts(12, { "sort": { "_id": -1 }});
+        var posts = yield* this.forum.getPosts(12, { "sort": { "_id": -1 }});
 
-        yield ForaUI.renderers.simple.forum({
+        yield* ForaUI.renderers.simple.forum({
             posts: posts,
             forumTemplate: 'index',
             postTemplate: 'list'
@@ -15,9 +15,9 @@
 
 
     var post = function*(stub) {
-        post = yield this.forum.getPost(stub);
+        post = yield* this.forum.getPost(stub);
 
-        yield ForaUI.renderers.simple.post({
+        yield* ForaUI.renderers.simple.post({
             post: post,
             forumTemplate: 'item',
             postTemplate: 'item'

@@ -23,7 +23,7 @@ downloadImage = (imageUrl) ->*
     _curl = "curl --proto =http,https --proto-redir =http,https --max-filesize 5000000 " + imageUrl + " > #{filePath}"
 
     exec = thunkify exec
-    yield exec _curl
+    yield* exec _curl
 
     logger.log "Downloaded #{imageUrl} to #{filePath}"
     filePath
