@@ -1,11 +1,6 @@
 (function() {
     "use strict";
 
-    var start = Date.now();
-
-    var foraBuild = require('../fora-build');
-    var spawn = foraBuild.tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
-
     var optimist = require('optimist')
         .usage('Build the fora project.\nUsage: $0')
         .alias('h', 'help')
@@ -15,6 +10,7 @@
         .describe('threads', "Number of threads to use for the build (default: 8)")
         .describe('debugweb', 'Start debugger for web')
         .describe('debugapi', 'Start debugger for api')
+        .describe('debugbuild', 'Debug the build process itself')
         .describe('args-debugclient', 'Do not minify JS files sent to browser')
         .describe('args-showerrors', 'Display errors in the console')
         .describe('usees6', 'Use es6 generators in browser (skips transpiler)')
@@ -25,6 +21,13 @@
         optimist.showHelp();
         process.exit(0);
     }
+
+    GLOBAL.ENABLE_DEBUG_MODE = argv.debugbuild;
+
+    var start = Date.now();
+
+    var foraBuild = require('../fora-build');
+    var spawn = foraBuild.tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
 
     /* Create the build */
     var threads = argv.threads ? parseInt(argv.threads) : 8;
@@ -102,6 +105,6 @@
         build.start(build.state.monitor);
     } catch(e) {
         console.log(e.stack);
-        if (e._inner) console.log(e.inner.stack);
+        if (e._inner) console.log(e._inner.stack);
     }
 })();

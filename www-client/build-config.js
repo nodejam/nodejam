@@ -101,12 +101,14 @@
                 ));
 
                 if (!this.build.state.debugclient) {
-                    var minify = function(options) {
-                        return function(cb) {
-                            options.callback = cb;
-                            new compressor.minify(options);
-                        }
-                    };
+                    var minify = function*(options) {
+                        yield function(options) {
+                            return function(cb) {
+                                options.callback = cb;
+                                new compressor.minify(options);
+                            }
+                        }(options);
+                    }
 
                     console.log("Minifying CSS to lib.css");
                     yield* minify({
