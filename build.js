@@ -26,7 +26,7 @@
 
     var start = Date.now();
 
-    var foraBuild = require('../fora-build');
+    var foraBuild = require('fora-build');
     var spawn = foraBuild.tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
 
     /* Create the build */

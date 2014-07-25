@@ -88,7 +88,7 @@ process.chdir __dirname
 
     #Start
     app.listen port
-
+    console.log "RRR"
     logger.log "Fora API started at #{new Date} on #{host}:#{port}"
 
 )()
