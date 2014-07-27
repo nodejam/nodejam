@@ -8,10 +8,12 @@
         .describe('server', "Build the server")
         .describe('norun', "Do not start the server after building")
         .describe('threads', "Number of threads to use for the build (default: 8)")
-        .describe('debugweb', 'Start debugger for web')
-        .describe('debugapi', 'Start debugger for api')
-        .describe('debugbuild', 'Debug the build process itself')
-        .describe('args-debugclient', 'Do not minify JS files sent to browser')
+        .describe('debug-api', 'Start debugger for api')
+        .describe('debug-brk-api', 'Start debugger for api with breakpoint')
+        .describe('debug-web', 'Start debugger for web')
+        .describe('debug-brk-web', 'Start debugger for web with breakpoint')
+        .describe('debug-build', 'Debug the build process itself')
+        .describe('args-debug-client', 'Do not minify JS files sent to browser')
         .describe('args-showerrors', 'Display errors in the console')
         .describe('usees6', 'Use es6 generators in browser (skips transpiler)')
         .describe('help', 'Print this help screen');
@@ -22,7 +24,7 @@
         process.exit(0);
     }
 
-    GLOBAL.ENABLE_DEBUG_MODE = argv.debugbuild;
+    GLOBAL.ENABLE_DEBUG_MODE = argv['debug-build'];
 
     var start = Date.now();
 
@@ -49,9 +51,8 @@
         build.state.buildServer = true;
     }
 
-    if (argv.debugapi) build.state.debugapi = true;
-    if (argv.debugweb) build.state.debugweb = true;
-    if (argv.debugclient) build.state.debugclient = true;
+    if (argv['debug-api'] || argv['debug-brk-api']) build.state.debugApi = true;
+    if (argv['debug-web'] || argv['debug-brk-web']) build.state.debugWeb = true;
     if (argv.usees6) build.state.useES6 = true;
 
     /* Create configuration */
@@ -64,8 +65,10 @@
     build.job(function*() {
         if (this.state.monitor) {
             var params = ["server/run.sh"];
-            if (argv.debugapi) params.push("--debugapi");
-            if (argv.debugweb) params.push("--debugweb");
+            if (argv['debug-api']) params.push("--debug-api");
+            if (argv['debug-brk-api']) params.push("--debug-brk-api");
+            if (argv['debug-web']) params.push("--debug-web");
+            if (argv['debug-brk-web']) params.push("--debug-brk-web");
             var moreArgs = process.argv.filter(function(p) { return /^--args-/.test(p); }).map(function(p) { return p.replace(/^--args-/, '--') });
             params = params.concat(moreArgs);
             console.log("Restarting the server.....");

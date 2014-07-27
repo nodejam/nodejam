@@ -50,7 +50,7 @@ process.chdir __dirname
     #layout
     layout = require './layout'
     app.use (next) ->*
-        @render = if argv.debugclient then layout.render_DEBUG else layout.render
+        @render = if argv['debug-client'] then layout.render_DEBUG else layout.render
         yield* next
 
     #monitoring and debugging

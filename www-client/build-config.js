@@ -100,7 +100,7 @@
                         .map(function(e) { return e.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); })
                 ));
 
-                if (!this.build.state.debugclient) {
+                if (!this.build.state.debugClient) {
                     var minify = function*(options) {
                         yield function(options) {
                             return function(cb) {
@@ -151,7 +151,7 @@
                     reactPages.concat(extensions).map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
                     " > app/www/js/bundle.js";
 
-                if (this.build.state.debugclient) {
+                if (this.build.state.debugClient) {
                     cmdMakeLib += " --debug";
                     cmdMakeBundle += " --debug";
                 }
