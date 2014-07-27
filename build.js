@@ -14,7 +14,7 @@
         .describe('debug-brk-web', 'Start debugger for web with breakpoint')
         .describe('debug-build', 'Debug the build process itself')
         .describe('args-debug-client', 'Do not minify JS files sent to browser')
-        .describe('args-showerrors', 'Display errors in the console')
+        .describe('args-show-errors', 'Display errors in the console')
         .describe('use-es6', 'Use es6 generators in browser (skips transpiler)')
         .describe('help', 'Print this help screen');
 
