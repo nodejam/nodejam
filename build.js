@@ -53,7 +53,7 @@
 
     if (argv['debug-api'] || argv['debug-brk-api']) build.state.debugApi = true;
     if (argv['debug-web'] || argv['debug-brk-web']) build.state.debugWeb = true;
-    if (argv.'use-es6') build.state.useES6 = true;
+    if (argv['use-es6']) build.state.useES6 = true;
 
     /* Create configuration */
     var shared = build.configure(sharedConfig, 'shared');
