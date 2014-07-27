@@ -3,7 +3,6 @@
     "koa": "*",
     "koa-route": "*",
     "koa-favicon": "*",
-    "koa-hbs    ": "*",
     "co": "*",
     "co-body": "*",
     "co-multipart": "*",
