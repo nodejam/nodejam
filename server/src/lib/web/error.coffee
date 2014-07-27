@@ -7,4 +7,4 @@ module.exports = (app) ->
         printer.call console, err.stack
         if err._inner
             printer.call console, err._inner
-            printer.call console.err._inner.stack
+            printer.call console, err._inner.stack
