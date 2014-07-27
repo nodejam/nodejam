@@ -6,8 +6,6 @@ class PostBase extends ForaDbModel
         {
             name: "post",
             collection: 'posts',
-            initialize: (obj) ->*
-                yield* obj.initialize()
             schema: {
                 type: 'object',
                 properties: {

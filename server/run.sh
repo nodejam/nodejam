@@ -6,6 +6,11 @@ export NODE_PATH=$NODE_PATH:`pwd`/app/app-lib
 debugapi=false
 debugweb=false
 
+if [ $NODE_ENV = "development" ]; then
+    echo "Longer stack traces are on: --stack-trace-limit=1000"
+    long_stack="--stack-trace-limit=1000"
+fi
+
 for i; do
     case $i in
         --debugapi)
@@ -23,15 +28,15 @@ start_processes() {
     kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}') 2>/dev/null
 
     if ! $debugapi ; then
-        node --harmony app/api/app.js localhost 10982 fora_api "$@" 2> apierrors.log &
+        node --harmony $long_stack app/api/app.js localhost 10982 fora_api "$@" 2> apierrors.log &
     else
-        node --debug-brk --harmony app/api/app.js localhost 10982 fora_api "$@" 2> apierrors.log &
+        node --debug-brk --harmony $long_stack app/api/app.js localhost 10982 fora_api "$@" 2> apierrors.log &
     fi
 
     if ! $debugweb ; then
-        node --harmony app/website/app.js localhost 10981 fora_website "$@" 2> weberrors.log &
+        node --harmony $long_stack app/website/app.js localhost 10981 fora_website "$@" 2> weberrors.log &
     else
-        node --debug-brk --harmony app/website/app.js localhost 10981 fora_website 2> weberrors.log &
+        node --debug-brk --harmony $long_stack app/website/app.js localhost 10981 fora_website 2> weberrors.log &
     fi
 }
 

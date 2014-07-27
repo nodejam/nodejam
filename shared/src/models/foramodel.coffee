@@ -16,11 +16,5 @@ class ForaDbModel extends odm.DatabaseModel
         typeUtils
 
 
-
-    initialize: =>*
-        @["typeDefinition"] = yield* @getTypeDefinition()
-
-
-
 exports.ForaModel = ForaModel
 exports.ForaDbModel = ForaDbModel
