@@ -15,7 +15,7 @@ options:
   --nginx-conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
   --host hostname     Adds an entry into /etc/hosts. eg: --host test.myforaproj.com
   --mongodb           Install a pre-compiled version of MongoDb (for now this works only on ubuntu)
-  --mongodb-latest    Compile and install the latest MongoDb  
+  --mongodb-latest    Compile and install the latest MongoDb
   --gm                Install Graphics Magick
   --config-files      Creates config files if they don't exist
   --node-modules      Install Node Modules
@@ -31,11 +31,6 @@ if [ $# -eq 0 ]
   then
     help
     exit 0
-fi
-
-if [ "$(whoami)" == "root" ]; then
-	echo "This script must not be run as root. It will prompt for password as required."
-	exit 1
 fi
 
 vercomp () {
@@ -78,13 +73,14 @@ node=false
 coffee=false
 nginx=false
 nginx_conf=false
-hostname="local.foraproject.org"            
+hostname="local.foraproject.org"
 mongodb=false
 mongodb_latest=false
 gm=false
 config_files=false
 node_modules=false
 host=false
+disallow_root=true
 
 MACHINE_TYPE=`uname -m`
 if [ ${MACHINE_TYPE} == 'x86_64' ]; then
@@ -190,15 +186,27 @@ do
             dont_force=false
             shift
             ;;
+        --allowroot)
+            disallow_root=false
+            shift
+            ;;
         -*)
             echo "WARN: Unknown option (ignored): $1" >&2
             shift
             ;;
-        *)  # no more options. Stop while loop        
+        *)  # no more options. Stop while loop
             break
             ;;
     esac
 done
+
+#Don't allow root without the --allowroot option
+if $disallow_root ; then
+    if [ "$(whoami)" == "root" ]; then
+        echo "This script must not be run as root. It will prompt for password as required."
+        exit 1
+    fi
+fi
 
 install_brew(){
     if [ "$PLATFORM" = "darwin" ]; then
@@ -243,9 +251,9 @@ if $node ; then
     fi
 fi
 
-install_coffee() {    
+install_coffee() {
     temp_cs=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
-    
+
     echo "Installing standard Coffee-Script compiler.. ($temp_cs)"
     cd $temp_cs
     npm install coffee-script
@@ -255,15 +263,15 @@ install_coffee() {
     cd $temp_new_cs
     echo "Switching to earlier version (1e377ed59bc4f679863b7543f0c33d1f89dbf6ac), until a parser bug is fixed.."
     git checkout 1e377ed59bc4f679863b7543f0c33d1f89dbf6ac
-    npm install mkdirp  
+    npm install mkdirp
     npm install jison
     echo "Building Coffee-Script"
-    cake build:parser  
-    cake build 
+    cake build:parser
+    cake build
     echo "Installing Coffee-Script"
-    sudo npm install -g mkdirp  
+    sudo npm install -g mkdirp
     sudo $temp_cs/node_modules/coffee-script/bin/cake install
-    
+
     rm -rf $temp_cs
     rm -rf $temp_new_cs
 }
@@ -278,7 +286,7 @@ if $coffee ; then
         if [ "$?" -eq 0 ] ; then
             echo "Coffee-Script is installed and supports yield. Update is not needed."
         else
-            echo "Coffee-Script is installed but does not support yield. Will update compiler." 
+            echo "Coffee-Script is installed but does not support yield. Will update compiler."
             install_coffee
         fi
     else
@@ -318,7 +326,7 @@ if $nginx_conf ; then
         else
             echo "fora.conf exists /usr/local/etc/nginx/sites-*/. Will not overwrite, you must delete them manually."
         fi
-    else 
+    else
         if [ ! -f /etc/nginx/sites-available/fora.conf ]; then
             sudo sh -c "cat install/nginx.conf.sample | sed -e 's_/path/to/fora_"$base_dir"_g' -e 's_fora.host.name_"$hostname"_g' > /etc/nginx/sites-available/fora.conf"
             sudo ln -s /etc/nginx/sites-available/fora.conf /etc/nginx/sites-enabled/fora.conf
@@ -338,7 +346,7 @@ if $host ; then
     else
         echo "Adding to /etc/hosts..."
         echo "127.0.0.1 $hostname #This was added by Fora" | sudo tee -a /etc/hosts
-    fi    
+    fi
 fi
 
 
@@ -387,7 +395,7 @@ if $node_modules ; then
     sudo npm install -g less
     sudo npm install -g react
     sudo npm install -g react-tools
-        
+
     sudo npm install
     cd server
     sudo npm install
