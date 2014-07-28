@@ -18,11 +18,12 @@
         statics: {
             componentInit: function*(props) {
                 /* Convert the JSON into Post objects and attach the templates */
-                for (var i = 0; i < props.posts.length; i++) {
-                    if (!(props.posts[i] instanceof Models.Post)) props.posts[i] = new Models.Post(props.post);
-                    var typeDef = yield* props.posts[i].getTypeDefinition();
-                    var extension = yield* loader.load(yield* props.posts[i].getTypeDefinition());
-                    props.posts[i].template = yield* extension.getTemplateModule(props.postTemplate);
+                var posts = props.posts;
+                for (var i = 0; i < posts.length; i++) {
+                    if (!(posts[i] instanceof Models.Post)) posts[i] = new Models.Post(props.post);
+                    var typeDef = yield* posts[i].getTypeDefinition();
+                    var extension = yield* loader.load(yield* posts[i].getTypeDefinition());
+                    posts[i].template = yield* extension.getTemplateModule(props.postTemplate);
                 }
                 return props;
             }
