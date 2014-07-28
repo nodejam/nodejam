@@ -4,7 +4,7 @@
     var ForaUI = require('fora-ui');
 
     var index = function*() {
-        var posts = yield* this.forum.getPosts(12, { "sort": { "_id": -1 }});
+        var posts = yield* this.forum.getPosts(12, { "_id": -1 });
 
         yield* ForaUI.renderers.simple.forum({
             posts: posts,
