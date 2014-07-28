@@ -99,8 +99,8 @@ if opt isnt '--debug'
             'app/www/js/views/validator.js',
             'app/www/js/views/baseview.js',
             'app/www/js/views/users/login.js',
-            'app/www/js/views/forums/item.js'
-            'app/www/js/views/posts/post.js'
+            'app/www/js/views/apps/item.js'
+            'app/www/js/views/records/post.js'
         ],
         fileOut: 'app/www/js/fora.js',
         callback: (err) -> 

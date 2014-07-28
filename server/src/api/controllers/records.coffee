@@ -1,9 +1,9 @@
 
 module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) -> {
-    create: auth.handler { session: 'user' }, (forum) ->*
-        forum = yield* models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
+    create: auth.handler { session: 'user' }, (app) ->*
+        app = yield* models.App.get { stub: app, network: @network.stub }, { user: @session.user }, db
 
-        post = yield* models.Post.create {
+        post = yield* models.Record.create {
             type: yield* @parser.body('type'),
             createdById: @session.user.id,
             createdBy: @session.user,
@@ -13,13 +13,13 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
         }
 
         yield* @parser.map post, yield* mapper.getMappableFields yield* post.getTypeDefinition()
-        post = yield* forum.addPost post
+        post = yield* app.addRecord post
         @body = post
 
 
-    edit: auth.handler { session: 'user' }, (forum, post) ->*
-        forum = yield* models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-        post = yield* models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
+    edit: auth.handler { session: 'user' }, (app, post) ->*
+        app = yield* models.App.get { stub: app, network: @network.stub }, { user: @session.user }, db
+        post = yield* models.Record.get { stub: post, appId: app._id.toString() }, { user: @session.user }, db
 
         if post
             if (post.createdBy.username is @session.user.username)
@@ -35,9 +35,9 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
             @throw 'access denied', 403
 
 
-    remove: auth.handler { session: 'user' }, (forum, post) ->*
-        forum = yield* models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-        post = yield* models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
+    remove: auth.handler { session: 'user' }, (app, post) ->*
+        app = yield* models.App.get { stub: app, network: @network.stub }, { user: @session.user }, db
+        post = yield* models.Record.get { stub: post, appId: app._id.toString() }, { user: @session.user }, db
         if post
             if (post.createdBy.username is @session.user.username) or @session.admin
                 post = yield* post.destroy()
@@ -48,9 +48,9 @@ module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) 
             @throw 'invalid post', 400
 
 
-    admin_update: auth.handler { session: 'admin' }, (forum, post) ->*
-        forum = yield* models.Forum.get { stub: forum, network: @network.stub }, { user: @session.user }, db
-        post = yield* models.Post.get { stub: post, forumId: forum._id.toString() }, { user: @session.user }, db
+    admin_update: auth.handler { session: 'admin' }, (app, post) ->*
+        app = yield* models.App.get { stub: app, network: @network.stub }, { user: @session.user }, db
+        post = yield* models.Record.get { stub: post, appId: app._id.toString() }, { user: @session.user }, db
 
         if post
             meta = yield* @parser.body('meta')

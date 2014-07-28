@@ -25,7 +25,7 @@ process.chdir __dirname
 
     ForaTypeUtils = require('../models/foratypeutils')
     typeUtils = new ForaTypeUtils()
-    yield* typeUtils.init([models, fields], models.Forum, models.Post)
+    yield* typeUtils.init([models, fields], models.App, models.Record)
 
     Loader = require('fora-extensions').Loader
     loader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
@@ -64,8 +64,8 @@ process.chdir __dirname
     conrollerArgs = {typeUtils, models, fields, db, conf, auth, mapper, loader }
     m_credentials = require('./controllers/credentials') conrollerArgs
     m_users = require('./controllers/users') conrollerArgs
-    m_forums = require('./controllers/forums') conrollerArgs
-    m_posts = require('./controllers/posts') conrollerArgs
+    m_apps = require('./controllers/apps') conrollerArgs
+    m_records = require('./controllers/records') conrollerArgs
     m_images = require('./controllers/images') conrollerArgs
 
     #credentials and users
@@ -74,17 +74,17 @@ process.chdir __dirname
     app.use route.post '/api/v1/login', m_users.login
     app.use route.get '/api/v1/users/:username', m_users.item
 
-    #forums
-    app.use route.post '/api/v1/forums', m_forums.create
-    app.use route.post '/api/v1/forums/:forum/members', m_forums.join
-    app.use route.post '/api/v1/forums/:forum', m_posts.create
-    app.use route.put '/api/v1/forums/:forum/posts/:post', m_posts.edit
+    #apps
+    app.use route.post '/api/v1/apps', m_apps.create
+    app.use route.post '/api/v1/apps/:app/members', m_apps.join
+    app.use route.post '/api/v1/apps/:app', m_records.create
+    app.use route.put '/api/v1/apps/:app/records/:post', m_records.edit
 
     #images
     app.use route.post '/api/v1/images', m_images.upload
 
     #admin
-    app.use route.put "/api/v1/admin/forums/:forum/posts/:post", m_posts.admin_update
+    app.use route.put "/api/v1/admin/apps/:app/records/:post", m_records.admin_update
 
     #Start
     app.listen port

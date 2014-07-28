@@ -1,4 +1,4 @@
-class PostExtension
+class AppExtension
 
     constructor: (@typeDefinition, @loader) ->
 
@@ -7,4 +7,4 @@ class PostExtension
         return require "/js/extensions/#{@typeDefinition.name}/templates/#{name}"
         yield false
 
-module.exports = PostExtension
+module.exports = AppExtension

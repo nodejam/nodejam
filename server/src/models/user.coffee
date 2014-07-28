@@ -23,9 +23,9 @@ class User extends UserBase
 
                   
                                                             
-    getPosts:(limit, sort, context, db) =>*
+    getRecords:(limit, sort, context, db) =>*
         { context, db } = @getContext context, db
-        yield* models.Post.find({ 'createdById': db.getRowId(@), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
+        yield* models.Record.find({ 'createdById': db.getRowId(@), state: 'published' }, ((cursor) -> cursor.sort(sort).limit limit), context, db)
 
         
     

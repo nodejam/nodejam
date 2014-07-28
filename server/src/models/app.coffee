@@ -1,17 +1,17 @@
 models = require('./')
 conf = require '../conf'
 
-ForumBase = require('./forum-base').ForumBase
+AppBase = require('./app-base').AppBase
 models = require('./')
 
-class Forum extends ForumBase
+class App extends AppBase
 
     @typeDefinition: ->
-        typeDef = ForumBase.typeDefinition()
+        typeDef = AppBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield* Forum.getTypeUtils().getTypeDefinition(obj.type)
-            if def.ctor isnt Forum
-                throw new Error "Forum type definitions must have ctor set to Forum"
+            def = yield* App.getTypeUtils().getTypeDefinition(obj.type)
+            if def.ctor isnt App
+                throw new Error "App type definitions must have ctor set to App"
             def
         typeDef
 
@@ -28,19 +28,19 @@ class Forum extends ForumBase
                 throw new Error "Stub is invalid"
 
         if not db.getRowId(@)
-            @stats = new Forum.Stats {
-                posts: 0,
+            @stats = new App.Stats {
+                records: 0,
                 members: 1,
-                lastPost: 0
+                lastRecord: 0
             }
-            @cache ?= { posts: [] }
+            @cache ?= { records: [] }
 
         yield* super(context, db)
 
 
 
     summarize: (context, db) =>
-        summary = new Forum.Summary {
+        summary = new App.Summary {
             id: db.getRowId(@),
             network: @network,
             name: @name,
@@ -75,34 +75,34 @@ class Forum extends ForumBase
 
 
 
-    addPost: (post, context, db) =>*
+    addRecord: (record, context, db) =>*
         { context, db } = @getContext context, db
-        post.forumId = db.getRowId(@)
-        post.forum = @summarize context, db
-        yield* post.save context, db
+        record.appId = db.getRowId(@)
+        record.app = @summarize context, db
+        yield* record.save context, db
 
 
 
-    getPost: (stub, context, db) =>*
+    getRecord: (stub, context, db) =>*
         { context, db } = @getContext context, db
-        yield* models.Post.get({ 'forumId': db.getRowId(@), stub }, {}, db)
+        yield* models.Record.get({ 'appId': db.getRowId(@), stub }, {}, db)
 
 
 
-    getPosts: (limit, sort, context, db) =>*
+    getRecords: (limit, sort, context, db) =>*
         { context, db } = @getContext context, db
-        yield* models.Post.find({ 'forumId': db.getRowId(@), state: 'published' },  { sort, limit }, context, db)
+        yield* models.Record.find({ 'appId': db.getRowId(@), state: 'published' },  { sort, limit }, context, db)
 
 
 
     addRole: (user, role, context, db) =>*
         { context, db } = @getContext context, db
 
-        membership = yield* models.Membership.get { 'forumId': db.getRowId(@), 'user.username': user.username }, context, db
+        membership = yield* models.Membership.get { 'appId': db.getRowId(@), 'user.username': user.username }, context, db
         if not membership
             membership = new models.Membership {
-                forumId: db.getRowId(@),
-                forum: @summarize(context, db),
+                appId: db.getRowId(@),
+                app: @summarize(context, db),
                 userId: user.id,
                 user,
                 roles: [role]
@@ -116,7 +116,7 @@ class Forum extends ForumBase
 
     removeRole: (user, role, context, db) =>*
         { context, db } = @getContext context, db
-        membership = yield* models.Membership.get { 'forumId': db.getRowId(@), 'user.username': user.username }, context, db
+        membership = yield* models.Membership.get { 'appId': db.getRowId(@), 'user.username': user.username }, context, db
         membership.roles = (r for r in membership.roles when r isnt role)
         yield* if membership.roles.length then membership.save() else membership.destroy()
 
@@ -124,27 +124,27 @@ class Forum extends ForumBase
 
     getMembership: (username, context, db) =>*
         { context, db } = @getContext context, db
-        yield* models.Membership.get { 'forum.id': db.getRowId(@), 'user.username': username }, {}, db
+        yield* models.Membership.get { 'app.id': db.getRowId(@), 'user.username': username }, {}, db
 
 
 
     getMemberships: (roles, context, db) =>*
         { context, db } = @getContext context, db
-        yield* models.Membership.find { 'forumId': db.getRowId(@), roles: { $in: roles } }, { sort: { id: -1 }, limit: 200 }, context, db
+        yield* models.Membership.find { 'appId': db.getRowId(@), roles: { $in: roles } }, { sort: { id: -1 }, limit: 200 }, context, db
 
 
 
     refreshCache: (context, db) =>*
         { context, db } = @getContext context, db
-        posts = yield* @getPosts 10, db.setRowId({}, -1), context, db
-        @cache = { posts: [] }
+        records = yield* @getRecords 10, db.setRowId({}, -1), context, db
+        @cache = { records: [] }
 
-        if posts.length
-            for p in posts
-                @cache.posts.push yield* p.getView("concise", context, db)
+        if records.length
+            for p in records
+                @cache.records.push yield* p.getView("concise", context, db)
 
-            @stats.posts = yield* models.Post.count({ 'forumId': db.getRowId(@) , state: 'published' }, context, db)
-            @stats.lastPost = posts[0].savedAt
+            @stats.records = yield* models.Record.count({ 'appId': db.getRowId(@) , state: 'published' }, context, db)
+            @stats.lastRecord = records[0].savedAt
             yield* @save context, db
 
-exports.Forum = Forum
+exports.App = App

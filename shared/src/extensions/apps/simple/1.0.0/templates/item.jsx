@@ -16,25 +16,25 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(props) {
-                /* Convert the JSON into a Post object and attach the templates */
-                if (!(props.post instanceof Models.Post)) props.post = new Models.Post(props.post);
-                var typeDef = yield props.post.getTypeDefinition();
+                /* Convert the JSON into a Record object and attach the templates */
+                if (!(props.record instanceof Models.Record)) props.record = new Models.Record(props.record);
+                var typeDef = yield props.record.getTypeDefinition();
                 var extension = yield loader.load(typeDef);
-                props.post.template = yield extension.getTemplateModule('item');
+                props.record.template = yield extension.getTemplateModule('item');
                 return props;
             }
         },
 
         render: function() {
             return (
-                <Page cover={this.props.post.cover}>
-                    <Cover cover={this.props.post.cover} />
+                <Page cover={this.props.record.cover}>
+                    <Cover cover={this.props.record.cover} />
                     <Content>
                         <div className="content-area item">
                             {
-                                this.props.post.template({
-                                    post: this.props.post,
-                                    forum: this.props.forum,
+                                this.props.record.template({
+                                    record: this.props.record,
+                                    app: this.props.app,
                                     author: this.props.author
                                 })
                             }

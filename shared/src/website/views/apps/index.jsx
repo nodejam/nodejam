@@ -11,29 +11,29 @@
         Content = ForaUI.Content;
 
     module.exports = React.createClass({
-        render: function() {        
-            createItem = function(forum) {
-                if (forum.cover) {
+        render: function() {
+            createItem = function(app) {
+                if (app.cover) {
                     style = {
-                        backgroundImage: "url(" + forum.cover.image.small + ")"
+                        backgroundImage: "url(" + app.cover.image.small + ")"
                     };
                     image = <div className="image" style={style}></div>
                 }
                 else
                     image = null;
-                    
+
                 return (
                     <li className="col-span span5">
                         {image}
                         <article>
-                            <h2><a href={"/" + forum.stub}>{forum.name}</a></h2>
+                            <h2><a href={"/" + app.stub}>{app.name}</a></h2>
                             <ul>
                                 {
-                                    forum.cache.posts.map(function(post) {
+                                    app.cache.records.map(function(record) {
                                         return (
                                             <li>
-                                                <a href={"/" + forum.stub + "/" + post.stub}>{post.title}</a><br />
-                                                <span className="subtext">{post.createdBy.name}</span>
+                                                <a href={"/" + app.stub + "/" + record.stub}>{record.title}</a><br />
+                                                <span className="subtext">{record.createdBy.name}</span>
                                             </li>
                                         );
                                     })
@@ -42,7 +42,7 @@
                         </article>
                     </li>
                 );
-            };    
+            };
 
             return (
                 <Page>
@@ -50,22 +50,22 @@
                         <nav>
                             <ul>
                                 <li className="selected">
-                                    Posts
+                                    Records
                                 </li>
                                 <li>
-                                    <a href="/forums">Forums</a>
-                                </li>            
+                                    <a href="/s">Forums</a>
+                                </li>
                             </ul>
                         </nav>
                         <div className="content-area wide">
                             <ul className="articles card-view">
-                                {this.props.forums.map(createItem)}     
+                                {this.props.s.map(createItem)}
                             </ul>
                         </div>
                     </Content>
-                </Page>        
+                </Page>
             );
         }
     });
-    
+
 })();

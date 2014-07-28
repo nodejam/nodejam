@@ -26,7 +26,7 @@ init = ->*
 
     ForaTypeUtils = require('../../models/foratypeutils')
     typeUtils = new ForaTypeUtils()
-    yield* typeUtils.init([models, fields], models.Forum, models.Post)
+    yield* typeUtils.init([models, fields], models.App, models.Record)
 
 
     odm = require('fora-models')
@@ -81,54 +81,54 @@ init = ->*
                 resp = yield* _doHttpRequest "/api/v1/login?token=#{token}", querystring.stringify({ token, username: user.username }), 'post'
                 _globals.sessions[user.username].token = JSON.parse(resp).token
 
-            forums = {}
-            for forum in data.forums
-                token = _globals.sessions[forum._createdBy].token
-                logger.log "Creating a new forum #{forum.name} with token #{token}...."
-                delete forum._createdBy
-                if forum._message
-                    forum.message = fs.readFileSync path.resolve(__dirname, "forums/#{forum._message}"), 'utf-8'
-                delete forum._message
-                if forum._about
-                    forum.about = fs.readFileSync path.resolve(__dirname, "forums/#{forum._about}"), 'utf-8'
-                delete forum._about
-                forum.type = 'forums/simple/1.0.0'
-                resp = yield* _doHttpRequest "/api/v1/forums?token=#{token}", querystring.stringify(forum), 'post'
-                forumJson = JSON.parse resp
-                forums[forumJson.stub] = forumJson
-                logger.log "Created #{forumJson.name}"
+            apps = {}
+            for app in data.apps
+                token = _globals.sessions[app._createdBy].token
+                logger.log "Creating a new app #{app.name} with token #{token}...."
+                delete app._createdBy
+                if app._message
+                    app.message = fs.readFileSync path.resolve(__dirname, "apps/#{app._message}"), 'utf-8'
+                delete app._message
+                if app._about
+                    app.about = fs.readFileSync path.resolve(__dirname, "apps/#{app._about}"), 'utf-8'
+                delete app._about
+                app.type = 'apps/simple/1.0.0'
+                resp = yield* _doHttpRequest "/api/v1/apps?token=#{token}", querystring.stringify(app), 'post'
+                appJson = JSON.parse resp
+                apps[appJson.stub] = appJson
+                logger.log "Created #{appJson.name}"
 
                 for u, uToken of _globals.sessions
                     if uToken.token isnt token
-                        resp = yield* _doHttpRequest "/api/v1/forums/#{forumJson.stub}/members?token=#{uToken.token}", querystring.stringify(forum), 'post'
+                        resp = yield* _doHttpRequest "/api/v1/apps/#{appJson.stub}/members?token=#{uToken.token}", querystring.stringify(app), 'post'
                         resp = JSON.parse resp
-                        logger.log "#{u} joined #{forum.name}"
+                        logger.log "#{u} joined #{app.name}"
 
-            for article in data.articles
+            for article in data.records
                 token = _globals.sessions[article._createdBy].token
                 adminkey = _globals.sessions['jeswin'].token
 
                 logger.log "Creating a new article with token #{token}...."
                 logger.log "Creating #{article.title}..."
 
-                article.content_text = fs.readFileSync path.resolve(__dirname, "articles/#{article._content}"), 'utf-8'
+                article.content_text = fs.readFileSync path.resolve(__dirname, "records/#{article._content}"), 'utf-8'
                 article.content_format = 'markdown'
                 article.state = 'published'
-                forum = article._forum
+                app = article._app
                 meta = article._meta
 
-                delete article._forum
+                delete article._app
                 delete article._createdBy
                 delete article._content
                 delete article._meta
 
 
-                resp = yield* _doHttpRequest "/api/v1/forums/#{forum}?token=#{token}", querystring.stringify(article), 'post'
+                resp = yield* _doHttpRequest "/api/v1/apps/#{app}?token=#{token}", querystring.stringify(article), 'post'
                 resp = JSON.parse resp
                 logger.log "Created #{resp.title} with stub #{resp.stub}"
 
                 for metaTag in meta.split(',')
-                    resp = yield* _doHttpRequest "/api/v1/admin/forums/#{forum}/posts/#{resp.stub}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'
+                    resp = yield* _doHttpRequest "/api/v1/admin/apps/#{app}/records/#{resp.stub}?token=#{adminkey}", querystring.stringify({ meta: metaTag}), 'put'
                     resp = JSON.parse resp
                     logger.log "Added #{metaTag} tag to article #{resp.title}."
 

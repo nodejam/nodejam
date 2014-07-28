@@ -16,21 +16,21 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(props) {
-                /* Convert the JSON into Post objects and attach the templates */
-                var posts = props.featured.concat(props.editorsPicks);
-                for (var i = 0; i < posts.length; i++) {
-                    if (!(posts[i] instanceof Models.Post)) posts[i] = new Models.Post(posts[i]);
-                    var typeDef = yield* posts[i].getTypeDefinition();
+                /* Convert the JSON into Record objects and attach the templates */
+                var records = props.featured.concat(props.editorsPicks);
+                for (var i = 0; i < records.length; i++) {
+                    if (!(records[i] instanceof Models.Record)) records[i] = new Models.Record(records[i]);
+                    var typeDef = yield* records[i].getTypeDefinition();
                     var extension = yield* loader.load(typeDef);
-                    posts[i].template = yield* extension.getTemplateModule('list');
+                    records[i].template = yield* extension.getTemplateModule('list');
                 }
                 return props;
             }
         },
 
         render: function() {
-            var createItem = function(post) {
-                return post.template({ key: post._id, post: post, forum: post.forum, author: post.createdBy });
+            var createItem = function(record) {
+                return record.template({ key: record._id, record: record, app: record.app, author: record.createdBy });
             };
 
             return (
@@ -40,10 +40,10 @@
                         <nav>
                             <ul>
                                 <li className="selected">
-                                    Posts
+                                    Records
                                 </li>
                                 <li>
-                                    <a href="/forums">Forums</a>
+                                    <a href="/s">Forums</a>
                                 </li>
                             </ul>
                         </nav>

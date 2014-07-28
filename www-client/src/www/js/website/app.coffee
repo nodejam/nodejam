@@ -11,7 +11,7 @@ class App
                 fields = require('../models/fields')
                 ForaTypeUtils = require('../models/foratypeutils')
                 typeUtils = new ForaTypeUtils()
-                yield* typeUtils.init([models, fields], models.Forum, models.Post)
+                yield* typeUtils.init([models, fields], models.App, models.Record)
 
                 reactClass = require(pageName)
                 if reactClass.componentInit

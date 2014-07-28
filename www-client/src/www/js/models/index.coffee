@@ -1,4 +1,3 @@
-exports.Forum = require('./forum').Forum
-exports.Post = require('./post').Post
+exports.App = require('./app').App
+exports.Record = require('./record').Record
 exports.User = require('./user').User
-

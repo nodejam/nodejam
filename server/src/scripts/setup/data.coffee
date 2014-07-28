@@ -1,7 +1,7 @@
 #Users
 tributeToAaron = {
-    username: 'aaronsw', 
-    name: 'Aaron Swartz Tribute', 
+    username: 'aaronsw',
+    name: 'Aaron Swartz Tribute',
     location: 'Brooklyn, NYC',
     credential_type: 'builtin',
     credential_username: 'aaronsw',
@@ -13,8 +13,8 @@ tributeToAaron = {
 }
 
 jeswin = {
-    username: 'jeswin', 
-    name: 'Jeswin', 
+    username: 'jeswin',
+    name: 'Jeswin',
     location: 'Bangalore, India',
     credential_type: 'twitter',
     credential_id: '15833712',
@@ -28,8 +28,8 @@ jeswin = {
 }
 
 ebin = {
-    username: 'ebin', 
-    name: 'Ebin John', 
+    username: 'ebin',
+    name: 'Ebin John',
     location: 'Bangalore, India',
     credential_type: 'builtin',
     credential_username: 'ebin'
@@ -40,8 +40,8 @@ ebin = {
 }
 
 anupk7 = {
-    username: 'anupk7', 
-    name: 'Anup Kesavan', 
+    username: 'anupk7',
+    name: 'Anup Kesavan',
     location: 'Bangalore, India',
     credential_type: 'builtin',
     credential_username: 'anupk7'
@@ -53,12 +53,12 @@ anupk7 = {
 
 users = [tributeToAaron, jeswin, ebin, anupk7]
 
-#Forums
+#Apps
 poetry = {
     name: 'Poetry',
     description: 'Selected Poetry from around the world.',
     cover_image_src: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',
-    cover_image_small: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',    
+    cover_image_small: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',
     permission: 'public',
     access: 'public',
     category: 'literature',
@@ -71,10 +71,10 @@ movies = {
     description: 'Movies that won\'t make any sense. Not now, not ever.',
     cover_image_src: 'http://fc01.deviantart.net/fs71/i/2012/224/8/6/charlie_chaplin_02__conceptual_fashion__by_lastwishes-d5au8rm.jpg',
     cover_image_small: 'http://fc01.deviantart.net/fs71/i/2012/224/8/6/charlie_chaplin_02__conceptual_fashion__by_lastwishes-d5au8rm.jpg',
-    permission: 'public',    
+    permission: 'public',
     access: 'public',
     category: 'movies',
-    _createdBy: 'jeswin'       
+    _createdBy: 'jeswin'
 }
 
 rawNerve = {
@@ -88,7 +88,7 @@ rawNerve = {
     theme: 'paper-theme',
     _about: 'about-raw-nerve.md',
     _message: 'message-raw-nerve.md',
-    _createdBy: 'aaronsw'   
+    _createdBy: 'aaronsw'
 }
 
 itsMyLife = {
@@ -99,7 +99,7 @@ itsMyLife = {
     permission: 'public',
     access: 'public',
     category: 'life',
-    _createdBy: 'jeswin'   
+    _createdBy: 'jeswin'
 }
 
 makingStuff =  {
@@ -110,7 +110,7 @@ makingStuff =  {
     permission: 'public',
     access: 'public',
     category: 'life',
-    _createdBy: 'jeswin'   
+    _createdBy: 'jeswin'
 }
 
 travel = {
@@ -121,7 +121,7 @@ travel = {
     permission: 'public',
     access: 'public',
     category: 'travel',
-    _createdBy: 'jeswin'   
+    _createdBy: 'jeswin'
 }
 
 computers = {
@@ -132,7 +132,7 @@ computers = {
     permission: 'public',
     access: 'public',
     category: 'technology',
-    _createdBy: 'jeswin'   
+    _createdBy: 'jeswin'
 }
 
 theGreatMasters = {
@@ -143,7 +143,7 @@ theGreatMasters = {
     permission: 'public',
     access: 'public',
     category: 'art',
-    _createdBy: 'jeswin'   
+    _createdBy: 'jeswin'
 }
 
 streetFood = {
@@ -154,7 +154,7 @@ streetFood = {
     permission: 'public',
     access: 'public',
     category: 'food-and-drinks'
-    _createdBy: 'jeswin'   
+    _createdBy: 'jeswin'
 }
 
 guzzlers = {
@@ -165,7 +165,7 @@ guzzlers = {
     permission: 'public',
     access: 'public',
     category: 'food-and-drinks'
-    _createdBy: 'jeswin'   
+    _createdBy: 'jeswin'
 }
 
 earlyMornings = {
@@ -176,134 +176,134 @@ earlyMornings = {
     permission: 'public',
     access: 'public',
     category: 'life',
-    _createdBy: 'jeswin'  
+    _createdBy: 'jeswin'
 }
 
-forums = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
+apps = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
 
 #Articles
 believeYouCanChange = {
     title: 'Believe you can change',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'believe-you-can-change.md',
     cover_image_src: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
     cover_image_small: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 cherishMistakes = {
     title: 'Cherish Mistakes',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'cherish-mistakes.md',
     cover_image_src: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
     cover_image_small: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 confrontReality = {
     title: 'Confront Reality',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'confront-reality.md',
     cover_image_src: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
     cover_image_small: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 darkKnight = {
     title: 'Dark Knight',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'dark-knight.md',
     cover_type: 'full-cover',
     cover_image_src: 'http://www.everyjoe.com/wp-content/uploads/2013/07/the-dark-knight.jpg',
     cover_image_small: 'http://www.everyjoe.com/wp-content/uploads/2013/07/the-dark-knight.jpg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 fixTheMachine = {
     title: 'Lean into the pain',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'lean-into-the-pain.md',
     cover_type: 'auto-cover',
     cover_image_src: 'http://farm4.staticflickr.com/3808/9311339474_ec6db28a45_c.jpg',
     cover_image_small: 'http://farm4.staticflickr.com/3808/9311339474_ec6db28a45_c.jpg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 leanIntoThePain = {
     title: 'Fix the machine not the person',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'fix-the-machine-not-the-person.md',
     cover_type: 'top-cover',
     cover_image_src: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
     cover_image_small: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 lookAtYourselfObjectively = {
     title: 'Look at yourself objectively',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'look-at-yourself-objectively.md',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 optimalBiases = {
     title: 'Optimal biases',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'optimal-biases.md',
     cover_image_src: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
     cover_image_small: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'pick'
 }
 
 takeAStepBack = {
     title: 'Take a step back',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'take-a-step-back.md',
     cover_image_src: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
     cover_image_small: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
 }
 
 flightOfTheIcarus = {
     title: 'Flight of the Icarus',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'flight-of-the-icarus.md',
     cover_image_src: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
     cover_image_small: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'jeswin',
     _meta: 'featured'
 }
 
 huckleberryFinn = {
     title: 'Huckleberry Finn',
-    type: "posts/article/1.0.0",
+    type: "records/article/1.0.0",
     _content: 'huckleberry-finn.md',
-    _forum: 'raw-nerve',
+    _app: 'raw-nerve',
     _createdBy: 'jeswin',
     _meta: 'featured'
 }
 
-articles = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus, huckleberryFinn]
+records = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus, huckleberryFinn]
 
 exports.users = users
-exports.forums = forums
-exports.articles = articles
+exports.apps = apps
+exports.records = records

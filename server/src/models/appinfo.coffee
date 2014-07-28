@@ -2,23 +2,23 @@ ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
             
-class ForumInfo extends ForaDbModel
+class AppInfo extends ForaDbModel
     @typeDefinition: {
-        name: 'forum-info',
-        collection: 'foruminfo',
+        name: 'app-info',
+        collection: 'appinfo',
         schema: {
             type: 'object',        
             properties: {
-                forumId: { type: 'string' },
+                appId: { type: 'string' },
                 about: { type: 'string' },
                 message: { type: 'string' }
             },
-            required: ['forumId']
+            required: ['appId']
         },
         links: {
-            forum: { type: 'forum', key: 'forumId' }
+            app: { type: 'app', key: 'appId' }
         }
     }
     
     
-exports.ForumInfo = ForumInfo    
+exports.AppInfo = AppInfo    

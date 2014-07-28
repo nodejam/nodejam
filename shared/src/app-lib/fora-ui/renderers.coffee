@@ -4,46 +4,46 @@ module.exports = {
     simple: {
 
         ###
-            Render a simple forum
+            Render a simple app
         ###
-        forum: (props, context) ->*
-            typeDefinition = yield* context.forum.getTypeDefinition()
+        app: (props, context) ->*
+            typeDefinition = yield* context.app.getTypeDefinition()
 
             options = {}
             if context.koaContext.session
                 options.loggedIn = true
-                membership = yield* context.forum.getMembership context.koaContext.session.user.username
+                membership = yield* context.app.getMembership context.koaContext.session.user.username
                 if membership
                     options.isMember = true
-                    options.primaryPostType = "Article" #TODO: This makes no sense
+                    options.primaryRecordType = "Article" #TODO: This makes no sense
 
-            template = yield* context.extension.getTemplateModule(props.forumTemplate)
-            props = { posts: props.posts, forum: context.forum, forumTemplate: props.forumTemplate, postTemplate: props.postTemplate, options }
+            template = yield* context.extension.getTemplateModule(props.appTemplate)
+            props = { records: props.records, app: context.app, appTemplate: props.appTemplate, recordTemplate: props.recordTemplate, options }
 
             script = "
                 <script>
                     var page = new Fora.Views.Page(
-                        '/js/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}.js',
-                        #{JSON.stringify({ posts: props.posts, forum: context.forum, postTemplate: props.postTemplate, options })}
+                        '/js/extensions/#{typeDefinition.name}/templates/#{props.appTemplate}.js',
+                        #{JSON.stringify({ records: props.records, app: context.app, recordTemplate: props.recordTemplate, options })}
                     );
                 </script>"
 
-            context.koaContext.body = yield* context.koaContext.render template, "/js/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
+            context.koaContext.body = yield* context.koaContext.render template, "/js/extensions/#{typeDefinition.name}/templates/#{props.appTemplate}", props
 
         ###
-            Render a simple post
+            Render a simple record
         ###
-        post: (props, context) ->*
-            typeDefinition = yield* context.forum.getTypeDefinition()
-            author = yield* props.post.getAuthor()
+        record: (props, context) ->*
+            typeDefinition = yield* context.app.getTypeDefinition()
+            author = yield* props.record.getAuthor()
 
             options = {}
             if context.koaContext.session
                 options.loggedIn = true
 
-            template = yield* context.extension.getTemplateModule(props.forumTemplate)
-            props = { post: props.post, forum: context.forum, author, forumTemplate: props.forumTemplate, postTemplate: props.postTemplate }
+            template = yield* context.extension.getTemplateModule(props.appTemplate)
+            props = { record: props.record, app: context.app, author, appTemplate: props.appTemplate, recordTemplate: props.recordTemplate }
 
-            context.koaContext.body = yield* context.koaContext.render template, "/js/extensions/#{typeDefinition.name}/templates/#{props.forumTemplate}", props
+            context.koaContext.body = yield* context.koaContext.render template, "/js/extensions/#{typeDefinition.name}/templates/#{props.appTemplate}", props
     }
 }

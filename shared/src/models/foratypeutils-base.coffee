@@ -3,7 +3,7 @@ odm = require('fora-models')
 
 class ForaTypeUtilsBase extends odm.TypeUtils
 
-    init: (@builtinTypes, @ForumType, @PostType) =>*
+    init: (@builtinTypes, @AppType, @RecordType) =>*
         yield* @buildTypeCache()
 
 
@@ -46,8 +46,8 @@ class ForaTypeUtilsBase extends odm.TypeUtils
     getBuiltInUserTypes: =>*
         definitions = {}
 
-        yield* @addTrustedUserTypes @ForumType, 'forum', 'forums', definitions
-        yield* @addTrustedUserTypes @PostType, 'post', 'posts', definitions
+        yield* @addTrustedUserTypes @AppType, 'app', 'apps', definitions
+        yield* @addTrustedUserTypes @RecordType, 'record', 'records', definitions
 
         return definitions
 

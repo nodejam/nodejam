@@ -9,7 +9,7 @@ class UserInfo extends ForaDbModel
             type: 'object',        
             properties: {
                 userId: { type: 'string' },
-                subscriptions: { type: 'array', items: { $ref: 'forum-summary' } },
+                subscriptions: { type: 'array', items: { $ref: 'app-summary' } },
                 following: { type: 'array', items: { $ref: 'user-summary' } },
                 lastMessageAccessTime: { type: 'number' }
             },

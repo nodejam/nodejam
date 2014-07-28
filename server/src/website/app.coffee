@@ -27,7 +27,7 @@ process.chdir __dirname
 
     ForaTypeUtils = require('../models/foratypeutils')
     typeUtils = new ForaTypeUtils()
-    yield* typeUtils.init([models, fields], models.Forum, models.Post)
+    yield* typeUtils.init([models, fields], models.App, models.Record)
 
     Loader = require('fora-extensions').Loader
     loader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
@@ -76,7 +76,7 @@ process.chdir __dirname
     m_home = require('./controllers/home') controllerArgs
     m_auth = require('./controllers/auth') controllerArgs
     m_users = require('./controllers/users') controllerArgs
-    m_forums = require('./controllers/forums') controllerArgs
+    m_apps = require('./controllers/apps') controllerArgs
 
     #health
     app.use route.get '/healthcheck', -> this.body { "Jack Sparrow is alive" }
@@ -93,11 +93,11 @@ process.chdir __dirname
     #users
     app.use route.get '/~:username', m_users.item
 
-    #forums
-    app.use route.get '/forums', m_forums.index
-    app.use route.get '/forums/new', m_forums.create
-    app.use route.get '/:forum', m_forums.page
-    app.use route.get '/:forum/:page', m_forums.page
+    #apps
+    app.use route.get '/apps', m_apps.index
+    app.use route.get '/apps/new', m_apps.create
+    app.use route.get '/:app', m_apps.page
+    app.use route.get '/:app/:page', m_apps.page
 
     #Start
     app.listen port

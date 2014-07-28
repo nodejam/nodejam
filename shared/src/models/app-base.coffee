@@ -1,13 +1,13 @@
 ForaModel = require('./foramodel').ForaModel
 ForaDbModel = require('./foramodel').ForaDbModel
 
-class ForumBase extends ForaDbModel
+class AppBase extends ForaDbModel
 
     class Settings extends ForaModel
         @typeDefinition: {
-            name: "forum-settings",
+            name: "app-settings",
             schema: {
-                type: 'object',                    
+                type: 'object',
                 properties: {
                     commentsEnabled: { type: 'boolean' },
                     commentsOpened: { type: 'boolean' }
@@ -19,11 +19,11 @@ class ForumBase extends ForaDbModel
 
     class Summary extends ForaModel
         @typeDefinition: {
-            name: "forum-summary",
+            name: "app-summary",
             schema: {
-                type: 'object',        
+                type: 'object',
                 properties: {
-                    id: { type: 'string' },                
+                    id: { type: 'string' },
                     network: { type: 'string' },
                     name: { type: 'string' },
                     stub: { type: 'string' },
@@ -31,31 +31,31 @@ class ForumBase extends ForaDbModel
                 },
                 required: ['id', 'network', 'name', 'stub', 'createdBy']
             }
-        }    
+        }
 
     @Summary: Summary
 
-    class Stats extends ForaModel   
+    class Stats extends ForaModel
         @typeDefinition: {
-            name: "forum-stats",
+            name: "app-stats",
             schema: {
-                type: 'object',        
+                type: 'object',
                 properties: {
-                    posts: { type: 'number' },
+                    records: { type: 'number' },
                     members: { type: 'number' },
-                    lastPost: { type: 'number' }
+                    lastRecord: { type: 'number' }
                 }
-                required: ['posts', 'members', 'lastPost']
+                required: ['records', 'members', 'lastRecord']
             }
         }
-        
+
     @Stats: Stats
 
     @childModels: { Stats, Summary, Settings }
 
     @typeDefinition: -> {
-        name: 'forum',
-        collection: 'forums',    
+        name: 'app',
+        collection: 'apps',
         schema: {
             type: 'object',
             properties: {
@@ -67,13 +67,13 @@ class ForumBase extends ForaDbModel
                 access: { type: 'string', enum: ['public', 'protected', 'private'] },
                 createdById: { type: 'string' }
                 createdBy: { $ref: 'user-summary' },
-                settings: { $ref: 'forum-settings' },
+                settings: { $ref: 'app-settings' },
                 cover: { $ref: 'cover' },
                 theme: { type: 'string' },
-                cache: { 
+                cache: {
                     type: 'object',
                     properties: {
-                        posts: {
+                        records: {
                             type: 'array',
                             items: {
                                 type: 'object',
@@ -82,15 +82,15 @@ class ForumBase extends ForaDbModel
                                     title: { type: 'string' },
                                     createdBy: { $ref: 'user-summary' }
                                     id: { type: 'string' },
-                                    stub: { type: 'string' }                  
+                                    stub: { type: 'string' }
                                 },
                                 required: ['title', 'createdBy', 'id', 'stub']
                             }
                         }
                     }
-                    required: ['posts']
+                    required: ['records']
                 }
-                stats: { $ref: 'forum-stats' },
+                stats: { $ref: 'app-stats' },
             }
             required: ['type', 'network', 'name', 'description', 'stub', 'access', 'createdById', 'createdBy', 'cache', 'stats']
         },
@@ -104,8 +104,8 @@ class ForumBase extends ForaDbModel
         },
         links: {
             createdBy: { type: 'user-summary', key: 'createdById' }
-            posts: { type: 'post', field: 'forumId' },
-            info: { type: 'forum-info', field: 'forumId' }
+            records: { type: 'record', field: 'appId' },
+            info: { type: 'app-info', field: 'appId' }
         },
         logging: {
                 onInsert: 'NEW_FORUM'
@@ -113,5 +113,4 @@ class ForumBase extends ForaDbModel
     }
 
 
-exports.ForumBase = ForumBase
-
+exports.AppBase = AppBase

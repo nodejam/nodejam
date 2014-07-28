@@ -1,11 +1,11 @@
 (function() {
     "use strict";
-    
-    /* 
+
+    /*
         typeDefinition: Defines the various fields in the type
     */
     exports.typeDefinition = {
-        type: "forum",
+        type: "app",
         author: "Fora",
         schema: {
             type: "object",

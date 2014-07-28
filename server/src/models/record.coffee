@@ -8,17 +8,17 @@ typeUtils = new ForaTypeUtils()
 Loader = require('fora-extensions').Loader
 extensionLoader = new Loader(typeUtils, { directory: require("path").resolve(__dirname, '../extensions') })
 
-PostBase = require('./post-base').PostBase
+RecordBase = require('./record-base').RecordBase
 models = require('./')
 
-class Post extends PostBase
+class Record extends RecordBase
 
     @typeDefinition: ->
-        typeDef = PostBase.typeDefinition()
+        typeDef = RecordBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield* Post.getTypeUtils().getTypeDefinition(obj.type)
-            if def.ctor isnt Post
-                throw new Error "Post type definitions must have ctor set to Post"
+            def = yield* Record.getTypeUtils().getTypeDefinition(obj.type)
+            if def.ctor isnt Record
+                throw new Error "Record type definitions must have ctor set to Record"
             def
         typeDef
 
@@ -30,7 +30,7 @@ class Post extends PostBase
         for k, v of criteria
             params[k] = v
 
-        Post.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
+        Record.find params, ((cursor) -> cursor.sort(settings.sort).limit limit), context, db
 
 
 
@@ -46,7 +46,6 @@ class Post extends PostBase
 
     constructor: (params) ->
         super
-        @recommendations ?= []
         @meta ?= []
         @tags ?= []
 
@@ -85,8 +84,8 @@ class Post extends PostBase
         result = yield* super(context, db)
 
         if @state is 'published'
-            forum = yield* models.Forum.getById @forumId, context, db
-            yield* forum.refreshCache()
+            app = yield* models.App.getById @appId, context, db
+            yield* app.refreshCache()
 
         result
 
@@ -103,4 +102,4 @@ class Post extends PostBase
         model = yield* extensions.getModel()
         yield* model.view.call @, name
 
-exports.Post = Post
+exports.Record = Record

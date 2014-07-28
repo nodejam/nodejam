@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    /* 
+    /*
         typeDefinition: Defines the various fields in the type
     */
     exports.typeDefinition = {
@@ -20,8 +20,16 @@
     }
 
 
-    /* 
-        save: Gives you a hook to make changes to the post before it gets saved.
+    /*
+        fromJSON: Create an article from JSON
+    */
+    exports.fromJSON = function(params) {
+        //var post = new
+    }
+
+
+    /*
+        save: Gives you a hook to make changes to the record before it gets saved.
     */
     exports.save = function*() {
         //If no cover was specified, use 'inline-cover'
@@ -33,9 +41,9 @@
     }
 
 
-    /* 
+    /*
         view: return a view of the object.
-        A view is a subset (or summary) of fields in the post.
+        A view is a subset (or summary) of fields in the record.
     */
     exports.view = function*(name) {
         return {

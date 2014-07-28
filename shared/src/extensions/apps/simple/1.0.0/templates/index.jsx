@@ -17,38 +17,38 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(props) {
-                /* Convert the JSON into Post objects and attach the templates */
-                var posts = props.posts;
-                for (var i = 0; i < posts.length; i++) {
-                    if (!(posts[i] instanceof Models.Post)) posts[i] = new Models.Post(props.post);
-                    var typeDef = yield* posts[i].getTypeDefinition();
-                    var extension = yield* loader.load(yield* posts[i].getTypeDefinition());
-                    posts[i].template = yield* extension.getTemplateModule(props.postTemplate);
+                /* Convert the JSON into Record objects and attach the templates */
+                var records = props.records;
+                for (var i = 0; i < records.length; i++) {
+                    if (!(records[i] instanceof Models.Record)) records[i] = new Models.Record(props.record);
+                    var typeDef = yield* records[i].getTypeDefinition();
+                    var extension = yield* loader.load(yield* records[i].getTypeDefinition());
+                    records[i].template = yield* extension.getTemplateModule(props.recordTemplate);
                 }
                 return props;
             }
         },
 
         render: function() {
-            var forum = this.props.forum;
+            var app = this.props.app;
 
             //If the cover is missing, use default
-            if (!forum.cover) {
-                forum.cover = {
+            if (!app.cover) {
+                app.cover = {
                     image: {
-                        src: '/images/forum-cover.jpg',
-                        small: '/images/forum-cover-small.jpg',
-                        alt: forum.name
+                        src: '/images/app-cover.jpg',
+                        small: '/images/app-cover-small.jpg',
+                        alt: app.name
                     }
                 };
             }
 
-            if (!forum.cover.type) {
-                forum.cover.type = "auto-cover"
+            if (!app.cover.type) {
+                app.cover.type = "auto-cover"
             }
 
-            var createItem = function(post) {
-                return post.template({ post: post, forum: post.forum, author: post.createdBy });
+            var createItem = function(record) {
+                return record.template({ record: record, app: record.app, author: record.createdBy });
             };
 
 
@@ -57,9 +57,9 @@
 
             if (options.loggedIn) {
                 if (options.isMember)
-                    action = <a href="#" className="positive new-post"><i className="fa fa-plus"></i>New {options.primaryPostType}</a>
+                    action = <a href="#" className="positive new-record"><i className="fa fa-plus"></i>New {options.primaryRecordType}</a>
                 else
-                    action = <a href="#" className="positive join-forum"><i className="fa fa-user"></i>Join Forum</a>
+                    action = <a href="#" className="positive join-app"><i className="fa fa-user"></i>Join Forum</a>
 
                 buttons = (
                     <ul className="alt buttons">
@@ -72,7 +72,7 @@
 
             return (
                 <Page>
-                    <Cover cover={forum.cover} />
+                    <Cover cover={app.cover} />
                     <Content>
                         <nav>
                             <ul>
@@ -80,14 +80,14 @@
                                     Popular
                                 </li>
                                 <li>
-                                    <a href="/{{forum.stub}}/about">About</a>
+                                    <a href="/{{app.stub}}/about">About</a>
                                 </li>
                             </ul>
                             {buttons}
                         </nav>
                         <div className="content-area">
                             <ul className="articles default-view">
-                                {this.props.posts.map(createItem)}
+                                {this.props.records.map(createItem)}
                             </ul>
                         </div>
                     </Content>

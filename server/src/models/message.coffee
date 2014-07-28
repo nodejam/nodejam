@@ -3,12 +3,12 @@ ForaDbModel = require('./foramodel').ForaDbModel
 models = require './'
 
 class Message extends ForaDbModel
-    
+
     @typeDefinition: {
         name: "message",
         collection: 'messages',
         schema: {
-            type: 'object',        
+            type: 'object',
             properties: {
                 userId: { type: 'string' },
                 type: { type: 'string', enum: ['message', 'global-notification', 'user-notification'] },
@@ -27,32 +27,32 @@ class Message extends ForaDbModel
             errors = if @type is 'user-notification' or @type is 'message' then errors.concat @to.validate()
             errors = if @type is 'user-notification' or @type is 'message' then errors.concat @from.validate()
     }
-        
-        
-    
+
+
+
     format: (_format) =>
         try
             switch _format
                 when 'timeline'
                     switch @reason
-                        when 'new-forum'
-                            user = @data.forum.createdBy
-                            {                        
+                        when 'new-app'
+                            user = @data.app.createdBy
+                            {
                                 subject: {
                                     thumbnail: user.thumbnail,
                                     name: user.name,
                                     link: "/~#{user.username}"
                                 },
-                                verb: "added a new forum",
+                                verb: "added a new app",
                                 object: {
-                                    thumbnail: @data.forum.icon,
-                                    name: @data.forum.name,
-                                    link: "/#{@data.forum.stub}"
+                                    thumbnail: @data.app.icon,
+                                    name: @data.app.name,
+                                    link: "/#{@data.app.stub}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
                             }
-                        when 'published-post'
-                            user = @data.post.createdBy
+                        when 'published-record'
+                            user = @data.record.createdBy
                             {
                                 subject: {
                                     thumbnail: user.thumbnail,
@@ -61,14 +61,14 @@ class Message extends ForaDbModel
                                 },
                                 verb: "published",
                                 object: {
-                                    name: @data.post.title,
-                                    link: "/#{@data.post.forum.stub}/#{db.getRowId(@data.post)}"
+                                    name: @data.record.title,
+                                    link: "/#{@data.record.app.stub}/#{db.getRowId(@data.record)}"
                                 },
                                 time: moment(@timestamp).from(Date.now())
-                            }                   
+                            }
         catch error
-            return ''                
-            
-            
-    
+            return ''
+
+
+
 exports.Message = Message

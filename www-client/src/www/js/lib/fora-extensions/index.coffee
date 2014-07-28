@@ -1,5 +1,5 @@
-PostExtension = require('./postextension')
-ForumExtension = require('./forumextension')
+RecordExtension = require('./recordextension')
+AppExtension = require('./appextension')
 
 class Loader
 
@@ -17,13 +17,13 @@ class Loader
     load: (typeDefinition) =>*
         if typeDefinition.extensionType is 'builtin'
             switch typeDefinition.type
-                when 'forum'
-                    return new ForumExtension(typeDefinition, this)
+                when 'app'
+                    return new AppExtension(typeDefinition, this)
                 when 'post'
-                    return new PostExtension(typeDefinition, this)
+                    return new RecordExtension(typeDefinition, this)
         else
             throw new Error "Untrusted extensions are not implemented yet"
-            
+
         yield false
 
 exports.Loader = Loader

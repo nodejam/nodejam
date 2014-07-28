@@ -6,7 +6,7 @@
         .alias('h', 'help')
         .describe('client', "Build the client")
         .describe('server', "Build the server")
-        .describe('norun', "Do not start the server after building")
+        .describe('no-run', "Do not start the server after building")
         .describe('threads', "Number of threads to use for the build (default: 8)")
         .describe('debug-api', 'Start debugger for api')
         .describe('debug-brk-api', 'Start debugger for api with breakpoint')
@@ -41,7 +41,7 @@
     var clientConfig = require('./www-client/build-config')(foraBuild.tools);
 
     /* Set build parameters */
-    build.state.monitor = !argv.norun;
+    build.state.monitor = !argv['no-run'];
 
     if (argv.client || argv.server) {
         build.state.buildClient = argv.client;

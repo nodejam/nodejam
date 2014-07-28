@@ -1,9 +1,9 @@
 exports.Credential = require('./credential').Credential
 exports.User = require('./user').User
 exports.Session = require('./session').Session
-exports.Forum = require('./forum').Forum
-exports.ForumInfo = require('./foruminfo').ForumInfo
-exports.Post = require('./post').Post
+exports.App = require('./app').App
+exports.AppInfo = require('./appinfo').AppInfo
+exports.Record = require('./record').Record
 exports.Token = require('./token').Token
 exports.UserInfo = require('./userinfo').UserInfo
 exports.Message = require('./message').Message
