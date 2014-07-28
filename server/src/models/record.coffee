@@ -91,7 +91,7 @@ class Record extends RecordBase
 
 
 
-    getAuthor: =>*
+    getCreator: =>*
         { context, db } = @getContext context, db
         yield* models.User.getById @createdById, {}, db
 

@@ -35,7 +35,7 @@ module.exports = {
         ###
         record: (props, context) ->*
             typeDefinition = yield* context.app.getTypeDefinition()
-            author = yield* props.record.getAuthor()
+            author = yield* props.record.getCreator()
 
             options = {}
             if context.koaContext.session
