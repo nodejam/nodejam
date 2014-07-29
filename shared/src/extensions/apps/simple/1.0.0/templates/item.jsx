@@ -18,9 +18,9 @@
             componentInit: function*(props) {
                 /* Convert the JSON into a Record object and attach the templates */
                 if (!(props.record instanceof Models.Record)) props.record = new Models.Record(props.record);
-                var typeDef = yield props.record.getTypeDefinition();
-                var extension = yield loader.load(typeDef);
-                props.record.template = yield extension.getTemplateModule('item');
+                var typeDef = yield* props.record.getTypeDefinition();
+                var extension = yield* loader.load(typeDef);
+                props.record.template = yield* extension.getTemplateModule('item');
                 return props;
             }
         },

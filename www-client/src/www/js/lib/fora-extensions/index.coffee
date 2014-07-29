@@ -19,8 +19,10 @@ class Loader
             switch typeDefinition.type
                 when 'app'
                     return new AppExtension(typeDefinition, this)
-                when 'post'
+                when 'record'
                     return new RecordExtension(typeDefinition, this)
+                else
+                    throw new Error "Extension must either be an app or record"
         else
             throw new Error "Untrusted extensions are not implemented yet"
 
