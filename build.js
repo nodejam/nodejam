@@ -13,8 +13,9 @@
         .describe('debug-web', 'Start debugger for web')
         .describe('debug-brk-web', 'Start debugger for web with breakpoint')
         .describe('debug-build', 'Debug the build process itself')
-        .describe('args-debug-client', 'Do not minify JS files sent to browser')
-        .describe('args-show-errors', 'Display errors in the console')
+        .describe('debug-client', 'Do not minify JS files sent to browser')
+        .describe('show-errors', 'Display errors in the console')
+        .describe('args-some-param', 'Pass some-param to web and api processes')
         .describe('use-es6', 'Use es6 generators in browser (skips transpiler)')
         .describe('help', 'Print this help screen');
 
@@ -53,6 +54,7 @@
 
     if (argv['debug-api'] || argv['debug-brk-api']) build.state.debugApi = true;
     if (argv['debug-web'] || argv['debug-brk-web']) build.state.debugWeb = true;
+    if (argv['debug-client']) build.state.debugClient = true;
     if (argv['use-es6']) build.state.useES6 = true;
 
     /* Create configuration */
@@ -69,6 +71,8 @@
             if (argv['debug-brk-api']) params.push("--debug-brk-api");
             if (argv['debug-web']) params.push("--debug-web");
             if (argv['debug-brk-web']) params.push("--debug-brk-web");
+            if (argv['debug-client']) params.push("--debug-client");
+            if (argv['show-errors']) params.push("--show-errors");
             var moreArgs = process.argv.filter(function(p) { return /^--args-/.test(p); }).map(function(p) { return p.replace(/^--args-/, '--') });
             params = params.concat(moreArgs);
             console.log("Restarting the server.....");

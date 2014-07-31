@@ -30,6 +30,9 @@ for p in ['assets', 'images', 'original-images']
     yield* typeUtils.init([models, fields], models.App, models.Record)
     db = new odm.Database conf.db, typeUtils.getTypeDefinitions()
     yield* db.setupIndexes()
+    console.log "wait for 5 seconds..."
+    setTimeout (->
+      console.log "done"
+      process.exit()
+    ), 5000
 )()
-
-setTimeout (-> process.exit()), 5000

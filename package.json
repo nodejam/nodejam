@@ -18,7 +18,8 @@
   "dependencies": {
     "optimist": "*",
     "node-minify": "*",
-    "fora-build": "*"
+    "fora-build": "*",
+    "react-tools": "*"
   },
   "devDependencies": {
     "browserify-global-shim": "^1.0.0"

@@ -10,15 +10,15 @@ class BaseModel
 
     @create: (params) ->*
         typeDef = yield* @getTypeDefinition()
-        
+
         if typeDef.discriminator
-            actualTypeDef = yield* typeDef.discriminator params            
-            obj = new actualTypeDef.ctor params            
+            actualTypeDef = yield* typeDef.discriminator params
+            obj = new actualTypeDef.ctor params
             obj.getTypeDefinition = ->*
-                actualTypeDef    
+                actualTypeDef
         else
             obj = new typeDef.ctor params
-        
+
         obj
 
 
@@ -29,16 +29,16 @@ class BaseModel
             if not @__typeDefinition
                 throw new Error "CANNOT_RESOLVE_TYPE_DEFINITION"
         @__typeDefinition
-            
-            
-    
+
+
+
     @getLimit: (limit, _default, max) ->
         result = _default
         if limit
             result = limit
             if result > max
                 result = max
-        result        
+        result
 
 
 
@@ -46,16 +46,16 @@ class BaseModel
         typeDefinition ?= yield* @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
         yield* validator.validate @, typeDefinition
-            
+
 
 
     validateField: (value, fieldName, typeDefinition) ->*
         typeDefinition ?= yield* @getTypeDefinition()
         validator = new Validator @constructor.getTypeUtils()
         yield* validator.validateField @, value, fieldName, typeDefinition
-        
 
-    
+
+
     getTypeDefinition: =>*
         yield* @constructor.getTypeDefinition()
 
@@ -64,7 +64,7 @@ class BaseModel
     toJSON: ->
         result = {}
         for k,v of @
-            if not /^__/.test(k) 
+            if not /^__/.test(k)
                 result[k] = v
         result
 
