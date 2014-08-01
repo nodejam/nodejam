@@ -1,4 +1,5 @@
 ForaTypeUtilsBase = require('./foratypeutils-base').ForaTypeUtilsBase
+modules = require('../extensions/models')
 
 class ForaTypeUtils extends ForaTypeUtilsBase
 
@@ -6,7 +7,6 @@ class ForaTypeUtils extends ForaTypeUtilsBase
     addTrustedUserTypes: (ctor, baseTypeName, dir, definitions) =>*
         typeDef = if typeof ctor.typeDefinition is "function" then ctor.typeDefinition() else ctor.typeDefinition
 
-        modules = require('/js/extensions/models')
         matches = (m for m in modules when new RegExp("^/js/extensions/#{dir}/").test m)
 
         for m in matches
@@ -18,6 +18,6 @@ class ForaTypeUtils extends ForaTypeUtilsBase
 
         return
         yield false;
-        
-        
+
+
 module.exports = ForaTypeUtils

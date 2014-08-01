@@ -147,8 +147,10 @@
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown -r ./app/www/js/lib/fora-extensions:fora-extensions " +
                      "-r ./app/www/js/lib/fora-models:fora-models -r ./app/www/js/app-lib/fora-ui:fora-ui > app/www/js/lib.js";
                 var cmdMakeBundle = "browserify -x markdown -x react -x co -x fora-extensions -x fora-models -x fora-ui " +
-                    "./app/www/js/website/app " + "-r ./app/www/js/extensions/models:/js/extensions/models " +
-                    reactPages.concat(extensions).map(function(x) { return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); }).join(" ") +
+                    "./app/www/js/website/app " +
+                    reactPages.concat(extensions).map(function(x) {
+                      return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/');
+                    }).join(" ") +
                     " > app/www/js/bundle.js";
 
                 if (this.build.state.debugClient) {

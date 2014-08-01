@@ -16,14 +16,20 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(props) {
+
                 /* Convert the JSON into Record objects and attach the templates */
-                var records = props.featured.concat(props.editorsPicks);
-                for (var i = 0; i < records.length; i++) {
-                    if (!(records[i] instanceof Models.Record)) records[i] = new Models.Record(records[i]);
-                    var typeDef = yield* records[i].getTypeDefinition();
-                    var extension = yield* loader.load(typeDef);
-                    records[i].template = yield* extension.getTemplateModule('list');
+                var init = function*(records) {
+                  for (var i = 0; i < records.length; i++) {
+                      if (!(records[i] instanceof Models.Record)) records[i] = new Models.Record(records[i]);
+                      var typeDef = yield* records[i].getTypeDefinition();
+                      var extension = yield* loader.load(typeDef);
+                      records[i].template = yield* extension.getTemplateModule('list');
+                  }
                 }
+
+                yield* init(props.featured);
+                yield* init(props.editorsPicks);
+
                 return props;
             }
         },
