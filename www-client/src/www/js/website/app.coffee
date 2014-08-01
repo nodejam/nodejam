@@ -1,15 +1,16 @@
 co = require('co');
 React = require('react')
 
+models = require('../models')
+fields = require('../models/fields')
+ForaTypeUtils = require('../models/foratypeutils')
+
 class App
 
     initPage: (pageName, props) =>
         document.addEventListener 'DOMContentLoaded', ->
             setupPage = ->*
 
-                models = require('../models')
-                fields = require('../models/fields')
-                ForaTypeUtils = require('../models/foratypeutils')
                 typeUtils = new ForaTypeUtils()
                 yield* typeUtils.init([models, fields], models.App, models.Record)
 
