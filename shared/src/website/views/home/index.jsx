@@ -5,7 +5,7 @@
     var React = require('react'),
         ExtensionLoader = require('fora-extensions').Loader,
         ForaUI = require('fora-ui'),
-        Models = require('../../../models');
+        Models = require('models');
 
     var Page = ForaUI.Page,
         Content = ForaUI.Content,
@@ -16,7 +16,6 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(props) {
-
                 /* Convert the JSON into Record objects and attach the templates */
                 var init = function*(records) {
                   for (var i = 0; i < records.length; i++) {

@@ -3,9 +3,9 @@
     "use strict";
 
     var React = require('react'),
-        ForaUI = require('fora-ui'),
         ExtensionLoader = require('fora-extensions').Loader,
-        Models = require('../../../../../models');
+        ForaUI = require('fora-ui'),
+        Models = require('models');
 
     var Page = ForaUI.Page,
         Content = ForaUI.Content,
@@ -18,13 +18,16 @@
         statics: {
             componentInit: function*(props) {
                 /* Convert the JSON into Record objects and attach the templates */
-                var records = props.records;
-                for (var i = 0; i < records.length; i++) {
-                    if (!(records[i] instanceof Models.Record)) records[i] = new Models.Record(props.record);
-                    var typeDef = yield* records[i].getTypeDefinition();
-                    var extension = yield* loader.load(yield* records[i].getTypeDefinition());
-                    records[i].template = yield* extension.getTemplateModule(props.recordTemplate);
+                var init = function*(records) {
+                  for (var i = 0; i < records.length; i++) {
+                      if (!(records[i] instanceof Models.Record)) records[i] = new Models.Record(records[i]);
+                      var typeDef = yield* records[i].getTypeDefinition();
+                      var extension = yield* loader.load(typeDef);
+                      records[i].template = yield* extension.getTemplateModule('list');
+                  }
                 }
+
+                yield* init(props.records);
                 return props;
             }
         },
@@ -48,7 +51,7 @@
             }
 
             var createItem = function(record) {
-                return record.template({ record: record, app: record.app, author: record.createdBy });
+                return record.template({ key: record._id, record: record, app: record.app, author: record.createdBy });
             };
 
 
