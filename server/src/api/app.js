@@ -26,7 +26,7 @@
         },
 
         /*
-            App server will start baseConfigurationapplicationContainer:containerModuleName
+            App server will start applicationContainer:containerModuleName
             For example: containers/fora/1.0.0:api
         */
         containerModuleName: "api",
