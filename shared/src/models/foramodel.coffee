@@ -1,19 +1,19 @@
 odm = require('fora-models')
-ForaTypeUtils = require('./foratypeutils')
-typeUtils = new ForaTypeUtils()
+ForaTypeService = require('./foratypeutils')
+typeService = new ForaTypeService()
 
 class ForaModel extends odm.BaseModel
 
-    @getTypeUtils: ->
-        typeUtils
+    @getTypeService: ->
+        typeService
 
 
 
 class ForaDbModel extends odm.DatabaseModel
 
 
-    @getTypeUtils: ->
-        typeUtils
+    @getTypeService: ->
+        typeService
 
 
 exports.ForaModel = ForaModel

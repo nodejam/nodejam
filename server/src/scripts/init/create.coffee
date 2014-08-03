@@ -8,8 +8,8 @@ fsutils = require '../../lib/fsutils'
 models = require '../../models'
 fields = require '../../models/fields'
 
-ForaTypeUtils = require('../../models/foratypeutils')
-typeUtils = new ForaTypeUtils()
+ForaTypeService = require('../../models/foratypeutils')
+typeService = new ForaTypeService()
 
 #create directories
 today = Date.now()
@@ -27,9 +27,9 @@ for p in ['assets', 'images', 'original-images']
 #ensure indexes.
 (co ->*
     odm = require('fora-models')
-    yield* typeUtils.init([models, fields], models.App, models.Record)
+    yield* typeService.init([models, fields], models.App, models.Record)
     db = new odm.Database conf.db
-    yield* db.setupIndexes typeUtils.getTypeDefinitions()
+    yield* db.setupIndexes typeService.getTypeDefinitions()
     console.log "wait for 5 seconds..."
     setTimeout (->
       console.log "done"

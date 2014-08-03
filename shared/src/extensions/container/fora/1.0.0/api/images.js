@@ -9,7 +9,7 @@
         validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
 
     module.exports = function(params) {
-        var typeUtils = params.typeUtils,
+        var typeService = params.typeService,
             models = params.models,
             db = params.db,
             conf = params.conf,

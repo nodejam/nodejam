@@ -4,7 +4,7 @@ indexView = require('../views/apps/index')
     The data structure passed to app extensions.
 ###
 
-module.exports = ({typeUtils, models, fields, db, conf, auth, mapper, loader }) -> {
+module.exports = ({typeService, models, fields, db, conf, auth, mapper, loader }) -> {
 
     ###
         Display a list of apps.

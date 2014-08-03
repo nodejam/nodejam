@@ -1,8 +1,10 @@
 (function() {
     "use strict";
 
+    var _;
+
     module.exports = function(params) {
-        var typeUtils = params.typeUtils,
+        var typeService = params.typeService,
             models = params.models,
             db = params.db,
             conf = params.conf,
@@ -23,8 +25,8 @@
                 savedAt: Date.now()
             });
 
-            yield* this.parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition()));
-            var record = yield* app.addRecord(record);
+            _ = yield* this.parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition()));
+            record = yield* app.addRecord(record);
             this.body = record;
         });
 
@@ -36,14 +38,14 @@
             if (record) {
                 if (record.createdBy.username === this.session.user.username) {
                     record.savedAt = Date.now();
-                    yield* this.parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition()));
+                    _ = yield* this.parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition()));
                     if (yield* this.parser.body('state') === 'published') {
                         record.state = 'published';
                     }
                     record = yield* record.save();
                     this.body = record;
                 } else {
-                    throw new error'Access denied', 403
+                    throw new Error('Access denied');
                 }
             } else {
                 throw new Error('Access denied', 403);
@@ -60,10 +62,10 @@
                     record = yield* record.destroy();
                     this.body = record;
                 } else {
-                    throw new error'Access denied', 403
+                    throw new Error('Access denied');
                 }
             } else {
-                throw new Error('Access denied', 403);
+                throw new Error('Access denied');
             }
         };
 

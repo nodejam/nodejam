@@ -3,7 +3,7 @@ React = require('react')
 
 models = require('../models')
 fields = require('../models/fields')
-ForaTypeUtils = require('../models/foratypeutils')
+ForaTypeService = require('../models/foratypeutils')
 
 class App
 
@@ -11,8 +11,8 @@ class App
         document.addEventListener 'DOMContentLoaded', ->
             setupPage = ->*
 
-                typeUtils = new ForaTypeUtils()
-                yield* typeUtils.init([models, fields], models.App, models.Record)
+                typeService = new ForaTypeService()
+                yield* typeService.init([models, fields], models.App, models.Record)
 
                 reactClass = require(pageName)
                 if reactClass.componentInit

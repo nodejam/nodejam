@@ -5,7 +5,7 @@
 
     var logger = require('../logger'),
         argv = require('optimist').argv,
-        ForaTypeUtils = require('ForaTypeUtils'),
+        ForaTypeService = require('ForaTypeService'),
         odm = require('fora-models'),
         Mapper = require('./mapper'),
         errorHandler = require('./error'),
@@ -34,23 +34,23 @@
     var RequestParser = require('fora-webrequestparser');
     var setupRequest = function*(next) {
         if (["POST", "PUT", "PATCH"].indexOf(this.method) > -1) {
-            this.parser = new RequestParser(this, typeUtils);
+            this.parser = new RequestParser(this, typeService);
         }
         _ = yield* next;
     };
 
 
     module.exports = function*(containerName, loader, conf, host, port) {
-        var typeUtils = new ForaTypeUtils(loader);
-        _ = yield* typeUtils.init([models, fields], models.Record);
+        var typeService = new ForaTypeService(loader);
+        _ = yield* typeService.init([models, fields], models.Record);
 
         var db = new odm.Database(conf.db);
-        var mapper = new Mapper(typeUtils);
+        var mapper = new Mapper(typeService);
 
-        var auth = require('./auth')({ typeUtils: typeUtils, models: models, fields: fields, db: db, conf: conf });
+        var auth = require('./auth')({ typeService: typeService, models: models, fields: fields, db: db, conf: conf });
 
         var appInfo = setupInstanceStats();
-        //var controllerArgs = { typeUtils: typeUtils, models: models, fields: fields, db: db, conf: conf, auth: auth, mapper: mapper, loader: loader };
+        //var controllerArgs = { typeService: typeService, models: models, fields: fields, db: db, conf: conf, auth: auth, mapper: mapper, loader: loader };
 
         var app = koa();
         app.use(setupRequest);

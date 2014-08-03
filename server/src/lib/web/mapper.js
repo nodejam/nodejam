@@ -3,8 +3,8 @@
 
     var argv = require('optimist').argv;
 
-    var Mapper = function (typeUtils) {
-        this.typeUtils = typeUtils;
+    var Mapper = function (typeService) {
+        this.typeService = typeService;
     };
 
     Mapper.prototype.getMappableFields = function *(typeDef, acc, prefix) {
@@ -17,8 +17,8 @@
             def = typeDef.schema.properties[field];
 
             if (typeDef.inheritedProperties && typeDef.inheritedProperties.indexOf(field) === -1) {
-                if (this.typeUtils.isPrimitiveType(def.type)) {
-                    if (def.type === 'array' && this.typeUtils.isCustomType(def.items.type)) {
+                if (this.typeService.isPrimitiveType(def.type)) {
+                    if (def.type === 'array' && this.typeService.isCustomType(def.items.type)) {
                         prefix.push(field);
                         _ = yield* this.getMappableFields(def.items.typeDefinition, acc, prefix);
                         prefix.pop(field);
@@ -27,7 +27,7 @@
                         acc.push(prefix.concat(field).join('_'));
                     }
                 } else {
-                    if(this.typeUtils.isCustomType(def.type)) {
+                    if(this.typeService.isCustomType(def.type)) {
                         prefix.push(field);
                         _ = yield* this.getMappableFields(def.typeDefinition, acc, prefix);
                         prefix.pop(field);

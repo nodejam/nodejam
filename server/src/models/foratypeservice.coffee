@@ -1,4 +1,4 @@
-ForaTypeUtilsBase = require('./foratypeutils-base').ForaTypeUtilsBase
+ForaTypeServiceBase = require('./foratypeutils-base').ForaTypeServiceBase
 conf = require('../conf')
 fs = require 'fs'
 path = require 'path'
@@ -8,7 +8,7 @@ stat = thunkify fs.stat
 readfile = thunkify fs.readFile
 
 
-class ForaTypeUtils extends ForaTypeUtilsBase
+class ForaTypeService extends ForaTypeServiceBase
 
 
     addTrustedUserTypes: (ctor, baseTypeName, dir, definitions) =>*
@@ -36,4 +36,4 @@ class ForaTypeUtils extends ForaTypeUtilsBase
 
 
 
-module.exports = ForaTypeUtils
+module.exports = ForaTypeService

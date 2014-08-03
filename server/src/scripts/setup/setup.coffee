@@ -24,13 +24,13 @@ init = ->*
     models = require '../../models'
     fields = require '../../models/fields'
 
-    ForaTypeUtils = require('../../models/foratypeutils')
-    typeUtils = new ForaTypeUtils()
-    yield* typeUtils.init([models, fields], models.App, models.Record)
+    ForaTypeService = require('../../models/foratypeutils')
+    typeService = new ForaTypeService()
+    yield* typeService.init([models, fields], models.App, models.Record)
 
 
     odm = require('fora-models')
-    database = new odm.Database conf.db, typeUtils.getTypeDefinitions()
+    database = new odm.Database conf.db, typeService.getTypeDefinitions()
 
     _globals = {}
 
