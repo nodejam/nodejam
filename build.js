@@ -73,7 +73,7 @@
             if (argv['debug-brk-web']) params.push("--debug-brk-web");
             if (argv['debug-client']) params.push("--debug-client");
             if (argv['show-errors']) params.push("--show-errors");
-            var moreArgs = process.argv.filter(function(p) { return /^--args-/.test(p); }).map(function(p) { return p.replace(/^--args-/, '--') });
+            var moreArgs = process.argv.filter(function(p) { return /^--args-/.test(p); }).map(function(p) { return p.replace(/^--args-/, '--'); });
             params = params.concat(moreArgs);
             console.log("Restarting the server.....");
             var script = spawn("sh", params);

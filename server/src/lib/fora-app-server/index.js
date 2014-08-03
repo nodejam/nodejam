@@ -37,7 +37,7 @@
         */
 
         //Config is also a service.
-        var services.add("configuration", config);
+        services.add("configuration", config);
 
         //Database Service
         var odm = require('fora-models');
@@ -83,7 +83,7 @@
         _ = yield* container.init(context);
 
         var router = yield* container.getRouter();
-        app.use(router.routes());
+        app.use(router.getRoutes());
 
         /* GO! */
         app.listen(config.port);

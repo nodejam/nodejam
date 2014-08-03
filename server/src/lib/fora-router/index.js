@@ -3,8 +3,7 @@
 
     var pathToRegexp = require('path-to-regexp');
 
-    var Router = function (context) {
-        this.context = context;
+    var Router = function () {
         this.routes = [];
     };
 
