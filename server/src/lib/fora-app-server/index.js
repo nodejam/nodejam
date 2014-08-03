@@ -27,7 +27,7 @@
         var services = require('fora-services');
 
         /*
-            Load Services
+            Services
             0) Config
             1) Database Service
             2) Extensions Service
@@ -56,11 +56,11 @@
         services.add("types", typesService);
 
         //Parser Service
-        var parserService = require('fora-requestparser-service')();
+        var parserService = require('fora-requestparser-service');
         services.add("parser", parserService);
 
         //Auth Service
-        var authService = require('fora-auth-service')();
+        var authService = require('fora-auth-service');
         services.add("auth", authService);
 
         /*

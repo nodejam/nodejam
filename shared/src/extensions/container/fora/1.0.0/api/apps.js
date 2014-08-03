@@ -1,29 +1,31 @@
 (function() {
     "use strict";
 
+    var models = require('app-models');
+    var services = require('fora-services');
+
     module.exports = function(params) {
-        var typesService = params.typesService,
-            models = params.models,
+
+        ,
             db = params.db,
-            conf = params.conf,
-            auth = params.auth,
             mapper = params.mapper,
             loader = params.loader;
 
         var create = function*() {
+            var conf = services.get('conf');
             var context = { user: this.session.user };
 
-            var stub = (yield* this.parser.body('name').toLowerCase().trim();
+            var stub = yield* this.parser.body('name').toLowerCase().trim();
             if (conf.reservedNames.indexOf(stub) > -1)
                 stub = stub + "-app";
             stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'');
 
             var app = yield* models.App.get({
                 network: this.network.stub,
-                $or: [{ stub }, { name: yield* this.parser.body('name') }] },
+                $or: [{ stub: stub }, { name: yield* this.parser.body('name') }],
                 context: context,
                 db: db
-            );
+            });
 
             if (app) {
                 throw new Error("App exists");
@@ -46,6 +48,8 @@
             }
         };
 
+
+
         var edit = function*(app) {
             var context = { user: this.session.user };
             var app = yield* models.App.get({ stub: app, network: this.network.stub }, { user: this.session.user }, db);
@@ -61,11 +65,14 @@
         };
 
 
+
         var join = function*(app) {
             app = yield* models.App.get({ stub: app, network: this.network.stub }, { user: this.session.user }, db);
             yield* app.join(this.session.user);
             this.body = { success: true };
         };
+
+        var auth = services.get('auth');
 
         return {
             create: auth.handler({ session: 'user' }, create),

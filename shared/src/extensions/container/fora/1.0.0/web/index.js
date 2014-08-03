@@ -1,25 +1,52 @@
 (function() {
     "use strict";
 
-    /* Routing */
-    var auth = require('./auth');
-    var users = require('./users');
-    var apps = require("./apps");
+    var router;
 
-    exports.init = function*() {
+    var init = function*() {
+        router = yield* setRouter();
+    };
+
+    var setRouter = function*() {
+        var Router = require("fora-router");
+
+        var auth = require('./auth');
+        var users = require('./users');
+        var apps = require("./apps");
+
+        var router = new Router();
+
+        //healthcheck
+        router.get("healthcheck", function*() {
+            var uptime = parseInt((Date.now() - since)/1000) + "s";
+            this.body = { jacksparrow: "alive", instance: params.app.instance, since: params.app.since, uptime: params.app.uptime };
+        });
+
         //home
-        this.routes.get("", home.index);
+        router.get("", home.index);
 
         //login
-        this.routes.get("auth/twitter", auth.twitter);
-        this.routes.get("auth/twitter/callback", auth.twitterCallback);
+        router.get("auth/twitter", auth.twitter);
+        router.get("auth/twitter/callback", auth.twitterCallback);
 
         //users
-        this.routes.get("users/login", users.login);
-        this.routes.get("~:username", users.item);
+        router.get("users/login", users.login);
+        router.get("~:username", users.item);
 
         //apps
-        this.routes.get("apps", apps.index);
-        this.routes.get("apps/new", apps.create);
+        router.get("apps", apps.index);
+        router.get("apps/new", apps.create);
+
+        return router;
+
     };
+
+    var getRouter = function*() {
+        return router;
+    };
+
+    module.exports = {
+        getRouter: getRouter
+    };
+
 })();

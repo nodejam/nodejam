@@ -196,6 +196,8 @@
     };
 
 
-    module.exports = RequestParser;
+    module.exports = function(context) {
+        return new RequestParser(context);
+    };
 
 })();

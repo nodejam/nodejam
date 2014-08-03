@@ -3,11 +3,11 @@
 
     var router;
 
-    init = function*() {
+    var init = function*() {
         router = yield* setRouter();
-    }
+    };
 
-    setRouter = function*() {
+    var setRouter = function*() {
         var Router = require("fora-router");
 
         var credentials = require('./credentials')(api);
@@ -48,15 +48,18 @@
             } else {
                 var args = router.parse(req.url);
                 var app = args[0];
-
-
             }
-        })
+        });
 
-        return router;
-    }
-
-    exports.getRouter = function*() {
         return router;
     };
+
+    var getRouter = function*() {
+        return router;
+    };
+
+    module.exports = {
+        getRouter: getRouter
+    };
+
 })();
