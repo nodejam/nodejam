@@ -1,10 +1,15 @@
 (function() {
     "use strict";
 
-    module.exports = function(models, db, conf) {
-        var handler = function() {
+    var models = require("app-models");
+    var services = require("fora-services");
+    var db = services.get("db");
+    var conf = services.get("configuration");
 
+    module.exports = function() {
+        return function() {
             var options, fn;
+
             if (arguments.length === 1) {
                 options = {};
                 fn = arguments[0];
@@ -46,7 +51,5 @@
                 return yield* fn.apply(this, arguments);
             };
         };
-
-        return { handler: handler };
     };
 })();

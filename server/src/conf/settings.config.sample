@@ -17,6 +17,10 @@
         }
     },
 
+    "fileService": {
+        "userDirCount": 100
+    },
+
     "admins": ["jeswin"],
 
     "defaultNetwork": "foraproject.org",

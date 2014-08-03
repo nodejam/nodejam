@@ -32,14 +32,14 @@
     }
 
     module.exports = {
-        app: settings.app,
         db: settings.db,
-        auth: settings.auth,
         admins: settings.admins,
         applicationContainer: settings.applicationContainer,
-        reservedNames: settings.reservedNames,
         networks: networks,
-        userDirCount: 100
+        fileService: settings.fileService,
+        authService: settings.authService,
+        extensionsService: settings.extensionsService,
+        reservedNames: settings.reservedNames
     };
 
 })();

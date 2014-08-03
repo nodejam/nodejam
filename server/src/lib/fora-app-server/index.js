@@ -24,10 +24,11 @@
         var models = require('app-models'),
             fields = require('app-fields');
 
-        var context = { services: {} };
+        var services = require('fora-services');
 
         /*
             Load Services
+            0) Config
             1) Database Service
             2) Extensions Service
             3) Types Service
@@ -35,29 +36,32 @@
             5) Auth Service
         */
 
+        //Config is also a service.
+        var services.add("configuration", config);
+
         //Database Service
         var odm = require('fora-models');
         var db = new odm.Database(config.baseConfiguration.db);
-        context.services.db = db;
+        services.add("db", db);
 
         //Extensions Service
         var extensionsService = require('fora-extensions-service')(config.extensionsService, config.baseConfiguration.extensionsService);
         _ = yield* extensionsService.init();
-        context.services.extensionsService = extensionsService;
+        services.add("extensions", extensionsService);
 
         //Types Service
         var TypesService = require('fora-types-service');
         var typesService = new TypesService();
-        context.services.typesService = typesService;
-        _ = yield* typesService.init([models, fields], models.Record, context);
+        _ = yield* typesService.init([models, fields], models.Record);
+        services.add("types", typesService);
 
         //Parser Service
-        var parserService = require('fora-requestparser-service')(context);
-        context.services.parserService = parserService;
+        var parserService = require('fora-requestparser-service')();
+        services.add("parser", parserService);
 
         //Auth Service
-        var authService = require('fora-auth-service')(context);
-        context.services.authService = authService;
+        var authService = require('fora-auth-service')();
+        services.add("auth", authService);
 
         /*
             Setup information useful for monitoring and debugging
@@ -79,7 +83,7 @@
         _ = yield* container.init(context);
 
         var router = yield* container.getRouter();
-        app.use(router.start());
+        app.use(router.routes());
 
         /* GO! */
         app.listen(config.port);
