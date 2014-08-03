@@ -1,4 +1,6 @@
 {
+    "domains": ["local.foraproject.org", "www.foraproject.org"],
+
     "db": {
         "type": "mongodb",
         "name": "fora-dev-db",
@@ -6,26 +8,33 @@
         "port": 27017
     },
 
-    "authService": {
-        "twitter": {
-            "TWITTER_CONSUMER_KEY": "YOUR_TWITTER_KEY",
-            "TWITTER_CONSUMER_SECRET": "YOUR_LITTLE_SECRET",
-            "TWITTER_CALLBACK": "TWITTER_CALLBACK"
+    "admins": ["jeswin"],
+
+    "applicationContainer": "containers/fora/1.0.0",
+
+    "services": {
+        "auth": {
+            "twitter": {
+                "TWITTER_CONSUMER_KEY": "YOUR_TWITTER_KEY",
+                "TWITTER_CONSUMER_SECRET": "YOUR_LITTLE_SECRET",
+                "TWITTER_CALLBACK": "TWITTER_CALLBACK"
+            },
+            "adminkeys": {
+                "default": "Th3B@DGor1ll@@5"
+            }
         },
-        "adminkeys": {
-            "default": "Th3B@DGor1ll@@5"
+
+        "file": {
+            "userDirCount": 100
         }
     },
 
-    "fileService": {
-        "userDirCount": 100
+    "extensions": {
+        "containers/fora/1.0.0": {
+            "cover": "/images/cover.jpg",
+            "theme": "default-theme"
+        }
     },
-
-    "admins": ["jeswin"],
-
-    "defaultNetwork": "foraproject.org",
-
-    "applicationContainer": "containers/fora/1.0.0",
 
     "reservedNames": [
         "account", "accounts", "admin", "administrator", "api", "app", "apps", "config", "configuration", "credential", "credentials",

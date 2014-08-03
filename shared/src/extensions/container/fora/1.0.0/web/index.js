@@ -26,16 +26,16 @@
         router.get("", home.index);
 
         //login
-        router.get("auth/twitter", auth.twitter);
-        router.get("auth/twitter/callback", auth.twitterCallback);
+        router.get("/auth/twitter", auth.twitter);
+        router.get("/auth/twitter/callback", auth.twitterCallback);
 
         //users
-        router.get("users/login", users.login);
-        router.get("~:username", users.item);
+        router.get("/users/login", users.login);
+        router.get("/~:username", users.item);
 
         //apps
-        router.get("apps", apps.index);
-        router.get("apps/new", apps.create);
+        router.get("/apps", apps.index);
+        router.get("/apps/new", apps.create);
 
         return router;
 

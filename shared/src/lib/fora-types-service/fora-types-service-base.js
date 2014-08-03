@@ -11,6 +11,7 @@
 
     ForaTypesServiceBase.prototype = Object.create(odm.TypesService.prototype);
     ForaTypesServiceBase.prototype.constructor = ForaTypesServiceBase;
+    
 
     ForaTypesServiceBase.prototype.init = function*(builtinTypes, RecordType) {
         this.builtinTypes = builtinTypes;

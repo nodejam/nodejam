@@ -32,13 +32,13 @@
     }
 
     module.exports = {
+        domains: settings.domains,
         db: settings.db,
         admins: settings.admins,
         applicationContainer: settings.applicationContainer,
         networks: networks,
-        fileService: settings.fileService,
-        authService: settings.authService,
-        extensionsService: settings.extensionsService,
+        services: settings.services,
+        extensions: settings.extensions,
         reservedNames: settings.reservedNames
     };
 

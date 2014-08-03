@@ -9,45 +9,61 @@
 
 
     Router.prototype.get = function(url, handler) {
-        this.add("GET", url, handler);
+        this.addPattern("GET", url, handler);
     };
 
 
     Router.prototype.post = function(url, handler) {
-        this.add("POST", url, handler);
+        this.addPattern("POST", url, handler);
     };
 
 
     Router.prototype.del = function(url, handler) {
-        this.add("DEL", url, handler);
+        this.addPattern("DEL", url, handler);
     };
 
 
     Router.prototype.put = function(url, handler) {
-        this.add("PUT", url, handler);
+        this.addPattern("PUT", url, handler);
     };
 
 
-    Router.prototype.add = function(method, url, handler) {
-        this.routes.push({ method: method.toUpperCase(), re: pathToRegexp(url), url: url, handler: handler });
+    Router.prototype.addPattern = function(method, url, handler) {
+        if (/\//.test(url)) url = url.substring(1); //Remove '/' from the beginning
+        this.routes.push({ type: "pattern", method: method.toUpperCase(), re: pathToRegexp(url), url: url, handler: handler });
     };
 
 
-    Router.prototype.getRoutes = function() {
+    Router.prototype.when = function(predicate, handler) {
+        this.routes.push({ type: "predicate", predicate: predicate, handler: handler });
+    };
+
+
+    Router.prototype.getRoutes = function(trimCount) {
+        trimCount = trimCount || 0;
         var self = this;
+
         return function*(next) {
             for(var i = 0; i < this.routes.length; i++) {
                 var route = self.routes[i];
-                if (route.method === this.request.method) {
-                    var url = this.request.url.split('/').slice(2).join('/');
-                    var m = route.re.exec(url);
-                    if (m) {
-                        var args = m.slice(1);
-                        return yield* route.handler.apply(this, args);
-                    }
+                switch (route.type) {
+                    case "predicate":
+                        if (route.predicate(this)) {
+                            return yield* route.handler.apply(this, args);
+                        }
+                        break;
+                    case "pattern":
+                        if (route.method === this.request.method) {
+                            var url = this.request.url.split('/').slice(trimCount + 1).join('/');
+                            var m = route.re.exec(url);
+                            if (m) {
+                                var args = m.slice(1);
+                                return yield* route.handler.apply(this, args);
+                            }
+                        }
+                        break;
                 }
             }
-            yield next;
         };
     };
 
