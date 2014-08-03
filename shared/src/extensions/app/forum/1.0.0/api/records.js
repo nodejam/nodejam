@@ -4,7 +4,7 @@
     var _;
 
     module.exports = function(params) {
-        var typeService = params.typeService,
+        var typesService = params.typesService,
             models = params.models,
             db = params.db,
             conf = params.conf,

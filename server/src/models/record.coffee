@@ -2,11 +2,11 @@ randomizer = require '../lib/randomizer'
 models = require './'
 conf = require '../conf'
 
-ForaTypeService = require('./foratypeutils')
-typeService = new ForaTypeService()
+ForaTypesService = require('./foratypeutils')
+typesService = new ForaTypesService()
 
 Loader = require('fora-extensions').Loader
-extensionLoader = new Loader(typeService, { directory: require("path").resolve(__dirname, '../extensions') })
+extensionLoader = new Loader(typesService, { directory: require("path").resolve(__dirname, '../extensions') })
 
 RecordBase = require('./record-base').RecordBase
 models = require('./')
@@ -16,7 +16,7 @@ class Record extends RecordBase
     @typeDefinition: ->
         typeDef = RecordBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield* Record.getTypeService().getTypeDefinition(obj.type)
+            def = yield* Record.getTypesService().getTypeDefinition(obj.type)
             if def.ctor isnt Record
                 throw new Error "Record type definitions must have ctor set to Record"
             def

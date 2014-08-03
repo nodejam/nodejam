@@ -9,7 +9,7 @@ class App extends AppBase
     @typeDefinition: ->
         typeDef = AppBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield* App.getTypeService().getTypeDefinition(obj.type)
+            def = yield* App.getTypesService().getTypeDefinition(obj.type)
             if def.ctor isnt App
                 throw new Error "App type definitions must have ctor set to App"
             def

@@ -1,12 +1,12 @@
 BaseModel = require('./basemodel')
 DatabaseModel = require('./databasemodel')
-TypeService = require('./typeutils')
+TypesService = require('./typeutils')
 Validator = require('./validator')
 
 module.exports = {
     BaseModel,
     DatabaseModel,
-    TypeService,
+    TypesService,
     Validator
 }
 

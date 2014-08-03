@@ -20,7 +20,7 @@ server/src/website/views/_custom/*
 server/weberrors.log
 server/apierrors.log
 server/src/conf/*
-!server/src/conf/index.conf
+!server/src/conf/index.js
 !server/src/conf/*.sample
 
 www-client/system/*

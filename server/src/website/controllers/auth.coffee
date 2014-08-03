@@ -7,7 +7,7 @@ randomizer = require '../../lib/randomizer'
 netutils = require '../../lib/netutils'
 fsutils = require '../../lib/fsutils'
 
-module.exports = ({typeService, models, fields, db, conf, auth, mapper, loader }) ->
+module.exports = ({typesService, models, fields, db, conf, auth, mapper, loader }) ->
 
     OAuth = require('oauth').OAuth
     oa = new OAuth(
@@ -42,7 +42,7 @@ module.exports = ({typeService, models, fields, db, conf, auth, mapper, loader }
             @redirect "https://twitter.com/oauth/authenticate?oauth_token=#{oauth_token}"
 
 
-        twitterCallback: ({typeService, models, fields, db, conf, auth, mapper }) ->*
+        twitterCallback: ({typesService, models, fields, db, conf, auth, mapper }) ->*
             thunk_getOAuthAccessToken = (token, secret, verifier) ->
                 (cb) ->
                     oa.getOAuthAccessToken token, secret, verifier, (error, accessToken, accessTokenSecret, results) ->

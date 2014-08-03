@@ -39,7 +39,7 @@
                 Compile all JSX files
                 Use the React Tools API for this; there is no way to do this from the command line
             */
-            this.watch(["src/app-lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
+            this.watch(["src/lib/fora-ui/*.jsx", "src/extensions/*.jsx", "src/website/views/*.jsx"], function*(filePath) {
                 var fs = require('fs');
                 var dest = filePath.replace(/^src\//, 'app/').replace(/\.jsx$/, '.js');
                 yield* ensureDirExists(dest);

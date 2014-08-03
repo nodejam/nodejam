@@ -1,6 +1,6 @@
 indexView = require('../views/home/index')
 
-module.exports = ({typeService, models, fields, db, conf, auth, mapper, loader }) -> {
+module.exports = ({typesService, models, fields, db, conf, auth, mapper, loader }) -> {
     ###
         Application home page
     ###

@@ -1,7 +1,7 @@
 odm = require('fora-models')
 
 
-class ForaTypeServiceBase extends odm.TypeService
+class ForaTypesServiceBase extends odm.TypesService
 
     init: (@builtinTypes, @RecordType) =>*
         yield* @buildTypeCache()
@@ -90,4 +90,4 @@ class ForaTypeServiceBase extends odm.TypeService
         console.log "Missing " + JSON.stringify name
 
 
-exports.ForaTypeServiceBase = ForaTypeServiceBase
+exports.ForaTypesServiceBase = ForaTypesServiceBase

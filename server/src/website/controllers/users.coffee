@@ -1,7 +1,7 @@
 React = require 'fora-react-sandbox'
 LoginView = require('../views/users/login')
 
-module.exports = ({typeService, models, fields, db, conf, auth, mapper, loader }) -> {
+module.exports = ({typesService, models, fields, db, conf, auth, mapper, loader }) -> {
     login: ->*
         token = yield* models.Token.get { key: @query.key }, {}, db
         

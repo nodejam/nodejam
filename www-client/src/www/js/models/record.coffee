@@ -7,7 +7,7 @@ class Record extends RecordBase
     @typeDefinition: ->
         typeDef = RecordBase.typeDefinition()
         typeDef.discriminator = (obj) ->*
-            def = yield* Record.getTypeService().getTypeDefinition(obj.type)
+            def = yield* Record.getTypesService().getTypeDefinition(obj.type)
             if def.ctor isnt Record
                 throw new Error "Record type definitions must have ctor set to Record"
             def
@@ -21,8 +21,8 @@ class Record extends RecordBase
 
 
     getTypeDefinition: =>*
-        typeService = Record.getTypeService()
-        yield* typeService.getTypeDefinition(@type)
+        typesService = Record.getTypesService()
+        yield* typesService.getTypeDefinition(@type)
 
 
 exports.Record = Record

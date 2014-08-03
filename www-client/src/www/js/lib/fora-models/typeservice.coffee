@@ -1,6 +1,6 @@
 utils = require './utils'
 
-class TypeService
+class TypesService
     
 
     isPrimitiveType: (type) ->      
@@ -30,7 +30,7 @@ class TypeService
 
     
     resolveReferences: =>*
-        for name, def of TypeService.typeCache
+        for name, def of TypesService.typeCache
             yield* @resolveReferencesInDef def
         return
         
@@ -63,14 +63,14 @@ class TypeService
 
     
     buildTypeCache: =>*
-        if not TypeService.typeCache
-            TypeService.typeCache = {}
+        if not TypesService.typeCache
+            TypesService.typeCache = {}
             
             if @getCacheItems
                 items = yield* @getCacheItems()
 
                 for modelName, def of items
-                    TypeService.typeCache[modelName] = def        
+                    TypesService.typeCache[modelName] = def        
             
                 yield* @resolveReferences()
             
@@ -78,7 +78,7 @@ class TypeService
 
 
     getTypeDefinitions: =>
-        TypeService.typeCache
+        TypesService.typeCache
 
 
 
@@ -86,7 +86,7 @@ class TypeService
         #First check if it resolves in type cache
         #Then check if it resolves in the context
         #Otherwise build dynamic typedef
-        return (TypeService.typeCache[name] ? dynamicResolutionContext[name]) ? yield* @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
+        return (TypesService.typeCache[name] ? dynamicResolutionContext[name]) ? yield* @resolveDynamicTypeDefinition(name, dynamicResolutionContext)
 
     
 
@@ -100,4 +100,4 @@ class TypeService
 
 
 
-module.exports = TypeService
+module.exports = TypesService

@@ -6,7 +6,7 @@ class Loader
     @builtinExtensionCache = {}
 
 
-    constructor: (@typeService, @settings) ->
+    constructor: (@typesService, @settings) ->
 
 
     init: =>*

@@ -6,7 +6,7 @@
         "port": 27017
     },
 
-    "auth": {
+    "authService": {
         "twitter": {
             "TWITTER_CONSUMER_KEY": "YOUR_TWITTER_KEY",
             "TWITTER_CONSUMER_SECRET": "YOUR_LITTLE_SECRET",

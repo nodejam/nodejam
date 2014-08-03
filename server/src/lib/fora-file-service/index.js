@@ -29,7 +29,7 @@
         if (dirsAreValid([dir, subdir])) {
             if(['assets', 'images', 'original-images'].indexOf(dir) > -1) {
                 if (!isNaN(parseInt(subdir)))
-                    return path.join.apply(null, [conf.pubdir].concat([dir, subdir]));
+                    return path.join.apply(null, [conf.fileService.publicDirectory].concat([dir, subdir]));
             }
         }
         throw new Error("Invalid directory " + dir + "/" + subdir);
@@ -40,7 +40,7 @@
         if (dirsAreValid([dir, subdir]) && filenameIsValid(file)) {
             if (['assets', 'images', 'original-images'].indexOf(dir) > -1) {
                 if (!isNaN(parseInt(subdir)))
-                    return path.join.apply(null, [conf.pubdir].concat([dir, subdir, file]));
+                    return path.join.apply(null, [conf.fileService.publicDirectory].concat([dir, subdir, file]));
             }
         }
         throw new Error("Invalid directory " + dir + "/" + subdir + "/" + file);
@@ -51,7 +51,7 @@
         if (dirsAreValid([dir]) && filenameIsValid(file)) {
             var random = (Date.now() % conf.userDirCount).toString();
             if(['assets', 'images', 'original-images'].indexOf(dir) > -1) {
-                return path.join.apply(null, [conf.pubdir].concat([dir, random, file]));
+                return path.join.apply(null, [conf.fileService.publicDirectory].concat([dir, random, file]));
             }
         }
         throw new Error("Invalid path " + dir + "/" + file);

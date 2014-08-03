@@ -15,7 +15,7 @@
         var apps = require("./apps")(api);
         var images = require("./images")(api);
 
-        var router = new Routes();
+        var router = new Router();
 
         //healthcheck
         router.get("healthcheck", function*() {
@@ -53,7 +53,7 @@
             }
         })
 
-        return routes;
+        return router;
     }
 
     exports.getRouter = function*() {

@@ -23,24 +23,24 @@
     #Error handling
     require('../lib/web/error')(app)
 
-    #Conf, models, fields, typeService, loader
+    #Conf, models, fields, typesService, loader
     conf = require '../conf'
     models = require '../models'
     fields = require '../models/fields'
 
-    ForaTypeService = require('../models/foratypeutils')
-    typeService = new ForaTypeService()
-    yield* typeService.init([models, fields], models.App, models.Record)
+    ForaTypesService = require('../models/foratypeutils')
+    typesService = new ForaTypesService()
+    yield* typesService.init([models, fields], models.App, models.Record)
 
     Loader = require('fora-extensions').Loader
-    loader = new Loader(typeService, { directory: require("path").resolve(__dirname, '../extensions') })
+    loader = new Loader(typesService, { directory: require("path").resolve(__dirname, '../extensions') })
     yield* loader.init()
 
     odm = require('fora-models')
-    db = new odm.Database(conf.db, typeService.getTypeDefinitions())
+    db = new odm.Database(conf.db, typesService.getTypeDefinitions())
 
     #Mapper, auth
-    commonArgs = { typeService, models, fields, db, conf }
+    commonArgs = { typesService, models, fields, db, conf }
 
     init = require('../lib/web/init')(commonArgs)
     app.use init
@@ -48,7 +48,7 @@
     auth = require('../lib/web/auth')(commonArgs)
 
     Mapper = require('../lib/web/mapper')
-    mapper = new Mapper(typeService)
+    mapper = new Mapper(typesService)
 
     #layout
     layout = require './layout'
@@ -75,7 +75,7 @@
         uptime = parseInt((Date.now() - since)/1000) + "s"
         @body = { jacksparrow: "alive", instance, since, uptime }
 
-    controllerArgs = {typeService, models, fields, db, conf, auth, mapper, loader }
+    controllerArgs = {typesService, models, fields, db, conf, auth, mapper, loader }
     m_home = require('./controllers/home') controllerArgs
     m_auth = require('./controllers/auth') controllerArgs
     m_users = require('./controllers/users') controllerArgs

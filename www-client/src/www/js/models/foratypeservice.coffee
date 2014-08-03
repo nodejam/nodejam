@@ -1,7 +1,7 @@
-ForaTypeServiceBase = require('./foratypeutils-base').ForaTypeServiceBase
+ForaTypesServiceBase = require('./foratypeutils-base').ForaTypesServiceBase
 modules = require('../extensions/models')
 
-class ForaTypeService extends ForaTypeServiceBase
+class ForaTypesService extends ForaTypesServiceBase
 
 
     addTrustedUserTypes: (ctor, baseTypeName, dir, definitions) =>*
@@ -20,4 +20,4 @@ class ForaTypeService extends ForaTypeServiceBase
         yield false;
 
 
-module.exports = ForaTypeService
+module.exports = ForaTypesService

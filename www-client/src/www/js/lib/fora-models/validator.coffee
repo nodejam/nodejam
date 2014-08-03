@@ -1,6 +1,6 @@
 class Validator
 
-    constructor: (@typeService) ->
+    constructor: (@typesService) ->
         
 
     validate: (obj, typeDefinition) ->*
@@ -35,7 +35,7 @@ class Validator
                     errors.push "#{fieldName}: can have at most #{fieldDef.minItems} elements"
                 
                 for item in value
-                    if @typeService.isCustomType(fieldDef.items.type)
+                    if @typesService.isCustomType(fieldDef.items.type)
                         if item.validate
                             errors = errors.concat yield* item.validate()
                         else if fieldDef.items.typeDefinition
@@ -58,7 +58,7 @@ class Validator
                     when 'boolean'
                         typeCheck -> typeof value is 'boolean'
                     else
-                        if @typeService.isCustomType(fieldDef.type)
+                        if @typesService.isCustomType(fieldDef.type)
                             if value.validate
                                 errors = errors.concat yield* value.validate()
                             else if fieldDef.typeDefinition

@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    var Router = function (loader) {
-        this.loader = loader;
+    var Router = function (context) {
+        this.context = context;
     };
 
     Router.prototype.route = function*() {
