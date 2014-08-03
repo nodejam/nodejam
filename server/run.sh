@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ${0%/*}
 
-export NODE_PATH=$NODE_PATH:`pwd`/app/app-lib
+export NODE_PATH=$NODE_PATH:`pwd`/app/lib
 
 if [ $NODE_ENV = "development" ]; then
     echo "Longer stack traces are on: --stack-trace-limit=1000"

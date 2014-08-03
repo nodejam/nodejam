@@ -17,7 +17,7 @@
             },
             required: ["title"]
         }
-    }
+    };
 
 
     /*
@@ -25,7 +25,7 @@
     */
     exports.fromJSON = function(params) {
         //var post = new
-    }
+    };
 
 
     /*
@@ -37,8 +37,7 @@
             this.cover.type = "inline-cover";
         }
         return;
-        yield false;
-    }
+    };
 
 
     /*
@@ -53,7 +52,6 @@
             createdAt: this.createdAt,
             id: this._id.toString(),
             stub: this.stub
-        }
-        yield false;
-    }
+        };
+    };
 })();

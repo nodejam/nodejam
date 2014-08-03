@@ -28,8 +28,8 @@ for p in ['assets', 'images', 'original-images']
 (co ->*
     odm = require('fora-models')
     yield* typeUtils.init([models, fields], models.App, models.Record)
-    db = new odm.Database conf.db, typeUtils.getTypeDefinitions()
-    yield* db.setupIndexes()
+    db = new odm.Database conf.db
+    yield* db.setupIndexes typeUtils.getTypeDefinitions()
     console.log "wait for 5 seconds..."
     setTimeout (->
       console.log "done"

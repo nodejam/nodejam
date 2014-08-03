@@ -1,19 +1,22 @@
-co = require 'co'
-logger = require '../lib/logger'
-argv = require('optimist').argv
+(function() {
+    "use strict";
 
+    var co = require('co'),
+        logger = require('../lib/logger'),
+        argv = require('optimist').argv;
 
-host = process.argv[2]
-port = process.argv[3]
+    var host = process.argv[2];
+    var port = process.argv[3];
 
-if not host or not port
-    logger.log "Usage: app.js host port"
-    process.exit()
+    if (!host || !port) {
+        logger.log("Usage: app.js host port");
+        process.exit();
+    }
 
-process.chdir __dirname
+    process.chdir(__dirname);
 
-
-(co ->*
+    (co ->*
+    
     koa = require 'koa'
     app = koa()
 

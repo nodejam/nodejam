@@ -1,26 +1,28 @@
 {
     "db": {
         "type": "mongodb",
-        "name": "fora-dev-db", 
-        "host": "127.0.0.1", 
-        "port": 27017 
+        "name": "fora-dev-db",
+        "host": "127.0.0.1",
+        "port": 27017
     },
-    
+
     "auth": {
         "twitter": {
             "TWITTER_CONSUMER_KEY": "YOUR_TWITTER_KEY",
             "TWITTER_CONSUMER_SECRET": "YOUR_LITTLE_SECRET",
             "TWITTER_CALLBACK": "TWITTER_CALLBACK"
         },
-        "adminkeys": { 
+        "adminkeys": {
             "default": "Th3B@DGor1ll@@5"
         }
     },
-    
+
     "admins": ["jeswin"],
-    
+
     "defaultNetwork": "foraproject.org",
-    
+
+    "applicationContainer": "containers/fora/1.0.0",
+
     "reservedNames": [
         "account", "accounts", "admin", "administrator", "api", "app", "apps", "config", "configuration", "credential", "credentials",
         "css", "db", "data", "database", "edit", "edits", "email", "feed", "feeds", "file", "files", "fonts", "fora", "forum", "forums",
@@ -28,5 +30,5 @@
         "post", "posts", "pub", "public", "records", "rss", "script", "scripts", "setup", "session", "sessions", "subscribe", "subscriptions",
         "settings", "signup", "sitemap", "status", "sys", "system", "tag", "tags", "update", "updates",
         "terms", "user", "users", "wiki"
-    ]    
+    ]
 }
