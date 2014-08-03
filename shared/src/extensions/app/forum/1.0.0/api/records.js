@@ -77,10 +77,10 @@
             if (record) {
                 var meta = yield* this.parser.body('meta');
                 if (meta) {
-                    var record = yield* record.addMetaList(meta.split(','));
+                    record = yield* record.addMetaList(meta.split(','));
                     this.body = record;
                 } else {
-                    throw new Error("No meta was supplied")
+                    throw new Error("No meta was supplied");
                 }
             } else {
                 throw new Error('Missing record');
@@ -93,4 +93,5 @@
             remove: auth.handler({ session: 'user' }, remove),
             admin_update: auth.handler({ session: 'admin' }, admin_update)
         };
+    };
 })();

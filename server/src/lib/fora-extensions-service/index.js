@@ -45,8 +45,8 @@
         };
 
         for(var i = 0; i < this.baseConfig.extensionsDirectories; i++) {
-            for(var type in this.config.extensionTypes) {
-                var extensionType = this.config.extensionTypes[type];
+            for(var type in this.config.types) {
+                var extensionType = this.config.types[type];
                 for(var j = 0; j < types.length; j++) {
                     _ = yield* findTrustedExtensions(this.baseConfig.extensionsDirectories[i], extensionType, types[j]);
                 }

@@ -18,7 +18,7 @@
 
         /* Extensions needed by this app */
         extensionsService: {
-            extensionTypes: {
+            types: {
                 containers: ['api'],
                 apps: ['api'],
                 records: ['model']
