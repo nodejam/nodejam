@@ -1,7 +1,7 @@
 thunkify = require 'fora-node-thunkify'
 ForaDbModel = require('./foramodel').ForaDbModel
-hasher = require '../lib/hasher'
-randomizer = require '../lib/randomizer'
+hasher = require 'fora-hasher'
+randomizer = require 'fora-randomizer'
 models = require('./')
 
 class Credential extends ForaDbModel

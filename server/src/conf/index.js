@@ -24,7 +24,6 @@
         db: settings.db,
         admins: settings.admins,
         applicationContainer: settings.applicationContainer,
-        networks: networks,
         services: settings.services,
         extensions: settings.extensions,
         reservedNames: settings.reservedNames
