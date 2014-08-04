@@ -3,12 +3,7 @@
 
     var _;
 
-    var gm = require('gm'),
-        thunkify = require('fora-node-thunkify'),
-        logger = require('../../lib/logger'),
-        randomizer = require('../../lib/randomizer'),
-        fsutils = require('../../lib/fsutils'),
-        validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+    var services = require('fora-services');
 
     var resizeImage = function*(src, dest, options) {
         logger.log("Resizing #{src}...");
@@ -102,6 +97,7 @@
         }
     };
 
-    module.exports = { upload: auth.handler({ session: 'any' }, upload) };
+    var auth = services.get('auth');
+    module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();

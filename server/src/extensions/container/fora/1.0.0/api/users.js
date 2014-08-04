@@ -1,6 +1,8 @@
 (function() {
     "use strict";
 
+    var services = require('fora-services');
+
     var create = function*() {
 
         var user = new models.User({
@@ -58,10 +60,11 @@
             this.body = user.summarize({}, db);
     };
 
+    var auth = services.get('auth');
     module.exports = {
-        create: auth.handler({ session: 'credential' }, create),
-        login: auth.handler({ session: 'credential' }, login),
-        item: auth.handler(item)
+        create: auth({ session: 'credential' }, create),
+        login: auth({ session: 'credential' }, login),
+        item: auth(item)
     };
 
 })();

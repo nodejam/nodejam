@@ -68,11 +68,10 @@
 
 
     var auth = services.get('auth');
-
     module.exports = {
-        create: auth.handler({ session: 'user' }, create),
-        edit: auth.handler({ session: 'user' }, edit),
-        join: auth.handler({ session: 'user' }, join)
+        create: auth({ session: 'user' }, create),
+        edit: auth({ session: 'user' }, edit),
+        join: auth({ session: 'user' }, join)
     };
 
 

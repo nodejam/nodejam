@@ -1,6 +1,8 @@
 (function() {
     "use strict";
 
+    var services = require('fora-services');
+
     var create = function*() {
         if (yield* this.parser.body('secret') === conf.auth.adminkeys.default) {
             var type = yield* this.parser.body('type');
@@ -31,6 +33,7 @@
         }
     };
 
-    module.exports = { create: auth.handler({ session: 'user' }, create) };
+    var auth = services.get('auth');
+    module.exports = { create: auth({ session: 'user' }, create) };
 
 })();
