@@ -5,7 +5,7 @@
     var services = require('fora-services');
 
     var create = function*() {
-        var conf = services.get('conf');
+        var conf = services.get('configuration');
         var context = { user: this.session.user };
 
         var stub = yield* this.parser.body('name').toLowerCase().trim();

@@ -34,7 +34,7 @@ start_processes() {
     kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}') 2>/dev/null
 
     node --harmony $api_debug $long_stack app/api/app.js localhost 10982 fora_api "$@" 2> apierrors.log &
-    #node --harmony $web_debug $long_stack app/website/app.js localhost 10981 fora_website "$@" 2> weberrors.log &
+    node --harmony $web_debug $long_stack app/website/app.js localhost 10981 fora_website "$@" 2> weberrors.log &
 }
 
 start_processes $@

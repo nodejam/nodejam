@@ -10,7 +10,7 @@ class User extends UserBase
         if not db.getRowId(@)
             existing = yield* User.get { @username }, context, db
             if not existing
-                conf = services.get('conf')
+                conf = services.get('configuration')
                 @assets = "#{typeHelpers.getHashCode(@username) % conf.userDirCount}"
                 @lastLogin = 0
                 @followingCount = 0

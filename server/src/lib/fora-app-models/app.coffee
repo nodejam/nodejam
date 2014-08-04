@@ -19,7 +19,7 @@ class App extends AppBase
         { context, db } = @getContext context, db
 
         #if stub is a reserved name, change it
-        conf = services.get('conf')
+        conf = services.get('configuration')
         if conf.reservedNames.indexOf(@stub) > -1
             throw new Error "Stub cannot be #{@stub}, it is reserved"
 

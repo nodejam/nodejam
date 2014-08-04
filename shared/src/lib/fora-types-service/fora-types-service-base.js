@@ -6,10 +6,10 @@
     var odm = require('fora-models');
 
     var ForaTypesServiceBase = function() {
-        odm.TypeUtils.apply(this, arguments);
+        odm.TypesService.apply(this, arguments);
     };
 
-    ForaTypesServiceBase.prototype = Object.create(odm.TypeUtils.prototype);
+    ForaTypesServiceBase.prototype = Object.create(odm.TypesService.prototype);
     ForaTypesServiceBase.prototype.constructor = ForaTypesServiceBase;
 
 

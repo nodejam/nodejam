@@ -35,7 +35,7 @@
         var services = require('fora-services');
 
         //Config is also a service.
-        services.add("configuration", config);
+        services.add("configuration", config.baseConfiguration);
 
         //Database Service
         var odm = require('fora-models');

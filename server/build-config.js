@@ -40,7 +40,7 @@
             /*
                 Copy other files
             */
-            this.watch(["src/*.config", "src/*.js"], function*(filePath) {
+            this.watch(["src/*.config", "src/*.json", "src/*.js"], function*(filePath) {
                 var dest = filePath.replace(/^src\//, 'app/');
                 yield* ensureDirExists(dest);
                 yield* exec("cp " + filePath + " " + dest);

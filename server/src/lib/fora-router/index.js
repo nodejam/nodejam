@@ -43,7 +43,7 @@
         var self = this;
 
         return function*(next) {
-            for(var i = 0; i < this.routes.length; i++) {
+            for(var i = 0; i < self.routes.length; i++) {
                 var route = self.routes[i];
                 switch (route.type) {
                     case "predicate":
