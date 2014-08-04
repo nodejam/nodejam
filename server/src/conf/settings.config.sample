@@ -30,7 +30,7 @@
     },
 
     "extensions": {
-        "containers/fora/1.0.0": {
+        "container/fora/1.0.0": {
             "cover": "/images/cover.jpg",
             "theme": "default-theme"
         }

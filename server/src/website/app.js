@@ -17,19 +17,21 @@
         baseConfiguration: require('../conf'),
 
         /* Extensions needed by this app */
-        extensionsService: {
-            types: {
-                containers: ['web'],
-                apps: ['web'],
-                records: ['model', 'templates']
+        services: {
+            extensions: {
+                types: {
+                    container: ['web'],
+                    apps: ['web'],
+                    records: ['model', 'templates']
+                }
             }
         },
 
         /*
             App server will start applicationContainer:containerModuleName
-            For example: containers/fora/1.0.0:web
+            For example: container/fora/1.0.0:api
         */
-        containerModuleName: "web",
+        containerModuleName: "api",
 
         host: host,
         port: port

@@ -3,9 +3,16 @@
 
     var _;
 
+    var thunkify = require('fora-node-thunkify'),
+        fs = require('fs'),
+        path = require('path');
+
+    var readdir = thunkify(fs.readdir);
+    var stat = thunkify(fs.stat);
+    var readfile = thunkify(fs.readFile);
+
     var trustedExtensionCache = {};
     var extensionTypeCache = {};
-
 
     var ExtensionsService = function(config, baseConfig) {
         this.config = config;
@@ -19,10 +26,10 @@
             var dirs = [];
             var files = yield* readdir(dir);
             for (var i = 0; i < files.length; i++) {
-                var filePath = dir + "/" + file;
+                var filePath = dir + "/" + files[i];
                 var entry = yield* stat(filePath);
                 if (entry.isDirectory())
-                    dirs.push(file);
+                    dirs.push(files[i]);
             }
             return dirs;
         };
@@ -44,11 +51,11 @@
             }
         };
 
-        for(var i = 0; i < this.baseConfig.locations; i++) {
+        for(var i = 0; i < this.baseConfig.locations.length; i++) {
             for(var type in this.config.types) {
-                var extensionType = this.config.types[type];
-                for(var j = 0; j < types.length; j++) {
-                    _ = yield* findTrustedExtensions(this.baseConfig.locations[i], extensionType, types[j]);
+                var modules = this.config.types[type];
+                for(var j = 0; j < modules.length; j++) {
+                    _ = yield* findTrustedExtensions(this.baseConfig.locations[i], type, modules[j]);
                 }
             }
         }
@@ -60,7 +67,7 @@
         if (extension)
             return extension;
         else
-            throw new Error("Untrusted extensions are not implemented");
+            throw new Error("Extension " + name + " was not found");
     };
 
 

@@ -80,7 +80,7 @@
         app.use(errorHandler);
 
         var container = yield* extensionsService.get(config.baseConfiguration.applicationContainer + ":" + config.containerModuleName);
-        _ = yield* container.init(context);
+        _ = yield* container.init();
 
         var router = yield* container.getRouter();
         app.use(router.start());

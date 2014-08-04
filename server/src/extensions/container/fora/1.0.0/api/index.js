@@ -73,6 +73,7 @@
     };
 
     module.exports = {
+        init: init,
         getRouter: getRouter
     };
 

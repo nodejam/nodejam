@@ -22,16 +22,16 @@
         services: {
             extensions: {
                 types: {
-                    containers: ['api'],
-                    apps: ['api'],
-                    records: ['model']
+                    container: ['api'],
+                    app: ['api'],
+                    record: ['model']
                 }
             }
         },
 
         /*
             App server will start applicationContainer:containerModuleName
-            For example: containers/fora/1.0.0:api
+            For example: container/fora/1.0.0:api
         */
         containerModuleName: "api",
 
