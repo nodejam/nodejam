@@ -1,13 +1,6 @@
 randomizer = require '../lib/randomizer'
 models = require './'
-conf = require '../conf'
-
-ForaTypesService = require('./foratypeutils')
-typesService = new ForaTypesService()
-
-Loader = require('fora-extensions').Loader
-extensionLoader = new Loader(typesService, { directory: require("path").resolve(__dirname, '../extensions') })
-
+services = require('fora-services')
 RecordBase = require('./record-base').RecordBase
 models = require('./')
 
@@ -66,7 +59,8 @@ class Record extends RecordBase
     save: (context, db) =>*
         { context, db } = @getContext context, db
 
-        extensions = yield* extensionLoader.load yield* @getTypeDefinition()
+        extensions = yield* services('extensions').get yield* @getTypeDefinition()
+        conf = services('configuration');
         model = yield* extensions.getModel()
         yield* model.save.call @
 
@@ -98,7 +92,7 @@ class Record extends RecordBase
 
 
     getView: (name) =>*
-        extensions = yield* extensionLoader.load yield* @getTypeDefinition()
+        extensions = yield* services('extensions').get yield* @getTypeDefinition()
         model = yield* extensions.getModel()
         yield* model.view.call @, name
 

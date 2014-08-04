@@ -10,13 +10,14 @@
     var configureRouter = function() {
         var services = require('fora-services');
         var conf = services.get('conf');
+        var extensions = services.get('extensions');
 
         var credentials = require('./credentials'),
             users = require('./users'),
             apps = require("./apps"),
             images = require("./images");
 
-        var models = require('app-models');
+        var models = require('fora-app-models');
 
         var Router = require("fora-router");
         var router = new Router();
@@ -39,6 +40,12 @@
             this.url = "/" + parts.slice(3).join("/");
             var app = yield* models.App.get({ stub: parts[2] });
         });
+
+        var routeToApp = function*(app) {
+            var appExtension = yield* extensions.get(app.type);
+            var router = appExtension.getRouter();
+            yield* router.start();
+        };
 
         //healthcheck
         router.get("/healthcheck", function*() {

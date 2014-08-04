@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    var models = require('app-models');
+    var models = require('fora-app-models');
     var services = require('fora-services');
 
     module.exports = function(params) {

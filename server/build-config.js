@@ -38,6 +38,17 @@
 
 
             /*
+                Copy other files
+            */
+            this.watch(["src/*.config", "src/*.js"], function*(filePath) {
+                var dest = filePath.replace(/^src\//, 'app/');
+                yield* ensureDirExists(dest);
+                yield* exec("cp " + filePath + " " + dest);
+                this.build.queue('restart_server');
+            }, "server_files_copy");
+
+
+            /*
                 Copy everything under setup
             */
             this.watch(["src/scripts/setup/*.md"], function*(filePath) {
@@ -57,28 +68,6 @@
                 yield* exec("cp " + filePath + " " + dest);
                 this.build.queue('restart_server');
             }, "server_shared_files_copy");
-
-
-            /*
-                Copy config
-            */
-            this.watch(["src/conf/*.config"], function*(filePath) {
-                var dest = filePath.replace(/^src\//, 'app/');
-                yield* ensureDirExists(dest);
-                yield* exec("cp " + filePath + " " + dest);
-                this.build.queue('restart_server');
-            }, "server_conf_files_copy");
-
-
-            /*
-                Copy all hbs files
-            */
-            this.watch(["src/website/views/*.hbs"], function*(filePath) {
-                var dest = filePath.replace(/^src\//, 'app/');
-                yield* ensureDirExists(dest);
-                yield* exec("cp " + filePath + " " + dest);
-                this.build.queue('restart_server');
-            }, "server_hbs_copy");
 
 
             /*

@@ -44,18 +44,18 @@
             }
         };
 
-        for(var i = 0; i < this.baseConfig.extensionsDirectories; i++) {
+        for(var i = 0; i < this.baseConfig.locations; i++) {
             for(var type in this.config.types) {
                 var extensionType = this.config.types[type];
                 for(var j = 0; j < types.length; j++) {
-                    _ = yield* findTrustedExtensions(this.baseConfig.extensionsDirectories[i], extensionType, types[j]);
+                    _ = yield* findTrustedExtensions(this.baseConfig.locations[i], extensionType, types[j]);
                 }
             }
         }
     };
 
 
-    ExtensionsService.prototype.load = function*(name) {
+    ExtensionsService.prototype.get = function*(name) {
         var extension = trustedExtensionCache[name];
         if (extension)
             return extension;

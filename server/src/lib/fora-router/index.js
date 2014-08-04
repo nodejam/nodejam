@@ -39,8 +39,7 @@
     };
 
 
-    Router.prototype.getRoutes = function(trimCount) {
-        trimCount = trimCount || 0;
+    Router.prototype.start = function() {
         var self = this;
 
         return function*(next) {
@@ -54,8 +53,7 @@
                         break;
                     case "pattern":
                         if (route.method === this.request.method) {
-                            var url = this.request.url.split('/').slice(trimCount + 1).join('/');
-                            var m = route.re.exec(url);
+                            var m = route.re.exec(this.request.url);
                             if (m) {
                                 var args = m.slice(1);
                                 return yield* route.handler.apply(this, args);

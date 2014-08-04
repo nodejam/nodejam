@@ -6,6 +6,7 @@
         .alias('h', 'help')
         .describe('client', "Build the client")
         .describe('server', "Build the server")
+        .describe('no-monitor', "Do not start the server or monitor files after building")
         .describe('no-run', "Do not start the server after building")
         .describe('threads', "Number of threads to use for the build (default: 8)")
         .describe('debug-api', 'Start debugger for api')
@@ -42,7 +43,15 @@
     var clientConfig = require('./www-client/build-config')(foraBuild.tools);
 
     /* Set build parameters */
-    build.state.monitor = !argv['no-run'];
+    build.state.monitor = true;
+    build.state.run = true;
+    if (argv.monitor === false) {
+        build.state.monitor = false;
+        build.state.run = false;
+    }
+    if (argv.run === false) {
+        build.state.run = false;
+    }
 
     if (argv.client || argv.server) {
         build.state.buildClient = argv.client;
@@ -65,7 +74,7 @@
         var client = build.configure(clientConfig, 'www-client');
 
     build.job(function*() {
-        if (this.state.monitor) {
+        if (this.state.run) {
             var params = ["server/run.sh"];
             if (argv['debug-api']) params.push("--debug-api");
             if (argv['debug-brk-api']) params.push("--debug-brk-api");
@@ -103,7 +112,8 @@
     /* Monitor? */
     if (build.state.monitor) {
         build.onComplete(function*() {
-            this.queue("restart_server");
+            if (build.state.run)
+                this.queue("restart_server");
         });
     }
 

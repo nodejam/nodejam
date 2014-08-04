@@ -3,7 +3,6 @@ React = require('react')
 
 models = require('../models')
 fields = require('../models/fields')
-ForaTypesService = require('../models/foratypeutils')
 
 class App
 

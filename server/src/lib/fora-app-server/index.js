@@ -21,8 +21,8 @@
 
 
     module.exports = function*(config) {
-        var models = require('app-models'),
-            fields = require('app-fields');
+        var models = require('fora-app-models'),
+            fields = require('fora-app-fields');
 
         var services = require('fora-services');
 
@@ -83,7 +83,7 @@
         _ = yield* container.init(context);
 
         var router = yield* container.getRouter();
-        app.use(router.getRoutes());
+        app.use(router.start());
 
         /* GO! */
         app.listen(config.port);

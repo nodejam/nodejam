@@ -1,6 +1,4 @@
 odm = require('fora-models')
-ForaTypesService = require('./foratypeutils')
-typesService = new ForaTypesService()
 
 class ForaModel extends odm.BaseModel
 

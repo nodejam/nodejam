@@ -8,9 +8,6 @@ fsutils = require '../../lib/fsutils'
 models = require '../../models'
 fields = require '../../models/fields'
 
-ForaTypesService = require('../../models/foratypeutils')
-typesService = new ForaTypesService()
-
 #create directories
 today = Date.now()
 for p in ['assets', 'images', 'original-images']

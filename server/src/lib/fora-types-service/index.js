@@ -13,7 +13,7 @@
 
     ForaTypesService.prototype.addTrustedUserTypes = function*(ctor, baseTypeName, dir, definitions) {
         var extensionsService = services.get("extensions");
-        var extensions = yield extensionsService.getTrustedExtensions("records");
+        var extensions = yield* extensionsService.getTrustedExtensions("records");
 
         for (var name in extensions) {
             definitions[name.split(":")[0]] = extensions[name];

@@ -24,11 +24,6 @@ init = ->*
     models = require '../../models'
     fields = require '../../models/fields'
 
-    ForaTypesService = require('../../models/foratypeutils')
-    typesService = new ForaTypesService()
-    yield* typesService.init([models, fields], models.App, models.Record)
-
-
     odm = require('fora-models')
     database = new odm.Database conf.db, typesService.getTypeDefinitions()
 
