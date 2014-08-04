@@ -19,11 +19,13 @@
         baseConfiguration: require('../conf'),
 
         /* Extensions needed by this app */
-        extensionsService: {
-            types: {
-                containers: ['api'],
-                apps: ['api'],
-                records: ['model']
+        services: {
+            extensions: {
+                types: {
+                    containers: ['api'],
+                    apps: ['api'],
+                    records: ['model']
+                }
             }
         },
 

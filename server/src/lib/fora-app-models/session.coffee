@@ -1,6 +1,6 @@
 ForaDbModel = require('./foramodel').ForaDbModel
 models = require('./')
-randomizer = require('../lib/randomizer')
+randomizer = require('fora-randomizer')
 
 ###
     A session token starts life as a credential token.

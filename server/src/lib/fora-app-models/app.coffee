@@ -1,8 +1,7 @@
 models = require('./')
-conf = require '../conf'
-
 AppBase = require('./app-base').AppBase
 models = require('./')
+services = require('fora-services')
 
 class App extends AppBase
 
@@ -20,6 +19,7 @@ class App extends AppBase
         { context, db } = @getContext context, db
 
         #if stub is a reserved name, change it
+        conf = services.get('conf')
         if conf.reservedNames.indexOf(@stub) > -1
             throw new Error "Stub cannot be #{@stub}, it is reserved"
 

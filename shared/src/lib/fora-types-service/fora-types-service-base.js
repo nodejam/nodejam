@@ -6,12 +6,12 @@
     var odm = require('fora-models');
 
     var ForaTypesServiceBase = function() {
-        odm.TypesService.apply(this, arguments);
+        odm.TypeUtils.apply(this, arguments);
     };
 
-    ForaTypesServiceBase.prototype = Object.create(odm.TypesService.prototype);
+    ForaTypesServiceBase.prototype = Object.create(odm.TypeUtils.prototype);
     ForaTypesServiceBase.prototype.constructor = ForaTypesServiceBase;
-    
+
 
     ForaTypesServiceBase.prototype.init = function*(builtinTypes, RecordType) {
         this.builtinTypes = builtinTypes;
@@ -25,7 +25,7 @@
 
         [yield* this.getModelTypeDefinitions(), yield* this.getBuiltInUserTypes()].forEach(function(defs) {
             for (var name in defs) {
-                def = defs[name];
+                var def = defs[name];
                 definitions[name] = def;
             }
         });
@@ -54,7 +54,7 @@
             var def = typeof model.typeDefinition === "function" ? model.typeDefinition() : model.typeDefinition;
             def = this.completeTypeDefinition(def, model);
             definitions[def.name] = definitions[def.name] || def;
-        });
+        }, this);
 
         return definitions;
     };

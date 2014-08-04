@@ -9,3 +9,8 @@ exports.UserInfo = require('./userinfo').UserInfo
 exports.Message = require('./message').Message
 exports.Network = require('./network').Network
 exports.Membership = require('./membership').Membership
+
+fields = require('./fields');
+exports.Cover = fields.Cover;
+exports.Image = fields.Image;
+exports.TextContent = fields.TextContent;

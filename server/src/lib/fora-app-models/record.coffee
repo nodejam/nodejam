@@ -1,4 +1,4 @@
-randomizer = require '../lib/randomizer'
+randomizer = require 'fora-randomizer'
 models = require './'
 services = require('fora-services')
 RecordBase = require('./record-base').RecordBase

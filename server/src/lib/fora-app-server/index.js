@@ -9,7 +9,7 @@
     var setupInstanceStats = function() {
         var appInfo = {};
         if (process.env.NODE_ENV === 'development') {
-            var randomizer = require('../randomizer');
+            var randomizer = require('fora-randomizer');
             appInfo.instance = randomizer.uniqueId();
             appInfo.since = Date.now();
         } else {
@@ -21,10 +21,7 @@
 
 
     module.exports = function*(config) {
-        var models = require('fora-app-models'),
-            fields = require('fora-app-fields');
-
-        var services = require('fora-services');
+        var models = require('fora-app-models');
 
         /*
             Services
@@ -35,6 +32,7 @@
             4) Parser Service
             5) Auth Service
         */
+        var services = require('fora-services');
 
         //Config is also a service.
         services.add("configuration", config);
@@ -45,14 +43,15 @@
         services.add("db", db);
 
         //Extensions Service
-        var extensionsService = require('fora-extensions-service')(config.extensionsService, config.baseConfiguration.extensionsService);
+        var ExtensionsService = require('fora-extensions-service');
+        var extensionsService = new ExtensionsService(config.services.extensions, config.baseConfiguration.services.extensions);
         _ = yield* extensionsService.init();
         services.add("extensions", extensionsService);
 
         //Types Service
         var TypesService = require('fora-types-service');
         var typesService = new TypesService();
-        _ = yield* typesService.init([models, fields], models.Record);
+        _ = yield* typesService.init([models], models.Record);
         services.add("types", typesService);
 
         //Parser Service
@@ -74,12 +73,13 @@
             2) Container Initialization
             3) Start Routing
         */
+        var koa = require('koa');
         var app = koa();
 
         var errorHandler = require('fora-error-handler');
         app.use(errorHandler);
 
-        var container = yield* extensionsService.load(config.baseConfiguration.applicationContainer + ":" + containerModuleName);
+        var container = yield* extensionsService.get(config.baseConfiguration.applicationContainer + ":" + config.containerModuleName);
         _ = yield* container.init(context);
 
         var router = yield* container.getRouter();
