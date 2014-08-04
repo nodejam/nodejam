@@ -1,5 +1,6 @@
-#Users
-tributeToAaron = {
+//Users
+
+var tributeToAaron = {
     username: 'aaronsw',
     name: 'Aaron Swartz Tribute',
     location: 'Brooklyn, NYC',
@@ -10,9 +11,9 @@ tributeToAaron = {
     picture_src: '/public/images/0/user.jpg',
     picture_small: '/public/images/0/user_t.jpg',
     about: 'Aaron Hillel Swartz was an American computer programmer, writer, political organizer and Internet activist. Swartz was involved in the development of RSS, Creative Commons, web.py and Reddit.'
-}
+};
 
-jeswin = {
+var jeswin = {
     username: 'jeswin',
     name: 'Jeswin',
     location: 'Bangalore, India',
@@ -25,36 +26,36 @@ jeswin = {
     picture_src: '/public/images/0/user.jpg',
     picture_small: '/public/images/0/user_t.jpg',
     about: 'Founder of Poetry(poe3.com). Proud sponsor of the RedBull F1 team by way of drinking too many cans.'
-}
+};
 
-ebin = {
+var ebin = {
     username: 'ebin',
     name: 'Ebin John',
     location: 'Bangalore, India',
     credential_type: 'builtin',
-    credential_username: 'ebin'
-    credential_password: 'liks345F'
+    credential_username: 'ebin',
+    credential_password: 'liks345F',
     email: 'ebin.john@outlook.com',
     picture_src: '/public/images/0/user.jpg',
     picture_small: '/public/images/0/user_t.jpg',
-}
+};
 
-anupk7 = {
+var anupk7 = {
     username: 'anupk7',
     name: 'Anup Kesavan',
     location: 'Bangalore, India',
     credential_type: 'builtin',
-    credential_username: 'anupk7'
-    credential_password: 'liks345F'
+    credential_username: 'anupk7',
+    credential_password: 'liks345F',
     email: 'anupk7@gmail.com',
     picture_src: '/public/images/0/user.jpg',
     picture_small: '/public/images/0/user_t.jpg',
-}
+};
 
-users = [tributeToAaron, jeswin, ebin, anupk7]
+var users = [tributeToAaron, jeswin, ebin, anupk7];
 
-#Apps
-poetry = {
+//Apps
+var poetry = {
     name: 'Poetry',
     description: 'Selected Poetry from around the world.',
     cover_image_src: 'http://us.cdn281.fansshare.com/photos/dreehemingway/full-dree-hemingway-tv-2077415311.jpg',
@@ -75,9 +76,9 @@ movies = {
     access: 'public',
     category: 'movies',
     _createdBy: 'jeswin'
-}
+};
 
-rawNerve = {
+var rawNerve = {
     name: 'Raw Nerve',
     description: 'This is a series of pieces on getting better at life.',
     cover_image_src: 'http://blogs-images.forbes.com/singularity/files/2013/01/Aaron_Swartz.jpg',
@@ -89,9 +90,9 @@ rawNerve = {
     _about: 'about-raw-nerve.md',
     _message: 'message-raw-nerve.md',
     _createdBy: 'aaronsw'
-}
+};
 
-itsMyLife = {
+var itsMyLife = {
     name: 'It\'s my life',
     description: 'Everyday life from corners of the world.',
     cover_image_src: 'http://www.dangerouslybored.com/wp-content/uploads/2012/10/clown-7.jpg',
@@ -100,9 +101,9 @@ itsMyLife = {
     access: 'public',
     category: 'life',
     _createdBy: 'jeswin'
-}
+};
 
-makingStuff =  {
+var makingStuff =  {
     name: 'Making Stuff',
     description: 'Everybody can make stuff. This is about stuff you\'ve made.',
     cover_image_src: 'http://cdnimg.visualizeus.com/thumbs/aa/06/colors,colours,costume,derro,fancy,dress,festival-aa06d899eec02dec6f84cb017ea3bf80_h.jpg',
@@ -133,9 +134,9 @@ computers = {
     access: 'public',
     category: 'technology',
     _createdBy: 'jeswin'
-}
+};
 
-theGreatMasters = {
+var theGreatMasters = {
     name: 'Great Masters',
     description: 'Paintings from the great masters.',
     cover_image_src: 'http://www.claude-monet.com/images/paintings/impression-sunrise.jpg',
@@ -144,31 +145,31 @@ theGreatMasters = {
     access: 'public',
     category: 'art',
     _createdBy: 'jeswin'
-}
+};
 
-streetFood = {
+var streetFood = {
     name: 'Street Food',
     description: 'Dai Pai Dong to Vada Pav. The love of street food.',
     cover_image_src: 'http://shecookshecleans.files.wordpress.com/2011/07/korean-chic-skewers.jpg?w=500',
     cover_image_small: 'http://shecookshecleans.files.wordpress.com/2011/07/korean-chic-skewers.jpg?w=500',
     permission: 'public',
     access: 'public',
-    category: 'food-and-drinks'
+    category: 'food-and-drinks',
     _createdBy: 'jeswin'
-}
+};
 
-guzzlers = {
+var guzzlers = {
     name: 'Guzzlers',
     description: 'Calling Beer guzzlers. We are already a few pitchers down.',
     cover_image_src: 'http://media.tumblr.com/tumblr_mdlnc6eBsm1qd0jy3.jpg',
     cover_image_small: 'http://media.tumblr.com/tumblr_mdlnc6eBsm1qd0jy3.jpg',
     permission: 'public',
     access: 'public',
-    category: 'food-and-drinks'
+    category: 'food-and-drinks',
     _createdBy: 'jeswin'
-}
+};
 
-earlyMornings = {
+var earlyMornings = {
     name: 'Early Mornings',
     description: 'Waking up early. Catching the day in its best act.',
     cover_image_src: 'http://www.minigallery.co.uk/Erica_Kirkpatrick/images/20120426093259079_l/large/Misty_Pond_Landscape_42.jpg',
@@ -181,7 +182,7 @@ earlyMornings = {
 
 apps = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
 
-#Articles
+//Articles
 believeYouCanChange = {
     title: 'Believe you can change',
     type: "records/article/1.0.0",
@@ -191,9 +192,9 @@ believeYouCanChange = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
-cherishMistakes = {
+var cherishMistakes = {
     title: 'Cherish Mistakes',
     type: "records/article/1.0.0",
     _content: 'cherish-mistakes.md',
@@ -202,9 +203,9 @@ cherishMistakes = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
-confrontReality = {
+var confrontReality = {
     title: 'Confront Reality',
     type: "records/article/1.0.0",
     _content: 'confront-reality.md',
@@ -213,9 +214,9 @@ confrontReality = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
-darkKnight = {
+var darkKnight = {
     title: 'Dark Knight',
     type: "records/article/1.0.0",
     _content: 'dark-knight.md',
@@ -225,9 +226,9 @@ darkKnight = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
-fixTheMachine = {
+var fixTheMachine = {
     title: 'Lean into the pain',
     type: "records/article/1.0.0",
     _content: 'lean-into-the-pain.md',
@@ -237,9 +238,9 @@ fixTheMachine = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
-leanIntoThePain = {
+var leanIntoThePain = {
     title: 'Fix the machine not the person',
     type: "records/article/1.0.0",
     _content: 'fix-the-machine-not-the-person.md',
@@ -249,9 +250,9 @@ leanIntoThePain = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
-lookAtYourselfObjectively = {
+var lookAtYourselfObjectively = {
     title: 'Look at yourself objectively',
     type: "records/article/1.0.0",
     _content: 'look-at-yourself-objectively.md',
@@ -269,9 +270,9 @@ optimalBiases = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'pick'
-}
+};
 
-takeAStepBack = {
+var takeAStepBack = {
     title: 'Take a step back',
     type: "records/article/1.0.0",
     _content: 'take-a-step-back.md',
@@ -280,9 +281,9 @@ takeAStepBack = {
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
-flightOfTheIcarus = {
+var flightOfTheIcarus = {
     title: 'Flight of the Icarus',
     type: "records/article/1.0.0",
     _content: 'flight-of-the-icarus.md',
@@ -291,19 +292,20 @@ flightOfTheIcarus = {
     _app: 'raw-nerve',
     _createdBy: 'jeswin',
     _meta: 'featured'
-}
+};
 
-huckleberryFinn = {
+var huckleberryFinn = {
     title: 'Huckleberry Finn',
     type: "records/article/1.0.0",
     _content: 'huckleberry-finn.md',
     _app: 'raw-nerve',
     _createdBy: 'jeswin',
     _meta: 'featured'
-}
+};
 
-records = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain, lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus, huckleberryFinn]
+var records = [believeYouCanChange, cherishMistakes, confrontReality, darkKnight, fixTheMachine, leanIntoThePain,
+    lookAtYourselfObjectively, optimalBiases, takeAStepBack, flightOfTheIcarus, huckleberryFinn];
 
-exports.users = users
-exports.apps = apps
-exports.records = records
+exports.users = users;
+exports.apps = apps;
+exports.records = records;
