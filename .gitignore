@@ -4,9 +4,7 @@ npm-debug.log
 *.swp
 *~
 
-server/app
 www-client/app
-shared/app
 
 backups/*
 !backups/backup.sh
@@ -14,14 +12,11 @@ backups/*
 temp/*
 !temp/placeholder
 
-server/src/website/views/_custom/*
-!server/src/website/views/_custom/placeholder
-
 server/weberrors.log
 server/apierrors.log
-server/src/conf/*
-!server/src/conf/index.js
-!server/src/conf/*.sample
+server/app/conf/*
+!server/app/conf/index.js
+!server/app/conf/*.sample
 
 www-client/system/*
 !www-client/system/placeholder

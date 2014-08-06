@@ -16,46 +16,16 @@
                 console.log("*************************");
                 console.log("Started fora/server build");
                 console.log("*************************");
-                var fs = require('fs');
                 this.state.start = Date.now(); //Note the time
-                if(fs.existsSync('app')) {
-                    yield* exec("rm -rf app");
-                }
-                yield* exec("mkdir app");
             }, "server_build_start");
-
-
-            /*
-                Compile all coffee-script files
-                Coffee doesn't do coffee {src} {dest} yet, hence the redirection.
-            */
-            this.watch(["src/*.coffee"], function*(filePath) {
-                var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
-                yield* ensureDirExists(dest);
-                yield* exec("coffee -cs < " + filePath + " > " + dest);
-                this.build.queue('restart_server');
-            }, "server_coffee_compile");
 
 
             /*
                 Copy other files
             */
-            this.watch(["src/*.config", "src/*.json", "src/*.js"], function*(filePath) {
-                var dest = filePath.replace(/^src\//, 'app/');
-                yield* ensureDirExists(dest);
-                yield* exec("cp " + filePath + " " + dest);
+            this.watch(["app/*.config", "app/*.json", "app/*.js"], function*(filePath) {
                 this.build.queue('restart_server');
             }, "server_files_copy");
-
-
-            /*
-                Copy everything under setup
-            */
-            this.watch(["src/scripts/setup/*.md"], function*(filePath) {
-                var dest = filePath.replace(/^src\//, 'app/');
-                yield* ensureDirExists(dest);
-                yield* exec("cp " + filePath + " " + dest);
-            }, "server_setup_data_copy");
 
 
 
