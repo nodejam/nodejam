@@ -1,3 +1,4 @@
+/*
 React = require('react')
 
 module.exports = {
@@ -47,3 +48,7 @@ module.exports = {
             context.koaContext.body = yield* context.koaContext.render template, "/js/extensions/#{typeDefinition.name}/templates/#{props.appTemplate}", props
     }
 }
+
+*/
+
+module.exports = {simple: {}};
