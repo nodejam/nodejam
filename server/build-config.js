@@ -1,5 +1,8 @@
 (function() {
     "use strict";
+
+    var _;
+
     module.exports = function(tools) {
 
         var spawn = tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
@@ -16,16 +19,34 @@
                 console.log("*************************");
                 console.log("Started fora/server build");
                 console.log("*************************");
+                var fs = require('fs');
                 this.state.start = Date.now(); //Note the time
+                if(fs.existsSync('app')) {
+                    _ = yield* exec("rm -rf app");
+                }
+                _ = yield* exec("mkdir app");
             }, "server_build_start");
 
 
             /*
                 Copy other files
             */
-            this.watch(["app/*.config", "app/*.json", "app/*.js"], function*(filePath) {
+            this.watch(["src/*.config", "src/*.json", "src/*.js"], function*(filePath) {
+                var dest = filePath.replace(/^src\//, 'app/');
+                _ = yield* ensureDirExists(dest);
+                _ = yield* exec("cp " + filePath + " " + dest);
                 this.build.queue('restart_server');
             }, "server_files_copy");
+
+
+            /*
+                Copy everything under setup
+            */
+            this.watch(["src/scripts/setup/*.md"], function*(filePath) {
+                var dest = filePath.replace(/^src\//, 'app/');
+                _ = yield* ensureDirExists(dest);
+                _ = yield* exec("cp " + filePath + " " + dest);
+            }, "server_setup_data_copy");
 
 
 
@@ -33,9 +54,9 @@
                 Watch everything under shared. Anything that moves, copy it.
             */
             this.watch(["../shared/app/*.*"], function*(filePath) {
-                var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/')
-                yield* ensureDirExists(dest);
-                yield* exec("cp " + filePath + " " + dest);
+                var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/');
+                _ = yield* ensureDirExists(dest);
+                _ = yield* exec("cp " + filePath + " " + dest);
                 this.build.queue('restart_server');
             }, "server_shared_files_copy");
 
@@ -47,6 +68,6 @@
                 this.state.end = Date.now();
             }, "server_build_complete");
 
-        }
-    }
+        };
+    };
 })();
