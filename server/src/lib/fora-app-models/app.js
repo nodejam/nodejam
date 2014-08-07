@@ -21,7 +21,7 @@
     __extends(App, AppBase);
 
 
-    App.typeDefinition = this.mergeTypeDefinition({
+    App.typeDefinition = App.mergeTypeDefinition({
         discriminator: function*(obj, typesService) {
             var def = yield* typesService.getTypeDefinition(obj.type);
             if (def.ctor !== App)

@@ -12,13 +12,13 @@
 
 
     var User = function() {
-        ForaDbModel.apply(this, arguments);
+        UserBase.apply(this, arguments);
     };
 
-    User.prototype = Object.create(ForaDbModel.prototype);
+    User.prototype = Object.create(UserBase.prototype);
     User.prototype.constructor = User;
 
-    __extends(User, ForaDbModel);
+    __extends(User, UserBase);
 
 
     User.prototype.save = function*(context) {

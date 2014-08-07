@@ -1,7 +1,7 @@
-#neat trick via http://oranlooney.com/functional-javascript
 (function() {
     "use strict";
 
+    //neat trick via http://oranlooney.com/functional-javascript
     var __Clone = function() {};
     var clone = function(obj) {
         __Clone.prototype = obj;

@@ -23,7 +23,7 @@
     __extends(Record, RecordBase);
 
 
-    Record.typeDefinition = this.mergeTypeDefinition({
+    Record.typeDefinition = Record.mergeTypeDefinition({
         discriminator: function*(obj, typesService) {
             var def = yield* typesService.getTypeDefinition(obj.type);
             if (def.ctor !== Record)

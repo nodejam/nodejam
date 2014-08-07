@@ -21,6 +21,10 @@ server/src/conf/*
 !server/src/conf/index.js
 !server/src/conf/*.sample
 
+#Ignore directories which are already on npm.
+#Sometimes we check them out here to test.
+server/src/lib/fora-models
+
 www-client/system/*
 !www-client/system/placeholder
 
