@@ -6,9 +6,10 @@
     var __hasProp = {}.hasOwnProperty,
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
-    var RecordBase = require('./foramodel').RecordBase,
+    var RecordBase = require('./record-base').RecordBase,
         models = require('./'),
-        randomizer = require('fora-randomizer');
+        randomizer = require('fora-randomizer'),
+        typeHelpers = require('fora-type-helpers');
 
     //ctor
     var Record = function() {
@@ -23,15 +24,16 @@
     __extends(Record, RecordBase);
 
 
-    Record.typeDefinition = Record.mergeTypeDefinition({
-        discriminator: function*(obj, typesService) {
+    Record.typeDefinition = (function() {
+        var originalDef = typeHelpers.clone(RecordBase.typeDefinition);
+        originalDef.discriminator = function*(obj, typesService) {
             var def = yield* typesService.getTypeDefinition(obj.type);
-            if (def.ctor !== Record)
-                throw new Error("Record type definitions must have ctor set to Record");
+            if (def.ctor !== App)
+                throw new Error("App type definitions must have ctor set to App");
             return def;
-        }
-    }, RecordBase.typeDefinition);
-
+        };
+        return originalDef;
+    })();
 
 
     Record.search = function*(criteria, settings, context) {

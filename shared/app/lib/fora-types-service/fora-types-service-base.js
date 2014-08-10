@@ -51,8 +51,7 @@
         var definitions = {};
 
         models.forEach(function(model) {
-            var def = typeof model.typeDefinition === "function" ? model.typeDefinition() : model.typeDefinition;
-            def = this.completeTypeDefinition(def, model);
+            var def = this.completeTypeDefinition(model.typeDefinition, model);
             definitions[def.name] = definitions[def.name] || def;
         }, this);
 

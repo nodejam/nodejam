@@ -10,7 +10,7 @@
 
     "admins": ["jeswin"],
 
-    "applicationContainer": "containers/fora/1.0.0",
+    "applicationContainer": "container/fora/1.0.0",
 
     "services": {
         "auth": {

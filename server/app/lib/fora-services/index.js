@@ -1,6 +1,9 @@
 (function() {
 
-    var services = {};
+    var services = {
+
+    };
+    var typeHelpers = require('fora-type-helpers');
 
     var add = function(name, obj) {
         services[name] = obj;
@@ -10,9 +13,20 @@
         return services[name];
     };
 
+    var context = function(params) {
+        var clone = typeHelpers.clone(services);
+        if (params) {
+            for (var key in params) {
+                clone[key] = params[key];
+            }
+        }
+        return clone;
+    };
+
     module.exports = {
         add: add,
-        get: get
+        get: get,
+        context: context
     };
 
 })();

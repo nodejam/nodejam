@@ -15,7 +15,7 @@
 
 
     var RequestParser = function() {
-        this.typesService = services.get("types");
+        this.typesService = services.get("typesService");
     };
 
 

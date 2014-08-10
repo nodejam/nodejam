@@ -9,10 +9,9 @@
     exports.Record = require('./record').Record;
     exports.Token = require('./token').Token;
     exports.UserInfo = require('./userinfo').UserInfo;
-    exports.Message = require('./message').Message;
     exports.Membership = require('./membership').Membership;
 
-    fields = require('./fields');
+    var fields = require('./fields');
     exports.Cover = fields.Cover;
     exports.Image = fields.Image;
     exports.TextContent = fields.TextContent;

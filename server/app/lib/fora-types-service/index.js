@@ -12,7 +12,7 @@
     ForaTypesService.prototype.constructor = ForaTypesService;
 
     ForaTypesService.prototype.addTrustedUserTypes = function*(ctor, baseTypeName, dir, definitions) {
-        var extensionsService = services.get("extensions");
+        var extensionsService = services.get("extensionsService");
         var extensions = extensionsService.getTrustedExtensions("records");
 
         for (var name in extensions) {

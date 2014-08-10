@@ -5,7 +5,7 @@
     var services = require('fora-services');
 
     var create = function*() {
-        var conf = services.get('configuration');
+        var conf = services.get('configurationService');
         var context = { user: this.session.user };
 
         var stub = yield* this.parser.body('name').toLowerCase().trim();
@@ -67,7 +67,7 @@
 
 
 
-    var auth = services.get('auth');
+    var auth = services.get('authService');
     module.exports = {
         create: auth({ session: 'user' }, create),
         edit: auth({ session: 'user' }, edit),

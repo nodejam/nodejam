@@ -10,7 +10,7 @@
     var configureRouter = function() {
         var services = require('fora-services');
         var conf = services.get('configuration');
-        var extensions = services.get('extensions');
+        var extensions = services.get('extensionsService');
 
         var credentials = require('./credentials'),
             users = require('./users'),
@@ -27,7 +27,7 @@
         router.when(function(req) {
             return conf.domains.indexOf(req.hostname) > -1;
         }, function*(next) {
-            var app = yield* models.App.get({ domains: this.req.hostname });
+            var app = yield* models.App.get({ domains: this.req.hostname }, services.context());
         });
 
         //Before passing this on to the app, rewrite the url

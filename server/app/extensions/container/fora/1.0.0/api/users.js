@@ -60,7 +60,7 @@
             this.body = user.summarize({}, db);
     };
 
-    var auth = services.get('auth');
+    var auth = services.get('authService');
     module.exports = {
         create: auth({ session: 'credential' }, create),
         login: auth({ session: 'credential' }, login),

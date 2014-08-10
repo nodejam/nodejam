@@ -46,21 +46,21 @@
         var ExtensionsService = require('fora-extensions-service');
         var extensionsService = new ExtensionsService(config.services.extensions, config.baseConfiguration.services.extensions);
         _ = yield* extensionsService.init();
-        services.add("extensions", extensionsService);
+        services.add("extensionsService", extensionsService);
 
         //Types Service
         var TypesService = require('fora-types-service');
         var typesService = new TypesService();
         _ = yield* typesService.init([models], models.Record);
-        services.add("types", typesService);
+        services.add("typesService", typesService);
 
         //Parser Service
         var parserService = require('fora-requestparser-service');
-        services.add("parser", parserService);
+        services.add("parserService", parserService);
 
         //Auth Service
         var authService = require('fora-auth-service');
-        services.add("auth", authService);
+        services.add("authService", authService);
 
         /*
             Setup information useful for monitoring and debugging

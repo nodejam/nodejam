@@ -7,7 +7,8 @@
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
     var models = require('./'),
-        AppBase = require('./app-base').AppBase;
+        AppBase = require('./app-base').AppBase,
+        typeHelpers = require('fora-type-helpers');
 
 
     //ctor
@@ -21,14 +22,16 @@
     __extends(App, AppBase);
 
 
-    App.typeDefinition = App.mergeTypeDefinition({
-        discriminator: function*(obj, typesService) {
+    App.typeDefinition = (function() {
+        var originalDef = typeHelpers.clone(AppBase.typeDefinition);
+        originalDef.discriminator = function*(obj, typesService) {
             var def = yield* typesService.getTypeDefinition(obj.type);
             if (def.ctor !== App)
                 throw new Error("App type definitions must have ctor set to App");
             return def;
-        }
-    }, AppBase.typeDefinition);
+        };
+        return originalDef;
+    })();
 
 
 
@@ -39,7 +42,7 @@
         if (!stub)
             throw new Error("Missing stub");
 
-        var conf = services.get('configuration');
+        var conf = services.get('configurationService');
         if (conf.reservedNames.indexOf(this.stub) > -1)
             throw new Error("Stub cannot be " + stub + ", it is reserved");
 

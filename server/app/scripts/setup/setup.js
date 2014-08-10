@@ -2,6 +2,8 @@
 
     "use strict";
 
+    var _;
+
     var http = require('http'),
         path = require('path'),
         fs = require('fs'),
@@ -18,8 +20,8 @@
 
     var argv = require('optimist').argv;
 
-    HOST = argv.host || 'local.foraproject.org';
-    PORT = argv.port ? parseInt(argv.port) : 80;
+    var HOST = argv.host || 'local.foraproject.org';
+    var PORT = argv.port ? parseInt(argv.port) : 80;
 
     logger.log("Setup will connect to #{HOST}:#{PORT}");
 
@@ -28,7 +30,7 @@
         var database = new odm.Database(conf.db);
 
         var _globals = {};
-        var db;
+        var db, _doHttpRequest;
 
         var del = function*() {
             if(process.env.NODE_ENV === 'development') {
@@ -173,7 +175,7 @@
     };
 
 
-    doHttpRequest = function(url, data, method, cb) {
+    var doHttpRequest = function(url, data, method, cb) {
         var options, req, response;
         logger.log("HTTP " + (method.toUpperCase()) + " to " + url);
         options = {

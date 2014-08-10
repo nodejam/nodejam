@@ -97,7 +97,7 @@
         }
     };
 
-    var auth = services.get('auth');
+    var auth = services.get('authService');
     module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();

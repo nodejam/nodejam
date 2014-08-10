@@ -4,7 +4,7 @@
     var models = require("fora-app-models");
     var services = require("fora-services");
     var db = services.get("db");
-    var conf = services.get("configuration");
+    var conf = services.get("configurationService");
 
     module.exports = function() {
         var options, fn;
