@@ -7,6 +7,7 @@
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
     var models = require('./'),
+        services = require('fora-services'),
         typeHelpers = require('fora-type-helpers'),
         UserBase = require('./user-base').UserBase;
 
@@ -25,22 +26,22 @@
         if (!context.db.getRowId(this)) {
             var existing = yield* User.get({ username: this.username }, context);
             if (!existing) {
-                conf = services.get('configurationService');
-                this.assets = (typeHelpers.getHashCode(this.username) % conf.userDirCount).toString();
+                var conf = services.get('configuration');
+                this.assets = (typeHelpers.getHashCode(this.username) % conf.services.file.userDirCount).toString();
                 this.lastLogin = 0;
                 this.followingCount = 0;
                 this.followerCount = 0;
-                _ = yield* ForaDbModel.prototype.save.apply(this, arguments);
+                return yield* UserBase.prototype.save.apply(this, arguments);
             } else {
                 throw new Error("User(#{@username}) already exists");
             }
         } else {
-            return yield* ForaDbModel.prototype.save.apply(this, arguments);
+            return yield* UserBase.prototype.save.apply(this, arguments);
         }
     };
 
 
-    User.prototype.save = function*(limit, sort, context) {
+    User.prototype.getRecords = function*(limit, sort, context) {
         return yield* models.Record.find(
             { createdById: context.db.getRowId(this), state: 'published' },
             function(cursor) {

@@ -1,10 +1,13 @@
 (function () {
     "use strict";
 
-    var path = require('path');
-    var fs = require('fs');
-    var thunkify = require('fora-node-thunkify');
-    var conf = require('../../conf');
+    var path = require('path'),
+        fs = require('fs'),
+        thunkify = require('fora-node-thunkify');
+
+    var services = require('fora-services');
+
+    var conf = services.get('configuration');
 
     var dirsAreValid = function(dirs) {
         var regex = /[a-zA-z0-9][a-zA-z0-9_\-]*/;
@@ -29,7 +32,7 @@
         if (dirsAreValid([dir, subdir])) {
             if(['assets', 'images', 'original-images'].indexOf(dir) > -1) {
                 if (!isNaN(parseInt(subdir)))
-                    return path.join.apply(null, [conf.fileService.publicDirectory].concat([dir, subdir]));
+                    return path.join.apply(null, [conf.services.file.publicDirectory].concat([dir, subdir]));
             }
         }
         throw new Error("Invalid directory " + dir + "/" + subdir);
@@ -40,7 +43,7 @@
         if (dirsAreValid([dir, subdir]) && filenameIsValid(file)) {
             if (['assets', 'images', 'original-images'].indexOf(dir) > -1) {
                 if (!isNaN(parseInt(subdir)))
-                    return path.join.apply(null, [conf.fileService.publicDirectory].concat([dir, subdir, file]));
+                    return path.join.apply(null, [conf.services.file.publicDirectory].concat([dir, subdir, file]));
             }
         }
         throw new Error("Invalid directory " + dir + "/" + subdir + "/" + file);
@@ -49,9 +52,9 @@
 
     var getRandomFilePath = function(dir, file) {
         if (dirsAreValid([dir]) && filenameIsValid(file)) {
-            var random = (Date.now() % conf.userDirCount).toString();
+            var random = (Date.now() % conf.services.file.userDirCount).toString();
             if(['assets', 'images', 'original-images'].indexOf(dir) > -1) {
-                return path.join.apply(null, [conf.fileService.publicDirectory].concat([dir, random, file]));
+                return path.join.apply(null, [conf.services.file.publicDirectory].concat([dir, random, file]));
             }
         }
         throw new Error("Invalid path " + dir + "/" + file);

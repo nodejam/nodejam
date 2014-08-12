@@ -127,7 +127,7 @@
 
 
     Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret, context) {
-        var existing = yield* Credential.get({ "twitter.id": id }, context, db);
+        var existing = yield* Credential.get({ "twitter.id": id }, context);
         if (!existing) {
             this.twitter = {
                 id: id,

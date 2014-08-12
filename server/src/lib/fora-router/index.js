@@ -42,6 +42,11 @@
     };
 
 
+    var decode = function(val) {
+      if (val) return decodeURIComponent(val);
+    };
+
+
     Router.prototype.start = function() {
         var self = this;
 
@@ -52,20 +57,22 @@
                     case "predicate":
                         if (route.predicate(this)) {
                             _ = yield* route.handler.apply(this, args);
+                            return yield next;
                         }
                         break;
                     case "pattern":
                         if (route.method === this.request.method) {
-                            var m = route.re.exec(this.request.url);
+                            var m = route.re.exec(this.path);
                             if (m) {
-                                var args = m.slice(1);
+                                var args = m.slice(1).map(decode);
                                 _ = yield* route.handler.apply(this, args);
+                                return yield next;
                             }
                         }
                         break;
                 }
             }
-            yield next;
+            return yield next;
         };
     };
 

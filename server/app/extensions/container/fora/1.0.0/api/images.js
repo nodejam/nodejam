@@ -3,7 +3,17 @@
 
     var _;
 
-    var services = require('fora-services');
+    var models = require('fora-app-models'),
+        services = require('fora-services'),
+        typeHelpers = require('fora-type-helpers');
+
+    var conf = services.get('configuration'),
+        Parser = services.get('parserService'),
+        typesService = services.get('typesService'),
+        db = services.get('db');
+
+    var context = { typesService: typesService, db: db };
+
 
     var resizeImage = function*(src, dest, options) {
         logger.log("Resizing #{src}...");
@@ -57,7 +67,8 @@
             throw new Error("Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}");
         }
 
-        var files = yield* this.parser.files();
+        var parser = new Parser(this);
+        var files = yield* parser.files();
 
         var file, timestamp, extension, filename;
         var pathArr, src, dir;

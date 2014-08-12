@@ -58,7 +58,7 @@
         if (user) {
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();
-            this.user = user.summarize(context, db);
+            this.user = user.summarize(context);
             return yield* this.save(context);
         } else {
             throw new Error("User not found");

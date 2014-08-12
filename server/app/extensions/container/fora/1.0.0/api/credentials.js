@@ -2,16 +2,18 @@
     "use strict";
 
     var models = require('fora-app-models'),
-        services = require('fora-services');
+        services = require('fora-services'),
+        typeHelpers = require('fora-type-helpers');
 
     var conf = services.get('configuration'),
         Parser = services.get('parserService'),
         typesService = services.get('typesService'),
         db = services.get('db');
 
+    var context = { typesService: typesService, db: db };
+
 
     var create = function*() {
-        var context = { db: db, typesService: typesService };
         var parser = new Parser(this);
         if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
             var type = yield* parser.body('type');
