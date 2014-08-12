@@ -28,8 +28,6 @@
             1) Database Service
             2) Extensions Service
             3) Types Service
-            4) Parser Service
-            5) Auth Service
         */
 
         var services = require('fora-services');
@@ -52,14 +50,6 @@
         var typesService = new TypesService(extensionsService);
         _ = yield* typesService.init([models], models.Record);
         services.add("types", typesService);
-
-        //Parser Service
-        var parser = require('fora-requestparser-service')(typesService);
-        services.add("parser", parser);
-
-        //Auth Service
-        var authService = require('fora-auth-service')(baseConfiguration, db);
-        services.add("auth", authService);
 
         /*
             Setup information useful for monitoring and debugging

@@ -8,10 +8,10 @@
         typeHelpers = require('fora-type-helpers'),
         conf = require('fora-configuration');
 
-    var Parser = services.get('parser'),
-        typesService = services.get('types'),
+    var typesService = services.get('types'),
         db = services.get('db');
 
+    var Parser = require('fora-request-parser')(typesService);
     var context = { typesService: typesService, db: db };
 
 
@@ -108,7 +108,7 @@
         }
     };
 
-    var auth = services.get('auth');
+    var auth = require('fora-auth-service')(conf, db);
     module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();
