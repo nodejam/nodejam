@@ -1,9 +1,12 @@
 (function() {
     "use strict";
 
+    var _;
+
     var models = require('fora-app-models'),
         services = require('fora-services'),
-        typeHelpers = require('fora-type-helpers');
+        typeHelpers = require('fora-type-helpers'),
+        FileService = require('fora-file-service');
 
     var conf = services.get('configuration'),
         Parser = services.get('parserService'),
@@ -12,7 +15,7 @@
 
     var context = { typesService: typesService, db: db };
 
-    var fileService = require('fora-file-service');
+    var fileService = new FileService(conf);
 
     var create = function*() {
         var parser = new Parser(this);

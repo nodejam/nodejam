@@ -5,9 +5,20 @@
         fs = require('fs'),
         thunkify = require('fora-node-thunkify');
 
-    var services = require('fora-services');
 
-    var conf = services.get('configuration');
+    var FileService = function(configuration) {
+        this.configuration = configuration;
+    };
+
+
+    var formatDate = function(date) {
+        date = date || new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() < 9 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1 + "");
+        var dayNum = date.getDate() < 10 ? ("0" + date.getDate()) : (date.getDate() + "");
+        return year + "-" + month + "-" + dayNum;
+    };
+
 
     var dirsAreValid = function(dirs) {
         var regex = /[a-zA-z0-9][a-zA-z0-9_\-]*/;
@@ -28,40 +39,40 @@
     };
 
 
-    var getDirPath = function(dir, subdir) {
+    FileService.prototype.getDirPath = function(dir, subdir) {
         if (dirsAreValid([dir, subdir])) {
             if(['assets', 'images', 'original-images'].indexOf(dir) > -1) {
                 if (!isNaN(parseInt(subdir)))
-                    return path.join.apply(null, [conf.services.file.publicDirectory].concat([dir, subdir]));
+                    return path.join.apply(null, [this.configuration.services.file.publicDirectory].concat([dir, subdir]));
             }
         }
         throw new Error("Invalid directory " + dir + "/" + subdir);
     };
 
 
-    var getFilePath = function(dir, subdir, file) {
+    FileService.prototype.getFilePath = function(dir, subdir, file) {
         if (dirsAreValid([dir, subdir]) && filenameIsValid(file)) {
             if (['assets', 'images', 'original-images'].indexOf(dir) > -1) {
                 if (!isNaN(parseInt(subdir)))
-                    return path.join.apply(null, [conf.services.file.publicDirectory].concat([dir, subdir, file]));
+                    return path.join.apply(null, [this.configuration.services.file.publicDirectory].concat([dir, subdir, file]));
             }
         }
         throw new Error("Invalid directory " + dir + "/" + subdir + "/" + file);
     };
 
 
-    var getRandomFilePath = function(dir, file) {
+    FileService.prototype.getRandomFilePath = function(dir, file) {
         if (dirsAreValid([dir]) && filenameIsValid(file)) {
-            var random = (Date.now() % conf.services.file.userDirCount).toString();
+            var random = (Date.now() % this.configuration.services.file.userDirCount).toString();
             if(['assets', 'images', 'original-images'].indexOf(dir) > -1) {
-                return path.join.apply(null, [conf.services.file.publicDirectory].concat([dir, random, file]));
+                return path.join.apply(null, [this.configuration.services.file.publicDirectory].concat([dir, random, file]));
             }
         }
         throw new Error("Invalid path " + dir + "/" + file);
     };
 
 
-    var copyFile = function*(src, dest) {
+    FileService.prototype.copyFile = function*(src, dest) {
         src = fs.createReadStream(src);
         dest = fs.createWriteStream(dest);
         src.pipe(dest);
@@ -69,20 +80,6 @@
     };
 
 
-    var formatDate = function(date) {
-        date = date || new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth() < 9 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1 + "");
-        var dayNum = date.getDate() < 10 ? ("0" + date.getDate()) : (date.getDate() + "");
-        return year + "-" + month + "-" + dayNum;
-    };
-
-    module.exports = {
-        formatDate: formatDate,
-        getDirPath: getDirPath,
-        getFilePath: getFilePath,
-        getRandomFilePath: getRandomFilePath,
-        copyFile: copyFile
-    };
+    module.exports = FileService;
 
 })();
