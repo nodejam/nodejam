@@ -17,9 +17,9 @@ temp/*
 server/weberrors.log
 server/apierrors.log
 
-server/src/conf/*
-!server/src/conf/index.js
-!server/src/conf/*.sample
+server/src/lib/fora-configuration/*
+!server/src/lib/fora-configuration/index.js
+!server/src/lib/fora-configuration/*.sample
 
 #Ignore directories which are already on npm.
 #Sometimes we check them out here to test.
