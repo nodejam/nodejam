@@ -25,42 +25,41 @@
 
         /*
             Services
-            0) Config
             1) Database Service
             2) Extensions Service
             3) Types Service
             4) Parser Service
             5) Auth Service
         */
+
         var services = require('fora-services');
 
-        //Config is also a service.
-        services.add("configuration", config.baseConfiguration);
+        var baseConfiguration = require('fora-configuration');
 
         //Database Service
         var odm = require('fora-models');
-        var db = new odm.Database(config.baseConfiguration.db);
+        var db = new odm.Database(baseConfiguration.db);
         services.add("db", db);
 
         //Extensions Service
         var ExtensionsService = require('fora-extensions-service');
-        var extensionsService = new ExtensionsService(config.services.extensions, config.baseConfiguration.services.extensions);
+        var extensionsService = new ExtensionsService(config.services.extensions, baseConfiguration.services.extensions);
         _ = yield* extensionsService.init();
-        services.add("extensionsService", extensionsService);
+        services.add("extensions", extensionsService);
 
         //Types Service
         var TypesService = require('fora-types-service');
-        var typesService = new TypesService();
+        var typesService = new TypesService(extensionsService);
         _ = yield* typesService.init([models], models.Record);
-        services.add("typesService", typesService);
+        services.add("types", typesService);
 
         //Parser Service
-        var parserService = require('fora-requestparser-service');
-        services.add("parserService", parserService);
+        var parser = require('fora-requestparser-service')(typesService);
+        services.add("parser", parser);
 
         //Auth Service
-        var authService = require('fora-auth-service');
-        services.add("authService", authService);
+        var authService = require('fora-auth-service')(baseConfiguration, db);
+        services.add("auth", authService);
 
         /*
             Setup information useful for monitoring and debugging
@@ -79,7 +78,7 @@
         var errorHandler = require('fora-error-handler');
         app.use(errorHandler);
 
-        var container = yield* extensionsService.get(config.baseConfiguration.apiContainer);
+        var container = yield* extensionsService.get(baseConfiguration.apiContainer);
         _ = yield* container.init();
 
         var router = yield* container.getRouter();

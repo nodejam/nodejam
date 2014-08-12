@@ -14,7 +14,6 @@
     var server = require('fora-app-server');
 
     var config = {
-        baseConfiguration: require('../conf'),
 
         /* Extensions needed by this app */
         services: {

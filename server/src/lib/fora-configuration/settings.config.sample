@@ -1,0 +1,52 @@
+{
+    "domains": ["local.foraproject.org", "www.foraproject.org"],
+
+    "db": {
+        "type": "mongodb",
+        "name": "fora-dev-db",
+        "host": "127.0.0.1",
+        "port": 27017
+    },
+
+    "admins": ["jeswin"],
+
+    "apiContainer": "container/fora/1.0.0/api",
+    "webContainer": "container/fora/1.0.0/web",
+
+    "services": {
+        "auth": {
+            "twitter": {
+                "TWITTER_CONSUMER_KEY": "YOUR_TWITTER_KEY",
+                "TWITTER_CONSUMER_SECRET": "YOUR_LITTLE_SECRET",
+                "TWITTER_CALLBACK": "TWITTER_CALLBACK"
+            },
+            "adminkeys": {
+                "default": "Th3B@DGor1ll@@5"
+            }
+        },
+
+        "file": {
+            "userDirCount": 100
+        }
+    },
+
+    "extensions": {
+        "container/fora/1.0.0/api": {
+            "urlRoot": "/api"
+        },
+        "container/fora/1.0.0/web": {
+            "urlRoot": "/",
+            "cover": "/images/cover.jpg",
+            "theme": "default-theme"
+        }
+    },
+
+    "reservedNames": [
+        "account", "accounts", "admin", "administrator", "api", "app", "apps", "config", "configuration", "credential", "credentials",
+        "css", "db", "data", "database", "edit", "edits", "email", "feed", "feeds", "file", "files", "fonts", "fora", "forum", "forums",
+        "group", "groups", "htm", "html", "image", "images", "js", "lib", "login", "logout", "mail", "mails", "messages", "messages",
+        "post", "posts", "pub", "public", "records", "rss", "script", "scripts", "setup", "session", "sessions", "subscribe", "subscriptions",
+        "settings", "signup", "sitemap", "status", "sys", "system", "tag", "tags", "update", "updates",
+        "terms", "user", "users", "wiki"
+    ]
+}

@@ -10,6 +10,7 @@
         AppBase = require('./app-base').AppBase,
         typeHelpers = require('fora-type-helpers');
 
+    var conf = require('fora-configuration');
 
     //ctor
     var App = function() {
@@ -40,7 +41,6 @@
         if (!stub)
             throw new Error("Missing stub");
 
-        var conf = services.get('configurationService');
         if (conf.reservedNames.indexOf(this.stub) > -1)
             throw new Error("Stub cannot be " + stub + ", it is reserved");
 

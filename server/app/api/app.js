@@ -16,8 +16,6 @@
     }
 
     var config = {
-        baseConfiguration: require('../conf'),
-
         /* Extensions needed by this app */
         services: {
             extensions: {

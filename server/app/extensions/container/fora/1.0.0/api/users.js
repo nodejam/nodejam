@@ -6,11 +6,11 @@
     var models = require('fora-app-models'),
         services = require('fora-services'),
         typeHelpers = require('fora-type-helpers'),
-        FileService = require('fora-file-service');
+        FileService = require('fora-file-service'),
+        conf = require('fora-configuration');
 
-    var conf = services.get('configuration'),
-        Parser = services.get('parserService'),
-        typesService = services.get('typesService'),
+    var Parser = services.get('parser'),
+        typesService = services.get('types'),
         db = services.get('db');
 
     var context = { typesService: typesService, db: db };
@@ -76,7 +76,7 @@
     };
 
 
-    var auth = services.get('authService');
+    var auth = services.get('auth');
     module.exports = {
         create: auth({ session: 'credential' }, create),
         login: auth({ session: 'credential' }, login),

@@ -2,7 +2,7 @@
     "use strict";
 
     var co = require('co'),
-        conf = require('../../conf'),
+        conf = require('fora-configuration'),
         logger = require('fora-logger'),
         fs = require('fs'),
         path = require('path'),

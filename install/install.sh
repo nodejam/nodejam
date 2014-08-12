@@ -379,11 +379,8 @@ fi
 
 #Install config files
 if $config_files ; then
-    if [ ! -f server/src/conf/settings.config ]; then
-        cp server/src/conf/settings.config.sample server/src/conf/settings.config
-    fi
-    if [ ! -f server/src/conf/fora.config ]; then
-        sudo sh -c "cat server/src/conf/fora.config.sample | sed -e 's_fora.host.name_"$hostname"_g' > server/src/conf/fora.config"
+    if [ ! -f server/src/lib/fora-configuration/settings.config ]; then
+        cp server/src/lib/fora-configuration/settings.config.sample server/src/lib/fora-configuration/settings.config
     fi
 fi
 

@@ -12,11 +12,11 @@
     settings.services.file = settings.services.file || {};
 
     if (!settings.services.file.publicDirectory) {
-        settings.services.file.publicDirectory = path.resolve(__dirname, '../../../www-public');
+        settings.services.file.publicDirectory = path.resolve(__dirname, '../../../../www-public');
     }
 
     if (!settings.services.extensions.locations) {
-        settings.services.extensions.locations = [path.resolve(__dirname, '../extensions')];
+        settings.services.extensions.locations = [path.resolve(__dirname, '../../extensions')];
     }
 
     module.exports = {

@@ -8,9 +8,9 @@
     };
 
     var configureRouter = function() {
-        var services = require('fora-services');
-        var conf = services.get('configuration');
-        var extensions = services.get('extensionsService');
+        var services = require('fora-services'),
+            extensions = services.get('extensions'),
+            conf = require('fora-configuration');
 
         var credentials = require('./credentials'),
             users = require('./users'),
