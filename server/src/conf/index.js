@@ -23,7 +23,8 @@
         domains: settings.domains,
         db: settings.db,
         admins: settings.admins,
-        applicationContainer: settings.applicationContainer,
+        apiContainer: settings.apiContainer,
+        webContainer: settings.webContainer,
         services: settings.services,
         extensions: settings.extensions,
         reservedNames: settings.reservedNames

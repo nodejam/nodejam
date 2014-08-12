@@ -1,9 +1,12 @@
 (function () {
     "use strict";
 
+    var _;
+
     var pathToRegexp = require('path-to-regexp');
 
-    var Router = function () {
+    var Router = function (urlRoot) {
+        this.urlRoot = urlRoot || "/";
         this.routes = [];
     };
 
@@ -29,7 +32,7 @@
 
 
     Router.prototype.addPattern = function(method, url, handler) {
-        if (/\//.test(url)) url = url.substring(1); //Remove '/' from the beginning
+        url = this.urlRoot + url;
         this.routes.push({ type: "pattern", method: method.toUpperCase(), re: pathToRegexp(url), url: url, handler: handler });
     };
 
@@ -48,7 +51,7 @@
                 switch (route.type) {
                     case "predicate":
                         if (route.predicate(this)) {
-                            return yield* route.handler.apply(this, args);
+                            _ = yield* route.handler.apply(this, args);
                         }
                         break;
                     case "pattern":
@@ -56,12 +59,13 @@
                             var m = route.re.exec(this.request.url);
                             if (m) {
                                 var args = m.slice(1);
-                                return yield* route.handler.apply(this, args);
+                                _ = yield* route.handler.apply(this, args);
                             }
                         }
                         break;
                 }
             }
+            yield next;
         };
     };
 

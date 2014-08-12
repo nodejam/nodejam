@@ -14,12 +14,13 @@
         services = require('fora-services');
 
 
-    var RequestParser = function() {
+    var RequestParser = function(context) {
+        this.context = context;
         this.typesService = services.get("typesService");
     };
 
 
-    RequestParser.prototype.body = function*(context, name, def) {
+    RequestParser.prototype.body = function*(name, def) {
         def = def || { type: "string" };
 
         if (!this.initted) {
@@ -30,7 +31,7 @@
         if (typeof(def) === "string")
             def = { type: def };
 
-        value = this.rawBody[name];
+        var value = this.rawBody[name];
 
         if (value)
             return this.parseSimpleType(value, name, def);

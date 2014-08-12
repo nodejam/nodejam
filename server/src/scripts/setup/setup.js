@@ -23,7 +23,7 @@
     var HOST = argv.host || 'local.foraproject.org';
     var PORT = argv.port ? parseInt(argv.port) : 80;
 
-    logger.log("Setup will connect to #{HOST}:#{PORT}");
+    logger.log("Setup will connect to " + HOST + ":" + PORT);
 
     var init = function*() {
         var odm = require('fora-models');
@@ -53,7 +53,7 @@
             for (var _i = 0; _i < data.users.length; _i++) {
                 user = data.users[_i];
 
-                logger.log("Creating a credential for #{user.username}...");
+                logger.log("Creating a credential for " + user.username);
 
                 cred = {
                     secret: conf.services.auth.adminkeys.default,
@@ -75,16 +75,16 @@
                         break;
                 }
 
-                resp = yield* _doHttpRequest('/api/v1/credentials', querystring.stringify(cred), 'post');
+                resp = yield* _doHttpRequest('/api/credentials', querystring.stringify(cred), 'post');
                 token = JSON.parse(resp).token;
 
-                resp = yield* _doHttpRequest("/api/v1/users?token=#{token}", querystring.stringify(user), 'post');
+                resp = yield* _doHttpRequest("/api/users?token=" + token, querystring.stringify(user), 'post');
                 resp = JSON.parse(resp);
-                logger.log("Created #{resp.username}");
+                logger.log("Created " + resp.username);
                 _globals.sessions[user.username] = resp;
 
-                logger.log("Creating session for #{resp.username}");
-                resp = yield* _doHttpRequest("/api/v1/login?token=#{token}", querystring.stringify({ token: token, username: user.username }), 'post');
+                logger.log("Creating session for " + resp.username);
+                resp = yield* _doHttpRequest("/api/login?token=" + token, querystring.stringify({ token: token, username: user.username }), 'post');
                 _globals.sessions[user.username].token = JSON.parse(resp).token;
             }
 
@@ -94,27 +94,27 @@
             for (_i = 0; _i < data.apps.length; _i++) {
                 app = data.apps[_i];
                 token = _globals.sessions[app._createdBy].token;
-                logger.log("Creating a new app #{app.name} with token #{token}....");
+                logger.log("Creating a new app " + app.name + " with token " + token);
                 delete app._createdBy;
 
                 if (app._message)
-                    app.message = fs.readFileSync(path.resolve(__dirname, "apps/#{app._message}"), 'utf-8');
+                    app.message = fs.readFileSync(path.resolve(__dirname, "apps/" + app._message), 'utf-8');
                 delete app._message;
 
                 if (app._about)
-                    app.about = fs.readFileSync(path.resolve(__dirname, "apps/#{app._about}"), 'utf-8');
+                    app.about = fs.readFileSync(path.resolve(__dirname, "apps/" + app._about), 'utf-8');
                 delete app._about;
 
                 app.type = 'apps/simple/1.0.0';
-                resp = yield* _doHttpRequest("/api/v1/apps?token=#{token}", querystring.stringify(app), 'post');
+                resp = yield* _doHttpRequest("/api/apps?token=" + token, querystring.stringify(app), 'post');
                 appJson = JSON.parse(resp);
                 apps[appJson.stub] = appJson;
-                logger.log("Created #{appJson.name}");
+                logger.log("Created " + appJson.name);
 
                 for (var u in _globals.sessions) {
                     var uToken = _globals.sessions[u];
                     if (uToken.token !== token) {
-                        resp = yield* _doHttpRequest("/api/v1/apps/#{appJson.stub}/members?token=#{uToken.token}", querystring.stringify(app), 'post');
+                        resp = yield* _doHttpRequest("/api/apps/" + appJson.stub + "/members?token=" + uToken.token, querystring.stringify(app), 'post');
                         resp = JSON.parse(resp);
                         logger.log(u + " joined " + app.name);
                     }
@@ -126,10 +126,10 @@
                 token = _globals.sessions[article._createdBy].token;
                 adminkey = _globals.sessions.jeswin.token;
 
-                logger.log("Creating a new article with token #{token}....");
-                logger.log("Creating #{article.title}...");
+                logger.log("Creating a new article with token " + token);
+                logger.log("Creating " + article.title);
 
-                article.content_text = fs.readFileSync(path.resolve(__dirname, "records/#{article._content}"), 'utf-8');
+                article.content_text = fs.readFileSync(path.resolve(__dirname, "records/" + article._content), 'utf-8');
                 article.content_format = 'markdown';
                 article.state = 'published';
                 app = article._app;
@@ -140,17 +140,17 @@
                 delete article._content;
                 delete article._meta;
 
-                resp = yield* _doHttpRequest("/api/v1/apps/#{app}?token=#{token}", querystring.stringify(article), 'post');
+                resp = yield* _doHttpRequest("/api/apps/" + app + "?token=" + token, querystring.stringify(article), 'post');
                 resp = JSON.parse(resp);
                 logger.log("Created " + resp.title + " with stub " + resp.stub);
 
                 var metaTags = meta.split(',');
                 for (var _i2 = 0; _i2 < metaTags.length; _i2++) {
                     var metaTag = metaTags[_i2];
-                    resp = yield* _doHttpRequest("/api/v1/admin/apps/" + app + "/records/" + resp.stub + "?token=" + adminkey,
+                    resp = yield* _doHttpRequest("/api/admin/apps/" + app + "/records/" + resp.stub + "?token=" + adminkey,
                         querystring.stringify({ meta: metaTag}), 'put');
                     resp = JSON.parse(resp);
-                    logger.log("Added #{metaTag} tag to article #{resp.title}.");
+                    logger.log("Added " + metaTag + " tag to article " + resp.title);
                 }
             }
 

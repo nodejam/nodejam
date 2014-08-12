@@ -3,7 +3,7 @@
 
     var crypto = require('crypto');
 
-    module.exports = function(opts, callback) {
+    var hasher = function(opts, callback) {
         //Generate a random 8-character base64 password if none provided
         if (!opts.plaintext) {
             return crypto.randomBytes(6, function(err, buf) {
@@ -39,4 +39,6 @@
             }
         });
     };
+
+    module.exports = hasher;
 })();

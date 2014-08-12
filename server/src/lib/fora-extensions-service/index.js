@@ -34,29 +34,30 @@
             return dirs;
         };
 
-        var findTrustedExtensions = function*(baseDirectory, extensionType, moduleName) {
+        var findTrustedExtensions = function*(baseDirectory, extensionType) {
             var typeNames = yield* getSubDirectories(path.join(baseDirectory, extensionType));
             for(var i = 0; i < typeNames.length; i++) {
                 var typeName = typeNames[i];
                 var versions = yield* getSubDirectories(path.join(baseDirectory, extensionType, typeName));
                 for(var j = 0; j < versions.length; j++) {
                     var version = versions[j];
-                    var extensionName = extensionType + "/" + typeName + "/" + version + ":" + moduleName;
-                    var extModule = require(path.join(baseDirectory, extensionType, typeName, version, moduleName));
-                    trustedExtensionCache[extensionName] = extModule;
-                    if (!extensionTypeCache[extensionType])
-                        extensionTypeCache[extensionType] = {};
-                    extensionTypeCache[extensionType][extensionName] = extModule;
+                    var modules = yield* getSubDirectories(path.join(baseDirectory, extensionType, typeName, version));
+                    for(var k = 0; k < modules.length; k++) {
+                        var moduleName = modules[k];
+                        var extensionName = extensionType + "/" + typeName + "/" + version + "/" + moduleName;
+                        var extModule = require(path.join(baseDirectory, extensionType, typeName, version, moduleName));
+                        trustedExtensionCache[extensionName] = extModule;
+                        if (!extensionTypeCache[extensionType])
+                            extensionTypeCache[extensionType] = {};
+                        extensionTypeCache[extensionType][extensionName] = extModule;
+                    }
                 }
             }
         };
 
         for(var i = 0; i < this.baseConfig.locations.length; i++) {
-            for(var type in this.config.types) {
-                var modules = this.config.types[type];
-                for(var j = 0; j < modules.length; j++) {
-                    _ = yield* findTrustedExtensions(this.baseConfig.locations[i], type, modules[j]);
-                }
+            for(var j = 0; j < this.config.types.length; j++) {
+                _ = yield* findTrustedExtensions(this.baseConfig.locations[i], this.config.types[j]);
             }
         }
     };

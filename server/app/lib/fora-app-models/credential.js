@@ -91,7 +91,6 @@
             if (this.email && !emailRegex.test(this.email))
                 return ['Invalid email'];
             return;
-            yield 0;
         }
     };
 
@@ -102,9 +101,8 @@
         This can be used to upgrade to a user token, which is then used for login.
     */
     Credential.prototype.createSession = function*(context) {
-        context = this.getContext(context);
         var session = new models.Session({
-            credentialId: db.getRowId(this),
+            credentialId: context.db.getRowId(this),
             token: randomizer.uniqueId(24)
         });
         return yield* session.save(context);
@@ -112,8 +110,6 @@
 
 
     Credential.prototype.addBuiltin = function*(username, password, context) {
-        context = this.getContext(context);
-
         var existing = yield* Credential.get({ "builtin.username": username }, context);
         if (!existing) {
             var hashed = yield* thunkify(hasher)({ plaintext: password });
@@ -123,7 +119,7 @@
                 salt: hashed.salt.toString('hex'),
                 hash: hashed.key.toString('hex')
             };
-            _ = yield* this.save(context);
+            return yield* this.save(context);
         } else {
             throw new Error("Built-in credential with the same username already exists");
         }
@@ -131,8 +127,6 @@
 
 
     Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret, context) {
-        context = this.getContext(context);
-
         var existing = yield* Credential.get({ "twitter.id": id }, context, db);
         if (!existing) {
             this.twitter = {
@@ -141,7 +135,7 @@
                 accessToken: accessToken,
                 accessTokenSecret: accessTokenSecret
             };
-            _ = yield* this.save(context);
+            return yield* this.save(context);
         } else {
             throw new Error("Twitter credential with the same id already exists");
         }
@@ -149,8 +143,6 @@
 
 
     Credential.authenticateBuiltin = function*(username, password, context) {
-        context = this.getContext(context);
-
         var credential = yield* Credential.get({ "builtin.username": username }, context);
         if (credential) {
             var salt = new Buffer(credential.builtin.salt, 'hex');

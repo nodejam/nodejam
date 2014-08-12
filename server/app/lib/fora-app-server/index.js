@@ -79,7 +79,7 @@
         var errorHandler = require('fora-error-handler');
         app.use(errorHandler);
 
-        var container = yield* extensionsService.get(config.baseConfiguration.applicationContainer + ":" + config.containerModuleName);
+        var container = yield* extensionsService.get(config.baseConfiguration.apiContainer);
         _ = yield* container.init();
 
         var router = yield* container.getRouter();

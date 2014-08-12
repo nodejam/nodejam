@@ -92,9 +92,9 @@
         return "/public/assets/" + this.assets;
     };
 
-    UserBase.prototype.summarize = function(context, db) {
+    UserBase.prototype.summarize = function(context) {
         return new UserBase.Summary({
-            id: db.getRowId(this),
+            id: context.db.getRowId(this),
             username: this.username,
             name: this.name,
             assets: this.assets

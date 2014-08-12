@@ -22,8 +22,6 @@
 
 
     User.prototype.save = function*(context) {
-        context = this.getContext(context);
-
         if (!context.db.getRowId(this)) {
             var existing = yield* User.get({ username: this.username }, context);
             if (!existing) {
@@ -37,16 +35,14 @@
                 throw new Error("User(#{@username}) already exists");
             }
         } else {
-            _ = yield* ForaDbModel.prototype.save.apply(this, arguments);
+            return yield* ForaDbModel.prototype.save.apply(this, arguments);
         }
     };
 
 
     User.prototype.save = function*(limit, sort, context) {
-        context = this.getContext(context);
-
-        _ = yield* models.Record.find(
-            { createdById: db.getRowId(this), state: 'published' },
+        return yield* models.Record.find(
+            { createdById: context.db.getRowId(this), state: 'published' },
             function(cursor) {
                 return cursor.sort(sort).limit(limit);
             },

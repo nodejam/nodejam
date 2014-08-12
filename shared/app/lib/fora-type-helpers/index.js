@@ -10,7 +10,7 @@
 
 
     var deepCloneObject = function(obj) {
-        if ((obj === null) || (typeof(obj) !== 'object')) {
+        if ((obj === undefined) || (obj === null) || (typeof(obj) !== 'object')) {
             return obj;
         } else {
             var temp = {};

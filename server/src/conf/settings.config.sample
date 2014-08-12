@@ -10,7 +10,8 @@
 
     "admins": ["jeswin"],
 
-    "applicationContainer": "container/fora/1.0.0",
+    "apiContainer": "container/fora/1.0.0/api",
+    "webContainer": "container/fora/1.0.0/web",
 
     "services": {
         "auth": {
@@ -30,7 +31,11 @@
     },
 
     "extensions": {
-        "container/fora/1.0.0": {
+        "container/fora/1.0.0/api": {
+            "urlRoot": "/api"
+        },
+        "container/fora/1.0.0/web": {
+            "urlRoot": "/",
             "cover": "/images/cover.jpg",
             "theme": "default-theme"
         }

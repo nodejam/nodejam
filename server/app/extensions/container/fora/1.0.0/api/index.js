@@ -20,12 +20,12 @@
         var models = require('fora-app-models');
 
         var Router = require("fora-router");
-        var router = new Router();
+        var router = new Router("/api");
 
         //If the request is for a different domain, it must be an app.
         //There is no need to rewrite, since domain based urls don't have /apps/:appname prefix
         router.when(function(req) {
-            return conf.domains.indexOf(req.hostname) > -1;
+            return conf.domains.indexOf(req.hostname) === -1;
         }, function*(next) {
             var app = yield* models.App.get({ domains: this.req.hostname }, services.context());
         });

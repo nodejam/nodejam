@@ -67,27 +67,23 @@
 
 
     Record.prototype.addMetaList = function*(metaList, context) {
-        context = this.getContext(context);
         metaList.forEach(function(m) {
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
         });
-        _ = yield* this.save(context);
+        return yield* this.save(context);
     };
 
 
     Record.prototype.removeMetaList = function*(metaList) {
-        context = this.getContext(context);
         this.meta = this.meta.filter(function(m) {
             return metaList.indexOf(m) === -1;
         });
-        _ = yield* this.save(context);
+        return yield* this.save(context);
     };
 
 
     Record.prototype.save = function*(context) {
-        context = this.getContext(context);
-
         //Broken here.. getModel isn't implemented
         var model = yield* extensions.getModel();
         _ = yield* model.save.call(this);
@@ -117,7 +113,6 @@
 
 
     Record.prototype.getCreator = function*(context) {
-        context = this.getContext(context);
         return yield* models.User.getById(this.createdById, context);
     };
 

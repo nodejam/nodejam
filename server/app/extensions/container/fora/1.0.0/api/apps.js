@@ -1,6 +1,8 @@
 (function() {
     "use strict";
 
+    var _;
+
     var models = require('fora-app-models');
     var services = require('fora-services');
 
@@ -33,10 +35,10 @@
                 createdBy: this.session.user,
             });
 
-            yield* this.parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            yield* this.parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition()));
+            _ = yield* this.parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
+            _ = yield* this.parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition()));
             app = yield* app.save(context, db);
-            yield* app.addRole(this.session.user, 'admin');
+            _ = yield* app.addRole(this.session.user, 'admin');
             this.body = app;
         }
     };
@@ -45,11 +47,11 @@
 
     var edit = function*(app) {
         var context = { user: this.session.user };
-        var app = yield* models.App.get({ stub: app, network: this.network.stub }, { user: this.session.user }, db);
+        app = yield* models.App.get({ stub: app, network: this.network.stub }, { user: this.session.user }, db);
 
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
-            yield* this.parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            yield* this.parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition()));
+            _ = yield* this.parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
+            _ = yield* this.parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition()));
             app = yield* app.save();
             this.body = app;
         } else {

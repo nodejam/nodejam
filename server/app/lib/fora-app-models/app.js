@@ -36,8 +36,6 @@
 
 
     App.prototype.save = function*(context) {
-        context = this.getContext(context);
-
         //if stub is a reserved name, change it
         if (!stub)
             throw new Error("Missing stub");
@@ -50,7 +48,7 @@
         if (!regex.test(this.stub))
             throw new Error("Stub is invalid");
 
-        _ = yield* AppBase.prototype.save.call(this, context);
+        return yield* AppBase.prototype.save.call(this, context);
     };
 
     exports.App = App;

@@ -21,19 +21,9 @@
         /* Extensions needed by this app */
         services: {
             extensions: {
-                types: {
-                    container: ['api'],
-                    app: ['api'],
-                    record: ['model']
-                }
+                types: ['container']
             }
         },
-
-        /*
-            App server will start applicationContainer:containerModuleName
-            For example: container/fora/1.0.0:api
-        */
-        containerModuleName: "api",
 
         host: host,
         port: port
