@@ -12,7 +12,7 @@
         thunkify = require('fora-node-thunkify'),
         logger = require('fora-logger'),
         data = require('./data'),
-        conf = require('fora-configuration');
+        conf = require('../../config');
 
     logger.log("Setup started at " + new Date());
     logger.log("NODE_ENV is " + process.env.NODE_ENV);

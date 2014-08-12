@@ -5,7 +5,7 @@
 
     var co = require('co')
     var logger = require('fora-logger');
-    var server = require('fora-app-server');
+    var server = require('../common/fora-app-server');
 
     var host = process.argv[2];
     var port = process.argv[3];
@@ -16,10 +16,10 @@
     }
 
     var config = {
-        /* Extensions needed by this app */
         services: {
             extensions: {
-                types: ['container']
+                types: []
+                /* types: ["app", "record"] */
             }
         },
 
@@ -27,8 +27,15 @@
         port: port
     };
 
+    var container = require('./controllers');
+
     co(function*() {
-        _ = yield* server(config);
+        _ = yield* server(container, config);
+
+
+_ = yield* container.init();
+
+
         logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
     })();
 

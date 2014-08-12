@@ -10,14 +10,14 @@
     var configureRouter = function() {
         var services = require('fora-services'),
             extensions = services.get('extensions'),
-            conf = require('fora-configuration');
+            conf = require('../../config');
 
         var credentials = require('./credentials'),
             users = require('./users'),
             apps = require("./apps"),
             images = require("./images");
 
-        var models = require('fora-app-models');
+        var models = require('../../models');
 
         var Router = require("fora-router");
         var router = new Router("/api");

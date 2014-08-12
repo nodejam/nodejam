@@ -1,10 +1,12 @@
 (function() {
     "use strict";
 
-    var models = require('fora-app-models'),
+    var _;
+
+    var models = require('../../models'),
         services = require('fora-services'),
         typeHelpers = require('fora-type-helpers'),
-        conf = require('fora-configuration');
+        conf = require('../../config');
 
     var typesService = services.get('types'),
         db = services.get('db');

@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    var models = require("fora-app-models");
+    var models = require("../../models");
 
     module.exports = function(conf, db) {
         return function() {

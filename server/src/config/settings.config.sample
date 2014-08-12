@@ -10,9 +10,6 @@
 
     "admins": ["jeswin"],
 
-    "apiContainer": "container/fora/1.0.0/api",
-    "webContainer": "container/fora/1.0.0/web",
-
     "services": {
         "auth": {
             "twitter": {

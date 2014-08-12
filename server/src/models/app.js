@@ -10,7 +10,7 @@
         AppBase = require('./app-base').AppBase,
         typeHelpers = require('fora-type-helpers');
 
-    var conf = require('fora-configuration');
+    var conf = require('../config');
 
     //ctor
     var App = function() {

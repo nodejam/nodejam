@@ -10,7 +10,7 @@
         typeHelpers = require('fora-type-helpers'),
         UserBase = require('./user-base').UserBase;
 
-    var conf = require('fora-configuration');
+    var conf = require('../config');
 
     var User = function() {
         UserBase.apply(this, arguments);

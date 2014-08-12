@@ -2,12 +2,12 @@
     "use strict";
 
     var co = require('co'),
-        conf = require('fora-configuration'),
         logger = require('fora-logger'),
         fs = require('fs'),
         path = require('path'),
         FileService = require('fora-file-service'),
-        models = require('fora-app-models');
+        models = require('../../models'),
+        conf = require('../../config');
 
     var fileService = new FileService(conf);
 

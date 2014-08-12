@@ -3,10 +3,10 @@
 
     var _;
 
-    var models = require('fora-app-models'),
+    var models = require('../../models'),
         services = require('fora-services'),
         typeHelpers = require('fora-type-helpers'),
-        conf = require('fora-configuration');
+        conf = require('../../config');
 
     var typesService = services.get('types'),
         db = services.get('db');
@@ -108,7 +108,7 @@
         }
     };
 
-    var auth = require('fora-auth-service')(conf, db);
+    var auth = require('../../common/fora-auth-service')(conf, db);
     module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();

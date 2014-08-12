@@ -20,28 +20,26 @@
     };
 
 
-    module.exports = function*(config) {
-        var models = require('fora-app-models');
-
+    module.exports = function*(container, config) {
         /*
             Services
             1) Database Service
             2) Extensions Service
             3) Types Service
         */
+        var baseConfig = require("../../config");
+        var models = require("../../models");
 
         var services = require('fora-services');
 
-        var baseConfiguration = require('fora-configuration');
-
         //Database Service
         var odm = require('fora-models');
-        var db = new odm.Database(baseConfiguration.db);
+        var db = new odm.Database(baseConfig.db);
         services.add("db", db);
 
         //Extensions Service
         var ExtensionsService = require('fora-extensions-service');
-        var extensionsService = new ExtensionsService(config.services.extensions, baseConfiguration.services.extensions);
+        var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions);
         _ = yield* extensionsService.init();
         services.add("extensions", extensionsService);
 
@@ -68,7 +66,6 @@
         var errorHandler = require('fora-error-handler');
         app.use(errorHandler);
 
-        var container = yield* extensionsService.get(baseConfiguration.apiContainer);
         _ = yield* container.init();
 
         var router = yield* container.getRouter();

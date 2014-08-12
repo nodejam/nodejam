@@ -379,8 +379,8 @@ fi
 
 #Install config files
 if $config_files ; then
-    if [ ! -f server/src/lib/fora-configuration/settings.config ]; then
-        cp server/src/lib/fora-configuration/settings.config.sample server/src/lib/fora-configuration/settings.config
+    if [ ! -f server/src/config/settings.config ]; then
+        cp server/src/config/settings.config.sample server/src/config/settings.config
     fi
 fi
 
