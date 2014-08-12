@@ -76,7 +76,7 @@
     };
 
 
-    var auth = require('../../common/fora-auth-service')(conf, db);
+    var auth = require('../../common/auth-service')(conf, db);
     module.exports = {
         create: auth({ session: 'user' }, create),
         edit: auth({ session: 'user' }, edit),

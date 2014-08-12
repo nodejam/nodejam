@@ -11,7 +11,7 @@
         process.exit();
     }
 
-    var server = require('fora-app-server');
+    var server = require('app-server');
 
     var config = {
 

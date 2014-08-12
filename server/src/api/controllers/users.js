@@ -6,7 +6,7 @@
     var models = require('../../models'),
         services = require('fora-services'),
         typeHelpers = require('fora-type-helpers'),
-        FileService = require('fora-file-service'),
+        FileService = require('../../common/file-service'),
         conf = require('../../config');
 
     var typesService = services.get('types'),
@@ -76,7 +76,7 @@
     };
 
 
-    var auth = require('../../common/fora-auth-service')(conf, db);
+    var auth = require('../../common/auth-service')(conf, db);
     module.exports = {
         create: auth({ session: 'credential' }, create),
         login: auth({ session: 'credential' }, login),

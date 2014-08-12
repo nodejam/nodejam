@@ -13,17 +13,17 @@
     ForaTypesServiceBase.prototype.constructor = ForaTypesServiceBase;
 
 
-    ForaTypesServiceBase.prototype.init = function*(builtinTypes, RecordType) {
+    ForaTypesServiceBase.prototype.init = function*(builtinTypes, trustedTypes) {
         this.builtinTypes = builtinTypes;
-        this.RecordType = RecordType;
-        _ = yield* this.buildTypeCache(builtinTypes, RecordType);
+        this.trustedTypes = trustedTypes;
+        return yield* this.buildTypeCache();
     };
 
 
     ForaTypesServiceBase.prototype.getCacheItems = function*() {
         var definitions = {};
 
-        [yield* this.getModelTypeDefinitions(), yield* this.getBuiltInUserTypes()].forEach(function(defs) {
+        [yield* this.getBuiltInTypes(), yield* this.getTrustedTypes()].forEach(function(defs) {
             for (var name in defs) {
                 var def = defs[name];
                 definitions[name] = def;
@@ -34,7 +34,7 @@
     };
 
 
-    ForaTypesServiceBase.prototype.getModelTypeDefinitions = function*() {
+    ForaTypesServiceBase.prototype.getBuiltInTypes = function*() {
         var models = [];
 
         var fnAdd = function(module) {
@@ -58,14 +58,18 @@
         return definitions;
     };
 
-    ForaTypesServiceBase.prototype.getBuiltInUserTypes = function*() {
+
+    ForaTypesServiceBase.prototype.getTrustedTypes = function*() {
         var definitions = {};
-        _ = yield* this.addTrustedUserTypes(this.RecordType, 'record', 'records', definitions);
+        for (var i = 0; i < this.trustedTypes.length; i++) {
+            var t = this.trustedTypes[i];
+            _ = yield* this.addTrustedTypes(t.ctor, t.type, t.directory, definitions);
+        }
         return definitions;
     };
 
 
-    ForaTypesServiceBase.prototype.addTrustedUserTypes = function*() {
+    ForaTypesServiceBase.prototype.addTrustedTypes = function*() {
         throw new Error("addTrustedUserTypes() method must be overridden in derived class.");
     };
 
@@ -103,7 +107,7 @@
     };
 
 
-    ForaTypesServiceBase.prototype.resolveDynamicTypeDefinition = function*(name) {
+    ForaTypesServiceBase.prototype.resolveTrustedTypeDefinition = function*(name) {
         //TODO: make sure we dont allow special characters in name, like '..'
         console.log("Missing " + JSON.stringify(name));
     };

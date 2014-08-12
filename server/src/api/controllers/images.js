@@ -108,7 +108,7 @@
         }
     };
 
-    var auth = require('../../common/fora-auth-service')(conf, db);
+    var auth = require('../../common/auth-service')(conf, db);
     module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();

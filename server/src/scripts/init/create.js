@@ -5,7 +5,7 @@
         logger = require('fora-logger'),
         fs = require('fs'),
         path = require('path'),
-        FileService = require('fora-file-service'),
+        FileService = require('../../common/file-service'),
         models = require('../../models'),
         conf = require('../../config');
 
