@@ -46,10 +46,7 @@
         //Types Service
         var TypesService = require('fora-types-service');
         var typesService = new TypesService(extensionsService);
-        _ = yield* typesService.init(
-            [models],
-            [{ ctor: models.Record, type: 'record', directory: 'record' }]
-        );
+        _ = yield* typesService.init([models], [{ ctor: models.Record, type: 'record' }]);
         services.add("types", typesService);
 
         /*

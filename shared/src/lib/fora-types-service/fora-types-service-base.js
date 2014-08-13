@@ -63,7 +63,7 @@
         var definitions = {};
         for (var i = 0; i < this.trustedTypes.length; i++) {
             var t = this.trustedTypes[i];
-            _ = yield* this.addTrustedTypes(t.ctor, t.type, t.directory, definitions);
+            _ = yield* this.addTrustedTypes(t.ctor, t.type, definitions);
         }
         return definitions;
     };
