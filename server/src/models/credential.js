@@ -110,7 +110,7 @@
 
 
     Credential.prototype.addBuiltin = function*(username, password, context) {
-        var existing = yield* Credential.get({ "builtin.username": username }, context);
+        var existing = yield* Credential.findOne({ "builtin.username": username }, context);
         if (!existing) {
             var hashed = yield* thunkify(hasher)({ plaintext: password });
             this.builtin = {
@@ -127,7 +127,7 @@
 
 
     Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret, context) {
-        var existing = yield* Credential.get({ "twitter.id": id }, context);
+        var existing = yield* Credential.findOne({ "twitter.id": id }, context);
         if (!existing) {
             this.twitter = {
                 id: id,
@@ -143,7 +143,7 @@
 
 
     Credential.authenticateBuiltin = function*(username, password, context) {
-        var credential = yield* Credential.get({ "builtin.username": username }, context);
+        var credential = yield* Credential.findOne({ "builtin.username": username }, context);
         if (credential) {
             var salt = new Buffer(credential.builtin.salt, 'hex');
             result = yield* thunkify(hasher)({plaintext: password, salt: salt});

@@ -54,7 +54,7 @@
         User tokens can be used to login to the app.
     */
     Session.prototype.upgrade = function*(username, context) {
-        var user = yield* models.User.get({ username: username, credentialId: this.credentialId }, context);
+        var user = yield* models.User.findOne({ username: username, credentialId: this.credentialId }, context);
         if (user) {
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();

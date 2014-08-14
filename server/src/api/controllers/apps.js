@@ -23,7 +23,7 @@
             stub = stub + "-app";
         stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'');
 
-        var app = yield* models.App.get({
+        var app = yield* models.App.findOne({
                 $or: [{ stub: stub }, { name: yield* parser.body('name') }]
             }, typeHelpers.extend({ user: this.session.user }, context)
         );
@@ -57,7 +57,7 @@
     var edit = function*(app) {
         var parser = new Parser(this);
         var context = { user: this.session.user };
-        app = yield* models.App.get({ stub: app }, context);
+        app = yield* models.App.findOne({ stub: app }, context);
 
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
@@ -72,7 +72,7 @@
 
 
     var join = function*(app) {
-        app = yield* models.App.get({ stub: app }, context);
+        app = yield* models.App.findOne({ stub: app }, context);
         _ = yield* app.join(this.session.user);
         this.body = { success: true };
     };

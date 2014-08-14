@@ -70,7 +70,7 @@
 
 
     var item = function*(username) {
-        var user = yield* models.User.get({ username: username }, context);
+        var user = yield* models.User.findOne({ username: username }, context);
         if (user)
             this.body = user.summarize({}, db);
     };

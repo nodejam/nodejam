@@ -47,9 +47,7 @@
 
         yield Record.find(
             params,
-            function(cursor) {
-                return cursor.sort(settings.sort).limit(limit);
-            },
+            { sort: settings.sort, limit: limit },
             context
         );
     };
@@ -103,7 +101,7 @@
         var result = yield* RecordBase.prototype.save.call(this, context);
 
         if (this.state === 'published') {
-            app = yield* models.App.getById(this.appId, context);
+            app = yield* models.App.findById(this.appId, context);
             _ = yield* app.refreshCache();
         }
 
@@ -113,7 +111,7 @@
 
 
     Record.prototype.getCreator = function*(context) {
-        return yield* models.User.getById(this.createdById, context);
+        return yield* models.User.findById(this.createdById, context);
     };
 
 

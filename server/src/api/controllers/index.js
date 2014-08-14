@@ -35,7 +35,7 @@
         router.when(function(req) {
             return conf.domains.indexOf(req.hostname) === -1;
         }, function*(next) {
-            var app = yield* models.App.get({ domains: this.req.hostname }, services.context());
+            var app = yield* models.App.findOne({ domains: this.req.hostname }, services.context());
             return yield* routeToApp(app);
         });
 
@@ -46,7 +46,7 @@
         }, function*(next) {
             var parts = this.req.url.split('/');
             this.url = "/" + parts.slice(3).join("/");
-            var app = yield* models.App.get({ stub: parts[2] });
+            var app = yield* models.App.findOne({ stub: parts[2] });
             return yield* routeToApp(app);
         });
 
