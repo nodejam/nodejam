@@ -17,17 +17,17 @@
 	__extends(AppBase, ForaDbModel);
 
 
-	//Settings
-	var Settings = function() {
+	//AppSettings
+	var AppSettings = function() {
 		ForaModel.apply(this, arguments);
 	};
 
-	Settings.prototype = Object.create(ForaModel.prototype);
-	Settings.prototype.constructor = Settings;
+	AppSettings.prototype = Object.create(ForaModel.prototype);
+	AppSettings.prototype.constructor = AppSettings;
 
-	__extends(Settings, ForaModel);
+	__extends(AppSettings, ForaModel);
 
-	Settings.typeDefinition = {
+	AppSettings.typeDefinition = {
 		name: "app-settings",
 		schema: {
 			type: 'object',
@@ -38,20 +38,18 @@
 		}
 	};
 
-	AppBase.Settings = Settings;
 
-
-	//Summary
-	var Summary = function() {
+	//AppSummary
+	var AppSummary = function() {
 		ForaModel.apply(this, arguments);
 	};
 
-	Summary.prototype = Object.create(ForaModel.prototype);
-	Summary.prototype.constructor = Summary;
+	AppSummary.prototype = Object.create(ForaModel.prototype);
+	AppSummary.prototype.constructor = AppSummary;
 
-	__extends(Summary, ForaModel);
+	__extends(AppSummary, ForaModel);
 
-	Summary.typeDefinition = {
+	AppSummary.typeDefinition = {
 		name: "app-summary",
 		schema: {
 			type: 'object',
@@ -73,21 +71,19 @@
 		}
 	};
 
-	AppBase.Summary = Summary;
 
-
-	//Summary
-	var Stats = function() {
+	//AppSummary
+	var AppStats = function() {
 		ForaModel.apply(this, arguments);
 	};
 
-	Stats.prototype = Object.create(ForaModel.prototype);
-	Stats.prototype.constructor = Stats;
+	AppStats.prototype = Object.create(ForaModel.prototype);
+	AppStats.prototype.constructor = AppStats;
 
-	__extends(Stats, ForaModel);
+	__extends(AppStats, ForaModel);
 
 
-	Stats.typeDefinition = {
+	AppStats.typeDefinition = {
 		name: "app-stats",
 		schema: {
 			type: 'object',
@@ -106,15 +102,6 @@
 		}
 	};
 
-	AppBase.Stats = Stats;
-
-
-	//Set these as child models.
-	AppBase.childModels = {
-		Stats: Stats,
-		Summary: Summary,
-		Settings: Settings
-	};
 
 	AppBase.typeDefinition = {
 		name: 'app',
@@ -181,5 +168,9 @@
 
 
 	exports.AppBase = AppBase;
+	exports.AppStats = AppStats;
+	exports.AppSummary = AppSummary;
+	exports.AppSettings = AppSettings;
+
 
 })();

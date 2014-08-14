@@ -18,16 +18,16 @@
 
 
     //Settings
-    var Summary = function() {
+    var UserSummary = function() {
         ForaModel.apply(this, arguments);
     };
 
-    Summary.prototype = Object.create(ForaModel.prototype);
-    Summary.prototype.constructor = Summary;
+    UserSummary.prototype = Object.create(ForaModel.prototype);
+    UserSummary.prototype.constructor = UserSummary;
 
-    __extends(Summary, ForaModel);
+    __extends(UserSummary, ForaModel);
 
-    Summary.typeDefinition = {
+    UserSummary.typeDefinition = {
         name: "user-summary",
         schema: {
             type: 'object',
@@ -41,17 +41,13 @@
         }
     };
 
-    Summary.prototype.getUrl = function() {
+    UserSummary.prototype.getUrl = function() {
         return "/~" + this.username;
     };
 
-    Summary.prototype.getAssetUrl = function() {
+    UserSummary.prototype.getAssetUrl = function() {
         return "/public/assets/" + this.assets;
     };
-
-    UserBase.Summary = Summary;
-
-    UserBase.childModels = { Summary: Summary };
 
     UserBase.typeDefinition = {
         name: "user",
@@ -93,7 +89,7 @@
     };
 
     UserBase.prototype.summarize = function(context) {
-        return new UserBase.Summary({
+        return new UserSummary({
             id: context.db.getRowId(this),
             username: this.username,
             name: this.name,
@@ -102,5 +98,6 @@
     };
 
     exports.UserBase = UserBase;
+    exports.UserSummary = UserSummary;
 
 })();

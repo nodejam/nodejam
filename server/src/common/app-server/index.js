@@ -46,7 +46,11 @@
         //Types Service
         var TypesService = require('fora-types-service');
         var typesService = new TypesService(extensionsService);
-        _ = yield* typesService.init([models], [{ ctor: models.Record, type: 'record' }]);
+        var virtualTypeDefinitions = yield* typesService.getVirtualTypeDefinitions();
+        _ = yield* typesService.init(
+            Object.keys(models).map(function(k) { return models[k]; }),
+            virtualTypeDefinitions
+        );
         services.add("types", typesService);
 
         /*

@@ -12,12 +12,8 @@
     ForaTypesService.prototype.constructor = ForaTypesService;
 
 
-    ForaTypesService.prototype.addTrustedTypes = function*(ctor, type, dir, definitions) {
-        var extensions = this.extensionsService.getTrustedExtensions(type);
-
-        for (var name in extensions) {
-            definitions[name] = extensions[name];
-        }
+    ForaTypesService.prototype.getVirtualTypeDefinitions = function*() {
+        return [];
     };
 
 
