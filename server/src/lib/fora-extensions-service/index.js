@@ -11,8 +11,9 @@
     var stat = thunkify(fs.stat);
     var readfile = thunkify(fs.readFile);
 
-    var trustedExtensionCache = {};
-    var extensionTypeCache = {};
+    var moduleCache = {};
+    var extensionsByType = {};
+    var extensionsByName = {};
 
     var ExtensionsService = function(config, baseConfig) {
         this.config = config;
@@ -44,12 +45,22 @@
                     var modules = yield* getSubDirectories(path.join(baseDirectory, extensionType, typeName, version));
                     for(var k = 0; k < modules.length; k++) {
                         var moduleName = modules[k];
-                        var extensionName = extensionType + "/" + typeName + "/" + version + "/" + moduleName;
+                        var extensionName = extensionType + "/" + typeName + "/" + version;
+                        var fullName = extensionName + "/" + moduleName;
                         var extModule = require(path.join(baseDirectory, extensionType, typeName, version, moduleName));
-                        trustedExtensionCache[extensionName] = extModule;
-                        if (!extensionTypeCache[extensionType])
-                            extensionTypeCache[extensionType] = {};
-                        extensionTypeCache[extensionType][extensionName] = extModule;
+
+                        //Put the module in cache
+                        moduleCache[fullName] = extModule;
+
+                        //Add to by-extension-name directory
+                        if (!extensionsByName[extensionName])
+                            extensionsByType[extensionName] = {};
+                        extensionsByType[extensionName][moduleName] = extModule;
+
+                        //Add to by-type directory
+                        if (!extensionsByType[extensionType])
+                            extensionsByType[extensionType] = {};
+                        extensionsByType[extensionType][fullName] = extModule;
                     }
                 }
             }
@@ -64,7 +75,7 @@
 
 
     ExtensionsService.prototype.get = function*(name) {
-        var extension = trustedExtensionCache[name];
+        var extension = moduleCache[name];
         if (extension)
             return extension;
         else
@@ -73,7 +84,7 @@
 
 
     ExtensionsService.prototype.getTrustedExtensions = function(type) {
-        return extensionTypeCache[type];
+        return extensionsByType[type];
     };
 
 

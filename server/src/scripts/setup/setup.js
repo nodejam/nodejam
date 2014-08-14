@@ -107,7 +107,7 @@
 
                 app.type = 'apps/simple/1.0.0';
                 resp = yield* _doHttpRequest("/api/apps?token=" + token, querystring.stringify(app), 'post');
-                appJson = JSON.parse(resp);
+                var appJson = JSON.parse(resp);
                 apps[appJson.stub] = appJson;
                 logger.log("Created " + appJson.name);
 

@@ -40,10 +40,9 @@
             }, typesService);
 
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            _ = yield* parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition()));
 
-            app = yield* app.save(typeHelpers.extend(context));
-            _ = yield* app.addRole(this.session.user, 'admin');
+            app = yield* app.save(context);
+            _ = yield* app.addRole(this.session.user, 'admin', context);
 
             this.body = app;
 
@@ -61,7 +60,7 @@
 
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            _ = yield* parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition()));
+            _ = yield* parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition(typesService)));
             app = yield* app.save(context);
             this.body = app;
         } else {

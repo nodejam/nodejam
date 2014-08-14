@@ -17,6 +17,11 @@
     };
 
 
+    ForaTypesService.prototype.getDynamicTypeDefinition = function*(name, dynamicResolutionContext) {
+        throw new Error("Cannot find type " + name);
+    };
+
+
     module.exports = ForaTypesService;
 
 })();

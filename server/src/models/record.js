@@ -102,7 +102,6 @@
 
         if (this.state === 'published') {
             app = yield* models.App.findById(this.appId, context);
-            _ = yield* app.refreshCache();
         }
 
         return result;

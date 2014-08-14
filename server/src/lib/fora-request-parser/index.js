@@ -14,10 +14,17 @@
 
     var getParser = function(typesService) {
 
+        var isPrimitiveType = function(type) {
+            return ['string', 'number', 'integer', 'boolean', 'array'].indexOf(type) > -1;
+        };
+
+        var isCustomType = function(type) {
+            return !isPrimitiveType(type);
+        };
+
         var RequestParser = function(context) {
             this.context = context;
         };
-
 
         RequestParser.prototype.body = function*(name, def) {
             def = def || { type: "string" };
@@ -60,7 +67,8 @@
 
 
         RequestParser.prototype.map_impl = function*(target, whitelist, options, parents) {
-            var typeDef = yield* target.getTypeDefinition();
+            var changed = false;
+            var typeDef = yield* target.getTypeDefinition(typesService);
 
             for (var fieldName in typeDef.schema.properties) {
                 var def = typeDef.schema.properties[fieldName];
@@ -75,7 +83,7 @@
 
 
         RequestParser.prototype.setField = function*(obj, fieldName, def, typeDef, whitelist, options, parents) {
-            if (typesService.isPrimitiveType(def.type)) {
+            if (isPrimitiveType(def.type)) {
                 if (def.type !== 'array') {
                     if (whitelist[0] && whitelist[0][0] === fieldName)
                         return yield* this.setSimpleType(obj, fieldName, def, typeDef, whitelist, options, parents);
@@ -90,6 +98,7 @@
 
         //eg: name: "jeswin", age: 33
         RequestParser.prototype.setSimpleType = function*(obj, fieldName, def, typeDef, whitelist, options, parents) {
+            var changed = false;
             var formField = parents.concat(fieldName).join('_');
             var val = yield* this.body(formField);
             if (val) {
@@ -116,6 +125,7 @@
             #2. Array of objects (eg: customers_1_name: "jeswin", customers_1_age: "33")
         */
         RequestParser.prototype.setArray = function*(obj, fieldName, def, typeDef, whitelist, options, parents) {
+            var changed = false;
             if (typeDef && typeDef.mapping && typeDef.mapping[fieldName]) {
                 if (def.items.type !== 'array') {
                     if (whitelist.indexOf(fieldName) !== -1) {
@@ -155,10 +165,9 @@
 
 
         RequestParser.prototype.setCustomType = function*(obj, fieldName, def, typeDef, whitelist, options, parents) {
-            var changed;
+            var changed = false;
 
             whitelist = whitelist.slice(1);
-
             parents.push(fieldName);
             if (def.typeDefinition && def.typeDefinition.ctor) {
                 var newObj = new def.typeDefinition.ctor();

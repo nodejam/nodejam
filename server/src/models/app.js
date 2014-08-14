@@ -23,26 +23,13 @@
     __extends(App, AppBase);
 
 
-    App.typeDefinition = (function() {
-        var originalDef = typeHelpers.clone(AppBase.typeDefinition);
-        originalDef.discriminator = function*(obj, typesService) {
-            var def = yield* typesService.getTypeDefinition(obj.type);
-            if (def.ctor !== App)
-                throw new Error("App type definitions must have ctor set to App");
-            return def;
-        };
-        return originalDef;
-    })();
-
-
-
     App.prototype.save = function*(context) {
         //if stub is a reserved name, change it
-        if (!stub)
+        if (!this.stub)
             throw new Error("Missing stub");
 
         if (conf.reservedNames.indexOf(this.stub) > -1)
-            throw new Error("Stub cannot be " + stub + ", it is reserved");
+            throw new Error("Stub cannot be " + this.stub + ", it is reserved");
 
         var regex = /[a-z][a-z0-9|-]*/;
         if (!regex.test(this.stub))
@@ -50,6 +37,107 @@
 
         return yield* AppBase.prototype.save.call(this, context);
     };
+
+
+    App.prototype.summarize = function(context) {
+        return new models.AppSummary({
+            id: context.db.getRowId(this),
+            network: this.network,
+            name: this.name,
+            stub: this.stub,
+            createdBy: this.createdBy
+        });
+    };
+
+
+    App.prototype.getView = function*(name, context) {
+        switch (name) {
+            case 'card':
+                return {
+                id: context.db.getRowId(this),
+                network: this.network,
+                name: this.name,
+                description: this.description,
+                stub: this.stub,
+                createdBy: this.createdBy,
+                cache: this.cache,
+                image: this.cover ? this.cover.image ? this.cover.image.small : void 0 : void 0
+            };
+        }
+    };
+
+
+    App.prototype.join = function*(user, token, context) {
+        if (this.access === 'public') {
+            return yield* this.addRole(user, 'member', context);
+        } else {
+            throw new Error("Access denied");
+        }
+    };
+
+
+    App.prototype.addRecord = function*(record, context) {
+        record.appId = context.db.getRowId(this);
+        record.app = this.summarize(context);
+        return yield* record.save(context);
+    };
+
+
+    App.prototype.getRecord = function*(stub, context) {
+        return yield* models.Record.find({ 'appId': context.db.getRowId(this), stub: stub }, context);
+    };
+
+
+    App.prototype.getRecords = function*(limit, sort, context) {
+        return yield* models.Record.find({ 'appId': context.db.getRowId(this), state: 'published' }, { sort: sort, limit: limit }, context);
+    };
+
+
+    App.prototype.addRole = function*(user, role, context) {
+        var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, context);
+
+        if (!membership) {
+            membership = new models.Membership({
+                appId: context.db.getRowId(this),
+                app: this.summarize(context),
+                userId: user.id,
+                user: user,
+                roles: [role]
+            });
+        } else {
+            if (membership.roles.indexOf(role) === -1) {
+                membership.roles.push(role);
+            }
+        }
+
+        return yield* membership.save(context);
+    };
+
+
+    App.prototype.removeRole = function*(user, role, context) {
+        var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, context);
+        membership.roles = membership.roles.filter(function(r) { return r != role; });
+        if (membership.roles.length) {
+            return yield* membership.save();
+        } else {
+            return yield* membership.destroy();
+        }
+    };
+
+
+    App.prototype.getMembership = function*(username, context) {
+      return yield* models.Membership.findOne({ 'app.id': context.db.getRowId(this), 'user.username': username }, context);
+    };
+
+
+    App.prototype.getMemberships = function*(roles, context) {
+        return yield* models.Membership.find(
+            { 'appId': context.db.getRowId(this), roles: { $in: roles } },
+            { sort: { id: -1 }, limit: 200},
+            context
+        );
+    };
+
 
     exports.App = App;
 
