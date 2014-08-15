@@ -35,6 +35,7 @@
         logger.log("Resized #{src} to #{dest} [#{JSON.stringify options}]");
     };
 
+
     var upload = function*() {
         var srcArr, srcWidth, srcHeight;
         var smallArr, smallWidth, smallHeight;

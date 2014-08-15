@@ -3,7 +3,7 @@
 
     var _;
 
-    var co = require('co')
+    var co = require('co');
     var logger = require('fora-logger');
     var server = require('../common/app-server');
 
@@ -31,11 +31,6 @@
 
     co(function*() {
         _ = yield* server(container, config);
-
-
-_ = yield* container.init();
-
-
         logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
     })();
 
