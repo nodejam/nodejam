@@ -25,33 +25,17 @@
         var router = new Router("/api");
 
 
-        //apps will do their own routing.
-        var routeToApp = function*(app) {
-            var appExtensions = yield* extensions.getByName(app.type);
-            console.log(appExtensions);
-            var router = appExtension.getRouter();
-            _ = yield* router.route().call(this);
-        };
-
         //If the request is for a different domain, it must be an app.
-        //There is no need to rewrite, since domain based urls don't have /apps/:appname prefix
+        //Rewrite: example.com/url -> /apps/example/url
         router.when(function() {
             return this.req.hostname && (conf.domains.indexOf(this.req.hostname) === -1);
-        }, function*() {
+        }, function*(routingContext) {
             var app = yield* models.App.findOne({ domains: this.req.hostname }, services.context());
-            return yield* routeToApp.call(this, app);
+            routingContext.app = app; //Cache this to avoid db lookup later.
+            this.req.url = "/apps" + app.stub + this.req.url;
+            return true; //continue matching.
         });
 
-        //Before passing this on to the app, rewrite the url
-        //eg: rewrite /apps/:appname/some/path -> /some/path
-        router.when(function() {
-            return /^\/apps\//.test(this.req.url);
-        }, function*(next) {
-            var parts = this.req.url.split('/');
-            this.url = "/" + parts.slice(3).join("/");
-            var app = yield* models.App.findOne({ stub: parts[2] }, services.context());
-            return yield* routeToApp.call(this, app);
-        });
 
         //healthcheck
         router.get("/healthcheck", function*() {
@@ -70,6 +54,30 @@
 
         //images
         router.post("/images", images.upload);
+
+
+        //apps will do their own routing.
+        var routeToApp = function*(app) {
+            var appExtensions = yield* extensions.getByName(app.type);
+            if (!appExtensions.api.__initted) {
+                _ = yield* appExtensions.api.init();
+                appExtensions.api.__initted = true;
+            }
+            var router = yield* appExtensions.api.getRouter();
+            _ = yield* router.route().call(this);
+        };
+
+
+        //Before passing this on to the app, rewrite the url
+        //eg: rewrite /apps/:appname/some/path -> /some/path
+        router.when(function() {
+            return /^\/apps\//.test(this.req.url);
+        }, function*() {
+            var parts = this.req.url.split('/');
+            this.req.url = "/" + parts.slice(3).join("/");
+            var app = routingContext.app ? routingContext.app : yield* models.App.findOne({ stub: parts[2] }, services.context());
+            _ = yield* routeToApp.call(this, app);
+        });
 
         return router;
     };

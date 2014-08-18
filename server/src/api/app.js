@@ -18,8 +18,7 @@
     var config = {
         services: {
             extensions: {
-                types: []
-                /* types: ["app", "record"] */
+                types: ["app"]
             }
         },
 

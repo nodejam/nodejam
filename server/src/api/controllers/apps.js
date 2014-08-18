@@ -40,7 +40,6 @@
             }, typesService);
 
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-
             app = yield* app.save(context);
             _ = yield* app.addRole(this.session.user, 'admin', context);
 
@@ -55,13 +54,12 @@
 
     var edit = function*(app) {
         var parser = new Parser(this);
-        var context = { user: this.session.user };
         app = yield* models.App.findOne({ stub: app }, context);
 
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            _ = yield* parser.map(app, yield* mapper.getMappableFields(yield* app.getTypeDefinition(typesService)));
             app = yield* app.save(context);
+
             this.body = app;
         } else {
             throw new Error("Access denied");
@@ -71,7 +69,7 @@
 
 
     var join = function*(app) {
-        app = yield* models.App.findOne({ stub: app }, context);
+        var app = yield* models.App.findOne({ stub: app }, context);
         _ = yield* app.join(this.session.user);
         this.body = { success: true };
     };

@@ -1,15 +1,35 @@
 (function() {
     "use strict";
 
-    /* Routing */
-    var members = require('./members');
-    var records = require('./records');
+    var router;
 
-    exports.init = function*() {
-        this.routes.post("members", members.join);
-        this.routes.post("", records.create);
-        this.routes.put("records/:record", records.edit);
-        this.routes.put("admin/records/:record", records.admin_update);
+    var init = function*() {
+        router = configureRouter();
+    };
+
+    var configureRouter = function() {
+        var members = require('./members'),
+            records = require('./records');
+
+        var Router = require("fora-router");
+        var router = new Router();
+
+        router.post("/members", members.join);
+        router.post("/", records.create);
+        router.post("/records", records.create);
+        router.put("/records/:record", records.edit);
+        router.put("/admin/records/:record", records.admin_update);
+
+        return router;
+    };
+
+    var getRouter = function*() {
+        return router;
+    };
+
+    module.exports = {
+        init: init,
+        getRouter: getRouter
     };
 
 })();
