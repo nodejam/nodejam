@@ -11,7 +11,6 @@
 
     var configureRouter = function() {
         var services = require('../../common/fora-services'),
-            extensions = services.get('extensions'),
             conf = require('../../config');
 
         var credentials = require('./credentials'),
@@ -66,7 +65,7 @@
             var parts = this.req.url.split('/');
             this.req.url = "/" + parts.slice(3).join("/");
             var app = routingContext.app ? routingContext.app : yield* models.App.findOne({ stub: parts[2] }, services.context());
-            var sandbox = new Sandbox(app, extensions);
+            var sandbox = new Sandbox(app, services);
             _ = yield* sandbox.executeRequest(this);
         });
 

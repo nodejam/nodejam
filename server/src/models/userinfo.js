@@ -7,9 +7,14 @@
     var ForaDbModel = require('./foramodel').ForaDbModel;
 
     var UserInfo = function() {
-        this.subscriptions = this.subscriptions || [];
-        following = following || [];
         ForaDbModel.apply(this, arguments);
+
+        if (!this.subscriptions)
+            this.subscriptions = [];
+
+        if (!this.following)
+            this.following = [];
+
     };
 
     UserInfo.prototype = Object.create(ForaDbModel.prototype);

@@ -65,7 +65,7 @@ var poetry = {
     category: 'literature',
     _createdBy: 'jeswin',
     posttypes: 'haiku,article'
-}
+};
 
 movies = {
     name: 'Modern Cinema',
@@ -112,7 +112,7 @@ var makingStuff =  {
     access: 'public',
     category: 'life',
     _createdBy: 'jeswin'
-}
+};
 
 travel = {
     name: 'Travel',
@@ -123,7 +123,7 @@ travel = {
     access: 'public',
     category: 'travel',
     _createdBy: 'jeswin'
-}
+};
 
 computers = {
     name: 'Computers',
@@ -178,14 +178,15 @@ var earlyMornings = {
     access: 'public',
     category: 'life',
     _createdBy: 'jeswin'
-}
+};
 
-apps = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings]
+apps = [poetry, movies, rawNerve, itsMyLife, makingStuff, travel, computers, theGreatMasters, streetFood, guzzlers, earlyMornings];
 
 //Articles
 believeYouCanChange = {
     title: 'Believe you can change',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'believe-you-can-change.md',
     cover_image_src: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
     cover_image_small: 'http://3.bp.blogspot.com/-v3u0buEsK5E/T7XVL4nuUtI/AAAAAAAACu8/2Hte6GPRJ_M/s1600/dolphin.png',
@@ -196,7 +197,8 @@ believeYouCanChange = {
 
 var cherishMistakes = {
     title: 'Cherish Mistakes',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'cherish-mistakes.md',
     cover_image_src: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
     cover_image_small: 'http://img2.etsystatic.com/008/0/5851351/il_fullxfull.370263870_r8lg.jpg',
@@ -207,7 +209,8 @@ var cherishMistakes = {
 
 var confrontReality = {
     title: 'Confront Reality',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'confront-reality.md',
     cover_image_src: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
     cover_image_small: 'http://www.cariboobrewing.com/wp-content/uploads/back-to-the-future-lloyd-michael-j-fox.jpeg',
@@ -218,7 +221,8 @@ var confrontReality = {
 
 var darkKnight = {
     title: 'Dark Knight',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'dark-knight.md',
     cover_type: 'full-cover',
     cover_image_src: 'http://www.everyjoe.com/wp-content/uploads/2013/07/the-dark-knight.jpg',
@@ -230,7 +234,8 @@ var darkKnight = {
 
 var fixTheMachine = {
     title: 'Lean into the pain',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'lean-into-the-pain.md',
     cover_type: 'auto-cover',
     cover_image_src: 'http://farm4.staticflickr.com/3808/9311339474_ec6db28a45_c.jpg',
@@ -242,7 +247,8 @@ var fixTheMachine = {
 
 var leanIntoThePain = {
     title: 'Fix the machine not the person',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'fix-the-machine-not-the-person.md',
     cover_type: 'top-cover',
     cover_image_src: 'http://25.media.tumblr.com/tumblr_mdcyr848za1qgfiato1_1280.jpg',
@@ -254,16 +260,18 @@ var leanIntoThePain = {
 
 var lookAtYourselfObjectively = {
     title: 'Look at yourself objectively',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'look-at-yourself-objectively.md',
     _app: 'raw-nerve',
     _createdBy: 'aaronsw',
     _meta: 'featured'
-}
+};
 
 optimalBiases = {
     title: 'Optimal biases',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'optimal-biases.md',
     cover_image_src: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
     cover_image_small: 'http://farm8.staticflickr.com/7330/9290232985_be2a915d39_c.jpg',
@@ -274,7 +282,8 @@ optimalBiases = {
 
 var takeAStepBack = {
     title: 'Take a step back',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'take-a-step-back.md',
     cover_image_src: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
     cover_image_small: 'http://thelittlecorporal.files.wordpress.com/2012/02/great_dictator.jpg',
@@ -285,7 +294,8 @@ var takeAStepBack = {
 
 var flightOfTheIcarus = {
     title: 'Flight of the Icarus',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'flight-of-the-icarus.md',
     cover_image_src: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
     cover_image_small: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Bol%2C_Hans_-_Landscape_with_the_Fall_of_Icarus.jpg',
@@ -296,7 +306,8 @@ var flightOfTheIcarus = {
 
 var huckleberryFinn = {
     title: 'Huckleberry Finn',
-    type: "records/article/1.0.0",
+    type: "article",
+    version: "1.0.0",
     _content: 'huckleberry-finn.md',
     _app: 'raw-nerve',
     _createdBy: 'jeswin',

@@ -65,7 +65,6 @@
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
             app = yield* app.save(context);
-
             this.body = app;
         } else {
             throw new Error("Access denied");
@@ -73,19 +72,10 @@
     };
 
 
-
-    var join = function*(app) {
-        var app = yield* models.App.findOne({ stub: app }, context);
-        _ = yield* app.join(this.session.user);
-        this.body = { success: true };
-    };
-
-
     var auth = require('../../common/auth-service')(conf, db);
     module.exports = {
         create: auth({ session: 'user' }, create),
-        edit: auth({ session: 'user' }, edit),
-        join: auth({ session: 'user' }, join)
+        edit: auth({ session: 'user' }, edit)
     };
 
 

@@ -106,7 +106,7 @@
                 delete app._about;
 
                 app.type = "forum";
-                app.version = "1.0.0"
+                app.version = "1.0.0";
                 resp = yield* _doHttpRequest("/api/apps?token=" + token, querystring.stringify(app), 'post');
                 var appJson = JSON.parse(resp);
                 apps[appJson.stub] = appJson;
