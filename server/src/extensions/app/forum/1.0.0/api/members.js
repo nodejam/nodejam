@@ -1,6 +1,8 @@
 (function() {
     "use strict";
 
+    var models = require('fora-app-models');
+    
 
     var join = function*(app) {
         app = yield* models.App.findOne({ stub: app }, context);

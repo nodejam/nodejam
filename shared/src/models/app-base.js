@@ -9,34 +9,28 @@
 
 	var AppBase = function() {
 		ForaDbModel.apply(this, arguments);
+
+		if (!this.cache)
+			this.cache = {
+				records: []
+			};
+
+		if (!this.stats) {
+			this.stats = new AppStats({
+				records: 0,
+				members: 0,
+				lastRecord: 0
+			});
+		}
+
+		if (!this.records)
+			this.records = [];
 	};
 
 	AppBase.prototype = Object.create(ForaDbModel.prototype);
 	AppBase.prototype.constructor = AppBase;
 
 	__extends(AppBase, ForaDbModel);
-
-
-	//AppSettings
-	var AppSettings = function() {
-		ForaModel.apply(this, arguments);
-	};
-
-	AppSettings.prototype = Object.create(ForaModel.prototype);
-	AppSettings.prototype.constructor = AppSettings;
-
-	__extends(AppSettings, ForaModel);
-
-	AppSettings.typeDefinition = {
-		name: "app-settings",
-		schema: {
-			type: 'object',
-			properties: {
-				commentsEnabled: { type: 'boolean' },
-				commentsOpened: { type: 'boolean' }
-			}
-		}
-	};
 
 
 	//AppSummary
@@ -110,6 +104,10 @@
 			type: 'object',
 			properties: {
 				type: { type: 'string' },
+				version: { type: 'string' },
+				versionMajor: { type: 'number' },
+				versionMinor: { type: 'number' },
+				versionRevision: { type: 'number' },
 				name: { type: 'string' },
 				description: { type: 'string' },
 				stub: { type: 'string' },
@@ -119,7 +117,6 @@
 				},
 				createdById: { type: 'string' },
 				createdBy: { $ref: 'user-summary' },
-				settings: { $ref: 'app-settings' },
 				cover: { $ref: 'cover' },
 				theme: { type: 'string' },
 				cache: {
@@ -144,7 +141,8 @@
 				},
 				stats: { $ref: 'app-stats' }
 			},
-			required: ['type', 'name', 'description', 'stub', 'access', 'createdById', 'createdBy', 'cache', 'stats']
+			required: ['type', 'version', 'versionMajor', 'versionMinor', 'versionRevision',
+				'name', 'description', 'stub', 'access', 'createdById', 'createdBy', 'cache', 'stats']
 		},
 		indexes: [ {
 				'createdById': 1,
@@ -162,7 +160,7 @@
 			info: { Type: 'app-info', field: 'appId' }
 		},
 		logging: {
-			onInsert: 'NEW_FORUM'
+			onInsert: 'NEW_APP'
 		}
 	};
 
@@ -170,7 +168,6 @@
 	exports.AppBase = AppBase;
 	exports.AppStats = AppStats;
 	exports.AppSummary = AppSummary;
-	exports.AppSettings = AppSettings;
 
 
 })();

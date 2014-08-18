@@ -5,11 +5,7 @@
     exports.Session = require('./session').Session;
     exports.AppSummary = require('./app-base').AppSummary;
     exports.AppStats = require('./app-base').AppStats;
-    exports.AppSettings = require('./app-base').AppSettings;
     exports.App = require('./app').App;
-    exports.App = require('./app').App;
-    exports.App = require('./app').App;
-    exports.AppInfo = require('./appinfo').AppInfo;
     exports.Record = require('./record').Record;
     exports.Token = require('./token').Token;
     exports.UserSummary = require('./user-base').UserSummary;

@@ -29,6 +29,7 @@ server/src/lib/fora-request-parser
 server/src/lib/fora-router
 server/src/lib/fora-extensions-service
 server/src/lib/fora-types-service
+server/src/lib/fora-app-sandbox
 
 www-client/system/*
 !www-client/system/placeholder

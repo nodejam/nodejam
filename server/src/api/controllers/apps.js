@@ -32,12 +32,18 @@
 
             app = yield* models.App.create({
                 type: yield* parser.body('type'),
+                version: yield* parser.body('version'),
                 name: yield* parser.body('name'),
                 access: yield* parser.body('access'),
                 stub: stub,
                 createdById: this.session.user.id,
                 createdBy: this.session.user,
             }, typesService);
+
+            var versionParts = app.version.split('.');
+            app.versionMajor = parseInt(versionParts[0]);
+            app.versionMinor = parseInt(versionParts[1]);
+            app.versionRevision = parseInt(versionParts[2]);
 
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
             app = yield* app.save(context);

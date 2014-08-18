@@ -105,7 +105,8 @@
                     app.about = fs.readFileSync(path.resolve(__dirname, "apps/" + app._about), 'utf-8');
                 delete app._about;
 
-                app.type = 'app/forum/1.0.0';
+                app.type = "forum";
+                app.version = "1.0.0"
                 resp = yield* _doHttpRequest("/api/apps?token=" + token, querystring.stringify(app), 'post');
                 var appJson = JSON.parse(resp);
                 apps[appJson.stub] = appJson;
