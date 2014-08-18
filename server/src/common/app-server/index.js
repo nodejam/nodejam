@@ -9,7 +9,7 @@
     var setupInstanceStats = function() {
         var appInfo = {};
         if (process.env.NODE_ENV === 'development') {
-            var randomizer = require('fora-randomizer');
+            var randomizer = require('../randomizer');
             appInfo.instance = randomizer.uniqueId();
             appInfo.since = Date.now();
         } else {

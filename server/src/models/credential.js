@@ -10,7 +10,7 @@
     var thunkify = require('fora-node-thunkify'),
         ForaDbModel = require('./foramodel').ForaDbModel,
         hasher = require('../common/hasher'),
-        randomizer = require('fora-randomizer'),
+        randomizer = require('../common/randomizer'),
         models = require('./');
 
 

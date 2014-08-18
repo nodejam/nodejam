@@ -2,7 +2,7 @@
     "use strict";
 
     var co = require('co'),
-        logger = require('fora-logger'),
+        logger = require('../../common/logger'),
         fs = require('fs'),
         path = require('path'),
         FileService = require('../../common/file-service'),

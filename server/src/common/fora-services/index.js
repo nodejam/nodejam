@@ -3,7 +3,7 @@
     var services = {
 
     };
-    var typeHelpers = require('fora-type-helpers');
+    var typeHelpers = require('../type-helpers');
 
     var add = function(name, obj) {
         services[name] = obj;

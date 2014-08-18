@@ -7,7 +7,7 @@
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
     var models = require('./'),
-        typeHelpers = require('fora-type-helpers'),
+        typeHelpers = require('../common/type-helpers'),
         UserBase = require('./user-base').UserBase;
 
     var conf = require('../config');

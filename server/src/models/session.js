@@ -8,7 +8,7 @@
 
     var ForaDbModel = require('./foramodel').ForaDbModel,
         models = require('./'),
-        randomizer = require('fora-randomizer');
+        randomizer = require('../common/randomizer');
 
     /*
         A session token starts life as a credential token.

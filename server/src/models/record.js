@@ -8,8 +8,8 @@
 
     var RecordBase = require('./record-base').RecordBase,
         models = require('./'),
-        randomizer = require('fora-randomizer'),
-        typeHelpers = require('fora-type-helpers');
+        randomizer = require('../common/randomizer'),
+        typeHelpers = require('../common/type-helpers');
 
     //ctor
     var Record = function() {

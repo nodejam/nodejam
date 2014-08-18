@@ -5,7 +5,7 @@
 
     var models = require('../../models'),
         services = require('../../common/fora-services'),
-        typeHelpers = require('fora-type-helpers'),
+        typeHelpers = require('../../common/type-helpers'),
         conf = require('../../config');
 
     var typesService = services.get('types'),

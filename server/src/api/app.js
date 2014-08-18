@@ -4,7 +4,7 @@
     var _;
 
     var co = require('co');
-    var logger = require('fora-logger');
+    var logger = require('../common/logger');
     var server = require('../common/app-server');
 
     var host = process.argv[2];

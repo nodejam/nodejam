@@ -8,7 +8,7 @@
 
     var models = require('./'),
         AppBase = require('./app-base').AppBase,
-        typeHelpers = require('fora-type-helpers');
+        typeHelpers = require('../common/type-helpers');
 
     var conf = require('../config');
 
