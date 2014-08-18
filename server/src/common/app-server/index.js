@@ -30,7 +30,7 @@
         var baseConfig = require("../../config");
         var models = require("../../models");
 
-        var services = require('fora-services');
+        var services = require('../fora-services');
 
         //Database Service
         var odm = require('fora-models');
@@ -67,7 +67,7 @@
         var koa = require('koa');
         var app = koa();
 
-        var errorHandler = require('fora-error-handler');
+        var errorHandler = require('../error-handler');
         app.use(errorHandler);
 
         _ = yield* container.init();

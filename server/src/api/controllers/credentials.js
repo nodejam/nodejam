@@ -4,7 +4,7 @@
     var _;
 
     var models = require('../../models'),
-        services = require('fora-services'),
+        services = require('../../common/fora-services'),
         typeHelpers = require('fora-type-helpers'),
         conf = require('../../config');
 

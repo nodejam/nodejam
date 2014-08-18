@@ -9,7 +9,7 @@
 
     var thunkify = require('fora-node-thunkify'),
         ForaDbModel = require('./foramodel').ForaDbModel,
-        hasher = require('fora-hasher'),
+        hasher = require('../common/hasher'),
         randomizer = require('fora-randomizer'),
         models = require('./');
 

@@ -10,7 +10,7 @@
     };
 
     var configureRouter = function() {
-        var services = require('fora-services'),
+        var services = require('../../common/fora-services'),
             extensions = services.get('extensions'),
             conf = require('../../config');
 
