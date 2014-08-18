@@ -25,6 +25,7 @@ server/src/config/*
 #Ignore directories which are already on npm.
 #Sometimes we check them out here to test.
 server/src/lib/fora-models
+server/src/lib/fora-request-parser
 
 www-client/system/*
 !www-client/system/placeholder

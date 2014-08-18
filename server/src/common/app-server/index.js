@@ -73,7 +73,7 @@
         _ = yield* container.init();
 
         var router = yield* container.getRouter();
-        app.use(router.start());
+        app.use(router.route());
 
         /* GO! */
         app.listen(config.port);

@@ -54,8 +54,8 @@
 
                         //Add to by-extension-name directory
                         if (!extensionsByName[extensionName])
-                            extensionsByType[extensionName] = {};
-                        extensionsByType[extensionName][moduleName] = extModule;
+                            extensionsByName[extensionName] = {};
+                        extensionsByName[extensionName][moduleName] = extModule;
 
                         //Add to by-type directory
                         if (!extensionsByType[extensionType])
@@ -74,8 +74,27 @@
     };
 
 
+
     ExtensionsService.prototype.get = function*(name) {
         var extension = moduleCache[name];
+        if (extension)
+            return extension;
+        else
+            throw new Error("Extension " + name + " was not found");
+    };
+
+
+    ExtensionsService.prototype.getByName = function*(name) {
+        var extension = extensionsByName[name];
+        if (extension)
+            return extension;
+        else
+            throw new Error("Extension " + name + " was not found");
+    };
+
+
+    ExtensionsService.prototype.getByType = function*(name) {
+        var extension = extensionsByType[name];
         if (extension)
             return extension;
         else
