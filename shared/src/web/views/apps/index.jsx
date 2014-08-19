@@ -5,7 +5,7 @@
     var React = require('react'),
         ForaUI = require('fora-ui'),
         ExtensionLoader = require('fora-extensions').Loader,
-        Models = require('../../../models');
+        Models = require('fora-app-models');
 
     var Page = ForaUI.Page,
         Content = ForaUI.Content;

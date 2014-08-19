@@ -10,7 +10,7 @@
         querystring = require('querystring'),
         co = require('co'),
         thunkify = require('fora-node-thunkify'),
-        logger = require('../../common/logger'),
+        logger = require('fora-app-logger'),
         data = require('./data'),
         conf = require('../../config');
 

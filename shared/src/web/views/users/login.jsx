@@ -4,15 +4,15 @@
 
     var React = require('react'),
         ForaUI = require('fora-ui'),
-        Models = require('../../../models');
+        Models = require('fora-app-models');
 
     var Page = ForaUI.Page,
         Content = ForaUI.Content;
 
     module.exports = React.createClass({
-        render: function() {        
+        render: function() {
             self = this;
-            
+
             if (!self.props.users.length)
                 createMessage = "Create an identity";
             else
@@ -27,7 +27,7 @@
                                 if (self.props.users)
                                     return (
                                         <section>
-                                            <h2>Sign in as</h2>                                        
+                                            <h2>Sign in as</h2>
                                             {function() {
                                                 if (self.props.users.length === 1) {
                                                     return (
@@ -41,11 +41,11 @@
                                                                     <p>{self.props.users[0].about}</p>
                                                                 </div>
                                                             </li>
-                                                        </ul> 
+                                                        </ul>
                                                     );
                                                 } else {
                                                     return (
-                                                        <ul className="selectable concise-icon-block float-layout cells">                                                
+                                                        <ul className="selectable concise-icon-block float-layout cells">
                                                         {function() {
                                                             return self.props.users.map(function(user) {
                                                                 return (
@@ -57,20 +57,20 @@
                                                                             <h4>{user.username}</h4>
                                                                             <p className="subtext">{user.name}</p>
                                                                         </div>
-                                                                    </li> 
+                                                                    </li>
                                                                 );
                                                             });
-                                                        }()}                                                
-                                                        </ul> 
+                                                        }()}
+                                                        </ul>
                                                     );
-                                                }                                                    
+                                                }
                                             }()}
-                                        </section> 
+                                        </section>
                                     );
                             }()}
-     
+
                             <section>
-                                <h2>{createMessage}</h2>            
+                                <h2>{createMessage}</h2>
                                 <div className="icon-block content" id="create-user-form" >
                                     <div className="icon picture" data-src="/public/images/0/user.jpg" data-small="/public/images/0/user_t.jpg">
                                         <img className="seal upsize" src="/images/user-default.png" /><br />
@@ -89,12 +89,12 @@
                                             <button className="create">Create <i className="fa fa-caret-right"></i></button>
                                         </p>
                                     </div>
-                                </div>                           
+                                </div>
                             </section>
-                            
-                        </div>                
+
+                        </div>
                     </Content>
-                </Page> 
+                </Page>
             );
         }
     });

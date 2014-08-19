@@ -10,7 +10,7 @@
     };
 
     var configureRouter = function() {
-        var services = require('../../common/fora-services'),
+        var services = require('fora-app-services'),
             conf = require('../../config');
 
         var credentials = require('./credentials'),
@@ -18,12 +18,13 @@
             apps = require("./apps"),
             images = require("./images");
 
-        var Sandbox = require('fora-app-sandbox');
-
-        var models = require('../../models');
+        var models = require('fora-app-models');
 
         var Router = require("fora-router");
         var router = new Router("/api");
+
+        var Sandbox = require('fora-app-sandbox');
+        var sandbox = new Sandbox(services);
 
 
         //healthcheck
@@ -65,8 +66,7 @@
             var parts = this.req.url.split('/');
             this.req.url = "/" + parts.slice(3).join("/");
             var app = routingContext.app ? routingContext.app : yield* models.App.findOne({ stub: parts[2] }, services.context());
-            var sandbox = new Sandbox(app, services);
-            _ = yield* sandbox.executeRequest(this);
+            _ = yield* sandbox.executeRequest(this, app);
         });
 
         return router;

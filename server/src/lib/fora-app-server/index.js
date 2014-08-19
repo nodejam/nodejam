@@ -9,7 +9,7 @@
     var setupInstanceStats = function() {
         var appInfo = {};
         if (process.env.NODE_ENV === 'development') {
-            var randomizer = require('../randomizer');
+            var randomizer = require('fora-app-randomizer');
             appInfo.instance = randomizer.uniqueId();
             appInfo.since = Date.now();
         } else {
@@ -20,17 +20,20 @@
     };
 
 
-    module.exports = function*(container, config) {
+    module.exports = function*(container, config, baseConfig) {
         /*
             Services
+            0) Configuration
             1) Database Service
             2) Extensions Service
             3) Types Service
         */
-        var baseConfig = require("../../config");
-        var models = require("../../models");
+        var models = require("fora-app-models");
 
-        var services = require('../fora-services');
+        var services = require('fora-app-services');
+
+        //Configuration
+        services.add("config", baseConfig);
 
         //Database Service
         var odm = require('fora-models');
@@ -67,7 +70,7 @@
         var koa = require('koa');
         var app = koa();
 
-        var errorHandler = require('../error-handler');
+        var errorHandler = require('fora-app-error-handler');
         app.use(errorHandler);
 
         _ = yield* container.init();

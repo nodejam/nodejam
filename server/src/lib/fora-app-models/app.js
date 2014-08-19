@@ -8,9 +8,9 @@
 
     var models = require('./'),
         AppBase = require('./app-base').AppBase,
-        typeHelpers = require('../common/type-helpers');
+        typeHelpers = require('fora-app-type-helpers');
 
-    var conf = require('../config');
+    var services = require('fora-app-services');
 
     //ctor
     var App = function() {
@@ -24,6 +24,8 @@
 
 
     App.prototype.save = function*(context) {
+        var conf = services.get('config');
+
         //if stub is a reserved name, change it
         if (!this.stub)
             throw new Error("Missing stub");
