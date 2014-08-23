@@ -123,7 +123,7 @@
             }
 
             for (_i = 0; _i < data.records.length; _i++) {
-                article = data.records[_i];
+                var article = data.records[_i];
                 token = _globals.sessions[article._createdBy].token;
                 adminkey = _globals.sessions.jeswin.token;
 
@@ -134,7 +134,7 @@
                 article.content_format = 'markdown';
                 article.state = 'published';
                 app = article._app;
-                meta = article._meta;
+                var meta = article._meta;
 
                 delete article._app;
                 delete article._createdBy;

@@ -69,7 +69,7 @@
     };
 
 
-    App.prototype.join = function*(user, token, context) {
+    App.prototype.join = function*(user, context) {
         if (this.access === 'public') {
             return yield* this.addRole(user, 'member', context);
         } else {
