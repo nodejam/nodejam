@@ -1,8 +1,7 @@
 (function() {
 
-    var services = {
+    var services = {};
 
-    };
     var typeHelpers = require('fora-app-type-helpers');
 
     var add = function(name, obj) {

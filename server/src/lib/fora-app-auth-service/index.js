@@ -17,10 +17,12 @@
             }
 
             return function*() {
-                var token = this.query.token || this.cookies.get('token');
+                if (!this.session) {
+                    var token = this.query.token || this.cookies.get('token');
 
-                if (token)
-                    this.session = yield* models.Session.findOne({ token: token }, { db: db });
+                    if (token)
+                        this.session = yield* models.Session.findOne({ token: token }, { db: db });
+                }
 
                 switch (options.session) {
                     case "admin":

@@ -26,6 +26,10 @@
         var Sandbox = require('fora-app-sandbox');
         var sandbox = new Sandbox(services);
 
+        var typesService = services.get('types'),
+            db = services.get('db');
+
+        var context = { typesService: typesService, db: db };
 
         //healthcheck
         router.get("/healthcheck", function*() {
@@ -37,11 +41,11 @@
         //Rewrite: example.com/url -> /apps/example/url
         //If the request is for a different domain, it must be an app.
         router.when(function() {
-            return this.req.hostname && (conf.domains.indexOf(this.req.hostname) === -1);
+            return this.request.hostname && (conf.domains.indexOf(this.request.hostname) === -1);
         }, function*(routingContext) {
-            var app = yield* models.App.findOne({ domains: this.req.hostname }, services.context());
+            var app = yield* models.App.findOne({ domains: this.request.hostname }, context);
             routingContext.app = app; //Cache this to avoid db lookup later.
-            this.req.url = "/apps" + app.stub + this.req.url;
+            routingContext.url = "/apps" + app.stub + this.request.url;
             return true; //continue matching.
         });
 
@@ -60,13 +64,13 @@
 
         //Run the app in a sandbox.
         //Also rewrite the url: /apps/:appname/some/path -> /some/path
-        router.when(function() {
-            return /^\/apps\//.test(this.req.url);
+        router.when(function(routingContext) {
+            return /^\/apps\//.test(routingContext.url || this.request.url);
         }, function*(routingContext) {
-            var parts = this.req.url.split('/');
-            this.req.url = "/" + parts.slice(3).join("/");
-            var app = routingContext.app ? routingContext.app : yield* models.App.findOne({ stub: parts[2] }, services.context());
-            _ = yield* sandbox.executeRequest(this, app);
+            var parts = (routingContext.url || this.request.url).split('/');
+            routingContext.url = "/" + parts.slice(3).join("/");
+            routingContext.app = routingContext.app || (yield* models.App.findOne({ stub: parts[2].split("?")[0] }, context));
+            _ = yield* sandbox.executeRequest(this, routingContext);
         });
 
         return router;
