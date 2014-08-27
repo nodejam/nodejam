@@ -9,44 +9,21 @@
 
     var Sandbox = function(services) {
         this.services = services;
-        this.extensionsService = services.get('extensions');
+        this.extensionsService = services.get('extensionsService');
     };
 
 
-    Sandbox.prototype.sanitizeContext = function(requestContext, routingContext) {
-        var sanitized = {
-            request: {},
-            query: {}
-        };
+    Sandbox.prototype.executeRequest = function*(requestContext) {
+        var appExtension = yield* this.extensionsService.getExtensionByName(
+            "app",
+            requestContext.routingContext.app.type,
+            requestContext.routingContext.app.version
+        );
 
-        sanitized.request.method = requestContext.request.method;
-
-        var urlParts = routingContext.url.split("/");
-        var lastUrlPart = urlParts[urlParts.length - 1];
-        if (lastUrlPart.indexOf('?') > -1) {
-            var queryParams = lastUrlPart.split("?")[1];
-            var queryParts = queryParams.split("&").filter(function(p) { return p.split("=")[0] !== "token"; });
-            urlParts[urlParts.length - 1] = lastUrlPart.split("?")[0] + "?" + queryParts.join("&");
-            sanitized.request.url = urlParts.join("/");
-            queryParts.forEach(function(p) {
-                var pParts = p.split("=");
-                sanitized.query[pParts[0]] = pParts.length > 1 ? pParts[1] : undefined;
-            });
-        }
-
-        return sanitized;
-    };
-
-
-    Sandbox.prototype.executeRequest = function*(requestContext, routingContext) {
-        var app = routingContext.app;
-        requestContext = this.sanitizeContext(requestContext, routingContext);
-        var appExtension = yield* this.extensionsService.getExtensionByName("app", app.type, app.version);
-
-        //We can't pass appExtension to Untrusted contexts, since it will execute outside this process boundary.
+        //We can't pass appExtension to Untrusted sandboxen, since it will execute outside this process boundary.
         //For example, inside another process, or even a machine.
-        var sandbox = appExtension ? new TrustedSandbox(appExtension, app) : new UntrustedSandbox(null, app);
-        return yield* sandbox.executeRequest(requestContext, app);
+        var sandbox = appExtension ? new TrustedSandbox(appExtension, requestContext.app) : new UntrustedSandbox(null, requestContext.app);
+        return yield* sandbox.executeRequest(requestContext);
     };
 
 

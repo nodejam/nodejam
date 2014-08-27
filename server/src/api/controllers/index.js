@@ -41,11 +41,9 @@
         //Rewrite: example.com/url -> /apps/example/url
         //If the request is for a different domain, it must be an app.
         router.when(function() {
-            return this.request.hostname && (conf.domains.indexOf(this.request.hostname) === -1);
-        }, function*(routingContext) {
-            var app = yield* models.App.findOne({ domains: this.request.hostname }, context);
-            routingContext.app = app; //Cache this to avoid db lookup later.
-            routingContext.url = "/apps" + app.stub + this.request.url;
+            return this.hostname && (conf.domains.indexOf(this.hostname) === -1);
+        }, function*() {
+            this.routingContext.app = yield* models.App.findOne({ domains: this.hostname }, context);
             return true; //continue matching.
         });
 
@@ -63,14 +61,21 @@
         router.post("/images", images.upload);
 
         //Run the app in a sandbox.
-        //Also rewrite the url: /apps/:appname/some/path -> /some/path
-        router.when(function(routingContext) {
-            return /^\/apps\//.test(routingContext.url || this.request.url);
-        }, function*(routingContext) {
-            var parts = (routingContext.url || this.request.url).split('/');
-            routingContext.url = "/" + parts.slice(3).join("/");
-            routingContext.app = routingContext.app || (yield* models.App.findOne({ stub: parts[2].split("?")[0] }, context));
-            _ = yield* sandbox.executeRequest(this, routingContext);
+        //Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
+        router.when(function() {
+            return /^\/apps\//.test(this.url);
+        }, function*() {
+            if (!this.routingContext.app) {
+                this.routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[2] }, context);
+                var urlParts = this.url.split("/");
+                this.url = this.url.replace(/^\/apps\/[a-z0-9\-]*\/?/,"/");
+            }
+
+            var token = this.query.token || this.cookies.get('token');
+            if (token)
+                this.session = yield* models.Session.findOne({ token: token }, { db: db });
+
+            return yield* sandbox.executeRequest(this);
         });
 
         return router;

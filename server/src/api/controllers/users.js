@@ -9,16 +9,12 @@
         FileService = require('fora-app-file-service'),
         conf = require('../../config');
 
-    var typesService = services.get('types'),
-        db = services.get('db');
-
-    var Parser = require('fora-request-parser')(typesService);
-    var context = { typesService: typesService, db: db };
-
+    var Parser = require('fora-request-parser');
     var fileService = new FileService(conf);
 
     var create = function*() {
-        var parser = new Parser(this);
+        var parser = new Parser(this, services.get('typesService'));
+        
         var user = new models.User({
             username: yield* parser.body('username'),
             credentialId: this.session.credentialId,
@@ -29,7 +25,7 @@
             lastLogin: Date.now()
         });
 
-        user = yield* user.save(context);
+        user = yield* user.save(services());
 
         //Move images to assets
         var picture = {
@@ -49,13 +45,13 @@
         _ = yield* copy(picture.src, user.username + ".jpg");
         _ = yield* copy(picture.small, user.username + "_t.jpg");
 
-        this.body = user.summarize(context);
+        this.body = user.summarize(services());
     };
 
 
     var login = function*() {
-        var parser = new Parser(this);
-        var session = yield* this.session.upgrade(yield* parser.body('username'), context);
+        var parser = new Parser(this, services.get('typesService'));
+        var session = yield* this.session.upgrade(yield* parser.body('username'), services());
 
         var user = session.user;
         user.token = session.token;
@@ -70,13 +66,13 @@
 
 
     var item = function*(username) {
-        var user = yield* models.User.findOne({ username: username }, context);
+        var user = yield* models.User.findOne({ username: username }, services());
         if (user)
-            this.body = user.summarize({}, db);
+            this.body = user.summarize({}, services.get('db'));
     };
 
 
-    var auth = require('fora-app-auth-service')(conf, db);
+    var auth = require('fora-app-auth-service')(conf, services.get('db'));
     module.exports = {
         create: auth({ session: 'credential' }, create),
         login: auth({ session: 'credential' }, login),

@@ -10,10 +10,10 @@
     };
 
 
-    TrustedSandbox.prototype.executeRequest = function*(context, app) {
+    TrustedSandbox.prototype.executeRequest = function*(requestContext) {
         var router = yield* this.appExtension.api.getRouter();
-        context.app = this.app;
-        _ = yield* router.route().call(context);
+        var routeFunc = router.route();
+        return yield* routeFunc.call(requestContext);
     };
 
 

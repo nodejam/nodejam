@@ -26,7 +26,7 @@
         if (!context.db.getRowId(this)) {
             var existing = yield* User.findOne({ username: this.username }, context);
             if (!existing) {
-                var conf = services.get('config');
+                var conf = services.get('configuration');
                 this.assets = (typeHelpers.getHashCode(this.username) % conf.services.file.userDirCount).toString();
                 this.lastLogin = 0;
                 this.followingCount = 0;

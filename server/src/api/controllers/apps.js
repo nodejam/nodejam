@@ -8,16 +8,12 @@
         typeHelpers = require('fora-app-type-helpers'),
         conf = require('../../config');
 
-    var typesService = services.get('types'),
-        db = services.get('db');
-
-    var Parser = require('fora-request-parser')(typesService);
-    var context = { typesService: typesService, db: db };
+    var Parser = require('fora-request-parser');
 
 
     var create = function*() {
-        var parser = new Parser(this);
-
+        var parser = new Parser(this, services.get('typesService'));
+        
         var stub = (yield* parser.body('name')).toLowerCase().trim();
         if (conf.reservedNames.indexOf(stub) > -1)
             stub = stub + "-app";
@@ -25,7 +21,7 @@
 
         var app = yield* models.App.findOne({
                 $or: [{ stub: stub }, { name: yield* parser.body('name') }]
-            }, typeHelpers.extend({ user: this.session.user }, context)
+            }, typeHelpers.extend({ user: this.session.user }, services())
         );
 
         if (!app) {
@@ -38,7 +34,7 @@
                 stub: stub,
                 createdById: this.session.user.id,
                 createdBy: this.session.user,
-            }, typesService);
+            }, services.get('types'));
 
             var versionParts = app.version.split('.');
             app.versionMajor = parseInt(versionParts[0]);
@@ -46,8 +42,8 @@
             app.versionRevision = parseInt(versionParts[2]);
 
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            app = yield* app.save(context);
-            _ = yield* app.addRole(this.session.user, 'admin', context);
+            app = yield* app.save(services());
+            _ = yield* app.addRole(this.session.user, 'admin', services());
 
             this.body = app;
 
@@ -59,12 +55,13 @@
 
 
     var edit = function*(app) {
-        var parser = new Parser(this);
-        app = yield* models.App.findOne({ stub: app }, context);
+        var parser = new Parser(this, services.get('typesService'));
+
+        app = yield* models.App.findOne({ stub: app }, services());
 
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            app = yield* app.save(context);
+            app = yield* app.save(services());
             this.body = app;
         } else {
             throw new Error("Access denied");
@@ -72,7 +69,7 @@
     };
 
 
-    var auth = require('fora-app-auth-service')(conf, db);
+    var auth = require('fora-app-auth-service')(conf, services.get('db'));
     module.exports = {
         create: auth({ session: 'user' }, create),
         edit: auth({ session: 'user' }, edit)

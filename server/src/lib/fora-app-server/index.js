@@ -33,7 +33,7 @@
         var services = require('fora-app-services');
 
         //Configuration
-        services.add("config", baseConfig);
+        services.add("configuration", baseConfig);
 
         //Database Service
         var odm = require('fora-models');
@@ -44,7 +44,7 @@
         var ExtensionsService = require('fora-extensions-service');
         var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions);
         _ = yield* extensionsService.init();
-        services.add("extensions", extensionsService);
+        services.add("extensionsService", extensionsService);
 
         //Types Service
         var TypesService = require('fora-types-service');
@@ -54,7 +54,7 @@
             Object.keys(models).map(function(k) { return models[k]; }),
             virtualTypeDefinitions
         );
-        services.add("types", typesService);
+        services.add("typesService", typesService);
 
         /*
             Setup information useful for monitoring and debugging

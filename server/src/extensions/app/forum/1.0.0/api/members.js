@@ -10,9 +10,8 @@
 
     var context = { typesService: typesService, db: db };
 
-
     var join = function*() {
-        var app = this.app;
+        var app = this.routingContext.app;
         _ = yield* app.join(this.session.user, context);
         this.body = { success: true };
     };

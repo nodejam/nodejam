@@ -24,7 +24,7 @@
 
 
     App.prototype.save = function*(context) {
-        var conf = services.get('config');
+        var conf = services.get('configuration');
 
         //if stub is a reserved name, change it
         if (!this.stub)
@@ -44,7 +44,6 @@
     App.prototype.summarize = function(context) {
         return new models.AppSummary({
             id: context.db.getRowId(this),
-            network: this.network,
             name: this.name,
             stub: this.stub,
             createdBy: this.createdBy
@@ -57,7 +56,6 @@
             case 'card':
                 return {
                 id: context.db.getRowId(this),
-                network: this.network,
                 name: this.name,
                 description: this.description,
                 stub: this.stub,

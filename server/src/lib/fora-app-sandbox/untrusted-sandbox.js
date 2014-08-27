@@ -12,7 +12,6 @@
 
     UntrustedSandbox.prototype.executeRequest = function*(context, app) {
         var router = yield* this.appExtension.api.getRouter();
-        context.app = this.app;
         _ = yield* router.route().call(context);
     };
 

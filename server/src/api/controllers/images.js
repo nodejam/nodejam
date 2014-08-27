@@ -8,11 +8,7 @@
         typeHelpers = require('fora-app-type-helpers'),
         conf = require('../../config');
 
-    var typesService = services.get('types'),
-        db = services.get('db');
-
-    var Parser = require('fora-request-parser')(typesService);
-    var context = { typesService: typesService, db: db };
+    var Parser = require('fora-request-parser');
 
 
     var resizeImage = function*(src, dest, options) {
@@ -68,7 +64,9 @@
             throw new Error("Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}");
         }
 
-        var parser = new Parser(this);
+        var typesService = services.get('types');
+        var parser = new Parser(this, typesService);
+
         var files = yield* parser.files();
 
         var file, timestamp, extension, filename;
@@ -109,7 +107,7 @@
         }
     };
 
-    var auth = require('fora-app-auth-service')(conf, db);
+    var auth = require('fora-app-auth-service')(conf, services.get('db'));
     module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();

@@ -8,15 +8,11 @@
         typeHelpers = require('fora-app-type-helpers'),
         conf = require('../../config');
 
-    var typesService = services.get('types'),
-        db = services.get('db');
-
-    var Parser = require('fora-request-parser')(typesService);
-    var context = { typesService: typesService, db: db };
+    var Parser = require('fora-request-parser');
 
 
     var create = function*() {
-        var parser = new Parser(this);
+        var parser = new Parser(this, services.get('typesService'));
         if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
             var type = yield* parser.body('type');
 
@@ -30,18 +26,18 @@
                 case 'builtin':
                     username = yield* parser.body('username');
                     var password = yield* parser.body('password');
-                    credential = yield* credential.addBuiltin(username, password, context);
+                    credential = yield* credential.addBuiltin(username, password, services());
                     break;
                 case 'twitter':
                     var id = yield* parser.body('id');
                     username = yield* parser.body('username');
                     var accessToken = yield* parser.body('accessToken');
                     var accessTokenSecret = yield* parser.body('accessTokenSecret');
-                    credential = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret, context);
+                    credential = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret, services());
                     break;
             }
 
-            var session = yield* credential.createSession(context);
+            var session = yield* credential.createSession(services());
             this.body = { token: session.token };
         }
     };

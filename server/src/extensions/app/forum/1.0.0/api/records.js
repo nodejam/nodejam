@@ -5,18 +5,12 @@
     var models = require('fora-app-models'),
         services = require('fora-app-services');
 
-    var typesService = services.get('types'),
-        conf = services.get('config'),
-        db = services.get('db');
+    var Parser = require('fora-request-parser');
 
-    var Parser = require('fora-request-parser')(typesService);
-
-    var context = { typesService: typesService, db: db };
-
-
-    var create = function*(appStub) {
-        var parser = new Parser(this);
-        var app = this.app;
+    var create = function*() {
+        var typesService = services.get('typesService');
+        var parser = new Parser(this, typesService);
+        var app = this.routingContext.app;
 
         var record = yield* models.Record.create({
             type: yield* parser.body('type'),
@@ -25,17 +19,19 @@
             state: yield* parser.body('state'),
             rating: 0,
             savedAt: Date.now()
-        });
+        }, typesService);
 
-        _ = yield* parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition()));
+        _ = yield* parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition(typesService)));
         record = yield* app.addRecord(record);
         this.body = record;
     };
 
 
-    var edit = function*(appStub, recordStub) {
-        var parser = new Parser(this);
-        var app = this.app;
+    var edit = function*() {
+        var typesService = services.get('typesService');
+        var parser = new Parser(this, typesService);
+        var app = this.routingContext.app;
+
         var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, { user: this.session.user }, db);
 
         if (record) {
@@ -56,8 +52,11 @@
     };
 
 
-    var remove = function*(appStub, recordStub) {
-        var app = yield* models.App.get({ stub: appStub, network: this.network.stub }, { user: this.session.user }, db);
+    var remove = function*() {
+        var typesService = services.get('typesService');
+        var parser = new Parser(this, typesService);
+        var app = this.routingContext.app;
+
         var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, { user: this.session.user }, db);
 
         if (record) {
@@ -74,7 +73,7 @@
 
 
     var admin_update = function*(appStub, recordStub) {
-        var app = yield* models.App.get({ stub: appStub, network: this.network.stub }, { user: this.session.user }, db);
+        var app = yield* models.App.get({ stub: appStub }, { user: this.session.user }, db);
         var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, { user: this.session.user }, db);
 
         if (record) {
@@ -91,7 +90,7 @@
     };
 
 
-    var auth = require('fora-app-auth-service')(conf, db);
+    var auth = require('fora-app-auth-service')(services.get('configuration'), services.get('db'));
     module.exports = {
         create: auth({ session: 'user' }, create),
         edit: auth({ session: 'user' }, edit),
