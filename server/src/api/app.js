@@ -19,7 +19,10 @@
     var config = {
         services: {
             extensions: {
-                types: ["app"]
+                modules: [
+                    { kind: "app", modules: ["api"] },
+                    { kind: "record", modules: ["model"] }
+                ]
             }
         },
 

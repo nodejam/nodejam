@@ -14,15 +14,15 @@
 
 
     Sandbox.prototype.executeRequest = function*(requestContext) {
-        var appExtension = yield* this.extensionsService.getExtensionByName(
+        var extension = yield* this.extensionsService.getExtensionByName(
             "app",
             requestContext.routingContext.app.type,
             requestContext.routingContext.app.version
         );
 
-        //We can't pass appExtension to Untrusted sandboxen, since it will execute outside this process boundary.
+        //We can't pass extension to Untrusted sandboxen, since it will execute outside this process boundary.
         //For example, inside another process, or even a machine.
-        var sandbox = appExtension ? new TrustedSandbox(appExtension, requestContext.app) : new UntrustedSandbox(null, requestContext.app);
+        var sandbox = extension ? new TrustedSandbox(extension, requestContext.app) : new UntrustedSandbox(null, requestContext.app);
         return yield* sandbox.executeRequest(requestContext);
     };
 

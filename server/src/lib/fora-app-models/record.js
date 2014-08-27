@@ -27,7 +27,7 @@
     Record.typeDefinition = (function() {
         var originalDef = typeHelpers.clone(RecordBase.typeDefinition);
         originalDef.discriminator = function*(obj, typesService) {
-            var def = yield* typesService.getTypeDefinition(obj.type);
+            var def = yield* typesService.getTypeDefinition(obj.type + "/" + obj.version);
             if (def.ctor !== App)
                 throw new Error("App type definitions must have ctor set to App");
             return def;

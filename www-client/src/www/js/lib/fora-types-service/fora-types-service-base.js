@@ -17,17 +17,12 @@
 
     ForaTypesServiceBase.prototype.init = function*(ctors, virtualTypeDefinitions) {
         if (!initted) {
-            yield* this.buildTypeCache(ctors, virtualTypeDefinitions);
+            _ = yield* this.buildTypeCache(ctors, virtualTypeDefinitions);
         } else {
             throw new Error("init() was already called");
         }
     };
 
-
-    ForaTypesServiceBase.prototype.resolveDerivedTypeDefinition = function*(name) {
-        //TODO: make sure we dont allow special characters in name, like '..'
-        console.log("Missing " + JSON.stringify(name));
-    };
 
     module.exports = ForaTypesServiceBase;
 

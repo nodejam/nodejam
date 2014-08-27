@@ -14,6 +14,7 @@
 
         var record = yield* models.Record.create({
             type: yield* parser.body('type'),
+            version: yield* parser.body('version'),
             createdById: this.session.user.id,
             createdBy: this.session.user,
             state: yield* parser.body('state'),
@@ -37,7 +38,7 @@
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
                 record.savedAt = Date.now();
-                _ = yield* parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition()));
+                _ = yield* parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition(typesService)));
                 if (yield* parser.body('state') === 'published') {
                     record.state = 'published';
                 }
@@ -72,8 +73,9 @@
     };
 
 
-    var admin_update = function*(appStub, recordStub) {
-        var app = yield* models.App.get({ stub: appStub }, { user: this.session.user }, db);
+    var admin_update = function*(recordStub) {
+        var app = this.routingContext.app;
+
         var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, { user: this.session.user }, db);
 
         if (record) {

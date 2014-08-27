@@ -23,7 +23,6 @@
             properties: {
                 type: { type: 'string' },
                 appId: { type: 'string' },
-                app: { $ref: 'app-summary' },
                 createdById: { type: 'string' },
                 createdBy: { $ref: 'user-summary' },
                 meta: { type: 'array', items: { type: 'string' } },
