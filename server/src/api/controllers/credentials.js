@@ -26,18 +26,18 @@
                 case 'builtin':
                     username = yield* parser.body('username');
                     var password = yield* parser.body('password');
-                    credential = yield* credential.addBuiltin(username, password, services());
+                    credential = yield* credential.addBuiltin(username, password);
                     break;
                 case 'twitter':
                     var id = yield* parser.body('id');
                     username = yield* parser.body('username');
                     var accessToken = yield* parser.body('accessToken');
                     var accessTokenSecret = yield* parser.body('accessTokenSecret');
-                    credential = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret, services());
+                    credential = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
                     break;
             }
 
-            var session = yield* credential.createSession(services());
+            var session = yield* credential.createSession();
             this.body = { token: session.token };
         }
     };

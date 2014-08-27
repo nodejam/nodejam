@@ -68,7 +68,7 @@
     TextContent.prototype = Object.create(ForaModel.prototype);
     TextContent.prototype.constructor = TextContent;
 
-    __extends(Cover, ForaModel);
+    __extends(TextContent, ForaModel);
 
     TextContent.typeDefinition = {
         name: 'text-content',

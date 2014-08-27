@@ -14,7 +14,7 @@
 
     var create = function*() {
         var parser = new Parser(this, services.get('typesService'));
-        
+
         var user = new models.User({
             username: yield* parser.body('username'),
             credentialId: this.session.credentialId,
@@ -25,7 +25,7 @@
             lastLogin: Date.now()
         });
 
-        user = yield* user.save(services());
+        user = yield* user.save();
 
         //Move images to assets
         var picture = {
@@ -45,13 +45,13 @@
         _ = yield* copy(picture.src, user.username + ".jpg");
         _ = yield* copy(picture.small, user.username + "_t.jpg");
 
-        this.body = user.summarize(services());
+        this.body = user.summarize();
     };
 
 
     var login = function*() {
         var parser = new Parser(this, services.get('typesService'));
-        var session = yield* this.session.upgrade(yield* parser.body('username'), services());
+        var session = yield* this.session.upgrade(yield* parser.body('username'));
 
         var user = session.user;
         user.token = session.token;
@@ -66,13 +66,13 @@
 
 
     var item = function*(username) {
-        var user = yield* models.User.findOne({ username: username }, services());
+        var user = yield* models.User.findOne({ username: username }, services.copy());
         if (user)
             this.body = user.summarize({}, services.get('db'));
     };
 
 
-    var auth = require('fora-app-auth-service')(conf, services.get('db'));
+    var auth = require('fora-app-auth-service')(conf, services.get('typesService'), services.get('db'));
     module.exports = {
         create: auth({ session: 'credential' }, create),
         login: auth({ session: 'credential' }, login),

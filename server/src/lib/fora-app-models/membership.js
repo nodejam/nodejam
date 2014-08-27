@@ -28,10 +28,9 @@
                 userId: { type: 'string' },
                 user: { $ref: 'user-summary'},
                 appId: { type: 'string' },
-                app: { $ref: 'app-summary' },
                 roles: { type: 'array', items: { type: 'string' } },
             },
-            required: ['userId', 'user', 'appId', 'app', 'roles'],
+            required: ['userId', 'user', 'appId', 'roles'],
         },
         links: {
             user: { type: 'user', key: 'userId' },

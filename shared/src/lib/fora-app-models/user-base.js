@@ -4,6 +4,7 @@
     var __hasProp = {}.hasOwnProperty,
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
+    var services = require('fora-app-services');
     var ForaModel = require('./foramodel').ForaModel;
     var ForaDbModel = require('./foramodel').ForaDbModel;
 
@@ -88,9 +89,9 @@
         return "/public/assets/" + this.assets;
     };
 
-    UserBase.prototype.summarize = function(context) {
+    UserBase.prototype.summarize = function() {
         return new UserSummary({
-            id: context.db.getRowId(this),
+            id: services.get('db').getRowId(this),
             username: this.username,
             name: this.name,
             assets: this.assets

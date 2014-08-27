@@ -23,7 +23,7 @@
     __extends(App, AppBase);
 
 
-    App.prototype.save = function*(context) {
+    App.prototype.save = function*() {
         var conf = services.get('configuration');
 
         //if stub is a reserved name, change it
@@ -37,11 +37,12 @@
         if (!regex.test(this.stub))
             throw new Error("Stub is invalid");
 
-        return yield* AppBase.prototype.save.call(this, context);
+        return yield* AppBase.prototype.save.call(this);
     };
 
 
-    App.prototype.summarize = function(context) {
+    App.prototype.summarize = function() {
+        var context = services.copy();
         return new models.AppSummary({
             id: context.db.getRowId(this),
             name: this.name,
@@ -51,7 +52,8 @@
     };
 
 
-    App.prototype.getView = function*(name, context) {
+    App.prototype.getView = function*(name) {
+        var context = services.copy();
         switch (name) {
             case 'card':
                 return {
@@ -67,39 +69,40 @@
     };
 
 
-    App.prototype.join = function*(user, context) {
+    App.prototype.join = function*(user) {
         if (this.access === 'public') {
-            return yield* this.addRole(user, 'member', context);
+            return yield* this.addRole(user, 'member', services.copy());
         } else {
             throw new Error("Access denied");
         }
     };
 
 
-    App.prototype.addRecord = function*(record, context) {
-        record.appId = context.db.getRowId(this);
-        record.app = this.summarize(context);
-        return yield* record.save(context);
+    App.prototype.addRecord = function*(record) {
+        record.appId = services.get('db').getRowId(this);
+        return yield* record.save();
     };
 
 
-    App.prototype.getRecord = function*(stub, context) {
+    App.prototype.getRecord = function*(stub) {
+        var context = services.copy();
         return yield* models.Record.find({ 'appId': context.db.getRowId(this), stub: stub }, context);
     };
 
 
-    App.prototype.getRecords = function*(limit, sort, context) {
+    App.prototype.getRecords = function*(limit, sort) {
+        var context = services.copy();
         return yield* models.Record.find({ 'appId': context.db.getRowId(this), state: 'published' }, { sort: sort, limit: limit }, context);
     };
 
 
-    App.prototype.addRole = function*(user, role, context) {
+    App.prototype.addRole = function*(user, role) {
+        var context = services.copy();
         var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, context);
 
         if (!membership) {
             membership = new models.Membership({
                 appId: context.db.getRowId(this),
-                app: this.summarize(context),
                 userId: user.id,
                 user: user,
                 roles: [role]
@@ -110,12 +113,13 @@
             }
         }
 
-        return yield* membership.save(context);
+        return yield* membership.save();
     };
 
 
-    App.prototype.removeRole = function*(user, role, context) {
-        var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, context);
+    App.prototype.removeRole = function*(user, role) {
+        var context = services.copy();
+        var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, services.copy());
         membership.roles = membership.roles.filter(function(r) { return r != role; });
         if (membership.roles.length) {
             return yield* membership.save();
@@ -125,12 +129,14 @@
     };
 
 
-    App.prototype.getMembership = function*(username, context) {
-      return yield* models.Membership.findOne({ 'app.id': context.db.getRowId(this), 'user.username': username }, context);
+    App.prototype.getMembership = function*(username) {
+        var context = services.copy();
+        return yield* models.Membership.findOne({ 'app.id': context.db.getRowId(this), 'user.username': username }, context);
     };
 
 
-    App.prototype.getMemberships = function*(roles, context) {
+    App.prototype.getMemberships = function*(roles) {
+        var context = services.copy();
         return yield* models.Membership.find(
             { 'appId': context.db.getRowId(this), roles: { $in: roles } },
             { sort: { id: -1 }, limit: 200},

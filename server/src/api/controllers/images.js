@@ -107,7 +107,7 @@
         }
     };
 
-    var auth = require('fora-app-auth-service')(conf, services.get('db'));
+    var auth = require('fora-app-auth-service')(conf, services.get('typesService'), services.get('db'));
     module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();

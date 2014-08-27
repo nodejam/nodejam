@@ -31,7 +31,7 @@
                 state: { type: 'string', enum: ['draft','published'] },
                 savedAt: { type: 'integer' }
             },
-            required: ['type', 'appId', 'app', 'createdById', 'createdBy', 'meta', 'tags', 'stub', 'state', 'savedAt']
+            required: ['type', 'appId', 'createdById', 'createdBy', 'meta', 'tags', 'stub', 'state', 'savedAt']
         },
         indexes: [
             { 'state': 1, 'app.stub': 1 },

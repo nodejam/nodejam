@@ -9,7 +9,8 @@
     var RecordBase = require('./record-base').RecordBase,
         models = require('./'),
         randomizer = require('fora-app-randomizer'),
-        typeHelpers = require('fora-app-type-helpers');
+        typeHelpers = require('fora-app-type-helpers'),
+        services = require('fora-app-services');
 
     //ctor
     var Record = function() {
@@ -28,8 +29,8 @@
         var originalDef = typeHelpers.clone(RecordBase.typeDefinition);
         originalDef.discriminator = function*(obj, typesService) {
             var def = yield* typesService.getTypeDefinition(obj.type + "/" + obj.version);
-            if (def.ctor !== App)
-                throw new Error("App type definitions must have ctor set to App");
+            if (def.ctor !== Record)
+                throw new Error("Record type definitions must have ctor set to Record");
             return def;
         };
         return originalDef;
@@ -64,12 +65,18 @@
     };
 
 
-    Record.prototype.addMetaList = function*(metaList, context) {
+    Record.prototype.getMappableFields = function*() {
+        var def = yield* this.getTypeDefinition();
+        return def.__ownProperties;
+    };
+
+
+    Record.prototype.addMetaList = function*(metaList) {
         metaList.forEach(function(m) {
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
         });
-        return yield* this.save(context);
+        return yield* this.save(services.copy());
     };
 
 
@@ -81,7 +88,7 @@
     };
 
 
-    Record.prototype.save = function*(context) {
+    Record.prototype.save = function*() {
         //Broken here.. getModel isn't implemented
         var model = yield* extensions.getModel();
         _ = yield* model.save.call(this);
@@ -109,7 +116,7 @@
 
 
 
-    Record.prototype.getCreator = function*(context) {
+    Record.prototype.getCreator = function*() {
         return yield* models.User.findById(this.createdById, context);
     };
 

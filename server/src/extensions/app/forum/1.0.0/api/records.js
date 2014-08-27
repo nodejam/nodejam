@@ -22,7 +22,7 @@
             savedAt: Date.now()
         }, typesService);
 
-        _ = yield* parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition(typesService)));
+        _ = yield* parser.map(record, yield* record.getMappableFields());
         record = yield* app.addRecord(record);
         this.body = record;
     };

@@ -22,7 +22,8 @@
     __extends(User, UserBase);
 
 
-    User.prototype.save = function*(context) {
+    User.prototype.save = function*() {
+        var context = services.copy();
         if (!context.db.getRowId(this)) {
             var existing = yield* User.findOne({ username: this.username }, context);
             if (!existing) {
@@ -31,12 +32,12 @@
                 this.lastLogin = 0;
                 this.followingCount = 0;
                 this.followerCount = 0;
-                return yield* UserBase.prototype.save.apply(this, arguments);
+                return yield* UserBase.prototype.save.call(this, context);
             } else {
                 throw new Error("User(#{@username}) already exists");
             }
         } else {
-            return yield* UserBase.prototype.save.apply(this, arguments);
+            return yield* UserBase.prototype.save.call(this, context);
         }
     };
 

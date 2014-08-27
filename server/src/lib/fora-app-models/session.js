@@ -8,7 +8,8 @@
 
     var ForaDbModel = require('./foramodel').ForaDbModel,
         models = require('./'),
-        randomizer = require('fora-app-randomizer');
+        randomizer = require('fora-app-randomizer'),
+        services = require('fora-app-services');
 
     /*
         A session token starts life as a credential token.
@@ -53,13 +54,13 @@
         Upgrades a credential token to a user token.
         User tokens can be used to login to the app.
     */
-    Session.prototype.upgrade = function*(username, context) {
-        var user = yield* models.User.findOne({ username: username, credentialId: this.credentialId }, context);
+    Session.prototype.upgrade = function*(username) {
+        var user = yield* models.User.findOne({ username: username, credentialId: this.credentialId }, services.copy());
         if (user) {
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();
-            this.user = user.summarize(context);
-            return yield* this.save(context);
+            this.user = user.summarize();
+            return yield* this.save(services.copy());
         } else {
             throw new Error("User not found");
         }

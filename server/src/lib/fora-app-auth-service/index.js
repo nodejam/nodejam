@@ -3,7 +3,7 @@
 
     var models = require("fora-app-models");
 
-    module.exports = function(conf, db) {
+    module.exports = function(conf, typesService, db) {
         return function() {
             var options, fn;
 
@@ -21,7 +21,7 @@
                     var token = this.query.token || this.cookies.get('token');
 
                     if (token)
-                        this.session = yield* models.Session.findOne({ token: token }, { db: db });
+                        this.session = yield* models.Session.findOne({ token: token }, { typesService: typesService, db: db });
                 }
 
                 switch (options.session) {

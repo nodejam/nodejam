@@ -73,7 +73,7 @@
 
             var token = this.query.token || this.cookies.get('token');
             if (token)
-                this.session = yield* models.Session.findOne({ token: token }, { db: db });
+                this.session = yield* models.Session.findOne({ token: token }, { typesService: typesService, db: db });
 
             return yield* sandbox.executeRequest(this);
         });

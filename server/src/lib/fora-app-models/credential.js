@@ -11,7 +11,8 @@
         ForaDbModel = require('./foramodel').ForaDbModel,
         hasher = require('fora-app-hasher'),
         randomizer = require('fora-app-randomizer'),
-        models = require('./');
+        models = require('./'),
+        services = require('fora-app-services');
 
 
     var Credential = function() {
@@ -100,17 +101,17 @@
         Create a credential token.
         This can be used to upgrade to a user token, which is then used for login.
     */
-    Credential.prototype.createSession = function*(context) {
+    Credential.prototype.createSession = function*() {
         var session = new models.Session({
-            credentialId: context.db.getRowId(this),
+            credentialId: services.get('db').getRowId(this),
             token: randomizer.uniqueId(24)
         });
-        return yield* session.save(context);
+        return yield* session.save();
     };
 
 
-    Credential.prototype.addBuiltin = function*(username, password, context) {
-        var existing = yield* Credential.findOne({ "builtin.username": username }, context);
+    Credential.prototype.addBuiltin = function*(username, password) {
+        var existing = yield* Credential.findOne({ "builtin.username": username }, services.copy());
         if (!existing) {
             var hashed = yield* thunkify(hasher)({ plaintext: password });
             this.builtin = {
@@ -119,15 +120,15 @@
                 salt: hashed.salt.toString('hex'),
                 hash: hashed.key.toString('hex')
             };
-            return yield* this.save(context);
+            return yield* this.save(services.copy());
         } else {
             throw new Error("Built-in credential with the same username already exists");
         }
     };
 
 
-    Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret, context) {
-        var existing = yield* Credential.findOne({ "twitter.id": id }, context);
+    Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret) {
+        var existing = yield* Credential.findOne({ "twitter.id": id }, services.copy());
         if (!existing) {
             this.twitter = {
                 id: id,
@@ -135,15 +136,15 @@
                 accessToken: accessToken,
                 accessTokenSecret: accessTokenSecret
             };
-            return yield* this.save(context);
+            return yield* this.save(services.copy());
         } else {
             throw new Error("Twitter credential with the same id already exists");
         }
     };
 
 
-    Credential.authenticateBuiltin = function*(username, password, context) {
-        var credential = yield* Credential.findOne({ "builtin.username": username }, context);
+    Credential.authenticateBuiltin = function*(username, password) {
+        var credential = yield* Credential.findOne({ "builtin.username": username }, services.copy());
         if (credential) {
             var salt = new Buffer(credential.builtin.salt, 'hex');
             result = yield* thunkify(hasher)({plaintext: password, salt: salt});
