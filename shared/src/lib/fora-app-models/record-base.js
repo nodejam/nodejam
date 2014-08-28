@@ -25,8 +25,11 @@
             type: 'object',
             properties: {
                 type: { type: 'string' },
+                version: { type: 'string' },
+                versionMajor: { type: 'number' },
+                versionMinor: { type: 'number' },
+                versionRevision: { type: 'number' },
                 appId: { type: 'string' },
-                createdById: { type: 'string' },
                 createdBy: { $ref: 'user-summary' },
                 meta: { type: 'array', items: { type: 'string' } },
                 tags: { type: 'array', items: { type: 'string' } },
@@ -34,13 +37,14 @@
                 state: { type: 'string', enum: ['draft','published'] },
                 savedAt: { type: 'integer' }
             },
-            required: ['type', 'appId', 'createdById', 'createdBy', 'meta', 'tags', 'stub', 'state', 'savedAt']
+            required: ['type', 'version', 'versionMajor', 'versionMinor', 'versionRevision',
+                       'appId', 'createdBy', 'meta', 'tags', 'stub', 'state', 'savedAt']
         },
         indexes: [
             { 'state': 1, 'app.stub': 1 },
             { 'state': 1, 'appId': 1 },
             { 'state': 1, 'createdAt': 1, 'app.stub': 1 },
-            { 'createdById' : 1 },
+            { 'createdBy.id' : 1 },
             { 'createdBy.username': 1 }
         ],
         links: {

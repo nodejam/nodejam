@@ -37,6 +37,11 @@
         if (!regex.test(this.stub))
             throw new Error("Stub is invalid");
 
+        var versionParts = this.version.split('.');
+        this.versionMajor = parseInt(versionParts[0]);
+        this.versionMinor = parseInt(versionParts[1]);
+        this.versionRevision = parseInt(versionParts[2]);
+
         return yield* AppBase.prototype.save.call(this);
     };
 

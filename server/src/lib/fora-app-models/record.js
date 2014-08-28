@@ -106,6 +106,11 @@
         var extensionsService = services.get('extensionsService');
         var model = extensionsService.getModuleByName("record", this.type, this.version, "model");
 
+        var versionParts = this.version.split('.');
+        this.versionMajor = parseInt(versionParts[0]);
+        this.versionMinor = parseInt(versionParts[1]);
+        this.versionRevision = parseInt(versionParts[2]);
+
         //if stub is a reserved name, change it
         if (this.stub) {
             if (conf.reservedNames.indexOf(this.stub) > -1)
@@ -130,7 +135,7 @@
 
 
     Record.prototype.getCreator = function*() {
-        return yield* models.User.findById(this.createdById, context);
+        return yield* models.User.findById(this.createdBy.id, context);
     };
 
 

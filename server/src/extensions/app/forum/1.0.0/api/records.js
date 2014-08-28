@@ -15,7 +15,6 @@
         var record = yield* models.Record.create({
             type: yield* parser.body('type'),
             version: yield* parser.body('version'),
-            createdById: this.session.user.id,
             createdBy: this.session.user,
             state: yield* parser.body('state'),
             rating: 0,
@@ -23,8 +22,8 @@
         });
 
         _ = yield* parser.map(record, yield* record.getMappableFields());
-        record = yield* app.addRecord(record);
-        this.body = record;
+
+        this.body = yield* app.addRecord(record);
     };
 
 

@@ -44,7 +44,7 @@
 
     User.prototype.getRecords = function*(limit, sort, context) {
         return yield* models.Record.find(
-            { createdById: context.db.getRowId(this), state: 'published' },
+            { "createdBy.id": context.db.getRowId(this), state: 'published' },
             { sort: sort, limit: limit },
             context
         );
