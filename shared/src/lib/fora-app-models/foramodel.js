@@ -24,21 +24,6 @@
         odm.DatabaseModel.call(this, params);
     };
 
-    ForaDbModel.create = function*(params) {
-        var obj;
-        var typesService = services.get('typesService');
-        var typeDef = yield* this.getTypeDefinition(typesService);
-        if (typeDef.discriminator) {
-            var actualTypeDef = yield* typeDef.discriminator(params, typesService);
-            obj = new actualTypeDef.ctor(params);
-            obj.getTypeDefinition = function*() {
-                return actualTypeDef;
-            };
-        } else {
-            obj = new typeDef.ctor(params);
-        }
-        return obj;
-    };
 
     ForaDbModel.prototype = Object.create(odm.DatabaseModel.prototype);
     ForaDbModel.prototype.constructor = ForaDbModel;

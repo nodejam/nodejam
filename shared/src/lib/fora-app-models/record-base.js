@@ -18,6 +18,9 @@
     RecordBase.typeDefinition = {
         name: "record",
         collection: 'records',
+        discriminator: function*(obj, typesService) {
+            return yield* typesService.getTypeDefinition(obj.type + "/" + obj.version);
+        },
         schema: {
             type: 'object',
             properties: {

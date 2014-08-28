@@ -50,7 +50,7 @@
         var TypesService = require('fora-types-service');
         var typesService = new TypesService(extensionsService);
         var typeDefinitions = Object.keys(models).map(function(k) { return models[k]; });
-        var exts = yield* extensionsService.getExtensionsByModule("record", "definition");
+        var exts = yield* extensionsService.getModulesByKind("record", "definition");
         var virtualTypeDefinitions = Object.keys(exts).map(function(key) {
             return { typeDefinition: exts[key], ctor: models.Record };
         });

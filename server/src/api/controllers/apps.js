@@ -25,7 +25,7 @@
         );
 
         if (!app) {
-            app = yield* models.App.create({
+            app = new models.App({
                 type: yield* parser.body('type'),
                 version: yield* parser.body('version'),
                 name: yield* parser.body('name'),

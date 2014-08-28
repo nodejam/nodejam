@@ -6,11 +6,13 @@
     var __hasProp = {}.hasOwnProperty,
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
+
     var RecordBase = require('./record-base').RecordBase,
         models = require('./'),
         randomizer = require('fora-app-randomizer'),
         typeHelpers = require('fora-app-type-helpers'),
         services = require('fora-app-services');
+
 
     //ctor
     var Record = function() {
@@ -25,16 +27,23 @@
     __extends(Record, RecordBase);
 
 
-    Record.typeDefinition = (function() {
-        var originalDef = typeHelpers.clone(RecordBase.typeDefinition);
-        originalDef.discriminator = function*(obj, typesService) {
-            var def = yield* typesService.getTypeDefinition(obj.type + "/" + obj.version);
-            if (def.ctor !== Record)
-                throw new Error("Record type definitions must have ctor set to Record");
-            return def;
-        };
-        return originalDef;
-    })();
+
+    Record.create = function*(params) {
+        var obj;
+        var typesService = services.get('typesService');
+        var typeDef = yield* this.getTypeDefinition(typesService);
+        if (typeDef.discriminator) {
+            var actualTypeDef = yield* typeDef.discriminator(params, typesService);
+            obj = new actualTypeDef.ctor(params);
+            obj.getTypeDefinition = function*() {
+                return actualTypeDef;
+            };
+        } else {
+            obj = new typeDef.ctor(params);
+        }
+        return obj;
+    };
+
 
 
     Record.search = function*(criteria, settings, context) {
@@ -54,6 +63,7 @@
     };
 
 
+
     var getLimit = function(limit, _default, max) {
         var result = _default;
         if (limit) {
@@ -65,10 +75,12 @@
     };
 
 
+
     Record.prototype.getMappableFields = function*() {
         var def = yield* this.getTypeDefinition();
         return def.__ownProperties;
     };
+
 
 
     Record.prototype.addMetaList = function*(metaList) {
@@ -80,23 +92,24 @@
     };
 
 
+
     Record.prototype.removeMetaList = function*(metaList) {
         this.meta = this.meta.filter(function(m) {
             return metaList.indexOf(m) === -1;
         });
-        return yield* this.save(context);
+        return yield* this.save(services.copy());
     };
 
 
+
     Record.prototype.save = function*() {
-        //Broken here.. getModel isn't implemented
-        var model = yield* extensions.getModel();
-        _ = yield* model.save.call(this);
+        var extensionsService = services.get('extensionsService');
+        var model = extensionsService.getModuleByName("record", this.type, this.version, "model");
 
         //if stub is a reserved name, change it
-        if (stub) {
+        if (this.stub) {
             if (conf.reservedNames.indexOf(this.stub) > -1)
-                throw new Error("Stub cannot be " + stub + ", it is reserved");
+                throw new Error("Stub cannot be " + this.stub + ", it is reserved");
 
             var regex = /[a-z][a-z0-9|-]*/;
             if (!regex.test(this.stub))
@@ -105,10 +118,10 @@
             this.stub = this.stub || randomizer.uniqueId(16);
         }
 
-        var result = yield* RecordBase.prototype.save.call(this, context);
+        var result = yield* RecordBase.prototype.save.call(this);
 
         if (this.state === 'published') {
-            app = yield* models.App.findById(this.appId, context);
+            _ = yield* models.App.findById(this.appId, services.copy());
         }
 
         return result;
@@ -119,6 +132,7 @@
     Record.prototype.getCreator = function*() {
         return yield* models.User.findById(this.createdById, context);
     };
+
 
 
     exports.Record = Record;
