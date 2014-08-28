@@ -52,6 +52,6 @@
         deepCloneObject: deepCloneObject,
         extend: extend,
         getHashCode: getHashCode
-    }
+    };
 
 })();

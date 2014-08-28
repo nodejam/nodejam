@@ -10,9 +10,10 @@
     var RecordBase = require('./record-base').RecordBase,
         models = require('./'),
         randomizer = require('fora-app-randomizer'),
-        typeHelpers = require('fora-app-type-helpers'),
+        TypesUtil = require('fora-models').TypesUtil,
         services = require('fora-app-services');
 
+    var typesUtil = new TypesUtil();
 
     //ctor
     var Record = function() {
@@ -75,12 +76,36 @@
     };
 
 
+    var getMappableFields = function*(typeDefinition, acc, prefix) {
+        acc = acc || [];
+        prefix = prefix || [];
 
-    Record.prototype.getMappableFields = function*() {
-        var def = yield* this.getTypeDefinition();
-        return def.__ownProperties;
+        for (var field in typeDefinition.schema.properties) {
+            if (!typeDefinition.ownProperties || typeDefinition.ownProperties.indexOf(field) > -1) {
+                var def = typeDefinition.schema.properties[field];
+                if (typesUtil.isPrimitiveType(def.type)) {
+                    if (def.type === "array" && typesUtil.isCustomType(def.items.type)) {
+                            prefix.push(field);
+                            _ = yield* getMappableFields(def.items.typeDefinition, acc, prefix);
+                            prefix.pop(field);
+                    } else {
+                        acc.push(prefix.concat(field).join('_'));
+                    }
+                } else if (typesUtil.isCustomType(def.type)) {
+                    prefix.push(field);
+                    _ = yield* getMappableFields(def.typeDefinition, acc, prefix);
+                    prefix.pop(field);
+                }
+            }
+        }
+
+        return acc;
     };
 
+
+    Record.prototype.getMappableFields = function*() {
+        return yield* getMappableFields(yield* this.getTypeDefinition());
+    };
 
 
     Record.prototype.addMetaList = function*(metaList) {
