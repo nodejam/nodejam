@@ -5,13 +5,13 @@
     var services = require('fora-app-services');
 
 
-    var home = function*() {
+    var index = function*() {
         this.body = "AGAIN!";
     };
 
     var auth = require('fora-app-auth-service');
     module.exports = {
-        home: home
+        index: index
     };
 
 })();
