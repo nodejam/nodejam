@@ -17,6 +17,8 @@
             }
 
             return function*() {
+                var self = this;
+
                 if (!this.session) {
                     var token = this.query.token || this.cookies.get('token');
 
@@ -28,7 +30,7 @@
                     case "admin":
                         if (!this.session || !this.session.user)
                             throw new Error('No session');
-                        else if (conf.admins.filter(function(u) { return u === this.session.user.username; }).length === 0)
+                        else if (conf.admins.filter(function(u) { return u === self.session.user.username; }).length === 0)
                             throw new Error('Not admin');
 
                         this.session.admin = true;

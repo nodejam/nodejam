@@ -2,6 +2,7 @@
     "use strict";
 
     var _;
+
     var models = require('fora-app-models'),
         services = require('fora-app-services');
 
@@ -32,17 +33,14 @@
         var parser = new Parser(this, typesService);
         var app = this.routingContext.app;
 
-        var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, { user: this.session.user }, db);
+        var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, services.copy());
 
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
                 record.savedAt = Date.now();
-                _ = yield* parser.map(record, yield* mapper.getMappableFields(yield* record.getTypeDefinition(typesService)));
-                if (yield* parser.body('state') === 'published') {
-                    record.state = 'published';
-                }
-                record = yield* record.save();
-                this.body = record;
+                _ = yield* parser.map(record, yield* record.getMappableFields());
+                if (yield* parser.body('state') === 'published') record.state = 'published';
+                this.body = yield* record.save();
             } else {
                 throw new Error('Access denied');
             }
@@ -57,7 +55,7 @@
         var parser = new Parser(this, typesService);
         var app = this.routingContext.app;
 
-        var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, { user: this.session.user }, db);
+        var record = yield* models.Record.findOne({ stub: recordStub, appId: app._id.toString() }, services.copy());
 
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
@@ -73,9 +71,11 @@
 
 
     var admin_update = function*(recordStub) {
+        var typesService = services.get('typesService');
+        var parser = new Parser(this, typesService);
         var app = this.routingContext.app;
 
-        var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, { user: this.session.user }, db);
+        var record = yield* models.Record.findOne({ stub: recordStub, appId: app._id.toString() }, services.copy());
 
         if (record) {
             var meta = yield* parser.body('meta');

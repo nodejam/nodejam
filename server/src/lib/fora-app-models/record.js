@@ -112,7 +112,7 @@
         metaList.forEach(function(m) {
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
-        });
+        }, this);
         return yield* this.save(services.copy());
     };
 
@@ -137,6 +137,7 @@
         this.versionRevision = parseInt(versionParts[2]);
 
         //if stub is a reserved name, change it
+        var conf = services.get('configuration');
         if (this.stub) {
             if (conf.reservedNames.indexOf(this.stub) > -1)
                 throw new Error("Stub cannot be " + this.stub + ", it is reserved");
