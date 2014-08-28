@@ -21,7 +21,7 @@
             extensions: {
                 modules: [
                     { kind: "app", modules: ["api"] },
-                    { kind: "record", modules: ["model"] }
+                    { kind: "record", modules: ["definition", "model"] }
                 ]
             }
         },

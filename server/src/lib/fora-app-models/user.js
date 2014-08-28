@@ -32,12 +32,12 @@
                 this.lastLogin = 0;
                 this.followingCount = 0;
                 this.followerCount = 0;
-                return yield* UserBase.prototype.save.call(this, context);
+                return yield* UserBase.prototype.save.call(this);
             } else {
                 throw new Error("User(#{@username}) already exists");
             }
         } else {
-            return yield* UserBase.prototype.save.call(this, context);
+            return yield* UserBase.prototype.save.call(this);
         }
     };
 

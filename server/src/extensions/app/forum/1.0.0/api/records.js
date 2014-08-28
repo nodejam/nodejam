@@ -20,7 +20,7 @@
             state: yield* parser.body('state'),
             rating: 0,
             savedAt: Date.now()
-        }, typesService);
+        });
 
         _ = yield* parser.map(record, yield* record.getMappableFields());
         record = yield* app.addRecord(record);

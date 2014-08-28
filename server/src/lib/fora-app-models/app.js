@@ -42,9 +42,8 @@
 
 
     App.prototype.summarize = function() {
-        var context = services.copy();
         return new models.AppSummary({
-            id: context.db.getRowId(this),
+            id: services.get('db').getRowId(this),
             name: this.name,
             stub: this.stub,
             createdBy: this.createdBy
@@ -53,11 +52,10 @@
 
 
     App.prototype.getView = function*(name) {
-        var context = services.copy();
         switch (name) {
             case 'card':
                 return {
-                id: context.db.getRowId(this),
+                id: services.get('db').getRowId(this),
                 name: this.name,
                 description: this.description,
                 stub: this.stub,
