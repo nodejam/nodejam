@@ -91,7 +91,7 @@
     };
 
 
-    var auth = require('fora-app-auth-service')(services.get('configuration'), services.get('db'));
+    var auth = require('fora-app-auth-service');
     module.exports = {
         create: auth({ session: 'user' }, create),
         edit: auth({ session: 'user' }, edit),

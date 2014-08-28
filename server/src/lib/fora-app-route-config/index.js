@@ -40,18 +40,20 @@
         fn(router);
 
         //Run the app in a sandbox.
-        //Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
-        var appPathRegex = new RegExp("^" + (/\/$/.test(options.appUrlPrefix) ? options.appUrlPrefix : options.appUrlPrefix + "/"));
-        var appRootRegex = new RegExp("^" + (/\/$/.test(options.appUrlPrefix) ? options.appUrlPrefix : options.appUrlPrefix + "/") + "[a-z0-9-]*/?");
+        //Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x\
+        var appUrlPrefix = /\/$/.test(options.appUrlPrefix) ? options.appUrlPrefix : options.appUrlPrefix + "/";
+        var prefixPartsCount = appUrlPrefix.split("/").length - 1;
+        var appPathRegex = new RegExp("^" + (appUrlPrefix));
+        var appRootRegex = new RegExp("^" + appUrlPrefix + "[a-z0-9-]*/?");
         router.when(
             function() {
                 return appPathRegex.test(this.url);
             },
             function*() {
                 if (!this.routingContext.app) {
-                    this.routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[2] }, context);
+                    this.routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
                     var urlParts = this.url.split("/");
-                    this.url = this.url.replace(appRootRegex,"/");
+                    this.url = this.url.replace(appRootRegex, "/");
                 }
 
                 var token = this.query.token || this.cookies.get('token');

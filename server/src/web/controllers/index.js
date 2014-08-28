@@ -4,67 +4,29 @@
     var _;
 
     var router;
+    var appInfo;
 
-    var init = function*() {
+    var init = function*(_appInfo) {
         router = configureRouter();
+        appInfo = _appInfo;
     };
 
     var configureRouter = function() {
-        var services = require('fora-app-services'),
-            conf = require('../../config'),
-            models = require('fora-app-models');
+        var routeConfig = require('fora-app-route-config');
 
-        var typesService = services.get('types'),
-            db = services.get('db');
-        var context = { typesService: typesService, db: db };
+        var home = require('./home');
 
-        var home = require('./home')
-
-        var Router = require("fora-router");
-        var router = new Router("/");
-
-        var Sandbox = require('fora-app-sandbox');
-        var sandbox = new Sandbox(services);
-
-
-        //healthcheck
-        router.get("/healthcheck", function*() {
-            var uptime = parseInt((Date.now() - since)/1000) + "s";
-            this.body = { jacksparrow: "alive", instance: params.app.instance, since: params.app.since, uptime: params.app.uptime };
-        });
-
-
-        //Rewrite: example.com/url -> /apps/example/url
-        //If the request is for a different domain, it must be an app.
-        router.when(function() {
-            return this.hostname && (conf.domains.indexOf(this.hostname) === -1);
-        }, function*() {
-            this.routingContext.app = yield* models.App.findOne({ domains: this.hostname }, context);
-            return true; //continue matching.
-        });
-
-        //home
-        router.post("/", home.index);
-
-        //Run the app in a sandbox.
-        //Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
-        router.when(function() {
-            return /^\/apps\//.test(this.url);
-        }, function*() {
-            if (!this.routingContext.app) {
-                this.routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[2] }, context);
-                var urlParts = this.url.split("/");
-                this.url = this.url.replace(/^\/apps\/[a-z0-9\-]*\/?/,"/");
+        return routeConfig(
+            function(router) {
+                //users
+                router.get("", home.index);
+            },
+            appInfo,
+            {
+                urlPrefix: "/",
+                appUrlPrefix: "/"
             }
-
-            var token = this.query.token || this.cookies.get('token');
-            if (token)
-                this.session = yield* models.Session.findOne({ token: token }, { typesService: typesService, db: db });
-
-            return yield* sandbox.executeRequest(this);
-        });
-
-        return router;
+        );
     };
 
     var getRouter = function*() {
