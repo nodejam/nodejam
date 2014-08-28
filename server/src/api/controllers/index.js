@@ -36,9 +36,7 @@
             appInfo,
             {
                 urlPrefix: "/api",
-                isAppUrl: function(url) {
-                    return /^\/apps\//.test(url);
-                }
+                appUrlPrefix: "/apps"
             }
         );
     };

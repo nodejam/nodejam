@@ -41,15 +41,17 @@
 
         //Run the app in a sandbox.
         //Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
+        var appPathRegex = new RegExp("^" + (/\/$/.test(options.appUrlPrefix) ? options.appUrlPrefix : options.appUrlPrefix + "/"));
+        var appRootRegex = new RegExp("^" + (/\/$/.test(options.appUrlPrefix) ? options.appUrlPrefix : options.appUrlPrefix + "/") + "[a-z0-9-]*/?");
         router.when(
             function() {
-                return options.isAppUrl(this.url);
+                return appPathRegex.test(this.url);
             },
             function*() {
                 if (!this.routingContext.app) {
                     this.routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[2] }, context);
                     var urlParts = this.url.split("/");
-                    this.url = this.url.replace(/^\/apps\/[a-z0-9\-]*\/?/,"/");
+                    this.url = this.url.replace(appRootRegex,"/");
                 }
 
                 var token = this.query.token || this.cookies.get('token');
