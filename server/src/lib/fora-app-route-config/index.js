@@ -8,7 +8,7 @@
             conf = require('../../config'),
             models = require('fora-app-models');
 
-        var typesService = services.get('types'),
+        var typesService = services.get('typesService'),
             db = services.get('db');
         var context = { typesService: typesService, db: db };
 
@@ -16,7 +16,7 @@
         var router = new Router(options.urlPrefix);
 
         var Sandbox = require('fora-app-sandbox');
-        var sandbox = new Sandbox(services);
+        var sandbox = new Sandbox(services, options.extensionModule);
 
         //healthcheck
         router.get("/healthcheck", function*() {
@@ -52,13 +52,17 @@
             function*() {
                 if (!this.routingContext.app) {
                     this.routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
-                    var urlParts = this.url.split("/");
-                    this.url = this.url.replace(appRootRegex, "/");
+                    if (this.routingContext.app) {
+                        var urlParts = this.url.split("/");
+                        this.url = this.url.replace(appRootRegex, "/");
+                    } else {
+                        throw new Error("Invalid application");
+                    }
                 }
 
                 var token = this.query.token || this.cookies.get('token');
                 if (token)
-                    this.session = yield* models.Session.findOne({ token: token }, { typesService: typesService, db: db });
+                    this.session = yield* models.Session.findOne({ token: token }, context);
 
                 return yield* sandbox.executeRequest(this);
             }

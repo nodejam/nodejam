@@ -4,15 +4,13 @@
     var _;
 
 
-    var UntrustedSandbox = function(appExtension, app) {
-        this.appExtension = appExtension;
+    var UntrustedSandbox = function(app, extensionModule) {
         this.app = app;
+        this.extensionModule = extensionModule;
     };
 
 
-    UntrustedSandbox.prototype.executeRequest = function*(context, app) {
-        var router = yield* this.appExtension.api.getRouter();
-        _ = yield* router.route().call(context);
+    UntrustedSandbox.prototype.executeRequest = function*(requestContext) {        
     };
 
 

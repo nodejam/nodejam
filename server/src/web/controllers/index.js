@@ -24,7 +24,8 @@
             appInfo,
             {
                 urlPrefix: "/",
-                appUrlPrefix: "/"
+                appUrlPrefix: "/",
+                extensionModule: "web"
             }
         );
     };
