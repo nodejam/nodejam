@@ -6,7 +6,7 @@
     var co = require('co');
     var logger = require('fora-app-logger');
     var server = require('fora-app-server');
-    var baseConfig = require('../config')
+    var baseConfig = require('../config');
 
     var host = process.argv[2];
     var port = process.argv[3];

@@ -3,6 +3,11 @@
 
     var _;
 
+    var co = require('co');
+    var logger = require('fora-app-logger');
+    var server = require('fora-app-server');
+    var baseConfig = require('../config');
+
     var host = process.argv[2];
     var port = process.argv[3];
 
@@ -11,18 +16,13 @@
         process.exit();
     }
 
-    var server = require('app-server');
-
     var config = {
-
-        /* Extensions needed by this app */
         services: {
             extensions: {
-                types: {
-                    container: ['web'],
-                    apps: ['web'],
-                    records: ['model', 'templates']
-                }
+                modules: [
+                    { kind: "app", modules: ["web"] },
+                    { kind: "record", modules: ["definition", "model"] }
+                ]
             }
         },
 
@@ -30,9 +30,10 @@
         port: port
     };
 
+    var container = require('./controllers');
+
     co(function*() {
-        _ = yield* loader.init();
-        _ = yield* server(config);
+        _ = yield* server(container, config, baseConfig);
         logger.log("Fora Website started at " + new Date() + " on " + host + ":" + port);
     })();
 

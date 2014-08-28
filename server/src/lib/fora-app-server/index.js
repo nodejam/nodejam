@@ -22,6 +22,12 @@
 
     module.exports = function*(container, config, baseConfig) {
         /*
+            Setup information useful for monitoring and debugging
+        */
+        var appInfo = setupInstanceStats();
+
+
+        /*
             Services
             0) Configuration
             1) Database Service
@@ -40,13 +46,21 @@
         var db = new odm.Database(baseConfig.db);
         services.add("db", db);
 
-        //Extensions Service
+        /*
+            Extensions Service
+            ------------------
+        */
         var ExtensionsService = require('fora-extensions-service');
         var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions);
         _ = yield* extensionsService.init();
         services.add("extensionsService", extensionsService);
 
-        //Types Service
+        /*
+            Types Service
+            -------------
+            We must pass all the typeDefinitions and virtual typeDefinitions to typesService.
+            Virtual Type Definitions are defined in extensions, so we need to get it via extensionsService.
+        */
         var TypesService = require('fora-types-service');
         var typesService = new TypesService(extensionsService);
         var typeDefinitions = Object.keys(models).map(function(k) { return models[k]; });
@@ -56,11 +70,6 @@
         });
         _ = yield* typesService.init(typeDefinitions, virtualTypeDefinitions);
         services.add("typesService", typesService);
-
-        /*
-            Setup information useful for monitoring and debugging
-        */
-        var appInfo = setupInstanceStats();
 
         /*
             Start the app.
@@ -74,7 +83,7 @@
         var errorHandler = require('fora-app-error-handler');
         app.use(errorHandler);
 
-        _ = yield* container.init();
+        _ = yield* container.init(appInfo);
 
         var router = yield* container.getRouter();
         app.use(router.route());
