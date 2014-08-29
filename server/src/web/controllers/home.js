@@ -10,7 +10,7 @@
 
 
     var index = function*() {
-        this.body = "hello";
+        this.render("hello");
     };
 
     module.exports = { index: index };

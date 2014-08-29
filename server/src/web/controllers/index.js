@@ -12,13 +12,19 @@
     };
 
     var configureRouter = function() {
+        var argv = require('optimist').argv;
         var routeConfig = require('fora-app-route-config');
 
+        var layout = require('./layout');
         var home = require('./home');
+
+        var renderFunc = argv['debug-client'] ? layout.render_DEBUG : layout.render;
 
         return routeConfig(
             function(router) {
-                //users
+                router.onRequest(function(next){
+                    this.render = renderFunc;
+                });
                 router.get("", home.index);
             },
             appInfo,

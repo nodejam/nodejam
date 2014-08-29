@@ -1,14 +1,15 @@
 (function() {
     "use strict";
 
-    var React = require('fora-react-sandbox');
-
     var makeScript = function (src) {
-        return "<script src=\"" + src + "\"></script>";
+        return '<script src="' + src + '"></script>';
     };
 
-    var makeLink = function(href, rel="stylesheet", media="screen", type = "text/css") {
-        return "<link href=\"" + href + "\" rel=\"" + rel + "\" media=\"" + media + "\" />";
+    var makeLink = function(href, rel, media, type) {
+        rel = rel || "stylesheet";
+        media = media || "screen";
+        type = type || "text/css";
+        return '<link href="' + href + '" rel="' + rel + '" media="' + media + '" />';
     };
 
     var deps = {
@@ -48,7 +49,10 @@
     };
 
     var render = function(debug) {
-        return function*(reactClass, pagePath, props = {}, params = {}) {
+        return function*(reactClass, pagePath, props, params) {
+            props = props || {};
+            params = params || {};
+
             if (reactClass.componentInit)
                 props = yield* reactClass.componentInit(props);
 
@@ -68,32 +72,31 @@
             if (params.javascript);
                 depsHtml += "<script>" + params.javascript + "</script>";
 
-            depsHtml += " \
+            depsHtml += '\
                 <script> \
-                    app.initPage(\"" + pagePath + "\", " + JSON.stringify(props) + "); \
-                </script>";
+                    app.initPage("' + pagePath + '", "' + JSON.stringify(props) + '); \
+                </script>';
 
-            return ("\
+            return ('\
                 <!DOCTYPE html>\
                 <html>\
                     <head>\
-                        <title>" + title + "</title>\
-                        " + depsHtml + "\
-                        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\
+                        <title>' + title + '</title>' +
+                        depsHtml +
+                        '<meta name="viewport" content="width=device-width, initial-scale=1"/>\
                     </head>\
-                    \
-                    <body class=\"" + bodyClass + "\">\
+                    <body class="' + bodyClass + '">\
                         <!-- header -->\
-                        <header class=\"site\">\
-                            <a href=\"#\" class=\"logo\">\
+                        <header class="site">\
+                            <a href="#" class="logo">\
                                 Fora\
                             </a>\
                         </header>\
-                        <div class=\"page-container\"> \
-                        " + React.renderComponentToString(component) + "\
+                        <div class="page-container"> \
+                        "' + React.renderComponentToString(component) + '"\
                         </div>\
                     </body>\
-                </html>");
+                </html>"');
             };
         };
 
