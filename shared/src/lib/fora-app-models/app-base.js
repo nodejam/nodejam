@@ -108,6 +108,7 @@
 				versionMajor: { type: 'number' },
 				versionMinor: { type: 'number' },
 				versionRevision: { type: 'number' },
+				sdkRevision: { type: 'number' },
 				name: { type: 'string' },
 				description: { type: 'string' },
 				stub: { type: 'string' },
@@ -140,7 +141,7 @@
 				},
 				stats: { $ref: 'app-stats' }
 			},
-			required: ['type', 'version', 'versionMajor', 'versionMinor', 'versionRevision',
+			required: ['type', 'version', 'versionMajor', 'versionMinor', 'versionRevision', 'sdkRevision',
 				'name', 'description', 'stub', 'access', 'createdBy', 'cache', 'stats']
 		},
 		indexes: [ { 'createdBy.id': 1 }, { 'stub': 1 }	],

@@ -3,10 +3,10 @@
 
     var _;
     var services = require('fora-app-services');
-    
+
 
     var join = function*() {
-        var app = this.routingContext.app;
+        var app = this.sdk.app;
         _ = yield* app.join(this.session.user, services.copy());
         this.body = { success: true };
     };

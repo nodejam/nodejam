@@ -28,11 +28,11 @@
         //Rewrite: example.com/url -> /apps/example/url
         //If the request is for a different domain, it must be an app.
         router.when(
-            function() {
+            function(routingContext) {
                 return this.hostname && (conf.domains.indexOf(this.hostname) === -1);
             },
-            function*() {
-                this.routingContext.app = yield* models.App.findOne({ domains: this.hostname }, context);
+            function*(routingContext) {
+                routingContext.app = yield* models.App.findOne({ domains: this.hostname }, context);
                 return true; //continue matching.
             }
         );
@@ -46,13 +46,13 @@
         var appPathRegex = new RegExp("^" + (appUrlPrefix));
         var appRootRegex = new RegExp("^" + appUrlPrefix + "[a-z0-9-]*/?");
         router.when(
-            function() {
+            function(routingContext) {
                 return appPathRegex.test(this.url);
             },
-            function*() {
-                if (!this.routingContext.app) {
-                    this.routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
-                    if (this.routingContext.app) {
+            function*(routingContext) {
+                if (!routingContext.app) {
+                    routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
+                    if (routingContext.app) {
                         var urlParts = this.url.split("/");
                         this.url = this.url.replace(appRootRegex, "/");
                     } else {
@@ -64,7 +64,7 @@
                 if (token)
                     this.session = yield* models.Session.findOne({ token: token }, context);
 
-                return yield* sandbox.executeRequest(this);
+                return yield* sandbox.executeRequest(this, routingContext);
             }
         );
 

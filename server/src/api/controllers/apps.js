@@ -34,6 +34,8 @@
                 createdBy: this.session.user,
             });
 
+            app.sdkRevision = 1;
+
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
             app = yield* app.save();
             _ = yield* app.addRole(this.session.user, 'admin');

@@ -11,7 +11,7 @@
     var create = function*() {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.routingContext.app;
+        var app = this.sdk.app;
 
         var record = yield* models.Record.create({
             type: yield* parser.body('type'),
@@ -31,7 +31,7 @@
     var edit = function*() {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.routingContext.app;
+        var app = this.sdk.app;
 
         var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, services.copy());
 
@@ -53,7 +53,7 @@
     var remove = function*() {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.routingContext.app;
+        var app = this.sdk.app;
 
         var record = yield* models.Record.findOne({ stub: recordStub, appId: app._id.toString() }, services.copy());
 
@@ -73,7 +73,7 @@
     var admin_update = function*(recordStub) {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.routingContext.app;
+        var app = this.sdk.app;
 
         var record = yield* models.Record.findOne({ stub: recordStub, appId: app._id.toString() }, services.copy());
 
