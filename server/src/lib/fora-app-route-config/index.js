@@ -18,6 +18,8 @@
         var Sandbox = require('fora-app-sandbox');
         var sandbox = new Sandbox(services, options.extensionModuleName);
 
+        var Parser = require('fora-request-parser');
+
         //healthcheck
         router.get("/healthcheck", function*() {
             var uptime = parseInt((Date.now() - since)/1000) + "s";
@@ -59,6 +61,8 @@
                         throw new Error("Invalid application");
                     }
                 }
+
+                this.parser = new Parser(this, typesService);
 
                 var token = this.query.token || this.cookies.get('token');
                 if (token)

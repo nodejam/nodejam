@@ -2,11 +2,9 @@
     "use strict";
 
     var _;
-    var services = require('fora-app-services');
-
 
     var join = function*() {
-        _ = yield* this.app.join(this.session.user, services.copy());
+        _ = yield* this.app.join(this.session.user);
         this.body = { success: true };
     };
 
