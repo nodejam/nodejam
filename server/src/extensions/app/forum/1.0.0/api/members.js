@@ -6,8 +6,7 @@
 
 
     var join = function*() {
-        var app = this.sdk.app;
-        _ = yield* app.join(this.session.user, services.copy());
+        _ = yield* this.app.join(this.session.user, services.copy());
         this.body = { success: true };
     };
 

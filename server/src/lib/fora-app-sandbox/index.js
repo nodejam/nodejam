@@ -7,10 +7,10 @@
         UntrustedSandbox = require('./untrusted-sandbox');
 
 
-    var Sandbox = function(services, extensionModule) {
+    var Sandbox = function(services, extensionModuleName) {
         this.services = services;
         this.extensionsService = services.get('extensionsService');
-        this.extensionModule = extensionModule;
+        this.extensionModuleName = extensionModuleName;
     };
 
 
@@ -24,7 +24,7 @@
         //We can't pass extension to Untrusted sandboxen, since it will execute outside this process boundary.
         //For example, inside another process, or even a machine.
         var sandbox = extension ?
-            new TrustedSandbox(extension, this.extensionModule) : new UntrustedSandbox(this.extensionModule);
+            new TrustedSandbox(extension, this.extensionModuleName) : new UntrustedSandbox(this.extensionModuleName);
         return yield* sandbox.executeRequest(requestContext, routingContext);
     };
 

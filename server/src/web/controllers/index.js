@@ -31,7 +31,7 @@
             {
                 urlPrefix: "/",
                 appUrlPrefix: "/",
-                extensionModule: "web"
+                extensionModuleName: "web"
             }
         );
     };

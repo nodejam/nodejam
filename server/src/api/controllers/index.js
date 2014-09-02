@@ -37,7 +37,7 @@
             {
                 urlPrefix: "/api",
                 appUrlPrefix: "/apps",
-                extensionModule: "api"
+                extensionModuleName: "api"
             }
         );
     };

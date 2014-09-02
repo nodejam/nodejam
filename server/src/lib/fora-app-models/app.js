@@ -46,32 +46,53 @@
     };
 
 
-    App.prototype.summarize = function() {
-        return new models.AppSummary({
-            id: services.get('db').getRowId(this),
-            name: this.name,
-            stub: this.stub,
-            createdBy: this.createdBy
-        });
+
+    /*
+        Records
+    */
+    App.prototype.createRecord = function*(params) {
+        var context = services.copy();
+        var record = yield* models.Record.create(params);
+        record.appId = context.db.getRowId(this);
+        return record;
     };
 
 
-    App.prototype.getView = function*(name) {
-        switch (name) {
-            case 'card':
-                return {
-                id: services.get('db').getRowId(this),
-                name: this.name,
-                description: this.description,
-                stub: this.stub,
-                createdBy: this.createdBy,
-                cache: this.cache,
-                image: this.cover ? this.cover.image ? this.cover.image.small : void 0 : void 0
-            };
-        }
+
+    App.prototype.addRecord = function*(record) {
+        var context = services.copy();
+        record.appId = context.db.getRowId(this);
+        return yield* record.save(context);
     };
 
 
+
+    App.prototype.getRecord = function*(stub) {
+        var context = services.copy();
+        return yield* models.Record.findOne({ 'appId': context.db.getRowId(this), stub: stub }, context);
+    };
+
+
+
+    App.prototype.findRecord = function*(query) {
+        var context = services.copy();
+        query.appId = context.db.getRowId(this);
+        return yield* models.Record.findOne(query, context);
+    };
+
+
+
+    App.prototype.findRecords = function*(query) {
+        var context = services.copy();
+        query.appId = context.db.getRowId(this);
+        return yield* models.Record.find(query, { sort: sort, limit: limit }, context);
+    };
+
+
+
+    /*
+        Membership and Permissions
+    */
     App.prototype.join = function*(user) {
         if (this.access === 'public') {
             return yield* this.addRole(user, 'member', services.copy());
@@ -80,23 +101,6 @@
         }
     };
 
-
-    App.prototype.addRecord = function*(record) {
-        record.appId = services.get('db').getRowId(this);
-        return yield* record.save();
-    };
-
-
-    App.prototype.getRecord = function*(stub) {
-        var context = services.copy();
-        return yield* models.Record.find({ 'appId': context.db.getRowId(this), stub: stub }, context);
-    };
-
-
-    App.prototype.getRecords = function*(limit, sort) {
-        var context = services.copy();
-        return yield* models.Record.find({ 'appId': context.db.getRowId(this), state: 'published' }, { sort: sort, limit: limit }, context);
-    };
 
 
     App.prototype.addRole = function*(user, role) {
@@ -120,6 +124,7 @@
     };
 
 
+
     App.prototype.removeRole = function*(user, role) {
         var context = services.copy();
         var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, services.copy());
@@ -132,10 +137,12 @@
     };
 
 
+
     App.prototype.getMembership = function*(username) {
         var context = services.copy();
         return yield* models.Membership.findOne({ 'app.id': context.db.getRowId(this), 'user.username': username }, context);
     };
+
 
 
     App.prototype.getMemberships = function*(roles) {
@@ -147,6 +154,18 @@
         );
     };
 
+
+    /*
+        Summarize
+    */
+    App.prototype.summarize = function() {
+        return new models.AppSummary({
+            id: services.get('db').getRowId(this),
+            name: this.name,
+            stub: this.stub,
+            createdBy: this.createdBy
+        });
+    };
 
     exports.App = App;
 

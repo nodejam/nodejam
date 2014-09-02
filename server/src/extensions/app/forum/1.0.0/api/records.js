@@ -11,9 +11,8 @@
     var create = function*() {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.sdk.app;
 
-        var record = yield* models.Record.create({
+        var record = yield* this.app.createRecord({
             type: yield* parser.body('type'),
             version: yield* parser.body('version'),
             createdBy: this.session.user,
@@ -24,16 +23,15 @@
 
         _ = yield* parser.map(record, yield* record.getMappableFields());
 
-        this.body = yield* app.addRecord(record);
+        this.body = yield* this.app.addRecord(record);
     };
 
 
-    var edit = function*() {
+    var edit = function*(stub) {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.sdk.app;
 
-        var record = yield* models.Record.get({ stub: recordStub, appId: app._id.toString() }, services.copy());
+        var record = yield* this.app.findRecord({ stub: stub });
 
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
@@ -50,12 +48,11 @@
     };
 
 
-    var remove = function*() {
+    var remove = function*(stub) {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.sdk.app;
 
-        var record = yield* models.Record.findOne({ stub: recordStub, appId: app._id.toString() }, services.copy());
+        var record = yield* this.app.getRecord({ stub: stub });
 
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
@@ -70,12 +67,12 @@
     };
 
 
-    var admin_update = function*(recordStub) {
+
+    var admin_update = function*(stub) {
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
-        var app = this.sdk.app;
 
-        var record = yield* models.Record.findOne({ stub: recordStub, appId: app._id.toString() }, services.copy());
+        var record = yield* this.app.getRecord(stub);
 
         if (record) {
             var meta = yield* parser.body('meta');
@@ -89,6 +86,7 @@
             throw new Error('Missing record');
         }
     };
+
 
 
     var auth = require('fora-app-auth-service');

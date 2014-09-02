@@ -16,7 +16,7 @@
         var router = new Router(options.urlPrefix);
 
         var Sandbox = require('fora-app-sandbox');
-        var sandbox = new Sandbox(services, options.extensionModule);
+        var sandbox = new Sandbox(services, options.extensionModuleName);
 
         //healthcheck
         router.get("/healthcheck", function*() {
