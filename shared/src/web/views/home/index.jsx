@@ -4,6 +4,11 @@
 
     var React = require("react");
 
+    var UI = require('fora-app-ui');
+    var Page = UI.Page,
+        Cover = UI.Cover,
+        Content = UI.Content;
+
     module.exports = React.createClass({
         statics: {
             componentInit: function*(props) {
