@@ -2,16 +2,7 @@
 (function() {
     "use strict";
 
-    var React = require('react'),
-        ExtensionLoader = require('fora-extensions').Loader,
-        ForaUI = require('fora-ui'),
-        Models = require('models');
-
-    var Page = ForaUI.Page,
-        Content = ForaUI.Content,
-        Cover = ForaUI.Cover,
-        loader = new ExtensionLoader();
-
+    var React = require("react");
 
     module.exports = React.createClass({
         statics: {

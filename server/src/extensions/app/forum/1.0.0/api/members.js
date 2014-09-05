@@ -4,7 +4,7 @@
     var _;
 
     var join = function*() {
-        _ = yield* this.app.join(this.session.user);
+        _ = yield* this.application.join(this.session.user);
         this.body = { success: true };
     };
 

@@ -34,7 +34,7 @@
                 return this.hostname && (conf.domains.indexOf(this.hostname) === -1);
             },
             function*(routingContext) {
-                routingContext.app = yield* models.App.findOne({ domains: this.hostname }, context);
+                routingContext.application = yield* models.App.findOne({ domains: this.hostname }, context);
                 return true; //continue matching.
             }
         );
@@ -52,9 +52,9 @@
                 return appPathRegex.test(this.url);
             },
             function*(routingContext) {
-                if (!routingContext.app) {
-                    routingContext.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
-                    if (routingContext.app) {
+                if (!routingContext.application) {
+                    routingContext.application = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
+                    if (routingContext.application) {
                         var urlParts = this.url.split("/");
                         this.url = this.url.replace(appRootRegex, "/");
                     } else {

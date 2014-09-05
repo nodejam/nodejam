@@ -11,7 +11,7 @@
 
 
     TrustedSandbox.prototype.executeRequest = function*(requestContext, routingContext) {
-        requestContext.app = routingContext.app;
+        requestContext.application = routingContext.application;
         var router = yield* this.extension[this.extensionModuleName].getRouter();
         var routeFunc = router.route();
         return yield* routeFunc.call(requestContext);
