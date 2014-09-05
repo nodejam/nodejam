@@ -22,7 +22,7 @@
 
         return routeConfig(
             function(router) {
-                router.onRequest(function(next){
+                router.onRequest(function*(next){
                     this.render = renderFunc;
                 });
                 router.get("", home.index);

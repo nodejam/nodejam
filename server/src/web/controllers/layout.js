@@ -1,6 +1,8 @@
 (function() {
     "use strict";
 
+    var React = require('react');
+
     var makeScript = function (src) {
         return '<script src="' + src + '"></script>';
     };
