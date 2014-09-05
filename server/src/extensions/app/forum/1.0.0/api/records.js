@@ -19,6 +19,7 @@
     };
 
 
+
     var edit = function*(stub) {
         var record = yield* this.app.findRecord({ stub: stub });
 
@@ -35,6 +36,7 @@
             throw new Error('Access denied', 403);
         }
     };
+
 
 
     var remove = function*(stub) {
