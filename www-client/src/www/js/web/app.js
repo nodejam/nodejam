@@ -20,7 +20,7 @@
         services: {
             extensions: {
                 modules: [
-                    { kind: "app", modules: ["api"] },
+                    { kind: "app", modules: ["web"] },
                     { kind: "record", modules: ["definition", "model"] }
                 ]
             }
@@ -30,11 +30,11 @@
         port: port
     };
 
-    var container = require('./container');
+    var container = require('./controllers');
 
     co(function*() {
         _ = yield* server(container, config, baseConfig);
-        logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
+        logger.log("Fora Website started at " + new Date() + " on " + host + ":" + port);
     })();
 
 })();

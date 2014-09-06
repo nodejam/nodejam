@@ -106,9 +106,9 @@
                             return function(cb) {
                                 options.callback = cb;
                                 new compressor.minify(options);
-                            }
+                            };
                         }(options);
-                    }
+                    };
 
                     console.log("Minifying CSS to lib.css");
                     yield* minify({

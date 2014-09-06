@@ -43,6 +43,7 @@
 
         //Run the app in a sandbox.
         //Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x\
+        options.appUrlPrefix = options.appUrlPrefix || "";
         var appUrlPrefix = /\/$/.test(options.appUrlPrefix) ? options.appUrlPrefix : options.appUrlPrefix + "/";
         var prefixPartsCount = appUrlPrefix.split("/").length - 1;
         var appPathRegex = new RegExp("^" + (appUrlPrefix));
