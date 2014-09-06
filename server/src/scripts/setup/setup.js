@@ -115,7 +115,7 @@
                 for (var u in _globals.sessions) {
                     var uToken = _globals.sessions[u];
                     if (uToken.token !== token) {
-                        resp = yield* _doHttpRequest("/api/apps/" + appJson.stub + "/members?token=" + uToken.token, querystring.stringify(app), 'post');
+                        resp = yield* _doHttpRequest("/api/app/" + appJson.stub + "/members?token=" + uToken.token, querystring.stringify(app), 'post');
                         resp = JSON.parse(resp);
                         logger.log(u + " joined " + app.name);
                     }
@@ -141,14 +141,14 @@
                 delete article._content;
                 delete article._meta;
 
-                resp = yield* _doHttpRequest("/api/apps/" + app + "?token=" + token, querystring.stringify(article), 'post');
+                resp = yield* _doHttpRequest("/api/app/" + app + "?token=" + token, querystring.stringify(article), 'post');
                 resp = JSON.parse(resp);
                 logger.log("Created " + resp.title + " with stub " + resp.stub);
 
                 var metaTags = meta.split(',');
                 for (var _i2 = 0; _i2 < metaTags.length; _i2++) {
                     var metaTag = metaTags[_i2];
-                    resp = yield* _doHttpRequest("/api/apps/" + app + "/admin/records/" + resp.stub + "?token=" + adminkey,
+                    resp = yield* _doHttpRequest("/api/app/" + app + "/admin/records/" + resp.stub + "?token=" + adminkey,
                         querystring.stringify({ meta: metaTag}), 'put');
                     resp = JSON.parse(resp);
                     logger.log("Added " + metaTag + " tag to article " + resp.title);

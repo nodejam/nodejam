@@ -6,8 +6,6 @@
     var models = require('fora-app-models'),
         services = require('fora-app-services');
 
-    var indexView = require('../views/home/index');
-
     var index = function*() {
         var db = services.get('db');
 
@@ -35,11 +33,7 @@
         var coverContent = "<h1>Editor's Picks</h1>\
             <p>Fora is a place to share ideas. Lorem Ipsum Bacon?</p>";
 
-        this.body = yield* this.render(
-            indexView,
-            "/js/website/views/home/index",
-            { editorsPicks: editorsPicks, featured: featured, cover: cover, coverContent: coverContent }
-        );
+        return { editorsPicks: editorsPicks, featured: featured, cover: cover, coverContent: coverContent };
     };
 
     module.exports = { index: index };

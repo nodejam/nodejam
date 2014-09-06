@@ -19,7 +19,7 @@
             api_apps = require("./api/apps"),
             api_images = require("./api/images");
 
-        //var ui_home = require('./ui/home');
+        var ui_home = require('./api/ui/home');
 
         return routeConfig(
             function(router) {
@@ -28,27 +28,27 @@
                    ---------- */
 
                 //users
-                router.post("/api/credentials", api_credentials.create);
-                router.post("/api/users", api_users.create);
-                router.post("/api/login", api_users.login);
-                router.get("/api/users/:username", api_users.item);
+                router.post("/credentials", api_credentials.create);
+                router.post("/users", api_users.create);
+                router.post("/login", api_users.login);
+                router.get("/users/:username", api_users.item);
 
                 //apps
-                router.post("/api/apps", api_apps.create);
+                router.post("/apps", api_apps.create);
 
                 //images
-                router.post("/api/images", api_images.upload);
+                router.post("/images", api_images.upload);
 
                 /* UI Routes
                    --------- */
 
                 //home
-                //router.get("/ui/home", ui_home.index);
+                router.get("/ui/home", ui_home.index);
             },
             appInfo,
             {
-                urlPrefix: "/",
-                appUrlPrefix: "/api/apps",
+                urlPrefix: "/api",
+                appUrlPrefix: "/app",
                 extensionModuleName: "api"
             }
         );
