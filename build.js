@@ -83,9 +83,9 @@
             params = params.concat(['app/container/index.js', 'localhost', '10982', 'fora_app']);
             params = params.concat(process.argv.filter(function(p) { return ['--debug', '--debug-brk'].indexOf(p) === -1 ; }));
 
-            console.log("Killing existing instances.....");
+            console.log("Killing existing instances...");
             require("child_process").execSync("kill $(ps ax | grep fora_app | awk '{print $1}') 2>/dev/null");
-            console.log("Restarting the server.....");
+            console.log("Restarting the server...");
 
             var script = spawn("sh", params);
         }

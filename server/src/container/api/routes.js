@@ -3,8 +3,9 @@
 
     var _;
 
-    var router;
-    var appInfo;
+    var router, appInfo;
+
+    var routeConfig = require('fora-app-route-config');
 
     var init = function*(_appInfo) {
         router = configureRouter();
@@ -12,7 +13,6 @@
     };
 
     var configureRouter = function() {
-        var routeConfig = require('fora-app-route-config');
 
         var credentials = require('./credentials'),
             users = require('./users'),

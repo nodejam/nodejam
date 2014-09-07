@@ -3,8 +3,12 @@
 
     var _;
 
-    var router;
-    var appInfo;
+    var router, appInfo;
+
+    var routeConfig = require('fora-app-route-config');
+    var Renderer = require('fora-app-renderer');
+
+    var indexView = require('./home/index');
 
     var init = function*(_appInfo) {
         router = configureRouter();
@@ -12,14 +16,14 @@
     };
 
     var configureRouter = function() {
-        var routeConfig = require('fora-app-route-config');
-
         var home = require('./home');
 
         return routeConfig(
             function(router) {
+                var renderer = new Renderer(router);
+
                 //home
-                router.get("", home.index);
+                renderer.addRoute("get", "", indexView);
             },
             appInfo,
             { extensionModuleName: "web" }

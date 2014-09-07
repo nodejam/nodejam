@@ -20,13 +20,18 @@
     };
 
 
-    module.exports = function*(routes, config, baseConfig) {
+    var Server = function(config, baseConfig) {
+        this.config = config;
+        this.baseConfig = baseConfig;
+
         /*
             Setup information useful for monitoring and debugging
         */
-        var appInfo = setupInstanceStats();
+        this.appInfo = setupInstanceStats();
+    };
 
 
+    Server.prototype.init = function*() {
         /*
             Services
             0) Configuration
@@ -39,11 +44,11 @@
         var services = require('fora-app-services');
 
         //Configuration
-        services.add("configuration", baseConfig);
+        services.add("configuration", this.baseConfig);
 
         //Database Service
         var odm = require('fora-models');
-        var db = new odm.Database(baseConfig.db);
+        var db = new odm.Database(this.baseConfig.db);
         services.add("db", db);
 
         /*
@@ -51,7 +56,7 @@
             ------------------
         */
         var ExtensionsService = require('fora-extensions-service');
-        var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions);
+        var extensionsService = new ExtensionsService(this.config.services.extensions, this.baseConfig.services.extensions);
         _ = yield* extensionsService.init();
         services.add("extensionsService", extensionsService);
 
@@ -78,18 +83,26 @@
             3) Start Routing
         */
         var koa = require('koa');
-        var app = koa();
+        this.app = koa();
 
         var errorHandler = require('fora-app-error-handler');
-        app.use(errorHandler);
-
-        for (let i = 0; i < routes.length; i++) {
-            _ = yield* routes[i].init(appInfo);
-            var router = yield* routes[i].getRouter();
-            app.use(router.route());
-        }
-
-        /* GO! */
-        app.listen(config.port);
+        this.app.use(errorHandler);
     };
+
+
+    Server.prototype.addRoutes = function*(routes) {
+        _ = yield* routes.init(this.appInfo);
+        var router = yield* routes.getRouter();
+        this.app.use(router.route());
+    };
+
+
+    Server.prototype.listen = function() {
+        /* GO! */
+        this.app.listen(this.config.port);
+    };
+
+
+    module.exports = Server;
+
 })();

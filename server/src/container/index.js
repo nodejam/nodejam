@@ -5,7 +5,7 @@
 
     var co = require('co');
     var logger = require('fora-app-logger');
-    var server = require('fora-app-server');
+    var Server = require('fora-app-server');
     var baseConfig = require('../config');
 
     var host = process.argv[2];
@@ -30,10 +30,11 @@
         port: port
     };
 
-    var api_routes = require('./api/routes');
-
     co(function*() {
-        _ = yield* server([api_routes], config, baseConfig);
+        var server = new Server(config, baseConfig);
+        _ = yield* server.init();
+        _ = yield* server.addRoutes(require('./api/routes'));
+        server.listen();
         logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
     })();
 
