@@ -32,11 +32,6 @@ server {
     }
 
     location / {
-        proxy_pass http://localhost:10981;
-        proxy_set_header   Host         $host;
-    }
-
-    location /api {
         proxy_pass http://localhost:10982;
         proxy_set_header   Host         $host;
     }
