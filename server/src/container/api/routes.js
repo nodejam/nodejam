@@ -1,59 +1,31 @@
 (function() {
     "use strict";
 
-    var _;
+    var credentials = require('./credentials'),
+        users = require('./users'),
+        apps = require("./apps"),
+        images = require("./images");
 
-    var router, appInfo;
+    var ui_home = require('./ui/home');
 
-    var routeConfig = require('fora-app-route-config');
+    module.exports = [
 
-    var init = function*(_appInfo) {
-        router = configureRouter();
-        appInfo = _appInfo;
-    };
+        //credentials
+        { method: "post", url: "/api/credentials", handler: credentials.create },
 
-    var configureRouter = function() {
+        //users
+        { method: "post", url: "/api/users", handler: users.create },
+        { method: "post", url: "/api/login", handler: users.login },
+        { method: "get", url: "/api/users/:username", handler: users.item },
 
-        var credentials = require('./credentials'),
-            users = require('./users'),
-            apps = require("./apps"),
-            images = require("./images");
+        //apps
+        { method: "post", url: "/api/apps", handler: apps.create },
 
-        var ui_home = require('./ui/home');
+        //images
+        { method: "post", url: "/api/images", handler: images.upload },
 
-        return routeConfig(
-            function(router) {
-                //users
-                router.post("/credentials", credentials.create);
-                router.post("/users", users.create);
-                router.post("/login", users.login);
-                router.get("/users/:username", users.item);
+        //ui_home
+        { method: "get", url: "/api/ui/home", handler: ui_home.index }
 
-                //apps
-                router.post("/apps", apps.create);
-
-                //images
-                router.post("/images", images.upload);
-
-                //ui/home
-                router.get("/ui/home", ui_home.index);
-            },
-            appInfo,
-            {
-                urlPrefix: "/api",
-                appUrlPrefix: "/app",
-                extensionModuleName: "api"
-            }
-        );
-    };
-
-    var getRouter = function*() {
-        return router;
-    };
-
-    module.exports = {
-        init: init,
-        getRouter: getRouter
-    };
-
+    ];
 })();

@@ -8,7 +8,7 @@
     var routeConfig = require('fora-app-route-config');
     var Renderer = require('fora-app-renderer');
 
-    var indexView = require('./home/index');
+    var indexView = require('./views/home/index');
 
     var init = function*(_appInfo) {
         router = configureRouter();
@@ -16,7 +16,6 @@
     };
 
     var configureRouter = function() {
-        var home = require('./home');
 
         return routeConfig(
             function(router) {

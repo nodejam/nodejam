@@ -90,9 +90,7 @@
     };
 
 
-    Server.prototype.addRoutes = function*(routes) {
-        _ = yield* routes.init(this.appInfo);
-        var router = yield* routes.getRouter();
+    Server.prototype.addRouter = function(router) {
         this.app.use(router.route());
     };
 

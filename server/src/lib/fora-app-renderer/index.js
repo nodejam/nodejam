@@ -4,6 +4,8 @@
     var _;
 
     var layout = require('./layout');
+    var argv = require('optimist').argv;
+
     var renderFunc = argv['debug-client'] ? layout.render_DEBUG : layout.render;
 
 
