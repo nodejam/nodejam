@@ -14,19 +14,19 @@
     };
 
 
-    Renderer.prototype.addRoute = function(url, view) {
-        var self = this;
-        this.router.get(
-            url,
-            function*() {
-                _ = yield* self.showView(view);
-            }
-        );
-    };
+    Renderer.prototype.createRoutes = function(routes) {
+        var result = [];
 
+        routes.forEach(function(route) {
+            result.push({
+                method: route.method,
+                url: route.url,
+                handler: function*() { _ = yield* renderFunc(route.view, route.path); }
+            });
+        });
 
-    Renderer.prototype.showView = function*() {
-        _ = yield* layout.render(view, pagePath);
+        return result;       
+
     };
 
 

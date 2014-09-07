@@ -129,7 +129,10 @@
         addExtensionRoutes(router, "/api/app", "api");
 
         //Setup UI routes
-        //......
+        require('./web/routes').forEach(function(route) {
+            router[route.method](route.url, route.handler);
+        });
+        addExtensionRoutes(router, "/", "web");
 
         //GO!
         server.addRouter(router);
