@@ -19,7 +19,7 @@
             api_apps = require("./api/apps"),
             api_images = require("./api/images");
 
-        var ui_home = require('./api/ui/home');
+        var api_ui_home = require('./api/ui/home');
 
         return routeConfig(
             function(router) {
@@ -39,11 +39,13 @@
                 //images
                 router.post("/images", api_images.upload);
 
-                /* UI Routes
-                   --------- */
+                //ui_home
+                router.get("/ui/home", api_ui_home.index);
 
-                //home
-                router.get("/ui/home", ui_home.index);
+
+                /* Web Routes
+                   ---------- */                
+
             },
             appInfo,
             {

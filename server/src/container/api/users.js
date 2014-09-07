@@ -7,7 +7,7 @@
         services = require('fora-app-services'),
         typeHelpers = require('fora-app-type-helpers'),
         FileService = require('fora-app-file-service'),
-        conf = require('../../../config');
+        conf = require('../../config');
 
     var Parser = require('fora-request-parser');
     var fileService = new FileService(conf);

@@ -9,10 +9,8 @@
         .describe('no-monitor', "Do not start the server or monitor files after building")
         .describe('no-run', "Do not start the server after building")
         .describe('threads', "Number of threads to use for the build (default: 8)")
-        .describe('debug-api', 'Start debugger for api')
-        .describe('debug-brk-api', 'Start debugger for api with breakpoint')
-        .describe('debug-web', 'Start debugger for web')
-        .describe('debug-brk-web', 'Start debugger for web with breakpoint')
+        .describe('debug', 'Start debugger for server')
+        .describe('debug-brk', 'Start debugger for api with breakpoint')
         .describe('debug-build', 'Debug the build process itself')
         .describe('debug-client', 'Do not minify JS files sent to browser')
         .describe('show-errors', 'Display errors in the console')
@@ -31,7 +29,10 @@
     var start = Date.now();
 
     var foraBuild = require('fora-build');
-    var spawn = foraBuild.tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
+    var spawn = foraBuild.tools.process.spawn({
+        stdout: function(data) { process.stdout.write(data); },
+        stderr: function(data) { process.stderr.write(data); }
+    });
 
     /* Create the build */
     var threads = argv.threads ? parseInt(argv.threads) : 8;
@@ -61,8 +62,7 @@
         build.state.buildServer = true;
     }
 
-    if (argv['debug-api'] || argv['debug-brk-api']) build.state.debugApi = true;
-    if (argv['debug-web'] || argv['debug-brk-web']) build.state.debugWeb = true;
+    if (argv.debug || argv['debug-brk']) build.state.debugServer = true;
     if (argv['debug-client']) build.state.debugClient = true;
     if (argv['use-es6']) build.state.useES6 = true;
 
@@ -75,17 +75,20 @@
 
     build.job(function*() {
         if (this.state.run) {
-            var params = ["server/run.sh"];
-            if (argv['debug-api']) params.push("--debug-api");
-            if (argv['debug-brk-api']) params.push("--debug-brk-api");
-            if (argv['debug-web']) params.push("--debug-web");
-            if (argv['debug-brk-web']) params.push("--debug-brk-web");
-            if (argv['debug-client']) params.push("--debug-client");
-            if (argv['show-errors']) params.push("--show-errors");
-            var moreArgs = process.argv.filter(function(p) { return /^--args-/.test(p); }).map(function(p) { return p.replace(/^--args-/, '--'); });
-            params = params.concat(moreArgs);
+            var params = ["server/runscript.sh"];
+            var appParams = process.argv.filter(function(p) { return ['debug', 'debug-brk'].indexOf(p) === -1 ; });
+            params.push('--harmony');
+            if (argv.debug)
+                params.push('--debug');
+            if (argv['debug-brk'])
+                params.push('--debug-brk');
+            params.push('app/container/index.js'); //script
+            params.push('localhost'); //host
+            params.push('10982'); //port
+            params = params.concat(appParams);
+            console.log(params);
             console.log("Restarting the server.....");
-            var script = spawn("sh", params);
+            var script = spawn("sh", params, { stdio: 'inherit' });
         }
     }, "restart_server");
 
