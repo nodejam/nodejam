@@ -14,12 +14,12 @@
     var configureRouter = function() {
         var routeConfig = require('fora-app-route-config');
 
-        var api_credentials = require('./api/credentials'),
-            api_users = require('./api/users'),
-            api_apps = require("./api/apps"),
-            api_images = require("./api/images");
+        var credentials = require('./credentials'),
+            users = require('./users'),
+            apps = require("./apps"),
+            images = require("./images");
 
-        var api_ui_home = require('./api/ui/home');
+        var ui_home = require('./ui/home');
 
         return routeConfig(
             function(router) {
@@ -28,23 +28,23 @@
                    ---------- */
 
                 //users
-                router.post("/credentials", api_credentials.create);
-                router.post("/users", api_users.create);
-                router.post("/login", api_users.login);
-                router.get("/users/:username", api_users.item);
+                router.post("/credentials", credentials.create);
+                router.post("/users", users.create);
+                router.post("/login", users.login);
+                router.get("/users/:username", users.item);
 
                 //apps
-                router.post("/apps", api_apps.create);
+                router.post("/apps", apps.create);
 
                 //images
-                router.post("/images", api_images.upload);
+                router.post("/images", images.upload);
 
                 //ui_home
-                router.get("/ui/home", api_ui_home.index);
+                router.get("/ui/home", ui_home.index);
 
 
                 /* Web Routes
-                   ---------- */                
+                   ---------- */
 
             },
             appInfo,

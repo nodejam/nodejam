@@ -29,11 +29,9 @@
     var start = Date.now();
 
     var foraBuild = require('fora-build');
-    var spawn = foraBuild.tools.process.spawn({
-        stdout: function(data) { process.stdout.write(data); },
-        stderr: function(data) { process.stderr.write(data); }
-    });
 
+    var spawn = foraBuild.tools.process.spawn();
+    
     /* Create the build */
     var threads = argv.threads ? parseInt(argv.threads) : 8;
     var build = foraBuild.create({ threads: threads });
@@ -85,10 +83,14 @@
             params.push('app/container/index.js'); //script
             params.push('localhost'); //host
             params.push('10982'); //port
+            params.push('fora_app'); //identifier for grepping
             params = params.concat(appParams);
-            console.log(params);
+
+
+            //kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}') 2>/dev/null
             console.log("Restarting the server.....");
-            var script = spawn("sh", params, { stdio: 'inherit' });
+
+            var script = spawn("sh", params);
         }
     }, "restart_server");
 

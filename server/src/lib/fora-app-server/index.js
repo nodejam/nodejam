@@ -20,7 +20,7 @@
     };
 
 
-    module.exports = function*(container, config, baseConfig) {
+    module.exports = function*(routes, config, baseConfig) {
         /*
             Setup information useful for monitoring and debugging
         */
@@ -74,7 +74,7 @@
         /*
             Start the app.
             1) Error Handling
-            2) Container Initialization
+            2) routes Initialization
             3) Start Routing
         */
         var koa = require('koa');
@@ -83,10 +83,11 @@
         var errorHandler = require('fora-app-error-handler');
         app.use(errorHandler);
 
-        _ = yield* container.init(appInfo);
-
-        var router = yield* container.getRouter();
-        app.use(router.route());
+        for (let i = 0; i < routes.length; i++) {
+            _ = yield* routes[i].init(appInfo);
+            var router = yield* routes[i].getRouter();
+            app.use(router.route());
+        }
 
         /* GO! */
         app.listen(config.port);

@@ -2,7 +2,7 @@
     "use strict";
     module.exports = function(tools) {
 
-        var spawn = tools.process.spawn({ log: function(data) { process.stdout.write(data); } });
+        var spawn = tools.process.spawn();
         var exec = tools.process.exec({ log: console.log });
         var ensureDirExists = tools.fs.ensureDirExists();
         var react = require('react-tools');

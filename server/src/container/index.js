@@ -30,10 +30,10 @@
         port: port
     };
 
-    var routes = require('./routes');
+    var api_routes = require('./api/routes');
 
     co(function*() {
-        _ = yield* server(routes, config, baseConfig);
+        _ = yield* server([api_routes], config, baseConfig);
         logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
     })();
 
