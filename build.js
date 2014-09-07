@@ -31,7 +31,8 @@
     var foraBuild = require('fora-build');
 
     var spawn = foraBuild.tools.process.spawn();
-    
+    var exec = foraBuild.tools.process.exec({ log: console.log });
+
     /* Create the build */
     var threads = argv.threads ? parseInt(argv.threads) : 8;
     var build = foraBuild.create({ threads: threads });
@@ -74,20 +75,16 @@
     build.job(function*() {
         if (this.state.run) {
             var params = ["server/runscript.sh"];
-            var appParams = process.argv.filter(function(p) { return ['debug', 'debug-brk'].indexOf(p) === -1 ; });
             params.push('--harmony');
             if (argv.debug)
                 params.push('--debug');
             if (argv['debug-brk'])
                 params.push('--debug-brk');
-            params.push('app/container/index.js'); //script
-            params.push('localhost'); //host
-            params.push('10982'); //port
-            params.push('fora_app'); //identifier for grepping
-            params = params.concat(appParams);
+            params = params.concat(['app/container/index.js', 'localhost', '10982', 'fora_app']);
+            params = params.concat(process.argv.filter(function(p) { return ['--debug', '--debug-brk'].indexOf(p) === -1 ; }));
 
-
-            //kill $(ps ax | grep 'fora_[website|api]' | awk '{print $1}') 2>/dev/null
+            console.log("Killing existing instances.....");
+            require("child_process").execSync("kill $(ps ax | grep fora_app | awk '{print $1}') 2>/dev/null");
             console.log("Restarting the server.....");
 
             var script = spawn("sh", params);

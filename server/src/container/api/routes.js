@@ -23,10 +23,6 @@
 
         return routeConfig(
             function(router) {
-
-                /* API Routes
-                   ---------- */
-
                 //users
                 router.post("/credentials", credentials.create);
                 router.post("/users", users.create);
@@ -39,13 +35,8 @@
                 //images
                 router.post("/images", images.upload);
 
-                //ui_home
+                //ui/home
                 router.get("/ui/home", ui_home.index);
-
-
-                /* Web Routes
-                   ---------- */
-
             },
             appInfo,
             {
