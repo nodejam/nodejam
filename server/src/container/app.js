@@ -22,6 +22,8 @@
 
     var Parser = require('fora-request-parser');
 
+    var Renderer = require('fora-app-renderer');
+    var renderer = new Renderer();
 
     /*
         Calling /healthcheck returns { "jacksparrow": "alive", .... }
@@ -129,7 +131,7 @@
         addExtensionRoutes(router, "/api/app", "api");
 
         //Setup UI routes
-        require('./web/routes').forEach(function(route) {
+        renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views")).forEach(function(route) {
             router[route.method](route.url, route.handler);
         });
         addExtensionRoutes(router, "/", "web");

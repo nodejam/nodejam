@@ -18,9 +18,8 @@ temp/*
 server/weberrors.log
 server/apierrors.log
 
-server/src/config/*
-!server/src/config/index.js
-!server/src/config/*.sample
+#Ignore actual configuration file
+server/src/config/settings.config
 
 #Ignore directories which are already on npm.
 #Sometimes we check them out here to test.
