@@ -23,7 +23,6 @@
     var Parser = require('fora-request-parser');
 
     var Renderer = require('fora-app-renderer');
-    var renderer = new Renderer();
 
     /*
         Calling /healthcheck returns { "jacksparrow": "alive", .... }
@@ -70,20 +69,21 @@
         var Sandbox = require('fora-app-sandbox');
         var sandbox = new Sandbox(services, extensionModuleName);
 
-        var appUrlPrefix = /\/$/.test(appUrlPrefix) ? appUrlPrefix : appUrlPrefix + "/";
+        appUrlPrefix = /\/$/.test(appUrlPrefix) ? appUrlPrefix : appUrlPrefix + "/";
         var prefixPartsCount = appUrlPrefix.split("/").length - 1;
         var appPathRegex = new RegExp("^" + (appUrlPrefix));
         var appRootRegex = new RegExp("^" + appUrlPrefix + "[a-z0-9-]*/?");
         router.when(
             function(routingContext) {
-                return appPathRegex.test(this.url);
+                return appPathRegex.test(routingContext.url);
             },
             function*(routingContext) {
                 if (!routingContext.application) {
-                    routingContext.application = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
+                    routingContext.application = yield* models.App.findOne({ stub: routingContext.path.split("/")[prefixPartsCount] }, context);
                     if (routingContext.application) {
-                        var urlParts = this.url.split("/");
-                        this.url = this.url.replace(appRootRegex, "/");
+                        var urlParts = routingContext.url.split("/");
+                        routingContext.url = routingContext.url.replace(appRootRegex, "/");
+                        routingContext.path = routingContext.path.replace(appRootRegex, "/");
                     } else {
                         throw new Error("Invalid application");
                     }
@@ -131,6 +131,7 @@
         addExtensionRoutes(router, "/api/app", "api");
 
         //Setup UI routes
+        var renderer = new Renderer(router);
         renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views")).forEach(function(route) {
             router[route.method](route.url, route.handler);
         });
