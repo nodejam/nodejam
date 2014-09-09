@@ -91,7 +91,7 @@
 
 
     Server.prototype.addRouter = function(router) {
-        this.app.use(router.route());
+        this.app.use(router.koaRoute());
     };
 
 
