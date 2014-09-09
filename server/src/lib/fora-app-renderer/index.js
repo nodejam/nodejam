@@ -18,14 +18,13 @@
     Renderer.prototype.createRoutes = function(routes, basepath) {
         var result = [];
 
-        var apiConnector = new ApiConnector(this.router);
         routes.forEach(function(route) {
             var view = require(require("path").join(basepath, route.path));
             result.push({
                 method: route.method,
                 url: route.url,
                 handler: function*() {
-                    this.api = apiConnector;
+                    this.api = new ApiConnector(this, this.router);
                     _ = yield* renderFunc(view, route.path);
                 }
             });

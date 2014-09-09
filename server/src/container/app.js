@@ -132,7 +132,8 @@
 
         //Setup UI routes
         var renderer = new Renderer(router);
-        renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views")).forEach(function(route) {
+        var uiRoutes = renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views"));
+        uiRoutes.forEach(function(route) {
             router[route.method](route.url, route.handler);
         });
         addExtensionRoutes(router, "/", "web");
