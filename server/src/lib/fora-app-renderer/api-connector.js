@@ -12,17 +12,12 @@
 
 
     ApiConnector.prototype.get = function*(url, requestContext) {
-        var routingContext = {
-            url: url,
-        };
-        routeFn.call(requestContext || this.requestContext, null, routingContext);
+        routeFn.call(requestContext || this.requestContext);
     };
 
 
     ApiConnector.prototype.getRoutingContext = function*(url, method) {
-        return {
-            url: url,
-        }
+        return {};
     };
 
 

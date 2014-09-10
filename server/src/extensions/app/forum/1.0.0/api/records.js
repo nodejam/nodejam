@@ -4,7 +4,7 @@
     var _;
 
     var create = function*() {
-        var record = yield* this.application.createRecord({
+        var record = yield* this.app.createRecord({
             type: yield* this.parser.body('type'),
             version: yield* this.parser.body('version'),
             createdBy: this.session.user,
@@ -15,13 +15,13 @@
 
         _ = yield* this.parser.map(record, yield* record.getMappableFields());
 
-        this.body = yield* this.application.addRecord(record);
+        this.body = yield* this.app.addRecord(record);
     };
 
 
 
     var edit = function*(stub) {
-        var record = yield* this.application.findRecord({ stub: stub });
+        var record = yield* this.app.findRecord({ stub: stub });
 
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
@@ -40,7 +40,7 @@
 
 
     var remove = function*(stub) {
-        var record = yield* this.application.getRecord({ stub: stub });
+        var record = yield* this.app.getRecord({ stub: stub });
 
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
@@ -57,7 +57,7 @@
 
 
     var admin_update = function*(stub) {
-        var record = yield* this.application.getRecord(stub);
+        var record = yield* this.app.getRecord(stub);
 
         if (record) {
             var meta = yield* this.parser.body('meta');

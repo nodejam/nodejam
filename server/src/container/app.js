@@ -46,11 +46,11 @@
         var context = { typesService: typesService, db: db };
 
         router.when(
-            function(routingContext) {
+            function() {
                 return this.hostname && (baseConfig.domains.indexOf(this.hostname) === -1);
             },
-            function*(routingContext) {
-                routingContext.application = yield* models.App.findOne({ domains: this.hostname }, context);
+            function*() {
+                this.app = yield* models.App.findOne({ domains: this.hostname }, context);
                 return true; //continue matching.
             }
         );
@@ -74,16 +74,15 @@
         var appPathRegex = new RegExp("^" + (appUrlPrefix));
         var appRootRegex = new RegExp("^" + appUrlPrefix + "[a-z0-9-]*/?");
         router.when(
-            function(routingContext) {
-                return appPathRegex.test(routingContext.url);
+            function() {
+                return appPathRegex.test(this.url);
             },
-            function*(routingContext) {
-                if (!routingContext.application) {
-                    routingContext.application = yield* models.App.findOne({ stub: routingContext.path.split("/")[prefixPartsCount] }, context);
-                    if (routingContext.application) {
-                        var urlParts = routingContext.url.split("/");
-                        routingContext.url = routingContext.url.replace(appRootRegex, "/");
-                        routingContext.path = routingContext.path.replace(appRootRegex, "/");
+            function*() {
+                if (!this.app) {
+                    this.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
+                    if (this.app) {
+                        var urlParts = this.url.split("/");
+                        this.url = this.url.replace(appRootRegex, "/");
                     } else {
                         throw new Error("Invalid application");
                     }
@@ -95,7 +94,7 @@
                 if (token)
                     this.session = yield* models.Session.findOne({ token: token }, context);
 
-                return yield* sandbox.executeRequest(this, routingContext);
+                return yield* sandbox.executeRequest(this);
             }
         );
     };
