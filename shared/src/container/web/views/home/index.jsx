@@ -11,8 +11,8 @@
 
     module.exports = React.createClass({
         statics: {
-            componentInit: function*() {
-                var props = yield* this.api.get("/");
+            componentInit: function*(request) {
+                var props = yield* request.api.get("/api/ui/home");
 
                 /* Convert the JSON into Record objects and attach the templates */
                 var init = function*(records) {

@@ -16,6 +16,8 @@
 
 
     Renderer.prototype.createRoutes = function(routes, basepath) {
+        var self = this;
+
         var result = [];
 
         routes.forEach(function(route) {
@@ -24,8 +26,8 @@
                 method: route.method,
                 url: route.url,
                 handler: function*() {
-                    this.api = new ApiConnector(this, this.router);
-                    _ = yield* renderFunc(view, route.path);
+                    this.api = new ApiConnector(this, self.router);
+                    _ = yield* renderFunc.call(this, view, route.path);
                 }
             });
         });
