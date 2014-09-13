@@ -6,11 +6,10 @@
 help() {
 echo "usage: ./install-fora.sh options
 options:
-  --all               Same as --node --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
-  --latest            Same as --node-latest --coffee --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
+  --all               Same as --node --nginx --nginx-conf --host local.foraproject.org --mongodb --gm --config-files --node-modules
+  --latest            Same as --node-latest --nginx --nginx-conf --host local.foraproject.org --mongodb-latest --gm --config-files --node-modules
 
   --node              Install a pre-compiled version of node
-  --coffee            Compile and install coffee-script, with support for the yield keyword
   --nginx             Install nginx
   --nginx-conf        Copies a sample nginx config file to /etc/nginx/sites-available, and creates a symlink in sites-enabled
   --host hostname     Adds an entry into /etc/hosts. eg: --host test.myforaproj.com
@@ -24,7 +23,7 @@ options:
 
 Examples:
   ./install-fora.sh --all
-  ./install-fora.sh --node --coffee --gm --node-modules"
+  ./install-fora.sh --node --gm --node-modules"
 }
 
 if [ $# -eq 0 ]
@@ -70,7 +69,6 @@ base_dir=$PWD
 dont_force=true
 common=false
 node=false
-coffee=false
 nginx=false
 nginx_conf=false
 hostname="local.foraproject.org"
@@ -119,7 +117,6 @@ do
         -a | --all)
             common=true
             node=true
-            coffee=true
             nginx=true
             nginx_conf=true
             host=true
@@ -131,7 +128,6 @@ do
             ;;
         --latest)
             common=true
-            coffee=true
             nginx=true
             nginx_conf=true
             host=true
@@ -143,10 +139,6 @@ do
             ;;
         --node)
             node=true
-            shift
-            ;;
-        --coffee)
-            coffee=true
             shift
             ;;
         --nginx)
@@ -248,50 +240,6 @@ if $node ; then
     else
         echo "Node will be installed."
         install_node
-    fi
-fi
-
-install_coffee() {
-    temp_cs=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
-
-    echo "Installing standard Coffee-Script compiler.. ($temp_cs)"
-    cd $temp_cs
-    npm install coffee-script
-    export PATH=$PATH:$base_dir/node_modules/coffee-script/bin
-    temp_new_cs=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
-    git clone https://github.com/alubbe/coffee-script.git $temp_new_cs
-    cd $temp_new_cs
-    echo "Switching to earlier version (1e377ed59bc4f679863b7543f0c33d1f89dbf6ac), until a parser bug is fixed.."
-    git checkout 1e377ed59bc4f679863b7543f0c33d1f89dbf6ac
-    npm install mkdirp
-    npm install jison
-    echo "Building Coffee-Script"
-    cake build:parser
-    cake build
-    echo "Installing Coffee-Script"
-    sudo npm install -g mkdirp
-    sudo $temp_cs/node_modules/coffee-script/bin/cake install
-
-    rm -rf $temp_cs
-    rm -rf $temp_new_cs
-}
-
-
-#coffee-script compiler must support yield
-if $coffee ; then
-    if $dont_force && command -v coffee >/dev/null; then
-	echo $dont_force
-        echo "NOTE: While checking for yield support you might see an error... ignore it."
-        coffee --nodejs --harmony -e "a = (->* yield 1)"
-        if [ "$?" -eq 0 ] ; then
-            echo "Coffee-Script is installed and supports yield. Update is not needed."
-        else
-            echo "Coffee-Script is installed but does not support yield. Will update compiler."
-            install_coffee
-        fi
-    else
-        echo "Coffee-Script will be installed."
-        install_coffee
     fi
 fi
 

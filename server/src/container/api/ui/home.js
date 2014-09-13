@@ -33,7 +33,7 @@
         var coverContent = "<h1>Editor's Picks</h1>\
             <p>Fora is a place to share ideas. Lorem Ipsum Bacon?</p>";
 
-        return { editorsPicks: editorsPicks, featured: featured, cover: cover, coverContent: coverContent };
+        this.body = { editorsPicks: editorsPicks, featured: featured, cover: cover, coverContent: coverContent };
     };
 
     module.exports = { index: index };
