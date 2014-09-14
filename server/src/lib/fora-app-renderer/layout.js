@@ -50,6 +50,8 @@
         ]
     };
 
+
+
     var render = function(debug) {
         return function*(reactClass, pagePath) {
             var props;

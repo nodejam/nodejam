@@ -81,11 +81,22 @@
     };
 
 
+    var getLimit = function(limit, _default, max) {
+        var result = _default;
+        if (limit) {
+            result = limit;
+            if (result > max)
+                result = max;
+        }
+        return result;
+    };
 
-    App.prototype.findRecords = function*(query) {
+
+    App.prototype.findRecords = function*(query, settings) {
         var context = services.copy();
         query.appId = context.db.getRowId(this);
-        return yield* models.Record.find(query, { sort: sort, limit: limit }, context);
+        settings = settings ? { sort: settings.sort, limit: getLimit(settings.limit, 100, 1000) } : {};
+        return yield* models.Record.find(query, settings, context);
     };
 
 

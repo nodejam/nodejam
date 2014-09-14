@@ -14,13 +14,12 @@
             componentInit: function*(request) {
                 var props = yield* request.api.get("/api/ui/home");
 
-                /* Convert the JSON into Record objects and attach the templates */
+                /* Attach the templates */
                 var init = function*(records) {
                   for (var i = 0; i < records.length; i++) {
-                      if (!(records[i] instanceof Models.Record)) records[i] = new Models.Record(records[i]);
                       var typeDef = yield* records[i].getTypeDefinition();
-                      var extension = yield* loader.load(typeDef);
-                      records[i].template = yield* extension.getTemplateModule('list');
+                      var extension = yield* request.libs.extensions.get(typeDef);
+                      records[i].template = extension["web/views"]["list"];
                   }
                 }
 

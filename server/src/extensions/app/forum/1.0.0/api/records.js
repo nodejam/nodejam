@@ -14,7 +14,7 @@
         });
 
         _ = yield* this.parser.map(record, yield* record.getMappableFields());
-
+        record.app = this.app.summarize();
         this.body = yield* this.app.addRecord(record);
     };
 

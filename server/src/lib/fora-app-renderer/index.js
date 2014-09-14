@@ -10,13 +10,20 @@
     var renderFunc = argv['debug-client'] ? layout.render_DEBUG : layout.render;
 
 
-    var Renderer = function(router) {
+    var Renderer = function(router, extensionsService) {
         this.router = router;
+        this.extensionsService = extensionsService;
     };
 
 
     Renderer.prototype.createRoutes = function(routes, basepath) {
         var self = this;
+
+        var libs = {
+            extensions: {
+                get: this.getExtension.bind(this)
+            }
+        };
 
         var result = [];
 
@@ -27,12 +34,20 @@
                 url: route.url,
                 handler: function*() {
                     this.api = new ApiConnector(this, self.router);
-                    _ = yield* renderFunc.call(this, view, route.path);
+                    this.libs = libs;
+                    this.body = yield* renderFunc.call(this, view, route.path);
                 }
             });
         });
 
         return result;
+    };
+
+
+    Renderer.prototype.getExtension = function*(typeDef) {
+        var result = yield* this.extensionsService.get(typeDef.name);
+        if (result)
+            return result.extension;
     };
 
 

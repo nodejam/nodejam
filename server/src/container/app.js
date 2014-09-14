@@ -106,7 +106,7 @@
                 extensions: {
                     modules: [
                         { kind: "app", modules: ["api"] },
-                        { kind: "record", modules: ["definition", "model"] }
+                        { kind: "record", modules: ["definition", "model", "web/views"] }
                     ]
                 }
             },
@@ -130,7 +130,7 @@
         addExtensionRoutes(router, "/api/app", "api");
 
         //Setup UI routes
-        var renderer = new Renderer(router);
+        var renderer = new Renderer(router, services.get('extensionsService'));
         var uiRoutes = renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views"));
         uiRoutes.forEach(function(route) {
             router[route.method](route.url, route.handler);

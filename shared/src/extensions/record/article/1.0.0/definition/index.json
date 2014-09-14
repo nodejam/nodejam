@@ -7,7 +7,8 @@
             "subtitle": { "type": "string", "maxLength": 200 },
             "synopsis": { "type": "string", "maxLength": 2000 },
             "cover": { "$ref": "cover" },
-            "content": { "$ref": "text-content" }
+            "content": { "$ref": "text-content" },
+            "app": { "$ref": "app-summary" }
         },
         "required": ["title"]
     }
