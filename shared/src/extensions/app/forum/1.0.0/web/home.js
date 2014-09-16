@@ -7,9 +7,10 @@
 
     var index = function*() {
         this.body = "AGAIN!";
+        return;
+        yield false; //browerify BS!
     };
 
-    var auth = require('fora-app-auth-service');
     module.exports = {
         index: index
     };

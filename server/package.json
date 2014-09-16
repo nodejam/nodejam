@@ -20,8 +20,10 @@
     "react": "*",
     "path-to-regexp": "*",
     "fora-models": "*",
-    "fora-extensions": "*",
-    "fora-react-sandbox": "*",
-    "fora-webrequestparser": "*"
+    "fora-extensions-service": "*",
+    "fora-request": "*",
+    "fora-request-parser": "*",
+    "fora-router": "*",
+    "fora-types-service": "*"
   }
 }

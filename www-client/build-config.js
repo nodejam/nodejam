@@ -29,26 +29,15 @@
 
 
             /*
-                Copy all files, except .coffee and .less
+                Copy all files, except .less
             */
             this.watch(["src/www/css/*.*", "src/www/fonts/*.*", "src/www/images/*.*", "src/www/js/*.js", "src/www/vendor/*.*"], function*(filePath) {
-                if (!/(\.coffee$)|(\.less$)/.test(path.extname(filePath))) {
+                if (!/(\.less$)/.test(path.extname(filePath))) {
                     var dest = filePath.replace(/^src\//, 'app/');
                     yield* ensureDirExists(dest);
                     yield* exec("cp " + filePath + " " + dest);
                 }
             }, "client_files_copy");
-
-
-            /*
-                Compile all coffee-script files
-                Coffee doesn't do coffee {src} {dest} yet, hence the redirection.
-            */
-            this.watch(["src/*.coffee"], function*(filePath) {
-                var dest = filePath.replace(/^src\//, 'app/').replace(/\.coffee$/, '.js');
-                yield* ensureDirExists(dest);
-                yield* exec("coffee -cs < " + filePath + " > " + dest);
-            }, "client_coffee_compile");
 
 
             /*
@@ -72,7 +61,7 @@
                     var result = yield* exec("regenerator " + filePath);
                     fs.writeFileSync(filePath, result);
                 }
-            }, "client_regenerator_transform", ["client_coffee_compile", "client_shared_files_copy"]);
+            }, "client_regenerator_transform", ["client_shared_files_copy"]);
 
 
             /*
@@ -144,13 +133,22 @@
                 console.log("Running browserify");
 
                 var cmdMakeLib = "browserify -r ./app/www/vendor/js/shims/react.shim.js:react -r ./app/www/vendor/js/shims/co.shim.js:co " +
-                     "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown -r ./app/www/js/lib/fora-extensions:fora-extensions " +
-                     "-r ./app/www/js/lib/fora-models:fora-models -r ./app/www/js/lib/fora-ui:fora-ui " +
-                     "-r ./app/www/js/lib/models:models > app/www/js/lib.js";
-                var cmdMakeBundle = "browserify -x markdown -x react -x co -x fora-extensions -x fora-models -x fora-ui -x models " +
-                    "./app/www/js/website/app " +
+                     "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
+                     "-r ./app/www/js/lib/fora-extensions-service/fora-extensions-service:fora-extensions-service " +
+                     "-r ./app/www/js/lib/fora-models/fora-models:fora-models " +
+                     "-r ./app/www/js/lib/fora-app-ui:fora-app-ui " +
+                     "-r ./app/www/js/lib/fora-app-type-helpers:fora-app-type-helpers " +
+                     "-r ./app/www/js/lib/fora-app-services:fora-app-services " +
+                     "-r ./app/www/js/lib/fora-app-models:fora-app-models " +
+                     "> app/www/js/lib.js";
+                var cmdMakeBundle = "browserify -x markdown -x react -x co -x fora-extensions-service -x fora-models -x fora-app-ui " +
+                    "-x fora-app-type-helpers -x fora-app-services -x fora-app-models " +
+                    "./app/www/js/container/app " +
                     reactPages.concat(extensions).map(function(x) {
-                      return "-r ./" + x.match(/(.*)\.js/)[1] + ":" + x.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/');
+                        //Take out .js, .json, /index.js and /index.json since require doesn't need it
+                        //x = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');
+                        var dest = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');
+                        return "-r ./" + x + ":" + dest.replace(/^app\/www\//,'/');
                     }).join(" ") +
                     " > app/www/js/bundle.js";
 
@@ -173,6 +171,6 @@
             this.onComplete(function*() {
                 this.state.end = Date.now();
             }, "client_build_complete", ["client_bundle_files"]);
-        }
-    }
+        };
+    };
 })();
