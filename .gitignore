@@ -26,9 +26,9 @@ server/src/config/settings.config
 server/src/lib/fora-models
 server/src/lib/fora-request
 server/src/lib/fora-request-parser
-server/src/lib/fora-router
 server/src/lib/fora-extensions-service
 server/src/lib/fora-types-service
+shared/src/lib/fora-router
 
 www-client/system/*
 !www-client/system/placeholder

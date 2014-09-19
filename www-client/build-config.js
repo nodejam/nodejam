@@ -136,13 +136,20 @@
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
                      "-r ./app/www/js/lib/fora-extensions-service/fora-extensions-service:fora-extensions-service " +
                      "-r ./app/www/js/lib/fora-models/fora-models:fora-models " +
+                     "-r ./app/www/js/lib/fora-router/lib/fora-router:fora-router " +
                      "-r ./app/www/js/lib/fora-app-ui:fora-app-ui " +
                      "-r ./app/www/js/lib/fora-app-type-helpers:fora-app-type-helpers " +
                      "-r ./app/www/js/lib/fora-app-services:fora-app-services " +
                      "-r ./app/www/js/lib/fora-app-models:fora-app-models " +
+                     "-r ./app/www/js/lib/path-to-regexp/path-to-regexp:path-to-regexp " +
+                     "-r ./app/www/js/lib/fora-request/fora-request:fora-request " +
                      "> app/www/js/lib.js";
-                var cmdMakeBundle = "browserify -x markdown -x react -x co -x fora-extensions-service -x fora-models -x fora-app-ui " +
-                    "-x fora-app-type-helpers -x fora-app-services -x fora-app-models " +
+                var cmdMakeBundle = "browserify " +
+                    "-x markdown -x react -x co " +
+                    "-x fora-extensions-service " +
+                    "-x fora-models -x fora-router -x fora-app-ui " +
+                    " -x fora-app-type-helpers " +
+                    "-x fora-app-services -x fora-app-models " +
                     "./app/www/js/container/app " +
                     reactPages.concat(extensions).map(function(x) {
                         //Take out .js, .json, /index.js and /index.json since require doesn't need it

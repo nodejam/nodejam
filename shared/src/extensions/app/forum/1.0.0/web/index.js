@@ -5,6 +5,8 @@
 
     var init = function*() {
         router = configureRouter();
+        return;
+        yield false;
     };
 
     var configureRouter = function() {
