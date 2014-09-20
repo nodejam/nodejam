@@ -69,15 +69,15 @@
             var bodyClass = pageName + " " + theme;
 
             var d = debug ? debug_deps : deps;
-            var depsHtml = d.styles.map(makeLink).concat(d.scripts.map(makeScript)).join('');
+            var depsHtml = d.styles.map(function(x) { return makeLink(x); }).concat(d.scripts.map(function(x) { return makeScript(x); })).join('');
 
             depsHtml += '\
                 <script> \
-                    app.initPage("' + pagePath + '", "' + JSON.stringify(props) + '); \
+                    app.initPage("' + pagePath + '", ' + JSON.stringify(props) + '); \
                 </script>';
 
-            return ('\
-                <!DOCTYPE html>\
+            return (
+                '<!DOCTYPE html>\
                 <html>\
                     <head>\
                         <title>' + title + '</title>' +
@@ -92,10 +92,10 @@
                             </a>\
                         </header>\
                         <div class="page-container"> \
-                        "' + React.renderComponentToString(component) + '"\
+                        ' + React.renderComponentToString(component) + '\
                         </div>\
                     </body>\
-                </html>"');
+                </html>');
             };
         };
 
