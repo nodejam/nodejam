@@ -99,49 +99,52 @@
         );
     };
 
+    var init = function() {
+        co(function*() {
+            var config = {
+                services: {
+                    extensions: {
+                        modules: [
+                            { kind: "app", modules: ["api"] },
+                            { kind: "record", modules: ["definition", "model", "web/views"] }
+                        ]
+                    }
+                },
+                host: host,
+                port: port
+            };
 
-    co(function*() {
-        var config = {
-            services: {
-                extensions: {
-                    modules: [
-                        { kind: "app", modules: ["api"] },
-                        { kind: "record", modules: ["definition", "model", "web/views"] }
-                    ]
-                }
-            },
-            host: host,
-            port: port
-        };
+            var server = new Server(config, baseConfig);
+            _ = yield* server.init();
 
-        var server = new Server(config, baseConfig);
-        _ = yield* server.init();
+            var router = new Router();
 
-        var router = new Router();
+            addHealthCheck(router, server);
 
-        addHealthCheck(router, server);
+            addDomainRewrite(router);
 
-        addDomainRewrite(router);
+            //Setup API routes.
+            require('./api/routes').forEach(function(route) {
+                router[route.method](route.url, route.handler);
+            });
+            addExtensionRoutes(router, "/api/app", "api");
 
-        //Setup API routes.
-        require('./api/routes').forEach(function(route) {
-            router[route.method](route.url, route.handler);
-        });
-        addExtensionRoutes(router, "/api/app", "api");
+            //Setup UI routes
+            var renderer = new Renderer(router, services.get('extensionsService'));
+            var uiRoutes = renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views"));
+            uiRoutes.forEach(function(route) {
+                router[route.method](route.url, route.handler);
+            });
+            addExtensionRoutes(router, "/", "web");
 
-        //Setup UI routes
-        var renderer = new Renderer(router, services.get('extensionsService'));
-        var uiRoutes = renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views"));
-        uiRoutes.forEach(function(route) {
-            router[route.method](route.url, route.handler);
-        });
-        addExtensionRoutes(router, "/", "web");
+            //GO!
+            server.addRouter(router);
+            server.listen();
 
-        //GO!
-        server.addRouter(router);
-        server.listen();
+            logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
+        })();
+    };
 
-        logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
-    })();
+    init();
 
 })();

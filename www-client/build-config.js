@@ -142,14 +142,18 @@
                      "-r ./app/www/js/lib/fora-app-services:fora-app-services " +
                      "-r ./app/www/js/lib/fora-app-models:fora-app-models " +
                      "-r ./app/www/js/lib/path-to-regexp/path-to-regexp:path-to-regexp " +
+                     "-r ./app/www/js/lib/fora-app-logger:fora-app-logger " +
+                     "-r ./app/www/js/lib/fora-app-renderer:fora-app-renderer " +
+                     "-r ./app/www/js/lib/fora-app-sandbox:fora-app-sandbox " +
                      "-r ./app/www/js/lib/fora-request/fora-request:fora-request " +
                      "> app/www/js/lib.js";
                 var cmdMakeBundle = "browserify " +
                     "-x markdown -x react -x co " +
-                    "-x fora-extensions-service " +
+                    "-x fora-extensions-service -x fora-app-renderer " +
                     "-x fora-models -x fora-router -x fora-app-ui " +
-                    " -x fora-app-type-helpers " +
+                    " -x fora-app-type-helpers -x fora-app-logger " +
                     "-x fora-app-services -x fora-app-models " +
+                    "-x fora-app-sandbox " +
                     "./app/www/js/container/app " +
                     reactPages.concat(extensions).map(function(x) {
                         //Take out .js, .json, /index.js and /index.json since require doesn't need it
