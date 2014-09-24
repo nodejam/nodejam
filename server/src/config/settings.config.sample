@@ -27,17 +27,6 @@
         }
     },
 
-    "extensions": {
-        "container/fora/1.0.0/api": {
-            "urlRoot": "/api"
-        },
-        "container/fora/1.0.0/web": {
-            "urlRoot": "/",
-            "cover": "/images/cover.jpg",
-            "theme": "default-theme"
-        }
-    },
-
     "reservedNames": [
         "account", "accounts", "admin", "administrator", "api", "app", "apps", "config", "configuration", "credential", "credentials",
         "css", "db", "data", "database", "edit", "edits", "email", "feed", "feeds", "file", "files", "fonts", "fora", "forum", "forums",

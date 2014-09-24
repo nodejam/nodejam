@@ -8,9 +8,8 @@
     var extensionsByKind = {};
     var extensionsByModule = {};
 
-    var ExtensionsService = function(config, baseConfig, dynamicExtensionFinder) {
+    var ExtensionsService = function(config, dynamicExtensionFinder) {
         this.config = config;
-        this.baseConfig = baseConfig;
         this.dynamicExtensionFinder = dynamicExtensionFinder;
     };
 

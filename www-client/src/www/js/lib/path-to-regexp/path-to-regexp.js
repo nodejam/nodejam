@@ -2,7 +2,6 @@
  * Expose `pathtoRegexp`.
  */
 module.exports = pathtoRegexp;
-console.log("DEPRECATED use https://github.com/pillarjs/path-to-regexp");
 
 /**
  * The main path matching regexp utility.

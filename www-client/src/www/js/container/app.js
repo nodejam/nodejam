@@ -5,29 +5,13 @@
 
     var co = require('co');
     var logger = require('fora-app-logger');
+    var Client = require('fora-app-client');
     var Router = require('fora-router');
 
     var services = require('fora-app-services'),
         models = require('fora-app-models');
 
     var Renderer = require('fora-app-renderer');
-
-    var addDomainRewrite = function(router) {
-        var typesService = services.get('typesService'),
-            db = services.get('db');
-        var context = { typesService: typesService, db: db };
-
-        router.when(
-            function() {
-                return this.hostname && (baseConfig.domains.indexOf(this.hostname) === -1);
-            },
-            function*() {
-                this.app = yield* models.App.findOne({ domains: this.hostname }, context);
-                return true; //continue matching.
-            }
-        );
-    };
-
 
     /*
         Run the app in a sandbox.
@@ -75,12 +59,10 @@
                             { kind: "record", modules: ["definition", "model", "web/views"] }
                         ]
                     }
-                },
-                host: host,
-                port: port
+                }
             };
 
-            var server = new Server(config, baseConfig);
+            var server = new Client(config);
             _ = yield* server.init();
 
             var router = new Router();

@@ -71,10 +71,7 @@
             var d = debug ? debug_deps : deps;
             var depsHtml = d.styles.map(function(x) { return makeLink(x); }).concat(d.scripts.map(function(x) { return makeScript(x); })).join('');
 
-            depsHtml += '\
-                <script> \
-                    app.initPage("' + pagePath + '", ' + JSON.stringify(props) + '); \
-                </script>';
+            depsHtml += '<script> initForaApp(); </script>';
 
             return (
                 '<!DOCTYPE html>\
