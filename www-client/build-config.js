@@ -85,8 +85,11 @@
 
                 console.log("Writing out app/www/js/extensions/models.js");
                 fs.writeFileSync("app/www/js/extensions/models.json", JSON.stringify(
-                    extensions.filter(function(e) { return /model\.js$/.test(e); })
-                        .map(function(e) { return e.match(/(.*)\.js/)[1].replace(/^app\/www\//,'/'); })
+                    extensions.map(function(e) {
+                        return e.replace(/\/index\.json$|\/index\.js$/, '')
+                             .replace(/\.json$|\.js$/, '')
+                             .replace(/^app\/www\/js\//,'/');
+                    })
                 ));
 
                 if (!this.build.state.debugClient) {
@@ -161,11 +164,11 @@
                     "./app/www/js/container/app " +
                     reactPages.concat(extensions).map(function(x) {
                         //Take out .js, .json, /index.js and /index.json since require doesn't need it
-                        //x = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');
                         var dest = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');
-                        return "-r ./" + x + ":" + dest.replace(/^app\/www\//,'/');
+                        return "-r ./" + x + ":" + dest.replace(/^app\/www\/js\//,'/');
                     }).join(" ") +
-                    " > app/www/js/bundle.js";
+                    " -r ./app/www/js/extensions/models.json:/extensions/models " +
+                    "> app/www/js/bundle.js";
 
                 if (this.build.state.debugClient) {
                     cmdMakeLib += " --debug";

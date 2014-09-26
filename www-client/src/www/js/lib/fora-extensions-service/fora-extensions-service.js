@@ -15,6 +15,7 @@
 
 
     ExtensionsService.prototype.init = function*() {
+
         return;
         yield false;
     };
