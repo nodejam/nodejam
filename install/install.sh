@@ -327,8 +327,8 @@ fi
 
 #Install config files
 if $config_files ; then
-    if [ ! -f server/src/config/settings.config ]; then
-        cp server/src/config/settings.config.sample server/src/config/settings.config
+    if [ ! -f shared/src/config/settings.json ]; then
+        cp shared/src/config/settings.json.sample shared/src/config/settings.json
     fi
 fi
 

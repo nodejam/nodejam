@@ -7,11 +7,34 @@
     var logger = require('fora-app-logger');
     var Client = require('fora-app-client');
     var Router = require('fora-router');
+    var baseConfig = require('../config');
 
     var services = require('fora-app-services'),
         models = require('fora-app-models');
 
     var Renderer = require('fora-app-renderer');
+
+
+    /*
+        Rewrite: example.com/url -> /apps/example/url
+        If the request is for a different domain, it must be an app.
+    */
+    var addDomainRewrite = function(router) {
+        var typesService = services.get('typesService'),
+            db = services.get('db');
+        var context = { typesService: typesService, db: db };
+
+        router.when(
+            function() {
+                return this.hostname && (baseConfig.domains.indexOf(this.hostname) === -1);
+            },
+            function*() {
+                this.app = yield* models.App.findOne({ domains: this.hostname }, context);
+                return true; //continue matching.
+            }
+        );
+    };
+
 
     /*
         Run the app in a sandbox.
@@ -62,12 +85,10 @@
                 }
             };
 
-            var server = new Client(config);
-            _ = yield* server.init();
+            var client = new Client(config, baseConfig);
+            _ = yield* client.init();
 
             var router = new Router();
-
-            addHealthCheck(router, server);
 
             addDomainRewrite(router);
 
@@ -80,8 +101,8 @@
             addExtensionRoutes(router, "/", "web");
 
             //GO!
-            server.addRouter(router);
-            server.listen();
+            client.addRouter(router);
+            client.listen();
 
             logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
         })();

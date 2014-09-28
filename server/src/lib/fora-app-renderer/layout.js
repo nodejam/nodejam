@@ -72,14 +72,17 @@
             var depsHtml = d.styles.map(function(x) { return makeLink(x); }).concat(d.scripts.map(function(x) { return makeScript(x); })).join('');
 
             depsHtml += '<script> initForaApp(); </script>';
-
+            
             return (
                 '<!DOCTYPE html>\
                 <html>\
                     <head>\
                         <title>' + title + '</title>' +
                         depsHtml +
-                        '<meta name="viewport" content="width=device-width, initial-scale=1"/>\
+                        '<script>\
+                            var __apiCache = ' + JSON.stringify(this.apiCache) + ';\
+                        </script>\
+                        <meta name="viewport" content="width=device-width, initial-scale=1"/>\
                     </head>\
                     <body class="' + bodyClass + '">\
                         <!-- header -->\

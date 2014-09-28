@@ -6,8 +6,9 @@
     /*
         Setup information useful for monitoring and debugging
     */
-    var Client = function(config) {
+    var Client = function(config, baseConfig) {
         this.config = config;
+        this.baseConfig = baseConfig;
     };
 
 
@@ -21,7 +22,7 @@
             ------------------
         */
         var ExtensionsService = require('fora-extensions-service');
-        var extensionsService = new ExtensionsService(this.config.services.extensions);
+        var extensionsService = new ExtensionsService(this.config.services.extensions, this.baseConfig);
         _ = yield* extensionsService.init();
         services.add("extensionsService", extensionsService);
 

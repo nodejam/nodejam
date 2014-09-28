@@ -83,8 +83,12 @@
             */
             this.onComplete(function*() {
 
-                console.log("Writing out app/www/js/extensions/models.js");
-                fs.writeFileSync("app/www/js/extensions/models.json", JSON.stringify(
+                extensions = extensions.filter(function(e) {
+                    return /\/index\.json$|\/index\.js$/.test(e);
+                });
+
+                console.log("Writing out app/www/js/extensions/extensions.json");
+                fs.writeFileSync("app/www/js/extensions/extensions.json", JSON.stringify(
                     extensions.map(function(e) {
                         return e.replace(/\/index\.json$|\/index\.js$/, '')
                              .replace(/\.json$|\.js$/, '')
@@ -157,17 +161,17 @@
                     "-x markdown -x react -x co " +
                     "-x fora-extensions-service -x fora-app-renderer " +
                     "-x fora-models -x fora-router -x fora-app-ui " +
-                    " -x fora-app-type-helpers -x fora-app-logger " +
+                    "-x fora-app-type-helpers -x fora-app-logger " +
                     "-x fora-app-services -x fora-app-models " +
                     "-x fora-app-sandbox -x fora-app-client " +
                     "-x fora-types-service " +
-                    "./app/www/js/container/app " +
                     reactPages.concat(extensions).map(function(x) {
                         //Take out .js, .json, /index.js and /index.json since require doesn't need it
                         var dest = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');
                         return "-r ./" + x + ":" + dest.replace(/^app\/www\/js\//,'/');
-                    }).join(" ") +
-                    " -r ./app/www/js/extensions/models.json:/extensions/models " +
+                    }).join(" ") + " " +
+                    "-r ./app/www/js/extensions/extensions.json:/extensions/models " +
+                    "./app/www/js/container/app " +
                     "> app/www/js/bundle.js";
 
                 if (this.build.state.debugClient) {

@@ -6,6 +6,7 @@
     var ApiConnector = require('./api-connector');
     var layout = require('./layout');
     var argv = require('optimist').argv;
+    var path = require('path');
 
     var renderFunc = argv['debug-client'] ? layout.render_DEBUG : layout.render;
 
@@ -28,7 +29,7 @@
         var result = [];
 
         routes.forEach(function(route) {
-            var view = require(require("path").join(basepath, route.path));
+            var view = require(path.join(basepath, route.path));
             result.push({
                 method: route.method,
                 url: route.url,
