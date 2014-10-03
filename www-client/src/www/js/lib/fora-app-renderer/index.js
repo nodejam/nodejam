@@ -5,8 +5,7 @@
 
     var ApiConnector = require('./api-connector');
 
-    var renderFunc = argv['debug-client'] ? layout.render_DEBUG : layout.render;
-
+    var renderFunc = __DEBUG ? layout.render_DEBUG : layout.render;
 
     var Renderer = function(router, extensionsService) {
         this.router = router;

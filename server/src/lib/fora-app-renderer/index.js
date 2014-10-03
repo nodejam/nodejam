@@ -36,7 +36,7 @@
                 handler: function*() {
                     this.api = new ApiConnector(this, self.router);
                     this.libs = libs;
-                    this.body = yield* renderFunc.call(this, view, route.path);
+                    this.body = yield* renderFunc.call(this, view);
                 }
             });
         });

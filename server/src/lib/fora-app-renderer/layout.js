@@ -2,6 +2,7 @@
     "use strict";
 
     var React = require('react');
+    var PageContainer = require('fora-app-ui').PageContainer;
 
     var makeScript = function (src) {
         return '<script src="' + src + '"></script>';
@@ -53,7 +54,7 @@
 
 
     var render = function(debug) {
-        return function*(reactClass, pagePath) {
+        return function*(reactClass) {
             var props;
 
             if (reactClass.componentInit)
@@ -72,7 +73,9 @@
             var depsHtml = d.styles.map(function(x) { return makeLink(x); }).concat(d.scripts.map(function(x) { return makeScript(x); })).join('');
 
             depsHtml += '<script> initForaApp(); </script>';
-            
+
+            var container = PageContainer({ page: component });
+
             return (
                 '<!DOCTYPE html>\
                 <html>\
@@ -90,11 +93,9 @@
                             <a href="#" class="logo">\
                                 Fora\
                             </a>\
-                        </header>\
-                        <div class="page-container"> \
-                        ' + React.renderComponentToString(component) + '\
-                        </div>\
-                    </body>\
+                        </header>' +
+                        React.renderComponentToString(container) +
+                    '</body>\
                 </html>');
             };
         };

@@ -2,58 +2,10 @@
     "use strict";
 
     var React = require('react');
-
-    var makeScript = function (src) {
-        return '<script src="' + src + '"></script>';
-    };
-
-    var makeLink = function(href, rel, media, type) {
-        rel = rel || "stylesheet";
-        media = media || "screen";
-        type = type || "text/css";
-        return '<link href="' + href + '" rel="' + rel + '" media="' + media + '" />';
-    };
-
-    var deps = {
-        styles: [
-            'http://fonts.googleapis.com/css?family=Open+Sans:400,700|Lato:900|Crimson+Text:400,600,400italic|Oswald',
-            '/css/lib.css',
-            '/css/main.css'
-        ],
-
-        scripts: [
-            '/js/vendor.js',
-            '/js/lib.js',
-            '/js/bundle.js'
-        ]
-    };
-
-    var debug_deps ={
-        styles: [
-            'http://fonts.googleapis.com/css?family=Open+Sans:400,700|Lato:900|Crimson+Text:400,600,400italic|Oswald',
-            '/vendor/components/font-awesome/css/font-awesome.css',
-            '/vendor/css/HINT.css',
-            '/vendor/css/toggle-switch.css',
-            '/vendor/components/medium-editor/css/medium-editor.css',
-            '/vendor/components/medium-editor/css/themes/default.css',
-            '/css/main.css'
-        ],
-
-        scripts: [
-            '/vendor/js/co.js',
-            '/vendor/js/markdown.js',
-            '/vendor/js/setImmediate.js',
-            '/vendor/js/regenerator-runtime.js',
-            '/vendor/js/react.js',
-            '/js/lib.js',
-            '/js/bundle.js'
-        ]
-    };
-
-
+    var PageContainer = require('fora-app-ui').PageContainer;
 
     var render = function(debug) {
-        return function*(reactClass, pagePath) {
+        return function*(reactClass) {
             var props;
 
             if (reactClass.componentInit)
