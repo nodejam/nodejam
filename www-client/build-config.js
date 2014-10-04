@@ -61,6 +61,7 @@
                     var result = yield* exec("regenerator " + filePath);
                     fs.writeFileSync(filePath, result);
                 }
+                this.queue("client_bundle_files");
             }, "client_regenerator_transform", ["client_shared_files_copy"]);
 
 
@@ -81,7 +82,7 @@
             /*
                 Bundle all files.
             */
-            this.onComplete(function*() {
+            this.job(function*() {
 
                 extensions = extensions.filter(function(e) {
                     return /\/index\.json$|\/index\.js$/.test(e) &&
@@ -193,7 +194,7 @@
             */
             this.onComplete(function*() {
                 this.state.end = Date.now();
-            }, "client_build_complete", ["client_bundle_files"]);
+            }, "client_build_complete");
         };
     };
 })();

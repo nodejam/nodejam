@@ -51,13 +51,13 @@
             var router = new Router();
 
             var extensionsService = services.get('extensionsService');
-            yield* addContainerUIRoutes(router, "/", extensionsService);
+            _ = yield* addContainerUIRoutes(router, "/", extensionsService);
 
             //GO!
             client.addRouter(router);
             client.listen();
 
-            logger.log("Fora started at " + new Date() + " on " + host + ":" + port);
+            logger.log("Fora started at " + new Date());
         })();
     };
 

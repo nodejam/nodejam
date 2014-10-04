@@ -3,6 +3,8 @@
 
     var _; //keep jshint happy, until they fix yield*
 
+    var ForaRequest = require('fora-request');
+
     /*
         Setup information useful for monitoring and debugging
     */
@@ -46,5 +48,31 @@
 
     };
 
+
+    Client.prototype.addRouter = function(router) {
+        var routeFunc = router.route();
+
+        var onChange = function*() {
+            var request = new ForaRequest();
+            _ = yield* routeFunc(request, null);
+        };
+
+        // Listen on hash change:
+        window.addEventListener('hashchange', onChange);
+        // Listen on page load:
+        window.addEventListener('load', onChange);
+    };
+
+
+    Client.prototype.listen = function() {
+        /* PASS */
+        console.log("Fora initialized.");
+    };
+
+
+
+
+
     module.exports = Client;
+
 })();
