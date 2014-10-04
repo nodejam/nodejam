@@ -12,7 +12,7 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(request) {
-                var props = yield* request.api.get("/api/ui/home");
+                var props = yield* request.api.get("/api/v1/ui/home");
 
                 /* Attach the templates */
                 var init = function*(records) {

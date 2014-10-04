@@ -4,16 +4,17 @@
     var _;
 
     var ApiConnector = require('./api-connector');
+    var layout = require('./layout');
 
-    var renderFunc = __DEBUG ? layout.render_DEBUG : layout.render;
 
-    var Renderer = function(router, extensionsService) {
+    var Renderer = function(router, extensionsService, isDebug) {
         this.router = router;
         this.extensionsService = extensionsService;
+        this.renderFunc = isDebug ? layout.render_DEBUG : layout.render;
     };
 
 
-    Renderer.prototype.createRoutes = function(routes, basepath) {
+    Renderer.prototype.createRoutes = function(routes) {
         var self = this;
 
         var libs = {
@@ -25,14 +26,13 @@
         var result = [];
 
         routes.forEach(function(route) {
-            var view = require(require("path").join(basepath, route.path));
             result.push({
                 method: route.method,
                 url: route.url,
                 handler: function*() {
                     this.api = new ApiConnector(this, self.router);
                     this.libs = libs;
-                    this.body = yield* renderFunc.call(this, view, route.path);
+                    this.body = yield* self.renderFunc.call(this, route.handler);
                 }
             });
         });

@@ -80,7 +80,7 @@
                 params.push('--debug');
             if (argv['debug-brk'])
                 params.push('--debug-brk');
-            params = params.concat(['app/container/app.js', 'localhost', '10982', 'fora_app']);
+            params = params.concat(['app/app.js', 'localhost', '10982', 'fora_app']);
             params = params.concat(process.argv.filter(function(p) { return ['--debug', '--debug-brk'].indexOf(p) === -1 ; }));
 
             console.log("Killing existing instances...");

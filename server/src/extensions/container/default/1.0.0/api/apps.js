@@ -6,7 +6,7 @@
     var models = require('fora-app-models'),
         services = require('fora-app-services'),
         typeHelpers = require('fora-app-type-helpers'),
-        conf = require('../../config');
+        conf = require('../../../../../config');
 
     var Parser = require('fora-request-parser');
 

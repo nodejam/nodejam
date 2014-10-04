@@ -3,26 +3,20 @@
 
     var _;
 
+    var path = require('path');
     var co = require('co');
     var logger = require('fora-app-logger');
     var Server = require('fora-app-server');
     var Router = require('fora-router');
-    var baseConfig = require('../config');
-
-    var host = process.argv[2];
-    var port = process.argv[3];
-
-    if (!host || !port) {
-        logger.log("Usage: app.js host port");
-        process.exit();
-    }
+    var baseConfig = require('./config');
 
     var services = require('fora-app-services'),
         models = require('fora-app-models');
 
     var Parser = require('fora-request-parser');
-
     var Renderer = require('fora-app-renderer');
+
+    var argv = require('optimist').argv;
 
     /*
         Calling /healthcheck returns { "jacksparrow": "alive", .... }
@@ -33,7 +27,6 @@
             this.body = { jacksparrow: "alive", instance: server.appInfo.instance, since: server.appInfo.since, uptime: server.appInfo.uptime };
         });
     };
-
 
 
     /*
@@ -57,11 +50,35 @@
     };
 
 
+    /*  Container API Routes */
+    var addContainerAPIRoutes = function*(router, urlPrefix, extensionsService) {
+        var routes = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "api");
+        routes.forEach(function(route) {
+            router[route.method](path.join(urlPrefix, route.url), route.handler);
+        });
+    }
+
+
+    /*  Container UI Routes */
+    var addContainerUIRoutes = function*(router, urlPrefix, extensionsService) {
+        var routes = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "web");
+
+        var renderer = new Renderer(router, extensionsService, argv['debug-client']);
+
+        var uiRoutes = renderer.createRoutes(routes);
+        uiRoutes.forEach(function(route) {
+            router[route.method](path.join(urlPrefix, route.url), route.handler);
+        });
+    }
+
+
     /*
-        Run the app in a sandbox.
-        Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
+        Extension Routes
+        - Check if the route is an app
+        - Run the app in a sandbox.
+        - Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
     */
-    var addExtensionRoutes = function(router, appUrlPrefix, extensionModuleName) {
+    var addExtensionRoutes = function*(router, appUrlPrefix, extensionModuleName) {
         var typesService = services.get('typesService'),
             db = services.get('db');
         var context = { typesService: typesService, db: db };
@@ -73,6 +90,7 @@
         var prefixPartsCount = appUrlPrefix.split("/").length - 1;
         var appPathRegex = new RegExp("^" + (appUrlPrefix));
         var appRootRegex = new RegExp("^" + appUrlPrefix + "[a-z0-9-]*/?");
+
         router.when(
             function() {
                 return appPathRegex.test(this.url);
@@ -99,12 +117,22 @@
         );
     };
 
+
     var init = function() {
         co(function*() {
+            var host = process.argv[2];
+            var port = process.argv[3];
+
+            if (!host || !port) {
+                logger.log("Usage: app.js host port");
+                process.exit();
+            }
+
             var config = {
                 services: {
                     extensions: {
                         modules: [
+                            { kind: "container", modules: ["api", "web"] },
                             { kind: "app", modules: ["definition", "api"] },
                             { kind: "record", modules: ["definition", "model", "web/views"] }
                         ]
@@ -120,28 +148,22 @@
             var router = new Router();
 
             addHealthCheck(router, server);
-
             addDomainRewrite(router);
 
-            //Setup API routes.
-            require('./api/routes').forEach(function(route) {
-                router[route.method](route.url, route.handler);
-            });
-            addExtensionRoutes(router, "/api/app", "api");
+            var extensionsService = services.get('extensionsService');
 
-            //Setup UI routes
-            var renderer = new Renderer(router, services.get('extensionsService'));
-            var uiRoutes = renderer.createRoutes(require('./web/routes'), require("path").resolve(__dirname, "web/views"));
-            uiRoutes.forEach(function(route) {
-                router[route.method](route.url, route.handler);
-            });
-            addExtensionRoutes(router, "/", "web");
+            //Setup API routes.
+            yield* addContainerAPIRoutes(router, "/api/v1", extensionsService);
+            yield* addExtensionRoutes(router, "/api/app", "api");
+
+            yield* addContainerUIRoutes(router, "/", extensionsService);
+            yield* addExtensionRoutes(router, "/", "web");
 
             //GO!
             server.addRouter(router);
             server.listen();
 
-            logger.log("Fora API started at " + new Date() + " on " + host + ":" + port);
+            logger.log("Fora started at " + new Date() + " on " + host + ":" + port);
         })();
     };
 

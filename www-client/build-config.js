@@ -84,7 +84,8 @@
             this.onComplete(function*() {
 
                 extensions = extensions.filter(function(e) {
-                    return /\/index\.json$|\/index\.js$/.test(e);
+                    return /\/index\.json$|\/index\.js$/.test(e) &&
+                        !/\/views\//.test(e);
                 });
 
                 console.log("Writing out app/www/js/extensions/extensions.json");
@@ -171,7 +172,7 @@
                         return "-r ./" + x + ":" + dest.replace(/^app\/www\/js\//,'/');
                     }).join(" ") + " " +
                     "-r ./app/www/js/extensions/extensions.json:/extensions/models " +
-                    "./app/www/js/container/app " +
+                    "./app/www/js/app " +
                     "> app/www/js/bundle.js";
 
                 if (this.build.state.debugClient) {
