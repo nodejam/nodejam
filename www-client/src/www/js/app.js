@@ -3,7 +3,6 @@
 
     var _;
 
-    var path = require('path');
     var co = require('co');
     var logger = require('fora-app-logger');
     var Client = require('fora-app-client');
@@ -25,7 +24,8 @@
 
         var uiRoutes = renderer.createRoutes(routes);
         uiRoutes.forEach(function(route) {
-            router[route.method](path.join(urlPrefix, route.url), route.handler);
+            var url = /\/$/.test(urlPrefix) || /^\//.test(route.url) ? urlPrefix + route.url : urlPrefix + "/" + route.url;
+            router[route.method](url, route.handler);
         });
     };
 

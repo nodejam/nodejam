@@ -52,9 +52,13 @@
     Client.prototype.addRouter = function(router) {
         var routeFunc = router.route();
 
-        var onChange = function*() {
+        var doRouting = function*() {
             var request = new ForaRequest();
-            _ = yield* routeFunc(request, null);
+            _ = yield* routeFunc.call(request, null);
+        };
+
+        var onChange = function() {
+            co(doRouting)();
         };
 
         // Listen on hash change:
