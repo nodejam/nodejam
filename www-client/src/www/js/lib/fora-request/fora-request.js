@@ -14,6 +14,12 @@
         this.method = "GET";
     };
 
+
+    ForaRequest.prototype.clone = function() {
+        return this;
+    };
+
+
     module.exports = ForaRequest;
 
 })();

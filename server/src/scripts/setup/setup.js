@@ -75,16 +75,16 @@
                         break;
                 }
 
-                resp = yield* _doHttpRequest('/api/credentials', querystring.stringify(cred), 'post');
+                resp = yield* _doHttpRequest('/api/v1/credentials', querystring.stringify(cred), 'post');
                 token = JSON.parse(resp).token;
 
-                resp = yield* _doHttpRequest("/api/users?token=" + token, querystring.stringify(user), 'post');
+                resp = yield* _doHttpRequest("/api/v1/users?token=" + token, querystring.stringify(user), 'post');
                 resp = JSON.parse(resp);
                 logger.log("Created " + resp.username);
                 _globals.sessions[user.username] = resp;
 
                 logger.log("Creating session for " + resp.username);
-                resp = yield* _doHttpRequest("/api/login?token=" + token, querystring.stringify({ token: token, username: user.username }), 'post');
+                resp = yield* _doHttpRequest("/api/v1/login?token=" + token, querystring.stringify({ token: token, username: user.username }), 'post');
                 _globals.sessions[user.username].token = JSON.parse(resp).token;
             }
 
@@ -107,7 +107,7 @@
 
                 app.type = "forum";
                 app.version = "1.0.0";
-                resp = yield* _doHttpRequest("/api/apps?token=" + token, querystring.stringify(app), 'post');
+                resp = yield* _doHttpRequest("/api/v1/apps?token=" + token, querystring.stringify(app), 'post');
                 var appJson = JSON.parse(resp);
                 apps[appJson.stub] = appJson;
                 logger.log("Created " + appJson.name);

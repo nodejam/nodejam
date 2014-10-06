@@ -12,8 +12,8 @@
     };
 
 
-    ApiConnector.prototype.get = function*(url, requestContext) {
-        var response = yield* this.makeRequest("GET", url, requestContext);
+    ApiConnector.prototype.get = function*(url) {
+        var response = yield* this.makeRequest("GET", url);
 
         /*
             This could be use to write out a stringified JSON response directly on the web page.
@@ -22,7 +22,7 @@
         this.requestContext.apiCache.push({
             method: "GET",
             url: url,
-            requestContext: requestContext,
+            requestContext: this.requestContext,
             response: response
         });
 
@@ -30,8 +30,8 @@
     };
 
 
-    ApiConnector.prototype.makeRequest = function*(method, url, requestContext) {
-        requestContext = (requestContext || this.requestContext).clone();
+    ApiConnector.prototype.makeRequest = function*(method, url) {
+        var requestContext = this.requestContext.clone();
         requestContext.url = url;
         requestContext.method = method;
         _ = yield* this.routeFn.call(requestContext);
