@@ -22,7 +22,7 @@
         this.requestContext.apiCache.push({
             method: "GET",
             url: url,
-            requestContext: this.requestContext,
+            requestContext: this.requestContext.clone(),
             response: response
         });
 

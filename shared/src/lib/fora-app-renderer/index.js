@@ -41,8 +41,8 @@
     };
 
 
-    Renderer.prototype.getExtension = function*(typeDef) {
-        var result = yield* this.extensionsService.get(typeDef.name);
+    Renderer.prototype.getExtension = function*(name) {
+        var result = yield* this.extensionsService.get(name);
         if (result)
             return result.extension;
     };

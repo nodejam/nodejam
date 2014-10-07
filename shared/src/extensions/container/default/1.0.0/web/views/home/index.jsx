@@ -18,10 +18,10 @@
                 var init = function*(records) {
                   for (var i = 0; i < records.length; i++) {
                       var typeDef = yield* records[i].getTypeDefinition();
-                      var extension = yield* request.libs.extensions.get(typeDef);
-                      records[i].template = extension["web/views"]["list"];
+                      var extension = yield* request.libs.extensions.get(typeDef.name);
+                      records[i].template = extension["web/views"].list;
                   }
-                }
+              };
 
                 yield* init(props.featured);
                 yield* init(props.editorsPicks);

@@ -19,6 +19,16 @@
 
         var services = require('fora-app-services');
 
+
+        //Configuration
+        services.add("configuration", this.baseConfig);
+
+        //Database Service
+        var odm = require('fora-models');
+        var db = new odm.Database(this.baseConfig.db);
+        services.add("db", db);
+
+        
         /*
             Extensions Service
             ------------------
