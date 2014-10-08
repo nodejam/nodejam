@@ -7,7 +7,7 @@
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
     var models = require('./'),
-        typeHelpers = require('fora-app-type-helpers'),
+        dataUtils = require('fora-data-utils'),
         UserBase = require('./user-base').UserBase;
 
     var services = require('fora-app-services');
@@ -28,7 +28,7 @@
             var existing = yield* User.findOne({ username: this.username }, context);
             if (!existing) {
                 var conf = services.get('configuration');
-                this.assets = (typeHelpers.getHashCode(this.username) % conf.services.file.userDirCount).toString();
+                this.assets = (dataUtils.getHashCode(this.username) % conf.services.file.userDirCount).toString();
                 this.lastLogin = 0;
                 this.followingCount = 0;
                 this.followerCount = 0;

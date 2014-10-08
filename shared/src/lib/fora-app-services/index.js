@@ -4,7 +4,7 @@
 
     var services ={};
 
-    var typeHelpers = require('fora-app-type-helpers');
+    var dataUtils = require('fora-data-utils');
 
     services.add = function(name, obj) {
         _store[name] = obj;
@@ -15,7 +15,7 @@
     };
 
     services.copy = function(params) {
-        var clone = typeHelpers.clone(_store);
+        var clone = dataUtils.clone(_store);
         if (params) {
             for (var key in params) {
                 clone[key] = params[key];

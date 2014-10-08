@@ -3,10 +3,14 @@
 
     var _;
 
+    var visit = require('fora-data-utils').visit;
+    var services = require('fora-app-services');
+
     var ApiConnector = function(requestContext, router) {
         this.requestContext = requestContext;
         this.router = router;
         this.routeFn = router.route();
+        this.typesService = services.get('typesService');
     };
 
 
@@ -27,13 +31,20 @@
                 }
             }
 
-            if (match)
-                return match.response;
-
+            if (match) {
+                return visit(
+                    match.response,
+                    function(item) {
+                        if (item._mustReconstruct) {
+                            var typeDefinition = this.typesService.get(item.type);
+                        }
+                    }
+                );
+            }
         }
 
         //Do an AJAX call here and return results.
-        throw new Error("We are not doing AJAX yet.")
+        throw new Error("We are not doing AJAX yet.");
     };
 
 

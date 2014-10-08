@@ -28,7 +28,7 @@
         var db = new odm.Database(this.baseConfig.db);
         services.add("db", db);
 
-        
+
         /*
             Extensions Service
             ------------------
@@ -44,7 +44,7 @@
             We must pass all the typeDefinitions and virtual typeDefinitions to typesService.
             Virtual Type Definitions are defined in extensions, so we need to get it via extensionsService.
         */
-        var TypesService = require('fora-types-service');
+        var TypesService = require('fora-app-types-service');
         var typesService = new TypesService(extensionsService);
         var typeDefinitions = Object.keys(models).map(function(k) { return models[k]; });
 

@@ -3,6 +3,8 @@
 
     var _;
 
+    var visit = require('fora-data-utils').visit;
+    var models = require('fora-models');
 
     var ApiConnector = function(requestContext, router) {
         this.requestContext = requestContext;
@@ -14,6 +16,24 @@
 
     ApiConnector.prototype.get = function*(url) {
         var response = yield* this.makeRequest("GET", url);
+
+        //On the client, we can't tell if the deserialized JSON needs to go through a constructor.
+        //So, set a flag __mustReconstruct.
+        response = visit(
+            response,
+            function(x) {
+                if (x instanceof models.BaseModel) {
+                    return {
+                        value: x,
+                        stop: true,
+                        fnAfterVisit: function(o) {
+                            o._mustReconstruct = true;
+                            return o;
+                        }
+                    };
+                }
+            }
+        );
 
         /*
             This could be use to write out a stringified JSON response directly on the web page.

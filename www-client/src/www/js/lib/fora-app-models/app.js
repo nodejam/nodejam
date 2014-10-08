@@ -6,8 +6,7 @@
     var __hasProp = {}.hasOwnProperty,
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
-    var AppBase = require('./app-base').AppBase,
-        typeHelpers = require('fora-app-type-helpers');
+    var AppBase = require('./app-base').AppBase;
 
     //ctor
     var App = function() {

@@ -147,7 +147,6 @@
                      "-r ./app/www/js/lib/fora-models/fora-models:fora-models " +
                      "-r ./app/www/js/lib/fora-router/lib/fora-router:fora-router " +
                      "-r ./app/www/js/lib/fora-app-ui:fora-app-ui " +
-                     "-r ./app/www/js/lib/fora-app-type-helpers:fora-app-type-helpers " +
                      "-r ./app/www/js/lib/fora-app-services:fora-app-services " +
                      "-r ./app/www/js/lib/fora-app-models:fora-app-models " +
                      "-r ./app/www/js/lib/path-to-regexp/path-to-regexp:path-to-regexp " +
@@ -157,13 +156,15 @@
                      "-r ./app/www/js/lib/fora-request/fora-request:fora-request " +
                      "-r ./app/www/js/lib/fora-app-client:fora-app-client " +
                      "-r ./app/www/js/lib/fora-types-service:fora-types-service " +
+                     "-r ./app/www/js/lib/fora-app-types-service:fora-app-types-service " +
+                     "-r ./app/www/js/lib/fora-data-utils:fora-data-utils " +
                      "> app/www/js/lib.js";
 
                 var cmdMakeBundle = "browserify " +
                     "-x markdown -x react -x co " +
                     "-x fora-extensions-service -x fora-app-renderer " +
                     "-x fora-models -x fora-router -x fora-app-ui " +
-                    "-x fora-app-type-helpers -x fora-app-logger " +
+                    "-x fora-data-utils -x fora-app-logger " +
                     "-x fora-app-services -x fora-app-models " +
                     "-x fora-app-sandbox -x fora-app-client " +
                     "-x fora-types-service " +

@@ -1,0 +1,22 @@
+(function() {
+    "use strict";
+
+    var ForaTypesService = require('fora-types-service');
+
+    var ForaAppTypesService = function(extensionsService) {
+        this.extensionsService = extensionsService;
+        ForaTypesService.apply(this);
+    };
+
+    ForaAppTypesService.prototype = Object.create(ForaTypesService.prototype);
+    ForaAppTypesService.prototype.constructor = ForaAppTypesService;
+
+
+    ForaAppTypesService.prototype.getDynamicTypeDefinition = function*(name, dynamicResolutionContext) {
+        throw new Error("Cannot find type " + name);
+        yield false;
+    };
+
+    module.exports = ForaAppTypesService;
+
+})();

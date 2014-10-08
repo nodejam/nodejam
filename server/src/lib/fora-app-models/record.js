@@ -10,10 +10,8 @@
     var RecordBase = require('./record-base').RecordBase,
         models = require('./'),
         randomizer = require('fora-app-randomizer'),
-        TypesUtil = require('fora-models').TypesUtil,
+        dataUtils = require('fora-data-utils'),
         services = require('fora-app-services');
-
-    var typesUtil = new TypesUtil();
 
     //ctor
     var Record = function() {
@@ -83,15 +81,15 @@
         for (var field in typeDefinition.schema.properties) {
             if (!typeDefinition.ownProperties || typeDefinition.ownProperties.indexOf(field) > -1) {
                 var def = typeDefinition.schema.properties[field];
-                if (typesUtil.isPrimitiveType(def.type)) {
-                    if (def.type === "array" && typesUtil.isCustomType(def.items.type)) {
+                if (dataUtils.isPrimitiveType(def.type)) {
+                    if (def.type === "array" && dataUtils.isCustomType(def.items.type)) {
                             prefix.push(field);
                             _ = yield* getMappableFields(def.items.typeDefinition, acc, prefix);
                             prefix.pop(field);
                     } else {
                         acc.push(prefix.concat(field).join('_'));
                     }
-                } else if (typesUtil.isCustomType(def.type)) {
+                } else if (dataUtils.isCustomType(def.type)) {
                     prefix.push(field);
                     _ = yield* getMappableFields(def.typeDefinition, acc, prefix);
                     prefix.pop(field);
@@ -131,6 +129,9 @@
         var extensionsService = services.get('extensionsService');
         var model = extensionsService.getModuleByName("record", this.type, this.version, "model");
 
+        var typeParts = this.type.split('/');
+        this.recordType = typeParts[1];
+        this.version = typeParts[2];
         var versionParts = this.version.split('.');
         this.versionMajor = parseInt(versionParts[0]);
         this.versionMinor = parseInt(versionParts[1]);

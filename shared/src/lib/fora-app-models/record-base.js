@@ -19,12 +19,13 @@
         name: "record",
         collection: 'records',
         discriminator: function*(obj, typesService) {
-            return yield* typesService.getTypeDefinition("record" + "/" + obj.type + "/" + obj.version);
+            return yield* typesService.getTypeDefinition(obj.type);
         },
         schema: {
             type: 'object',
             properties: {
                 type: { type: 'string' },
+                recordType: { type: 'string' },
                 version: { type: 'string' },
                 versionMajor: { type: 'number' },
                 versionMinor: { type: 'number' },
@@ -37,7 +38,7 @@
                 state: { type: 'string', enum: ['draft','published'] },
                 savedAt: { type: 'integer' }
             },
-            required: ['type', 'version', 'versionMajor', 'versionMinor', 'versionRevision',
+            required: ['type', 'recordType', 'version', 'versionMajor', 'versionMinor', 'versionRevision',
                        'appId', 'createdBy', 'meta', 'tags', 'stub', 'state', 'savedAt']
         },
         indexes: [

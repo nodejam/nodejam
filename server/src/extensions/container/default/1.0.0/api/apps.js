@@ -5,7 +5,7 @@
 
     var models = require('fora-app-models'),
         services = require('fora-app-services'),
-        typeHelpers = require('fora-app-type-helpers'),
+        dataUtils = require('fora-data-utils'),
         conf = require('../../../../../config');
 
     var Parser = require('fora-request-parser');
@@ -21,7 +21,7 @@
 
         var app = yield* models.App.findOne({
                 $or: [{ stub: stub }, { name: yield* parser.body('name') }]
-            }, typeHelpers.extend({ user: this.session.user }, services.copy())
+            }, dataUtils.extend({ user: this.session.user }, services.copy())
         );
 
         if (!app) {

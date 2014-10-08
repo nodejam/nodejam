@@ -6,10 +6,6 @@
 
 
     module.exports = function() {
-        var conf = services.get('configuration'),
-            typesService = services.get('typesServices'),
-            db = services.get('db');
-
         var options, fn;
 
         if (arguments.length === 1) {
@@ -22,6 +18,10 @@
         }
 
         return function*() {
+            var conf = services.get('configuration'),
+                typesService = services.get('typesService'),
+                db = services.get('db');
+
             var self = this;
 
             if (!this.session) {
