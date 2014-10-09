@@ -117,13 +117,17 @@
         var context = services.copy();
         var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, context);
 
+        var typesService = services.get('typesService');
         if (!membership) {
-            membership = new models.Membership({
-                appId: context.db.getRowId(this),
-                userId: user.id,
-                user: user,
-                roles: [role]
-            });
+            membership = yield* typesService.constructModel(
+                {
+                    appId: context.db.getRowId(this),
+                    userId: user.id,
+                    user: user,
+                    roles: [role]
+                },
+                models.Membership
+            );
         } else {
             if (membership.roles.indexOf(role) === -1) {
                 membership.roles.push(role);

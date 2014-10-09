@@ -31,11 +31,11 @@
 
     //ensure indexes.
     (co(function*() {
-        var odm = require('fora-models');
-        _ = yield* typesService.init([models, fields], models.App, models.Record);
+        var Database = require('fora-db');
+        var db = new Database(conf.db);
 
-        var db = new odm.Database(conf.db);
-        _ = yield* db.setupIndexes(typesService.getTypeDefinitions());
+        _ = yield* typesService.init([models, fields], models.App, models.Record);
+            _ = yield* db.setupIndexes(typesService.getTypeDefinitions());
 
         console.log("wait for 5 seconds...");
         setTimeout(function() {
