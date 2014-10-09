@@ -91,7 +91,6 @@
         validate: function*(fields) {
             if (this.email && !emailRegex.test(this.email))
                 return ['Invalid email'];
-            return;
         }
     };
 
@@ -102,10 +101,14 @@
         This can be used to upgrade to a user token, which is then used for login.
     */
     Credential.prototype.createSession = function*() {
-        var session = new models.Session({
-            credentialId: services.get('db').getRowId(this),
-            token: randomizer.uniqueId(24)
-        });
+        var typesService = services.get('typesService');
+        var session = yield* typesService.constructModel(
+            {
+                credentialId: services.get('db').getRowId(this),
+                token: randomizer.uniqueId(24)
+            },
+            models.Session
+        );
         return yield* session.save();
     };
 

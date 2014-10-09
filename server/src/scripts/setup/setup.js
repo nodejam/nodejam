@@ -26,8 +26,8 @@
     logger.log("Setup will connect to " + HOST + ":" + PORT);
 
     var init = function*() {
-        var odm = require('fora-models');
-        var database = new odm.Database(conf.db);
+        var Database = require('fora-db');
+        var database = new Database(conf.db);
 
         var _globals = {};
         var db, _doHttpRequest;

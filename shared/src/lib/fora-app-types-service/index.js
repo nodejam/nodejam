@@ -3,9 +3,9 @@
 
     var ForaTypesService = require('fora-types-service');
 
-    var ForaAppTypesService = function(extensionsService) {
+    var ForaAppTypesService = function(extensionsService, services) {
         this.extensionsService = extensionsService;
-        ForaTypesService.apply(this);
+        ForaTypesService.call(this, services);
     };
 
     ForaAppTypesService.prototype = Object.create(ForaTypesService.prototype);

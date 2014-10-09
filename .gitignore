@@ -23,13 +23,15 @@ server/src/config/settings.config
 
 #Ignore directories which are already on npm.
 #Sometimes we check them out here to test.
+shared/src/lib/fora-types-service
+shared/src/lib/fora-router
+shared/src/lib/fora-data-utils
+shared/src/lib/fora-validator
 server/src/lib/fora-models
 server/src/lib/fora-request
 server/src/lib/fora-request-parser
 server/src/lib/fora-extensions-service
-shared/src/lib/fora-types-service
-shared/src/lib/fora-router
-shared/src/lib/fora-data-utils
+server/src/lib/fora-db
 
 www-client/system/*
 !www-client/system/placeholder
