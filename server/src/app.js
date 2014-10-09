@@ -34,16 +34,12 @@
         If the request is for a different domain, it must be an app.
     */
     var addDomainRewrite = function(router) {
-        var typesService = services.get('typesService'),
-            db = services.get('db');
-        var context = { typesService: typesService, db: db };
-
         router.when(
             function() {
                 return this.hostname && (baseConfig.domains.indexOf(this.hostname) === -1);
             },
             function*() {
-                this.app = yield* models.App.findOne({ domains: this.hostname }, context);
+                this.app = yield* models.App.findOne({ domains: this.hostname });
                 return true; //continue matching.
             }
         );
@@ -79,10 +75,6 @@
         - Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
     */
     var addExtensionRoutes = function*(router, appUrlPrefix, extensionModuleName) {
-        var typesService = services.get('typesService'),
-            db = services.get('db');
-        var context = { typesService: typesService, db: db };
-
         var Sandbox = require('fora-app-sandbox');
         var sandbox = new Sandbox(services, extensionModuleName);
 
@@ -97,7 +89,7 @@
             },
             function*() {
                 if (!this.app) {
-                    this.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] }, context);
+                    this.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] });
                     if (this.app) {
                         var urlParts = this.url.split("/");
                         this.url = this.url.replace(appRootRegex, "/");
@@ -106,11 +98,11 @@
                     }
                 }
 
-                this.parser = new Parser(this, typesService);
+                this.parser = new Parser(this, services.get('typesService'));
 
                 var token = this.query.token || this.cookies.get('token');
                 if (token)
-                    this.session = yield* models.Session.findOne({ token: token }, context);
+                    this.session = yield* models.Session.findOne({ token: token });
 
                 return yield* sandbox.executeRequest(this);
             }

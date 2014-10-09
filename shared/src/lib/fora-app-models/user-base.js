@@ -93,7 +93,7 @@
         var typesService = services.get('typesService');
         return yield* typesService.constructModel(
             {
-                id: services.get('db').getRowId(this),
+                id: this.getRowId(),
                 username: this.username,
                 name: this.name,
                 assets: this.assets

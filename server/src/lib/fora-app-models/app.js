@@ -50,33 +50,29 @@
         Records
     */
     App.prototype.createRecord = function*(params) {
-        var context = services.copy();
         var record = yield* models.Record.create(params);
-        record.appId = context.db.getRowId(this);
+        record.appId = this.getRowId();
         return record;
     };
 
 
 
     App.prototype.addRecord = function*(record) {
-        var context = services.copy();
-        record.appId = context.db.getRowId(this);
-        return yield* record.save(context);
+        record.appId = this.getRowId();
+        return yield* record.save();
     };
 
 
 
     App.prototype.getRecord = function*(stub) {
-        var context = services.copy();
-        return yield* models.Record.findOne({ 'appId': context.db.getRowId(this), stub: stub }, context);
+        return yield* models.Record.findOne({ 'appId': this.getRowId(), stub: stub });
     };
 
 
 
     App.prototype.findRecord = function*(query) {
-        var context = services.copy();
-        query.appId = context.db.getRowId(this);
-        return yield* models.Record.findOne(query, context);
+        query.appId = this.getRowId();
+        return yield* models.Record.findOne(query);
     };
 
 
@@ -92,10 +88,9 @@
 
 
     App.prototype.findRecords = function*(query, settings) {
-        var context = services.copy();
-        query.appId = context.db.getRowId(this);
+        query.appId = this.getRowId();
         settings = settings ? { sort: settings.sort, limit: getLimit(settings.limit, 100, 1000) } : {};
-        return yield* models.Record.find(query, settings, context);
+        return yield* models.Record.find(query, settings);
     };
 
 
@@ -105,7 +100,7 @@
     */
     App.prototype.join = function*(user) {
         if (this.access === 'public') {
-            return yield* this.addRole(user, 'member', services.copy());
+            return yield* this.addRole(user, 'member');
         } else {
             throw new Error("Access denied");
         }
@@ -114,14 +109,13 @@
 
 
     App.prototype.addRole = function*(user, role) {
-        var context = services.copy();
-        var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, context);
+        var membership = yield* models.Membership.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
 
         var typesService = services.get('typesService');
         if (!membership) {
             membership = yield* typesService.constructModel(
                 {
-                    appId: context.db.getRowId(this),
+                    appId: this.getRowId(),
                     userId: user.id,
                     user: user,
                     roles: [role]
@@ -140,31 +134,23 @@
 
 
     App.prototype.removeRole = function*(user, role) {
-        var context = services.copy();
-        var membership = yield* models.Membership.findOne({ 'appId': context.db.getRowId(this), 'user.username': user.username }, services.copy());
+        var membership = yield* models.Membership.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
         membership.roles = membership.roles.filter(function(r) { return r != role; });
-        if (membership.roles.length) {
-            return yield* membership.save();
-        } else {
-            return yield* membership.destroy();
-        }
+        return membership.roles.length ? (yield* membership.save()) : (yield* membership.destroy());
     };
 
 
 
     App.prototype.getMembership = function*(username) {
-        var context = services.copy();
-        return yield* models.Membership.findOne({ 'app.id': context.db.getRowId(this), 'user.username': username }, context);
+        return yield* models.Membership.findOne({ 'app.id': this.getRowId(), 'user.username': username });
     };
 
 
 
     App.prototype.getMemberships = function*(roles) {
-        var context = services.copy();
         return yield* models.Membership.find(
-            { 'appId': context.db.getRowId(this), roles: { $in: roles } },
-            { sort: { id: -1 }, limit: 200},
-            context
+            { 'appId': this.getRowId(), roles: { $in: roles } },
+            { sort: { id: -1 }, limit: 200}
         );
     };
 

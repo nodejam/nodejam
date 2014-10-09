@@ -166,7 +166,7 @@
 		var typesService = services.get('typesService');
 		return yield* typesService.constructModel(
 			{
-				id: services.get('db').getRowId(this),
+				id: this.getRowId(),
 				name: this.name,
 				stub: this.stub,
 				createdBy: this.createdBy

@@ -23,9 +23,8 @@
 
 
     User.prototype.save = function*() {
-        var context = services.copy();
-        if (!context.db.getRowId(this)) {
-            var existing = yield* User.findOne({ username: this.username }, context);
+        if (!this.getRowId()) {
+            var existing = yield* User.findOne({ username: this.username });
             if (!existing) {
                 var conf = services.get('configuration');
                 this.assets = (dataUtils.getHashCode(this.username) % conf.services.file.userDirCount).toString();
@@ -44,7 +43,7 @@
 
     User.prototype.getRecords = function*(limit, sort, context) {
         return yield* models.Record.find(
-            { "createdBy.id": context.db.getRowId(this), state: 'published' },
+            { "createdBy.id": this.getRowId(), state: 'published' },
             { sort: sort, limit: limit },
             context
         );

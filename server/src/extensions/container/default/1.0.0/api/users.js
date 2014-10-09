@@ -68,7 +68,7 @@
 
 
     var item = function*(username) {
-        var user = yield* models.User.findOne({ username: username }, services.copy());
+        var user = yield* models.User.findOne({ username: username });
         if (user)
             this.body = yield* user.summarize();
     };

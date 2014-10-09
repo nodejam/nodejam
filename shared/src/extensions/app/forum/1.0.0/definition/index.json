@@ -1,6 +1,7 @@
 {
     "author": "Fora",
     "records": [
-        "article/1.0.0"
+        { "type": "article" },
+        { "type": "photos" }
     ]
 }

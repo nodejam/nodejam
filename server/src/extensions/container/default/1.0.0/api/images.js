@@ -63,7 +63,7 @@
             throw new Error("Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}");
         }
 
-        var typesService = services.get('types');
+        var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
 
         var files = yield* parser.files();

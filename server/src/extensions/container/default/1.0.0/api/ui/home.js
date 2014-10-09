@@ -9,21 +9,13 @@
     var index = function*() {
         var db = services.get('db');
 
-        var editorsPicks = yield* models.Record.find(
-            { meta: 'pick' },
-            { sort: db.setRowId({}, -1) , limit: 1 },
-            services.copy()
-        );
+        var editorsPicks = yield* models.Record.find({ meta: 'pick' },{ sort: db.setRowId({}, -1) , limit: 1 });
 
-        var featured = yield* models.Record.find(
-            { meta: 'featured' },
-            { sort: db.setRowId({}, -1) , limit: 12 },
-            services.copy()
-        );
+        var featured = yield* models.Record.find({ meta: 'featured' }, { sort: db.setRowId({}, -1) , limit: 12 });
 
         //Featured must not included editor's Picks.
         featured = featured.filter(function(fi) {
-            return editorsPicks.map(function(ei) { return db.getRowId(ei); }).indexOf(db.getRowId(fi)) === -1;
+            return editorsPicks.map(function(ei) { return ei.getRowId(); }).indexOf(fi.getRowId()) === -1;
         });
 
         var cover = {

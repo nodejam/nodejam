@@ -20,10 +20,7 @@
             stub = stub + "-app";
         stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'');
 
-        var app = yield* models.App.findOne({
-                $or: [{ stub: stub }, { name: yield* parser.body('name') }]
-            }, dataUtils.extend({ user: this.session.user }, services.copy())
-        );
+        var app = yield* models.App.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
 
         if (!app) {
             app = yield* typesService.constructModel(
@@ -53,7 +50,7 @@
     var edit = function*(app) {
         var parser = new Parser(this, services.get('typesService'));
 
-        app = yield* models.App.findOne({ stub: app }, services.copy());
+        app = yield* models.App.findOne({ stub: app });
 
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);

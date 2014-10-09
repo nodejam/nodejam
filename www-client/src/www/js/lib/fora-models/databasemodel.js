@@ -126,9 +126,11 @@
 				result[fieldName] = obj[fieldName];
 			}
 		}
+
 		if (db.getRowId(obj)) {
 			db.setRowId(result, db.getRowId(obj));
 		}
+
 		return result;
 	};
 

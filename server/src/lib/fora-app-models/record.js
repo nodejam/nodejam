@@ -45,7 +45,7 @@
 
 
 
-    Record.search = function*(criteria, settings, context) {
+    Record.search = function*(criteria, settings) {
         var limit = getLimit(settings.limit, 100, 1000);
 
         var params = {};
@@ -54,11 +54,7 @@
             params[k] = v;
         }
 
-        yield Record.find(
-            params,
-            { sort: settings.sort, limit: limit },
-            context
-        );
+        yield Record.find(params, { sort: settings.sort, limit: limit });
     };
 
 
@@ -111,7 +107,7 @@
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
         }, this);
-        return yield* this.save(services.copy());
+        return yield* this.save();
     };
 
 
@@ -120,7 +116,7 @@
         this.meta = this.meta.filter(function(m) {
             return metaList.indexOf(m) === -1;
         });
-        return yield* this.save(services.copy());
+        return yield* this.save();
     };
 
 
@@ -153,7 +149,7 @@
         var result = yield* RecordBase.prototype.save.call(this);
 
         if (this.state === 'published') {
-            _ = yield* models.App.findById(this.appId, services.copy());
+            _ = yield* models.App.findById(this.appId);
         }
 
         return result;
@@ -162,7 +158,7 @@
 
 
     Record.prototype.getCreator = function*() {
-        return yield* models.User.findById(this.createdBy.id, context);
+        return yield* models.User.findById(this.createdBy.id);
     };
 
 

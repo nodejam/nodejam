@@ -104,7 +104,7 @@
         var typesService = services.get('typesService');
         var session = yield* typesService.constructModel(
             {
-                credentialId: services.get('db').getRowId(this),
+                credentialId: this.getRowId(),
                 token: randomizer.uniqueId(24)
             },
             models.Session
@@ -114,7 +114,7 @@
 
 
     Credential.prototype.addBuiltin = function*(username, password) {
-        var existing = yield* Credential.findOne({ "builtin.username": username }, services.copy());
+        var existing = yield* Credential.findOne({ "builtin.username": username });
         if (!existing) {
             var hashed = yield* thunkify(hasher)({ plaintext: password });
             this.builtin = {
@@ -123,7 +123,7 @@
                 salt: hashed.salt.toString('hex'),
                 hash: hashed.key.toString('hex')
             };
-            return yield* this.save(services.copy());
+            return yield* this.save();
         } else {
             throw new Error("Built-in credential with the same username already exists");
         }
@@ -131,7 +131,7 @@
 
 
     Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret) {
-        var existing = yield* Credential.findOne({ "twitter.id": id }, services.copy());
+        var existing = yield* Credential.findOne({ "twitter.id": id });
         if (!existing) {
             this.twitter = {
                 id: id,
@@ -139,7 +139,7 @@
                 accessToken: accessToken,
                 accessTokenSecret: accessTokenSecret
             };
-            return yield* this.save(services.copy());
+            return yield* this.save();
         } else {
             throw new Error("Twitter credential with the same id already exists");
         }
@@ -147,7 +147,7 @@
 
 
     Credential.authenticateBuiltin = function*(username, password) {
-        var credential = yield* Credential.findOne({ "builtin.username": username }, services.copy());
+        var credential = yield* Credential.findOne({ "builtin.username": username });
         if (credential) {
             var salt = new Buffer(credential.builtin.salt, 'hex');
             result = yield* thunkify(hasher)({plaintext: password, salt: salt});
