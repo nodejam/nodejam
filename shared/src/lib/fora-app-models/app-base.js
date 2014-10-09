@@ -105,6 +105,7 @@
 			type: 'object',
 			properties: {
 				type: { type: 'string' },
+				appType: { type: 'string' },
 				version: { type: 'string' },
 				versionMajor: { type: 'number' },
 				versionMinor: { type: 'number' },
@@ -141,7 +142,7 @@
 				},
 				stats: { $ref: 'app-stats' }
 			},
-			required: ['type', 'version', 'versionMajor', 'versionMinor', 'versionRevision',
+			required: ['type', 'appType', 'version', 'versionMajor', 'versionMinor', 'versionRevision',
 				'name', 'description', 'stub', 'access', 'createdBy', 'cache', 'stats']
 		},
 		indexes: [ { 'createdBy.id': 1 }, { 'stub': 1 }	],

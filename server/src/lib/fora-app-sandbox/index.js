@@ -15,7 +15,7 @@
 
 
     Sandbox.prototype.executeRequest = function*(requestContext) {
-        var extensionInfo = yield* this.extensionsService.get("app" + "/" + requestContext.app.type + "/" + requestContext.app.version);
+        var extensionInfo = yield* this.extensionsService.get(requestContext.app.type);
 
         //We can't pass extension to Untrusted sandboxen, since it will execute outside this process boundary.
         //For example, inside another process, or even a machine.

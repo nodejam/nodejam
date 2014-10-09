@@ -26,7 +26,6 @@
             app = yield* typesService.constructModel(
                 {
                     type: yield* parser.body('type'),
-                    version: yield* parser.body('version'),
                     name: yield* parser.body('name'),
                     access: yield* parser.body('access'),
                     stub: stub,
