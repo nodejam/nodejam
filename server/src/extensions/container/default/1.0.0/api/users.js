@@ -12,18 +12,21 @@
     var fileService = new FileService(conf);
 
     var create = function*() {
-        var parser = new Parser(this, services.get('typesService'));
+        var typesService = services.get('typesService');
+        var parser = new Parser(this, typesService);
 
-        var user = new models.User({
-            username: yield* parser.body('username'),
-            credentialId: this.session.credentialId,
-            name: yield* parser.body('name'),
-            location: yield* parser.body('location'),
-            email: (yield* parser.body('email') || 'unknownthis.foraproject.org'),
-            about: yield* parser.body('about'),
-            lastLogin: Date.now()
-        });
-
+        var user = yield* typesService.constructModel(
+            {
+                username: yield* parser.body('username'),
+                credentialId: this.session.credentialId,
+                name: yield* parser.body('name'),
+                location: yield* parser.body('location'),
+                email: (yield* parser.body('email') || 'unknownthis.foraproject.org'),
+                about: yield* parser.body('about'),
+                lastLogin: Date.now()
+            },
+            models.User
+        );
         user = yield* user.save();
 
         //Move images to assets
@@ -44,7 +47,7 @@
         _ = yield* copy(picture.src, user.username + ".jpg");
         _ = yield* copy(picture.small, user.username + "_t.jpg");
 
-        this.body = user.summarize();
+        this.body = yield* user.summarize();
     };
 
 
@@ -67,7 +70,7 @@
     var item = function*(username) {
         var user = yield* models.User.findOne({ username: username }, services.copy());
         if (user)
-            this.body = user.summarize({}, services.get('db'));
+            this.body = yield* user.summarize();
     };
 
 

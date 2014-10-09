@@ -12,7 +12,8 @@
 
 
     var create = function*() {
-        var parser = new Parser(this, services.get('typesService'));
+        var typesService = services.get('typesService');
+        var parser = new Parser(this, typesService);
 
         var stub = (yield* parser.body('name')).toLowerCase().trim();
         if (conf.reservedNames.indexOf(stub) > -1)
@@ -25,15 +26,17 @@
         );
 
         if (!app) {
-            app = new models.App({
-                type: yield* parser.body('type'),
-                version: yield* parser.body('version'),
-                name: yield* parser.body('name'),
-                access: yield* parser.body('access'),
-                stub: stub,
-                createdBy: this.session.user,
-            });
-
+            app = yield* typesService.constructModel(
+                {
+                    type: yield* parser.body('type'),
+                    version: yield* parser.body('version'),
+                    name: yield* parser.body('name'),
+                    access: yield* parser.body('access'),
+                    stub: stub,
+                    createdBy: this.session.user,
+                },
+                models.App
+            );
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
             app = yield* app.save();
             _ = yield* app.addRole(this.session.user, 'admin');

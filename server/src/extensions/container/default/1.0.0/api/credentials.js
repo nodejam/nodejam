@@ -11,14 +11,18 @@
 
 
     var create = function*() {
-        var parser = new Parser(this, services.get('typesService'));
+        var typesService = services.get('typesService');
+        var parser = new Parser(this, typesService);
         if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
             var type = yield* parser.body('type');
 
-            var credential = new models.Credential({
-                email: yield* parser.body('email'),
-                preferences: { canEmail: true }
-            });
+            var credential = yield* typesService.constructModel(
+                {
+                    email: yield* parser.body('email'),
+                    preferences: { canEmail: true }
+                },
+                models.Credential
+            );
 
             var username;
             switch(type) {

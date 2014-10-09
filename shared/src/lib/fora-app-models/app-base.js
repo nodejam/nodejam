@@ -4,6 +4,7 @@
 	var __hasProp = {}.hasOwnProperty,
 		__extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
+	var services = require('fora-app-services');
 	var ForaModel = require('./foramodel').ForaModel;
 	var ForaDbModel = require('./foramodel').ForaDbModel;
 
@@ -155,6 +156,23 @@
 		logging: {
 			onInsert: 'NEW_APP'
 		}
+	};
+
+
+	/*
+		Summarize
+	*/
+	AppBase.prototype.summarize = function*() {
+		var typesService = services.get('typesService');
+		return yield* typesService.constructModel(
+			{
+				id: services.get('db').getRowId(this),
+				name: this.name,
+				stub: this.stub,
+				createdBy: this.createdBy
+			},
+			AppSummary
+		);
 	};
 
 

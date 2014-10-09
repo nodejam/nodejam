@@ -59,7 +59,7 @@
         if (user) {
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();
-            this.user = user.summarize();
+            this.user = yield* user.summarize();
             return yield* this.save(services.copy());
         } else {
             throw new Error("User not found");

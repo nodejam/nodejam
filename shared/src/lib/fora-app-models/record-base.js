@@ -4,6 +4,7 @@
     var __hasProp = {}.hasOwnProperty,
         __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
 
+    var services = require('fora-app-services');
     var ForaDbModel = require('./foramodel').ForaDbModel;
 
     var RecordBase = function() {

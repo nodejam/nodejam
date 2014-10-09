@@ -89,13 +89,17 @@
         return "/public/assets/" + this.assets;
     };
 
-    UserBase.prototype.summarize = function() {
-        return new UserSummary({
-            id: services.get('db').getRowId(this),
-            username: this.username,
-            name: this.name,
-            assets: this.assets
-        });
+    UserBase.prototype.summarize = function*() {
+        var typesService = services.get('typesService');
+        return yield* typesService.constructModel(
+            {
+                id: services.get('db').getRowId(this),
+                username: this.username,
+                name: this.name,
+                assets: this.assets
+            },
+            UserSummary
+        );
     };
 
     exports.UserBase = UserBase;

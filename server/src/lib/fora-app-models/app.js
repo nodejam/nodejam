@@ -165,18 +165,6 @@
     };
 
 
-    /*
-        Summarize
-    */
-    App.prototype.summarize = function() {
-        return new models.AppSummary({
-            id: services.get('db').getRowId(this),
-            name: this.name,
-            stub: this.stub,
-            createdBy: this.createdBy
-        });
-    };
-
     exports.App = App;
 
 })();
