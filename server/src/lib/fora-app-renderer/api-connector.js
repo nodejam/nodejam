@@ -15,20 +15,21 @@
 
 
     ApiConnector.prototype.get = function*(url) {
-        var response = yield* this.makeRequest("GET", url);
+        var requestContext = yield* this.makeRequest("GET", url);
+
+        var response = requestContext.body;
 
         //On the client, we can't tell if the deserialized JSON needs to go through a constructor.
         //So, set a flag __mustReconstruct.
-        response = visit(
+        response = yield* visit(
             response,
-            function(x) {
+            function*(x) {
                 if (x instanceof models.BaseModel) {
                     return {
                         value: x,
                         stop: true,
-                        fnAfterVisit: function(o) {
+                        fnAfterVisit: function*(o) {
                             o._mustReconstruct = true;
-                            return o;
                         }
                     };
                 }
@@ -40,10 +41,12 @@
             A client side script calling the same method doesn't then do the actual fetch.
         */
         this.requestContext.apiCache.push({
-            method: "GET",
-            url: url,
-            requestContext: this.requestContext.clone(),
-            response: response
+            requestContext: {
+                url: requestContext.url,
+                method: requestContext.method,
+                query: requestContext.query,
+                body: response
+            }
         });
 
         return response;
@@ -51,12 +54,12 @@
 
 
     ApiConnector.prototype.makeRequest = function*(method, url) {
-        var requestContext = this.requestContext.clone();
+        var requestContext = yield* this.requestContext.clone();
         requestContext.url = url;
         requestContext.method = method;
         _ = yield* this.routeFn.call(requestContext);
 
-        return requestContext.body;
+        return requestContext;
     };
 
 

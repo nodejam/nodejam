@@ -25,18 +25,20 @@
         if (__apiCache) {
             for(var i = 0; i < __apiCache.length; i++) {
                 var current = __apiCache[i];
-                if (current.method === method && current.url === url) {
+                if (current.requestContext.method === method && current.requestContext.url === url) {
                     match = current;
                     break;
                 }
             }
 
             if (match) {
-                return visit(
-                    match.response,
-                    function(item) {
+                return yield* visit(
+                    match.requestContext.body,
+                    function*(item) {
                         if (item._mustReconstruct) {
                             var typeDefinition = this.typesService.get(item.type);
+                            var model = yield* this.typesService.constructModelFromTypeDefinition(item, typeDefinition);
+                            return { value: model, stop: true };
                         }
                     }
                 );
