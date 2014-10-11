@@ -8,30 +8,15 @@
     */
     var setupInstanceStats = function() {
         var appInfo = {};
-        if (process.env.NODE_ENV === 'development') {
-            var randomizer = require('fora-app-randomizer');
-            appInfo.instance = randomizer.uniqueId();
-            appInfo.since = Date.now();
-        } else {
-            appInfo.instance = '00000000';
-            appInfo.since = 0;
-        }
+        var randomizer = require('fora-app-randomizer');
+        appInfo.instance = randomizer.uniqueId();
+        appInfo.since = Date.now();
         return appInfo;
     };
 
 
-    var Server = function(config, baseConfig) {
-        this.config = config;
-        this.baseConfig = baseConfig;
-
-        /*
-            Setup information useful for monitoring and debugging
-        */
-        this.appInfo = setupInstanceStats();
-    };
-
-
-    Server.prototype.init = function*() {
+    var init = function*(config, baseConfig) {
+        var appInfo = setupInstanceStats();
         /*
             Services
             0) Configuration
@@ -44,11 +29,11 @@
         var foraModels = require('fora-models');
 
         //Configuration
-        services.add("configuration", this.baseConfig);
+        services.add("configuration", baseConfig);
 
         //Database Service
         var Database = require('fora-db');
-        var db = new Database(this.baseConfig.db);
+        var db = new Database(baseConfig.db);
         services.add("db", db);
 
         /*
@@ -56,7 +41,7 @@
             ------------------
         */
         var ExtensionsService = require('fora-extensions-service');
-        var extensionsService = new ExtensionsService(this.config.services.extensions, this.baseConfig.services.extensions);
+        var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions);
         _ = yield* extensionsService.init();
         services.add("extensionsService", extensionsService);
 
@@ -87,31 +72,11 @@
         _ = yield* typesService.init(typeDefinitions, recordVirtTypeDefinitions);
         services.add("typesService", typesService);
 
-        /*
-            Start the app.
-            1) Error Handling
-            2) routes Initialization
-            3) Start Routing
-        */
-        var koa = require('koa');
-        this.app = koa();
-
-        var errorHandler = require('fora-app-error-handler');
-        this.app.use(errorHandler);
+        return {
+            appInfo: appInfo
+        };
     };
 
-
-    Server.prototype.addRouter = function(router) {
-        this.app.use(router.koaRoute());
-    };
-
-
-    Server.prototype.listen = function() {
-        /* GO! */
-        this.app.listen(this.config.port);
-    };
-
-
-    module.exports = Server;
+    module.exports = init;
 
 })();

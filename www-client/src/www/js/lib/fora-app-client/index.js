@@ -15,8 +15,14 @@
 
 
     Client.prototype.init = function*() {
+        /*
+            Services
+            0) Configuration
+            1) Database Service
+            2) Extensions Service
+            3) Types Service
+        */
         var models = require("fora-app-models");
-
         var services = require('fora-app-services');
 
 
@@ -24,10 +30,9 @@
         services.add("configuration", this.baseConfig);
 
         //Database Service
-        var odm = require('fora-models');
-        var db = new odm.Database(this.baseConfig.db);
+        var Database = require('fora-db');
+        var db = new Database(this.baseConfig.db);
         services.add("db", db);
-
 
         /*
             Extensions Service
@@ -45,7 +50,16 @@
             Virtual Type Definitions are defined in extensions, so we need to get it via extensionsService.
         */
         var TypesService = require('fora-app-types-service');
-        var typesService = new TypesService(extensionsService);
+        var typesService = new TypesService(
+            extensionsService,
+            {
+                modelServices: {
+                    getRowId: db.getRowId.bind(db),
+                    setRowId: db.setRowId.bind(db),
+                    isModel: function(i) { return i instanceof foraModels.BaseModel; }
+                }
+            }
+        );
         var typeDefinitions = Object.keys(models).map(function(k) { return models[k]; });
 
         var recordExtensions = yield* extensionsService.getModulesByKind("record", "definition");

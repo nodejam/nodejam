@@ -20,6 +20,8 @@
 
 
     ApiConnector.prototype.makeRequest = function*(method, url) {
+        var self = this;
+
         var match;
 
         if (__apiCache) {
@@ -36,8 +38,8 @@
                     match.requestContext.body,
                     function*(item) {
                         if (item._mustReconstruct) {
-                            var typeDefinition = this.typesService.get(item.type);
-                            var model = yield* this.typesService.constructModelFromTypeDefinition(item, typeDefinition);
+                            var typeDefinition = yield* self.typesService.getTypeDefinition(item.type);
+                            var model = yield* self.typesService.constructModelFromTypeDefinition(item, typeDefinition);
                             return { value: model, stop: true };
                         }
                     }

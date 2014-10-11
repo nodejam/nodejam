@@ -143,8 +143,13 @@
 
                 var cmdMakeLib = "browserify -r ./app/www/vendor/js/shims/react.shim.js:react -r ./app/www/vendor/js/shims/co.shim.js:co " +
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
+                     "-r ./app/www/js/lib/fora-data-utils:fora-data-utils " +
+                     "-r ./app/www/js/lib/fora-types-service:fora-types-service " +
                      "-r ./app/www/js/lib/fora-extensions-service/fora-extensions-service:fora-extensions-service " +
+                     "-r ./app/www/js/lib/fora-db/fora-db:fora-db " +
                      "-r ./app/www/js/lib/fora-models/fora-models:fora-models " +
+                     "-r ./app/www/js/lib/fora-validator:fora-validator " +
+                     "-r ./app/www/js/lib/fora-request/fora-request:fora-request " +
                      "-r ./app/www/js/lib/fora-router/lib/fora-router:fora-router " +
                      "-r ./app/www/js/lib/fora-app-ui:fora-app-ui " +
                      "-r ./app/www/js/lib/fora-app-services:fora-app-services " +
@@ -153,21 +158,20 @@
                      "-r ./app/www/js/lib/fora-app-logger:fora-app-logger " +
                      "-r ./app/www/js/lib/fora-app-renderer:fora-app-renderer " +
                      "-r ./app/www/js/lib/fora-app-sandbox:fora-app-sandbox " +
-                     "-r ./app/www/js/lib/fora-request/fora-request:fora-request " +
                      "-r ./app/www/js/lib/fora-app-client:fora-app-client " +
-                     "-r ./app/www/js/lib/fora-types-service:fora-types-service " +
                      "-r ./app/www/js/lib/fora-app-types-service:fora-app-types-service " +
-                     "-r ./app/www/js/lib/fora-data-utils:fora-data-utils " +
+                     "-r ./app/www/js/lib/fora-app-initialize:fora-app-initialize " +
+                     "-r ./app/www/js/lib/fora-app-randomizer:fora-app-randomizer " +
                      "> app/www/js/lib.js";
 
                 var cmdMakeBundle = "browserify " +
                     "-x markdown -x react -x co " +
                     "-x fora-extensions-service -x fora-app-renderer " +
                     "-x fora-models -x fora-router -x fora-app-ui " +
-                    "-x fora-data-utils -x fora-app-logger " +
+                    "-x fora-db -x fora-data-utils -x fora-app-logger " +
                     "-x fora-app-services -x fora-app-models " +
                     "-x fora-app-sandbox -x fora-app-client " +
-                    "-x fora-types-service " +
+                    "-x fora-types-service -x fora-app-initialize " +
                     reactPages.concat(extensions).map(function(x) {
                         //Take out .js, .json, /index.js and /index.json since require doesn't need it
                         var dest = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');

@@ -6,7 +6,7 @@
     var path = require('path');
     var co = require('co');
     var logger = require('fora-app-logger');
-    var Server = require('fora-app-server');
+    var initializeApp = require('fora-app-initialize');
     var Router = require('fora-router');
     var baseConfig = require('./config');
 
@@ -21,10 +21,10 @@
     /*
         Calling /healthcheck returns { "jacksparrow": "alive", .... }
     */
-    var addHealthCheck = function(router, server) {
+    var addHealthCheck = function(router, appIinfo) {
         router.get("/healthcheck", function*() {
             var uptime = parseInt((Date.now() - since)/1000) + "s";
-            this.body = { jacksparrow: "alive", instance: server.appInfo.instance, since: server.appInfo.since, uptime: server.appInfo.uptime };
+            this.body = { jacksparrow: "alive", instance: appInfo.instance, since: appInfo.since, uptime: appInfo.uptime };
         });
     };
 
@@ -134,12 +134,9 @@
                 port: port
             };
 
-            var server = new Server(config, baseConfig);
-            _ = yield* server.init();
-
+            var initResult = yield* initializeApp(config, baseConfig);
             var router = new Router();
-
-            addHealthCheck(router, server);
+            addHealthCheck(router, initResult.appInfo);
             addDomainRewrite(router);
 
             var extensionsService = services.get('extensionsService');
@@ -151,9 +148,13 @@
             yield* addContainerUIRoutes(router, "/", extensionsService);
             yield* addExtensionRoutes(router, "/", "web");
 
-            //GO!
-            server.addRouter(router);
-            server.listen();
+            /* Init koa */
+            var koa = require('koa');
+            var app = koa();
+            var errorHandler = require('fora-app-error-handler');
+            app.use(errorHandler);
+            app.use(router.koaRoute());
+            app.listen(config.port);
 
             logger.log("Fora started at " + new Date() + " on " + host + ":" + port);
         })();

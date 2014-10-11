@@ -1,12 +1,12 @@
 (function() {
 	"use strict";
 
-	var utils = require('./utils');
-	var Validator = require('./validator');
+	var dataUtils = require('fora-data-utils');
+	var Validator = require('fora-validator');
 
 
 	var BaseModel = function(params) {
-		utils.extend(this, params);
+		dataUtils.extend(this, params);
 	};
 
 
@@ -72,4 +72,4 @@
 
 	module.exports = BaseModel;
 
-}).call(this);
+})();

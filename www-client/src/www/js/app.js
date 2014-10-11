@@ -5,7 +5,7 @@
 
     var co = require('co');
     var logger = require('fora-app-logger');
-    var Client = require('fora-app-client');
+    var initializeApp = require('fora-app-initialize');
     var Router = require('fora-router');
     var baseConfig = require('./config');
 
@@ -45,17 +45,26 @@
                 }
             };
 
-            var client = new Client(config, baseConfig);
-            _ = yield* client.init();
-
+            var initResult = yield* initializeApp(config, baseConfig);
             var router = new Router();
 
             var extensionsService = services.get('extensionsService');
             _ = yield* addContainerUIRoutes(router, "/", extensionsService);
 
-            //GO!
-            client.addRouter(router);
-            client.listen();
+            var routeFunc = router.route();
+
+            var doRouting = function*() {
+                var request = new ForaRequest();
+                _ = yield* routeFunc.call(request, null);
+            };
+
+            var onChange = function() {
+                co(doRouting)();
+            };
+
+            // Listen on hash change, page load:
+            window.addEventListener('hashchange', onChange);
+            window.addEventListener('load', onChange);
 
             logger.log("Fora started at " + new Date());
         })();

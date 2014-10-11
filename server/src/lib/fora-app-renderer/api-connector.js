@@ -30,6 +30,7 @@
                         stop: true,
                         fnAfterVisit: function*(o) {
                             o._mustReconstruct = true;
+                            return o;
                         }
                     };
                 }
