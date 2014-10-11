@@ -53,7 +53,8 @@
         Records
     */
     App.prototype.createRecord = function*(params) {
-        var record = yield* models.Record.create(params);
+        var typesService = services.get('typesService');
+        var record = yield* typesService.constructModel(params, models.Record);
         record.appId = this.getRowId();
         return record;
     };

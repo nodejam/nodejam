@@ -56,7 +56,7 @@
     var addContainerUIRoutes = function*(router, urlPrefix, extensionsService) {
         var routes = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "web");
 
-        var renderer = new Renderer(router, extensionsService, argv['debug-client']);
+        var renderer = new Renderer(router, argv['debug-client']);
 
         var uiRoutes = renderer.createRoutes(routes);
         uiRoutes.forEach(function(route) {

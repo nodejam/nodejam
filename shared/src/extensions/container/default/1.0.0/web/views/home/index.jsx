@@ -17,9 +17,7 @@
                 /* Attach the templates */
                 var init = function*(records) {
                   for (var i = 0; i < records.length; i++) {
-                      var typeDef = yield* records[i].getTypeDefinition();
-                      var extension = yield* api.extensions.get(typeDef.name);
-                      records[i].template = extension["web/views"].list;
+                      records[i].template = yield* api.views.getView("list", records[i]);
                   }
               };
 

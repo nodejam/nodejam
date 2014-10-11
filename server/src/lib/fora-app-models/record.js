@@ -27,24 +27,6 @@
 
 
 
-    Record.create = function*(params) {
-        var obj;
-        var typesService = services.get('typesService');
-        var typeDef = yield* this.getTypeDefinition(typesService);
-        if (typeDef.discriminator) {
-            var actualTypeDef = yield* typeDef.discriminator(params, typesService);
-            obj = new actualTypeDef.ctor(params);
-            obj.getTypeDefinition = function*() {
-                return actualTypeDef;
-            };
-        } else {
-            obj = new typeDef.ctor(params);
-        }
-        return obj;
-    };
-
-
-
     Record.search = function*(criteria, settings) {
         var limit = getLimit(settings.limit, 100, 1000);
 
@@ -98,7 +80,8 @@
 
 
     Record.prototype.getMappableFields = function*() {
-        return yield* getMappableFields(yield* this.getTypeDefinition());
+        var typesService = services.get('typesService');
+        return yield* getMappableFields(yield* this.getTypeDefinition(typesService));
     };
 
 

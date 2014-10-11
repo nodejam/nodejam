@@ -3,13 +3,13 @@
 
     var _;
 
-    var HttpConnector = require('./http-connector');
-    var layout = require('./layout');
+    var HttpConnector = require('./http-connector'),
+        viewApi = require('./view-api'),
+        layout = require('./layout');
 
 
-    var Renderer = function(router, extensionsService, isDebug) {
+    var Renderer = function(router, isDebug) {
         this.router = router;
-        this.extensionsService = extensionsService;
         this.renderFunc = isDebug ? layout.render_DEBUG : layout.render;
     };
 
@@ -26,9 +26,7 @@
                 handler: function*() {
                     var api = {
                         http: new HttpConnector(this, self.router),
-                        extensions: {
-                            get: self.getExtension.bind(self)
-                        }
+                        views: viewApi
                     };
                     this.body = yield* self.renderFunc.call(null, this, route.handler, api);
                 }
@@ -36,13 +34,6 @@
         });
 
         return result;
-    };
-
-
-    Renderer.prototype.getExtension = function*(name) {
-        var result = yield* this.extensionsService.get(name);
-        if (result)
-            return result.extension;
     };
 
 
