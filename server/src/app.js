@@ -3,20 +3,17 @@
 
     var _;
 
-    var path = require('path');
-    var co = require('co');
-    var logger = require('fora-app-logger');
-    var initializeApp = require('fora-app-initialize');
-    var Router = require('fora-router');
-    var baseConfig = require('./config');
-
-    var services = require('fora-app-services'),
-        models = require('fora-app-models');
-
-    var Parser = require('fora-request-parser');
-    var Renderer = require('fora-app-renderer');
-
-    var argv = require('optimist').argv;
+    var path = require('path'),
+        argv = require('optimist').argv,
+        co = require('co'),
+        logger = require('fora-app-logger'),
+        Router = require('fora-router'),
+        Parser = require('fora-request-parser'),
+        Renderer = require('fora-app-renderer'),
+        services = require('fora-app-services'),
+        models = require('fora-app-models'),
+        initializeApp = require('fora-app-initialize'),
+        baseConfig = require('./config');
 
     /*
         Calling /healthcheck returns { "jacksparrow": "alive", .... }

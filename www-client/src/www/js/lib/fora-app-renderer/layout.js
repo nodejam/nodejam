@@ -18,11 +18,11 @@
 
 
     var render = function(debug) {
-        return function*(reactClass) {
+        return function*(request, reactClass, api) {
             var props;
 
             if (reactClass.componentInit)
-                props = yield* reactClass.componentInit.call(null, this);
+                props = yield* reactClass.componentInit.call(null, api);
 
             props = props || {};
 
@@ -45,7 +45,7 @@
             React.renderComponent(container, document.getElementsByClassName('app-container')[0]);
         };
     };
-    
+
 
     module.exports = {
         render: render(false),

@@ -11,14 +11,14 @@
 
     module.exports = React.createClass({
         statics: {
-            componentInit: function*(request) {
-                var props = yield* request.api.get("/api/v1/ui/home");
+            componentInit: function*(api) {
+                var props = yield* api.http.get("/api/v1/ui/home");
 
                 /* Attach the templates */
                 var init = function*(records) {
                   for (var i = 0; i < records.length; i++) {
                       var typeDef = yield* records[i].getTypeDefinition();
-                      var extension = yield* request.libs.extensions.get(typeDef.name);
+                      var extension = yield* api.extensions.get(typeDef.name);
                       records[i].template = extension["web/views"].list;
                   }
               };

@@ -3,7 +3,7 @@
 
     var _;
 
-    var ApiConnector = require('./api-connector');
+    var HttpConnector = require('./http-connector');
     var layout = require('./layout');
 
 
@@ -17,12 +17,6 @@
     Renderer.prototype.createRoutes = function(routes) {
         var self = this;
 
-        var libs = {
-            extensions: {
-                get: this.getExtension.bind(this)
-            }
-        };
-
         var result = [];
 
         routes.forEach(function(route) {
@@ -30,9 +24,13 @@
                 method: route.method,
                 url: route.url,
                 handler: function*() {
-                    this.api = new ApiConnector(this, self.router);
-                    this.libs = libs;
-                    this.body = yield* self.renderFunc.call(this, route.handler);
+                    var api = {
+                        http: new HttpConnector(this, self.router),
+                        extensions: {
+                            get: self.getExtension.bind(self)
+                        }
+                    };
+                    this.body = yield* self.renderFunc.call(null, this, route.handler, api);
                 }
             });
         });

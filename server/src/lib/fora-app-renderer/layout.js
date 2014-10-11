@@ -54,11 +54,11 @@
 
 
     var render = function(debug) {
-        return function*(reactClass) {
+        return function*(request, reactClass, api) {
             var props;
 
             if (reactClass.componentInit)
-                props = yield* reactClass.componentInit.call(null, this);
+                props = yield* reactClass.componentInit.call(null, api);
 
             props = props || {};
 
@@ -83,7 +83,7 @@
                         <title>' + title + '</title>\
                         <script>\
                             var __DEBUG = ' + (debug ? "true" : "false") + ';\
-                            var __apiCache = ' + JSON.stringify(this.apiCache) + ';\
+                            var __apiCache = ' + JSON.stringify(request.apiCache) + ';\
                         </script>' +
                         depsHtml +
                         '<meta name="viewport" content="width=device-width, initial-scale=1"/>\

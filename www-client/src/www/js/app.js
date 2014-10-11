@@ -3,17 +3,15 @@
 
     var _;
 
-    var co = require('co');
-    var logger = require('fora-app-logger');
-    var initializeApp = require('fora-app-initialize');
-    var Router = require('fora-router');
-    var baseConfig = require('./config');
-
-    var services = require('fora-app-services'),
-        models = require('fora-app-models');
-
-    var Renderer = require('fora-app-renderer');
-
+    var co = require('co'),
+        logger = require('fora-app-logger'),
+        Router = require('fora-router'),
+        Renderer = require('fora-app-renderer'),
+        ForaRequest = require('fora-request'),
+        services = require('fora-app-services'),
+        models = require('fora-app-models'),
+        initializeApp = require('fora-app-initialize'),
+        baseConfig = require('./config');
 
 
     /*  Container UI Routes */
