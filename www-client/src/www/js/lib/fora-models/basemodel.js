@@ -10,11 +10,6 @@
 	};
 
 
-	/*
-		Rationale:
-		One might think why anyone would call this method, when they can directly invoke typesService.getTypeDefinition(name)
-		That involves a lookup, which we try to avoid by caching in __typeDefinition.
-	*/
 	BaseModel.getTypeDefinition = function*(typesService) {
 		if (!this.__typeDefinition) {
 			this.__typeDefinition = yield* typesService.getTypeDefinition(this.typeDefinition.name);
@@ -22,19 +17,6 @@
 				throw new Error("Unable to load type definition");
 		}
 		return this.__typeDefinition;
-	};
-
-
-	BaseModel.getLimit = function(limit, _default, max) {
-		var result;
-		result = _default;
-		if (limit) {
-			result = limit;
-			if (result > max) {
-				result = max;
-			}
-		}
-		return result;
 	};
 
 
@@ -53,7 +35,8 @@
 
 
 	BaseModel.prototype.getTypeDefinition = function*(typesService) {
-		return yield* this.constructor.getTypeDefinition(typesService);
+		var typeDef = yield* this.constructor.getTypeDefinition(typesService);
+		return typeDef.discriminator ? (yield* typeDef.discriminator(this, typesService)) : typeDef;
 	};
 
 

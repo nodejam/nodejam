@@ -37,7 +37,7 @@
                         modules: [
                             { kind: "container", modules: ["api", "web"] },
                             { kind: "app", modules: ["definition", "api"] },
-                            { kind: "record", modules: ["definition", "model", "web/views"] }
+                            { kind: "record", modules: ["definition", "model", "web"] }
                         ]
                     }
                 }

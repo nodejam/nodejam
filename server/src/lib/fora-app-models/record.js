@@ -36,7 +36,7 @@
             params[k] = v;
         }
 
-        yield Record.find(params, { sort: settings.sort, limit: limit });
+        _ = yield* Record.find(params, { sort: settings.sort, limit: limit });
     };
 
 

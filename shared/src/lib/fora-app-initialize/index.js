@@ -41,7 +41,16 @@
             ------------------
         */
         var ExtensionsService = require('fora-extensions-service');
-        var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions);
+        var fnModuleMapper = function*(extModule, kind, typeName, version, moduleName) {
+            if (kind === "record" && moduleName === "definition") {
+                extModule.name = kind + "/" + typeName + "/" + version;
+            }
+            if (extModule.init)
+                _ = yield* extModule.init();
+
+            return extModule;
+        };
+        var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions, fnModuleMapper);
         _ = yield* extensionsService.init();
         services.add("extensionsService", extensionsService);
 

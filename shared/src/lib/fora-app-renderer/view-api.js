@@ -11,7 +11,7 @@
         var extensionSearchResult = yield* extensionsService.get(typeDef.name);
         if (extensionSearchResult) {
             var extension = extensionSearchResult.extension;
-            return extension["web/views"][viewName];
+            return extension["web"][viewName];
         }
     };
 

@@ -11,16 +11,19 @@
     //This file was written out during the build...
     var extensionPaths = require('../../extensions/extensions');
 
-    var ExtensionsService = function(config, baseConfig, dynamicExtensionFinder) {
+    var ExtensionsService = function(config, baseConfig, fnModuleMapper, dynamicExtensionFinder) {
         this.config = config;
         this.baseConfig = baseConfig;
+        this.fnModuleMapper = fnModuleMapper;
         this.dynamicExtensionFinder = dynamicExtensionFinder;
     };
 
 
     ExtensionsService.prototype.init = function*() {
+        var self = this;
 
         var canLoad = function(m) { return m.kind === kind && m.modules.indexOf(moduleName) > -1; };
+
         for(var i = 0; i < extensionPaths.length; i++) {
             var path = extensionPaths[i].split('/').slice(2);
             var kind = path[0];
@@ -33,9 +36,7 @@
                 var fullName = extensionName + "/" + moduleName;
 
                 var extModule = require(["/extensions", kind, typeName, version, moduleName].join("/"));
-                extModule.name = kind + "/" + typeName + "/" + version;
-                if (extModule.init)
-                    _ = yield* extModule.init();
+                extModule = yield* self.fnModuleMapper(extModule, kind, typeName, version, moduleName);
 
                 //Put the module in cache
                 moduleCache[fullName] = extModule;

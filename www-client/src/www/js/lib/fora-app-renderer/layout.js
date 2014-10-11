@@ -32,14 +32,15 @@
 
             var pageName = props.pageName || "default-page";
             var theme = props.theme || "default-theme";
-            var bodyClass = pageName + " " + theme;
 
-            if (!hasClass(document.body, "")) {
-                if (document.body.classList)
-                    document.body.classList.add(className);
-                else
-                    el.className += ' ' + className;
-            }
+            [pageName, theme].forEach(function(bodyClass) {
+                if (!hasClass(document.body, bodyClass)) {
+                    if (document.body.classList)
+                        document.body.classList.add(bodyClass);
+                    else
+                        el.className += ' ' + bodyClass;
+                }
+            });
 
             var container = pageContainer({ page: component });
             React.renderComponent(container, document.getElementsByClassName('app-container')[0]);
