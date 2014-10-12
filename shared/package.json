@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "fora-data-utils": "*",
+    "fora-router": "*",
+    "fora-types-service": "*",
+    "fora-validator": "*"
+  }
+}

@@ -10,7 +10,6 @@
     "mongodb": "*",
     "validator": "*",
     "sanitizer": "*",
-    "handlebars": "*",
     "fs-extra": "*",
     "gm": "*",
     "oauth": "*",
@@ -19,11 +18,10 @@
     "multiparty": "*",
     "react": "*",
     "path-to-regexp": "*",
+    "fora-db": "*",
     "fora-models": "*",
     "fora-extensions-service": "*",
     "fora-request": "*",
-    "fora-request-parser": "*",
-    "fora-router": "*",
-    "fora-types-service": "*"
+    "fora-request-parser": "*"
   }
 }
