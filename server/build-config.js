@@ -49,6 +49,52 @@
             }, "server_setup_data_copy");
 
 
+            /*
+                We have to reload the app when anything under node_modules change
+            */
+            this.watch(
+                [
+                    "node_modules/fora-db/lib/*.*",
+                    "node_modules/fora-models/lib/*.*",
+                    "node_modules/fora-extensions-service/lib/*.*",
+                    "node_modules/fora-request/lib/*.*",
+                    "node_modules/fora-request-parser/lib/*.*"
+                ],
+                function*(filePath) {
+                    this.build.queue('restart_server');
+                },
+                "server_shared_files_copy"
+            );
+
+
+            /*
+                Also watch ../shared/node_modules
+            */
+            this.watch(
+                [
+                    "../shared/node_modules/fora-data-utils/lib/*.*",
+                    "../shared/node_modules/fora-router/lib/*.*",
+                    "../shared/node_modules/fora-types-service/lib/*.*",
+                    "../shared/node_modules/fora-validator/lib/*.*"
+                ],
+                function*(filePath) {
+                    if (!this.state.changedSharedLibs)
+                        this.state.changedSharedLibs = [];
+                    if (this.state.changedSharedLibs.indexOf(filePath) === -1)
+                        this.state.changedSharedLibs.push(filePath);
+                    console.log(filePath);
+                    var self = this;
+                    this.queue(function*() {
+                        for (var i = 0; i < self.state.changedSharedLibs; self.state.changedSharedLibs++) {
+                            console.log(self.state.changedSharedLibs[i]);
+                        }
+                    });
+
+                    this.build.queue('restart_server');
+                },
+                "server_shared_files_copy"
+            );
+
 
             /*
                 Watch everything under shared. Anything that moves, copy it.
