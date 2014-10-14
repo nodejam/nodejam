@@ -10,6 +10,9 @@
         var ensureDirExists = tools.fs.ensureDirExists();
         var react = require('react-tools');
 
+        var npmModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator",
+                          "fora-db", "fora-models", "fora-extensions-service", "fora-request", "fora-request-parser"];
+
         return function() {
 
             /*
@@ -53,58 +56,27 @@
                 We have to reload the app when anything under node_modules change
             */
             this.watch(
-                [
-                    "node_modules/fora-db/lib/*.*",
-                    "node_modules/fora-models/lib/*.*",
-                    "node_modules/fora-extensions-service/lib/*.*",
-                    "node_modules/fora-request/lib/*.*",
-                    "node_modules/fora-request-parser/lib/*.*"
-                ],
+                npmModules.map(function(m) { return "node_modules/" + m + "/lib/*.*"; }),
                 function*(filePath) {
                     this.build.queue('restart_server');
                 },
-                "server_shared_files_copy"
+                "server_modules_watch"
             );
 
 
             /*
-                Also watch ../shared/node_modules
+                Compile all JSX files
+                Use the React Tools API for this; there is no way to do this from the command line
             */
-            this.watch(
-                [
-                    "../shared/node_modules/fora-data-utils/lib/*.*",
-                    "../shared/node_modules/fora-router/lib/*.*",
-                    "../shared/node_modules/fora-types-service/lib/*.*",
-                    "../shared/node_modules/fora-validator/lib/*.*"
-                ],
-                function*(filePath) {
-                    if (!this.state.changedSharedLibs)
-                        this.state.changedSharedLibs = [];
-                    if (this.state.changedSharedLibs.indexOf(filePath) === -1)
-                        this.state.changedSharedLibs.push(filePath);
-                    console.log(filePath);
-                    var self = this;
-                    this.queue(function*() {
-                        for (var i = 0; i < self.state.changedSharedLibs; self.state.changedSharedLibs++) {
-                            console.log(self.state.changedSharedLibs[i]);
-                        }
-                    });
-
-                    this.build.queue('restart_server');
-                },
-                "server_shared_files_copy"
-            );
-
-
-            /*
-                Watch everything under shared. Anything that moves, copy it.
-            */
-            this.watch(["../shared/app/*.*"], function*(filePath) {
-                var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/');
+            this.watch(["src/lib/fora-app-ui/*.jsx", "src/extensions/*.jsx"], function*(filePath) {
+                var fs = require('fs');
+                var dest = filePath.replace(/^src\//, 'app/').replace(/\.jsx$/, '.js');
                 _ = yield* ensureDirExists(dest);
-                _ = yield* exec("cp " + filePath + " " + dest);
-                this.build.queue('restart_server');
-            }, "server_shared_files_copy");
+                var contents = fs.readFileSync(filePath);
+                console.log("jsx " + filePath);
+                var result = react.transform(contents.toString());
+                fs.writeFileSync(dest, result);
+            }, "servier_jsx_compile");
 
 
             /*

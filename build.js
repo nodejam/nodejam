@@ -38,7 +38,6 @@
     var build = foraBuild.create({ threads: threads });
 
     /* The three configs */
-    var sharedConfig = require('./shared/build-config')(foraBuild.tools);
     var serverConfig = require('./server/build-config')(foraBuild.tools);
     var clientConfig = require('./www-client/build-config')(foraBuild.tools);
 
@@ -66,7 +65,6 @@
     if (argv['use-es6']) build.state.useES6 = true;
 
     /* Create configuration */
-    var shared = build.configure(sharedConfig, 'shared');
     if (build.state.buildServer)
         var server = build.configure(serverConfig, 'server');
     if (build.state.buildClient)
@@ -97,17 +95,16 @@
 
         var elapsed = Date.now() - start;
 
-        var sharedTime = (shared.state.end - shared.state.start)/1000;
-        console.log("Build(shared): " + sharedTime + "s");
-
         if (this.state.buildServer) {
             var serverTime = (server.state.end - server.state.start)/1000;
             console.log("Build(server): " + serverTime + "s");
         }
+
         if (this.state.buildClient) {
             var clientTime = (client.state.end - client.state.start)/1000;
             console.log("Build(client): " + clientTime + "s");
         }
+        
         console.log("Build(total): " + (elapsed/1000) + "s");
     });
 

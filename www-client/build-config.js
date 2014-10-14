@@ -1,5 +1,9 @@
 (function() {
+
     "use strict";
+
+    var _;
+
     module.exports = function(tools) {
 
         var spawn = tools.process.spawn();
@@ -9,6 +13,11 @@
         var compressor = require('node-minify');
         var path = require('path');
         var fs = require('fs');
+
+        var clientModules = ["fora-db", "fora-extensions-service", "fora-models", "fora-request"];
+        var serverModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator"];
+        var libModules = ["fora-app-ui", "fora-app-services", "fora-app-models", "fora-app-logger", "fora-app-renderer", "fora-app-sandbox",
+                          "fora-app-client", "fora-app-types-service", "fora-app-initialize", "fora-app-randomizer"];
 
         return function() {
 
@@ -23,66 +32,65 @@
                 console.log("Started fora/www-client build");
                 console.log("*****************************");
                 this.state.start = Date.now();
-                yield* exec("rm -rf app");
-                yield* exec("mkdir app");
+                _ = yield* exec("rm -rf app");
+                _ = yield* exec("mkdir app");
             }, "client_build_start");
 
 
             /*
                 Copy all files, except .less
             */
-            this.watch(["src/www/css/*.*", "src/www/fonts/*.*", "src/www/images/*.*", "src/www/js/*.js", "src/www/vendor/*.*"], function*(filePath) {
-                if (!/(\.less$)/.test(path.extname(filePath))) {
-                    var dest = filePath.replace(/^src\//, 'app/');
-                    yield* ensureDirExists(dest);
-                    yield* exec("cp " + filePath + " " + dest);
-                }
-            }, "client_files_copy");
+            this.watch(
+                ["src/www/css/*.*", "src/www/fonts/*.*", "src/www/images/*.*",
+                 "src/www/js/*.js", "src/www/vendor/*.*"],
+                function*(filePath) {
+                    if (!/(\.less$)/.test(path.extname(filePath))) {
+                        var dest = filePath.replace(/^src\//, 'app/');
+                        _ = yield* ensureDirExists(dest);
+                        _ = yield* exec("cp " + filePath + " " + dest);
+                    }
+                },
+                "client_files_copy"
+            );
 
 
             /*
-                Watch everything under shared. Anything that moves, copy it.
+                Also watch ../server/node_modules
             */
-            this.watch(["../shared/app/*.*"], function*(filePath) {
-                var dest = filePath.replace(/^\.\.\/shared\/app\//, 'app/www/js/')
-                if (/^app\/www\/js\/website\/views\//.test(dest)) reactPages.push(dest);
-                if (/^app\/www\/js\/extensions\//.test(dest)) extensions.push(dest);
-                yield* ensureDirExists(dest);
-                yield* exec("cp " + filePath + " " + dest);
-            }, "client_shared_files_copy");
-
-
-            /*
-                Do facebook regenerator transform on all client side js files
-            */
-            this.watch(["app/www/js/*.js"], function*(filePath) {
-                //Skip regenerator in es6 mode. Requires flags in browsers (as of June 2014)
-                if (!this.build.state.useES6) {
-                    var result = yield* exec("regenerator " + filePath);
-                    fs.writeFileSync(filePath, result);
+            this.watch(
+                serverModules.map(function(m) { return "../server/node_modules/" + m + "/*.*";}),
+                function*(filePath) {
+                    var dest = filePath.replace(/^\.\.\/shared\/node_modules\//, 'app/www/lib/');
+                    _ = yield* ensureDirExists(dest);
+                    _ = yield* exec("cp " + filePath + " " + dest);
                 }
-                this.queue("client_bundle_files");
-            }, "client_regenerator_transform", ["client_shared_files_copy"]);
+            );
 
 
             /*
                 Compile less files. Schedule it at the end.
             */
             this.watch(["src/www/css/*.less"], function*(filePath) {
-                yield* ensureDirExists('app/www/css/main.css');
-                if (!this.state.lesscQueued) {
-                    this.state.lesscQueued = true;
-                    this.queue(function*() {
-                        yield* exec("lessc --verbose src/www/css/main.less app/www/css/main.css");
-                    });
-                }
+                _ = yield* ensureDirExists('app/www/css/main.css');
+                this.queue(function*() {
+                    _ = yield* exec("lessc --verbose src/www/css/main.less app/www/css/main.css");
+                });
             }, "client_less_compile");
 
 
             /*
-                Bundle all files.
+                1. Do facebook regenerator transform on all client side js files
+                2. Browserify bundle
             */
             this.job(function*() {
+
+                // var transformables = ["app/www/js/*.js"]
+                // this.watch(transformables, function*(filePath) {
+                //     //Skip regenerator in es6 mode. Requires flags in browsers (as of June 2014)
+                //     if (!this.build.state.useES6) {
+                //         var result = yield* exec("regenerator " + filePath);
+                //         fs.writeFileSync(filePath, result);
+                //     }
 
                 extensions = extensions.filter(function(e) {
                     return /\/index\.json$|\/index\.js$/.test(e) &&
@@ -109,7 +117,7 @@
                     };
 
                     console.log("Minifying CSS to lib.css");
-                    yield* minify({
+                    _ = yield* minify({
                         type: 'sqwish',
                         buffer: 1000 * 1024,
                         tempPath: '../temp/',
@@ -124,7 +132,7 @@
                     });
 
                     console.log("Minifying JS to vendor.js");
-                    yield* minify({
+                    _ = yield* minify({
                         type: 'no-compress',
                         buffer: 1000 * 2048,
                         tempPath: '../temp/',
@@ -141,37 +149,24 @@
 
                 console.log("Running browserify");
 
-                var cmdMakeLib = "browserify -r ./app/www/vendor/js/shims/react.shim.js:react -r ./app/www/vendor/js/shims/co.shim.js:co " +
+                var cmdMakeLib = "browserify " +
+                     "-r ./app/www/vendor/js/shims/react.shim.js:react " +
+                     "-r ./app/www/vendor/js/shims/co.shim.js:co " +
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
-                     "-r ./app/www/js/lib/fora-data-utils:fora-data-utils " +
-                     "-r ./app/www/js/lib/fora-types-service:fora-types-service " +
-                     "-r ./app/www/js/lib/fora-extensions-service/fora-extensions-service:fora-extensions-service " +
-                     "-r ./app/www/js/lib/fora-db/fora-db:fora-db " +
-                     "-r ./app/www/js/lib/fora-models/fora-models:fora-models " +
-                     "-r ./app/www/js/lib/fora-validator:fora-validator " +
-                     "-r ./app/www/js/lib/fora-request/fora-request:fora-request " +
                      "-r ./app/www/js/lib/path-to-regexp/path-to-regexp:path-to-regexp " +
-                     "-r ./app/www/js/lib/fora-router/lib/fora-router:fora-router " +
-                     "-r ./app/www/js/lib/fora-app-ui:fora-app-ui " +
-                     "-r ./app/www/js/lib/fora-app-services:fora-app-services " +
-                     "-r ./app/www/js/lib/fora-app-models:fora-app-models " +
-                     "-r ./app/www/js/lib/fora-app-logger:fora-app-logger " +
-                     "-r ./app/www/js/lib/fora-app-renderer:fora-app-renderer " +
-                     "-r ./app/www/js/lib/fora-app-sandbox:fora-app-sandbox " +
-                     "-r ./app/www/js/lib/fora-app-client:fora-app-client " +
-                     "-r ./app/www/js/lib/fora-app-types-service:fora-app-types-service " +
-                     "-r ./app/www/js/lib/fora-app-initialize:fora-app-initialize " +
-                     "-r ./app/www/js/lib/fora-app-randomizer:fora-app-randomizer " +
+                     serverModules.concat(clientModules).map(function(m) {
+                         return "-r ./app/www/node_modules/" + m + "/" + m + ":" + m;
+                     }).join(" ") + " " +
+                     libModules.map(function(m) {
+                         return "-r ./app/www/js/lib/" + m + "/" + m + ":" + m;
+                     }).join(" ") + " " +
                      "> app/www/js/lib.js";
 
                 var cmdMakeBundle = "browserify " +
                     "-x markdown -x react -x co " +
-                    "-x fora-extensions-service -x fora-app-renderer " +
-                    "-x fora-models -x fora-request -x fora-router -x fora-app-ui " +
-                    "-x fora-db -x fora-data-utils -x fora-app-logger " +
-                    "-x fora-app-services -x fora-app-models " +
-                    "-x fora-app-sandbox -x fora-app-client " +
-                    "-x fora-types-service -x fora-app-initialize " +
+                    serverModules.concat(clientModules).concat(libModules).map(function(m) {
+                        return "-x " + m;
+                    }).join(" ") + " " +
                     reactPages.concat(extensions).map(function(x) {
                         //Take out .js, .json, /index.js and /index.json since require doesn't need it
                         var dest = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');
@@ -186,8 +181,8 @@
                     cmdMakeBundle += " --debug";
                 }
 
-                yield* exec(cmdMakeLib);
-                yield* exec(cmdMakeBundle)
+                _ = yield* exec(cmdMakeLib);
+                _ = yield* exec(cmdMakeBundle);
 
 
             }, "client_bundle_files");

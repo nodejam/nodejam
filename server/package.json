@@ -22,6 +22,10 @@
     "fora-models": "*",
     "fora-extensions-service": "*",
     "fora-request": "*",
-    "fora-request-parser": "*"
+    "fora-request-parser": "*",
+    "fora-data-utils": "*",
+    "fora-router": "*",
+    "fora-types-service": "*",
+    "fora-validator": "*"
   }
 }
