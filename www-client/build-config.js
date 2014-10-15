@@ -110,13 +110,28 @@
             }, "client_less_compile");
 
 
+            /*
+                Do regenerator transform, if not in es6 mode?
+            */
+            if (!this.build.state.useES6) {
+                this.watch(["app/www/js/*.js"], function*(filePath) {
+                    var result = yield* exec("regenerator " + filePath);
+                    fs.writeFileSync(filePath, result);
+                }, "client_regenerator_transform", ["client_files_copy", "client_server_npm_copy", "client_server_lib_copy", "client_server_config_copy"]);
+            }
+
 
             /*
                 Hook the bundle step
             */
+            var bundleTrigger = this.build.state.useES6 ?
+                ["client_files_copy", "client_server_npm_copy", "client_server_lib_copy", "client_server_config_copy"]
+                : ['client_regenerator_transform'];
+
             this.watch(["app/www/js/*.js"], function*(filePath) {
                 this.queue("client_bundle_files");
-            }, "client_bundle_hook", ["client_files_copy", "client_server_npm_copy", "client_server_lib_copy", "client_server_config_copy"]);
+            }, "client_bundle_hook", bundleTrigger);
+
 
 
             /*
@@ -124,14 +139,6 @@
                 2. Browserify bundle
             */
             this.job(function*() {
-
-                // var transformables = ["app/www/js/*.js"]
-                // this.watch(transformables, function*(filePath) {
-                //     //Skip regenerator in es6 mode. Requires flags in browsers (as of June 2014)
-                //     if (!this.build.state.useES6) {
-                //         var result = yield* exec("regenerator " + filePath);
-                //         fs.writeFileSync(filePath, result);
-                //     }
 
                 extensions = extensions.filter(function(e) {
                     return /\/index\.json$|\/index\.js$/.test(e) &&
