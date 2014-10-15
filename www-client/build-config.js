@@ -15,9 +15,10 @@
         var fs = require('fs');
 
         var clientModules = ["fora-db", "fora-extensions-service", "fora-models", "fora-request"];
-        var serverModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator"];
+        var serverNpmModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator"];
         var libModules = ["fora-app-ui", "fora-app-services", "fora-app-models", "fora-app-logger", "fora-app-renderer", "fora-app-sandbox",
-                          "fora-app-client", "fora-app-types-service", "fora-app-initialize", "fora-app-randomizer"];
+                          "fora-app-types-service", "fora-app-initialize", "fora-app-randomizer"];
+
 
         return function() {
 
@@ -53,29 +54,69 @@
                 "client_files_copy"
             );
 
-
             /*
-                Also watch ../server/node_modules
+                Watch ../server/node_modules
             */
             this.watch(
-                serverModules.map(function(m) { return "../server/node_modules/" + m + "/*.*";}),
+                ["../server/src/config/*.*"],
                 function*(filePath) {
-                    var dest = filePath.replace(/^\.\.\/shared\/node_modules\//, 'app/www/lib/');
+                    var dest = filePath.replace(/^\.\.\/server\/src\//, 'app/www/js/');
                     _ = yield* ensureDirExists(dest);
                     _ = yield* exec("cp " + filePath + " " + dest);
-                }
+                },
+                "client_server_config_copy"
             );
+
+
+            /*
+                Watch ../server/node_modules
+            */
+            this.watch(
+                serverNpmModules.map(function(m) { return "../server/node_modules/" + m + "/*.*";}),
+                function*(filePath) {
+                    var dest = filePath.replace(/^\.\.\/server\/node_modules\//, 'app/www/js/lib/');
+                    _ = yield* ensureDirExists(dest);
+                    _ = yield* exec("cp " + filePath + " " + dest);
+                },
+                "client_server_npm_copy"
+            );
+
+
+            /*
+                watch ../server/src/lib/*.js
+            */
+            this.watch(
+                libModules.map(function(m) { return "../server/app/lib/" + m + "/*.*";}),
+                function*(filePath) {
+                    var dest = filePath.replace(/^\.\.\/server\/app\/lib\//, 'app/www/js/lib/');
+                    _ = yield* ensureDirExists(dest);
+                    if (!fs.existsSync(dest))
+                        _ = yield* exec("cp " + filePath + " " + dest);
+                    else
+                        console.log("Skipping " + filePath + " -> " + dest);
+                },
+                "client_server_lib_copy"
+            );
+
 
 
             /*
                 Compile less files. Schedule it at the end.
             */
+            var lessCompile = function*() { _ = yield* exec("lessc --verbose src/www/css/main.less app/www/css/main.css"); };
             this.watch(["src/www/css/*.less"], function*(filePath) {
                 _ = yield* ensureDirExists('app/www/css/main.css');
-                this.queue(function*() {
-                    _ = yield* exec("lessc --verbose src/www/css/main.less app/www/css/main.css");
-                });
+                this.queue(lessCompile);
             }, "client_less_compile");
+
+
+
+            /*
+                Hook the bundle step
+            */
+            this.watch(["app/www/js/*.js"], function*(filePath) {
+                this.queue("client_bundle_files");
+            }, "client_bundle_hook", ["client_files_copy", "client_server_npm_copy", "client_server_lib_copy", "client_server_config_copy"]);
 
 
             /*
@@ -98,6 +139,7 @@
                 });
 
                 console.log("Writing out app/www/js/extensions/extensions.json");
+                _ = yield* ensureDirExists("app/www/js/extensions/extensions.json");
                 fs.writeFileSync("app/www/js/extensions/extensions.json", JSON.stringify(
                     extensions.map(function(e) {
                         return e.replace(/\/index\.json$|\/index\.js$/, '')
@@ -153,18 +195,18 @@
                      "-r ./app/www/vendor/js/shims/react.shim.js:react " +
                      "-r ./app/www/vendor/js/shims/co.shim.js:co " +
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
-                     "-r ./app/www/js/lib/path-to-regexp/path-to-regexp:path-to-regexp " +
-                     serverModules.concat(clientModules).map(function(m) {
-                         return "-r ./app/www/node_modules/" + m + "/" + m + ":" + m;
+                     "-r ./app/www/js/lib/path-to-regexp:path-to-regexp " +
+                     serverNpmModules.map(function(m) {
+                         return "-r ./app/www/js/lib/" + m + "/lib/" + m + ":" + m;
                      }).join(" ") + " " +
-                     libModules.map(function(m) {
-                         return "-r ./app/www/js/lib/" + m + "/" + m + ":" + m;
+                     libModules.concat(clientModules).map(function(m) {
+                         return "-r ./app/www/js/lib/" + m + ":" + m;
                      }).join(" ") + " " +
                      "> app/www/js/lib.js";
 
                 var cmdMakeBundle = "browserify " +
-                    "-x markdown -x react -x co " +
-                    serverModules.concat(clientModules).concat(libModules).map(function(m) {
+                    " -x react -x co -x path-to-regexp -x markdown " +
+                    serverNpmModules.concat(clientModules).concat(libModules).map(function(m) {
                         return "-x " + m;
                     }).join(" ") + " " +
                     reactPages.concat(extensions).map(function(x) {
