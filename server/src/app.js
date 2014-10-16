@@ -62,8 +62,8 @@
 
     /*  Container API Routes */
     var addContainerAPIRoutes = function*(router, urlPrefix, extensionsService) {
-        var routes = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "api");
-        routes.forEach(function(route) {
+        var apiModule = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "api");
+        apiModule.routes.forEach(function(route) {
             router[route.method](path.join(urlPrefix, route.url), route.handler);
         });
     }
@@ -71,11 +71,11 @@
 
     /*  Container UI Routes */
     var addContainerUIRoutes = function*(router, urlPrefix, extensionsService) {
-        var routes = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "web");
+        var webModule = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "web");
 
         var renderer = new Renderer(router, argv['debug-client']);
 
-        var uiRoutes = renderer.createRoutes(routes);
+        var uiRoutes = renderer.createRoutes(webModule.routes);
         uiRoutes.forEach(function(route) {
             router[route.method](path.join(urlPrefix, route.url), route.handler);
         });

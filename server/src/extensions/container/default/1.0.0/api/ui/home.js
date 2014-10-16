@@ -6,6 +6,7 @@
     var models = require('fora-app-models'),
         services = require('fora-app-services');
 
+
     var index = function*() {
         var db = services.get('db');
 

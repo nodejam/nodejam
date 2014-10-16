@@ -1,9 +1,6 @@
 /** @jsx React.DOM */
 (function() {
-
     "use strict";
-
-    var _;
 
     var React = require("react");
 
@@ -15,17 +12,11 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(api) {
-                var props = yield* api.http.get("/api/v1/ui/home");
+                var props = yield* api.http.get("/api/v1/ui/apps");
 
-                /* Attach the templates */
-                var init = function*(records) {
-                  for (var i = 0; i < records.length; i++) {
-                      records[i].template = yield* api.views.getWidget("list", records[i]);
-                  }
-                };
-
-                _ = yield* init(props.featured);
-                _ = yield* init(props.editorsPicks);
+                for (var i = 0; i < props.apps.length; i++) {
+                      records[i].template = yield* api.views.getView("list", records[i]);
+                }
 
                 return props;
             }
