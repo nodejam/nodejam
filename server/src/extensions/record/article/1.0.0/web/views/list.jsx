@@ -44,7 +44,7 @@
                 var style = {
                     backgroundImage: "url(" + record.cover.image.small + ")"
                 };
-                image = <div className="image" style={style}></div>
+                image = <div className="image" style={style}></div>;
             }
             else
                 image = null;

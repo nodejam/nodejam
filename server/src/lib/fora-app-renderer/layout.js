@@ -90,11 +90,6 @@
                     </head>\
                     <body class="' + bodyClass + '">\
                         <!-- header -->\
-                        <header class="site">\
-                            <a href="#" class="logo">\
-                                Fora\
-                            </a>\
-                        </header>\
                         <div class="app-container">' +
                         React.renderComponentToString(container) +
                         '</div>\

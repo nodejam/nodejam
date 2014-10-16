@@ -104,7 +104,8 @@
                 function*(filePath) {
                     var dest = filePath.replace(/^\.\.\/server\/app\/lib\//, 'app/www/js/lib/');
                     _ = yield* ensureDirExists(dest);
-                    if (!fs.existsSync(dest))
+                    var parts = filePath.split("/");
+                    if (parts[4] === "fora-app-ui" || !fs.existsSync(dest))
                         _ = yield* exec("cp " + filePath + " " + dest);
                     else
                         console.log("Skipping " + filePath + " -> " + dest);

@@ -13,7 +13,7 @@
                         <li><a href="/apps"><i className="fa fa-list"></i>Forums</a></li>
                         <li className="account"></li>
                     </ul>
-                    <div className="transparent-overlay">
+                    <div className="transparent-overlay" onClick={this.props.closeHandler}>
                     </div>
                 </div>
             );

@@ -2,17 +2,13 @@
 (function() {
     "use strict";
 
-    var React = require('react'),
-        SiteOptions = require('./site-options');
+    var React = require('react');
 
     module.exports = React.createClass({
         render: function() {
             return (
-                <div>
-                    <SiteOptions />
-                    <div className="single-section-page">
-                        {this.props.children}
-                    </div>
+                <div className="single-section-page">
+                    {this.props.children}
                 </div>
             );
         }
