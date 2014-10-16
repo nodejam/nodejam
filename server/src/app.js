@@ -198,7 +198,7 @@
             app.use(errorHandler);
 
             app.use(router.koaRoute());
-            app.listen(config.port);
+            app.listen(port);
 
             logger.log("Fora started at " + new Date() + " on " + host + ":" + port);
         })();

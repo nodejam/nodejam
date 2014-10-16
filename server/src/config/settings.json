@@ -1,5 +1,5 @@
 {
-    "domains": ["local.foraproject.org", "www.foraproject.org"],
+    "domains": ["localhost"],
 
     "db": {
         "type": "mongodb",
