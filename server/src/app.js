@@ -6,6 +6,7 @@
     var path = require('path'),
         argv = require('optimist').argv,
         co = require('co'),
+        koaSend = require("koa-send"),
         logger = require('fora-app-logger'),
         Router = require('fora-router'),
         Parser = require('fora-request-parser'),
@@ -14,6 +15,9 @@
         models = require('fora-app-models'),
         initializeApp = require('fora-app-initialize'),
         baseConfig = require('./config');
+
+    var staticPaths = ["public", "js", "vendor", "css", "images", "fonts"];
+
 
     /*
         Calling /healthcheck returns { "jacksparrow": "alive", .... }
@@ -91,7 +95,7 @@
                         var urlParts = this.url.split("/");
                         this.url = this.url.replace(appRootRegex, "/");
                     } else {
-                        throw new Error("Invalid application");
+                        throw new Error("Invalid application at " + this.url);
                     }
                 }
 
@@ -102,6 +106,31 @@
                     this.session = yield* models.Session.findOne({ token: token });
 
                 return yield* sandbox.executeRequest(this);
+            }
+        );
+    };
+
+
+
+    /*
+        Static file routes
+
+    */
+    var addStaticRoutes = function*(router) {
+        router.when(
+            function() {
+                var path = this.path.split("/");
+                return path.length >= 2 && ["public", "js", "vendor", "css", "images", "fonts"].indexOf(path[1]) > -1;
+            },
+            function*() {
+                var path = this.path.split("/");
+                switch(path[1]) {
+                    case "public":
+                        _ = yield koaSend(this, this.path, { root: baseConfig.services.file.publicDirectory });
+                    default:
+                        _ =  yield koaSend(this.koaRequest, this.path, { root: '../www-client/app/www' });
+                }
+                return false;
             }
         );
     };
@@ -138,7 +167,10 @@
 
             var extensionsService = services.get('extensionsService');
 
-            //Setup API routes.
+            if (baseConfig.serveStaticFiles) {
+                yield* addStaticRoutes(router);
+            }
+
             yield* addContainerAPIRoutes(router, "/api/v1", extensionsService);
             yield* addExtensionRoutes(router, "/api/app", "api");
 
@@ -148,8 +180,10 @@
             /* Init koa */
             var koa = require('koa');
             var app = koa();
+
             var errorHandler = require('fora-app-error-handler');
             app.use(errorHandler);
+
             app.use(router.koaRoute());
             app.listen(config.port);
 

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "koa": "*",
+    "koa-send": "*",
     "koa-route": "*",
     "koa-favicon": "*",
     "co": "*",

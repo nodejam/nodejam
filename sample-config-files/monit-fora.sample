@@ -7,14 +7,5 @@ check process fora_app with pidfile "/var/run/fora-app.pid"
     if failed port 10981 protocol HTTP
         request /healthcheck
         with timeout 10 seconds
-        then restart        
-        
-check process fora_api with pidfile "/var/run/fora-api.pid"
-    start program = "/sbin/start fora-api"
-    stop program  = "/sbin/stop fora-api"
-    if failed port 10982 protocol HTTP
-        request /api/healthcheck
-        with timeout 10 seconds
         then restart
         
-

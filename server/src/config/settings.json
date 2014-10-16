@@ -8,6 +8,8 @@
         "port": 27017
     },
 
+    "serveStaticFiles": true,
+
     "admins": ["jeswin"],
 
     "services": {

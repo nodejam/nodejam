@@ -23,12 +23,8 @@ server {
         alias /path/to/fora/www-client/app/www/fonts;
     }
 
-   location /images {
+    location /images {
         alias /path/to/fora/www-client/app/www/images;
-    }
-
-    location /shared {
-        alias /path/to/fora/www-client/app/www/shared;
     }
 
     location / {

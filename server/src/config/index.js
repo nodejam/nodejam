@@ -27,7 +27,8 @@
         webContainer: settings.webContainer,
         services: settings.services,
         extensions: settings.extensions,
-        reservedNames: settings.reservedNames
+        reservedNames: settings.reservedNames,
+        serveStaticFiles: settings.serveStaticFiles
     };
 
 })();

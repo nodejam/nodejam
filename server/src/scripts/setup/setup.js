@@ -20,8 +20,8 @@
 
     var argv = require('optimist').argv;
 
-    var HOST = argv.host || 'local.foraproject.org';
-    var PORT = argv.port ? parseInt(argv.port) : 80;
+    var HOST = argv.host || 'localhost';
+    var PORT = argv.port ? parseInt(argv.port) : 10981;
 
     logger.log("Setup will connect to " + HOST + ":" + PORT);
 

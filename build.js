@@ -6,6 +6,8 @@
         .alias('h', 'help')
         .describe('client', "Build the client")
         .describe('server', "Build the server")
+        .describe('host', "Run server on this host")
+        .describe('port', "Run server on this port")
         .describe('no-monitor', "Do not start the server or monitor files after building")
         .describe('no-run', "Do not start the server after building")
         .describe('threads', "Number of threads to use for the build (default: 8)")
@@ -52,6 +54,9 @@
         build.state.run = false;
     }
 
+    var host = argv.host || "localhost";
+    var port = argv.port || "10981";
+
     if (argv.client || argv.server) {
         build.state.buildClient = argv.client;
         build.state.buildServer = argv.server;
@@ -78,7 +83,7 @@
                 params.push('--debug');
             if (argv['debug-brk'])
                 params.push('--debug-brk');
-            params = params.concat(['app/app.js', 'localhost', '10982', 'fora_app']);
+            params = params.concat(['app/app.js', host, port, 'fora_app']);
             params = params.concat(process.argv.filter(function(p) { return ['--debug', '--debug-brk'].indexOf(p) === -1 ; }));
 
             console.log("Killing existing instances...");
@@ -104,7 +109,7 @@
             var clientTime = (client.state.end - client.state.start)/1000;
             console.log("Build(client): " + clientTime + "s");
         }
-        
+
         console.log("Build(total): " + (elapsed/1000) + "s");
     });
 
