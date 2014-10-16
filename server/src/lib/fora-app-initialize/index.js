@@ -3,20 +3,8 @@
 
     var _; //keep jshint happy, until they fix yield*
 
-    /*
-        Setup information useful for monitoring and debugging
-    */
-    var setupInstanceStats = function() {
-        var appInfo = {};
-        var randomizer = require('fora-app-randomizer');
-        appInfo.instance = randomizer.uniqueId();
-        appInfo.since = Date.now();
-        return appInfo;
-    };
-
 
     var init = function*(config, baseConfig) {
-        var appInfo = setupInstanceStats();
         /*
             Services
             0) Configuration
@@ -81,9 +69,7 @@
         _ = yield* typesService.init(typeDefinitions, recordVirtTypeDefinitions);
         services.add("typesService", typesService);
 
-        return {
-            appInfo: appInfo
-        };
+        return {};
     };
 
     module.exports = init;

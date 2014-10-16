@@ -14,9 +14,22 @@
         services = require('fora-app-services'),
         models = require('fora-app-models'),
         initializeApp = require('fora-app-initialize'),
-        baseConfig = require('./config');
+        baseConfig = require('./config'),
+        randomizer = require('fora-app-randomizer');
+
 
     var staticPaths = ["public", "js", "vendor", "css", "images", "fonts"];
+
+
+    /*
+        Setup information useful for monitoring and debugging
+    */
+    var setupInstanceStats = function() {
+        var appInfo = {};
+        appInfo.instance = randomizer.uniqueId();
+        appInfo.since = Date.now();
+        return appInfo;
+    };
 
 
     /*
@@ -155,14 +168,14 @@
                             { kind: "record", modules: ["definition", "model", "web"] }
                         ]
                     }
-                },
-                host: host,
-                port: port
+                }
             };
+
+            var appInfo = setupInstanceStats();
 
             var initResult = yield* initializeApp(config, baseConfig);
             var router = new Router();
-            addHealthCheck(router, initResult.appInfo);
+            addHealthCheck(router, appInfo);
             addDomainRewrite(router);
 
             var extensionsService = services.get('extensionsService');

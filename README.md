@@ -36,7 +36,6 @@ Windows is not supported yet.
 - Install nodejs, v0.11.9 or greater
 - Install mongodb (Use OS package manager: eg: sudo apt-get install mongodb)
 - Install graphicsmagick (Use OS package manager: eg: sudo apt-get install graphicsmagick)
-- Edit and rename src/conf/settings.config.sample to src/conf/settings.config
 
 ### 2. NODE_ENV
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
@@ -50,7 +49,7 @@ sudo npm install -g less
 ```
 
 ### 4. Install npm dependencies
-These are dependencies for the fora server.
+These are npm dependencies for the fora server.
 ```
 cd server
 npm install
@@ -63,19 +62,16 @@ Build the app once now.
 node --harmony build.js --no-monitor --server
 ```
 
-### 6. Initialize the directories (one time )
+### 6. Initialize the directories (one time)
 ```
-cd server
-./runscript.sh --harmony app/scripts/init/create.js
-cd ..
+server/runscript.sh --harmony app/scripts/init/create.js
 ```
 
 ### 7. (Optional): Want some test data?
 ```
-cd server
-./runscript.sh --harmony app/scripts/setup/setup.js options
+server/runscript.sh --harmony app/scripts/setup/setup.js --recreate
 
-options:
+Full options:
     --create            Creates the database
     --delete            Deletes the database (Only available in NODE_ENV=development)
     --recreate          Calls --delete and --create
@@ -86,7 +82,6 @@ options:
 
 ### 8. Edit Settings
 Edit server/src/config/settings.json
-
 
 ### 9. RUN!
 The build script (build.js) has many options.
