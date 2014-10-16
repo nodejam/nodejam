@@ -22,7 +22,6 @@
 
         return function() {
 
-            var reactPages = [];
             var extensions = [];
 
             /*
@@ -55,7 +54,7 @@
             );
 
             /*
-                Watch ../server/node_modules
+                Watch ../server/config
             */
             this.watch(
                 ["../server/src/config/*.*"],
@@ -79,6 +78,21 @@
                     _ = yield* exec("cp " + filePath + " " + dest);
                 },
                 "client_server_npm_copy"
+            );
+
+
+            /*
+                watch ../server/src/extensions/*.*
+            */
+            this.watch(
+                ["../server/app/extensions/*.*"],
+                function*(filePath) {
+                    var dest = filePath.replace(/^\.\.\/server\/app\/extensions\//, 'app/www/js/extensions/');
+                    _ = yield* ensureDirExists(dest);
+                    _ = yield* exec("cp " + filePath + " " + dest);
+                    extensions.push(dest);
+                },
+                "client_server_extensions_copy"
             );
 
 
@@ -114,10 +128,18 @@
                 Do regenerator transform, if not in es6 mode?
             */
             if (!this.build.state.useES6) {
-                this.watch(["app/www/js/*.js"], function*(filePath) {
-                    var result = yield* exec("regenerator " + filePath);
-                    fs.writeFileSync(filePath, result);
-                }, "client_regenerator_transform", ["client_files_copy", "client_server_npm_copy", "client_server_lib_copy", "client_server_config_copy"]);
+                this.watch(
+                    ["app/www/js/*.js"],
+                    function*(filePath) {
+                        var result = yield* exec("regenerator " + filePath);
+                        fs.writeFileSync(filePath, result);
+                    },
+                    "client_regenerator_transform",
+                    [
+                        "client_files_copy", "client_server_npm_copy", "client_server_lib_copy",
+                        "client_server_config_copy", "client_server_extensions_copy"
+                    ]
+                );
             }
 
 
@@ -125,7 +147,7 @@
                 Hook the bundle step
             */
             var bundleTrigger = this.build.state.useES6 ?
-                ["client_files_copy", "client_server_npm_copy", "client_server_lib_copy", "client_server_config_copy"]
+                ["client_files_copy", "client_server_npm_copy", "client_server_lib_copy", "client_server_config_copy", "client_server_extensions_copy"]
                 : ['client_regenerator_transform'];
 
             this.watch(["app/www/js/*.js"], function*(filePath) {
@@ -139,10 +161,10 @@
                 2. Browserify bundle
             */
             this.job(function*() {
-
                 extensions = extensions.filter(function(e) {
-                    return /\/index\.json$|\/index\.js$/.test(e) &&
-                        !/\/views\//.test(e);
+                    var parts = e.split("/");
+                    return ["model", "definition", "web"].indexOf(parts[7]) > -1 &&
+                        ["index.js", "index.json"].indexOf(parts[8]) > -1;
                 });
 
                 console.log("Writing out app/www/js/extensions/extensions.json");
@@ -216,7 +238,7 @@
                     serverNpmModules.concat(clientModules).concat(libModules).map(function(m) {
                         return "-x " + m;
                     }).join(" ") + " " +
-                    reactPages.concat(extensions).map(function(x) {
+                    extensions.map(function(x) {
                         //Take out .js, .json, /index.js and /index.json since require doesn't need it
                         var dest = x.replace(/\/index\.json$|\/index\.js$/, '').replace(/\.json$|\.js$/, '');
                         return "-r ./" + x + ":" + dest.replace(/^app\/www\/js\//,'/');
