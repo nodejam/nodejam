@@ -29,6 +29,11 @@
         }
     },
 
+    "typeAliases": {
+        "app": { "singular": "forum", "plural": "forums", "displaySingular": "Forum", "displayPlural": "Forums" },
+        "record": { "singular": "post", "plural": "posts", "displaySingular": "Post", "displayPlural": "Posts" }
+    },
+
     "reservedNames": [
         "account", "accounts", "admin", "administrator", "api", "app", "apps", "config", "configuration", "credential", "credentials",
         "css", "db", "data", "database", "edit", "edits", "email", "feed", "feeds", "file", "files", "fonts", "fora", "forum", "forums",

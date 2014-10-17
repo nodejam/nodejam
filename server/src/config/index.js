@@ -19,6 +19,11 @@
         settings.services.extensions.locations = [path.resolve(__dirname, '../extensions')];
     }
 
+    var typeAliases = settings.typeAliases || {
+        app: { singular: "app", plural: "apps", displaySingular: "App", displayPlural: "Apps" },
+        record: { singular: "records", plural: "records", displaySingular: "Record", displayPlural: "Records"  }
+    };
+
     module.exports = {
         domains: settings.domains,
         db: settings.db,
@@ -28,7 +33,8 @@
         services: settings.services,
         extensions: settings.extensions,
         reservedNames: settings.reservedNames,
-        serveStaticFiles: settings.serveStaticFiles
+        serveStaticFiles: settings.serveStaticFiles,
+        typeAliases: typeAliases
     };
 
 })();

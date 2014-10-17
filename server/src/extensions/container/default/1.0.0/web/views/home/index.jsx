@@ -12,6 +12,9 @@
         Cover = UI.Cover,
         Content = UI.Content;
 
+    var services = require("fora-app-services");
+    var config = services.get("configuration");
+
     module.exports = React.createClass({
         statics: {
             componentInit: function*(api) {
@@ -43,10 +46,10 @@
                         <nav>
                             <ul>
                                 <li className="selected">
-                                    Records
+                                    {config.typeAliases.record.displayPlural}
                                 </li>
                                 <li>
-                                    <a href="/apps">Forums</a>
+                                    <a href={"/" + config.typeAliases.app.plural}>{config.typeAliases.app.displayPlural}</a>
                                 </li>
                             </ul>
                         </nav>

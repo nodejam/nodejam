@@ -8,6 +8,8 @@
 
     var ui_home = require('./ui/home');
 
+    var config = require('fora-app-services').get('configuration');
+
     module.exports = {
         routes: [
             //credentials
@@ -19,7 +21,7 @@
             { method: "get", url: "/users/:username", handler: users.item },
 
             //apps
-            { method: "post", url: "/apps", handler: apps.create },
+            { method: "post", url: "/" + config.typeAliases.app.plural, handler: apps.create },
 
             //images
             { method: "post", url: "/images", handler: images.upload },
@@ -28,5 +30,5 @@
             { method: "get", url: "/ui/home", handler: ui_home.index }
         ]
     };
-    
+
 })();

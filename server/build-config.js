@@ -76,6 +76,7 @@
                 console.log("jsx " + filePath);
                 var result = react.transform(contents.toString());
                 fs.writeFileSync(dest, result);
+                this.build.queue('restart_server');
             }, "servier_jsx_compile");
 
 

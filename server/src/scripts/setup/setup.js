@@ -106,7 +106,7 @@
                 delete app._about;
 
                 app.type = "app/forum/1.0.0";
-                resp = yield* _doHttpRequest("/api/v1/apps?token=" + token, querystring.stringify(app), 'post');
+                resp = yield* _doHttpRequest("/api/v1/forums?token=" + token, querystring.stringify(app), 'post');
                 var appJson = JSON.parse(resp);
                 apps[appJson.stub] = appJson;
                 logger.log("Created " + appJson.name);
@@ -147,7 +147,7 @@
                 var metaTags = meta.split(',');
                 for (var _i2 = 0; _i2 < metaTags.length; _i2++) {
                     var metaTag = metaTags[_i2];
-                    resp = yield* _doHttpRequest("/api/app/" + app + "/admin/records/" + resp.stub + "?token=" + adminkey,
+                    resp = yield* _doHttpRequest("/api/app/" + app + "/admin/posts/" + resp.stub + "?token=" + adminkey,
                         querystring.stringify({ meta: metaTag}), 'put');
                     resp = JSON.parse(resp);
                     logger.log("Added " + metaTag + " tag to article " + resp.title);
