@@ -7,14 +7,16 @@
 
     var config = require('fora-app-services').get('configuration');
 
-    module.exports = {
-        routes: [
-            { method: "post", url: "/members", handler: members.join },
-            { method: "post", url: "/", handler: records.create },
-            { method: "post", url: "/" + config.typeAliases.record.plural, handler: records.create },
-            { method: "put", url: "/" + config.typeAliases.record.plural + "/:record", handler: records.edit },
-            { method: "put", url: "/admin/" + config.typeAliases.record.plural + "/:record", handler: records.admin_update }
-        ]
+    module.exports = function() {
+        return {
+            routes: [
+                { method: "post", url: "/members", handler: members.join },
+                { method: "post", url: "/", handler: records.create },
+                { method: "post", url: "/posts", handler: records.create },
+                { method: "put", url: "/posts/:post", handler: records.edit },
+                { method: "put", url: "/admin/posts/:post", handler: records.admin_update }
+            ]
+        };
     };
 
 })();

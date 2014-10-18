@@ -16,7 +16,7 @@
         var extensionModule = this.extension[this.moduleName];
         if (!extensionModule.__router) {
             extensionModule.__router = new Router();
-            extensionModule.routes.forEach(function(route) {
+            extensionModule().routes.forEach(function(route) {
                 extensionModule.__router[route.method](route.url, route.handler);
             });
         }

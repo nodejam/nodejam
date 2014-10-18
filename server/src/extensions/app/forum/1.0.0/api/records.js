@@ -4,7 +4,8 @@
     var _;
 
     var create = function*() {
-        var record = yield* this.app.createRecord({
+        var app = this.app;
+        var record = yield* app.createRecord({
             type: yield* this.parser.body('type'),
             version: yield* this.parser.body('version'),
             createdBy: this.session.user,
@@ -14,8 +15,26 @@
         });
 
         _ = yield* this.parser.map(record, yield* record.getMappableFields());
+
+        //record.app isnt in record, it's in article. FIXME
         record.app = yield* this.app.summarize();
-        this.body = yield* this.app.addRecord(record);
+        record = yield* this.app.addRecord(record);
+
+        //Add to cache.
+        if (!app.cache.records)
+            app.cache.records = [];
+        if (app.cache.records.length > 10)
+            app.cache.records.slice(app.cache.records.length - 10);
+        app.cache.records.push(
+            {
+                createdBy: record.createdBy,
+                createdAt: record.createdAt,
+                updatedAt: record.updatedAt
+            }
+        );
+        _ = yield* app.save();
+
+        this.body = record;
     };
 
 

@@ -5,8 +5,6 @@
     var React = require('react'),
         ForaUI = require('fora-app-ui');
 
-    var RecordEditor = ForaUI.RecordEditor;
-
     module.exports = React.createClass({
         render: function() {
             var record = this.props.record;

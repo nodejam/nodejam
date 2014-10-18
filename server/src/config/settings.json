@@ -35,11 +35,11 @@
     },
 
     "reservedNames": [
-        "account", "accounts", "admin", "administrator", "api", "app", "apps", "config", "configuration", "credential", "credentials",
-        "css", "db", "data", "database", "edit", "edits", "email", "feed", "feeds", "file", "files", "fonts", "fora", "forum", "forums",
-        "group", "groups", "htm", "html", "image", "images", "js", "lib", "login", "logout", "mail", "mails", "messages", "messages",
-        "post", "posts", "pub", "public", "records", "rss", "script", "scripts", "setup", "session", "sessions", "subscribe", "subscriptions",
-        "settings", "signup", "sitemap", "status", "sys", "system", "tag", "tags", "update", "updates",
+        "account", "accounts", "admin", "administrator", "administrators", "api", "app", "apps", "config", "configuration", "credential",
+        "credentials", "css", "db", "data", "database", "edit", "edits", "email", "feed", "feeds", "file", "files", "fonts", "fora", "forum",
+        "forums", "group", "groups", "htm", "html", "image", "images", "js", "lib", "login", "logout", "mail", "mails", "messages", "messages",
+        "post", "posts", "pub", "public", "record", "records", "rss", "script", "scripts", "setup", "session", "sessions", "subscribe",
+        "subscription", "subscriptions", "settings", "signup", "sitemap", "status", "sys", "system", "tag", "tags", "update", "updates",
         "terms", "user", "users", "wiki"
     ]
 }
