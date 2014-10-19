@@ -6,7 +6,8 @@
         apps = require("./apps"),
         images = require("./images");
 
-    var ui_home = require('./ui/home');
+    var ui_home = require('./ui/home'),
+        ui_apps = require('./ui/apps');
 
     var config = require('fora-app-services').get('configuration');
 
@@ -28,7 +29,10 @@
                 { method: "post", url: "/images", handler: images.upload },
 
                 //ui_home
-                { method: "get", url: "/ui/home", handler: ui_home.index }
+                { method: "get", url: "/ui/home", handler: ui_home.index },
+
+                //ui_apps
+                { method: "get", url: "/ui/apps", handler: ui_apps.index }
             ]
         };
     };

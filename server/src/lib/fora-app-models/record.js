@@ -134,7 +134,7 @@
         if (this.state === 'published') {
             _ = yield* models.App.findById(this.appId);
         }
-
+        
         return result;
     };
 

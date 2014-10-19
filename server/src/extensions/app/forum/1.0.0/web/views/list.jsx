@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 (function() {
-    
+
     "use strict";
 
     var React = require('react'),
@@ -8,11 +8,13 @@
 
     module.exports = React.createClass({
         render: function() {
+            var app = this.props.app;
+
             if (app.cover) {
-                style = {
+                var style = {
                     backgroundImage: "url(" + app.cover.image.small + ")"
                 };
-                image = <div className="image" style={style}></div>;
+                var image = <div className="image" style={style}></div>;
             }
             else
                 image = null;

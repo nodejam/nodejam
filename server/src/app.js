@@ -164,7 +164,7 @@
                     extensions: {
                         modules: [
                             { kind: "container", modules: ["api", "web"] },
-                            { kind: "app", modules: ["definition", "api"] },
+                            { kind: "app", modules: ["definition", "api", "web"] },
                             { kind: "record", modules: ["definition", "model", "web"] }
                         ]
                     }

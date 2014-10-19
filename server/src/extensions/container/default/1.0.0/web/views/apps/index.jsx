@@ -2,6 +2,8 @@
 (function() {
     "use strict";
 
+    var _;
+
     var React = require("react");
 
     var UI = require('fora-app-ui');
@@ -9,13 +11,16 @@
         Cover = UI.Cover,
         Content = UI.Content;
 
+    var services = require("fora-app-services");
+    var config = services.get("configuration");
+
     module.exports = React.createClass({
         statics: {
             componentInit: function*(api) {
                 var props = yield* api.http.get("/api/v1/ui/apps");
 
                 for (var i = 0; i < props.apps.length; i++) {
-                      records[i].template = yield* api.views.getView("list", records[i]);
+                      props.apps[i].template = yield* api.views.getWidget("list", props.apps[i]);
                 }
 
                 return props;
@@ -23,30 +28,26 @@
         },
 
         render: function() {
-            var createItem = function(record) {
-                return record.template({ key: record._id, record: record, app: record.app, author: record.createdBy });
+            var createItem = function(app) {
+                return app.template({ app: app });
             };
 
             return (
                 <Page>
-                    <Cover cover={this.props.cover} coverContent={this.props.coverContent} />
                     <Content>
                         <nav>
                             <ul>
-                                <li className="selected">
-                                    Records
-                                </li>
                                 <li>
-                                    <a href="/apps">Forums</a>
+                                    {config.typeAliases.record.displayPlural}
+                                </li>
+                                <li className="selected">
+                                    <a href={"/" + config.typeAliases.app.plural}>{config.typeAliases.app.displayPlural}</a>
                                 </li>
                             </ul>
                         </nav>
-                        <div className="content-area">
-                            <ul className="articles default-view">
-                                {this.props.editorsPicks.map(createItem)}
-                            </ul>
-                            <ul className="articles default-view">
-                                {this.props.featured.map(createItem)}
+                        <div className="content-area wide">
+                            <ul className="articles card-view">
+                                {this.props.apps.map(createItem)}
                             </ul>
                         </div>
                     </Content>

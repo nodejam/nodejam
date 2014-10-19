@@ -1,12 +1,14 @@
 (function() {
     "use strict";
 
-    module.exports = {
-        widgets: {
-            concise: require('./views/concise'),
-            item: require('./views/item'),
-            list: require('./views/list')
-        }
+    module.exports = function() {
+        return {
+            widgets: {
+                concise: require('./views/concise'),
+                item: require('./views/item'),
+                list: require('./views/list')
+            }
+        };
     };
 
 })();

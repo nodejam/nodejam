@@ -4,15 +4,16 @@
 
     var services = require('fora-app-services');
 
-    var getWidget = function*(viewName, record) {
+    var getWidget = function*(viewName, item) {
         var typesService = services.get('typesService');
         var extensionsService = services.get('extensionsService');
 
-        var typeDef = yield* record.getTypeDefinition(typesService);
-        var extensionSearchResult = yield* extensionsService.get(typeDef.name);
+        var extensionSearchResult = yield* extensionsService.get(item.type);
         if (extensionSearchResult) {
             var extension = extensionSearchResult.extension;
-            return extension.web.widgets[viewName];
+            if (!extension.__widgets)
+                extension.__widgets = extension.web().widgets;
+            return extension.__widgets[viewName];
         }
     };
 
