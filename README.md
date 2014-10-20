@@ -4,28 +4,15 @@ This is __not ready__ to be forked yet. Our first priority is to get the foundat
 The following dates are tentative and might change.
 
 Some re-usable components of fora have been moved to separate packages.
-- Fora Build (Build system, stable) https://github.com/jeswin/fora-build
-- Fora Models (Object Data Mapper, stable) https://github.com/jeswin/fora-models
-- Fora Extensions (Plugin Loading (Fora specific), stable) https://github.com/jeswin/fora-extensions
-
-Development Plan
-================
-
-- Make everything isomorphic - Oct 18
-- Post Editor Jeswin Kumar · Oct 21
-- Create Forum Jeswin Kumar · Oct 22
-- Forum Settings Jeswin Kumar · Oct 23
-- Permissions Jeswin Kumar · Oct 24
-- Forum Members Jeswin Kumar · Oct 25
-- Twitter Posting anup kesavan · Oct 27
-- Facebook Posting anup kesavan · Oct 29
-- User Landing Jeswin Kumar · Oct 30
-- User Followers Jeswin Kumar · Nov 01
-- User Following Jeswin Kumar · Nov 01
-- Add support for Persona.org login anup kesavan - Oct 28
-- RSS anup kesavan · Oct 28
-- ReactJS Safe Scripts Jeswin Kumar · Oct 28
-- 0.1 Alpha, Nov 7
+- Fora Build (Build system) https://github.com/jeswin/fora-build
+- Fora Models (Object Data Mapper) https://github.com/jeswin/fora-models
+- Fora Extensions (Plugins) https://github.com/jeswin/fora-extensions
+- Fora Node Thunkify (Port of thunkify that uses yield*) https://github.com/jeswin/fora-node-thunkify
+- Fora Router (Router for Koa) https://github.com/jeswin/fora-router
+- Fora Types Service (Data Type Manager) https://github.com/jeswin/fora-types-service
+- Fora Validator (Validation) https://github.com/jeswin/fora-validator
+- Fora Request (Wrapper around Koa Request) https://github.com/jeswin/fora-request
+- Fora Request Parser (Parse and HTTP Request into an object) https://github.com/jeswin/fora-request-parser
 
 Installation
 ============
