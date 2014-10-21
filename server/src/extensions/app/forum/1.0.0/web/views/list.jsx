@@ -10,11 +10,13 @@
         render: function() {
             var app = this.props.app;
 
+            var image;
+
             if (app.cover) {
                 var style = {
                     backgroundImage: "url(" + app.cover.image.small + ")"
                 };
-                var image = <div className="image" style={style}></div>;
+                image = <div className="image" style={style}></div>;
             }
             else
                 image = null;
