@@ -1,7 +1,6 @@
 To know what Fora is about, see this https://slides.com/jeswin/fora/fullscreen#
 
 This is __not ready__ to be forked yet. Our first priority is to get the foundation right.
-The following dates are tentative and might change.
 
 Some re-usable components of fora have been moved to separate packages.
 - Fora Build (Build system) https://github.com/jeswin/fora-build
@@ -20,7 +19,7 @@ Installation is straight forward on Linux and Mac.
 Windows is not supported yet.
 
 ### 1. Install dependencies
-- Install nodejs, v0.11.9 or greater
+- Install nodejs, v0.11.9 or greater.
 - Install mongodb (Use OS package manager: eg: sudo apt-get install mongodb)
 - Install graphicsmagick (Use OS package manager: eg: sudo apt-get install graphicsmagick)
 
