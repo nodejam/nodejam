@@ -26,18 +26,25 @@
                     {image}
                     <article>
                         <h2><a href={"/" + app.stub}>{app.name}</a></h2>
-                        <ul>
-                            {
-                                app.cache.records.map(function(record) {
-                                    return (
-                                        <li>
-                                            <a href={"/" + app.stub + "/" + record.stub}>{record.title}</a><br />
-                                            <span className="subtext">{record.createdBy.name}</span>
-                                        </li>
-                                    );
-                                })
-                            }
-                        </ul>
+                        {
+                            (function(){
+                                if (app.cache && app.cache.records) {
+                                    return <ul>
+                                        {
+                                            app.cache.records.map(function(record) {
+                                                return (
+                                                    <li>
+                                                        {JSON.stringify(record)}
+                                                        <a href={"/" + app.stub + "/" + record.stub}>{record.title}</a><br />
+                                                        <span className="subtext">{record.createdBy.name}</span>
+                                                    </li>
+                                                );
+                                            })
+                                        }
+                                    </ul>;
+                                }
+                            })()
+                        }
                     </article>
                 </li>
             );

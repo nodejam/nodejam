@@ -9,9 +9,9 @@
     var ui_home = require('./ui/home'),
         ui_apps = require('./ui/apps');
 
-    var config = require('fora-app-services').get('configuration');
+    module.exports = function(api) {
+        var config = api.get("configuration");
 
-    module.exports = function() {
         return {
                 routes: [
                 //credentials

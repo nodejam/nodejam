@@ -1,10 +1,9 @@
 (function() {
     "use strict";
 
-    var services = require("fora-app-services");
-    var config = services.get("configuration");
-
-    module.exports = function() {
+    module.exports = function(api) {
+        var config = api.get("configuration");
+        
         return {
             routes: [
                 { method: "get", url: "", handler: require('./views/home/index') },

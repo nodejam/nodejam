@@ -5,6 +5,7 @@
 
     var create = function*() {
         var app = this.app;
+        
         var record = yield* app.createRecord({
             type: yield* this.parser.body('type'),
             version: yield* this.parser.body('version'),
@@ -23,8 +24,12 @@
         //Add to cache.
         if (!app.cache.records)
             app.cache.records = [];
+
         if (app.cache.records.length > 10)
             app.cache.records.slice(app.cache.records.length - 10);
+
+        app.stats.lastRecord = Date.now();
+
         app.cache.records.push(
             {
                 createdBy: record.createdBy,
@@ -32,6 +37,7 @@
                 updatedAt: record.updatedAt
             }
         );
+
         _ = yield* app.save();
 
         this.body = record;

@@ -5,8 +5,6 @@
     var members = require('./members'),
         records = require('./records');
 
-    var config = require('fora-app-services').get('configuration');
-
     module.exports = function() {
         return {
             routes: [
