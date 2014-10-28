@@ -5,14 +5,13 @@
 
     var models = require('fora-app-models'),
         services = require('fora-app-services'),
-        dataUtils = require('fora-data-utils'),
-        conf = require('../../../../../config');
+        dataUtils = require('fora-data-utils');
 
     var Parser = require('fora-request-parser');
 
-
     var create = function*() {
         var typesService = services.get('typesService');
+        var conf = services.get("configuration");
         var parser = new Parser(this, typesService);
 
         var stub = (yield* parser.body('name')).toLowerCase().trim();

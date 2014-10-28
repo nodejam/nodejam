@@ -9,7 +9,6 @@
         koaSend = require("koa-send"),
         logger = require('fora-app-logger'),
         Router = require('fora-router'),
-        Parser = require('fora-request-parser'),
         Renderer = require('fora-app-renderer'),
         services = require('fora-app-services'),
         models = require('fora-app-models'),
@@ -61,22 +60,24 @@
 
 
     /*  Container API Routes */
-    var addContainerAPIRoutes = function*(router, urlPrefix, extensionsService) {
+    var addContainerAPIRoutes = function*(router, urlPrefix) {
+        var extensionsService = services.get("extensionsService");
         var apiModule = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "api");
 
-        apiModule(services).routes.forEach(function(route) {
+        apiModule().routes.forEach(function(route) {
             router[route.method](path.join(urlPrefix, route.url), route.handler);
         });
     }
 
 
     /*  Container UI Routes */
-    var addContainerUIRoutes = function*(router, urlPrefix, extensionsService) {
+    var addContainerUIRoutes = function*(router, urlPrefix) {
+        var extensionsService = services.get("extensionsService");
         var webModule = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "web");
 
         var renderer = new Renderer(router, argv['debug-client']);
 
-        var uiRoutes = renderer.createRoutes(webModule(services).routes);
+        var uiRoutes = renderer.createRoutes(webModule().routes);
         uiRoutes.forEach(function(route) {
             router[route.method](path.join(urlPrefix, route.url), route.handler);
         });
@@ -112,8 +113,6 @@
                         throw new Error("Invalid application at " + this.url);
                     }
                 }
-
-                this.parser = new Parser(this, services.get('typesService'));
 
                 var token = this.query.token || this.cookies.get('token');
                 if (token)
@@ -179,16 +178,14 @@
             addHealthCheck(router, appInfo);
             addDomainRewrite(router);
 
-            var extensionsService = services.get('extensionsService');
-
             if (baseConfig.serveStaticFiles) {
                 yield* addStaticRoutes(router);
             }
 
-            yield* addContainerAPIRoutes(router, "/api/v1", extensionsService);
+            yield* addContainerAPIRoutes(router, "/api/v1");
             yield* addExtensionRoutes(router, "/api/app", "api");
 
-            yield* addContainerUIRoutes(router, "/", extensionsService);
+            yield* addContainerUIRoutes(router, "/");
             yield* addExtensionRoutes(router, "/", "web");
 
             /* Init koa */

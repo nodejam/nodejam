@@ -73,9 +73,11 @@
             this.watch(
                 serverNpmModules.map(function(m) { return "../server/node_modules/" + m + "/*.*";}),
                 function*(filePath) {
-                    var dest = filePath.replace(/^\.\.\/server\/node_modules\//, 'app/www/js/lib/');
-                    _ = yield* ensureDirExists(dest);
-                    _ = yield* exec("cp " + filePath + " " + dest);
+                    if (!/\/\.git\//.test(filePath)) {
+                        var dest = filePath.replace(/^\.\.\/server\/node_modules\//, 'app/www/js/lib/');
+                        _ = yield* ensureDirExists(dest);
+                        _ = yield* exec("cp " + filePath + " " + dest);
+                    }
                 },
                 "client_server_npm_copy"
             );

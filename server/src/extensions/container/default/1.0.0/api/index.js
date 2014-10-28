@@ -9,11 +9,12 @@
     var ui_home = require('./ui/home'),
         ui_apps = require('./ui/apps');
 
-    module.exports = function(api) {
-        var config = api.get("configuration");
+    var services = require("fora-app-services");
+    var config = services.get("configuration");
 
+    module.exports = function() {
         return {
-                routes: [
+            routes: [
                 //credentials
                 { method: "post", url: "/credentials", handler: credentials.create },
 

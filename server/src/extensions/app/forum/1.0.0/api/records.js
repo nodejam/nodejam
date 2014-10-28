@@ -3,42 +3,62 @@
 
     var _;
 
+    var services = require("fora-app-services"),
+        Parser = require('fora-request-parser');
+
+
     var create = function*() {
-        var app = this.app;
-        
-        var record = yield* app.createRecord({
-            type: yield* this.parser.body('type'),
-            version: yield* this.parser.body('version'),
+        var typesService = services.get("typesService"),
+            extensionsService = services.get("extensionsService");
+
+        var parser = new Parser(this, typesService);
+
+        var record = yield* this.app.createRecord({
+            type: yield* parser.body('type'),
+            version: yield* parser.body('version'),
             createdBy: this.session.user,
-            state: yield* this.parser.body('state'),
+            state: yield* parser.body('state'),
             rating: 0,
             savedAt: Date.now()
         });
 
-        _ = yield* this.parser.map(record, yield* record.getMappableFields());
+        _ = yield* parser.map(record, yield* record.getMappableFields());
 
-        //record.app isnt in record, it's in article. FIXME
         record.app = yield* this.app.summarize();
         record = yield* this.app.addRecord(record);
 
+        //Update the last updated time
+        this.app.stats.lastRecord = Date.now();
+
         //Add to cache.
-        if (!app.cache.records)
-            app.cache.records = [];
+        if (!this.app.cache.records)
+            this.app.cache.records = [];
 
-        if (app.cache.records.length > 10)
-            app.cache.records.slice(app.cache.records.length - 10);
+        var cacheItem;
+        var modelModule = yield* extensionsService.getModuleByFullType(record.type, "model");
 
-        app.stats.lastRecord = Date.now();
-
-        app.cache.records.push(
-            {
+        if (modelModule) {
+            var model = modelModule();
+            if (model.getCacheItem)
+                cacheItem = yield* model.getCacheItem.call(this);
+        }
+        if (!cacheItem && record.title) {
+            cacheItem = {
+                title: record.title,
                 createdBy: record.createdBy,
                 createdAt: record.createdAt,
                 updatedAt: record.updatedAt
-            }
-        );
+            };
+        }
 
-        _ = yield* app.save();
+        if (cacheItem) {
+            this.app.cache.records.push(cacheItem);
+
+            if (this.app.cache.records.length > 10)
+                this.app.cache.records.slice(this.app.cache.records.length - 10);
+        }
+
+        _ = yield* this.app.save();
 
         this.body = record;
     };
@@ -46,13 +66,17 @@
 
 
     var edit = function*(stub) {
+        var typesService = services.get("typesService"),
+            extensionsService = services.get("extensionsService");
+
+        var parser = new Parser(this, typesService);
         var record = yield* this.app.findRecord({ stub: stub });
 
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
                 record.savedAt = Date.now();
-                _ = yield* this.parser.map(record, yield* record.getMappableFields());
-                if (yield* this.parser.body('state') === 'published') record.state = 'published';
+                _ = yield* parser.map(record, yield* record.getMappableFields());
+                if (yield* parser.body('state') === 'published') record.state = 'published';
                 this.body = yield* record.save();
             } else {
                 throw new Error('Access denied');
@@ -82,10 +106,11 @@
 
 
     var admin_update = function*(stub) {
+        var parser = new Parser(this, services.get('typesService'));
         var record = yield* this.app.getRecord(stub);
 
         if (record) {
-            var meta = yield* this.parser.body('meta');
+            var meta = yield* parser.body('meta');
             if (meta) {
                 record = yield* record.addMetaList(meta.split(','));
                 this.body = record;

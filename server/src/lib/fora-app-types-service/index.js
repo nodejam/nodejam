@@ -14,7 +14,6 @@
 
     ForaAppTypesService.prototype.getDynamicTypeDefinition = function*(name, dynamicResolutionContext) {
         throw new Error("Cannot find type " + name);
-        yield false;
     };
 
     module.exports = ForaAppTypesService;

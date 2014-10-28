@@ -59,14 +59,16 @@
                 extensionsByModule[kind][moduleName][fullName] = extModule;
             }
         }
-
-        return;
-        yield false;
     };
 
 
     ExtensionsService.prototype.getModule = function*(name) {
         return moduleCache[name];
+    };
+
+
+    ExtensionsService.prototype.getModuleByFullType = function*(type, moduleName) {
+        return moduleCache[type + "/" + moduleName];
     };
 
 
