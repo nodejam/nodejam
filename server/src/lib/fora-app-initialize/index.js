@@ -59,14 +59,27 @@
                 }
             }
         );
-        var typeDefinitions = Object.keys(models).map(function(k) { return models[k]; });
+
+
+        var ctors = Object.keys(models).map(function(k) { return models[k]; });
+
+        var appExtensions = yield* extensionsService.getModulesByKind("app", "definition");
+        var appVirtTypeDefinitions = Object.keys(appExtensions).map(function(key) {
+            return appExtensions[key];
+        });
 
         var recordExtensions = yield* extensionsService.getModulesByKind("record", "definition");
         var recordVirtTypeDefinitions = Object.keys(recordExtensions).map(function(key) {
-            return { typeDefinition: recordExtensions[key], ctor: models.Record };
+            return recordExtensions[key];
         });
 
-        _ = yield* typesService.init(typeDefinitions, recordVirtTypeDefinitions);
+        _ = yield* typesService.init(
+            ctors,
+            [
+                { typeDefinitions: appVirtTypeDefinitions, ctor: models.App },
+                { typeDefinitions: recordVirtTypeDefinitions, ctor: models.Record }
+            ]
+        );
         services.add("typesService", typesService);
 
         return {};
