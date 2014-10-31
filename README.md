@@ -83,4 +83,4 @@ But in chrome, you'll have to enable this flag: chrome://flags/#enable-javascrip
 node --harmony build.js --use-es6
 ```
 
-Enjoy Fora at localhost:10981
+Enjoy Fora by pointing the browser at http://localhost:10981
