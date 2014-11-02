@@ -4,7 +4,7 @@
     var _;
 
     var visit = require('fora-data-utils').visit;
-    var models = require('fora-models');
+
 
     var ApiConnector = function(requestContext, router) {
         this.requestContext = requestContext;
@@ -24,7 +24,7 @@
         response = yield* visit(
             response,
             function*(x) {
-                if (x instanceof models.BaseModel) {
+                if (x.constructor.typeDefinition) {
                     return {
                         value: x,
                         stop: true,

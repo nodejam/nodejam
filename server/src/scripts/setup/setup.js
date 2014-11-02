@@ -26,7 +26,7 @@
     logger.log("Setup will connect to " + HOST + ":" + PORT);
 
     var init = function*() {
-        var Database = require('fora-db');
+        var Database = require('fora-db-backend-mongodb');
         var database = new Database(conf.db);
 
         var _globals = {};

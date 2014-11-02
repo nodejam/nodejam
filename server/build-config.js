@@ -11,7 +11,7 @@
         var react = require('react-tools');
 
         var npmModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator",
-                          "fora-db", "fora-models", "fora-extensions-service", "fora-request", "fora-request-parser"];
+                          "fora-db-backend-mongodb", "fora-models", "fora-extensions-service", "fora-request", "fora-request-parser"];
 
         return function() {
 

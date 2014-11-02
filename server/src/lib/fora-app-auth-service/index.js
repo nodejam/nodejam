@@ -2,10 +2,12 @@
     "use strict";
 
     var models = require("fora-app-models"),
-        services = require("fora-app-services");
-
+        services = require("fora-app-services"),
+        DbConnector = require('fora-app-db-connector');
 
     module.exports = function() {
+        var sessionStore = new DbConnector(models.Session);
+
         var options, fn;
 
         if (arguments.length === 1) {
@@ -19,14 +21,14 @@
 
         return function*() {
             var conf = services.get('configuration');
-            
+
             var self = this;
 
             if (!this.session) {
                 var token = this.query.token || this.cookies.get('token');
 
                 if (token)
-                    this.session = yield* models.Session.findOne({ token: token });
+                    this.session = yield* sessionStore.findOne({ token: token });
             }
 
             switch (options.session) {

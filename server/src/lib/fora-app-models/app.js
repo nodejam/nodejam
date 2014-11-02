@@ -3,23 +3,20 @@
 
     var _;
 
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
-
     var models = require('./'),
-        AppBase = require('./app-base').AppBase;
+        appCommon = require('./app-common'),
+        dataUtils = require('fora-data-utils'),
+        DbConnector = require('fora-app-db-connector'),
+        services = require('fora-app-services');
 
-    var services = require('fora-app-services');
 
-    //ctor
-    var App = function() {
-        AppBase.apply(this, arguments);
+    var App = function(params) {
+        dataUtils.extend(this, params);
+        this.init();
     };
+    appCommon.extendApp(App);
 
-    App.prototype = Object.create(AppBase.prototype);
-    App.prototype.constructor = App;
-
-    __extends(App, AppBase);
+    var appStore = new DbConnector(App);
 
 
     App.prototype.save = function*() {
@@ -44,39 +41,38 @@
         this.versionMinor = parseInt(versionParts[1]);
         this.versionRevision = parseInt(versionParts[2]);
 
-        return yield* AppBase.prototype.save.call(this);
+        return yield* appStore.save(this);
     };
 
 
 
-    /*
-        Records
-    */
     App.prototype.createRecord = function*(params) {
         var typesService = services.get('typesService');
         var record = yield* typesService.constructModel(params, models.Record);
-        record.appId = this.getRowId();
+        record.appId = DbConnector.getRowId(this);
         return record;
     };
 
 
 
     App.prototype.addRecord = function*(record) {
-        record.appId = this.getRowId();
+        record.appId = DbConnector.getRowId(this);
         return yield* record.save();
     };
 
 
 
     App.prototype.getRecord = function*(stub) {
-        return yield* models.Record.findOne({ 'appId': this.getRowId(), stub: stub });
+        var recordStore = new DbConnector(models.Record);
+        return yield* recordStore.findOne({ 'appId': this.getRowId(), stub: stub });
     };
 
 
 
     App.prototype.findRecord = function*(query) {
-        query.appId = this.getRowId();
-        return yield* models.Record.findOne(query);
+        query.appId = DbConnector.getRowId(this);
+        var recordStore = new DbConnector(models.Record);
+        return yield* recordStore.findOne(query);
     };
 
 
@@ -92,16 +88,14 @@
 
 
     App.prototype.findRecords = function*(query, settings) {
-        query.appId = this.getRowId();
+        query.appId = DbConnector.getRowId(this);
         settings = settings ? { sort: settings.sort, limit: getLimit(settings.limit, 100, 1000) } : {};
-        return yield* models.Record.find(query, settings);
+        var recordStore = new DbConnector(models.Record);
+        return yield* recordStore.find(query, settings);
     };
 
 
 
-    /*
-        Membership and Permissions
-    */
     App.prototype.join = function*(user) {
         if (this.access === 'public') {
             return yield* this.addRole(user, 'member');
@@ -113,13 +107,14 @@
 
 
     App.prototype.addRole = function*(user, role) {
-        var membership = yield* models.Membership.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
+        var membershipStore = new DbConnector(models.Membership);
+        var membership = yield* membershipStore.findOne({ 'appId': DbConnector.getRowId(this), 'user.username': user.username });
 
         var typesService = services.get('typesService');
         if (!membership) {
             membership = yield* typesService.constructModel(
                 {
-                    appId: this.getRowId(),
+                    appId: DbConnector.getRowId(this),
                     userId: user.id,
                     user: user,
                     roles: [role]
@@ -138,7 +133,8 @@
 
 
     App.prototype.removeRole = function*(user, role) {
-        var membership = yield* models.Membership.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
+        var membershipStore = new DbConnector(models.Membership);
+        var membership = yield* membershipStore.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
         membership.roles = membership.roles.filter(function(r) { return r != role; });
         return membership.roles.length ? (yield* membership.save()) : (yield* membership.destroy());
     };
@@ -146,18 +142,19 @@
 
 
     App.prototype.getMembership = function*(username) {
-        return yield* models.Membership.findOne({ 'app.id': this.getRowId(), 'user.username': username });
+        var membershipStore = new DbConnector(models.Membership);
+        return yield* membershipStore.findOne({ 'app.id': this.getRowId(), 'user.username': username });
     };
 
 
 
     App.prototype.getMemberships = function*(roles) {
-        return yield* models.Membership.find(
+        var membershipStore = new DbConnector(models.Membership);
+        return yield* membershipStore.find(
             { 'appId': this.getRowId(), roles: { $in: roles } },
             { sort: { id: -1 }, limit: 200}
         );
     };
-
 
     exports.App = App;
 

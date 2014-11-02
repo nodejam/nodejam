@@ -5,11 +5,13 @@
 
     var models = require('fora-app-models'),
         services = require('fora-app-services'),
-        dataUtils = require('fora-data-utils');
-
-    var Parser = require('fora-request-parser');
+        dataUtils = require('fora-data-utils'),
+        Parser = require('fora-request-parser'),
+        DbConnector = require('fora-app-db-connector');
 
     var create = function*() {
+        var appStore = new DbConnector(models.App);
+        
         var typesService = services.get('typesService');
         var conf = services.get("configuration");
         var parser = new Parser(this, typesService);
@@ -19,7 +21,7 @@
             stub = stub + "-app";
         stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'');
 
-        var app = yield* models.App.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
+        var app = yield* appStore.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
 
         if (!app) {
             app = yield* typesService.constructModel(
@@ -46,9 +48,10 @@
 
 
     var edit = function*(app) {
+        var appStore = new DbConnector(models.App);
         var parser = new Parser(this, services.get('typesService'));
 
-        app = yield* models.App.findOne({ stub: app });
+        app = yield* appStore.findOne({ stub: app });
 
         if (this.session.user.username === app.createdBy.username || this.session.admin) {
             _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);

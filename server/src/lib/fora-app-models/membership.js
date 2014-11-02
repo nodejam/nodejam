@@ -1,23 +1,15 @@
 (function() {
     "use strict";
 
-    var _;
-
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
-
-    var ForaDbModel = require('./foramodel').ForaDbModel;
+    var DbConnector = require('fora-app-db-connector'),
+        dataUtils = require('fora-data-utils');
 
 
-    var Membership = function() {
-        ForaDbModel.apply(this, arguments);
+    var Membership = function(params) {
+        dataUtils.extend(this, params);
     };
 
-    Membership.prototype = Object.create(ForaDbModel.prototype);
-    Membership.prototype.constructor = Membership;
-
-    __extends(Membership, ForaDbModel);
-
+    var membershipStore = new DbConnector(Membership);
 
     Membership.typeDefinition = {
         name: "membership",
@@ -41,6 +33,12 @@
             updatedAt: { event: 'updated' }
         },
     };
+
+
+    Membership.prototype.save = function*() {
+        return yield* membershipStore.save(this);
+    };
+
 
     exports.Membership = Membership;
 

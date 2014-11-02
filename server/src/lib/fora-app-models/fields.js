@@ -1,22 +1,12 @@
 (function() {
     "use strict";
 
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
+    var markdown = require('markdown').markdown,
+        dataUtils = require('fora-data-utils');
 
-    var markdown = require('markdown').markdown;
-    var ForaModel = require('./foramodel').ForaModel;
-
-
-    //Image
-    var Image = function() {
-        ForaModel.apply(this, arguments);
+    var Image = function(params) {
+        dataUtils.extend(this, params);
     };
-
-    Image.prototype = Object.create(ForaModel.prototype);
-    Image.prototype.constructor = Image;
-
-    __extends(Image, ForaModel);
 
     Image.typeDefinition = {
         name: 'image',
@@ -33,15 +23,7 @@
     };
 
 
-    //Cover
-    var Cover = function() {
-        ForaModel.apply(this, arguments);
-    };
-
-    Cover.prototype = Object.create(ForaModel.prototype);
-    Cover.prototype.constructor = Cover;
-
-    __extends(Cover, ForaModel);
+    var Cover = function() {};
 
     Cover.typeDefinition = {
         name: 'cover',
@@ -59,16 +41,7 @@
     };
 
 
-
-    //TextContent
-    var TextContent = function() {
-        ForaModel.apply(this, arguments);
-    };
-
-    TextContent.prototype = Object.create(ForaModel.prototype);
-    TextContent.prototype.constructor = TextContent;
-
-    __extends(TextContent, ForaModel);
+    var TextContent = function() {};
 
     TextContent.typeDefinition = {
         name: 'text-content',
@@ -82,6 +55,7 @@
         },
         allowHtml: ['text']
     };
+
 
     TextContent.prototype.formatContent = function() {
         switch (this.format) {

@@ -14,7 +14,8 @@
         models = require('fora-app-models'),
         initializeApp = require('fora-app-initialize'),
         baseConfig = require('./config'),
-        randomizer = require('fora-app-randomizer');
+        randomizer = require('fora-app-randomizer'),
+        DbConnector = require('fora-app-db-connector');
 
 
     var staticPaths = ["public", "js", "vendor", "css", "images", "fonts"];
@@ -47,12 +48,13 @@
         If the request is for a different domain, it must be an app.
     */
     var addDomainRewrite = function(router) {
+        var appStore = new DbConnector(models.App);
         router.when(
             function() {
                 return this.hostname && (baseConfig.domains.indexOf(this.hostname) === -1);
             },
             function*() {
-                this.app = yield* models.App.findOne({ domains: this.hostname });
+                this.app = yield* appStore.findOne({ domains: this.hostname });
                 return true; //continue matching.
             }
         );
@@ -91,6 +93,8 @@
         - Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
     */
     var addExtensionRoutes = function*(router, appUrlPrefix, extensionModuleName) {
+        var appStore = new DbConnector(models.App);
+        var sessionStore = new DbConnector(models.Session);
         var Sandbox = require('fora-app-sandbox');
         var sandbox = new Sandbox(services, extensionModuleName);
 
@@ -105,7 +109,7 @@
             },
             function*() {
                 if (!this.app) {
-                    this.app = yield* models.App.findOne({ stub: this.path.split("/")[prefixPartsCount] });
+                    this.app = yield* appStore.findOne({ stub: this.path.split("/")[prefixPartsCount] });
                     if (this.app) {
                         var urlParts = this.url.split("/");
                         this.url = this.url.replace(appRootRegex, "/");
@@ -116,7 +120,7 @@
 
                 var token = this.query.token || this.cookies.get('token');
                 if (token)
-                    this.session = yield* models.Session.findOne({ token: token });
+                    this.session = yield* sessionStore.findOne({ token: token });
 
                 return yield* sandbox.executeRequest(this);
             }

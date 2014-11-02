@@ -3,29 +3,23 @@
 
     var _;
 
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
-
-
-    var RecordBase = require('./record-base').RecordBase,
-        models = require('./'),
+    var recordCommon = require('./record-common'),
         randomizer = require('fora-app-randomizer'),
         dataUtils = require('fora-data-utils'),
-        services = require('fora-app-services');
+        services = require('fora-app-services'),
+        DbConnector = require('fora-app-db-connector'),
+        models = require('./');
 
-    //ctor
-    var Record = function() {
+
+    var Record = function(params) {
+        dataUtils.extend(this, params);
         this.meta = this.meta || [];
         this.tags = this.tags || [];
-        RecordBase.apply(this, arguments);
     };
 
-    Record.prototype = Object.create(RecordBase.prototype);
-    Record.prototype.constructor = Record;
+    recordCommon.extendRecord(Record);
 
-    __extends(Record, RecordBase);
-
-
+    var recordStore = new DbConnector(Record);
 
     Record.search = function*(criteria, settings) {
         var limit = getLimit(settings.limit, 100, 1000);
@@ -36,9 +30,8 @@
             params[k] = v;
         }
 
-        _ = yield* Record.find(params, { sort: settings.sort, limit: limit });
+        return yield* recordStore.find(params, { sort: settings.sort, limit: limit });
     };
-
 
 
     var getLimit = function(limit, _default, max) {
@@ -81,7 +74,7 @@
 
     Record.prototype.getMappableFields = function*() {
         var typesService = services.get('typesService');
-        return yield* getMappableFields(yield* this.getTypeDefinition(typesService));
+        return yield* getMappableFields(yield* typesService.getTypeDefinitionFromObject(this, Record));
     };
 
 
@@ -90,7 +83,7 @@
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
         }, this);
-        return yield* this.save();
+        return yield* recordStore.save(this);
     };
 
 
@@ -99,7 +92,7 @@
         this.meta = this.meta.filter(function(m) {
             return metaList.indexOf(m) === -1;
         });
-        return yield* this.save();
+        return yield* recordStore.save(this);
     };
 
 
@@ -129,21 +122,15 @@
             this.stub = this.stub || randomizer.uniqueId(16);
         }
 
-        var result = yield* RecordBase.prototype.save.call(this);
-
-        if (this.state === 'published') {
-            _ = yield* models.App.findById(this.appId);
-        }
-        
-        return result;
+        return yield* recordStore.save(this);
     };
 
 
 
     Record.prototype.getCreator = function*() {
-        return yield* models.User.findById(this.createdBy.id);
+        var userStore = new DbConnector(models.User);
+        return yield* userStore.findById(this.createdBy.id);
     };
-
 
 
     exports.Record = Record;

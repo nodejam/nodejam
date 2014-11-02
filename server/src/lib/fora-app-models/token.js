@@ -1,19 +1,11 @@
 (function() {
     "use strict";
 
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
-
-    var ForaDbModel = require('./foramodel').ForaDbModel;
-
-    var Token = function() {
-        ForaDbModel.apply(this, arguments);
+    var dataUtils = require('fora-data-utils');
+    
+    var Token = function(params) {
+        dataUtils.extend(this, params);
     };
-
-    Token.prototype = Object.create(ForaDbModel.prototype);
-    Token.prototype.constructor = Token;
-
-    __extends(Token, ForaDbModel);
 
     Token.typeDefinition = {
         name: "token",
@@ -32,6 +24,6 @@
         indexes: [{ 'key': 1 }],
     };
 
-
     exports.Token = Token;
+
 })();

@@ -31,7 +31,7 @@ server/src/lib/fora-models
 server/src/lib/fora-request
 server/src/lib/fora-request-parser
 server/src/lib/fora-extensions-service
-server/src/lib/fora-db
+server/src/lib/fora-db-backend-mongodb
 
 www-client/system/*
 !www-client/system/placeholder

@@ -3,26 +3,21 @@
 
     var _;
 
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
-
-    var ForaDbModel = require('./foramodel').ForaDbModel,
-        models = require('./'),
+    var models = require('./'),
         randomizer = require('fora-app-randomizer'),
-        services = require('fora-app-services');
+        services = require('fora-app-services'),
+        dataUtils = require('fora-data-utils'),
+        DbConnector = require('fora-app-db-connector');
 
     /*
         A session token starts life as a credential token.
         A credential token can be converted into a user-session token.
     */
-    var Session = function() {
-        ForaDbModel.apply(this, arguments);
+    var Session = function(params) {
+        dataUtils.extend(this, params);
     };
 
-    Session.prototype = Object.create(ForaDbModel.prototype);
-    Session.prototype.constructor = Session;
-
-    __extends(Session, ForaDbModel);
+    var sessionStore = new DbConnector(Session);
 
     Session.typeDefinition = {
         name: 'session',
@@ -55,16 +50,18 @@
         User tokens can be used to login to the app.
     */
     Session.prototype.upgrade = function*(username) {
-        var user = yield* models.User.findOne({ username: username, credentialId: this.credentialId });
+        var userStore = new DbConnector(models.User);
+        var user = yield* userStore.findOne({ username: username, credentialId: this.credentialId });
         if (user) {
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();
             this.user = yield* user.summarize();
-            return yield* this.save();
+            return yield* sessionStore.save(this);
         } else {
             throw new Error("User not found");
         }
     };
 
     exports.Session = Session;
+
 })();

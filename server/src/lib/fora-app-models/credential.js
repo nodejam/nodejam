@@ -1,31 +1,21 @@
 (function() {
     "use strict";
 
-    var _;
-
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
-
-
     var thunkify = require('fora-node-thunkify'),
-        ForaDbModel = require('./foramodel').ForaDbModel,
         hasher = require('fora-app-hasher'),
         randomizer = require('fora-app-randomizer'),
         models = require('./'),
-        services = require('fora-app-services');
-
-
-    var Credential = function() {
-        ForaDbModel.apply(this, arguments);
-    };
-
-    Credential.prototype = Object.create(ForaDbModel.prototype);
-    Credential.prototype.constructor = Credential;
-
-    __extends(Credential, ForaDbModel);
+        services = require('fora-app-services'),
+        DbConnector = require('fora-app-db-connector'),
+        dataUtils = require('fora-data-utils');
 
     var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    var Credential = function(params) {
+        dataUtils.extend(this, params);
+    };
+
+    var credentialStore = new DbConnector(Credential);
 
     Credential.typeDefinition = {
         name: 'credential',
@@ -104,17 +94,18 @@
         var typesService = services.get('typesService');
         var session = yield* typesService.constructModel(
             {
-                credentialId: this.getRowId(),
+                credentialId: DbConnector.getRowId(this),
                 token: randomizer.uniqueId(24)
             },
             models.Session
         );
-        return yield* session.save();
+        var sessionStore = new DbConnector(models.Session);
+        return yield* sessionStore.save(session);
     };
 
 
     Credential.prototype.addBuiltin = function*(username, password) {
-        var existing = yield* Credential.findOne({ "builtin.username": username });
+        var existing = yield* credentialStore.findOne({ "builtin.username": username });
         if (!existing) {
             var hashed = yield* thunkify(hasher)({ plaintext: password });
             this.builtin = {
@@ -123,7 +114,7 @@
                 salt: hashed.salt.toString('hex'),
                 hash: hashed.key.toString('hex')
             };
-            return yield* this.save();
+            return yield* credentialStore.save(this);
         } else {
             throw new Error("Built-in credential with the same username already exists");
         }
@@ -131,7 +122,7 @@
 
 
     Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret) {
-        var existing = yield* Credential.findOne({ "twitter.id": id });
+        var existing = yield* credentialStore.findOne({ "twitter.id": id });
         if (!existing) {
             this.twitter = {
                 id: id,
@@ -139,7 +130,7 @@
                 accessToken: accessToken,
                 accessTokenSecret: accessTokenSecret
             };
-            return yield* this.save();
+            return yield* credentialStore.save(this);
         } else {
             throw new Error("Twitter credential with the same id already exists");
         }
@@ -147,7 +138,7 @@
 
 
     Credential.authenticateBuiltin = function*(username, password) {
-        var credential = yield* Credential.findOne({ "builtin.username": username });
+        var credential = yield* credentialStore.findOne({ "builtin.username": username });
         if (credential) {
             var salt = new Buffer(credential.builtin.salt, 'hex');
             result = yield* thunkify(hasher)({plaintext: password, salt: salt});

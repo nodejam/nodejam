@@ -14,7 +14,7 @@
         var path = require('path');
         var fs = require('fs');
 
-        var clientModules = ["fora-db", "fora-extensions-service", "fora-models", "fora-request"];
+        var clientModules = ["fora-app-db-backend", "fora-extensions-service", "fora-models", "fora-request"];
         var serverNpmModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator"];
         var libModules = ["fora-app-ui", "fora-app-services", "fora-app-models", "fora-app-logger", "fora-app-renderer", "fora-app-sandbox",
                           "fora-app-types-service", "fora-app-initialize", "fora-app-randomizer"];

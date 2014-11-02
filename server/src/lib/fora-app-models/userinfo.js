@@ -1,26 +1,17 @@
 (function() {
+
     "use strict";
 
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
-
-    var ForaDbModel = require('./foramodel').ForaDbModel;
-
-    var UserInfo = function() {
-        ForaDbModel.apply(this, arguments);
-
+    var dataUtils = require('fora-data-utils');
+    
+    var UserInfo = function(params) {
+        dataUtils.extend(this, params);
         if (!this.subscriptions)
             this.subscriptions = [];
 
         if (!this.following)
             this.following = [];
-
     };
-
-    UserInfo.prototype = Object.create(ForaDbModel.prototype);
-    UserInfo.prototype.constructor = UserInfo;
-
-    __extends(UserInfo, ForaDbModel);
 
 
     UserInfo.typeDefinition = {
@@ -45,4 +36,5 @@
     };
 
     exports.UserInfo = UserInfo;
+
 })();

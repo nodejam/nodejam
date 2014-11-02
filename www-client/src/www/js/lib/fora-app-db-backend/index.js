@@ -5,10 +5,7 @@
 
     var Database = function(conf) {
         this.conf = conf;
-        switch (this.conf.type) {
-            case 'mongodb':
-                this.rowId = this.conf.rowId || '_id';
-        }
+        this.rowId = this.conf.rowId || '_id';
     };
 
     Database.prototype.getRowId = function(obj) {

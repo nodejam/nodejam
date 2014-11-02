@@ -14,13 +14,12 @@
         */
         var models = require("fora-app-models");
         var services = require('fora-app-services');
-        var foraModels = require('fora-models');
 
         //Configuration
         services.add("configuration", baseConfig);
 
         //Database Service
-        var Database = require('fora-db');
+        var Database = require('fora-app-db-backend');
         var db = new Database(baseConfig.db);
         services.add("db", db);
 
@@ -55,7 +54,7 @@
                 modelServices: {
                     getRowId: db.getRowId.bind(db),
                     setRowId: db.setRowId.bind(db),
-                    isModel: function(i) { return i instanceof foraModels.BaseModel; }
+                    isModel: function(i) { return i && i.constructor.typeDefinition; }
                 }
             }
         );
