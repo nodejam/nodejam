@@ -43,7 +43,13 @@
                 createdAt: { event: 'created' },
                 updatedAt: { event: 'updated' }
             },
-            trackChanges: true,
+            initialize: function*(record, raw, typeDef, typesService) {
+                var clone = JSON.parse(JSON.stringify(raw));
+                var original = yield* typesService.updateModel({}, clone, typeDef, true);
+                this.getOriginal = function*() {
+                    return original;
+                };
+            },
             logging: {
                 onInsert: 'NEW_POST'
             }

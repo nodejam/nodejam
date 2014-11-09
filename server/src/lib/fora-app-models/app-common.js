@@ -70,14 +70,13 @@
 
 		App.prototype.summarize = function*() {
 			var typesService = services.get('typesService');
-			return yield* typesService.constructModel(
+			return new AppSummary(
 				{
 					id: DbConnector.getRowId(this),
 					name: this.name,
 					stub: this.stub,
 					createdBy: this.createdBy
-				},
-				AppSummary
+				}
 			);
 		};
 

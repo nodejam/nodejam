@@ -72,9 +72,8 @@
     };
 
 
-    Record.prototype.getMappableFields = function*() {
-        var typesService = services.get('typesService');
-        return yield* getMappableFields(yield* typesService.getTypeDefinitionFromObject(this, Record));
+    Record.prototype.getMappableFields = function*(typeDefinition) {
+        return yield* getMappableFields(typeDefinition);
     };
 
 
@@ -121,7 +120,6 @@
         } else {
             this.stub = this.stub || randomizer.uniqueId(16);
         }
-
         return yield* recordStore.save(this);
     };
 

@@ -48,14 +48,13 @@
 
         User.prototype.summarize = function*() {
             var typesService = services.get('typesService');
-            return yield* typesService.constructModel(
+            return new UserSummary(
                 {
                     id: DbConnector.getRowId(this),
                     username: this.username,
                     name: this.name,
                     assets: this.assets
-                },
-                UserSummary
+                }
             );
         };
     };

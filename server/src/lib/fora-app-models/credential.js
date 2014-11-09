@@ -92,12 +92,11 @@
     */
     Credential.prototype.createSession = function*() {
         var typesService = services.get('typesService');
-        var session = yield* typesService.constructModel(
+        var session = new models.Session(
             {
                 credentialId: DbConnector.getRowId(this),
                 token: randomizer.uniqueId(24)
-            },
-            models.Session
+            }
         );
         var sessionStore = new DbConnector(models.Session);
         return yield* sessionStore.save(session);

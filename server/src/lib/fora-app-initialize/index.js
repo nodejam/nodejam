@@ -54,13 +54,26 @@
                 modelServices: {
                     getRowId: db.getRowId.bind(db),
                     setRowId: db.setRowId.bind(db),
-                    isModel: function(i) { return i && i.constructor.typeDefinition; }
+                    isModel: function(i) { return i && i.constructor.typeDefinition; },
+                    setTypeDefinition: function*(def) {
+                        this.getTypeDefinition = function*() {
+                            return def;
+                        };
+                    },
+                    getTypeDefinition: function*() {
+                        return yield* this.getTypeDefinition();
+                    }
                 }
             }
         );
 
 
-        var ctors = Object.keys(models).map(function(k) { return models[k]; });
+        var modelsArray = Object.keys(models).map(function(k) { return models[k]; });
+        var typeDefinitions = modelsArray.map(function(Model) {
+            var typeDefinition = Model.typeDefinition;
+            typeDefinition.ctor = function(params) { return new Model(params); };
+            return typeDefinition;
+        });
 
         var appExtensions = yield* extensionsService.getModulesByKind("app", "definition");
         var appVirtTypeDefinitions = Object.keys(appExtensions).map(function(key) {
@@ -73,10 +86,10 @@
         });
 
         _ = yield* typesService.init(
-            ctors,
+            typeDefinitions,
             [
-                { typeDefinitions: appVirtTypeDefinitions, ctor: models.App },
-                { typeDefinitions: recordVirtTypeDefinitions, ctor: models.Record }
+                { typeDefinitions: appVirtTypeDefinitions, baseTypeDefinition: models.App.typeDefinition },
+                { typeDefinitions: recordVirtTypeDefinitions, baseTypeDefinition: models.Record.typeDefinition }
             ]
         );
         services.add("typesService", typesService);

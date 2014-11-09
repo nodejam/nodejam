@@ -28,45 +28,62 @@
     };
 
 
+    Connector.prototype.getTypeDefinition = function*() {
+        if (!this.ctor.__typeDefinition) {
+            var typesService = services.get('typesService');
+            this.ctor.__typeDefinition = yield* typesService.getTypeDefinition(this.ctor.typeDefinition.name);
+        }
+        return this.ctor.__typeDefinition;
+    };
+
+
     Connector.prototype.findById = function*(id) {
         var services = getServices();
         var query = services.db.setRowId({}, id);
-        return yield* database.findOne(this.ctor, query, {}, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.findOne(typeDefinition, query, {}, getServices());
     };
 
 
     Connector.prototype.find = function*(query, options) {
-        return yield* database.find(this.ctor, query, options, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.find(typeDefinition, query, options, getServices());
     };
 
 
     Connector.prototype.findOne = function*(query, options) {
-        return yield* database.findOne(this.ctor, query, options, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.findOne(typeDefinition, query, options, getServices());
     };
 
 
     Connector.prototype.count = function*(query) {
-        return yield* database.count(this.ctor, query, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.count(typeDefinition, query, getServices());
     };
 
 
     Connector.prototype.destroyAll = function*(query) {
-        return yield* database.destroyAll(this.ctor, query, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.destroyAll(typeDefinition, query, getServices());
     };
 
 
     Connector.prototype.save = function*(record) {
-        return yield* database.save(record, this.ctor, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.save(record, typeDefinition, getServices());
     };
 
 
     Connector.prototype.destroy = function*(record) {
-        return yield* database.destroy(record, this.ctor, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.destroy(record, typeDefinition, getServices());
     };
 
 
     Connector.prototype.link = function*(record, name) {
-        return yield* database.link(record, this.ctor, name, getServices());
+        var typeDefinition = yield* this.getTypeDefinition();
+        return yield* database.link(record, typeDefinition, name, getServices());
     };
 
     module.exports = Connector;

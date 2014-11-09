@@ -11,7 +11,7 @@
 
     var create = function*() {
         var appStore = new DbConnector(models.App);
-        
+
         var typesService = services.get('typesService');
         var conf = services.get("configuration");
         var parser = new Parser(this, typesService);
@@ -24,17 +24,20 @@
         var app = yield* appStore.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
 
         if (!app) {
-            app = yield* typesService.constructModel(
+            app = new models.App(
                 {
                     type: yield* parser.body('type'),
                     name: yield* parser.body('name'),
                     access: yield* parser.body('access'),
                     stub: stub,
                     createdBy: this.session.user,
-                },
-                models.App
+                }
             );
-            _ = yield* parser.map(app, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
+            _ = yield* parser.map(
+                app,
+                (yield* appStore.getTypeDefinition()),
+                ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
+            );
             app = yield* app.save();
             _ = yield* app.addRole(this.session.user, 'admin');
 

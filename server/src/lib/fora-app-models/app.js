@@ -48,7 +48,8 @@
 
     App.prototype.createRecord = function*(params) {
         var typesService = services.get('typesService');
-        var record = yield* typesService.constructModel(params, models.Record);
+        var typeDefinition = yield* typesService.getTypeDefinition(models.Record.typeDefinition.name);
+        var record = yield* typesService.constructModel(params, typeDefinition);
         record.appId = DbConnector.getRowId(this);
         return record;
     };
@@ -64,7 +65,7 @@
 
     App.prototype.getRecord = function*(stub) {
         var recordStore = new DbConnector(models.Record);
-        return yield* recordStore.findOne({ 'appId': this.getRowId(), stub: stub });
+        return yield* recordStore.findOne({ 'appId': DbConnector.getRowId(this), stub: stub });
     };
 
 
@@ -112,14 +113,13 @@
 
         var typesService = services.get('typesService');
         if (!membership) {
-            membership = yield* typesService.constructModel(
+            membership = new models.Membership(
                 {
                     appId: DbConnector.getRowId(this),
                     userId: user.id,
                     user: user,
                     roles: [role]
-                },
-                models.Membership
+                }
             );
         } else {
             if (membership.roles.indexOf(role) === -1) {

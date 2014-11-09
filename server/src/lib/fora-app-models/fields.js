@@ -23,7 +23,9 @@
     };
 
 
-    var Cover = function() {};
+    var Cover = function(params) {
+        dataUtils.extend(this, params);
+    };
 
     Cover.typeDefinition = {
         name: 'cover',

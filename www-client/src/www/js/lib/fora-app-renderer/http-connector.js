@@ -39,7 +39,7 @@
                     function*(item) {
                         if (item._mustReconstruct) {
                             var typeDefinition = yield* self.typesService.getTypeDefinition(item.type);
-                            var model = yield* self.typesService.constructModelFromTypeDefinition(item, typeDefinition);
+                            var model = yield* self.typesService.constructModel(item, typeDefinition);
                             return { value: model, stop: true };
                         }
                     }

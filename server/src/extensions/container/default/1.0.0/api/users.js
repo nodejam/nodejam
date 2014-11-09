@@ -15,7 +15,7 @@
         var typesService = services.get('typesService');
         var parser = new Parser(this, typesService);
 
-        var user = yield* typesService.constructModel(
+        var user = new models.User(
             {
                 username: yield* parser.body('username'),
                 credentialId: this.session.credentialId,
@@ -24,8 +24,7 @@
                 email: (yield* parser.body('email') || 'unknownthis.foraproject.org'),
                 about: yield* parser.body('about'),
                 lastLogin: Date.now()
-            },
-            models.User
+            }
         );
         user = yield* user.save();
 

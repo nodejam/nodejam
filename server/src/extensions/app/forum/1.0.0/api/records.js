@@ -22,8 +22,8 @@
             savedAt: Date.now()
         });
 
-        _ = yield* parser.map(record, yield* record.getMappableFields());
-
+        var recordDef = yield* record.getTypeDefinition();
+        _ = yield* parser.map(record, recordDef, yield* record.getMappableFields(recordDef));
         record.app = yield* this.app.summarize();
         record = yield* this.app.addRecord(record);
 

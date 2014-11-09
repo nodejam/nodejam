@@ -16,12 +16,11 @@
         if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
             var type = yield* parser.body('type');
 
-            var credential = yield* typesService.constructModel(
+            var credential = new models.Credential(
                 {
                     email: yield* parser.body('email'),
                     preferences: { canEmail: true }
-                },
-                models.Credential
+                }
             );
 
             var username;
