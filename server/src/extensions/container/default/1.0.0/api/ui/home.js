@@ -4,19 +4,20 @@
     var _;
 
     var models = require('fora-app-models'),
-        services = require('fora-app-services');
+        services = require('fora-app-services'),
+        DbConnector = require('fora-app-db-connector');
 
 
     var index = function*() {
+        var recordStore = new DbConnector(models.Record);
         var db = services.get('db');
 
-        var editorsPicks = yield* models.Record.find({ meta: 'pick' },{ sort: db.setRowId({}, -1) , limit: 1 });
-
-        var featured = yield* models.Record.find({ meta: 'featured' }, { sort: db.setRowId({}, -1) , limit: 12 });
+        var editorsPicks = yield* recordStore.find({ meta: 'pick' },{ sort: db.setRowId({}, -1) , limit: 1 });
+        var featured = yield* recordStore.find({ meta: 'featured' }, { sort: db.setRowId({}, -1) , limit: 12 });
 
         //Featured must not included editor's Picks.
         featured = featured.filter(function(fi) {
-            return editorsPicks.map(function(ei) { return ei.getRowId(); }).indexOf(fi.getRowId()) === -1;
+            return editorsPicks.map(function(ei) { return DbConnector.getRowId(ei); }).indexOf(DbConnector.getRowId(fi)) === -1;
         });
 
         var cover = {

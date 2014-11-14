@@ -43,8 +43,11 @@
     };
 
 
-    var TextContent = function() {};
+    var TextContent = function(params) {
+        dataUtils.extend(this, params);
+    };
 
+    
     TextContent.typeDefinition = {
         name: 'text-content',
         schema: {
