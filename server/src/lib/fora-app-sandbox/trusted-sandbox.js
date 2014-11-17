@@ -5,22 +5,24 @@
 
     var Router = require('fora-router');
 
-
-    var TrustedSandbox = function(extension, moduleName) {
+    var TrustedSandbox = function(extension, moduleName, extensionsService) {
         this.extension = extension;
         this.moduleName = moduleName;
+        this.extensionsService = extensionsService;
     };
 
-
     TrustedSandbox.prototype.executeRequest = function*(requestContext) {
-        var extensionModule = this.extension[this.moduleName];
-        if (!extensionModule.__router) {
-            extensionModule.__router = new Router();
-            extensionModule().routes.forEach(function(route) {
-                extensionModule.__router[route.method](route.url, route.handler);
+        var requestHandler = this.extension[this.moduleName];
+        
+        if (!requestHandler.__router) {
+            requestHandler.__router = new Router();
+            requestHandler.routes.forEach(function(route) {
+                requestHandler.__router[route.method](route.url, route.handler);
             });
         }
-        var routeFunc = extensionModule.__router.route();
+
+        var routeFunc = requestHandler.__router.route();
+
         return yield* routeFunc.call(requestContext, null);
     };
 

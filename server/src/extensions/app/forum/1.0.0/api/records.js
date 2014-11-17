@@ -8,59 +8,7 @@
 
 
     var create = function*() {
-        var typesService = services.get("typesService"),
-            extensionsService = services.get("extensionsService");
-
-        var parser = new Parser(this, typesService);
-
-        var record = yield* this.app.createRecord({
-            type: yield* parser.body('type'),
-            version: yield* parser.body('version'),
-            createdBy: this.session.user,
-            state: yield* parser.body('state'),
-            rating: 0,
-            savedAt: Date.now()
-        });
-
-        var recordDef = yield* record.getTypeDefinition();
-        _ = yield* parser.map(record, recordDef, yield* record.getMappableFields(recordDef));
-        record.app = yield* this.app.summarize();
-        record = yield* this.app.addRecord(record);
-
-        //Update the last updated time
-        this.app.stats.lastRecord = Date.now();
-
-        //Add to cache.
-        if (!this.app.cache.records)
-            this.app.cache.records = [];
-
-        var cacheItem;
-        var modelModule = yield* extensionsService.getModuleByFullType(record.type, "model");
-
-        if (modelModule) {
-            var model = modelModule();
-            if (model.getCacheItem)
-                cacheItem = yield* model.getCacheItem.call(this);
-        }
-        if (!cacheItem && record.title) {
-            cacheItem = {
-                title: record.title,
-                createdBy: record.createdBy,
-                createdAt: record.createdAt,
-                updatedAt: record.updatedAt
-            };
-        }
-
-        if (cacheItem) {
-            this.app.cache.records.push(cacheItem);
-
-            if (this.app.cache.records.length > 10)
-                this.app.cache.records.slice(this.app.cache.records.length - 10);
-        }
-
-        _ = yield* this.app.save();
-
-        this.body = record;
+        this.body = yield* this.app.newRecord(this);
     };
 
 
@@ -75,7 +23,7 @@
         if (record) {
             if (record.createdBy.username === this.session.user.username) {
                 record.savedAt = Date.now();
-                _ = yield* parser.map(record, yield* record.getMappableFields());
+                _ = yield* parser.map(record, yield* record.getCustomFields());
                 if (yield* parser.body('state') === 'published') record.state = 'published';
                 this.body = yield* record.save();
             } else {

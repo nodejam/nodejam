@@ -28,12 +28,16 @@
     };
 
 
-    Connector.prototype.getTypeDefinition = function*() {
-        if (!this.ctor.__typeDefinition) {
-            var typesService = services.get('typesService');
-            this.ctor.__typeDefinition = yield* typesService.getTypeDefinition(this.ctor.typeDefinition.name);
+    Connector.prototype.getTypeDefinition = function*(record) {
+        if (record && record.getTypeDefinition) {
+            return yield* record.getTypeDefinition();
+        } else {
+            if (!this.ctor.__typeDefinition) {
+                var typesService = services.get('typesService');
+                this.ctor.__typeDefinition = yield* typesService.getTypeDefinition(this.ctor.typeDefinition.name);
+            }
+            return this.ctor.__typeDefinition;
         }
-        return this.ctor.__typeDefinition;
     };
 
 
@@ -70,19 +74,19 @@
 
 
     Connector.prototype.save = function*(record) {
-        var typeDefinition = yield* this.getTypeDefinition();
+        var typeDefinition = yield* this.getTypeDefinition(record);
         return yield* database.save(record, typeDefinition, getServices());
     };
 
 
     Connector.prototype.destroy = function*(record) {
-        var typeDefinition = yield* this.getTypeDefinition();
+        var typeDefinition = yield* this.getTypeDefinition(record);
         return yield* database.destroy(record, typeDefinition, getServices());
     };
 
 
     Connector.prototype.link = function*(record, name) {
-        var typeDefinition = yield* this.getTypeDefinition();
+        var typeDefinition = yield* this.getTypeDefinition(record);
         return yield* database.link(record, typeDefinition, name, getServices());
     };
 

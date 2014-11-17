@@ -46,8 +46,7 @@
             return "/public/assets/" + this.assets;
         };
 
-        User.prototype.summarize = function*() {
-            var typesService = services.get('typesService');
+        User.prototype.summarize = function() {
             return new UserSummary(
                 {
                     id: DbConnector.getRowId(this),

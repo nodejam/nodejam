@@ -4,8 +4,9 @@ This is __not ready__ to be forked yet. Our first priority is to get the foundat
 
 Some re-usable components of fora have been moved to separate packages.
 - Fora Build (Build system) https://github.com/jeswin/fora-build
-- Fora Models (Object Data Mapper) https://github.com/jeswin/fora-models
-- Fora Extensions (Plugins) https://github.com/jeswin/fora-extensions
+- Fora Db (Object Data Mapper) https://github.com/jeswin/fora-db
+- Fora MongoDb Backend (ForaDb's Mongo Backend) https://github.com/jeswin/fora-backend-mongodb
+- Fora Extensions (Extensions and Plugin Management) https://github.com/jeswin/fora-extensions
 - Fora Node Thunkify (Port of thunkify that uses yield*) https://github.com/jeswin/fora-node-thunkify
 - Fora Router (Router for Koa) https://github.com/jeswin/fora-router
 - Fora Types Service (Data Type Manager) https://github.com/jeswin/fora-types-service

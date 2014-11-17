@@ -136,19 +136,6 @@
     };
 
 
-    Credential.authenticateBuiltin = function*(username, password) {
-        var credential = yield* credentialStore.findOne({ "builtin.username": username });
-        if (credential) {
-            var salt = new Buffer(credential.builtin.salt, 'hex');
-            result = yield* thunkify(hasher)({plaintext: password, salt: salt});
-            return credential.hash === result.key.toString('hex') ?
-                { token: credential.token } : { success: false, error: "Invalid username or password" };
-        } else {
-            return { success: false, error: "Invalid username or password" };
-        }
-    };
-
-
     exports.Credential = Credential;
 
 })();

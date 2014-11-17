@@ -115,7 +115,6 @@
                     var uToken = _globals.sessions[u];
                     if (uToken.token !== token) {
                         resp = yield* _doHttpRequest("/api/app/" + appJson.stub + "/members?token=" + uToken.token, querystring.stringify(app), 'post');
-                        resp = JSON.parse(resp);
                         logger.log(u + " joined " + app.name);
                     }
                 }

@@ -46,7 +46,7 @@
         _ = yield* copy(picture.src, user.username + ".jpg");
         _ = yield* copy(picture.small, user.username + "_t.jpg");
 
-        this.body = yield* user.summarize();
+        this.body = user.summarize();
     };
 
 
@@ -69,7 +69,7 @@
     var item = function*(username) {
         var user = yield* models.User.findOne({ username: username });
         if (user)
-            this.body = yield* user.summarize();
+            this.body = user.summarize();
     };
 
 

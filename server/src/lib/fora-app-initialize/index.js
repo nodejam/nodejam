@@ -12,7 +12,6 @@
             2) Extensions Service
             3) Types Service
         */
-        var models = require("fora-app-models");
         var services = require('fora-app-services');
 
         //Configuration
@@ -29,7 +28,7 @@
         */
         var ExtensionsService = require('fora-extensions-service');
         var fnModuleMapper = function*(extModule, kind, typeName, version, moduleName) {
-            if (kind === "record" && moduleName === "definition") {
+            if ((kind === "record" || kind === "app") && moduleName === "definition") {
                 extModule.name = kind + "/" + typeName + "/" + version;
             }
             if (extModule.init)
@@ -48,42 +47,37 @@
             Virtual Type Definitions are defined in extensions, so we need to get it via extensionsService.
         */
         var TypesService = require('fora-app-types-service');
-        var typesService = new TypesService(
-            extensionsService,
-            {
-                modelServices: {
-                    getRowId: db.getRowId.bind(db),
-                    setRowId: db.setRowId.bind(db),
-                    isModel: function(i) { return i && i.constructor.typeDefinition; },
-                    setTypeDefinition: function*(def) {
-                        this.getTypeDefinition = function*() {
-                            return def;
-                        };
-                    },
-                    getTypeDefinition: function*() {
-                        return yield* this.getTypeDefinition();
-                    }
-                }
-            }
-        );
+        var typesService = new TypesService();
+        services.add("typesService", typesService);
 
+        var models = require("fora-app-models");
 
         var modelsArray = Object.keys(models).map(function(k) { return models[k]; });
-        var typeDefinitions = modelsArray.map(function(Model) {
-            var typeDefinition = Model.typeDefinition;
-            typeDefinition.ctor = function(params) { return new Model(params); };
+        var typeDefinitions = modelsArray.map(function(ctor) {
+            var typeDefinition = ctor.typeDefinition;
+            typeDefinition.ctor = ctor;
             return typeDefinition;
         });
 
-        var appExtensions = yield* extensionsService.getModulesByKind("app", "definition");
-        var appVirtTypeDefinitions = Object.keys(appExtensions).map(function(key) {
-            return appExtensions[key];
-        });
+        var appExtensions = yield* extensionsService.getExtensionsByKind("app");
+        var appVirtTypeDefinitions = [].concat.apply([], Object.keys(appExtensions).map(function(type) {
+            var versions = appExtensions[type];
+            return Object.keys(versions).map(function(version) {
+                var ext = versions[version];
+                ext.definition.ctor = ext.model;
+                return ext.definition;
+            });
+        }));
 
-        var recordExtensions = yield* extensionsService.getModulesByKind("record", "definition");
-        var recordVirtTypeDefinitions = Object.keys(recordExtensions).map(function(key) {
-            return recordExtensions[key];
-        });
+        var recordExtensions = yield* extensionsService.getExtensionsByKind("record");
+        var recordVirtTypeDefinitions = [].concat.apply([], Object.keys(recordExtensions).map(function(type) {
+            var versions = recordExtensions[type];
+            return Object.keys(versions).map(function(version) {
+                var ext = versions[version];
+                ext.definition.ctor = ext.model;
+                return ext.definition;
+            });
+        }));
 
         _ = yield* typesService.init(
             typeDefinitions,
@@ -92,7 +86,6 @@
                 { typeDefinitions: recordVirtTypeDefinitions, baseTypeDefinition: models.Record.typeDefinition }
             ]
         );
-        services.add("typesService", typesService);
 
         return {};
     };

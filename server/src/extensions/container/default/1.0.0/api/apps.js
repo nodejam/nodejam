@@ -24,21 +24,25 @@
         var app = yield* appStore.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
 
         if (!app) {
-            app = new models.App(
-                {
-                    type: yield* parser.body('type'),
-                    name: yield* parser.body('name'),
-                    access: yield* parser.body('access'),
-                    stub: stub,
-                    createdBy: this.session.user,
-                }
-            );
+            var type = yield* parser.body('type');
+            var typeDefinition = yield* typesService.getTypeDefinition(type);
+            var params = {
+                type: type,
+                name: yield* parser.body('name'),
+                access: yield* parser.body('access'),
+                stub: stub,
+                createdBy: this.session.user,
+            };
+            app = yield* typesService.constructModel(params, typeDefinition);
+
             _ = yield* parser.map(
                 app,
                 (yield* appStore.getTypeDefinition()),
                 ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
             );
+
             app = yield* app.save();
+
             _ = yield* app.addRole(this.session.user, 'admin');
 
             this.body = app;

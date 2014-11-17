@@ -16,11 +16,11 @@
 
     /*  Container UI Routes */
     var addContainerUIRoutes = function*(router, urlPrefix, extensionsService) {
-        var webModule = yield* extensionsService.getModuleByName("container", "default", "1.0.0", "web");
+        var webModule = yield* extensionsService.getModule("container", "default", "1.0.0", "web");
 
         var renderer = new Renderer(router);
 
-        var uiRoutes = renderer.createRoutes(webModule().routes);
+        var uiRoutes = renderer.createRoutes(webModule.routes);
         uiRoutes.forEach(function(route) {
             var url = /\/$/.test(urlPrefix) || /^\//.test(route.url) ? urlPrefix + route.url : urlPrefix + "/" + route.url;
             router[route.method](url, route.handler);

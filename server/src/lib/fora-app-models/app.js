@@ -7,24 +7,28 @@
         appCommon = require('./app-common'),
         dataUtils = require('fora-data-utils'),
         DbConnector = require('fora-app-db-connector'),
-        services = require('fora-app-services');
-
+        services = require('fora-app-services'),
+        Parser = require('fora-request-parser');
+    var typesService = services.get('typesService');
 
     var App = function(params) {
         dataUtils.extend(this, params);
-        this.init();
+        if (!this.stats) {
+            this.stats = new models.AppStats({
+                records: 0,
+                members: 0,
+                lastRecord: 0
+            });
+        }
+        if (this.init)
+            this.init();
     };
     appCommon.extendApp(App);
 
     var appStore = new DbConnector(App);
 
-
     App.prototype.save = function*() {
         var conf = services.get('configuration');
-
-        //if stub is a reserved name, change it
-        if (!this.stub)
-            throw new Error("Missing stub");
 
         if (conf.reservedNames.indexOf(this.stub) > -1)
             throw new Error("Stub cannot be " + this.stub + ", it is reserved");
@@ -55,9 +59,27 @@
     };
 
 
+    App.prototype.createRecordFromRequest = function*(request) {
+        var parser = new Parser(request, typesService);
+
+        var record = yield* this.createRecord({
+            type: yield* parser.body('type'),
+            version: yield* parser.body('version'),
+            createdBy: request.session.user,
+            state: yield* parser.body('state'),
+            rating: 0,
+            savedAt: Date.now()
+        });
+
+        var recordDef = yield* record.getTypeDefinition();
+        _ = yield* parser.map(record, recordDef, yield* record.getCustomFields(recordDef));
+        return yield* this.addRecord(record);
+    };
+
 
     App.prototype.addRecord = function*(record) {
         record.appId = DbConnector.getRowId(this);
+        this.stats.lastRecord = Date.now();
         return yield* record.save();
     };
 

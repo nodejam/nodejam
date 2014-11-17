@@ -55,7 +55,7 @@
         if (user) {
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();
-            this.user = yield* user.summarize();
+            this.user = user.summarize();
             return yield* sessionStore.save(this);
         } else {
             throw new Error("User not found");

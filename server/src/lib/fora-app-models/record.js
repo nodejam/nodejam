@@ -15,6 +15,8 @@
         dataUtils.extend(this, params);
         this.meta = this.meta || [];
         this.tags = this.tags || [];
+        if (this.init)
+            this.init();
     };
 
     recordCommon.extendRecord(Record);
@@ -45,37 +47,6 @@
     };
 
 
-    var getMappableFields = function*(typeDefinition, acc, prefix) {
-        acc = acc || [];
-        prefix = prefix || [];
-
-        for (var field in typeDefinition.schema.properties) {
-            if (!typeDefinition.ownProperties || typeDefinition.ownProperties.indexOf(field) > -1) {
-                var def = typeDefinition.schema.properties[field];
-                if (dataUtils.isPrimitiveType(def.type)) {
-                    if (def.type === "array" && dataUtils.isCustomType(def.items.type)) {
-                            prefix.push(field);
-                            _ = yield* getMappableFields(def.items.typeDefinition, acc, prefix);
-                            prefix.pop(field);
-                    } else {
-                        acc.push(prefix.concat(field).join('_'));
-                    }
-                } else if (dataUtils.isCustomType(def.type)) {
-                    prefix.push(field);
-                    _ = yield* getMappableFields(def.typeDefinition, acc, prefix);
-                    prefix.pop(field);
-                }
-            }
-        }
-
-        return acc;
-    };
-
-
-    Record.prototype.getMappableFields = function*(typeDefinition) {
-        return yield* getMappableFields(typeDefinition);
-    };
-
 
     Record.prototype.addMetaList = function*(metaList) {
         metaList.forEach(function(m) {
@@ -98,7 +69,7 @@
 
     Record.prototype.save = function*() {
         var extensionsService = services.get('extensionsService');
-        var model = extensionsService.getModuleByName("record", this.type, this.version, "model");
+        var model = extensionsService.getModule("record", this.type, this.version, "model");
 
         var typeParts = this.type.split('/');
         this.recordType = typeParts[1];
