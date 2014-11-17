@@ -8,8 +8,10 @@
         dataUtils = require('fora-data-utils'),
         services = require('fora-app-services'),
         DbConnector = require('fora-app-db-connector'),
+        Parser = require('fora-request-parser'),
         models = require('./');
 
+    var typesService = services.get('typesService');
 
     var Record = function(params) {
         dataUtils.extend(this, params);
@@ -22,18 +24,6 @@
     recordCommon.extendRecord(Record);
 
     var recordStore = new DbConnector(Record);
-
-    Record.search = function*(criteria, settings) {
-        var limit = getLimit(settings.limit, 100, 1000);
-
-        var params = {};
-        for (var k in criteria) {
-            v = criteria[k];
-            params[k] = v;
-        }
-
-        return yield* recordStore.find(params, { sort: settings.sort, limit: limit });
-    };
 
 
     var getLimit = function(limit, _default, max) {
@@ -48,21 +38,44 @@
 
 
 
-    Record.prototype.addMeta = function*(metaList) {
-        metaList.forEach(function(m) {
-            if (this.meta.indexOf(m) === -1)
-                this.meta.push(m);
-        }, this);
-        return yield* recordStore.save(this);
+    Record.search = function*(criteria, settings) {
+        var limit = getLimit(settings.limit, 100, 1000);
+
+        var params = {};
+        for (var k in criteria) {
+            v = criteria[k];
+            params[k] = v;
+        }
+
+        return yield* recordStore.find(params, { sort: settings.sort, limit: limit });
     };
 
 
 
-    Record.prototype.removeMeta = function*(metaList) {
-        this.meta = this.meta.filter(function(m) {
-            return metaList.indexOf(m) === -1;
+    Record.create = function*(params) {
+        var typesService = services.get('typesService');
+        var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
+        var record = yield* typesService.constructModel(params, typeDefinition);
+        return record;
+    };
+
+
+
+    Record.createViaRequest = function*(request) {
+        var parser = new Parser(request, typesService);
+
+        var record = yield* Record.create({
+            type: yield* parser.body('type'),
+            version: yield* parser.body('version'),
+            createdBy: request.session.user,
+            state: yield* parser.body('state'),
+            rating: 0,
+            savedAt: Date.now()
         });
-        return yield* recordStore.save(this);
+
+        var def = yield* record.getTypeDefinition();
+        _ = yield* parser.map(record, def, yield* record.getCustomFields(def));
+        return record;
     };
 
 
@@ -91,6 +104,59 @@
         } else {
             this.stub = this.stub || randomizer.uniqueId(16);
         }
+        return yield* recordStore.save(this);
+    };
+
+
+
+    Record.prototype.updateViaRequest = function*(request) {
+        var def = yield* this.getTypeDefinition();
+        _ = yield* parser.map(this, def, yield* this.getCustomFields());
+        this.savedAt = Date.now();
+        if (yield* parser.body('state') === 'published') this.state = 'published';
+        return yield* this.save();
+    };
+
+
+
+    Record.prototype.addMetaViaRequest = function*(request) {
+        var parser = new Parser(request, services.get('typesService'));
+        var meta = yield* parser.body('meta');
+        if (meta) {
+            return yield* this.addMeta(meta.split(','));
+        } else {
+            throw new Error("Meta was not supplied");
+        }
+    };
+
+
+
+    Record.prototype.deleteMetaViaRequest = function*(request) {
+        var parser = new Parser(request, services.get('typesService'));
+        var meta = yield* parser.body('meta');
+        if (meta) {
+            return yield* this.deleteMeta(meta.split(','));
+        } else {
+            throw new Error("Meta was not supplied");
+        }
+    };
+
+
+
+    Record.prototype.addMeta = function*(metaList) {
+        metaList.forEach(function(m) {
+            if (this.meta.indexOf(m) === -1)
+                this.meta.push(m);
+        }, this);
+        return yield* recordStore.save(this);
+    };
+
+
+
+    Record.prototype.deleteMeta = function*(metaList) {
+        this.meta = this.meta.filter(function(m) {
+            return metaList.indexOf(m) === -1;
+        });
         return yield* recordStore.save(this);
     };
 

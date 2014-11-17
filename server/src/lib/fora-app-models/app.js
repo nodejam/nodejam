@@ -7,8 +7,8 @@
         appCommon = require('./app-common'),
         dataUtils = require('fora-data-utils'),
         DbConnector = require('fora-app-db-connector'),
-        services = require('fora-app-services'),
-        Parser = require('fora-request-parser');
+        services = require('fora-app-services');
+        
     var typesService = services.get('typesService');
 
     var App = function(params) {
@@ -26,6 +26,7 @@
     appCommon.extendApp(App);
 
     var appStore = new DbConnector(App);
+
 
     App.prototype.save = function*() {
         var conf = services.get('configuration');
@@ -50,20 +51,8 @@
 
 
 
-    App.prototype.createRecordViaRequest = function*(request) {
-        var parser = new Parser(request, typesService);
-
-        var record = yield* this.createRecord({
-            type: yield* parser.body('type'),
-            version: yield* parser.body('version'),
-            createdBy: request.session.user,
-            state: yield* parser.body('state'),
-            rating: 0,
-            savedAt: Date.now()
-        });
-
-        var recordDef = yield* record.getTypeDefinition();
-        _ = yield* parser.map(record, recordDef, yield* record.getCustomFields(recordDef));
+    App.prototype.addRecordViaRequest = function*(request) {
+        var record = yield* models.Record.createViaRequest(request);
         return yield* this.addRecord(record);
     };
 
@@ -74,11 +63,7 @@
 
         if (record) {
             if (record.createdBy.username === request.session.user.username) {
-                var recordDef = yield* record.getTypeDefinition();
-                _ = yield* parser.map(record, yield* record.getCustomFields());
-                record.savedAt = Date.now();
-                if (yield* parser.body('state') === 'published') record.state = 'published';
-                return yield* record.save();
+                return record.updateViaRequest(request);
             } else {
                 throw new Error("Access denied");
             }
@@ -92,47 +77,40 @@
         var record = yield* this.getRecord(stub);
         if (record) {
             if(record.createdBy.username === request.session.user.username)
-                record = yield* record.destroy();
+                return yield* record.destroy();
             else
                 throw new Error('Access denied');
+        } else {
+            throw new Error("Not found");
         }
-        return record;
     };
 
 
 
     App.prototype.addRecordMetaViaRequest = function*(stub, request) {
-        var parser = new Parser(request, services.get('typesService'));
-        var meta = yield* parser.body('meta');
-
-        if (meta) {
-            var record = yield* this.getRecord(stub);
-            return yield* record.addMeta(meta.split(','));
+        var record = yield* this.getRecord(stub);
+        if (record) {
+            return yield* record.addMetaViaRequest(request);
         } else {
-            throw new Error("Meta was not supplied");
+            throw new Error("Not found");
         }
     };
 
 
 
-    App.prototype.removeRecordMetaViaRequest = function*(stub, request) {
-        var parser = new Parser(request, services.get('typesService'));
-        var meta = yield* parser.body('meta');
-
-        if (meta) {
-            var record = yield* this.getRecord(stub);
-            return yield* record.removeMeta(meta.split(','));
+    App.prototype.deleteRecordMetaViaRequest = function*(stub, request) {
+        var record = yield* this.getRecord(stub);
+        if (record) {
+            return yield* record.deleteMetaViaRequest(request);
         } else {
-            throw new Error("Meta was not supplied");
+            throw new Error("Not found");
         }
     };
 
 
 
     App.prototype.createRecord = function*(params) {
-        var typesService = services.get('typesService');
-        var typeDefinition = yield* typesService.getTypeDefinition(models.Record.typeDefinition.name);
-        var record = yield* typesService.constructModel(params, typeDefinition);
+        var record = yield* models.Record.create(params);
         record.appId = DbConnector.getRowId(this);
         return record;
     };
@@ -216,7 +194,7 @@
 
 
 
-    App.prototype.removeRole = function*(user, role) {
+    App.prototype.deleteRole = function*(user, role) {
         var membershipStore = new DbConnector(models.Membership);
         var membership = yield* membershipStore.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
         membership.roles = membership.roles.filter(function(r) { return r != role; });
