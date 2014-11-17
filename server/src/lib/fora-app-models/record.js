@@ -15,8 +15,8 @@
         dataUtils.extend(this, params);
         this.meta = this.meta || [];
         this.tags = this.tags || [];
-        if (this.init)
-            this.init();
+        if (this.my_init)
+            this.my_init();
     };
 
     recordCommon.extendRecord(Record);
@@ -48,7 +48,7 @@
 
 
 
-    Record.prototype.addMetaList = function*(metaList) {
+    Record.prototype.addMeta = function*(metaList) {
         metaList.forEach(function(m) {
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
@@ -58,7 +58,7 @@
 
 
 
-    Record.prototype.removeMetaList = function*(metaList) {
+    Record.prototype.removeMeta = function*(metaList) {
         this.meta = this.meta.filter(function(m) {
             return metaList.indexOf(m) === -1;
         });

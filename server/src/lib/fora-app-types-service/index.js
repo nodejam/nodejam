@@ -49,7 +49,9 @@
 
 
     ForaAppTypesService.prototype.isModel = function(value) {
-        return value && value.constructor && value.constructor.typeDefinition;
+        //In the case of virtual types (App and Record), we'll have value.getTypeDefinition.
+        //Static types will have value.constructor.typeDefinition.
+        return value && (value.getTypeDefinition || (value.constructor && value.constructor.typeDefinition));
     };
 
 

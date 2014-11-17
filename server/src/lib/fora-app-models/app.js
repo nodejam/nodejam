@@ -20,8 +20,8 @@
                 lastRecord: 0
             });
         }
-        if (this.init)
-            this.init();
+        if (this.my_init)
+            this.my_init();
     };
     appCommon.extendApp(App);
 
@@ -50,16 +50,7 @@
 
 
 
-    App.prototype.createRecord = function*(params) {
-        var typesService = services.get('typesService');
-        var typeDefinition = yield* typesService.getTypeDefinition(models.Record.typeDefinition.name);
-        var record = yield* typesService.constructModel(params, typeDefinition);
-        record.appId = DbConnector.getRowId(this);
-        return record;
-    };
-
-
-    App.prototype.createRecordFromRequest = function*(request) {
+    App.prototype.createRecordViaRequest = function*(request) {
         var parser = new Parser(request, typesService);
 
         var record = yield* this.createRecord({
@@ -75,6 +66,77 @@
         _ = yield* parser.map(record, recordDef, yield* record.getCustomFields(recordDef));
         return yield* this.addRecord(record);
     };
+
+
+
+    App.prototype.editRecordViaRequest = function*(stub, request) {
+        var record = yield* this.getRecord({ stub: stub });
+
+        if (record) {
+            if (record.createdBy.username === request.session.user.username) {
+                var recordDef = yield* record.getTypeDefinition();
+                _ = yield* parser.map(record, yield* record.getCustomFields());
+                record.savedAt = Date.now();
+                if (yield* parser.body('state') === 'published') record.state = 'published';
+                return yield* record.save();
+            } else {
+                throw new Error("Access denied");
+            }
+        } else {
+            throw new Error("Not found");
+        }
+    };
+
+
+    App.prototype.deleteRecordViaRequest = function*(stub, request) {
+        var record = yield* this.getRecord(stub);
+        if (record) {
+            if(record.createdBy.username === request.session.user.username)
+                record = yield* record.destroy();
+            else
+                throw new Error('Access denied');
+        }
+        return record;
+    };
+
+
+
+    App.prototype.addRecordMetaViaRequest = function*(stub, request) {
+        var parser = new Parser(request, services.get('typesService'));
+        var meta = yield* parser.body('meta');
+
+        if (meta) {
+            var record = yield* this.getRecord(stub);
+            return yield* record.addMeta(meta.split(','));
+        } else {
+            throw new Error("Meta was not supplied");
+        }
+    };
+
+
+
+    App.prototype.removeRecordMetaViaRequest = function*(stub, request) {
+        var parser = new Parser(request, services.get('typesService'));
+        var meta = yield* parser.body('meta');
+
+        if (meta) {
+            var record = yield* this.getRecord(stub);
+            return yield* record.removeMeta(meta.split(','));
+        } else {
+            throw new Error("Meta was not supplied");
+        }
+    };
+
+
+
+    App.prototype.createRecord = function*(params) {
+        var typesService = services.get('typesService');
+        var typeDefinition = yield* typesService.getTypeDefinition(models.Record.typeDefinition.name);
+        var record = yield* typesService.constructModel(params, typeDefinition);
+        record.appId = DbConnector.getRowId(this);
+        return record;
+    };
+
 
 
     App.prototype.addRecord = function*(record) {

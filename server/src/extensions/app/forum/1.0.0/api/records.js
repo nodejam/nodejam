@@ -8,66 +8,22 @@
 
 
     var create = function*() {
-        this.body = yield* this.app.newRecord(this);
+        this.body = yield* this.app.my_createRecord(this);
     };
-
 
 
     var edit = function*(stub) {
-        var typesService = services.get("typesService"),
-            extensionsService = services.get("extensionsService");
-
-        var parser = new Parser(this, typesService);
-        var record = yield* this.app.findRecord({ stub: stub });
-
-        if (record) {
-            if (record.createdBy.username === this.session.user.username) {
-                record.savedAt = Date.now();
-                _ = yield* parser.map(record, yield* record.getCustomFields());
-                if (yield* parser.body('state') === 'published') record.state = 'published';
-                this.body = yield* record.save();
-            } else {
-                throw new Error('Access denied');
-            }
-        } else {
-            throw new Error('Access denied', 403);
-        }
+        this.body = yield* this.app.my_editRecord(stub, this);
     };
-
 
 
     var remove = function*(stub) {
-        var record = yield* this.app.getRecord({ stub: stub });
-
-        if (record) {
-            if (record.createdBy.username === this.session.user.username) {
-                record = yield* record.destroy();
-                this.body = record;
-            } else {
-                throw new Error('Access denied');
-            }
-        } else {
-            throw new Error('Access denied');
-        }
+        this.body = yield* this.app.my_removeRecord(stub, this);
     };
 
 
-
-    var admin_update = function*(stub) {
-        var parser = new Parser(this, services.get('typesService'));
-        var record = yield* this.app.getRecord(stub);
-
-        if (record) {
-            var meta = yield* parser.body('meta');
-            if (meta) {
-                record = yield* record.addMetaList(meta.split(','));
-                this.body = record;
-            } else {
-                throw new Error("No meta was supplied");
-            }
-        } else {
-            throw new Error('Missing record');
-        }
+    var addMeta = function*(stub) {
+        this.body = yield* this.app.my_addRecordMeta(stub, this);
     };
 
 
@@ -77,7 +33,8 @@
         create: auth({ session: 'user' }, create),
         edit: auth({ session: 'user' }, edit),
         remove: auth({ session: 'user' }, remove),
-        admin_update: auth({ session: 'admin' }, admin_update)
+        addMeta: auth({ session: 'admin' }, addMeta
+        )
     };
 
 

@@ -5,7 +5,7 @@
     var models = require('fora-app-models');
 
     module.exports = models.Record.extend({
-        getCacheItem: function*() {
+        my_getCacheItem: function*() {
             return {
                 title: this.title,
                 createdBy: this.createdBy,

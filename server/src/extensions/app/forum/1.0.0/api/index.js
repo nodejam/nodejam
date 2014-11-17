@@ -11,7 +11,7 @@
             { method: "post", url: "/", handler: records.create },
             { method: "post", url: "/posts", handler: records.create },
             { method: "put", url: "/posts/:post", handler: records.edit },
-            { method: "put", url: "/admin/posts/:post", handler: records.admin_update }
+            { method: "post", url: "/posts/:post/meta", handler: records.addMeta }
         ]
     };
 

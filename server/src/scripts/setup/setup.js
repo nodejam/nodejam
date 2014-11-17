@@ -146,8 +146,8 @@
                 var metaTags = meta.split(',');
                 for (var _i2 = 0; _i2 < metaTags.length; _i2++) {
                     var metaTag = metaTags[_i2];
-                    resp = yield* _doHttpRequest("/api/app/" + app + "/admin/posts/" + resp.stub + "?token=" + adminkey,
-                        querystring.stringify({ meta: metaTag}), 'put');
+                    resp = yield* _doHttpRequest("/api/app/" + app + "/posts/" + resp.stub + "/meta?token=" + adminkey,
+                        querystring.stringify({ meta: metaTag}), 'post');
                     resp = JSON.parse(resp);
                     logger.log("Added " + metaTag + " tag to article " + resp.title);
                 }

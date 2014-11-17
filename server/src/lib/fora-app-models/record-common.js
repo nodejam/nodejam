@@ -102,6 +102,8 @@
             ctor.prototype.constructor = ctor;
 
             for (var key in items) {
+                if (!/^my_/.test(key))
+                    throw new Error("Custom functions in record/name/version/model.js must start with my_ prefix. Rename " + key + " as my_" + key + ".");
                 ctor.prototype[key] = items[key];
             }
 

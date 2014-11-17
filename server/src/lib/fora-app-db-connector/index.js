@@ -1,7 +1,7 @@
 (function() {
 
-    var database = require('fora-db');
-    var services = require('fora-app-services');
+    var database = require('fora-db'),
+        services = require('fora-app-services');
 
     var _svc;
     var getServices = function() {
@@ -28,16 +28,26 @@
     };
 
 
-    Connector.prototype.getTypeDefinition = function*(record) {
-        if (record && record.getTypeDefinition) {
-            return yield* record.getTypeDefinition();
-        } else {
-            if (!this.ctor.__typeDefinition) {
-                var typesService = services.get('typesService');
-                this.ctor.__typeDefinition = yield* typesService.getTypeDefinition(this.ctor.typeDefinition.name);
-            }
-            return this.ctor.__typeDefinition;
+    Connector.prototype.getTypeDefinition = function*() {
+        var typesService = services.get('typesService');
+        if (!this.ctor.__typeDefinition) {
+            this.ctor.__typeDefinition = yield* typesService.getTypeDefinition(this.ctor.typeDefinition.name);
         }
+        return this.ctor.__typeDefinition;
+    };
+
+
+    Connector.prototype.getTypeDefinitionFromRecord = function*(record) {
+        var typesService = services.get('typesService');
+        if (record) {
+            if (record.getTypeDefinition) {
+                return yield* record.getTypeDefinition();
+            } else {
+                var typeDef = yield* this.getTypeDefinition();
+                return yield* typesService.getEffectiveTypeDefinition(record, typeDef);
+            }
+        }
+        return yield* this.getTypeDefinition();
     };
 
 
@@ -74,19 +84,19 @@
 
 
     Connector.prototype.save = function*(record) {
-        var typeDefinition = yield* this.getTypeDefinition(record);
+        var typeDefinition = yield* this.getTypeDefinitionFromRecord(record);
         return yield* database.save(record, typeDefinition, getServices());
     };
 
 
     Connector.prototype.destroy = function*(record) {
-        var typeDefinition = yield* this.getTypeDefinition(record);
+        var typeDefinition = yield* this.getTypeDefinitionFromRecord(record);
         return yield* database.destroy(record, typeDefinition, getServices());
     };
 
 
     Connector.prototype.link = function*(record, name) {
-        var typeDefinition = yield* this.getTypeDefinition(record);
+        var typeDefinition = yield* this.getTypeDefinitionFromRecord(record);
         return yield* database.link(record, typeDefinition, name, getServices());
     };
 

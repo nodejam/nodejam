@@ -12,20 +12,45 @@
 
     module.exports = models.App.extend({
 
-        init: function() {
+        my_init: function() {
             if (!this.cache)
                 this.cache = { records: [] };
             if (!this.settings)
                 this.settings = {};
         },
 
-        createRecord: function*(request) {
-            var record = yield* this.createRecordFromRequest(request);
-            this.cache.records.push(record.getCacheItem());
+        my_createRecord: function*(request) {
+            var record = yield* this.createRecordViaRequest(request);
+            this.cache.records.push(record.my_getCacheItem());
+            _ = yield* this.save();
+            return record;
+        },
+
+
+        my_editRecord: function*(stub, request) {
+            var record = yield* this.editRecordViaRequest(stub, request);
+            this.cache.records = this.cache.records.filter(function(rec) { return rec.stub !== record.stub; });
+            this.cache.records.push(record.my_getCacheItem());
+            _ = yield* this.save();
+            return record;
+        },
+
+
+        my_deleteRecord: function*(stub, request) {
+            var record = yield* this.deleteRecordViaRequest(request);
+            this.cache.records = this.cache.records.filter(function(rec) { return rec.stub !== record.stub; });
+            _ = yield* this.save();
+            return record;
+        },
+
+
+        my_addRecordMeta: function*(stub, request) {
+            var record = yield* this.addRecordMetaViaRequest(stub, request);
+            this.cache.records = this.cache.records.filter(function(rec) { return rec.stub !== record.stub; });
+            this.cache.records.push(record.my_getCacheItem());
             _ = yield* this.save();
             return record;
         }
 
     });
-
 })();
