@@ -75,6 +75,42 @@
 
 
 
+    Record.prototype.updateViaRequest = function*(request) {
+        var def = yield* this.getTypeDefinition();
+        _ = yield* parser.map(this, def, yield* this.getCustomFields());
+        this.savedAt = Date.now();
+        if (yield* parser.body('state') === 'published') this.state = 'published';
+        return yield* this.save();
+    };
+
+
+
+    Record.prototype.addMetaViaRequest = function*(request) {
+        var parser = new Parser(request, services.get('typesService'));
+        var meta = yield* parser.body('meta');
+        if (meta) {
+            _ = yield* this.addMeta(meta.split(','));
+            return yield* this.save();
+        } else {
+            throw new Error("Meta was not supplied");
+        }
+    };
+
+
+
+    Record.prototype.deleteMetaViaRequest = function*(request) {
+        var parser = new Parser(request, services.get('typesService'));
+        var meta = yield* parser.body('meta');
+        if (meta) {
+            _ = yield* this.deleteMeta(meta.split(','));
+            return yield* this.save();
+        } else {
+            throw new Error("Meta was not supplied");
+        }
+    };
+
+
+
     Record.prototype.save = function*() {
         var extensionsService = services.get('extensionsService');
         var model = extensionsService.getModule("record", this.type, this.version, "model");
@@ -105,46 +141,11 @@
 
 
 
-    Record.prototype.updateViaRequest = function*(request) {
-        var def = yield* this.getTypeDefinition();
-        _ = yield* parser.map(this, def, yield* this.getCustomFields());
-        this.savedAt = Date.now();
-        if (yield* parser.body('state') === 'published') this.state = 'published';
-        return yield* this.save();
-    };
-
-
-
-    Record.prototype.addMetaViaRequest = function*(request) {
-        var parser = new Parser(request, services.get('typesService'));
-        var meta = yield* parser.body('meta');
-        if (meta) {
-            return yield* this.addMeta(meta.split(','));
-        } else {
-            throw new Error("Meta was not supplied");
-        }
-    };
-
-
-
-    Record.prototype.deleteMetaViaRequest = function*(request) {
-        var parser = new Parser(request, services.get('typesService'));
-        var meta = yield* parser.body('meta');
-        if (meta) {
-            return yield* this.deleteMeta(meta.split(','));
-        } else {
-            throw new Error("Meta was not supplied");
-        }
-    };
-
-
-
     Record.prototype.addMeta = function*(metaList) {
         metaList.forEach(function(m) {
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
         }, this);
-        return yield* this.save();
     };
 
 
@@ -153,7 +154,6 @@
         this.meta = this.meta.filter(function(m) {
             return metaList.indexOf(m) === -1;
         });
-        return yield* this.save();
     };
 
 

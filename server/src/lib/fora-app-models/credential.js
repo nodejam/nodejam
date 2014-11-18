@@ -1,5 +1,8 @@
 (function() {
+
     "use strict";
+
+    var _;
 
     var thunkify = require('fora-node-thunkify'),
         hasher = require('fora-app-hasher'),
@@ -108,18 +111,17 @@
                 case 'builtin':
                     username = yield* parser.body('username');
                     var password = yield* parser.body('password');
-                    credential = yield* credential.addBuiltin(username, password);
+                    _ = yield* credential.addBuiltin(username, password);
                     break;
                 case 'twitter':
                     var id = yield* parser.body('id');
                     username = yield* parser.body('username');
                     var accessToken = yield* parser.body('accessToken');
                     var accessTokenSecret = yield* parser.body('accessTokenSecret');
-                    credential = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
+                    _ = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
                     break;
             }
-
-            return credential;
+            return yield* credential.save();
         }
     };
 
@@ -155,7 +157,6 @@
                 salt: hashed.salt.toString('hex'),
                 hash: hashed.key.toString('hex')
             };
-            return yield* this.save();
         } else {
             throw new Error("Built-in credential with the same username already exists");
         }
@@ -171,7 +172,6 @@
                 accessToken: accessToken,
                 accessTokenSecret: accessTokenSecret
             };
-            return yield* this.save();
         } else {
             throw new Error("Twitter credential with the same id already exists");
         }

@@ -59,35 +59,12 @@
             );
 
             app = yield* app.save();
-            _ = yield* app.addRole(request.session.user, 'admin');
+            _ = yield* app.createRole(request.session.user, 'admin');
             return app;
         } else {
             throw new Error("App exists");
         }
     };
-
-
-    App.prototype.save = function*() {
-        var conf = services.get('configuration');
-
-        if (conf.reservedNames.indexOf(this.stub) > -1)
-            throw new Error("Stub cannot be " + this.stub + ", it is reserved");
-
-        var regex = /[a-z][a-z0-9|-]*/;
-        if (!regex.test(this.stub))
-            throw new Error("Stub is invalid");
-
-        var typeParts = this.type.split('/');
-        this.appType = typeParts[1];
-        this.version = typeParts[2];
-        var versionParts = this.version.split('.');
-        this.versionMajor = parseInt(versionParts[0]);
-        this.versionMinor = parseInt(versionParts[1]);
-        this.versionRevision = parseInt(versionParts[2]);
-        
-        return yield* appStore.save(this);
-    };
-
 
 
     App.prototype.editViaRequest = function*(request) {
@@ -160,6 +137,29 @@
 
 
 
+    App.prototype.save = function*() {
+        var conf = services.get('configuration');
+
+        if (conf.reservedNames.indexOf(this.stub) > -1)
+            throw new Error("Stub cannot be " + this.stub + ", it is reserved");
+
+        var regex = /[a-z][a-z0-9|-]*/;
+        if (!regex.test(this.stub))
+            throw new Error("Stub is invalid");
+
+        var typeParts = this.type.split('/');
+        this.appType = typeParts[1];
+        this.version = typeParts[2];
+        var versionParts = this.version.split('.');
+        this.versionMajor = parseInt(versionParts[0]);
+        this.versionMinor = parseInt(versionParts[1]);
+        this.versionRevision = parseInt(versionParts[2]);
+
+        return yield* appStore.save(this);
+    };
+
+
+
     App.prototype.getRecord = function*(stub) {
         var recordStore = new DbConnector(models.Record);
         return yield* recordStore.findOne({ 'appId': DbConnector.getRowId(this), stub: stub });
@@ -196,7 +196,7 @@
 
     App.prototype.join = function*(user) {
         if (this.access === 'public') {
-            return yield* this.addRole(user, 'member');
+            return yield* this.createRole(user, 'member');
         } else {
             throw new Error("Access denied");
         }
@@ -204,7 +204,7 @@
 
 
 
-    App.prototype.addRole = function*(user, role) {
+    App.prototype.createRole = function*(user, role) {
         var membershipStore = new DbConnector(models.Membership);
         var membership = yield* membershipStore.findOne({ 'appId': DbConnector.getRowId(this), 'user.username': user.username });
 
