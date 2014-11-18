@@ -26,13 +26,11 @@
                 this.lastLogin = 0;
                 this.followingCount = 0;
                 this.followerCount = 0;
-                return yield* userStore.save(this);
             } else {
                 throw new Error("User(#{@username}) already exists");
             }
-        } else {
-            return yield* userStore.save(this);
         }
+        return yield* userStore.save(this);
     };
 
 

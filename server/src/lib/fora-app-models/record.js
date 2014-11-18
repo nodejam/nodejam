@@ -52,30 +52,25 @@
 
 
 
-    Record.create = function*(params) {
+    Record.createViaRequest = function*(app, request) {
         var typesService = services.get('typesService');
         var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
-        var record = yield* typesService.constructModel(params, typeDefinition);
-        return record;
-    };
 
-
-
-    Record.createViaRequest = function*(request) {
         var parser = new Parser(request, typesService);
 
-        var record = yield* Record.create({
+        var record = yield* typesService.constructModel({
             type: yield* parser.body('type'),
             version: yield* parser.body('version'),
             createdBy: request.session.user,
             state: yield* parser.body('state'),
             rating: 0,
-            savedAt: Date.now()
-        });
+            savedAt: Date.now(),
+            appId: DbConnector.getRowId(app)
+        }, typeDefinition);
 
         var def = yield* record.getTypeDefinition();
         _ = yield* parser.map(record, def, yield* record.getCustomFields(def));
-        return record;
+        return yield* record.save();
     };
 
 
@@ -104,6 +99,7 @@
         } else {
             this.stub = this.stub || randomizer.uniqueId(16);
         }
+
         return yield* recordStore.save(this);
     };
 
@@ -148,7 +144,7 @@
             if (this.meta.indexOf(m) === -1)
                 this.meta.push(m);
         }, this);
-        return yield* recordStore.save(this);
+        return yield* this.save();
     };
 
 
@@ -157,7 +153,7 @@
         this.meta = this.meta.filter(function(m) {
             return metaList.indexOf(m) === -1;
         });
-        return yield* recordStore.save(this);
+        return yield* this.save();
     };
 
 

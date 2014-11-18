@@ -92,8 +92,7 @@
             key: 'home',
             value: { featured: yield* makeCacheItem(editorsPicks), editorsPicks: yield* makeCacheItem(featured) },
         });
-
-        _ = yield* cacheItemStore.save(cacheItem);
+        _ = yield* cacheItem.save();
 
         this.body = "OK";
     };

@@ -12,13 +12,13 @@
     };
 
 
-    var edit = function*(stub) {
-        this.body = yield* this.app.my_editRecord(stub, this);
+    var update = function*(stub) {
+        this.body = yield* this.app.my_updateRecord(stub, this);
     };
 
 
-    var remove = function*(stub) {
-        this.body = yield* this.app.my_removeRecord(stub, this);
+    var del = function*(stub) {
+        this.body = yield* this.app.my_deleteRecord(stub, this);
     };
 
 
@@ -31,8 +31,8 @@
     var auth = require('fora-app-auth-service');
     module.exports = {
         create: auth({ session: 'user' }, create),
-        edit: auth({ session: 'user' }, edit),
-        remove: auth({ session: 'user' }, remove),
+        update: auth({ session: 'user' }, update),
+        del: auth({ session: 'user' }, del),
         addMeta: auth({ session: 'admin' }, addMeta
         )
     };

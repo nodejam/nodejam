@@ -7,7 +7,11 @@
         models = require('./'),
         services = require('fora-app-services'),
         DbConnector = require('fora-app-db-connector'),
-        dataUtils = require('fora-data-utils');
+        dataUtils = require('fora-data-utils'),
+        Parser = require('fora-request-parser');
+
+    var typesService = services.get('typesService'),
+        conf = services.get('configuration');
 
     var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -19,7 +23,7 @@
 
     Credential.typeDefinition = {
         name: 'credential',
-        collection: 'credential',
+        collection: 'credentials',
         schema: {
             type: 'object',
             properties: {
@@ -85,6 +89,45 @@
     };
 
 
+    Credential.createViaRequest = function*(request) {
+        var typesService = services.get('typesService');
+        var parser = new Parser(request, typesService);
+
+        if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
+            var type = yield* parser.body('type');
+
+            var credential = new Credential(
+                {
+                    email: yield* parser.body('email'),
+                    preferences: { canEmail: true }
+                }
+            );
+
+            var username;
+            switch(type) {
+                case 'builtin':
+                    username = yield* parser.body('username');
+                    var password = yield* parser.body('password');
+                    credential = yield* credential.addBuiltin(username, password);
+                    break;
+                case 'twitter':
+                    var id = yield* parser.body('id');
+                    username = yield* parser.body('username');
+                    var accessToken = yield* parser.body('accessToken');
+                    var accessTokenSecret = yield* parser.body('accessTokenSecret');
+                    credential = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
+                    break;
+            }
+
+            return credential;
+        }
+    };
+
+
+    Credential.prototype.save = function*() {
+        return yield* credentialStore.save(this);
+    };
+
 
     /*
         Create a credential token.
@@ -98,8 +141,7 @@
                 token: randomizer.uniqueId(24)
             }
         );
-        var sessionStore = new DbConnector(models.Session);
-        return yield* sessionStore.save(session);
+        return yield* session.save();
     };
 
 
@@ -113,7 +155,7 @@
                 salt: hashed.salt.toString('hex'),
                 hash: hashed.key.toString('hex')
             };
-            return yield* credentialStore.save(this);
+            return yield* this.save();
         } else {
             throw new Error("Built-in credential with the same username already exists");
         }
@@ -129,7 +171,7 @@
                 accessToken: accessToken,
                 accessTokenSecret: accessTokenSecret
             };
-            return yield* credentialStore.save(this);
+            return yield* this.save();
         } else {
             throw new Error("Twitter credential with the same id already exists");
         }

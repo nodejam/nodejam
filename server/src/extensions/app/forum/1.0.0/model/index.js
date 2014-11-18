@@ -20,7 +20,7 @@
         },
 
         my_createRecord: function*(request) {
-            var record = yield* this.addRecordViaRequest(request);
+            var record = yield* this.createRecordViaRequest(request);
             this.cache.records.push(record.my_getCacheItem());
             _ = yield* this.save();
             return record;

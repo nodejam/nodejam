@@ -7,9 +7,10 @@
         appCommon = require('./app-common'),
         dataUtils = require('fora-data-utils'),
         DbConnector = require('fora-app-db-connector'),
-        services = require('fora-app-services');
+        services = require('fora-app-services'),
+        Parser = require('fora-request-parser');
 
-    var typesService = services.get('typesService');
+    var conf = services.get("configuration");
 
     var App = function(params) {
         dataUtils.extend(this, params);
@@ -26,7 +27,45 @@
     appCommon.extendApp(App);
 
     var appStore = new DbConnector(App);
-    
+
+
+    App.createViaRequest = function*(request) {
+        var typesService = services.get('typesService');
+        var parser = new Parser(request, typesService);
+
+        var stub = (yield* parser.body('name')).toLowerCase().trim();
+        if (conf.reservedNames.indexOf(stub) > -1)
+            stub = stub + "-app";
+        stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'');
+
+        var app = yield* appStore.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
+
+        if (!app) {
+            var type = yield* parser.body('type');
+            var typeDefinition = yield* typesService.getTypeDefinition(type);
+            var params = {
+                type: type,
+                name: yield* parser.body('name'),
+                access: yield* parser.body('access'),
+                stub: stub,
+                createdBy: request.session.user,
+            };
+            app = yield* typesService.constructModel(params, typeDefinition);
+
+            _ = yield* parser.map(
+                app,
+                (yield* appStore.getTypeDefinition()),
+                ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
+            );
+
+            app = yield* app.save();
+            _ = yield* app.addRole(request.session.user, 'admin');
+            return app;
+        } else {
+            throw new Error("App exists");
+        }
+    };
+
 
     App.prototype.save = function*() {
         var conf = services.get('configuration');
@@ -45,20 +84,32 @@
         this.versionMajor = parseInt(versionParts[0]);
         this.versionMinor = parseInt(versionParts[1]);
         this.versionRevision = parseInt(versionParts[2]);
-
+        
         return yield* appStore.save(this);
     };
 
 
 
-    App.prototype.addRecordViaRequest = function*(request) {
-        var record = yield* models.Record.createViaRequest(request);
-        return yield* this.addRecord(record);
+    App.prototype.editViaRequest = function*(request) {
+        var parser = new Parser(request, services.get('typesService'));
+
+        if (request.session.user.username === request.createdBy.username || request.session.admin) {
+            _ = yield* parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
+            return yield* this.save();
+        } else {
+            throw new Error("Access denied");
+        }
     };
 
 
 
-    App.prototype.editRecordViaRequest = function*(stub, request) {
+    App.prototype.createRecordViaRequest = function*(request) {
+        return yield* models.Record.createViaRequest(this, request);
+    };
+
+
+
+    App.prototype.updateRecordViaRequest = function*(stub, request) {
         var record = yield* this.getRecord({ stub: stub });
 
         if (record) {
@@ -105,22 +156,6 @@
         } else {
             throw new Error("Not found");
         }
-    };
-
-
-
-    App.prototype.createRecord = function*(params) {
-        var record = yield* models.Record.create(params);
-        record.appId = DbConnector.getRowId(this);
-        return record;
-    };
-
-
-
-    App.prototype.addRecord = function*(record) {
-        record.appId = DbConnector.getRowId(this);
-        this.stats.lastRecord = Date.now();
-        return yield* record.save();
     };
 
 

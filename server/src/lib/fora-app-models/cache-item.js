@@ -2,7 +2,8 @@
 
     "use strict";
 
-    var dataUtils = require('fora-data-utils');
+    var dataUtils = require('fora-data-utils'),
+    DbConnector = require('fora-app-db-connector');
 
     var CacheItem = function(params) {
         dataUtils.extend(this, params);
@@ -20,8 +21,14 @@
                 app: { type: 'string' }
             },
             required: ['type', 'key', 'value']
-        },        
+        },
         indexes: [{ 'key': 1 }, { 'key': 1, 'type': 1 }]
+    };
+
+    var cacheItemStore = new DbConnector(CacheItem);
+
+    CacheItem.prototype.save = function*() {
+        return yield* cacheItemStore.save(this);
     };
 
     exports.CacheItem = CacheItem;

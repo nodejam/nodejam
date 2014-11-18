@@ -56,11 +56,17 @@
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();
             this.user = user.summarize();
-            return yield* sessionStore.save(this);
+            return yield* this.save();
         } else {
             throw new Error("User not found");
         }
     };
+
+
+    Session.prototype.save = function*() {
+        return yield* sessionStore.save(this);
+    };
+
 
     exports.Session = Session;
 
