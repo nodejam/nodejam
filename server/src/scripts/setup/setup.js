@@ -147,13 +147,16 @@
                 for (var _i2 = 0; _i2 < metaTags.length; _i2++) {
                     var metaTag = metaTags[_i2];
                     resp = yield* _doHttpRequest("/api/app/" + app + "/posts/" + resp.stub + "/meta?token=" + adminkey,
-                        querystring.stringify({ meta: metaTag}), 'post');
+                        querystring.stringify({ meta: metaTag }), 'post');
                     resp = JSON.parse(resp);
                     logger.log("Added " + metaTag + " tag to article " + resp.title);
                 }
             }
 
-            //Without this return, CS will create a wrapper function to return the results (array) of: for metaTag in meta.split(',')
+            //Refresh the cache.
+            resp = yield* _doHttpRequest("/api/v1/ui/home/actions?token=" + adminkey,
+                querystring.stringify({ type: "refresh-cache" }), 'post');
+
             return;
         };
 

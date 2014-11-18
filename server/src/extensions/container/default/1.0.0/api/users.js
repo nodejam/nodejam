@@ -6,9 +6,9 @@
     var models = require('fora-app-models'),
         services = require('fora-app-services'),
         FileService = require('fora-app-file-service'),
-        conf = require('../../../../../config');
+        Parser = require('fora-request-parser');
 
-    var Parser = require('fora-request-parser');
+    var conf = services.get("configuration");
     var fileService = new FileService(conf);
 
     var create = function*() {

@@ -30,6 +30,7 @@
 
             //ui_home
             { method: "get", url: "/ui/home", handler: ui_home.index },
+            { method: "post", url: "/ui/home/actions", handler: ui_home.actions },
 
             //ui_apps
             { method: "get", url: "/ui/apps", handler: ui_apps.index }

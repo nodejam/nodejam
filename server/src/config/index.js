@@ -20,8 +20,8 @@
     }
 
     var typeAliases = settings.typeAliases || {
-        app: { singular: "app", plural: "apps", displaySingular: "App", displayPlural: "Apps" },
-        record: { singular: "records", plural: "records", displaySingular: "Record", displayPlural: "Records"  }
+        app: { singular: "app", plural: "apps", singularText: "App", pluralText: "Apps" },
+        record: { singular: "records", plural: "records", singularText: "Record", pluralText: "Records"  }
     };
 
     module.exports = {

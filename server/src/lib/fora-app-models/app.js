@@ -8,7 +8,7 @@
         dataUtils = require('fora-data-utils'),
         DbConnector = require('fora-app-db-connector'),
         services = require('fora-app-services');
-        
+
     var typesService = services.get('typesService');
 
     var App = function(params) {
@@ -26,7 +26,7 @@
     appCommon.extendApp(App);
 
     var appStore = new DbConnector(App);
-
+    
 
     App.prototype.save = function*() {
         var conf = services.get('configuration');

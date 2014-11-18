@@ -12,7 +12,7 @@
         if (extensionSearchResult) {
             var extension = extensionSearchResult.extension;
             if (!extension.__widgets)
-                extension.__widgets = extension.web().widgets;
+                extension.__widgets = extension.web.widgets;
             return extension.__widgets[viewName];
         }
     };

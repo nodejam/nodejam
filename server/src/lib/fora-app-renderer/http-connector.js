@@ -24,7 +24,7 @@
         response = yield* visit(
             response,
             function*(x) {
-                if (x.constructor.typeDefinition) {
+                if (x.getTypeDefinition) {
                     return {
                         value: x,
                         stop: true,

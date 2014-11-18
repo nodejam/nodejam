@@ -30,8 +30,8 @@
     },
 
     "typeAliases": {
-        "app": { "singular": "forum", "plural": "forums", "displaySingular": "Forum", "displayPlural": "Forums" },
-        "record": { "singular": "post", "plural": "posts", "displaySingular": "Post", "displayPlural": "Posts" }
+        "app": { "singular": "forum", "plural": "forums", "singularText": "Forum", "pluralText": "Forums" },
+        "record": { "singular": "post", "plural": "posts", "singularText": "Post", "pluralText": "Posts" }
     },
 
     "reservedNames": [

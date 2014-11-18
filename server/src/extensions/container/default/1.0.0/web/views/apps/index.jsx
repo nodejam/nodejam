@@ -38,10 +38,10 @@
                         <nav>
                             <ul>
                                 <li>
-                                    {config.typeAliases.record.displayPlural}
+                                    {config.typeAliases.record.pluralText}
                                 </li>
                                 <li className="selected">
-                                    <a href={"/" + config.typeAliases.app.plural}>{config.typeAliases.app.displayPlural}</a>
+                                    <a href={"/" + config.typeAliases.app.plural}>{config.typeAliases.app.pluralText}</a>
                                 </li>
                             </ul>
                         </nav>

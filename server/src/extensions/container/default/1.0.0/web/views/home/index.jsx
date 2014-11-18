@@ -21,9 +21,9 @@
                 var props = yield* api.http.get("/api/v1/ui/home");
 
                 /* Attach the templates */
-                var init = function*(records) {
-                  for (var i = 0; i < records.length; i++) {
-                      records[i].template = yield* api.views.getWidget("list", records[i]);
+                var init = function*(items) {
+                  for (var i = 0; i < items.length; i++) {
+                      items[i].record.template = yield* api.views.getWidget("list", items[i].record);
                   }
                 };
 
@@ -35,8 +35,8 @@
         },
 
         render: function() {
-            var createItem = function(record) {
-                return record.template({ key: record._id, record: record, app: record.app, author: record.createdBy });
+            var createItem = function(item) {
+                return item.record.template({ key: item.record._id, record: item.record, app: item.app, author: item.record.createdBy });
             };
 
             return (
