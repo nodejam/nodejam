@@ -19,7 +19,7 @@
             var results = [];
             for (var i = 0; i < cacheItems.length; i++) {
                 results.push({
-                    record: yield* models.Record.create(cacheItems[i].record),
+                    record: yield* models.Record.new(cacheItems[i].record),
                     app: cacheItems[i].app
                 });
             }

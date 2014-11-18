@@ -17,14 +17,12 @@
     ApiConnector.prototype.get = function*(url) {
         var requestContext = yield* this.makeRequest("GET", url);
 
-        var response = requestContext.body;
-
         //On the client, we can't tell if the deserialized JSON needs to go through a constructor.
         //So, set a flag __mustReconstruct.
-        response = yield* visit(
-            response,
+        var response = yield* visit(
+            requestContext.body,
             function*(x) {
-                if (x.getTypeDefinition) {
+                if (x && x.getTypeDefinition) {
                     return {
                         value: x,
                         stop: true,
