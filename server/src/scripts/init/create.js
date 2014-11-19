@@ -30,7 +30,7 @@
     });
 
     //ensure indexes.
-    (co(function*() {
+    co(function*() {
         var config = {
             services: {
                 extensions: {
@@ -53,6 +53,6 @@
             console.log("done");
             process.exit();
         }, 5000);
-    }))();
+    });
 
 })();

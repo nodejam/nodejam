@@ -213,8 +213,8 @@
         return req.end();
     };
 
-    (co(function*() {
+    co(function*() {
       return yield* init();
-    }))();
+    });
 
 })();

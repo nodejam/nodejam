@@ -36,7 +36,7 @@
     */
     var addHealthCheck = function(router, appIinfo) {
         router.get("/healthcheck", function*() {
-            var uptime = parseInt((Date.now() - since)/1000) + "s";
+            var uptime = parseInt((Date.now() - since)/1000).toString() + "s";
             this.body = { jacksparrow: "alive", instance: appInfo.instance, since: appInfo.since, uptime: appInfo.uptime };
         });
     };
@@ -204,7 +204,7 @@
             app.listen(port);
 
             logger.log("Fora started at " + new Date() + " on " + host + ":" + port);
-        })();
+        });
     };
 
     init();
