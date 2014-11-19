@@ -8,7 +8,7 @@
         DbConnector = require('fora-app-db-connector'),
         services = require('fora-app-services');
 
-    var conf = services.get("configuration");
+    var conf = services.getConfiguration();
 
     var App = function(params) {
         dataUtils.extend(this, params);

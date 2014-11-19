@@ -46,7 +46,7 @@
             var initResult = yield* initializeApp(config, baseConfig);
             var router = new Router();
 
-            var extensionsService = services.get('extensionsService');
+            var extensionsService = services.getExtensionsService();
             _ = yield* addContainerUIRoutes(router, "/", extensionsService);
 
             var routeFunc = router.route();

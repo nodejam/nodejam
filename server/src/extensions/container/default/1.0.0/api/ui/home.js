@@ -8,7 +8,7 @@
         DbConnector = require('fora-app-db-connector'),
         Parser = require('fora-request-parser');
 
-    var typesService = services.get('typesService');
+    var typesService = services.getTypesService();
 
     var index = function*() {
         var cacheItemStore = new DbConnector(models.CacheItem);
@@ -55,7 +55,7 @@
 
 
     var refreshHome = function*() {
-        var db = services.get('db');
+        var db = services.getDb();
 
         var recordStore = new DbConnector(models.Record);
 

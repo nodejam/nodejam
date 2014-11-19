@@ -13,8 +13,8 @@
         dataUtils = require('fora-data-utils'),
         Parser = require('fora-request-parser');
 
-    var typesService = services.get('typesService'),
-        conf = services.get('configuration');
+    var typesService = services.getTypesService(),
+        conf = services.getConfiguration();
 
     var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -93,7 +93,7 @@
 
 
     Credential.createViaRequest = function*(request) {
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         var parser = new Parser(request, typesService);
 
         if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
@@ -136,7 +136,7 @@
         This can be used to upgrade to a user token, which is then used for login.
     */
     Credential.prototype.createSession = function*() {
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         var session = new models.Session(
             {
                 credentialId: DbConnector.getRowId(this),

@@ -1,27 +1,48 @@
 (function() {
 
-    var _store = {};
+    var _db, _configuration, _extensionsService, _typesService;
 
-    var services ={};
+    var services = {
+        copy: function(params) {
+            return {
+                db: _db,
+                configuration: _configuration,
+                extensionsService: _extensionsService,
+                typesService: _typesService
+            };
+        },
 
-    var dataUtils = require('fora-data-utils');
+        getDb: function() {
+            return _db;
+        },
 
-    services.add = function(name, obj) {
-        _store[name] = obj;
-    };
+        setDb : function(svc) {
+            _db = svc;
+        },
 
-    services.get = function(name) {
-        return _store[name];
-    };
+        getConfiguration: function() {
+            return _configuration;
+        },
 
-    services.copy = function(params) {
-        var clone = dataUtils.clone(_store);
-        if (params) {
-            for (var key in params) {
-                clone[key] = params[key];
-            }
+        setConfiguration : function(svc) {
+            _configuration = svc;
+        },
+
+        getExtensionsService: function() {
+            return _extensionsService;
+        },
+
+        setExtensionsService : function(svc) {
+            _extensionsService = svc;
+        },
+
+        getTypesService: function() {
+            return _typesService;
+        },
+
+        setTypesService: function(svc) {
+            _typesService = svc;
         }
-        return clone;
     };
 
     module.exports = services;

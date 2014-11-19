@@ -10,7 +10,7 @@
         this.requestContext = requestContext;
         this.router = router;
         this.routeFn = router.route();
-        this.typesService = services.get('typesService');
+        this.typesService = services.getTypesService();
     };
 
 

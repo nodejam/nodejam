@@ -11,7 +11,7 @@
         FileService = require('fora-app-file-service'),
         Parser = require('fora-request-parser');
 
-    var conf = services.get("configuration");
+    var conf = services.getConfiguration();
     var fileService = new FileService(conf);
 
     var User = function(params) {
@@ -24,7 +24,7 @@
 
 
     User.createViaRequest = function*(request) {
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         var parser = new Parser(request, typesService);
 
         var user = new User({
@@ -65,7 +65,7 @@
         if (!DbConnector.getRowId(this)) {
             var existing = yield* userStore.findOne({ username: this.username });
             if (!existing) {
-                var conf = services.get('configuration');
+                var conf = services.getConfiguration();
                 this.assets = (dataUtils.getHashCode(this.username) % conf.services.file.userDirCount).toString();
                 this.lastLogin = 0;
                 this.followingCount = 0;

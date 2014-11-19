@@ -7,7 +7,7 @@
         services = require('fora-app-services'),
         Parser = require('fora-request-parser');
 
-    var conf = services.get("configuration");
+    var conf = services.getConfiguration();
 
     var resizeImage = function*(src, dest, options) {
         logger.log("Resizing #{src}...");
@@ -62,7 +62,7 @@
             throw new Error("Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}");
         }
 
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         var parser = new Parser(this, typesService);
 
         var files = yield* parser.files();

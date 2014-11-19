@@ -7,7 +7,7 @@
     var services = require("fora-app-services"),
         models = require('fora-app-models');
 
-    var typesService = services.get("typesService");
+    var typesService = services.getTypesService();
 
     module.exports = models.App.extend({
 

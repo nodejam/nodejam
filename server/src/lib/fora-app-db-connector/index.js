@@ -29,7 +29,7 @@
 
 
     Connector.prototype.getTypeDefinition = function*() {
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         if (!this.ctor.__typeDefinition) {
             this.ctor.__typeDefinition = yield* typesService.getTypeDefinition(this.ctor.typeDefinition.name);
         }
@@ -38,7 +38,7 @@
 
 
     Connector.prototype.getTypeDefinitionFromRecord = function*(record) {
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         if (record) {
             if (record.getTypeDefinition) {
                 return yield* record.getTypeDefinition();

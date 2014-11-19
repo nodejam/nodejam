@@ -10,7 +10,7 @@
         ui_apps = require('./ui/apps');
 
     var services = require("fora-app-services");
-    var config = services.get("configuration");
+    var config = services.getConfiguration();
 
     module.exports =  {
         routes: [

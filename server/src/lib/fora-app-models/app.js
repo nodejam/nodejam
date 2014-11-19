@@ -10,7 +10,7 @@
         services = require('fora-app-services'),
         Parser = require('fora-request-parser');
 
-    var conf = services.get("configuration");
+    var conf = services.getConfiguration();
 
     var App = function(params) {
         dataUtils.extend(this, params);
@@ -30,7 +30,7 @@
 
 
     App.createViaRequest = function*(request) {
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         var parser = new Parser(request, typesService);
 
         var stub = (yield* parser.body('name')).toLowerCase().trim();
@@ -68,7 +68,7 @@
 
 
     App.prototype.editViaRequest = function*(request) {
-        var parser = new Parser(request, services.get('typesService'));
+        var parser = new Parser(request, services.getTypesService());
 
         if (request.session.user.username === request.createdBy.username || request.session.admin) {
             _ = yield* parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
@@ -138,7 +138,7 @@
 
 
     App.prototype.save = function*() {
-        var conf = services.get('configuration');
+        var conf = services.getConfiguration();
 
         if (conf.reservedNames.indexOf(this.stub) > -1)
             throw new Error("Stub cannot be " + this.stub + ", it is reserved");
@@ -208,7 +208,7 @@
         var membershipStore = new DbConnector(models.Membership);
         var membership = yield* membershipStore.findOne({ 'appId': DbConnector.getRowId(this), 'user.username': user.username });
 
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         if (!membership) {
             membership = new models.Membership(
                 {

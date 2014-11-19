@@ -44,8 +44,8 @@
         };
 
         var initResult = yield* initializeApp(config, baseConfig);
-        var db = services.get('db');
-        var typesService = services.get('typesService');
+        var db = services.getDb();
+        var typesService = services.getTypesService();
         _ = yield* db.setupIndexes(typesService.getTypeDefinitions());
 
         console.log("wait for 3 seconds...");

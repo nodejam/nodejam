@@ -9,7 +9,7 @@
 
     var Sandbox = function(services, moduleName) {
         this.services = services;
-        this.extensionsService = services.get('extensionsService');
+        this.extensionsService = services.getExtensionsService();
         this.moduleName = moduleName;
     };
 

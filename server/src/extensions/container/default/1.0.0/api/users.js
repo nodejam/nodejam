@@ -8,7 +8,7 @@
         FileService = require('fora-app-file-service'),
         Parser = require('fora-request-parser');
 
-    var conf = services.get("configuration");
+    var conf = services.getConfiguration();
     var fileService = new FileService(conf);
 
 
@@ -19,7 +19,7 @@
 
 
     var login = function*() {
-        var parser = new Parser(this, services.get('typesService'));
+        var parser = new Parser(this, services.getTypesService());
         _ = yield* this.session.upgrade(yield* parser.body('username'));
         var session = yield* this.session.save();
 

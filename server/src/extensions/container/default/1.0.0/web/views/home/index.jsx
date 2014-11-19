@@ -13,7 +13,7 @@
         Content = UI.Content;
 
     var services = require("fora-app-services");
-    var config = services.get("configuration");
+    var config = services.getConfiguration();
 
     module.exports = React.createClass({
         statics: {

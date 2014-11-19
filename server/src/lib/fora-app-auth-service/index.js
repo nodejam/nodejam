@@ -20,7 +20,7 @@
         }
 
         return function*() {
-            var conf = services.get('configuration');
+            var conf = services.getConfiguration();
 
             var self = this;
 

@@ -7,7 +7,7 @@
         services = require('fora-app-services'),
         Parser = require('fora-request-parser');
 
-    var conf = services.get("configuration");
+    var conf = services.getConfiguration();
 
     var create = function*() {
         var credential = yield* models.Credential.createViaRequest(this);

@@ -11,7 +11,7 @@
         Parser = require('fora-request-parser'),
         models = require('./');
 
-    var typesService = services.get('typesService');
+    var typesService = services.getTypesService();
 
     var Record = function(params) {
         dataUtils.extend(this, params);
@@ -52,7 +52,7 @@
 
 
     Record.createViaRequest = function*(app, request) {
-        var typesService = services.get('typesService');
+        var typesService = services.getTypesService();
         var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
 
         var parser = new Parser(request, typesService);
@@ -85,7 +85,7 @@
 
 
     Record.prototype.addMetaViaRequest = function*(request) {
-        var parser = new Parser(request, services.get('typesService'));
+        var parser = new Parser(request, services.getTypesService());
         var meta = yield* parser.body('meta');
         if (meta) {
             _ = yield* this.addMeta(meta.split(','));
@@ -98,7 +98,7 @@
 
 
     Record.prototype.deleteMetaViaRequest = function*(request) {
-        var parser = new Parser(request, services.get('typesService'));
+        var parser = new Parser(request, services.getTypesService());
         var meta = yield* parser.body('meta');
         if (meta) {
             _ = yield* this.deleteMeta(meta.split(','));
@@ -111,7 +111,7 @@
 
 
     Record.prototype.save = function*() {
-        var extensionsService = services.get('extensionsService');
+        var extensionsService = services.getExtensionsService();
         var model = extensionsService.getModule("record", this.type, this.version, "model");
 
         var typeParts = this.type.split('/');
@@ -123,7 +123,7 @@
         this.versionRevision = parseInt(versionParts[2]);
 
         //if stub is a reserved name, change it
-        var conf = services.get('configuration');
+        var conf = services.getConfiguration();
         if (this.stub) {
             if (conf.reservedNames.indexOf(this.stub) > -1)
                 throw new Error("Stub cannot be " + this.stub + ", it is reserved");

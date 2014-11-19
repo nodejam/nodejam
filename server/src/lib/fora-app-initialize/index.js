@@ -15,12 +15,12 @@
         var services = require('fora-app-services');
 
         //Configuration
-        services.add("configuration", baseConfig);
+        services.setConfiguration(baseConfig);
 
         //Database Service
         var Database = require('fora-app-db-backend');
         var db = new Database(baseConfig.db);
-        services.add("db", db);
+        services.setDb(db);
 
         /*
             Extensions Service
@@ -38,7 +38,7 @@
         };
         var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions, fnModuleMapper);
         _ = yield* extensionsService.init();
-        services.add("extensionsService", extensionsService);
+        services.setExtensionsService(extensionsService);
 
         /*
             Types Service
@@ -48,7 +48,7 @@
         */
         var TypesService = require('fora-app-types-service');
         var typesService = new TypesService();
-        services.add("typesService", typesService);
+        services.setTypesService(typesService);
 
         var models = require("fora-app-models");
 

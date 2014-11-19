@@ -95,7 +95,7 @@
 
 
         Record.new = function*(params) {
-            var typesService = services.get('typesService');
+            var typesService = services.getTypesService();
             var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
             return yield* typesService.constructModel(params, typeDefinition);
         };

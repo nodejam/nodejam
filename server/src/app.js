@@ -63,7 +63,7 @@
 
     /*  Container API Routes */
     var addContainerAPIRoutes = function*(router, urlPrefix) {
-        var extensionsService = services.get("extensionsService");
+        var extensionsService = services.getExtensionsService();
         var apiModule = yield* extensionsService.getModule("container", "default", "1.0.0", "api");
 
         apiModule.routes.forEach(function(route) {
@@ -74,7 +74,7 @@
 
     /*  Container UI Routes */
     var addContainerUIRoutes = function*(router, urlPrefix) {
-        var extensionsService = services.get("extensionsService");
+        var extensionsService = services.getExtensionsService();
         var webModule = yield* extensionsService.getModule("container", "default", "1.0.0", "web");
 
         var renderer = new Renderer(router, argv['debug-client']);

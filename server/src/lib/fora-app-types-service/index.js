@@ -9,8 +9,8 @@
 
     var ForaAppTypesService = function() {
         ForaTypesService.call(this);
-        this.extensionsService = services.get('extensionsService');
-        this.db = services.get('db');
+        this.extensionsService = services.getExtensionsService();
+        this.db = services.getDb();
     };
 
     ForaAppTypesService.prototype = Object.create(ForaTypesService.prototype);

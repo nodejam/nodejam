@@ -5,8 +5,8 @@
     var services = require('fora-app-services');
 
     var getWidget = function*(viewName, item) {
-        var typesService = services.get('typesService');
-        var extensionsService = services.get('extensionsService');
+        var typesService = services.getTypesService();
+        var extensionsService = services.getExtensionsService();
 
         var extensionSearchResult = yield* extensionsService.get(item.type);
         if (extensionSearchResult) {
