@@ -5,7 +5,6 @@
     var _;
 
     var services = require("fora-app-services"),
-        Parser = require('fora-request-parser'),
         models = require('fora-app-models');
 
     var typesService = services.get("typesService");

@@ -37,14 +37,6 @@
     };
 
 
-    Record.new = function*(params) {
-        var typesService = services.get('typesService');
-        var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
-        return yield* typesService.constructModel(params, typeDefinition);
-    };
-
-
-
     Record.search = function*(criteria, settings) {
         var limit = getLimit(settings.limit, 100, 1000);
 

@@ -3,20 +3,26 @@
 
     var _;
 
-    var __hasProp = {}.hasOwnProperty,
-        __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } };
+    var appCommon = require('./app-common'),
+        dataUtils = require('fora-data-utils'),
+        DbConnector = require('fora-app-db-connector'),
+        services = require('fora-app-services');
 
-    var AppBase = require('./app-base').AppBase;
+    var conf = services.get("configuration");
 
-    //ctor
-    var App = function() {
-        AppBase.apply(this, arguments);
+    var App = function(params) {
+        dataUtils.extend(this, params);
+        if (!this.stats) {
+            this.stats = new models.AppStats({
+                records: 0,
+                members: 0,
+                lastRecord: 0
+            });
+        }
+        if (this.my_init)
+            this.my_init();
     };
-
-    App.prototype = Object.create(AppBase.prototype);
-    App.prototype.constructor = App;
-
-    __extends(App, AppBase);
+    appCommon.extendApp(App);
 
     exports.App = App;
 

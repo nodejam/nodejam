@@ -4,9 +4,7 @@
     var _;
 
     var moduleCache = {};
-    var extensionsByName = {};
-    var extensionsByKind = {};
-    var extensionsByModule = {};
+    var extensionsDir = {};
 
     //This file was written out during the build...
     var extensionPaths = require('../../extensions/extensions');
@@ -42,53 +40,50 @@
                 moduleCache[fullName] = extModule;
 
                 //Add to by-extension-name directory
-                if (!extensionsByName[extensionName])
-                    extensionsByName[extensionName] = {};
-                extensionsByName[extensionName][moduleName] = extModule;
+                if (!extensionsDir[kind])
+                    extensionsDir[kind] = {};
+                if (!extensionsDir[kind][typeName])
+                    extensionsDir[kind][typeName] = {};
+                if (!extensionsDir[kind][typeName][version])
+                    extensionsDir[kind][typeName][version] = {};
 
-                //Add to by-type directory
-                if (!extensionsByKind[kind])
-                    extensionsByKind[kind] = {};
-                extensionsByKind[kind][fullName] = extModule;
-
-                //Add to by-kind-and-module directory
-                if (!extensionsByModule[kind])
-                    extensionsByModule[kind] = {};
-                if (!extensionsByModule[kind][moduleName])
-                    extensionsByModule[kind][moduleName] = {};
-                extensionsByModule[kind][moduleName][fullName] = extModule;
+                extensionsDir[kind][typeName][version][moduleName] = extModule;
             }
         }
     };
 
 
-    ExtensionsService.prototype.getModule = function*(name) {
-        return moduleCache[name];
-    };
-
-
-    ExtensionsService.prototype.getModuleByFullType = function*(type, moduleName) {
-        return moduleCache[type + "/" + moduleName];
-    };
-
-
-    ExtensionsService.prototype.getModuleByName = function*(kind, type, version, moduleName) {
+    ExtensionsService.prototype.getModule = function*(kind, type, version, moduleName) {
         return moduleCache[kind + "/" + type + "/" + version + "/" + moduleName];
     };
 
 
-    ExtensionsService.prototype.getModulesByKind = function*(kind, moduleName) {
-        return extensionsByModule[kind][moduleName];
+    ExtensionsService.prototype.getModuleByName = function*(name) {
+        return moduleCache[name];
+    };
+
+
+    ExtensionsService.prototype.getModuleByFullType = function*(fullType, moduleName) {
+        return moduleCache[fullType + "/" + moduleName];
     };
 
 
     ExtensionsService.prototype.getExtensionsByKind = function*(kind) {
-        return extensionsByKind[kind];
+        return extensionsDir[kind];
     };
 
 
     ExtensionsService.prototype.get = function*(name) {
-        var extension = extensionsByName[name];
+        var extension;
+
+        var arrID = name.split('/');
+        var extTypes = extensionsDir[arrID[0]];
+        if (extTypes) {
+            var extVersions = extTypes[arrID[1]];
+            if (extVersions)
+                extension = extVersions[arrID[2]];
+        }
+
         return {
             trusted: extension ? true : false,
             extension: extension || this.dynamicExtensionFinder(name)
@@ -96,6 +91,5 @@
     };
 
 
-    module.exports = ExtensionsService;
-
+module.exports = ExtensionsService;
 })();

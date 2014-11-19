@@ -4,7 +4,8 @@
 
     var _;
 
-    var dataUtils = require('fora-data-utils');
+    var dataUtils = require('fora-data-utils'),
+        services = require('fora-app-services');
 
     var extendRecord = function(Record) {
 
@@ -90,6 +91,13 @@
 
         Record.prototype.getCustomFields = function*(typeDefinition) {
             return yield* getCustomFields(typeDefinition);
+        };
+
+
+        Record.new = function*(params) {
+            var typesService = services.get('typesService');
+            var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
+            return yield* typesService.constructModel(params, typeDefinition);
         };
 
 
