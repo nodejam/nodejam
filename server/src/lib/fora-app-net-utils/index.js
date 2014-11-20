@@ -12,8 +12,6 @@
     var exec = thunkify(require('child_process').exec);
 
     var downloadImage = function*(imageUrl) {
-        var _;
-
         var parseResult = url.parse(imageUrl);
         var hostArr = parseResult.hostname.split('.');
         var extension = parseResult.pathname.split('/').pop().split('.').pop();
@@ -22,7 +20,7 @@
         if(['jpg', 'jpeg', 'png', 'gif', 'bmp'].indexOf(extension.toLowerCase()) !== -1) {
             var filePath = fsutils.getFilePath("temp", filename);
             var _curl = "curl --proto =http,https --proto-redir =http,https --max-filesize 5000000 " + imageUrl + " > " + filePath;
-            _ = yield* exec(_curl);
+            yield* exec(_curl);
             logger.log("Downloaded " + imageUrl + " to " + filePath);
             return filePath;
         } else {

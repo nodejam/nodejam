@@ -46,7 +46,7 @@
         var initResult = yield* initializeApp(config, baseConfig);
         var db = services.getDb();
         var typesService = services.getTypesService();
-        _ = yield* db.setupIndexes(typesService.getTypeDefinitions());
+        yield* db.setupIndexes(typesService.getTypeDefinitions());
 
         console.log("wait for 3 seconds...");
         setTimeout(function() {

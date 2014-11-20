@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var models = require('./'),
         randomizer = require('fora-app-randomizer'),
         services = require('fora-app-services'),

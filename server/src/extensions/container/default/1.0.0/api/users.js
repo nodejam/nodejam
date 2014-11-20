@@ -20,7 +20,7 @@
 
     var login = function*() {
         var parser = new Parser(this, services.getTypesService());
-        _ = yield* this.session.upgrade(yield* parser.body('username'));
+        yield* this.session.upgrade(yield* parser.body('username'));
         var session = yield* this.session.save();
 
         var user = session.user;

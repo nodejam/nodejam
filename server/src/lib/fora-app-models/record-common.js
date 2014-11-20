@@ -2,8 +2,6 @@
 
     "use strict";
 
-    var _;
-
     var dataUtils = require('fora-data-utils'),
         services = require('fora-app-services');
 
@@ -72,14 +70,14 @@
                     if (dataUtils.isPrimitiveType(def.type)) {
                         if (def.type === "array" && dataUtils.isCustomType(def.items.type)) {
                                 prefix.push(field);
-                                _ = yield* getCustomFields(def.items.typeDefinition, acc, prefix);
+                                yield* getCustomFields(def.items.typeDefinition, acc, prefix);
                                 prefix.pop(field);
                         } else {
                             acc.push(prefix.concat(field).join('_'));
                         }
                     } else if (dataUtils.isCustomType(def.type)) {
                         prefix.push(field);
-                        _ = yield* getCustomFields(def.typeDefinition, acc, prefix);
+                        yield* getCustomFields(def.typeDefinition, acc, prefix);
                         prefix.pop(field);
                     }
                 }

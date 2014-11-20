@@ -33,7 +33,6 @@
                                             app.cache.records.map(function(record) {
                                                 return (
                                                     <li>
-                                                        {JSON.stringify(record)}
                                                         <a href={"/" + app.stub + "/" + record.stub}>{record.title}</a><br />
                                                         <span className="subtext">{record.createdBy.name}</span>
                                                     </li>

@@ -85,7 +85,7 @@
 
     Connector.prototype.save = function*(record) {
         var typeDefinition = yield* this.getTypeDefinitionFromRecord(record);
-        return yield* database.save(record, typeDefinition, getServices());
+        return yield* database.save(record, typeDefinition, getServices(), { modifyCurrent: true });
     };
 
 

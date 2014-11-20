@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var models = require('./'),
         dataUtils = require('fora-data-utils'),
         userCommon = require('./user-common'),
@@ -51,11 +49,11 @@
             var subdir = srcPathArr.pop();
             var source = fileService.getFilePath('images', subdir, file);
             var dest = fileService.getFilePath('assets', user.assets, destFilename);
-            _ = yield* fileService.copyFile(source, dest);
+            yield* fileService.copyFile(source, dest);
         };
 
-        _ = yield* copy(picture.src, user.username + ".jpg");
-        _ = yield* copy(picture.small, user.username + "_t.jpg");
+        yield* copy(picture.src, user.username + ".jpg");
+        yield* copy(picture.small, user.username + "_t.jpg");
 
         return user;
     };

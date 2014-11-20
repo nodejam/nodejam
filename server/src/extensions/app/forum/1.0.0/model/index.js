@@ -20,8 +20,8 @@
 
         my_createRecord: function*(request) {
             var record = yield* this.createRecordViaRequest(request);
-            this.cache.records.push(record.my_getCacheItem());
-            _ = yield* this.save();
+            this.cache.records.push(yield* record.my_getCacheItem());
+            yield* this.save();
             return record;
         },
 
@@ -29,8 +29,8 @@
         my_editRecord: function*(stub, request) {
             var record = yield* this.editRecordViaRequest(stub, request);
             this.cache.records = this.cache.records.filter(function(rec) { return rec.stub !== record.stub; });
-            this.cache.records.push(record.my_getCacheItem());
-            _ = yield* this.save();
+            this.cache.records.push(yield* record.my_getCacheItem());
+            yield* this.save();
             return record;
         },
 
@@ -38,7 +38,7 @@
         my_deleteRecord: function*(stub, request) {
             var record = yield* this.deleteRecordViaRequest(request);
             this.cache.records = this.cache.records.filter(function(rec) { return rec.stub !== record.stub; });
-            _ = yield* this.save();
+            yield* this.save();
             return record;
         },
 
@@ -46,8 +46,8 @@
         my_addRecordMeta: function*(stub, request) {
             var record = yield* this.addRecordMetaViaRequest(stub, request);
             this.cache.records = this.cache.records.filter(function(rec) { return rec.stub !== record.stub; });
-            this.cache.records.push(record.my_getCacheItem());
-            _ = yield* this.save();
+            this.cache.records.push(yield* record.my_getCacheItem());
+            yield* this.save();
             return record;
         }
 

@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var models = require('./'),
         appCommon = require('./app-common'),
         dataUtils = require('fora-data-utils'),
@@ -52,14 +50,14 @@
             };
             app = yield* typesService.constructModel(params, typeDefinition);
 
-            _ = yield* parser.map(
+            yield* parser.map(
                 app,
                 (yield* appStore.getTypeDefinition()),
                 ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
             );
 
-            app = yield* app.save();
-            _ = yield* app.createRole(request.session.user, 'admin');
+            yield* app.save();
+            yield* app.createRole(request.session.user, 'admin');
             return app;
         } else {
             throw new Error("App exists");
@@ -71,7 +69,7 @@
         var parser = new Parser(request, services.getTypesService());
 
         if (request.session.user.username === request.createdBy.username || request.session.admin) {
-            _ = yield* parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
+            yield* parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
             return yield* this.save();
         } else {
             throw new Error("Access denied");
@@ -81,7 +79,10 @@
 
 
     App.prototype.createRecordViaRequest = function*(request) {
-        return yield* models.Record.createViaRequest(this, request);
+        var record = yield* models.Record.createViaRequest(this, request);
+        this.stats.lastRecord = Date.now();
+        yield* this.save();
+        return record;
     };
 
 
@@ -91,7 +92,7 @@
 
         if (record) {
             if (record.createdBy.username === request.session.user.username) {
-                return record.updateViaRequest(request);
+                return yield* record.updateViaRequest(request);
             } else {
                 throw new Error("Access denied");
             }
@@ -104,10 +105,11 @@
     App.prototype.deleteRecordViaRequest = function*(stub, request) {
         var record = yield* this.getRecord(stub);
         if (record) {
-            if(record.createdBy.username === request.session.user.username)
+            if(record.createdBy.username === request.session.user.username) {
                 return yield* record.destroy();
-            else
+            } else {
                 throw new Error('Access denied');
+            }
         } else {
             throw new Error("Not found");
         }

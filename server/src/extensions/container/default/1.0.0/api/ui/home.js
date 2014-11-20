@@ -48,7 +48,7 @@
             var item = items[i];
             switch(item) {
                 case "refresh-cache":
-                    _ = yield* refreshHome.call(this);
+                    yield* refreshHome.call(this);
             }
         }
     };
@@ -72,7 +72,7 @@
         //Delete all existing
         var existingCacheItems = yield* cacheItemStore.find({ type: 'cache', key: 'home' });
         for (var i = 0; i < existingCacheItems.length; i++) {
-            _ = yield* existingCacheItems[i].destroy();
+            yield* existingCacheItems[i].destroy();
         }
 
         //Add a new one.
@@ -92,7 +92,7 @@
             key: 'home',
             value: { featured: yield* makeCacheItem(editorsPicks), editorsPicks: yield* makeCacheItem(featured) },
         });
-        _ = yield* cacheItem.save();
+        yield* cacheItem.save();
 
         this.body = "OK";
     };

@@ -1,9 +1,6 @@
 (function() {
     "use strict";
 
-    var _; //keep jshint happy, until they fix yield*
-
-
     var init = function*(config, baseConfig) {
         /*
             Services
@@ -32,12 +29,12 @@
                 extModule.name = kind + "/" + typeName + "/" + version;
             }
             if (extModule.init)
-                _ = yield* extModule.init();
+                yield* extModule.init();
 
             return extModule;
         };
         var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions, fnModuleMapper);
-        _ = yield* extensionsService.init();
+        yield* extensionsService.init();
         services.setExtensionsService(extensionsService);
 
         /*
@@ -79,7 +76,7 @@
             });
         }));
 
-        _ = yield* typesService.init(
+        yield* typesService.init(
             typeDefinitions,
             [
                 { typeDefinitions: appVirtTypeDefinitions, baseTypeDefinition: models.App.typeDefinition },

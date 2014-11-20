@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var path = require('path'),
         argv = require('optimist').argv,
         co = require('co'),
@@ -144,9 +142,9 @@
                 var path = this.path.split("/");
                 switch(path[1]) {
                     case "public":
-                        _ = yield koaSend(this, this.path, { root: baseConfig.services.file.publicDirectory });
+                        yield koaSend(this, this.path, { root: baseConfig.services.file.publicDirectory });
                     default:
-                        _ =  yield koaSend(this.koaRequest, this.path, { root: '../www-client/app/www' });
+                        yield koaSend(this.koaRequest, this.path, { root: '../www-client/app/www' });
                 }
                 return false;
             }

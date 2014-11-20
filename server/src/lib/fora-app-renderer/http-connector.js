@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var visit = require('fora-data-utils').visit;
 
 
@@ -56,7 +54,7 @@
         var requestContext = yield* this.requestContext.clone();
         requestContext.url = url;
         requestContext.method = method;
-        _ = yield* this.routeFn.call(requestContext);
+        yield* this.routeFn.call(requestContext);
 
         return requestContext;
     };

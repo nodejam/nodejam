@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var TrustedSandbox = require('./trusted-sandbox'),
         UntrustedSandbox = require('./untrusted-sandbox');
 

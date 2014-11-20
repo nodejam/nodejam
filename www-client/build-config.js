@@ -2,8 +2,6 @@
 
     "use strict";
 
-    var _;
-
     module.exports = function(tools) {
 
         var spawn = tools.process.spawn();
@@ -32,8 +30,8 @@
                 console.log("Started fora/www-client build");
                 console.log("*****************************");
                 this.state.start = Date.now();
-                _ = yield* exec("rm -rf app");
-                _ = yield* exec("mkdir app");
+                yield* exec("rm -rf app");
+                yield* exec("mkdir app");
             }, "client_build_start");
 
 
@@ -46,8 +44,8 @@
                 function*(filePath) {
                     if (!/(\.less$)/.test(path.extname(filePath))) {
                         var dest = filePath.replace(/^src\//, 'app/');
-                        _ = yield* ensureDirExists(dest);
-                        _ = yield* exec("cp " + filePath + " " + dest);
+                        yield* ensureDirExists(dest);
+                        yield* exec("cp " + filePath + " " + dest);
                     }
                 },
                 "client_files_copy"
@@ -60,8 +58,8 @@
                 ["../server/src/config/*.*"],
                 function*(filePath) {
                     var dest = filePath.replace(/^\.\.\/server\/src\//, 'app/www/js/');
-                    _ = yield* ensureDirExists(dest);
-                    _ = yield* exec("cp " + filePath + " " + dest);
+                    yield* ensureDirExists(dest);
+                    yield* exec("cp " + filePath + " " + dest);
                 },
                 "client_server_config_copy"
             );
@@ -75,8 +73,8 @@
                 function*(filePath) {
                     if (!/\/\.git\//.test(filePath)) {
                         var dest = filePath.replace(/^\.\.\/server\/node_modules\//, 'app/www/js/lib/');
-                        _ = yield* ensureDirExists(dest);
-                        _ = yield* exec("cp " + filePath + " " + dest);
+                        yield* ensureDirExists(dest);
+                        yield* exec("cp " + filePath + " " + dest);
                     }
                 },
                 "client_server_npm_copy"
@@ -90,8 +88,8 @@
                 ["../server/app/extensions/*.*"],
                 function*(filePath) {
                     var dest = filePath.replace(/^\.\.\/server\/app\/extensions\//, 'app/www/js/extensions/');
-                    _ = yield* ensureDirExists(dest);
-                    _ = yield* exec("cp " + filePath + " " + dest);
+                    yield* ensureDirExists(dest);
+                    yield* exec("cp " + filePath + " " + dest);
                     extensions.push(dest);
                 },
                 "client_server_extensions_copy"
@@ -105,10 +103,10 @@
                 libModules.map(function(m) { return "../server/app/lib/" + m + "/*.*";}),
                 function*(filePath) {
                     var dest = filePath.replace(/^\.\.\/server\/app\/lib\//, 'app/www/js/lib/');
-                    _ = yield* ensureDirExists(dest);
+                    yield* ensureDirExists(dest);
                     var parts = filePath.split("/");
                     if (parts[4] === "fora-app-ui" || !fs.existsSync(dest))
-                        _ = yield* exec("cp " + filePath + " " + dest);
+                        yield* exec("cp " + filePath + " " + dest);
                     else
                         console.log("Skipping " + filePath + " -> " + dest);
                 },
@@ -120,9 +118,9 @@
             /*
                 Compile less files. Schedule it at the end.
             */
-            var lessCompile = function*() { _ = yield* exec("lessc --verbose src/www/css/main.less app/www/css/main.css"); };
+            var lessCompile = function*() { yield* exec("lessc --verbose src/www/css/main.less app/www/css/main.css"); };
             this.watch(["src/www/css/*.less"], function*(filePath) {
-                _ = yield* ensureDirExists('app/www/css/main.css');
+                yield* ensureDirExists('app/www/css/main.css');
                 this.queue(lessCompile);
             }, "client_less_compile");
 
@@ -171,7 +169,7 @@
                 });
 
                 console.log("Writing out app/www/js/extensions/extensions.json");
-                _ = yield* ensureDirExists("app/www/js/extensions/extensions.json");
+                yield* ensureDirExists("app/www/js/extensions/extensions.json");
                 fs.writeFileSync("app/www/js/extensions/extensions.json", JSON.stringify(
                     extensions.map(function(e) {
                         return e.replace(/\/index\.json$|\/index\.js$/, '')
@@ -191,7 +189,7 @@
                     };
 
                     console.log("Minifying CSS to lib.css");
-                    _ = yield* minify({
+                    yield* minify({
                         type: 'sqwish',
                         buffer: 1000 * 1024,
                         tempPath: '../temp/',
@@ -206,7 +204,7 @@
                     });
 
                     console.log("Minifying JS to vendor.js");
-                    _ = yield* minify({
+                    yield* minify({
                         type: 'no-compress',
                         buffer: 1000 * 2048,
                         tempPath: '../temp/',
@@ -255,8 +253,8 @@
                     cmdMakeBundle += " --debug";
                 }
 
-                _ = yield* exec(cmdMakeLib);
-                _ = yield* exec(cmdMakeBundle);
+                yield* exec(cmdMakeLib);
+                yield* exec(cmdMakeBundle);
 
 
             }, "client_bundle_files");

@@ -41,7 +41,7 @@
 
 
     ForaAppTypesService.prototype.updateModel = function*(target, obj, typeDefinition) {
-        _ = yield* ForaTypesService.prototype.updateModel.call(this, target, obj, typeDefinition);
+        yield* ForaTypesService.prototype.updateModel.call(this, target, obj, typeDefinition);
         var rowId = this.db.getRowId(obj);
         if (rowId)
             this.db.setRowId(target, rowId);

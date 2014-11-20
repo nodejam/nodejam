@@ -23,8 +23,8 @@
                   }
                 };
 
-                _ = yield* init(props.featured);
-                _ = yield* init(props.editorsPicks);
+                yield* init(props.featured);
+                yield* init(props.editorsPicks);
 
                 return props;
             }

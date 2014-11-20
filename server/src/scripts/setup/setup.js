@@ -161,14 +161,14 @@
         };
 
         if (argv["delete"]) {
-            _ = yield* del();
+            yield* del();
             return process.exit();
         } else if (argv.create) {
-            _ = yield* create();
+            yield* create();
             return process.exit();
         } else if (argv.recreate) {
-            _ = yield* del();
-            _ = yield* create();
+            yield* del();
+            yield* create();
             return process.exit();
         } else {
             logger.log('Invalid option.');

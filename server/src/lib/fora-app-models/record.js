@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var recordCommon = require('./record-common'),
         randomizer = require('fora-app-randomizer'),
         dataUtils = require('fora-data-utils'),
@@ -68,7 +66,7 @@
         }, typeDefinition);
 
         var def = yield* record.getTypeDefinition();
-        _ = yield* parser.map(record, def, yield* record.getCustomFields(def));
+        yield* parser.map(record, def, yield* record.getCustomFields(def));
         return yield* record.save();
     };
 
@@ -76,7 +74,7 @@
 
     Record.prototype.updateViaRequest = function*(request) {
         var def = yield* this.getTypeDefinition();
-        _ = yield* parser.map(this, def, yield* this.getCustomFields());
+        yield* parser.map(this, def, yield* this.getCustomFields());
         this.savedAt = Date.now();
         if (yield* parser.body('state') === 'published') this.state = 'published';
         return yield* this.save();
@@ -88,7 +86,7 @@
         var parser = new Parser(request, services.getTypesService());
         var meta = yield* parser.body('meta');
         if (meta) {
-            _ = yield* this.addMeta(meta.split(','));
+            yield* this.addMeta(meta.split(','));
             return yield* this.save();
         } else {
             throw new Error("Meta was not supplied");
@@ -101,7 +99,7 @@
         var parser = new Parser(request, services.getTypesService());
         var meta = yield* parser.body('meta');
         if (meta) {
-            _ = yield* this.deleteMeta(meta.split(','));
+            yield* this.deleteMeta(meta.split(','));
             return yield* this.save();
         } else {
             throw new Error("Meta was not supplied");

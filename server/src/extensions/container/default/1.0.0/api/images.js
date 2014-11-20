@@ -25,7 +25,7 @@
                 img = img.resize(options.width, options.height);
         }
 
-        _ = yield* thunkify(img.write).call(img, dest);
+        yield* thunkify(img.write).call(img, dest);
         logger.log("Resized #{src} to #{dest} [#{JSON.stringify options}]");
     };
 
@@ -81,14 +81,14 @@
 
                 //copy to originals directory
                 var original = fsutils.getRandomFilePath('original-images', filename);
-                _ = yield* fsutils.copyFile(file.path, original);
+                yield* fsutils.copyFile(file.path, original);
 
                 var image = fsutils.getRandomFilePath('images', filename);
                 var smallImage = image.replace(/(.*)\//,"$1/small_");
 
                 //resize
-                _ = yield* resizeImage(original, image, { width: srcWidth, height: srcHeight, gravity: gravity, imageType: imageType });
-                _ = yield* resizeImage(original, smallImage, { width: smallWidth, height: smallHeight, gravity: gravity, imageType: imageType });
+                yield* resizeImage(original, image, { width: srcWidth, height: srcHeight, gravity: gravity, imageType: imageType });
+                yield* resizeImage(original, smallImage, { width: smallWidth, height: smallHeight, gravity: gravity, imageType: imageType });
 
                 pathArr = image.split('/');
                 filename = pathArr.pop();

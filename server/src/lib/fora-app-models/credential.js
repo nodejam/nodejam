@@ -2,8 +2,6 @@
 
     "use strict";
 
-    var _;
-
     var thunkify = require('fora-node-thunkify'),
         hasher = require('fora-app-hasher'),
         randomizer = require('fora-app-randomizer'),
@@ -111,14 +109,14 @@
                 case 'builtin':
                     username = yield* parser.body('username');
                     var password = yield* parser.body('password');
-                    _ = yield* credential.addBuiltin(username, password);
+                    yield* credential.addBuiltin(username, password);
                     break;
                 case 'twitter':
                     var id = yield* parser.body('id');
                     username = yield* parser.body('username');
                     var accessToken = yield* parser.body('accessToken');
                     var accessTokenSecret = yield* parser.body('accessTokenSecret');
-                    _ = yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
+                    yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
                     break;
             }
             return yield* credential.save();

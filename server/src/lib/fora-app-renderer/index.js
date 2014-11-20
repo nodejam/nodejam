@@ -1,8 +1,6 @@
 (function() {
     "use strict";
 
-    var _;
-
     var HttpConnector = require('./http-connector'),
         viewApi = require('./view-api'),
         layout = require('./layout');

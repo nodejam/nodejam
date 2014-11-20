@@ -47,13 +47,13 @@
             var router = new Router();
 
             var extensionsService = services.getExtensionsService();
-            _ = yield* addContainerUIRoutes(router, "/", extensionsService);
+            yield* addContainerUIRoutes(router, "/", extensionsService);
 
             var routeFunc = router.route();
 
             var doRouting = function*() {
                 var request = new ForaRequest();
-                _ = yield* routeFunc.call(request, null);
+                yield* routeFunc.call(request, null);
             };
 
             var onChange = function() {
