@@ -26,7 +26,7 @@
 
             props = props || {};
 
-            var component = reactClass(props);
+            var component = React.createFactory(reactClass)(props);
 
             document.title = props.title || "The Fora Project";
 
@@ -42,8 +42,8 @@
                 }
             });
 
-            var container = pageContainer({ page: component });
-            React.renderComponent(container, document.getElementsByClassName('app-container')[0]);
+            var container = React.createElement(pageContainer, { page: component });
+            React.render(container, document.getElementsByClassName('app-container')[0]);
         };
     };
 

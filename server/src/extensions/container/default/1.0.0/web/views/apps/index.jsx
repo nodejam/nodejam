@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 (function() {
     "use strict";
 
@@ -7,10 +6,6 @@
     var React = require("react");
 
     var UI = require('fora-app-ui');
-    var Page = UI.Page,
-        Cover = UI.Cover,
-        Content = UI.Content;
-
     var services = require("fora-app-services");
     var config = services.getConfiguration();
 
@@ -33,8 +28,8 @@
             };
 
             return (
-                <Page>
-                    <Content>
+                <UI.Page>
+                    <UI.Content>
                         <nav>
                             <ul>
                                 <li>
@@ -50,8 +45,8 @@
                                 {this.props.apps.map(createItem)}
                             </ul>
                         </div>
-                    </Content>
-                </Page>
+                    </UI.Content>
+                </UI.Page>
             );
         }
     });

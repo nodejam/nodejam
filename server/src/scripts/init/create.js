@@ -53,6 +53,6 @@
             console.log("done");
             process.exit();
         }, 5000);
-    });
+    }).then(null, function(err) { console.log(err); });
 
 })();

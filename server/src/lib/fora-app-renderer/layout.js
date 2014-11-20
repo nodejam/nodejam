@@ -62,7 +62,7 @@
 
             props = props || {};
 
-            var component = reactClass(props);
+            var component = React.createFactory(reactClass)(props);
 
             var title = props.title || "The Fora Project";
             var pageName = props.pageName || "default-page";
@@ -74,7 +74,7 @@
 
             depsHtml += '<script> initForaApp(); </script>';
 
-            var container = pageContainer({ page: component });
+            var container = React.createElement(pageContainer, { page: component });
 
             return (
                 '<!DOCTYPE html>\
@@ -91,7 +91,7 @@
                     <body class="' + bodyClass + '">\
                         <!-- header -->\
                         <div class="app-container">' +
-                        React.renderComponentToString(container) +
+                        React.renderToString(container) +
                         '</div>\
                     </body>\
                 </html>'

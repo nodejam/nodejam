@@ -57,7 +57,7 @@
             };
 
             var onChange = function() {
-                co(doRouting);
+                co(doRouting).then(null, function(err) { console.log(err); });
             };
 
             // Listen on hash change, page load:
@@ -65,7 +65,7 @@
             window.addEventListener('load', onChange);
 
             logger.log("Fora started at " + new Date());
-        });
+        }).then(null, function(err) { console.log(err); });
     };
 
     window.initForaApp = init;

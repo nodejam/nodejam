@@ -204,7 +204,7 @@
             app.listen(port);
 
             logger.log("Fora started at " + new Date() + " on " + host + ":" + port);
-        });
+        }).then(null, function(err) { console.log(err); });
     };
 
     init();

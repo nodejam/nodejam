@@ -1,12 +1,12 @@
-/** @jsx React.DOM */
 (function() {
     "use strict";
 
     var React = require('react');
 
-    var className;
+
     module.exports = React.createClass({
         render: function() {
+            var className;
             if (!this.props.type)
                 className = "main-pane";
             else

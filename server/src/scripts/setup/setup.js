@@ -214,7 +214,7 @@
     };
 
     co(function*() {
-      return yield* init();
-    });
+        return yield* init();
+    }).then(null, function(err) { console.log(err); });
 
 })();

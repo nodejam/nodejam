@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 (function() {
     "use strict";
 
@@ -13,7 +12,7 @@
                    cover.type = "auto-cover";
 
                 var classString = ['cover', cover.type].join(' ');
-                var imageStyle = { "background-image": "url(" + cover.image.src + ")" };
+                var imageStyle = { "backgroundImage": "url(" + cover.image.src + ")" };
                 var underlayStyle = {
                     background: cover.bgColor,
                     opacity: cover.opacity,
