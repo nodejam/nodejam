@@ -8,7 +8,7 @@ get_repos_from_git() {
         rm -rf $basedir/$proj
         git clone https://github.com/jeswin/$proj $basedir/$proj
     else
-        echo skipped $basedir/$proj
+        echo $basedir/$proj is already a git repo
     fi
 }
 
