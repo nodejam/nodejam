@@ -4,9 +4,11 @@ check_status_of_repos() {
     curdir=`pwd`
     proj=$1
     basedir=$2
+    echo checking $basedir/$proj
     cd $basedir/$proj
     git status
     cd $curdir
+    echo
 }
 
 check_status_of_repos "fora-build" "node_modules"
