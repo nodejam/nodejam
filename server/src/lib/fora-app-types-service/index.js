@@ -17,10 +17,10 @@
     ForaAppTypesService.prototype.constructor = ForaAppTypesService;
 
 
-    ForaAppTypesService.prototype.constructModel = function*(obj, typeDefinition, skipInitialize) {
+    ForaAppTypesService.prototype.constructModel = function*(obj, typeDefinition, options, skipInitialize) {
         var effectiveTypeDef = yield* ForaTypesService.prototype.getEffectiveTypeDefinition.call(this, obj, typeDefinition);
 
-        var result = yield* ForaTypesService.prototype.constructModel.call(this, obj, effectiveTypeDef);
+        var result = yield* ForaTypesService.prototype.constructModel.call(this, obj, effectiveTypeDef, options);
 
         result.getTypeDefinition = function*() {
             return effectiveTypeDef;
@@ -40,8 +40,8 @@
     };
 
 
-    ForaAppTypesService.prototype.updateModel = function*(target, obj, typeDefinition) {
-        yield* ForaTypesService.prototype.updateModel.call(this, target, obj, typeDefinition);
+    ForaAppTypesService.prototype.updateModel = function*(target, obj, typeDefinition, options) {
+        yield* ForaTypesService.prototype.updateModel.call(this, target, obj, typeDefinition, options);
         var rowId = this.db.getRowId(obj);
         if (rowId)
             this.db.setRowId(target, rowId);

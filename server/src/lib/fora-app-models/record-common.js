@@ -49,7 +49,7 @@
             },
             initialize: function*(record, raw, typeDef, typesService) {
                 var clone = JSON.parse(JSON.stringify(raw));
-                var original = yield* typesService.constructModel(clone, typeDef, true);
+                var original = yield* typesService.constructModel(clone, typeDef, {}, true);
                 this.getOriginal = function*() {
                     return original;
                 };
