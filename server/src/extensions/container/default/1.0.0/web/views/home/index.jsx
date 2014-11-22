@@ -18,8 +18,7 @@
                 /* Attach the templates */
                 var init = function*(items) {
                   for (var i = 0; i < items.length; i++) {
-                      var widget = yield* api.views.getWidget("list", items[i].record);
-                      items[i].record.template = React.createFactory(widget);
+                      items[i].record.template = yield* api.views.getWidget("list", items[i].record);
                   }
                 };
 

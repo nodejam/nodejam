@@ -67,7 +67,7 @@
         apiModule.routes.forEach(function(route) {
             router[route.method](path.join(urlPrefix, route.url), route.handler);
         });
-    }
+    };
 
 
     /*  Container UI Routes */
@@ -81,7 +81,7 @@
         uiRoutes.forEach(function(route) {
             router[route.method](path.join(urlPrefix, route.url), route.handler);
         });
-    }
+    };
 
 
     /*

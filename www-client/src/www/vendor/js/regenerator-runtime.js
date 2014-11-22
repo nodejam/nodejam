@@ -8,31 +8,28 @@
  * the same directory.
  */
 
-(function(
-  // Reliable reference to the global object (i.e. window in browsers).
-  global,
-
-  // Dummy constructor that we use as the .constructor property for
-  // functions that return Generator objects.
-  GeneratorFunction,
-
-  // Undefined value, more compressible than void 0.
-  undefined
-) {
+!(function() {
   var hasOwn = Object.prototype.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var iteratorSymbol =
+    typeof Symbol === "function" && Symbol.iterator || "@@iterator";
 
-  if (global.wrapGenerator) {
+  // Make a reasonable attempt to provide a Promise polyfill.
+  if (typeof Promise === "undefined") try {
+    Promise = require("promise");
+  } catch (ignored) {}
+
+  if (typeof regeneratorRuntime === "object") {
     return;
   }
 
-  function wrapGenerator(innerFn, outerFn, self, tryList) {
+  var runtime = regeneratorRuntime =
+    typeof exports === "undefined" ? {} : exports;
+
+  function wrap(innerFn, outerFn, self, tryList) {
     return new Generator(innerFn, outerFn, self || null, tryList || []);
   }
-
-  global.wrapGenerator = wrapGenerator;
-  if (typeof exports !== "undefined") {
-    exports.wrapGenerator = wrapGenerator;
-  }
+  runtime.wrap = wrap;
 
   var GenStateSuspendedStart = "suspendedStart";
   var GenStateSuspendedYield = "suspendedYield";
@@ -43,26 +40,53 @@
   // breaking out of the dispatch switch statement.
   var ContinueSentinel = {};
 
-  var Gp = Generator.prototype;
-  var GFp = GeneratorFunction.prototype = Object.create(Function.prototype);
-  GFp.constructor = GeneratorFunction;
-  GFp.prototype = Gp;
-  Gp.constructor = GFp;
+  // Dummy constructor that we use as the .constructor property for
+  // functions that return Generator objects.
+  var GF = function GeneratorFunction() {};
+  var GFp = function GeneratorFunctionPrototype() {};
+  var Gp = GFp.prototype = Generator.prototype;
+  (GFp.constructor = GF).prototype =
+    Gp.constructor = GFp;
 
-  wrapGenerator.mark = function(genFun) {
+  // Ensure isGeneratorFunction works when Function#name not supported.
+  var GFName = "GeneratorFunction";
+  if (GF.name !== GFName) GF.name = GFName;
+  if (GF.name !== GFName) throw new Error(GFName + " renamed?");
+
+  runtime.isGeneratorFunction = function(genFun) {
+    var ctor = genFun && genFun.constructor;
+    return ctor ? GF.name === ctor.name : false;
+  };
+
+  runtime.mark = function(genFun) {
     genFun.__proto__ = GFp;
     genFun.prototype = Object.create(Gp);
     return genFun;
   };
 
-  // Ensure isGeneratorFunction works when Function#name not supported.
-  if (GeneratorFunction.name !== "GeneratorFunction") {
-    GeneratorFunction.name = "GeneratorFunction";
-  }
+  runtime.async = function(innerFn, outerFn, self, tryList) {
+    return new Promise(function(resolve, reject) {
+      var generator = wrap(innerFn, outerFn, self, tryList);
+      var callNext = step.bind(generator.next);
+      var callThrow = step.bind(generator["throw"]);
 
-  wrapGenerator.isGeneratorFunction = function(genFun) {
-    var ctor = genFun && genFun.constructor;
-    return ctor ? GeneratorFunction.name === ctor.name : false;
+      function step(arg) {
+        try {
+          var info = this(arg);
+          var value = info.value;
+        } catch (error) {
+          return reject(error);
+        }
+
+        if (info.done) {
+          resolve(value);
+        } else {
+          Promise.resolve(value).then(callNext, callThrow);
+        }
+      }
+
+      callNext();
+    });
   };
 
   function Generator(innerFn, outerFn, self, tryList) {
@@ -140,6 +164,9 @@
             method = "next";
             arg = undefined;
           }
+
+        } else if (method === "return") {
+          context.abrupt("return", arg);
         }
 
         state = GenStateExecuting;
@@ -181,14 +208,13 @@
     }
 
     generator.next = invoke.bind(generator, "next");
-    generator.throw = invoke.bind(generator, "throw");
+    generator["throw"] = invoke.bind(generator, "throw");
+    generator["return"] = invoke.bind(generator, "return");
 
     return generator;
   }
 
-  Gp[typeof Symbol === "function"
-     && Symbol.iterator
-     || "@@iterator"] = function() {
+  Gp[iteratorSymbol] = function() {
     return this;
   };
 
@@ -226,7 +252,7 @@
     this.reset();
   }
 
-  wrapGenerator.keys = function(object) {
+  runtime.keys = function(object) {
     var keys = [];
     for (var key in object) {
       keys.push(key);
@@ -255,9 +281,8 @@
 
   function values(iterable) {
     var iterator = iterable;
-    var Symbol = global.Symbol;
-    if (Symbol && Symbol.iterator in iterable) {
-      iterator = iterable[Symbol.iterator]();
+    if (iteratorSymbol in iterable) {
+      iterator = iterable[iteratorSymbol]();
     } else if (!isNaN(iterable.length)) {
       var i = -1;
       iterator = function next() {
@@ -275,7 +300,7 @@
     }
     return iterator;
   }
-  wrapGenerator.values = values;
+  runtime.values = values;
 
   Context.prototype = {
     constructor: Context,
@@ -439,4 +464,4 @@
       return ContinueSentinel;
     }
   };
-}).apply(this, Function("return [this, function GeneratorFunction(){}]")());
+})();
