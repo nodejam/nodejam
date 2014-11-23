@@ -7,7 +7,6 @@ Some re-usable components of fora have been moved to separate packages.
 - Fora Db (Object Data Mapper) https://github.com/jeswin/fora-db
 - Fora MongoDb Backend (ForaDb's Mongo Backend) https://github.com/jeswin/fora-backend-mongodb
 - Fora Extensions (Extensions and Plugin Management) https://github.com/jeswin/fora-extensions
-- Fora Node Thunkify (Port of thunkify that uses yield*) https://github.com/jeswin/fora-node-thunkify
 - Fora Router (Router for Koa) https://github.com/jeswin/fora-router
 - Fora Types Service (Data Type Manager) https://github.com/jeswin/fora-types-service
 - Fora Validator (Validation) https://github.com/jeswin/fora-validator
@@ -17,7 +16,7 @@ Some re-usable components of fora have been moved to separate packages.
 Installation
 ============
 Installation is straight forward on Linux and Mac.
-Windows is not supported yet.
+Windows is not supported yet, but will be supported in future.
 
 ### 1. Install dependencies
 - Install nodejs, v0.11.9 or greater.
