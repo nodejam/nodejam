@@ -1,7 +1,7 @@
 /* Common for all pages */
 header.site {
     .logo {
-        .font-alt; display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left;
+        display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left;
         text-transform: uppercase; position: absolute; top: 6px; left: 6px; position: absolute; z-index: 100;
         &:hover { background: #333; }
     }
@@ -9,7 +9,7 @@ header.site {
 
 /* Left side pane */
 .site-options {
-    height: 100%; position: absolute; top: 0; left: 0; z-index: 99; 
+    height: 100%; position: absolute; top: 0; left: 0; z-index: 99;
 
     ul {
         opacity: 0.96; width: 220px; padding-top: 12px; font-size: 12px; font-weight: bold;
@@ -56,15 +56,6 @@ nav {
 }
 
 /* Generic sections. */
-article {
-    .font-content; .textsize-L;
-    h1, h2, h3, h4 { .font-content-heading; }
-}
-
-article + footer {
-    .font-content; .textsize-M; font-style: italic;
-}
-
 .text-block {
     font-size: 1em; line-height: 1.2em;
     li { display: block; padding-bottom: 8px; }

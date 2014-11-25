@@ -1,18 +1,18 @@
 .page-content-area(@contentAreaWidth) {
     .content-area {
         width: @contentAreaWidth; margin-left: auto; margin-right: auto; line-height: 1.6em;
-        
+
         &.wide {
-            width: 100%; 
+            width: 100%;
         }
-        
+
         /* Item will occupy full content-area */
         &.item {
-            &:after { content: ""; display:block; clear: both }            
+            &:after { content: ""; display:block; clear: both }
             &.small { max-width: 480px; }
         }
 
-        .articles(@contentAreaWidth);
+        .articles-list(@contentAreaWidth);
     }
 }
 
@@ -54,55 +54,54 @@
 /* Pages-Common */
 .pages-common() {
     .main-pane, .alt-pane {
-        margin-top: 20px; padding: 0 24px 64px 24px; box-sizing: border-box; -moz-box-sizing: border-box; 
-        > nav {            
+        margin-top: 20px; padding: 0 24px 64px 24px; box-sizing: border-box; -moz-box-sizing: border-box;
+        > nav {
             &:before { content: ">"; display:block; float: left;  margin-right: 12px; }
         }
         > .content-area:first-child { margin-top: 24px }
     }
-    
+
     /* If main-pane is the top element and nav is the first element within it, apply left margin to accomondate hamburger button */
     .main-pane {
         &:first-child {
             > nav:first-child { margin-left: 40px; }
         }
     }
-    
+
     /* Set cover background image properties */
     .auto-cover, .top-cover, .full-cover {
         .image {
             background-size: cover; background-position: 50% 50%; height: 100%;
             > .underlay { opacity: 0.5; }
-            > .content-wrap { 
+            > .content-wrap {
                 h1 { margin-bottom: .3em }
             }
         }
         button {
-            background: transparent; 
+            background: transparent;
         }
     }
 
     .full-cover {
         height: 0; width: 100%; top: 0; left: 0;
-        .content-wrap { 
+        .content-wrap {
             left: 32px; bottom: 20px; position: absolute; max-width: 500px;
         }
-        &.fixed { position: fixed; z-index: -1; }       
+        &.fixed { position: fixed; z-index: -1; }
     }
 
-    .inline-cover { 
+    .inline-cover {
         margin: 64px auto 20px auto;
         img { width: 100% }
     }
-    
-    /* item is used when we have a single objective on the page, such as an article or post */    
+
+    /* item is used when we have a single objective on the page, such as an article or post */
     .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
         .content-area:first-child {
             &.item {
-                font-size: 0.9em; padding: 20px 32px; box-sizing: border-box; -moz-box-sizing: border-box; 
+                font-size: 0.9em; padding: 20px 32px; box-sizing: border-box; -moz-box-sizing: border-box;
                 &.small { max-width: 480px; padding: 20px 32px 20px 24px; }
-            }            
+            }
         }
-    }    
+    }
 }
-

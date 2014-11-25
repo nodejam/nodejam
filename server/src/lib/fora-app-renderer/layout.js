@@ -17,9 +17,9 @@
 
     var deps = {
         styles: [
-            'http://fonts.googleapis.com/css?family=Open+Sans:400,700|Lato:900|Crimson+Text:400,600,400italic|Oswald',
             '/css/lib.css',
-            '/css/main.css'
+            '/css/main.css',
+            '/fonts/font.css'
         ],
 
         scripts: [
@@ -31,13 +31,13 @@
 
     var debug_deps ={
         styles: [
-            'http://fonts.googleapis.com/css?family=Open+Sans:400,700|Lato:900|Crimson+Text:400,600,400italic|Oswald',
             '/vendor/components/font-awesome/css/font-awesome.css',
             '/vendor/css/HINT.css',
             '/vendor/css/toggle-switch.css',
             '/vendor/components/medium-editor/css/medium-editor.css',
             '/vendor/components/medium-editor/css/themes/default.css',
-            '/css/main.css'
+            '/css/main.css',
+            '/fonts/font.css'
         ],
 
         scripts: [

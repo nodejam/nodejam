@@ -41,21 +41,25 @@
                 var style = {
                     backgroundImage: "url(" + record.cover.image.small + ")"
                 };
-                image = <div className="image" style={style}></div>;
+                image = <div className="cover" style={style}></div>;
             }
             else
                 image = null;
 
             return (
                 <li>
-                    {image}
                     <article>
-                        <h2><a href={"/" + this.props.app.stub + "/" + record.stub}>{record.title}</a></h2>
-                        <p>{synopsis}</p>
+                        <header>
+                            {image}
+                            <h2><a href={"/" + this.props.app.stub + "/" + record.stub}>{record.title}</a></h2>
+                        </header>
+                        <section className="content">
+                            <p>{synopsis}</p>
+                        </section>
+                        <footer>
+                            <a href={"/~" + this.props.author.username}>{this.props.author.name}</a> in <a href={this.props.app.stub}>{this.props.app.name}</a>
+                        </footer>
                     </article>
-                    <footer>
-                        <a href={"/~" + this.props.author.username}>{this.props.author.name}</a> in <a href={this.props.app.stub}>{this.props.app.name}</a>
-                    </footer>
                 </li>
             );
         }

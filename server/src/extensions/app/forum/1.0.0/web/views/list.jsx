@@ -23,7 +23,7 @@
             return (
                 <li className="col-span span5">
                     {image}
-                    <article>
+                    <div className="content">
                         <h2><a href={"/" + app.stub}>{app.name}</a></h2>
                         {
                             (function(){
@@ -43,7 +43,7 @@
                                 }
                             })()
                         }
-                    </article>
+                    </div>
                 </li>
             );
         }

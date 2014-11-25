@@ -42,7 +42,8 @@
                 ["src/www/css/*.*", "src/www/fonts/*.*", "src/www/images/*.*",
                  "src/www/js/*.js", "src/www/vendor/*.*"],
                 function*(filePath) {
-                    if (!/(\.less$)/.test(path.extname(filePath))) {
+                    var exlcudes = ["\\.less$", "\\.sh$"];
+                    if (!exlcudes.some(function(ex) { return new RegExp(ex).test(path.extname(filePath)); })) {
                         var dest = filePath.replace(/^src\//, 'app/');
                         yield* ensureDirExists(dest);
                         yield* exec("cp " + filePath + " " + dest);

@@ -1,40 +1,14 @@
-.articles (@contentAreaWidth) {        
-    ul.articles.default-view {
-        > li {
-            margin-bottom: 20px; padding-bottom: 20px;
-            div.image { background-size: cover; background-position: 50% 50%; float: right; border-radius: 100% }
-            article { max-height: 10.2em; overflow: hidden; }        
-            &:after { content: ""; display:block; clear: both }
-        }
-
-        .do() when (ispixel(@contentAreaWidth)) {
-            @imageSize: (@contentAreaWidth / 6);
-            @imageMargin: (@contentAreaWidth / 20);
-            > li {            
-                div.image { width: @imageSize; height: @imageSize; margin-left: @imageMargin; }
-            }
-        }
-
-        /* percentage is an attempt to fill available width on smaller screens */
-        .do() when (ispercentage(@contentAreaWidth)) {
-            > li {            
-                div.image { width: 84px; height: 84px; margin-left: 20px; }
-            }
-        }
-
-        .do();
-    }
-    
+.cards (@contentAreaWidth) {
     ul.articles.card-view {
-        margin: auto; text-align: center; 
-        > li {        
+        margin: auto; text-align: center;
+        > li {
             margin-bottom: 20px; display: inline-block; text-align: left; background: #f6f6f6;
             div.image { background-size: cover; height: 120px; background-position: 50% 50%; }
-            article { 
-                height: 10.2em; padding: 16px; overflow: hidden; 
+            div.content {
+                height: 10.2em; padding: 16px; overflow: hidden;
                 h2 { .textsize-L }
                 li { line-height: 1em; padding-bottom: 0.5em; }
-            }        
+            }
         }
-    }    
+    }
 }
