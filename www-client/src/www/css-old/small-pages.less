@@ -6,27 +6,27 @@
         .auto-cover, .top-cover, .full-cover {
             font-size: 0.9em;
         }
-
-        .auto-cover, .top-cover {
+        
+        .auto-cover, .top-cover { 
             height: 400px; position: relative;
             .content-wrap {
-                position: absolute; bottom: 0px; padding: 0 0 16px 16px; max-width: 400px;
+                position: absolute; bottom: 0px; padding: 0 0 16px 16px; max-width: 400px;                
             }
-        }
+        }       
     }
 }
 
-.small-pages(@minWidth) when (@minWidth >= 720) {
+.small-pages(@minWidth) when (@minWidth >= 720) {      
     .large-page-element, .tiny-page-element { display: none; }
-    .small-page-element { display: block !important; }
+    .small-page-element { display: block !important; }    
 
-    .single-section-page, .multi-section-page {
+    .single-section-page, .multi-section-page {                
 
         .main-pane {
             .page-content-area(720px);
-        }
+        }                
 
-        .alt-pane {
+        .alt-pane { 
             .page-content-area(720px);
         }
 
@@ -36,23 +36,23 @@
                     width: ((100 / floor((@minWidth - 40) / 300)) - 2) + 0%
                 }
             }
-        }
+        }  
     }
     .spans(80px);
 }
 
-.small-pages(@minWidth) when (@minWidth < 720) {
+.small-pages(@minWidth) when (@minWidth < 720) {  
     body { font-size: 0.9em }
-
+    
     .large-page-element, .small-page-element { display: none; }
-    .tiny-page-element { display: block !important; }
+    .tiny-page-element { display: block !important; }    
 
-    .single-section-page, .multi-section-page {
+    .single-section-page, .multi-section-page {                    
         .main-pane {
             .page-content-area(100%);
-        }
+        }                
 
-        .alt-pane {
+        .alt-pane { 
             .page-content-area(100%);
         }
 
@@ -62,24 +62,24 @@
                     width: 100%;
                 }
             }
-        }
+        }  
     }
 
 }
 
-.small-pages(@minWidth) when (@minWidth >= 480) and (@minWidth < 720) {
+.small-pages(@minWidth) when (@minWidth >= 480) and (@minWidth < 720) {  
     .spans(64px);
 }
 
-.small-pages(@minWidth) when (@minWidth < 480) {
-    .single-section-page, .multi-section-page {
-
+.small-pages(@minWidth) when (@minWidth < 480) {  
+    .single-section-page, .multi-section-page {                
+    
         .inline-cover + .main-pane .content-area:first-child {
             &.item {
                 padding: 20px 0;
             }
-        }
+        }        
     }
-
-    .spans(100%);
+    
+    .spans(100%);    
 }

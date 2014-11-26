@@ -1,0 +1,33 @@
+/*
+    Default view of a list of articles
+*/
+ul.articles.default-view {
+    > li {
+        margin-bottom: 1em; padding-bottom: 1em;
+        article {
+            div.cover {
+                background-size: cover; background-position: 50% 50%; float: right; border-radius: 100%;
+                width: 7em; height: 7em; margin-left: 1em;
+            }
+            > section.content {
+                p { max-height: 4.5em; overflow: hidden; }
+                margin-bottom: 1em
+            }
+            footer { font-size: 0.9em }
+        }
+        &:after { content: ""; display:block; clear: both }
+    }
+}
+
+/*
+    This handles the article's full view, ie: when it is shown as a single item on a page.
+*/
+article.item-view {
+    .text-content-font; font-size: 1.4em;
+
+    h1, h2, h3, h4 { .text-content-heading-font; }
+
+    footer {
+        font-style: italic;
+    }
+}

@@ -57,7 +57,9 @@
                             <p>{synopsis}</p>
                         </section>
                         <footer>
-                            <a href={"/~" + this.props.author.username}>{this.props.author.name}</a> in <a href={this.props.app.stub}>{this.props.app.name}</a>
+                            <p className="subtext">
+                                <a href={"/~" + this.props.author.username}>{this.props.author.name}</a> in <a href={this.props.app.stub}>{this.props.app.name}</a>
+                            </p>
                         </footer>
                     </article>
                 </li>

@@ -44,7 +44,7 @@
         }
     }
 
-    .subtext, .subtext a { color: @colorNeutral; }
+    .subtext { color: @colorNeutral; }
 
     /* FORM CONTROLS */
     .control (@fg, @bg, @borderColor) {
@@ -151,7 +151,7 @@
     }
 
     nav {
-        .base-font; font-weight: bold; font-size: 12px; height: 24px; color: @colorBright; padding-bottom: 4px; margin: 0 0 16px 0;
+        .base-font; font-weight: bold; font-size: 12px; height: 24px; color: @colorBright; padding-bottom: 4px; margin: 0 0 16px 0; 
         border-bottom-color: @colorXBright;
         ul {
             li {
@@ -234,10 +234,27 @@
         .make-theme('default');
         .color-groups();
     }
+
+    .paper-theme {
+        .make-theme('paper');
+        .color-groups();
+    }
+
+    .black-paper-theme {
+        .make-theme('black-paper');
+        .color-groups();
+    }
+
+    .green-cup-theme {
+        .make-theme('green-cup');
+        .color-groups();
+    }
 }
 
 
 .themes-tiny () {
+    /* PAGES.LESS */
+
     /* Remove bg on tiny screens. Boxes don't look good there */
     .single-section-page {
         .inline-cover + .main-pane .content-area:first-child {
@@ -246,4 +263,5 @@
             }
         }
     }
+
 }

@@ -7,22 +7,22 @@
         position: fixed; height: 100%; top: 0; right: 0;
         .image {
             > .underlay { width: 100%; position: fixed; height: 100%; }
-            > .content-wrap {
+            > .content-wrap { 
                 left: 32px; bottom: 20px; position: absolute; width: 70%; max-width: 400px;
             }
         }
-    }
-
-    .top-cover {
+    }    
+    
+    .top-cover { 
         position: relative;
         .content-wrap {
-            position: absolute; bottom: 0px; padding:0 0 32px 32px; max-width: 600px;
-        }
-    }
+            position: absolute; bottom: 0px; padding:0 0 32px 32px; max-width: 600px;                
+        }        
+    } 
 
     .auto-cover+.main-pane {
         > nav:first-child { margin-left: 40px; }
-    }
+    }    
 
 }
 
@@ -39,35 +39,35 @@
 
         /* Top and full covers have 100% main-pane width */
         .top-cover, .full-cover {
-            + .main-pane {
-                width: 100%;
+            + .main-pane { 
+                width: 100%;                
                 .page-content-area(@contentAreaWidth)
             }
-        }
+        }              
 
         .top-cover {
             height: @topCoverHeight;
         }
-
+        
         .inline-cover {
-            width: @contentAreaWidth; max-width: 720px;
+            width: @contentAreaWidth; max-width: 720px; 
         }
 
         /* Auto cover in large pages position on the side. Adjust main-pane width */
         .auto-cover {
-            left: @mainPaneWidth; width: (100% - @mainPaneWidth);
-            + .main-pane {
-                width: @mainPaneWidth;
+            left: @mainPaneWidth; width: (100% - @mainPaneWidth); 
+            + .main-pane { 
+                width: @mainPaneWidth; 
             }
         }
 
         .main-pane {
             /* No cover. 100% main-page width */
-            &:first-child {
-                width: 100%;
+            &:first-child { 
+                width: 100%; 
             }
             .page-content-area(@contentAreaWidth);
-        }
+        }        
     }
 
     ul.cards {
@@ -77,14 +77,14 @@
             }
         }
     }
-
+    
     .spans(68px);
 }
 
 
 
 /* Large page guards */
-.large-pages(@minWidth) when (@minWidth >= 1720) {
+.large-pages(@minWidth) when (@minWidth >= 1720) {  
     .large-page(
         @minWidth,
         @contentAreaWidth: 720px,
@@ -94,7 +94,7 @@
     );
 }
 
-.large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {
+.large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {  
     .large-page(
         @minWidth,
         @contentAreaWidth: 720px,
@@ -104,7 +104,7 @@
     );
 }
 
-.large-pages(@minWidth) when (@minWidth >= 1200) and (@minWidth < 1400) {
+.large-pages(@minWidth) when (@minWidth >= 1200) and (@minWidth < 1400) {  
     .large-page(
         @minWidth,
         @contentAreaWidth: 720px,
@@ -114,7 +114,7 @@
     );
 }
 
-.large-pages(@minWidth) when (@minWidth < 1200) {
+.large-pages(@minWidth) when (@minWidth < 1200) {  
     .large-page(
         @minWidth,
         @contentAreaWidth: 560px,
@@ -123,3 +123,5 @@
         @topCoverHeight: 400px
     );
 }
+
+

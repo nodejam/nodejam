@@ -4,10 +4,10 @@ em { font-style: italic; font-weight: normal }
 strong { font-weight: bold }
 
 h1, h2, h3, h4 { font-weight: 700 }
-    h1 { font-size: 2em; margin: 0 0 .4em 0; }
-    h2 { font-size: 1.7em; margin: 0 0 .3em 0; }
-    h3 { font-size: 1.4em; margin: 0 0 .3em 0; }
-    h4 { font-size: 1.2em; margin: 0 0 .2em 0; }
+    h1 { .xx-large-text; margin: 0; }
+    h2 { .x-large-text; margin: 0; }
+    h3 { .large-text; margin: 0; }
+    h4 { .medium-text; margin: 0; }
 
 p { margin:0.5em 0; padding: 0 }
 
@@ -32,7 +32,7 @@ fieldset { border: none }
 }
 
 input, select, textarea {
-    .base-font; border-radius: @roundness;
+    .base-font; .html-tag-common(); .rounded;
     padding: 8px 4px 10px 4px; margin: 2px 0 2px 0; border-width: 2px;
 }
 

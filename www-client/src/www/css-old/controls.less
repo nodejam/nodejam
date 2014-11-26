@@ -1,0 +1,209 @@
+/* Common for all pages */
+header.site {
+    .logo {
+        display: block; padding: 6px 10px 6px 2px; cursor: pointer; height: 32px; width: 32px; font-size: 12px; background: #aaa; color: white; float: left;
+        text-transform: uppercase; position: absolute; top: 6px; left: 6px; position: absolute; z-index: 100;
+        &:hover { background: #333; }
+    }
+}
+
+/* Left side pane */
+.site-options {
+    height: 100%; position: absolute; top: 0; left: 0; z-index: 99;
+
+    ul {
+        opacity: 0.96; width: 220px; padding-top: 12px; font-size: 12px; font-weight: bold;
+        li {
+            border-bottom-width: 1px; border-bottom-style: solid; clear: both; display: table; width: 100%;
+            a {
+                display: block; padding: 10px 4px 10px 20px; float: left; min-width: 120px;
+                i {
+                    margin-right: 12px;
+                }
+                &.right {
+                    float: right; padding: 10px 24px 10px 16px; margin: 0; min-width: 0;
+                    i { margin: 0 }
+                }
+            }
+        }
+    }
+    .transparent-overlay {
+        position: fixed; margin-left: 220px; height: 100%; top: 0; left: 0; width: 100%; cursor: pointer;
+    }
+}
+
+
+nav {
+    height: 24px; .base-font; font-weight: normal; font-size: 12px; padding-bottom: 4px; margin: 0 0 24px 0; clear: both;
+    border-bottom-width: 2px; border-bottom-style: solid;
+    ul {
+        float: left;
+        li {
+            float: left; padding-right: 12px;
+            &.selected { }
+            a { text-decoration: underline; }
+            i { text-decoration: none }
+        }
+        &.alt { float: right; }
+    }
+    &.buttons {
+        padding-bottom: 24px;
+        ul {
+            float: right;
+            li { padding-right: 4px; }
+        }
+    }
+}
+
+/* Generic sections. */
+.text-block {
+    font-size: 1em; line-height: 1.2em;
+    li { display: block; padding-bottom: 8px; }
+}
+
+/*
+    Image Types
+*/
+img {
+    &.seal {
+        border-radius: 100%; height: 48px; width: 48px;
+        &.downsize { height: 32px; width: 32px }
+        &.upsize { height: 64px; width: 64px }
+    }
+}
+
+/*
+    Icon Block
+    *******  ************
+    * img *  *   text   *
+    *******  ************
+*/
+.icon-block, .icon-block > li  {
+    > .icon {
+        float: left; padding-right: 20px; padding-top: 4px; text-align: center; font-size: 0.8em; line-height: 1.2em;
+    }
+    > .text {
+        overflow: hidden;
+    }
+
+    &.small {
+        > .icon {
+            float: left; padding-right: 12px; padding-top: 4px;
+        }
+    }
+}
+
+/*
+    Stamp Block
+    *******  ************
+    * img *     text    *
+    *******  that flows *
+    *   around the img  *
+    *********************
+*/
+.stamp-block {
+    img { float: right; width:48px; height: 48px; border-radius: 100%; margin-top: 3px; }
+    h2 { margin: 0 0 .2em 0 }
+    &.square { border-radius: none; }
+}
+
+/*
+       Concise
+     Icon Block
+    ************
+    *   img    *
+    ************
+    *   text   *
+    *   here   *
+    ************
+
+    This is only for uls
+*/
+ul.concise-icon-block  {
+    width: 100%;
+    li {
+        width: 10em; text-align: center; float: left;
+
+        > .icon {
+            padding-top: 4px; text-align: center; font-size: 0.8em; line-height: 1.2em;
+        }
+        > .text {
+            overflow: hidden; margin-top: 12px;
+        }
+    }
+}
+
+
+/* Dynamically created login */
+.login-box-mixin (@width, @spacing, @fontSize) {
+    #login-box {
+        .rounded; padding: @spacing (2 * @spacing); width: @width; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box;
+        h2 { clear: both; margin: 0 }
+        li {
+            font-size: @fontSize; clear: both; height: (@fontSize * 2.3);
+            i {
+                float: left; font-size: (@fontSize * 2);
+                &.fa-twitter { color: #00aced }
+                &.fa-facebook { color: #3b5998 }
+                &.fa-google-plus { color: #d34836 }
+            }
+            a {
+                float: left; margin: 6px 0 0 12px;
+                &.twitter { color: #00aced }
+            }
+        }
+    }
+}
+
+/* Dashboard Style Widgets */
+.dashboard-widgets {
+    > div {
+        float: left; .rounded;
+        p {
+            line-height: 0.6em; margin: 0;
+            .subtext { font-size: 12px; font-weight: bold; text-transform: uppercase }
+        }
+        &.full { width: 80%; padding: 20px 8% 12px 8%; margin: 0 4% 20px 0 }
+        &.half { width: 40%; padding: 20px 4% 12px 4%; margin: 0 2% 20px 0 }
+    }
+}
+
+
+/* Selectable Blocks */
+ul.selectable {
+
+    &.cells {
+        margin-bottom: 20px;
+
+        > li {
+            .rounded; padding: 10px; overflow: hidden; cursor: pointer;
+            &:hover, &.selected {
+                > i { position: absolute; margin: -4px }
+                &:before {
+                    content: ""; height: 60px; width: 60px; display: block; transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg);
+                    margin-top: -40px; margin-left: -40px; margin-bottom: -20px;
+                }
+            }
+        }
+
+        &.float-layout {
+            > li {
+                float: left;
+                margin:0 10px 10px 0;
+            }
+        }
+
+        &.row-layout {
+            > li {
+                float: none;
+                margin:0 0 10px 0;
+            }
+        }
+
+        &:after { content: ""; display:block; clear: both }
+    }
+}
+
+
+/* LEAN MODAL - Thanks to http://leanmodal.finelysliced.com.au/ */
+#lean_overlay { position: fixed; z-index:100; top: 0px; left: 0px; height:100%; width:100%; display: none; }
