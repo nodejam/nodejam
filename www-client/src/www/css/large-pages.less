@@ -1,5 +1,5 @@
 /* Large Pages */
-.large-pages-common {
+.large-pages-common() {
     .small-page-element, .tiny-page-element { display: none; }
     .large-page-element { display: block !important; }
 
@@ -23,7 +23,6 @@
     .auto-cover+.main-pane {
         > nav:first-child { margin-left: 40px; }
     }
-
 }
 
 .large-page(
@@ -69,16 +68,6 @@
             .page-content-area(@contentAreaWidth);
         }
     }
-
-    ul.cards {
-        &.float-layout {
-            > li {
-                width: ((100 / floor((@minWidth - 160) / 300)) - 2) + 0%
-            }
-        }
-    }
-
-    .spans(68px);
 }
 
 

@@ -1,6 +1,6 @@
-.page-content-area(@contentAreaWidth) {
+.page-content-area(@content-area-width) {
     .content-area {
-        width: @contentAreaWidth; margin-left: auto; margin-right: auto; line-height: 1.6em;
+        width: @content-area-width; margin-left: auto; margin-right: auto; line-height: 1.6em;
 
         &.wide {
             width: 100%;
@@ -14,40 +14,6 @@
     }
 }
 
-.spans(@wUnit) {
-    .do() when (ispixel(@wUnit)) {
-        .col-span {
-            .span-common { box-sizing: border-box; margin-right: 16px; }
-            &.span1 { .span-common; width: (@wUnit); }
-            &.span2 { .span-common; width: (@wUnit * 2); }
-            &.span3 { .span-common; width: (@wUnit * 3); }
-            &.span4 { .span-common; width: (@wUnit * 4); }
-            &.span5 { .span-common; width: (@wUnit * 5); }
-            &.span6 { .span-common; width: (@wUnit * 6); }
-            &.span7 { .span-common; width: (@wUnit * 7); }
-            &.span8 { .span-common; width: (@wUnit * 8); }
-            &.span9 { .span-common; width: (@wUnit * 9); }
-        }
-    }
-
-    /* percentage is an attempt to fill available width on smaller screens */
-    .do() when (ispercentage(@wUnit)) {
-        .col-span {
-            .span-common { box-sizing: border-box; margin-right: 16px; width: 100%; }
-            &.span1 { .span-common; width: 80px }
-            &.span2 { .span-common; width: 160px }
-            &.span3 { .span-common; width: 100% }
-            &.span4 { .span-common; width: 100% }
-            &.span5 { .span-common; width: 100% }
-            &.span6 { .span-common; width: 100% }
-            &.span7 { .span-common; width: 100% }
-            &.span8 { .span-common; width: 100% }
-            &.span9 { .span-common; width: 100% }
-        }
-    }
-
-    .do();
-}
 
 /* Pages-Common */
 .pages-common() {

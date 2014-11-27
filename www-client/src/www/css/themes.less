@@ -1,50 +1,50 @@
 .make-theme(
     @name,
-    @colorBright: #ccc,
-    @colorXBright: #eee,
-    @colorXXBright: #f6f6f6,
-    @colorBrightNeutral: #aaa,
-    @colorNeutral: #999,
-    @colorDarkNeutral: #888,
-    @colorDark: #666,
-    @colorXDark: #444,
-    @colorXXDark: #333,
-    @colorStandout: yellow,
-    @colorMaxBright: white,
-    @colorMaxDark: black,
-    @colorLink: #446,
-    @colorLinkHover: #668,
-    @colorPositive: #060,
-    @colorLightPositive: #aca,
-    @colorNegative: #c00,
-    @colorLightNegative: #caa,
-    @textOpacity: 0.9
+    @color-bright: #ccc,
+    @color-x-bright: #eee,
+    @color-xx-bright: #f6f6f6,
+    @color-bright-neutral: #aaa,
+    @color-neutral: #999,
+    @color-dark-neutral: #888,
+    @color-dark: #666,
+    @color-x-dark: #444,
+    @color-xx-dark: #333,
+    @color-standout: yellow,
+    @color-max-bright: white,
+    @color-max-dark: black,
+    @color-link: #446,
+    @color-link-hover: #668,
+    @color-positive: #060,
+    @color-light-positive: #aca,
+    @color-negative: #c00,
+    @color-light-negative: #caa,
+    @text-opacity: 0.9
 ) {
     background: url("/images/themes/@{name}/bg.png") repeat;
-    color: @colorXDark;
+    color: @color-x-dark;
 
     a {
-        color: @colorLink;
-        &:hover { color: @colorLinkHover;  }
-        &.positive:hover, &.positive { color: @colorPositive }
-        &.negative:hover, &.negative { color: @colorNegative }
+        color: @color-link;
+        &:hover { color: @color-link-hover;  }
+        &.positive:hover, &.positive { color: @color-positive }
+        &.negative:hover, &.negative { color: @color-negative }
     }
 
     .action {
-        &.positive { color: @colorPositive }
-        &.negative { color: @colorNegative }
+        &.positive { color: @color-positive }
+        &.negative { color: @color-negative }
     }
 
     /* CUSTOM */
     .placeholder {
-        .caret { color: @colorMaxDark }
-        .placeholder-text { color: @colorBrightNeutral; }
+        .caret { color: @color-max-dark }
+        .placeholder-text { color: @color-bright-neutral; }
         &.dim {
-            .placeholder-text { color: @colorXBright }
+            .placeholder-text { color: @color-x-bright }
         }
     }
 
-    .subtext, .subtext a { color: @colorNeutral; }
+    .subtext, .subtext a { color: @color-neutral; }
 
     /* FORM CONTROLS */
     .control (@fg, @bg, @borderColor) {
@@ -52,19 +52,19 @@
     }
 
     input, select, textarea {
-        .control (@colorXDark, @colorXXBright, @colorBright)
+        .control (@color-x-dark, @color-xx-bright, @color-bright)
     }
 
     button {
-        .control (@colorNeutral, transparent, @colorBright);
-        &:hover, &:focus { color: @colorDark; background-color: @colorBright; border-color: @colorBright }
+        .control (@color-neutral, transparent, @color-bright);
+        &:hover, &:focus { color: @color-dark; background-color: @color-bright; border-color: @color-bright }
         &.positive {
-            color: @colorPositive;
-            &:hover { background-color: @colorLightPositive; border-color: @colorLightPositive }
+            color: @color-positive;
+            &:hover { background-color: @color-light-positive; border-color: @color-light-positive }
         }
         &.negative {
-            color: @colorNegative;
-            &:hover { background-color: @colorLightNegative; border-color: @colorLightNegative }
+            color: @color-negative;
+            &:hover { background-color: @color-light-negative; border-color: @color-light-negative }
         }
     }
 
@@ -74,7 +74,7 @@
         .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
             .content-area:first-child {
                &.item {
-                    background: @colorMaxBright;
+                    background: @color-max-bright;
                 }
             }
         }
@@ -84,14 +84,14 @@
     /* CARDS.LESS */
     ul.articles.default-view {
         > li {
-            border-bottom: 2px solid @colorXXBright;
+            border-bottom: 2px solid @color-xx-bright;
         }
     }
 
     ul.articles.card-view {
         > li {
             article {
-                border-bottom: 12px solid @colorXBright; background: @colorXXBright;
+                border-bottom: 12px solid @color-x-bright; background: @color-xx-bright;
             }
         }
     }
@@ -100,30 +100,30 @@
 
     /*  CONTROLS.LESS */
     .site-options {
-        background: @colorXXDark;
+        background: @color-xx-dark;
         ul {
-            color: @colorXBright;
+            color: @color-x-bright;
             li {
-                border-bottom-color: @colorXDark;
+                border-bottom-color: @color-x-dark;
                 a {
-                    color: @colorXBright;
-                    &:hover { color: @colorMaxBright }
+                    color: @color-x-bright;
+                    &:hover { color: @color-max-bright }
                 }
             }
         }
     }
 
     #login-box {
-        background: @colorXBright;
+        background: @color-x-bright;
     }
 
 
     ul.selectable {
         > li {
-            background: @colorXXBright; box-shadow: inset 0 0 16px @colorXBright;
+            background: @color-xx-bright; box-shadow: inset 0 0 16px @color-x-bright;
 
             &:hover, &.selected {
-                > i { color: @colorMaxBright; }
+                > i { color: @color-max-bright; }
             }
 
             &:hover {
@@ -138,7 +138,7 @@
                 }
             }
 
-            &:hover { background: @colorXBright }
+            &:hover { background: @color-x-bright }
         }
     }
 
@@ -146,66 +146,66 @@
 
     .dashboard-widgets {
         > div {
-            background: @colorXXBright; color: @colorBright;
+            background: @color-xx-bright; color: @color-bright;
         }
     }
 
     nav {
-        .base-font; font-weight: bold; font-size: 12px; height: 24px; color: @colorBright; padding-bottom: 4px; margin: 0 0 16px 0;
-        border-bottom-color: @colorXBright;
+        .base-font; font-weight: bold; font-size: 12px; height: 24px; color: @color-bright; padding-bottom: 4px; margin: 0 0 16px 0;
+        border-bottom-color: @color-x-bright;
         ul {
             li {
-                color: @colorNeutral;
-                &.selected { color: @colorDark }
+                color: @color-neutral;
+                &.selected { color: @color-dark }
                 a {
-                    color: @colorNeutral;
+                    color: @color-neutral;
                 }
             }
         }
     }
 
     article + footer {
-        color: @colorNeutral
+        color: @color-neutral
     }
 
     /* EDITOR.LESS */
     .editable {
-        .highlight { background-color: @colorMaxBright !important; opacity: 0.8}
+        .highlight { background-color: @color-max-bright !important; opacity: 0.8}
 
         .editor-inline-bar {
-            background: @colorDark;
-            a { color: @colorBright; }
+            background: @color-dark;
+            a { color: @color-bright; }
         }
 
         .cover-editor {
             > .content-area {
-                color: @colorBright;
-                a { color: @colorBright }
+                color: @color-bright;
+                a { color: @color-bright }
 
                 span.colors {
                     > span {
-                        border: 1px solid @colorDark;
-                        &:hover { border-color: @colorBright }
-                        &.selected { border-color: @colorStandout }
+                        border: 1px solid @color-dark;
+                        &:hover { border-color: @color-bright }
+                        &.selected { border-color: @color-standout }
                     }
                 }
             }
         }
 
         .editor-field-title {
-            font-style: italic; color: @colorNeutral;
+            font-style: italic; color: @color-neutral;
         }
 
         .editor-field-message {
             font-style: italic;
 
-            &.error { color: @colorNegative; }
+            &.error { color: @color-negative; }
         }
 
         .lined-fields {
             > li, > p, > div {
-                border-bottom: 2px dotted @colorBright;
-                &.error { border-bottom-color: @colorNegative }
+                border-bottom: 2px dotted @color-bright;
+                &.error { border-bottom-color: @color-negative }
             }
         }
 
@@ -214,7 +214,7 @@
     .fancy {
         &.quote {
             i { color: red; }
-            color: @colorNeutral;
+            color: @color-neutral;
         }
     }
 }
