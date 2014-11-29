@@ -21,7 +21,7 @@
                 image = null;
 
             return (
-                <li className="col-span span5">
+                <li>
                     {image}
                     <div className="content">
                         <h2><a href={"/" + app.stub}>{app.name}</a></h2>

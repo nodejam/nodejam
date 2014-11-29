@@ -41,7 +41,7 @@
                             </ul>
                         </nav>
                         <div className="content-area wide">
-                            <ul className="articles card-view">
+                            <ul className="cards">
                                 {this.props.apps.map(createItem)}
                             </ul>
                         </div>

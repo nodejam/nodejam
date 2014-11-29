@@ -81,6 +81,7 @@
         @mainPaneWidth: 50%,
         @topCoverHeight: 400px
     );
+    .card(3, 3em, 10em, 10, 2, 12, 0);
 }
 
 .large-pages(@minWidth) when (@minWidth >= 1400) and (@minWidth < 1720) {
@@ -91,6 +92,7 @@
         @mainPaneWidth: 60%,
         @topCoverHeight: 400px
     );
+    .card(4, 3em, 10em, 10, 1, 12, 100%);
 }
 
 .large-pages(@minWidth) when (@minWidth >= 1200) and (@minWidth < 1400) {
@@ -101,6 +103,7 @@
         @mainPaneWidth: 66%,
         @topCoverHeight: 400px
     );
+    .card(3, 3em, 10em, 10, 1, 12, 100%);
 }
 
 .large-pages(@minWidth) when (@minWidth < 1200) {
@@ -111,4 +114,5 @@
         @mainPaneWidth: 66%,
         @topCoverHeight: 400px
     );
+    .card(3, 3em, 10em, 10, 1, 12, 100%);
 }

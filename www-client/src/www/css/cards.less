@@ -1,12 +1,22 @@
-.card() {
+.card-common() {
     margin-bottom: 20px; display: inline-block; text-align: left; background: #f6f6f6;
-    div.cover { background-size: cover; height: 120px; background-position: 50% 50%; }
-    div.content {
-        height: 10.2em; padding: 16px; overflow: hidden;
-        li { line-height: 1em; padding-bottom: 0.5em; }
-    }
+
+    div.cover { background-size: cover; background-position: 50% 50%; }
+    div.content { padding: 1em; overflow: hidden; }
 }
 
-li.card {
-    .card();
+ul.cards > li, .card {
+    .card-common();
+}
+
+.card(@cards-in-row, @cover-height, @content-height,
+            @col-width, @gutter-width, @num-cols, @page-width) {
+    @card-size: @num-cols / @cards-in-row;
+    ul.cards > li, .card {
+        .grid(@col-width, @gutter-width, @num-cols, @page-width);
+        .column(@card-size);
+
+        div.cover { height: @cover-height; }
+        div.content { height: @content-height; }
+    }
 }
