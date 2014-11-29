@@ -5,54 +5,261 @@
     Note: Edited mildly, so don't drop in replace with newer semantic-gs.
 */
 
-.fixed-grid(@column-width, @gutter-width, @columns) {
+// The micro clearfix http://nicolasgallagher.com/micro-clearfix-hack/
+.clearfix() {
+    *zoom:1;
 
-    // Utility variable — you should never need to modify this
-    @gridsystem-width: (@column-width*@columns) + (@gutter-width*@columns) * 1px;
-
-    // The micro clearfix http://nicolasgallagher.com/micro-clearfix-hack/
-    .clearfix() {
-        *zoom:1;
-
-        &:before,
-        &:after {
-            content:"";
-            display:table;
-        }
-        &:after {
-            clear:both;
-        }
+    &:before,
+    &:after {
+        content:"";
+        display:table;
     }
+    &:after {
+        clear:both;
+    }
+}
 
+.grid-fixed-full(@col-width, @gutter-width, @prefix) {
+    @columns: 12;
 
-    //////////
-    // GRID //
-    //////////
+    @gridsystem-width: (@col-width*@columns) + (@gutter-width*@columns) * 1px;
 
     .row {
-        .row {
-            display: block;
-            width: @total-width*((@gutter-width + @gridsystem-width)/@gridsystem-width);
-            margin: 0 @total-width*(((@gutter-width*.5)/@gridsystem-width)*-1);
-            // *width: @total-width*((@gutter-width + @gridsystem-width)/@gridsystem-width)-@correction;
-            // *margin: 0 @total-width*(((@gutter-width*.5)/@gridsystem-width)*-1)-@correction;
-            .clearfix;
-        }
+        display: block;
+        width: (@gutter-width + @gridsystem-width);
+        margin: 0 (@gutter-width * .5);
+        .clearfix;
     }
 
-    .column(@x) {
-        display: inline;
-        float: left;
-        width: @total-width*((((@gutter-width+@column-width)*@x)-@gutter-width) / @gridsystem-width);
-        margin: 0 @total-width*((@gutter-width*.5)/@gridsystem-width);
-        // *width: @total-width*((((@gutter-width+@column-width)*@x)-@gutter-width) / @gridsystem-width)-@correction;
-        // *margin: 0 @total-width*((@gutter-width*.5)/@gridsystem-width)-@correction;
+    .column-common(@x) when (@x > 0) {
+
+        .col-xs-@{x}, .col-sm-@{x}, .col-md-@{x}, .col-lg-@{x} {
+            display: inline;
+            float: left;
+            margin: 0 (@gutter-width * .5);
+            max-width: 100%;
+        }
+
+        @width: ((@gutter-width + @col-width) * @x) - @gutter-width;
+
+        .do() when (@prefix = xs) {
+            .col-sm-@{x}, .col-md-@{x}, .col-lg-@{x} {
+                width: @width;
+            }
+        }
+
+        .do() when (@prefix = sm) {
+            .col-xs-@{x}, .col-md-@{x}, .col-lg-@{x} {
+                width: @width;
+            }
+        }
+
+        .do() when (@prefix = md) {
+            .col-xs-@{x}, .col-sm-@{x}, .col-lg-@{x} {
+                width: @width;
+            }
+        }
+
+        .do() when (@prefix = lg) {
+            .col-xs-@{x}, .col-sm-@{x}, .col-md-@{x} {
+                width: @width;
+            }
+        }
+
+        .do();
+
+        .column-common(@x - 1);
+
+    }
+
+    .column-common(11);
+
+    .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        width: 100%;
+    }
+
+    .column-prefixed(@x) when (@x > 0) {
+
+        .col-@{prefix}-@{x} {
+            width: ((@gutter-width + @col-width) * @x) - @gutter-width;
+        }
+
+        .column-prefixed(@x - 1);
+
+    }
+
+    .column-prefixed(11);
+
+    .col-@{prefix}-12 {
+        width: 100%;
     }
 
     .push(@offset:1) {
-        margin-left: @total-width*(((@gutter-width+@column-width)*@offset) / @gridsystem-width) + @total-width*((@gutter-width*.5)/@gridsystem-width);
+        margin-left: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);;
+    }
+
+    .pull(@offset:1) {
+        margin-right: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);;
+    }
+}
+
+
+.grid-fixed(@col-width, @gutter-width) {
+    @columns: 12;
+
+    @gridsystem-width: (@col-width*@columns) + (@gutter-width*@columns) * 1px;
+
+    .row() {
+        display: block;
+        width: (@gutter-width + @gridsystem-width);
+        margin: 0 (@gutter-width * .5);
+        .clearfix;
+    }
+
+    .column-common() {
+        display: inline;
+        float: left;
+        margin: 0 (@gutter-width * .5);
+        max-width: 100%;
+    }
+
+    .column-common();
+
+    .column(@x) when (@x < 12) {
+        width: ((@gutter-width + @col-width) * @x) - @gutter-width;
+    }
+
+    .column(@x) when (@x = 12) {
+        width: 100%;
+    }
+
+    .push(@offset:1) {
+        margin-left: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);
+    }
+
+    .pull(@offset:1) {
+        margin-right: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);
+    }
+}
+
+
+.grid-fluid-full(@gutter-width, @prefix) {
+    @columns: 12;
+    @col-width: (100% - (12 * @gutter-width)) / 12;
+    @total-width: 100%;
+
+    .row {
+        display: block;
+        width: @gutter-width + 100%;
+        margin: 0 (-1 * (@gutter-width * .5));
+        .clearfix;
+    }
+
+    .column-common(@x) when (@x > 0) {
+
+        .col-xs-@{x}, .col-sm-@{x}, .col-md-@{x}, .col-lg-@{x} {
+            display: inline;
+            float: left;
+            margin: 0 (@gutter-width * .5);
+            max-width: 100%;
+        }
+
+        @width: ((@gutter-width + @col-width) * @x) - @gutter-width;
+
+        .do() when (@prefix = xs) {
+            .col-sm-@{x}, .col-md-@{x}, .col-lg-@{x} {
+                width: @width;
+            }
+        }
+
+        .do() when (@prefix = sm) {
+            .col-xs-@{x}, .col-md-@{x}, .col-lg-@{x} {
+                width: @width;
+            }
+        }
+
+        .do() when (@prefix = md) {
+            .col-xs-@{x}, .col-sm-@{x}, .col-lg-@{x} {
+                width: @width;
+            }
+        }
+
+        .do() when (@prefix = lg) {
+            .col-xs-@{x}, .col-sm-@{x}, .col-md-@{x} {
+                width: @width;
+            }
+        }
+
+        .do();
+
+        .column-common(@x - 1);
+
+    }
+
+    .column-common(11);
+
+    .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        width: 100%;
+    }
+
+    .column-prefixed(@x) when (@x > 0) {
+
+        .col-@{prefix}-@{x} {
+            width: ((@gutter-width + @col-width) * @x) - @gutter-width;;
+        }
+
+        .column-prefixed(@x - 1);
+
+    }
+
+    .column-prefixed(11);
+
+    .col-@{prefix}-12 {
+        width: 100%;
+    }
+
+    .push(@offset:1) {
+        margin-left: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
     }
     .pull(@offset:1) {
-        margin-right: @total-width*(((@gutter-width+@column-width)*@offset) / @gridsystem-width) + @total-width*((@gutter-width*.5)/@gridsystem-width);
+        margin-right: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
+    }
+}
+
+
+.grid-fluid(@gutter-width) {
+    @columns: 12;
+    @col-width: (100% - (12 * @gutter-width)) / 12;
+    @total-width: 100%;
+
+    .row() {
+        display: block;
+        width: @gutter-width + 100%;
+        margin: 0 (-1 * (@gutter-width * .5));
+        .clearfix;
+    }
+
+    .column-common() {
+        display: inline;
+        float: left;
+        margin: 0 (@gutter-width * .5);
+        max-width: 100%;
+    }
+
+    .column-common();
+
+    .column(@x) when (@x < 12) {
+        width: ((@gutter-width + @col-width) * @x) - @gutter-width;
+    }
+
+    .column(@x) when (@x = 12) {
+        width: 100%;
+    }
+
+    .push(@offset:1) {
+        margin-left: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
+    }
+    .pull(@offset:1) {
+        margin-right: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
     }
 }

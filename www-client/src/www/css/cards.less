@@ -1,5 +1,5 @@
 .card-common() {
-    margin-bottom: 20px; display: inline-block; text-align: left; background: #f6f6f6;
+    margin-bottom: 10px; display: inline-block; text-align: left; background: #f6f6f6;
 
     div.cover { background-size: cover; background-position: 50% 50%; }
     div.content { padding: 1em; overflow: hidden; }
@@ -9,14 +9,25 @@ ul.cards > li, .card {
     .card-common();
 }
 
-.card(@cards-in-row, @cover-height, @content-height,
-            @col-width, @gutter-width, @num-cols, @page-width) {
-    @card-size: @num-cols / @cards-in-row;
-    ul.cards > li, .card {
-        .grid(@col-width, @gutter-width, @num-cols, @page-width);
-        .column(@card-size);
+.card-content-size(@cover-height, @content-height) {
+    div.cover { height: @cover-height; }
+    div.content { height: @content-height; }
+}
 
-        div.cover { height: @cover-height; }
-        div.content { height: @content-height; }
+.card-fluid(@cards-in-row, @cover-height, @content-height) {
+    @card-size: 12 / @cards-in-row;
+    ul.cards.fluid > li, .card.fluid {
+        .grid-fluid(1%);
+        .column(card-size);
+        .card-content-size(@cover-height, @content-height);
+    }
+}
+
+.card-fixed(@card-size, @cover-height, @content-height, @col-width, @gutter-width) {
+    @card-size: 12 / @cards-in-row;
+    ul.cards.fixed > li, .card.fixed {
+        .grid-fixed(100, 10);
+        .column(card-size);
+        .card-content-size(@cover-height, @content-height);
     }
 }
