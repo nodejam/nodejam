@@ -1,0 +1,51 @@
+.theme-html-tags(
+    @name,
+    @color-bright: #ccc,
+    @color-x-bright: #eee,
+    @color-xx-bright: #f6f6f6,
+    @color-bright-neutral: #aaa,
+    @color-neutral: #999,
+    @color-dark-neutral: #888,
+    @color-dark: #666,
+    @color-x-dark: #444,
+    @color-xx-dark: #333,
+    @color-standout: yellow,
+    @color-max-bright: white,
+    @color-max-dark: black,
+    @color-link: #446,
+    @color-link-hover: #668,
+    @color-positive: #060,
+    @color-light-positive: #aca,
+    @color-negative: #c00,
+    @color-light-negative: #caa,
+    @text-opacity: 0.9
+) {
+    background: url("/images/themes/@{name}/bg.png") repeat;
+    color: @color-x-dark;
+
+    a {
+        color: @color-link;
+        &:hover { color: @color-link-hover;  }
+    }
+
+    .control (@fg, @bg, @borderColor) {
+        color: @fg; background-color: @bg; border-color: @borderColor;
+    }
+
+    input, select, textarea {
+        .control (@color-x-dark, @color-xx-bright, @color-bright)
+    }
+
+    button {
+        .control (@color-neutral, transparent, @color-bright);
+        &:hover, &:focus { color: @color-dark; background-color: @color-bright; border-color: @color-bright }
+        &.positive {
+            color: @color-positive;
+            &:hover { background-color: @color-light-positive; border-color: @color-light-positive }
+        }
+        &.negative {
+            color: @color-negative;
+            &:hover { background-color: @color-light-negative; border-color: @color-light-negative }
+        }
+    }
+}

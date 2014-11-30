@@ -1,0 +1,64 @@
+.theme-pages(
+    @name,
+    @color-bright: #ccc,
+    @color-x-bright: #eee,
+    @color-xx-bright: #f6f6f6,
+    @color-bright-neutral: #aaa,
+    @color-neutral: #999,
+    @color-dark-neutral: #888,
+    @color-dark: #666,
+    @color-x-dark: #444,
+    @color-xx-dark: #333,
+    @color-standout: yellow,
+    @color-max-bright: white,
+    @color-max-dark: black,
+    @color-link: #446,
+    @color-link-hover: #668,
+    @color-positive: #060,
+    @color-light-positive: #aca,
+    @color-negative: #c00,
+    @color-light-negative: #caa,
+    @text-opacity: 0.9
+) {
+    .single-section-page {
+        .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
+            .content-area:first-child {
+               &.item {
+                    background: @color-max-bright;
+                }
+            }
+        }
+    }
+}
+
+.theme-pages-tiny(
+    @name,
+    @color-bright: #ccc,
+    @color-x-bright: #eee,
+    @color-xx-bright: #f6f6f6,
+    @color-bright-neutral: #aaa,
+    @color-neutral: #999,
+    @color-dark-neutral: #888,
+    @color-dark: #666,
+    @color-x-dark: #444,
+    @color-xx-dark: #333,
+    @color-standout: yellow,
+    @color-max-bright: white,
+    @color-max-dark: black,
+    @color-link: #446,
+    @color-link-hover: #668,
+    @color-positive: #060,
+    @color-light-positive: #aca,
+    @color-negative: #c00,
+    @color-light-negative: #caa,
+    @text-opacity: 0.9
+) {
+    /* Remove bg on tiny screens. Boxes don't look good there */
+    .single-section-page {
+        .inline-cover + .main-pane .content-area:first-child {
+           &.item {
+                background: none !important;
+            }
+        }
+    }
+}

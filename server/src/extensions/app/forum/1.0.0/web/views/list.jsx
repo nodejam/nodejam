@@ -15,7 +15,7 @@
                 var style = {
                     backgroundImage: "url(" + app.cover.image.small + ")"
                 };
-                image = <div className="image" style={style}></div>;
+                image = <div className="cover" style={style}></div>;
             }
             else
                 image = null;

@@ -19,10 +19,8 @@
     }
 }
 
-.grid-fixed-full(@col-width, @gutter-width, @prefix) {
-    @columns: 12;
-
-    @gridsystem-width: (@col-width*@columns) + (@gutter-width*@columns) * 1px;
+.grid-fixed(@col-width, @gutter-width, @columns, @prefix) {
+    @gridsystem-width: ((@col-width + @gutter-width) * @columns) * 1px;
 
     .row {
         display: block;
@@ -72,9 +70,9 @@
 
     }
 
-    .column-common(11);
+    .column-common(@columns - 1);
 
-    .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    .col-xs-@{columns}, .col-sm-@{columns}, .col-md-@{columns}, .col-lg-@{columns} {
         width: 100%;
     }
 
@@ -88,178 +86,17 @@
 
     }
 
-    .column-prefixed(11);
+    .column-prefixed(@columns - 1);
 
-    .col-@{prefix}-12 {
+    .col-@{prefix}-@{columns} {
         width: 100%;
     }
 
-    .push(@offset:1) {
+    .push(@offset: 1) {
         margin-left: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);;
     }
 
-    .pull(@offset:1) {
+    .pull(@offset: 1) {
         margin-right: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);;
-    }
-}
-
-
-.grid-fixed(@col-width, @gutter-width) {
-    @columns: 12;
-
-    @gridsystem-width: (@col-width*@columns) + (@gutter-width*@columns) * 1px;
-
-    .row() {
-        display: block;
-        width: (@gutter-width + @gridsystem-width);
-        margin: 0 (@gutter-width * .5);
-        .clearfix;
-    }
-
-    .column-common() {
-        display: inline;
-        float: left;
-        margin: 0 (@gutter-width * .5);
-        max-width: 100%;
-    }
-
-    .column-common();
-
-    .column(@x) when (@x < 12) {
-        width: ((@gutter-width + @col-width) * @x) - @gutter-width;
-    }
-
-    .column(@x) when (@x = 12) {
-        width: 100%;
-    }
-
-    .push(@offset:1) {
-        margin-left: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);
-    }
-
-    .pull(@offset:1) {
-        margin-right: ((@gutter-width + @col-width) * @offset) + (@gutter-width * .5);
-    }
-}
-
-
-.grid-fluid-full(@gutter-width, @prefix) {
-    @columns: 12;
-    @col-width: (100% - (12 * @gutter-width)) / 12;
-    @total-width: 100%;
-
-    .row {
-        display: block;
-        width: @gutter-width + 100%;
-        margin: 0 (-1 * (@gutter-width * .5));
-        .clearfix;
-    }
-
-    .column-common(@x) when (@x > 0) {
-
-        .col-xs-@{x}, .col-sm-@{x}, .col-md-@{x}, .col-lg-@{x} {
-            display: inline;
-            float: left;
-            margin: 0 (@gutter-width * .5);
-            max-width: 100%;
-        }
-
-        @width: ((@gutter-width + @col-width) * @x) - @gutter-width;
-
-        .do() when (@prefix = xs) {
-            .col-sm-@{x}, .col-md-@{x}, .col-lg-@{x} {
-                width: @width;
-            }
-        }
-
-        .do() when (@prefix = sm) {
-            .col-xs-@{x}, .col-md-@{x}, .col-lg-@{x} {
-                width: @width;
-            }
-        }
-
-        .do() when (@prefix = md) {
-            .col-xs-@{x}, .col-sm-@{x}, .col-lg-@{x} {
-                width: @width;
-            }
-        }
-
-        .do() when (@prefix = lg) {
-            .col-xs-@{x}, .col-sm-@{x}, .col-md-@{x} {
-                width: @width;
-            }
-        }
-
-        .do();
-
-        .column-common(@x - 1);
-
-    }
-
-    .column-common(11);
-
-    .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
-        width: 100%;
-    }
-
-    .column-prefixed(@x) when (@x > 0) {
-
-        .col-@{prefix}-@{x} {
-            width: ((@gutter-width + @col-width) * @x) - @gutter-width;;
-        }
-
-        .column-prefixed(@x - 1);
-
-    }
-
-    .column-prefixed(11);
-
-    .col-@{prefix}-12 {
-        width: 100%;
-    }
-
-    .push(@offset:1) {
-        margin-left: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
-    }
-    .pull(@offset:1) {
-        margin-right: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
-    }
-}
-
-
-.grid-fluid(@gutter-width) {
-    @columns: 12;
-    @col-width: (100% - (12 * @gutter-width)) / 12;
-    @total-width: 100%;
-
-    .row() {
-        display: block;
-        width: @gutter-width + 100%;
-        margin: 0 (-1 * (@gutter-width * .5));
-        .clearfix;
-    }
-
-    .column-common() {
-        display: inline;
-        float: left;
-        margin: 0 (@gutter-width * .5);
-        max-width: 100%;
-    }
-
-    .column-common();
-
-    .column(@x) when (@x < 12) {
-        width: ((@gutter-width + @col-width) * @x) - @gutter-width;
-    }
-
-    .column(@x) when (@x = 12) {
-        width: 100%;
-    }
-
-    .push(@offset:1) {
-        margin-left: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
-    }
-    .pull(@offset:1) {
-        margin-right: (@gutter-width * .5) + ((@gutter-width+@col-width) * @offset);
     }
 }

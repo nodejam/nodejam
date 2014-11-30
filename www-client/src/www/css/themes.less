@@ -1,3 +1,10 @@
+@import "theme-common";
+@import "theme-html-tags";
+@import "theme-controls";
+@import "theme-cards";
+@import "theme-pages";
+@import "theme-fancy";
+
 .make-theme(
     @name,
     @color-bright: #ccc,
@@ -20,202 +27,168 @@
     @color-light-negative: #caa,
     @text-opacity: 0.9
 ) {
-    background: url("/images/themes/@{name}/bg.png") repeat;
-    color: @color-x-dark;
+    .theme-common(
+        @name,
+        @color-bright,
+        @color-x-bright,
+        @color-xx-bright,
+        @color-bright-neutral,
+        @color-neutral,
+        @color-dark-neutral,
+        @color-dark,
+        @color-x-dark,
+        @color-xx-dark,
+        @color-standout,
+        @color-max-bright,
+        @color-max-dark,
+        @color-link,
+        @color-link-hover,
+        @color-positive,
+        @color-light-positive,
+        @color-negative,
+        @color-light-negative,
+        @text-opacity
+    );
 
-    a {
-        color: @color-link;
-        &:hover { color: @color-link-hover;  }
-        &.positive:hover, &.positive { color: @color-positive }
-        &.negative:hover, &.negative { color: @color-negative }
-    }
+    .theme-html-tags(
+        @name,
+        @color-bright,
+        @color-x-bright,
+        @color-xx-bright,
+        @color-bright-neutral,
+        @color-neutral,
+        @color-dark-neutral,
+        @color-dark,
+        @color-x-dark,
+        @color-xx-dark,
+        @color-standout,
+        @color-max-bright,
+        @color-max-dark,
+        @color-link,
+        @color-link-hover,
+        @color-positive,
+        @color-light-positive,
+        @color-negative,
+        @color-light-negative,
+        @text-opacity
+    );
 
-    .action {
-        &.positive { color: @color-positive }
-        &.negative { color: @color-negative }
-    }
+    .theme-controls(
+        @name,
+        @color-bright,
+        @color-x-bright,
+        @color-xx-bright,
+        @color-bright-neutral,
+        @color-neutral,
+        @color-dark-neutral,
+        @color-dark,
+        @color-x-dark,
+        @color-xx-dark,
+        @color-standout,
+        @color-max-bright,
+        @color-max-dark,
+        @color-link,
+        @color-link-hover,
+        @color-positive,
+        @color-light-positive,
+        @color-negative,
+        @color-light-negative,
+        @text-opacity
+    );
 
-    /* CUSTOM */
-    .placeholder {
-        .caret { color: @color-max-dark }
-        .placeholder-text { color: @color-bright-neutral; }
-        &.dim {
-            .placeholder-text { color: @color-x-bright }
-        }
-    }
+    .theme-cards(
+        @name,
+        @color-bright,
+        @color-x-bright,
+        @color-xx-bright,
+        @color-bright-neutral,
+        @color-neutral,
+        @color-dark-neutral,
+        @color-dark,
+        @color-x-dark,
+        @color-xx-dark,
+        @color-standout,
+        @color-max-bright,
+        @color-max-dark,
+        @color-link,
+        @color-link-hover,
+        @color-positive,
+        @color-light-positive,
+        @color-negative,
+        @color-light-negative,
+        @text-opacity
+    );
 
-    .subtext, .subtext a { color: @color-neutral; }
+    .theme-pages(
+        @name,
+        @color-bright,
+        @color-x-bright,
+        @color-xx-bright,
+        @color-bright-neutral,
+        @color-neutral,
+        @color-dark-neutral,
+        @color-dark,
+        @color-x-dark,
+        @color-xx-dark,
+        @color-standout,
+        @color-max-bright,
+        @color-max-dark,
+        @color-link,
+        @color-link-hover,
+        @color-positive,
+        @color-light-positive,
+        @color-negative,
+        @color-light-negative,
+        @text-opacity
+    );
 
-    /* FORM CONTROLS */
-    .control (@fg, @bg, @borderColor) {
-        color: @fg; background-color: @bg; border-color: @borderColor;
-    }
+    .theme-fancy(
+        @name,
+        @color-bright,
+        @color-x-bright,
+        @color-xx-bright,
+        @color-bright-neutral,
+        @color-neutral,
+        @color-dark-neutral,
+        @color-dark,
+        @color-x-dark,
+        @color-xx-dark,
+        @color-standout,
+        @color-max-bright,
+        @color-max-dark,
+        @color-link,
+        @color-link-hover,
+        @color-positive,
+        @color-light-positive,
+        @color-negative,
+        @color-light-negative,
+        @text-opacity
+    );
 
-    input, select, textarea {
-        .control (@color-x-dark, @color-xx-bright, @color-bright)
-    }
-
-    button {
-        .control (@color-neutral, transparent, @color-bright);
-        &:hover, &:focus { color: @color-dark; background-color: @color-bright; border-color: @color-bright }
-        &.positive {
-            color: @color-positive;
-            &:hover { background-color: @color-light-positive; border-color: @color-light-positive }
-        }
-        &.negative {
-            color: @color-negative;
-            &:hover { background-color: @color-light-negative; border-color: @color-light-negative }
-        }
-    }
-
-
-    /* PAGES.LESS */
-    .single-section-page {
-        .full-cover.fixed + .main-pane, .inline-cover + .main-pane {
-            .content-area:first-child {
-               &.item {
-                    background: @color-max-bright;
-                }
-            }
-        }
-    }
-
-
-    /* CARDS.LESS */
-    ul.articles.default-view {
-        > li {
-            border-bottom: 2px solid @color-xx-bright;
-        }
-    }
-
-    ul.articles.card-view {
-        > li {
-            article {
-                border-bottom: 12px solid @color-x-bright; background: @color-xx-bright;
-            }
-        }
-    }
-
-
-
-    /*  CONTROLS.LESS */
-    .site-options {
-        background: @color-xx-dark;
-        ul {
-            color: @color-x-bright;
-            li {
-                border-bottom-color: @color-x-dark;
-                a {
-                    color: @color-x-bright;
-                    &:hover { color: @color-max-bright }
-                }
-            }
-        }
-    }
-
-    #login-box {
-        background: @color-x-bright;
-    }
-
-
-    ul.selectable {
-        > li {
-            background: @color-xx-bright; box-shadow: inset 0 0 16px @color-x-bright;
-
-            &:hover, &.selected {
-                > i { color: @color-max-bright; }
-            }
-
-            &:hover {
-                &:before {
-                    background: orange;
-                }
-            }
-
-            &.selected {
-                &:before {
-                    background: green;
-                }
-            }
-
-            &:hover { background: @color-x-bright }
-        }
-    }
-
-    #lean_overlay { background: black }
-
-    .dashboard-widgets {
-        > div {
-            background: @color-xx-bright; color: @color-bright;
-        }
-    }
-
-    nav {
-        .base-font; font-weight: bold; font-size: 12px; height: 24px; color: @color-bright; padding-bottom: 4px; margin: 0 0 16px 0;
-        border-bottom-color: @color-x-bright;
-        ul {
-            li {
-                color: @color-neutral;
-                &.selected { color: @color-dark }
-                a {
-                    color: @color-neutral;
-                }
-            }
-        }
-    }
-
-    article + footer {
-        color: @color-neutral
-    }
-
-    /* EDITOR.LESS */
-    .editable {
-        .highlight { background-color: @color-max-bright !important; opacity: 0.8}
-
-        .editor-inline-bar {
-            background: @color-dark;
-            a { color: @color-bright; }
-        }
-
-        .cover-editor {
-            > .content-area {
-                color: @color-bright;
-                a { color: @color-bright }
-
-                span.colors {
-                    > span {
-                        border: 1px solid @color-dark;
-                        &:hover { border-color: @color-bright }
-                        &.selected { border-color: @color-standout }
-                    }
-                }
-            }
-        }
-
-        .editor-field-title {
-            font-style: italic; color: @color-neutral;
-        }
-
-        .editor-field-message {
-            font-style: italic;
-
-            &.error { color: @color-negative; }
-        }
-
-        .lined-fields {
-            > li, > p, > div {
-                border-bottom: 2px dotted @color-bright;
-                &.error { border-bottom-color: @color-negative }
-            }
-        }
-
-    }
-
-    .fancy {
-        &.quote {
-            i { color: red; }
-            color: @color-neutral;
-        }
+    /* MEDIA */
+    @media (max-width: 479px) {
+        .theme-pages-tiny(
+            @name,
+            @color-bright,
+            @color-x-bright,
+            @color-xx-bright,
+            @color-bright-neutral,
+            @color-neutral,
+            @color-dark-neutral,
+            @color-dark,
+            @color-x-dark,
+            @color-xx-dark,
+            @color-standout,
+            @color-max-bright,
+            @color-max-dark,
+            @color-link,
+            @color-link-hover,
+            @color-positive,
+            @color-light-positive,
+            @color-negative,
+            @color-light-negative,
+            @text-opacity
+        );
     }
 }
 
@@ -229,21 +202,9 @@
 }
 
 /* THEMES */
-.themes-common () {
+.themes() {
     .default-theme {
         .make-theme('default');
         .color-groups();
-    }
-}
-
-
-.themes-tiny () {
-    /* Remove bg on tiny screens. Boxes don't look good there */
-    .single-section-page {
-        .inline-cover + .main-pane .content-area:first-child {
-           &.item {
-                background: none !important;
-            }
-        }
     }
 }
