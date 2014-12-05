@@ -6,7 +6,7 @@
         gm = require('gm'),
         thunkify = require('fora-node-thunkify'),
         logger = require('./logger'),
-        randomizer = require('fora-app-randomizer'),
+        randomizer = require('fora-lib-randomizer'),
         fsutils = require('./fsutils');
 
     var exec = thunkify(require('child_process').exec);

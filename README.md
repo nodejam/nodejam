@@ -24,7 +24,7 @@ Windows is not supported yet, but will be supported in future.
 - Install graphicsmagick (Use OS package manager: eg: sudo apt-get install graphicsmagick)
 
 ### 2. NODE_ENV
-In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=production
+In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=development
 
 ### 3. Install these tools via npm
 These are to be installed globally.
@@ -35,10 +35,21 @@ sudo npm install -g less
 ```
 
 ### 4. Install npm dependencies
-These are npm dependencies for the fora server.
+Install these npm dependencies
 ```
+npm install
+
 cd server
 npm install
+cd ..
+
+cd host
+npm install fora-host-default
+cd ..
+
+cd apps
+npm install fora-lib-forum
+npm install fora-lib-photogallery
 cd ..
 ```
 

@@ -2,7 +2,7 @@
     "use strict";
 
     var React = require('react');
-    var pageContainer = require('fora-app-ui').PageContainer;
+    var pageContainer = require('fora-lib-ui').PageContainer;
 
 
     //IE9 doesn't have classList. That's the least IE version we'll support.

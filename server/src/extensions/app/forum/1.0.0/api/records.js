@@ -3,7 +3,7 @@
 
     var _;
 
-    var services = require("fora-app-services"),
+    var services = require("fora-lib-services"),
         Parser = require('fora-request-parser');
 
 
@@ -28,7 +28,7 @@
 
 
 
-    var auth = require('fora-app-auth-service');
+    var auth = require('fora-lib-auth-service');
     module.exports = {
         create: auth({ session: 'user' }, create),
         update: auth({ session: 'user' }, update),

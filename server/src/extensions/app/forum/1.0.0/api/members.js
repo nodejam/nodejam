@@ -8,7 +8,7 @@
     };
 
 
-    var auth = require('fora-app-auth-service');
+    var auth = require('fora-lib-auth-service');
     module.exports = {
         join: auth({ session: 'user' }, join)
     };

@@ -4,13 +4,13 @@
     var _;
 
     var co = require('co'),
-        logger = require('fora-app-logger'),
+        logger = require('fora-lib-logger'),
         Router = require('fora-router'),
-        Renderer = require('fora-app-renderer'),
+        Renderer = require('fora-lib-renderer'),
         ForaRequest = require('fora-request'),
-        services = require('fora-app-services'),
-        models = require('fora-app-models'),
-        initializeApp = require('fora-app-initialize'),
+        services = require('fora-lib-services'),
+        models = require('fora-lib-models'),
+        initializeApp = require('fora-lib-initialize'),
         baseConfig = require('./config');
 
 

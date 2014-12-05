@@ -1,6 +1,6 @@
 (function() {
 
-    var services = require('fora-app-services');
+    var services = require('fora-lib-services');
 
     var _svc;
     var getServices = function() {

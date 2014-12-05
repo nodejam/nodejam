@@ -3,7 +3,7 @@
     "use strict";
 
     var React = require('react'),
-        services = require('fora-app-services');
+        services = require('fora-lib-services');
 
     var getWidget = function*(viewName, item) {
         var typesService = services.getTypesService();

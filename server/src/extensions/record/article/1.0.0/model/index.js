@@ -2,7 +2,7 @@
 
     "use strict";
 
-    var models = require('fora-app-models');
+    var models = require('fora-lib-models');
 
     module.exports = models.Record.extend({
         my_getCacheItem: function*() {

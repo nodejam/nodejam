@@ -3,7 +3,7 @@
     "use strict";
 
     var dataUtils = require('fora-data-utils'),
-    DbConnector = require('fora-app-db-connector');
+    DbConnector = require('fora-lib-db-connector');
 
     var CacheItem = function(params) {
         dataUtils.extend(this, params);

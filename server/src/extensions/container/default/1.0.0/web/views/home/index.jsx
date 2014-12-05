@@ -6,8 +6,8 @@
 
     var React = require("react");
 
-    var UI = require('fora-app-ui');
-    var services = require("fora-app-services");
+    var UI = require('fora-lib-ui');
+    var services = require("fora-lib-services");
     var config = services.getConfiguration();
 
     module.exports = React.createClass({

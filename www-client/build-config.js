@@ -12,10 +12,10 @@
         var path = require('path');
         var fs = require('fs');
 
-        var clientModules = ["fora-app-db-backend", "fora-extensions-service", "fora-request"];
+        var clientModules = ["fora-lib-db-backend", "fora-extensions-service", "fora-request"];
         var serverNpmModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator"];
-        var libModules = ["fora-app-ui", "fora-app-services", "fora-app-models", "fora-app-logger", "fora-app-renderer", "fora-app-sandbox",
-                          "fora-app-types-service", "fora-app-initialize", "fora-app-randomizer", "fora-app-db-connector"];
+        var libModules = ["fora-lib-ui", "fora-lib-services", "fora-lib-models", "fora-lib-logger", "fora-lib-renderer", "fora-lib-sandbox",
+                          "fora-lib-types-service", "fora-lib-initialize", "fora-lib-randomizer", "fora-lib-db-connector"];
 
 
         return function() {
@@ -106,7 +106,7 @@
                     var dest = filePath.replace(/^\.\.\/server\/app\/lib\//, 'app/www/js/lib/');
                     yield* ensureDirExists(dest);
                     var parts = filePath.split("/");
-                    if (parts[4] === "fora-app-ui" || !fs.existsSync(dest))
+                    if (parts[4] === "fora-lib-ui" || !fs.existsSync(dest))
                         yield* exec("cp " + filePath + " " + dest);
                     else
                         console.log("Skipping " + filePath + " -> " + dest);

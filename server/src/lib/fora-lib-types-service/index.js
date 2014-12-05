@@ -4,7 +4,7 @@
 
     var _;
 
-    var services = require('fora-app-services');
+    var services = require('fora-lib-services');
     var ForaTypesService = require('fora-types-service');
 
     var ForaAppTypesService = function() {

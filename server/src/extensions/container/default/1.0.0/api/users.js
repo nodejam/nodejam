@@ -3,9 +3,9 @@
 
     var _;
 
-    var models = require('fora-app-models'),
-        services = require('fora-app-services'),
-        FileService = require('fora-app-file-service'),
+    var models = require('fora-lib-models'),
+        services = require('fora-lib-services'),
+        FileService = require('fora-lib-file-service'),
         Parser = require('fora-request-parser');
 
     var conf = services.getConfiguration();
@@ -42,7 +42,7 @@
     };
 
 
-    var auth = require('fora-app-auth-service');
+    var auth = require('fora-lib-auth-service');
     module.exports = {
         create: auth({ session: 'credential' }, create),
         login: auth({ session: 'credential' }, login),

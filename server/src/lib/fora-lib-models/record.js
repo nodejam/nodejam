@@ -2,10 +2,10 @@
     "use strict";
 
     var recordCommon = require('./record-common'),
-        randomizer = require('fora-app-randomizer'),
+        randomizer = require('fora-lib-randomizer'),
         dataUtils = require('fora-data-utils'),
-        services = require('fora-app-services'),
-        DbConnector = require('fora-app-db-connector'),
+        services = require('fora-lib-services'),
+        DbConnector = require('fora-lib-db-connector'),
         Parser = require('fora-request-parser'),
         models = require('./');
 

@@ -3,8 +3,8 @@
 
     var _;
 
-    var models = require('fora-app-models'),
-        services = require('fora-app-services'),
+    var models = require('fora-lib-models'),
+        services = require('fora-lib-services'),
         Parser = require('fora-request-parser');
 
     var conf = services.getConfiguration();

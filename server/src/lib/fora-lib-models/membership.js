@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    var DbConnector = require('fora-app-db-connector'),
+    var DbConnector = require('fora-lib-db-connector'),
         dataUtils = require('fora-data-utils');
 
 

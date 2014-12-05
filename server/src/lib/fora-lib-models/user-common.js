@@ -1,8 +1,8 @@
 (function() {
     "use strict";
 
-    var services = require('fora-app-services'),
-        DbConnector = require('fora-app-db-connector');
+    var services = require('fora-lib-services'),
+        DbConnector = require('fora-lib-db-connector');
 
     var UserSummary = require('./user-summary').UserSummary;
 

@@ -2,7 +2,7 @@
     "use strict";
 
     var React = require('react'),
-        ForaUI = require('fora-app-ui');
+        ForaUI = require('fora-lib-ui');
 
     module.exports = React.createClass({
         render: function() {

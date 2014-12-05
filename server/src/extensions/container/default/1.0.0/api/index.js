@@ -9,7 +9,7 @@
     var ui_home = require('./ui/home'),
         ui_apps = require('./ui/apps');
 
-    var services = require("fora-app-services");
+    var services = require("fora-lib-services");
     var config = services.getConfiguration();
 
     module.exports =  {

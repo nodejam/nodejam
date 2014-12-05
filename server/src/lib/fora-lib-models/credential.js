@@ -3,11 +3,11 @@
     "use strict";
 
     var thunkify = require('fora-node-thunkify'),
-        hasher = require('fora-app-hasher'),
-        randomizer = require('fora-app-randomizer'),
+        hasher = require('fora-lib-hasher'),
+        randomizer = require('fora-lib-randomizer'),
         models = require('./'),
-        services = require('fora-app-services'),
-        DbConnector = require('fora-app-db-connector'),
+        services = require('fora-lib-services'),
+        DbConnector = require('fora-lib-db-connector'),
         dataUtils = require('fora-data-utils'),
         Parser = require('fora-request-parser');
 

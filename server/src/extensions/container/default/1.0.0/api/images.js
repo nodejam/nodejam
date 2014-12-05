@@ -3,8 +3,8 @@
 
     var _;
 
-    var models = require('fora-app-models'),
-        services = require('fora-app-services'),
+    var models = require('fora-lib-models'),
+        services = require('fora-lib-services'),
         Parser = require('fora-request-parser');
 
     var conf = services.getConfiguration();
@@ -105,7 +105,7 @@
         }
     };
 
-    var auth = require('fora-app-auth-service');
+    var auth = require('fora-lib-auth-service');
     module.exports = { upload: auth({ session: 'any' }, upload) };
 
 })();

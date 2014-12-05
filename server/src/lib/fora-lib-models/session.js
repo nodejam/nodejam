@@ -2,10 +2,10 @@
     "use strict";
 
     var models = require('./'),
-        randomizer = require('fora-app-randomizer'),
-        services = require('fora-app-services'),
+        randomizer = require('fora-lib-randomizer'),
+        services = require('fora-lib-services'),
         dataUtils = require('fora-data-utils'),
-        DbConnector = require('fora-app-db-connector');
+        DbConnector = require('fora-lib-db-connector');
 
     /*
         A session token starts life as a credential token.

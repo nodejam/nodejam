@@ -5,12 +5,12 @@
     var _;
 
     var co = require('co'),
-        logger = require('fora-app-logger'),
+        logger = require('fora-lib-logger'),
         fs = require('fs'),
         path = require('path'),
-        FileService = require('fora-app-file-service'),
-        initializeApp = require('fora-app-initialize'),
-        services = require('fora-app-services'),
+        FileService = require('fora-lib-file-service'),
+        initializeApp = require('fora-lib-initialize'),
+        services = require('fora-lib-services'),
         baseConfig = require('../../config');
 
     var fileService = new FileService(baseConfig);

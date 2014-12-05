@@ -1,7 +1,7 @@
 (function() {
 
     var database = require('fora-db'),
-        services = require('fora-app-services');
+        services = require('fora-lib-services');
 
     var _svc;
     var getServices = function() {

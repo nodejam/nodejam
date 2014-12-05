@@ -2,7 +2,7 @@
     "use strict";
 
     var React = require('react');
-    var pageContainer = require('fora-app-ui').PageContainer;
+    var pageContainer = require('fora-lib-ui').PageContainer;
 
     var makeScript = function (src) {
         return '<script src="' + src + '"></script>';

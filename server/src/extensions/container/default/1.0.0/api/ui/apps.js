@@ -3,9 +3,9 @@
 
     var _;
 
-    var models = require('fora-app-models'),
-        services = require('fora-app-services'),
-        DbConnector = require('fora-app-db-connector');
+    var models = require('fora-lib-models'),
+        services = require('fora-lib-services'),
+        DbConnector = require('fora-lib-db-connector');
 
 
     var index = function*() {

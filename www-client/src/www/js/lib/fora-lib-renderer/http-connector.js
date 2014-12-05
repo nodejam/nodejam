@@ -4,7 +4,7 @@
     var _;
 
     var visit = require('fora-data-utils').visit;
-    var services = require('fora-app-services');
+    var services = require('fora-lib-services');
 
     var ApiConnector = function(requestContext, router) {
         this.requestContext = requestContext;

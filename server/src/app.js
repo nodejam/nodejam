@@ -5,14 +5,14 @@
         argv = require('optimist').argv,
         co = require('co'),
         koaSend = require("koa-send"),
-        logger = require('fora-app-logger'),
+        logger = require('fora-lib-logger'),
         Router = require('fora-router'),
-        Renderer = require('fora-app-renderer'),
-        services = require('fora-app-services'),
-        initializeApp = require('fora-app-initialize'),
+        Renderer = require('fora-lib-renderer'),
+        services = require('fora-lib-services'),
+        initializeApp = require('fora-lib-initialize'),
         baseConfig = require('./config'),
-        randomizer = require('fora-app-randomizer'),
-        DbConnector = require('fora-app-db-connector');
+        randomizer = require('fora-lib-randomizer'),
+        DbConnector = require('fora-lib-db-connector');
 
 
     var staticPaths = ["public", "js", "vendor", "css", "images", "fonts"];
@@ -45,7 +45,7 @@
         If the request is for a different domain, it must be an app.
     */
     var addDomainRewrite = function(router) {
-        var models = require('fora-app-models');
+        var models = require('fora-lib-models');
         var appStore = new DbConnector(models.App);
         router.when(
             function() {
@@ -91,10 +91,10 @@
         - Also rewrite the url: /apps/:appname/some/path -> /some/path, /apps/:appname?x -> /?x
     */
     var addExtensionRoutes = function*(router, appUrlPrefix, extensionModuleName) {
-        var models = require('fora-app-models');
+        var models = require('fora-lib-models');
         var appStore = new DbConnector(models.App);
         var sessionStore = new DbConnector(models.Session);
-        var Sandbox = require('fora-app-sandbox');
+        var Sandbox = require('fora-lib-sandbox');
         var sandbox = new Sandbox(services, extensionModuleName);
 
         appUrlPrefix = /\/$/.test(appUrlPrefix) ? appUrlPrefix : appUrlPrefix + "/";
@@ -195,7 +195,7 @@
             var koa = require('koa');
             var app = koa();
 
-            var errorHandler = require('fora-app-error-handler');
+            var errorHandler = require('fora-lib-error-handler');
             app.use(errorHandler);
 
             app.use(router.koaRoute());

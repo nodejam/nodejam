@@ -4,8 +4,8 @@
     var models = require('./'),
         appCommon = require('./app-common'),
         dataUtils = require('fora-data-utils'),
-        DbConnector = require('fora-app-db-connector'),
-        services = require('fora-app-services'),
+        DbConnector = require('fora-lib-db-connector'),
+        services = require('fora-lib-services'),
         Parser = require('fora-request-parser');
 
     var conf = services.getConfiguration();

@@ -9,13 +9,13 @@
             2) Extensions Service
             3) Types Service
         */
-        var services = require('fora-app-services');
+        var services = require('fora-lib-services');
 
         //Configuration
         services.setConfiguration(baseConfig);
 
         //Database Service
-        var Database = require('fora-app-db-backend');
+        var Database = require('fora-lib-db-backend');
         var db = new Database(baseConfig.db);
         services.setDb(db);
 
@@ -43,11 +43,11 @@
             We must pass all the typeDefinitions and virtual typeDefinitions to typesService.
             Virtual Type Definitions are defined in extensions, so we need to get it via extensionsService.
         */
-        var TypesService = require('fora-app-types-service');
+        var TypesService = require('fora-lib-types-service');
         var typesService = new TypesService();
         services.setTypesService(typesService);
 
-        var models = require("fora-app-models");
+        var models = require("fora-lib-models");
 
         var modelsArray = Object.keys(models).map(function(k) { return models[k]; });
         var typeDefinitions = modelsArray.map(function(ctor) {
