@@ -43,14 +43,6 @@ cd server
 npm install
 cd ..
 
-cd host
-npm install fora-host-default
-cd ..
-
-cd apps
-npm install fora-lib-forum
-npm install fora-lib-photogallery
-cd ..
 ```
 
 ### 5. Build once
