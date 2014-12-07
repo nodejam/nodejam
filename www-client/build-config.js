@@ -67,13 +67,13 @@
 
 
             /*
-                Watch ../server/node_modules
+                Watch ../node_modules
             */
             this.watch(
-                serverNpmModules.map(function(m) { return "../server/node_modules/" + m + "/*.*";}),
+                serverNpmModules.map(function(m) { return "../node_modules/" + m + "/*.*";}),
                 function*(filePath) {
                     if (!/\/\.git\//.test(filePath)) {
-                        var dest = filePath.replace(/^\.\.\/server\/node_modules\//, 'app/www/js/lib/');
+                        var dest = filePath.replace(/^\.\.\/node_modules\//, 'app/www/js/lib/');
                         yield* ensureDirExists(dest);
                         yield* exec("cp " + filePath + " " + dest);
                     }

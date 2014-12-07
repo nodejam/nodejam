@@ -6,7 +6,6 @@ tags
 *~
 
 server/app
-shared/app
 www-client/app
 
 backups/*
@@ -14,27 +13,6 @@ backups/*
 
 temp/*
 !temp/placeholder
-
-server/weberrors.log
-server/apierrors.log
-
-#Ignore actual configuration file
-server/src/config/settings.config
-
-#Ignore directories which are already on npm.
-#Sometimes we check them out here to test.
-shared/src/lib/fora-types-service
-shared/src/lib/fora-router
-shared/src/lib/fora-data-utils
-shared/src/lib/fora-validator
-server/src/lib/fora-models
-server/src/lib/fora-request
-server/src/lib/fora-request-parser
-server/src/lib/fora-extensions-service
-server/src/lib/fora-db-backend-mongodb
-
-www-client/system/*
-!www-client/system/placeholder
 
 www-public/assets/*
 !www-public/assets/0
