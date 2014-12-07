@@ -26,14 +26,6 @@ Windows is not supported yet, but will be supported in future.
 ### 2. NODE_ENV
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=development
 
-### 3. Install these tools via npm
-These are to be installed globally.
-```
-sudo npm install -g regenerator
-sudo npm install -g browserify
-sudo npm install -g less
-```
-
 ### 4. Install npm dependencies
 Install these npm dependencies
 ```

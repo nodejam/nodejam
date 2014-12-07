@@ -17,6 +17,9 @@
         var libModules = ["fora-lib-ui", "fora-lib-services", "fora-lib-models", "fora-lib-logger", "fora-lib-renderer", "fora-lib-sandbox",
                           "fora-lib-types-service", "fora-lib-initialize", "fora-lib-randomizer", "fora-lib-db-connector"];
 
+        var cmd_browserify = "../node_modules/.bin/browserify";
+        var cmd_regenerator = "../node_modules/.bin/regenerator";
+        var cmd_lessc = "../node_modules/.bin/lessc";
 
         return function() {
 
@@ -119,7 +122,7 @@
             /*
                 Compile less files. Schedule it at the end.
             */
-            var lessCompile = function*() { yield* exec("lessc --verbose src/www/css/main.less app/www/css/main.css"); };
+            var lessCompile = function*() { yield* exec(cmd_lessc + " --verbose src/www/css/main.less app/www/css/main.css"); };
             this.watch(["src/www/css/*.less"], function*(filePath) {
                 yield* ensureDirExists('app/www/css/main.css');
                 this.queue(lessCompile);
@@ -133,7 +136,7 @@
                 this.watch(
                     ["app/www/js/*.js"],
                     function*(filePath) {
-                        var result = yield* exec("regenerator " + filePath);
+                        var result = yield* exec(cmd_regenerator + " " + filePath);
                         fs.writeFileSync(filePath, result);
                     },
                     "client_regenerator_transform",
@@ -222,7 +225,7 @@
 
                 console.log("Running browserify");
 
-                var cmdMakeLib = "browserify " +
+                var cmdMakeLib = cmd_browserify + " " +
                      "-r ./app/www/vendor/js/shims/react.shim.js:react " +
                      "-r ./app/www/vendor/js/shims/co.shim.js:co " +
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
@@ -235,7 +238,7 @@
                      }).join(" ") + " " +
                      "> app/www/js/lib.js";
 
-                var cmdMakeBundle = "browserify " +
+                var cmdMakeBundle = cmd_browserify + " " +
                     " -x react -x co -x path-to-regexp -x markdown " +
                     serverNpmModules.concat(clientModules).concat(libModules).map(function(m) {
                         return "-x " + m;

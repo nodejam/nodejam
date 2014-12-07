@@ -16,6 +16,9 @@
     "url": "https://github.com/jeswin/fora/issues"
   },
   "dependencies": {
+    "regenerator": "*",
+    "browserify": "*",
+    "less": "*",
     "optimist": "*",
     "node-minify": "*",
     "fora-build": "*",
@@ -47,8 +50,5 @@
     "fora-router": "*",
     "fora-types-service": "*",
     "fora-validator": "*"
-  },
-  "devDependencies": {
-    "browserify-global-shim": "^1.0.0"
   }
 }
