@@ -75,7 +75,9 @@
             this.watch(
                 serverNpmModules.map(function(m) { return "../node_modules/" + m + "/*.*";}),
                 function*(filePath) {
-                    if (!/\/\.git\//.test(filePath)) {
+                    //We dont want anything inside .git dir and inner node_modules
+                    if (!/\/\.git\//.test(filePath) &&
+                        (filePath.split('/').filter(function(x) { return x === "node_modules"; }).length <= 1)) {
                         var dest = filePath.replace(/^\.\.\/node_modules\//, 'app/www/js/lib/');
                         yield* ensureDirExists(dest);
                         yield* exec("cp " + filePath + " " + dest);
