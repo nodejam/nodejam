@@ -27,13 +27,9 @@ Windows is not supported yet, but will be supported in future.
 In ~/.bashrc export NODE_ENV as 'development' or 'production'. eg: export NODE_ENV=development
 
 ### 4. Install npm dependencies
-Install these npm dependencies
+From the main directory
 ```
 npm install
-
-cd server
-npm install
-cd ..
 
 ```
 
