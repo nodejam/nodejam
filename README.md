@@ -1,6 +1,5 @@
-To know what Fora is about, see this https://slides.com/jeswin/fora/fullscreen#
-
-This is __not ready__ to be forked yet. Our first priority is to get the foundation right.
+Things are going to be silent here until the end of Jan.
+Fora is now part of a larger plan.
 
 Some re-usable components of fora have been moved to separate packages.
 - Fora Build (Build system) https://github.com/jeswin/fora-build
@@ -12,6 +11,9 @@ Some re-usable components of fora have been moved to separate packages.
 - Fora Validator (Validation) https://github.com/jeswin/fora-validator
 - Fora Request (Wrapper around Koa Request) https://github.com/jeswin/fora-request
 - Fora Request Parser (Parse and HTTP Request into an object) https://github.com/jeswin/fora-request-parser
+
+To know what Fora is about, see this https://slides.com/jeswin/fora/fullscreen#
+This is __not ready__ to be forked yet. Our first priority is to get the foundation right.
 
 Installation
 ============
