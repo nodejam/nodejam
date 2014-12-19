@@ -8,8 +8,8 @@
         var ensureDirExists = tools.fs.ensureDirExists();
         var react = require('react-tools');
 
-        var npmModules = ["fora-data-utils", "fora-router", "fora-types-service", "fora-validator",
-                          "fora-db-backend-mongodb", "fora-models", "fora-extensions-service", "fora-request", "fora-request-parser"];
+        var npmModules = ["fora-data-utils", "fora-db", "fora-db-backend-mongodb", "fora-extensions-service", "fora-request", "fora-request-parser",
+            "fora-router", "fora-types-service", "fora-validator"];
 
         return function() {
 
@@ -54,7 +54,7 @@
                 We have to reload the app when anything under node_modules change
             */
             this.watch(
-                npmModules.map(function(m) { return "node_modules/" + m + "/lib/*.*"; }),
+                npmModules.map(function(m) { return "../node_modules/" + m + "/lib/*.*"; }),
                 function*(filePath) {
                     this.build.queue('restart_server');
                 },
