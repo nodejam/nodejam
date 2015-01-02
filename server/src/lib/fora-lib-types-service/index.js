@@ -5,7 +5,7 @@
     var _;
 
     var services = require('fora-lib-services');
-    var ForaTypesService = require('fora-types-service');
+    var ForaTypesService = require('ceramic-types-manager');
 
     var ForaAppTypesService = function() {
         ForaTypesService.call(this);

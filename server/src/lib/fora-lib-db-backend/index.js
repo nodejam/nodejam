@@ -1,6 +1,6 @@
 (function() {
     "use strict";
 
-    module.exports = require('calcify-backend-mongodb');
+    module.exports = require('ceramic-backend-mongodb');
 
 })();

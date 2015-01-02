@@ -42,17 +42,13 @@
     "react": "*",
     "path-to-regexp": "*",
     "fora-data-utils": "*",
-    "calcify": "*",
-    "calcify-backend-mongodb": "*",
-    "calcify-validator": "*",
+    "ceramic": "*",
+    "ceramic-backend-mongodb": "*",
+    "ceramic-validator": "*",
+    "ceramic-types-manager": "*",
     "fora-extensions-service": "*",
     "fora-request": "*",
     "fora-request-parser": "*",
-    "fora-router": "*",
-    "fora-types-service": "*",
-    "miller-rabin": "1.1.1"
- },
- "peerDependencies": {
-
+    "fora-router": "*"
  }
 }

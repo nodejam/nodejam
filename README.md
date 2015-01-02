@@ -1,11 +1,11 @@
 Some re-usable components of fora have been moved to separate packages.
-- Fora Build (Build system) https://github.com/jeswin/fora-build
-- Calcify (Object Data Mapper) https://github.com/jeswin/calcify
-- Calcify MongoDb Backend (ForaDb's Mongo Backend) https://github.com/jeswin/calcify-backend-mongodb
-- Calcify Validator (Validation) https://github.com/jeswin/calcify-validator
+- Ferment (Build system) https://github.com/jeswin/ferment
+- Ceramic (Object Data Mapper) https://github.com/jeswin/ceramic
+- Ceramic MongoDb Backend (ForaDb's Mongo Backend) https://github.com/jeswin/ceramic-backend-mongodb
+- Ceramic Validator (Validation) https://github.com/jeswin/ceramic-validator
+- Ceramic Types Manager (Data Type Manager) https://github.com/jeswin/ceramic-types-manager
 - Fora Extensions (Extensions and Plugin Management) https://github.com/jeswin/fora-extensions
 - Fora Router (Router for Koa) https://github.com/jeswin/fora-router
-- Fora Types Service (Data Type Manager) https://github.com/jeswin/fora-types-service
 - Fora Request (Wrapper around Koa Request) https://github.com/jeswin/fora-request
 - Fora Request Parser (Parse and HTTP Request into an object) https://github.com/jeswin/fora-request-parser
 

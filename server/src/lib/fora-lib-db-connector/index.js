@@ -1,6 +1,6 @@
 (function() {
 
-    var database = require('calcify'),
+    var database = require('ceramic'),
         services = require('fora-lib-services');
 
     var _svc;
