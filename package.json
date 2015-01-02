@@ -42,13 +42,17 @@
     "react": "*",
     "path-to-regexp": "*",
     "fora-data-utils": "*",
-    "fora-db": "*",
-    "fora-db-backend-mongodb": "*",
+    "calcify": "*",
+    "calcify-backend-mongodb": "*",
+    "calcify-validator": "*",
     "fora-extensions-service": "*",
     "fora-request": "*",
     "fora-request-parser": "*",
     "fora-router": "*",
     "fora-types-service": "*",
-    "fora-validator": "*"
-  }
+    "miller-rabin": "1.1.1"
+ },
+ "peerDependencies": {
+
+ }
 }

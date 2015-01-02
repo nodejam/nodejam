@@ -1,14 +1,11 @@
-Things are going to be silent here until the end of Jan.
-Fora is now part of a larger plan.
-
 Some re-usable components of fora have been moved to separate packages.
 - Fora Build (Build system) https://github.com/jeswin/fora-build
-- Fora Db (Object Data Mapper) https://github.com/jeswin/fora-db
-- Fora MongoDb Backend (ForaDb's Mongo Backend) https://github.com/jeswin/fora-backend-mongodb
+- Calcify (Object Data Mapper) https://github.com/jeswin/calcify
+- Calcify MongoDb Backend (ForaDb's Mongo Backend) https://github.com/jeswin/calcify-backend-mongodb
+- Calcify Validator (Validation) https://github.com/jeswin/calcify-validator
 - Fora Extensions (Extensions and Plugin Management) https://github.com/jeswin/fora-extensions
 - Fora Router (Router for Koa) https://github.com/jeswin/fora-router
 - Fora Types Service (Data Type Manager) https://github.com/jeswin/fora-types-service
-- Fora Validator (Validation) https://github.com/jeswin/fora-validator
 - Fora Request (Wrapper around Koa Request) https://github.com/jeswin/fora-request
 - Fora Request Parser (Parse and HTTP Request into an object) https://github.com/jeswin/fora-request-parser
 

@@ -1,6 +1,6 @@
 (function() {
     "use strict";
 
-    module.exports = require('fora-db-backend-mongodb');
+    module.exports = require('calcify-backend-mongodb');
 
 })();

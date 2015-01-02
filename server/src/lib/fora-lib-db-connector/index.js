@@ -1,6 +1,6 @@
 (function() {
 
-    var database = require('fora-db'),
+    var database = require('calcify'),
         services = require('fora-lib-services');
 
     var _svc;
