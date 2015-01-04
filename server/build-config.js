@@ -9,7 +9,7 @@
         var react = require('react-tools');
 
         var npmModules = ["fora-data-utils", "ceramic", "ceramic-backend-mongodb", "fora-extensions-service", "fora-request", "fora-request-parser",
-            "fora-router", "ceramic-types-manager", "ceramic-validator"];
+            "fora-router", "ceramic"];
 
         return function() {
 

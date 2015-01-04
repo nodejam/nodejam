@@ -35,7 +35,7 @@
             lastLogin: Date.now()
         });
 
-        user = yield* user.save();
+        yield* user.save();
 
         //Move images to assets
         var picture = {

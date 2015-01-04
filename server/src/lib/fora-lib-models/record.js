@@ -67,7 +67,8 @@
 
         var def = yield* record.getTypeDefinition();
         yield* parser.map(record, def, yield* record.getCustomFields(def));
-        return yield* record.save();
+        yield* record.save();
+        return record;
     };
 
 
@@ -77,7 +78,7 @@
         yield* parser.map(this, def, yield* this.getCustomFields());
         this.savedAt = Date.now();
         if (yield* parser.body('state') === 'published') this.state = 'published';
-        return yield* this.save();
+        yield* this.save();
     };
 
 

@@ -119,7 +119,8 @@
                     yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
                     break;
             }
-            return yield* credential.save();
+            yield* credential.save();
+            return credential;
         }
     };
 
@@ -141,7 +142,8 @@
                 token: randomizer.uniqueId(24)
             }
         );
-        return yield* session.save();
+        yield* session.save();
+        return session;
     };
 
 

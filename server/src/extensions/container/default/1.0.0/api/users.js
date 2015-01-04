@@ -21,15 +21,15 @@
     var login = function*() {
         var parser = new Parser(this, services.getTypesService());
         yield* this.session.upgrade(yield* parser.body('username'));
-        var session = yield* this.session.save();
+        yield* this.session.save();
 
-        var user = session.user;
-        user.token = session.token;
+        var user = this.session.user;
+        user.token = this.session.token;
 
         this.cookies.set("userId", user.id.toString(), { httpOnly: false });
         this.cookies.set("username", user.username, { httpOnly: false });
         this.cookies.set("fullName", user.name, { httpOnly: false });
-        this.cookies.set("token", session.token);
+        this.cookies.set("token", this.session.token);
 
         this.body = user;
     };

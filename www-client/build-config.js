@@ -13,7 +13,7 @@
         var fs = require('fs');
 
         var clientModules = ["fora-lib-db-backend", "fora-extensions-service", "fora-request"];
-        var serverNpmModules = ["fora-data-utils", "fora-router", "ceramic-types-manager", "ceramic-validator"];
+        var serverNpmModules = ["fora-data-utils", "fora-router", "ceramic"];
         var libModules = ["fora-lib-ui", "fora-lib-services", "fora-lib-models", "fora-lib-logger", "fora-lib-renderer", "fora-lib-sandbox",
                           "fora-lib-types-service", "fora-lib-initialize", "fora-lib-randomizer", "fora-lib-db-connector"];
 

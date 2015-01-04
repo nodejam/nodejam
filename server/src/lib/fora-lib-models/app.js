@@ -92,7 +92,8 @@
 
         if (record) {
             if (record.createdBy.username === request.session.user.username) {
-                return yield* record.updateViaRequest(request);
+                yield* record.updateViaRequest(request);
+                return record;
             } else {
                 throw new Error("Access denied");
             }
@@ -106,7 +107,8 @@
         var record = yield* this.getRecord(stub);
         if (record) {
             if(record.createdBy.username === request.session.user.username) {
-                return yield* record.destroy();
+                yield* record.destroy();
+                return record;
             } else {
                 throw new Error('Access denied');
             }
@@ -120,7 +122,8 @@
     App.prototype.addRecordMetaViaRequest = function*(stub, request) {
         var record = yield* this.getRecord(stub);
         if (record) {
-            return yield* record.addMetaViaRequest(request);
+            yield* record.addMetaViaRequest(request);
+            return record;
         } else {
             throw new Error("Not found");
         }
@@ -131,7 +134,8 @@
     App.prototype.deleteRecordMetaViaRequest = function*(stub, request) {
         var record = yield* this.getRecord(stub);
         if (record) {
-            return yield* record.deleteMetaViaRequest(request);
+            yield* record.deleteMetaViaRequest(request);
+            return record;
         } else {
             throw new Error("Not found");
         }
@@ -157,7 +161,7 @@
         this.versionMinor = parseInt(versionParts[1]);
         this.versionRevision = parseInt(versionParts[2]);
 
-        return yield* appStore.save(this);
+        yield* appStore.save(this);
     };
 
 
@@ -226,7 +230,8 @@
             }
         }
 
-        return yield* membership.save();
+        yield* membership.save();
+        return membership;
     };
 
 
@@ -235,7 +240,11 @@
         var membershipStore = new DbConnector(models.Membership);
         var membership = yield* membershipStore.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
         membership.roles = membership.roles.filter(function(r) { return r != role; });
-        return membership.roles.length ? (yield* membership.save()) : (yield* membership.destroy());
+        if (membership.roles.length)
+            yield* membership.save();
+        else
+            yield* membership.destroy();
+        return Membership;
     };
 
 
