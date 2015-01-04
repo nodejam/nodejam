@@ -16,7 +16,7 @@ get_repos_from_git() {
     fi
 }
 
-get_repos_from_git "fora-build" "node_modules"
+get_repos_from_git "crankshaft" "node_modules"
 get_repos_from_git "fora-data-utils" "node_modules"
 get_repos_from_git "ceramic" "node_modules"
 get_repos_from_git "ceramic-db" "node_modules"
