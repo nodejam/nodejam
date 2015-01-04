@@ -30,18 +30,18 @@
 
     var start = Date.now();
 
-    var foraBuild = require('fora-build');
+    var crankshaft = require('crankshaft');
 
-    var spawn = foraBuild.tools.process.spawn();
-    var exec = foraBuild.tools.process.exec({ log: console.log });
+    var spawn = crankshaft.tools.process.spawn();
+    var exec = crankshaft.tools.process.exec({ log: console.log });
 
     /* Create the build */
     var threads = argv.threads ? parseInt(argv.threads) : 8;
-    var build = foraBuild.create({ threads: threads });
+    var build = crankshaft.create({ threads: threads });
 
     /* The three configs */
-    var serverConfig = require('./server/build-config')(foraBuild.tools);
-    var clientConfig = require('./www-client/build-config')(foraBuild.tools);
+    var serverConfig = require('./server/build-config')(crankshaft.tools);
+    var clientConfig = require('./www-client/build-config')(crankshaft.tools);
 
     /* Set build parameters */
     build.state.monitor = true;

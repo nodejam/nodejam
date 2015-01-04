@@ -21,7 +21,7 @@
     "less": "*",
     "optimist": "*",
     "node-minify": "*",
-    "fora-build": "*",
+    "crankshaft": "*",
     "react-tools": "*",
     "koa": "*",
     "koa-send": "*",
