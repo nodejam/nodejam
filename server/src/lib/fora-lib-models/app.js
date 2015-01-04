@@ -244,7 +244,7 @@
             yield* membership.save();
         else
             yield* membership.destroy();
-        return Membership;
+        return membership;
     };
 
 
