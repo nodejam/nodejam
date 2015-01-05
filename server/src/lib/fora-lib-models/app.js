@@ -70,7 +70,7 @@
 
         if (request.session.user.username === request.createdBy.username || request.session.admin) {
             yield* parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            return yield* this.save();
+            yield* this.save();
         } else {
             throw new Error("Access denied");
         }

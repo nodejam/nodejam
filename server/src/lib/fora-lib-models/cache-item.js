@@ -28,7 +28,7 @@
     var cacheItemStore = new DbConnector(CacheItem);
 
     CacheItem.prototype.save = function*() {
-        return yield* cacheItemStore.save(this);
+        yield* cacheItemStore.save(this);
     };
 
     exports.CacheItem = CacheItem;

@@ -88,7 +88,7 @@
         var meta = yield* parser.body('meta');
         if (meta) {
             yield* this.addMeta(meta.split(','));
-            return yield* this.save();
+            yield* this.save();
         } else {
             throw new Error("Meta was not supplied");
         }
@@ -134,7 +134,7 @@
             this.stub = this.stub || randomizer.uniqueId(16);
         }
 
-        return yield* recordStore.save(this);
+        yield* recordStore.save(this);
     };
 
 
