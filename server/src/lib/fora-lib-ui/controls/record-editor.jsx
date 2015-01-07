@@ -6,8 +6,8 @@
     module.exports = React.createClass({
         render: function() {
             var json = JSON.stringify(this.props.record);
-            var typeDefinition = JSON.stringify(this.props.typeDefinition);
-            var script = "new Fora.Views.Records.Record(\"" + json + "\", \"" + typeDefinition + "\");";
+            var entitySchema = JSON.stringify(this.props.entitySchema);
+            var script = "new Fora.Views.Records.Record(\"" + json + "\", \"" + entitySchema + "\");";
             script = <script type="text/javascript" dangerouslySetInnerHTML={{__html: script}}></script>;
             return script;
         }

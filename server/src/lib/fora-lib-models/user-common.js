@@ -7,7 +7,7 @@
     var UserSummary = require('./user-summary').UserSummary;
 
     var extendUser = function(User) {
-        User.typeDefinition = {
+        User.entitySchema = {
             name: "user",
             collection: 'users',
             schema: {

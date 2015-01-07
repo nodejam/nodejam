@@ -7,7 +7,7 @@
         dataUtils.extend(this, params);
     };
 
-    Token.typeDefinition = {
+    Token.entitySchema = {
         name: "token",
         collection: 'tokens',
         schema: {

@@ -8,11 +8,11 @@
 	var AppSummary = require('./app-summary').AppSummary;
 
 	var extendApp = function(App) {
-		App.typeDefinition = {
+		App.entitySchema = {
 			name: 'app',
 			collection: 'apps',
 			discriminator: function*(obj, typesService) {
-				return yield* typesService.getTypeDefinition(obj.type);
+				return yield* typesService.getEntitySchema(obj.type);
 			},
 			schema: {
 				type: 'object',

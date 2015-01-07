@@ -9,7 +9,7 @@
         dataUtils.extend(this, params);
     };
 
-    CacheItem.typeDefinition = {
+    CacheItem.entitySchema = {
         name: "cache-item",
         collection: 'cacheitems',
         schema: {

@@ -17,7 +17,7 @@
 
     var sessionStore = new DbConnector(Session);
 
-    Session.typeDefinition = {
+    Session.entitySchema = {
         name: 'session',
         collection: 'sessions',
         schema: {

@@ -7,11 +7,11 @@
 
     var extendRecord = function(Record) {
 
-        Record.typeDefinition = {
+        Record.entitySchema = {
             name: "record",
             collection: 'records',
             discriminator: function*(obj, typesService) {
-                return yield* typesService.getTypeDefinition(obj.type);
+                return yield* typesService.getEntitySchema(obj.type);
             },
             schema: {
                 type: 'object',
@@ -60,24 +60,24 @@
         };
 
 
-        var getCustomFields = function*(typeDefinition, acc, prefix) {
+        var getCustomFields = function*(entitySchema, acc, prefix) {
             acc = acc || [];
             prefix = prefix || [];
 
-            for (var field in typeDefinition.schema.properties) {
-                if (!typeDefinition.ownProperties || typeDefinition.ownProperties.indexOf(field) > -1) {
-                    var def = typeDefinition.schema.properties[field];
+            for (var field in entitySchema.schema.properties) {
+                if (!entitySchema.ownProperties || entitySchema.ownProperties.indexOf(field) > -1) {
+                    var def = entitySchema.schema.properties[field];
                     if (dataUtils.isPrimitiveType(def.type)) {
                         if (def.type === "array" && dataUtils.isCustomType(def.items.type)) {
                                 prefix.push(field);
-                                yield* getCustomFields(def.items.typeDefinition, acc, prefix);
+                                yield* getCustomFields(def.items.entitySchema, acc, prefix);
                                 prefix.pop(field);
                         } else {
                             acc.push(prefix.concat(field).join('_'));
                         }
                     } else if (dataUtils.isCustomType(def.type)) {
                         prefix.push(field);
-                        yield* getCustomFields(def.typeDefinition, acc, prefix);
+                        yield* getCustomFields(def.entitySchema, acc, prefix);
                         prefix.pop(field);
                     }
                 }
@@ -87,15 +87,15 @@
         };
 
 
-        Record.prototype.getCustomFields = function*(typeDefinition) {
-            return yield* getCustomFields(typeDefinition);
+        Record.prototype.getCustomFields = function*(entitySchema) {
+            return yield* getCustomFields(entitySchema);
         };
 
 
         Record.new = function*(params) {
             var typesService = services.getTypesService();
-            var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
-            return yield* typesService.constructModel(params, typeDefinition);
+            var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.name);
+            return yield* typesService.constructModel(params, entitySchema);
         };
 
 

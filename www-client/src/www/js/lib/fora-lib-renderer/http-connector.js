@@ -38,8 +38,8 @@
                     match.requestContext.body,
                     function*(item) {
                         if (item._mustReconstruct) {
-                            var typeDefinition = yield* self.typesService.getTypeDefinition(item.type);
-                            var model = yield* self.typesService.constructModel(item, typeDefinition);
+                            var entitySchema = yield* self.typesService.getEntitySchema(item.type);
+                            var model = yield* self.typesService.constructModel(item, entitySchema);
                             return { value: model, stop: true };
                         }
                     }

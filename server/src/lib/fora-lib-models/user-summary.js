@@ -8,7 +8,7 @@
         dataUtils.extend(this, params);
     };
 
-    UserSummary.typeDefinition = {
+    UserSummary.entitySchema = {
         name: "app-summary",
         schema: {
             type: 'object',
@@ -30,7 +30,7 @@
         }
     };
 
-    UserSummary.typeDefinition = {
+    UserSummary.entitySchema = {
         name: "user-summary",
         schema: {
             type: 'object',

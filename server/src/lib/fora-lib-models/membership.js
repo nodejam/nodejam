@@ -11,7 +11,7 @@
 
     var membershipStore = new DbConnector(Membership);
 
-    Membership.typeDefinition = {
+    Membership.entitySchema = {
         name: "membership",
         collection: 'memberships',
         schema: {

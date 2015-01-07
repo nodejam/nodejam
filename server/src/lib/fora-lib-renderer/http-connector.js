@@ -20,7 +20,7 @@
         var response = yield* visit(
             requestContext.body,
             function*(x) {
-                if (x && x.getTypeDefinition) {
+                if (x && x.getEntitySchema) {
                     return {
                         value: x,
                         stop: true,

@@ -14,7 +14,7 @@
     };
 
 
-    UserInfo.typeDefinition = {
+    UserInfo.entitySchema = {
         name: "user-info",
         collection: 'userinfo',
         schema: {

@@ -31,28 +31,31 @@
 
     //ensure indexes.
     co(function*() {
-        var config = {
-            services: {
-                extensions: {
-                    modules: [
-                        { kind: "container", modules: ["api", "web"] },
-                        { kind: "app", modules: ["definition", "api"] },
-                        { kind: "record", modules: ["definition", "model", "web"] }
-                    ]
+        try {
+            var config = {
+                services: {
+                    extensions: {
+                        modules: [
+                            { kind: "container", modules: ["api", "web"] },
+                            { kind: "app", modules: ["definition", "api"] },
+                            { kind: "record", modules: ["definition", "model", "web"] }
+                        ]
+                    }
                 }
-            }
-        };
+            };
 
-        var initResult = yield* initializeApp(config, baseConfig);
-        var db = services.getDb();
-        var typesService = services.getTypesService();
-        yield* db.setupIndexes(typesService.getTypeDefinitions());
-
+            var initResult = yield* initializeApp(config, baseConfig);
+            var db = services.getDb();
+            var typesService = services.getTypesService();
+            yield* db.setupIndexes(typesService.getEntitySchemas());
+        } catch (err) {
+            console.log(err.stack);
+        }
         console.log("wait for 3 seconds...");
         setTimeout(function() {
             console.log("done");
             process.exit();
         }, 5000);
-    }).then(null, function(err) { console.log(err); });
+    }).then(null, function(err) { console.trace(err); });
 
 })();

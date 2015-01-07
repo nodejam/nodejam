@@ -8,7 +8,7 @@
         dataUtils.extend(this, params);
     };
 
-    AppStats.typeDefinition = {
+    AppStats.entitySchema = {
         name: "app-stats",
         schema: {
             type: 'object',

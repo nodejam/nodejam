@@ -51,7 +51,7 @@
 
     Record.createViaRequest = function*(app, request) {
         var typesService = services.getTypesService();
-        var typeDefinition = yield* typesService.getTypeDefinition(Record.typeDefinition.name);
+        var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.name);
 
         var parser = new Parser(request, typesService);
 
@@ -63,9 +63,9 @@
             rating: 0,
             savedAt: Date.now(),
             appId: DbConnector.getRowId(app)
-        }, typeDefinition);
+        }, entitySchema);
 
-        var def = yield* record.getTypeDefinition();
+        var def = yield* record.getEntitySchema();
         yield* parser.map(record, def, yield* record.getCustomFields(def));
         yield* record.save();
         return record;
@@ -74,7 +74,7 @@
 
 
     Record.prototype.updateViaRequest = function*(request) {
-        var def = yield* this.getTypeDefinition();
+        var def = yield* this.getEntitySchema();
         yield* parser.map(this, def, yield* this.getCustomFields());
         this.savedAt = Date.now();
         if (yield* parser.body('state') === 'published') this.state = 'published';

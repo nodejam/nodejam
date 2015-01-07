@@ -40,7 +40,7 @@
         /*
             Types Service
             -------------
-            We must pass all the typeDefinitions and virtual typeDefinitions to typesService.
+            We must pass all the entitySchemas and virtual entitySchemas to typesService.
             Virtual Type Definitions are defined in extensions, so we need to get it via extensionsService.
         */
         var TypesService = require('fora-lib-types-service');
@@ -50,14 +50,14 @@
         var models = require("fora-lib-models");
 
         var modelsArray = Object.keys(models).map(function(k) { return models[k]; });
-        var typeDefinitions = modelsArray.map(function(ctor) {
-            var typeDefinition = ctor.typeDefinition;
-            typeDefinition.ctor = ctor;
-            return typeDefinition;
+        var entitySchemas = modelsArray.map(function(ctor) {
+            var entitySchema = ctor.entitySchema;
+            entitySchema.ctor = ctor;
+            return entitySchema;
         });
 
         var appExtensions = yield* extensionsService.getExtensionsByKind("app");
-        var appVirtTypeDefinitions = [].concat.apply([], Object.keys(appExtensions).map(function(type) {
+        var appVirtEntitySchemas = [].concat.apply([], Object.keys(appExtensions).map(function(type) {
             var versions = appExtensions[type];
             return Object.keys(versions).map(function(version) {
                 var ext = versions[version];
@@ -67,7 +67,7 @@
         }));
 
         var recordExtensions = yield* extensionsService.getExtensionsByKind("record");
-        var recordVirtTypeDefinitions = [].concat.apply([], Object.keys(recordExtensions).map(function(type) {
+        var recordVirtEntitySchemas = [].concat.apply([], Object.keys(recordExtensions).map(function(type) {
             var versions = recordExtensions[type];
             return Object.keys(versions).map(function(version) {
                 var ext = versions[version];
@@ -77,10 +77,10 @@
         }));
 
         yield* typesService.init(
-            typeDefinitions,
+            entitySchemas,
             [
-                { typeDefinitions: appVirtTypeDefinitions, baseTypeDefinition: models.App.typeDefinition },
-                { typeDefinitions: recordVirtTypeDefinitions, baseTypeDefinition: models.Record.typeDefinition }
+                { entitySchemas: appVirtEntitySchemas, baseEntitySchema: models.App.entitySchema },
+                { entitySchemas: recordVirtEntitySchemas, baseEntitySchema: models.Record.entitySchema }
             ]
         );
 

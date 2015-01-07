@@ -8,7 +8,7 @@
         dataUtils.extend(this, params);
     };
 
-    Image.typeDefinition = {
+    Image.entitySchema = {
         name: 'image',
         schema: {
             type: 'object',
@@ -27,7 +27,7 @@
         dataUtils.extend(this, params);
     };
 
-    Cover.typeDefinition = {
+    Cover.entitySchema = {
         name: 'cover',
         schema: {
             type: 'object',
@@ -48,7 +48,7 @@
     };
 
     
-    TextContent.typeDefinition = {
+    TextContent.entitySchema = {
         name: 'text-content',
         schema: {
             type: 'object',

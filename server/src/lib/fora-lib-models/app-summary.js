@@ -8,7 +8,7 @@
         dataUtils.extend(this, params);
     };
 
-    AppSummary.typeDefinition = {
+    AppSummary.entitySchema = {
         name: "app-summary",
         schema: {
             type: 'object',

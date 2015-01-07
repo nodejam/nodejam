@@ -40,7 +40,7 @@
 
         if (!app) {
             var type = yield* parser.body('type');
-            var typeDefinition = yield* typesService.getTypeDefinition(type);
+            var entitySchema = yield* typesService.getEntitySchema(type);
             var params = {
                 type: type,
                 name: yield* parser.body('name'),
@@ -48,11 +48,11 @@
                 stub: stub,
                 createdBy: request.session.user,
             };
-            app = yield* typesService.constructModel(params, typeDefinition);
+            app = yield* typesService.constructModel(params, entitySchema);
 
             yield* parser.map(
                 app,
-                (yield* appStore.getTypeDefinition()),
+                (yield* appStore.getEntitySchema()),
                 ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
             );
 

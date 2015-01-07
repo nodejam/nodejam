@@ -22,7 +22,7 @@
 
     var credentialStore = new DbConnector(Credential);
 
-    Credential.typeDefinition = {
+    Credential.entitySchema = {
         name: 'credential',
         collection: 'credentials',
         schema: {
