@@ -49,7 +49,7 @@
             },
             initialize: function*(record, raw, typeDef, typesService) {
                 var clone = JSON.parse(JSON.stringify(raw));
-                var original = yield* typesService.constructModel(clone, typeDef, {}, true);
+                var original = yield* typesService.constructEntity(clone, typeDef, {}, true);
                 this.getOriginal = function*() {
                     return original;
                 };
@@ -95,7 +95,7 @@
         Record.new = function*(params) {
             var typesService = services.getTypesService();
             var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.name);
-            return yield* typesService.constructModel(params, entitySchema);
+            return yield* typesService.constructEntity(params, entitySchema);
         };
 
 

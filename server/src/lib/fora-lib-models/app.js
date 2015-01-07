@@ -48,7 +48,7 @@
                 stub: stub,
                 createdBy: request.session.user,
             };
-            app = yield* typesService.constructModel(params, entitySchema);
+            app = yield* typesService.constructEntity(params, entitySchema);
 
             yield* parser.map(
                 app,

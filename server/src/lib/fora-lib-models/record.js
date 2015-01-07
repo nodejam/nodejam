@@ -55,7 +55,7 @@
 
         var parser = new Parser(request, typesService);
 
-        var record = yield* typesService.constructModel({
+        var record = yield* typesService.constructEntity({
             type: yield* parser.body('type'),
             version: yield* parser.body('version'),
             createdBy: request.session.user,

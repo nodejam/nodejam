@@ -39,7 +39,7 @@
                     function*(item) {
                         if (item._mustReconstruct) {
                             var entitySchema = yield* self.typesService.getEntitySchema(item.type);
-                            var model = yield* self.typesService.constructModel(item, entitySchema);
+                            var model = yield* self.typesService.constructEntity(item, entitySchema);
                             return { value: model, stop: true };
                         }
                     }
