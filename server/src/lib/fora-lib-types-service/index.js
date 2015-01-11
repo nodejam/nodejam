@@ -51,7 +51,8 @@
     ForaAppTypesService.prototype.mustConstruct = function(value) {
         //In the case of virtual types (App and Record), we'll have value.getEntitySchema.
         //Static types will have value.constructor.entitySchema.
-        return value && (value.getEntitySchema || (value.constructor && value.constructor.entitySchema));
+        var isAlreadyConstructed = value && (value.getEntitySchema || (value.constructor && value.constructor.entitySchema));
+        return !isAlreadyConstructed;
     };
 
 
