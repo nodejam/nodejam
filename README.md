@@ -1,5 +1,5 @@
 Some re-usable components of fora have been moved to separate packages.
-- Ferment (Build system) https://github.com/jeswin/ferment
+- Crankshaft (Build system) https://github.com/jeswin/crankshaft
 - Ceramic (Serialization and validation for datatypes based on JSON Schema) https://github.com/jeswin/ceramic
 - Ceramic Db (Database backend for Ceramic) https://github.com/jeswin/ceramic-db
 - Ceramic MongoDb Backend (Ceramic's Mongo Backend) https://github.com/jeswin/ceramic-backend-mongodb
