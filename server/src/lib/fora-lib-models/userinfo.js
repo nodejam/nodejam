@@ -3,7 +3,7 @@
     "use strict";
 
     var dataUtils = require('fora-data-utils');
-    
+
     var UserInfo = function(params) {
         dataUtils.extend(this, params);
         if (!this.subscriptions)
@@ -15,9 +15,9 @@
 
 
     UserInfo.entitySchema = {
-        name: "user-info",
         collection: 'userinfo',
         schema: {
+            id: "user-info",
             type: 'object',
             properties: {
                 userId: { type: 'string' },

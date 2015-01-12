@@ -229,9 +229,11 @@
 
                 var cmdMakeLib = cmd_browserify + " " +
                      "-r ./app/www/vendor/js/shims/react.shim.js:react " +
+                     "-r ./app/www/vendor/js/shims/react.shim.js:react " +
                      "-r ./app/www/vendor/js/shims/co.shim.js:co " +
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
                      "-r ./app/www/js/lib/path-to-regexp:path-to-regexp " +
+                     "-r ./app/www/js/lib/jayschema:jayschema " +
                      serverNpmModules.map(function(m) {
                          return "-r ./app/www/js/lib/" + m + "/lib/" + m + ":" + m;
                      }).join(" ") + " " +
@@ -241,7 +243,7 @@
                      "> app/www/js/lib.js";
 
                 var cmdMakeBundle = cmd_browserify + " " +
-                    " -x react -x co -x path-to-regexp -x markdown " +
+                    " -x react -x co -x path-to-regexp -x jayschema -x markdown " +
                     serverNpmModules.concat(clientModules).concat(libModules).map(function(m) {
                         return "-x " + m;
                     }).join(" ") + " " +

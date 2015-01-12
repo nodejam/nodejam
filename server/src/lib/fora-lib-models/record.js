@@ -51,7 +51,7 @@
 
     Record.createViaRequest = function*(app, request) {
         var typesService = services.getTypesService();
-        var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.name);
+        var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.schema.id);
 
         var parser = new Parser(request, typesService);
 
@@ -113,7 +113,7 @@
         var extensionsService = services.getExtensionsService();
         var model = extensionsService.getModule("record", this.type, this.version, "model");
 
-        var typeParts = this.type.split('/');
+        var typeParts = this.type.split('_');
         this.recordType = typeParts[1];
         this.version = typeParts[2];
         var versionParts = this.version.split('.');

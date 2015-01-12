@@ -9,30 +9,8 @@
     };
 
     UserSummary.entitySchema = {
-        name: "app-summary",
         schema: {
-            type: 'object',
-            properties: {
-                id: {
-                    type: 'string'
-                },
-                name: {
-                    type: 'string'
-                },
-                stub: {
-                    type: 'string'
-                },
-                createdBy: {
-                    $ref: "user-summary"
-                }
-            },
-            required: ['id', 'name', 'stub', 'createdBy']
-        }
-    };
-
-    UserSummary.entitySchema = {
-        name: "user-summary",
-        schema: {
+            id: "user-summary",
             type: 'object',
             properties: {
                 id: { type: 'string' },

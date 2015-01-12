@@ -23,9 +23,9 @@
     var credentialStore = new DbConnector(Credential);
 
     Credential.entitySchema = {
-        name: 'credential',
         collection: 'credentials',
         schema: {
+            id: 'credential',
             type: 'object',
             properties: {
                 email: { type: 'string' },

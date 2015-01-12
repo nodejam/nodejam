@@ -10,9 +10,9 @@
     };
 
     CacheItem.entitySchema = {
-        name: "cache-item",
         collection: 'cacheitems',
         schema: {
+            id: 'cache-item',
             type: 'object',
             properties: {
                 type: { type: 'string' },

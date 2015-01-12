@@ -8,9 +8,9 @@
     };
 
     Token.entitySchema = {
-        name: "token",
         collection: 'tokens',
         schema: {
+            id: "token",
             type: 'object',
             properties: {
                 type: { type: 'string' },

@@ -153,7 +153,7 @@
         if (!regex.test(this.stub))
             throw new Error("Stub is invalid");
 
-        var typeParts = this.type.split('/');
+        var typeParts = this.type.split('_');
         this.appType = typeParts[1];
         this.version = typeParts[2];
         var versionParts = this.version.split('.');

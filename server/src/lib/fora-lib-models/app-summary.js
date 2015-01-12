@@ -3,14 +3,14 @@
     "use strict";
 
     var dataUtils = require('fora-data-utils');
-    
+
     var AppSummary = function(params) {
         dataUtils.extend(this, params);
     };
 
     AppSummary.entitySchema = {
-        name: "app-summary",
         schema: {
+            id: 'app-summary',
             type: 'object',
             properties: {
                 id: {

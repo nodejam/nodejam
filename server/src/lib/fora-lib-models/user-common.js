@@ -8,9 +8,9 @@
 
     var extendUser = function(User) {
         User.entitySchema = {
-            name: "user",
             collection: 'users',
             schema: {
+                id: "user",
                 type: 'object',
                 properties: {
                     credentialId: { type: 'string' },

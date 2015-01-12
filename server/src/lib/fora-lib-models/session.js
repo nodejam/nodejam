@@ -18,9 +18,9 @@
     var sessionStore = new DbConnector(Session);
 
     Session.entitySchema = {
-        name: 'session',
         collection: 'sessions',
         schema: {
+            id: 'session',
             type: 'object',
             properties: {
                 credentialId: { type: 'string' },

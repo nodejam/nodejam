@@ -9,12 +9,12 @@
 
 	var extendApp = function(App) {
 		App.entitySchema = {
-			name: 'app',
 			collection: 'apps',
 			discriminator: function*(obj, typesService) {
 				return yield* typesService.getEntitySchema(obj.type);
 			},
 			schema: {
+				id: 'app',
 				type: 'object',
 				properties: {
 					type: { type: 'string' },

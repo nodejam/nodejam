@@ -8,12 +8,12 @@
     var extendRecord = function(Record) {
 
         Record.entitySchema = {
-            name: "record",
             collection: 'records',
             discriminator: function*(obj, typesService) {
                 return yield* typesService.getEntitySchema(obj.type);
             },
             schema: {
+                id: "record",
                 type: 'object',
                 properties: {
                     type: { type: 'string' },
@@ -94,7 +94,7 @@
 
         Record.new = function*(params) {
             var typesService = services.getTypesService();
-            var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.name);
+            var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.schema.id);
             return yield* typesService.constructEntity(params, entitySchema);
         };
 

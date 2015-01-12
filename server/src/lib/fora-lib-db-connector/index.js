@@ -31,7 +31,7 @@
     Connector.prototype.getEntitySchema = function*() {
         var typesService = services.getTypesService();
         if (!this.ctor.__entitySchema) {
-            this.ctor.__entitySchema = yield* typesService.getEntitySchema(this.ctor.entitySchema.name);
+            this.ctor.__entitySchema = yield* typesService.getEntitySchema(this.ctor.entitySchema.schema.id);
         }
         return this.ctor.__entitySchema;
     };

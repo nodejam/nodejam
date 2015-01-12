@@ -12,9 +12,9 @@
     var membershipStore = new DbConnector(Membership);
 
     Membership.entitySchema = {
-        name: "membership",
         collection: 'memberships',
         schema: {
+            id: "membership",
             type: 'object',
             properties: {
                 userId: { type: 'string' },

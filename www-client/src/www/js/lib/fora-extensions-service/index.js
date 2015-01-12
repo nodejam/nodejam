@@ -27,11 +27,11 @@
             var kind = path[0];
             var typeName = path[1];
             var version = path[2];
-            var moduleName = path.slice(3).join("/");
+            var moduleName = path.slice(3).join("_");
 
             if (this.config.modules.some(canLoad)) {
-                var extensionName = kind + "/" + typeName + "/" + version;
-                var fullName = extensionName + "/" + moduleName;
+                var extensionName = kind + "_" + typeName + "_" + version;
+                var fullName = extensionName + "_" + moduleName;
 
                 var extModule = require(["/extensions", kind, typeName, version, moduleName].join("/"));
                 extModule = yield* self.fnModuleMapper(extModule, kind, typeName, version, moduleName);
@@ -54,7 +54,7 @@
 
 
     ExtensionsService.prototype.getModule = function*(kind, type, version, moduleName) {
-        return moduleCache[kind + "/" + type + "/" + version + "/" + moduleName];
+        return moduleCache[kind + "_" + type + "_" + version + "_" + moduleName];
     };
 
 
@@ -64,7 +64,7 @@
 
 
     ExtensionsService.prototype.getModuleByFullType = function*(fullType, moduleName) {
-        return moduleCache[fullType + "/" + moduleName];
+        return moduleCache[fullType + "_" + moduleName];
     };
 
 
@@ -76,7 +76,7 @@
     ExtensionsService.prototype.get = function*(name) {
         var extension;
 
-        var arrID = name.split('/');
+        var arrID = name.split("_");
         var extTypes = extensionsDir[arrID[0]];
         if (extTypes) {
             var extVersions = extTypes[arrID[1]];

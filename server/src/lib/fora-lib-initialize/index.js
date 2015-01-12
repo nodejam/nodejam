@@ -26,7 +26,7 @@
         var ExtensionsService = require('fora-extensions-service');
         var fnModuleMapper = function*(extModule, kind, typeName, version, moduleName) {
             if ((kind === "record" || kind === "app") && moduleName === "definition") {
-                extModule.name = kind + "/" + typeName + "/" + version;
+                extModule.schema.id = kind + "_" + typeName + "_" + version;
             }
             if (extModule.init)
                 yield* extModule.init();

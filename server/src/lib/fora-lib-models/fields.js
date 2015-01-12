@@ -9,8 +9,8 @@
     };
 
     Image.entitySchema = {
-        name: 'image',
         schema: {
+            id: 'image',
             type: 'object',
             properties: {
                 src: { type: 'string' },
@@ -28,8 +28,8 @@
     };
 
     Cover.entitySchema = {
-        name: 'cover',
         schema: {
+            id: 'cover',
             type: 'object',
             properties: {
                 type: { type: 'string' },
@@ -47,10 +47,10 @@
         dataUtils.extend(this, params);
     };
 
-    
+
     TextContent.entitySchema = {
-        name: 'text-content',
         schema: {
+            id: 'text-content',
             type: 'object',
             properties: {
                 text: { type: 'string' },

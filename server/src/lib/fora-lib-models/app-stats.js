@@ -9,8 +9,8 @@
     };
 
     AppStats.entitySchema = {
-        name: "app-stats",
         schema: {
+            id: 'app-stats',
             type: 'object',
             properties: {
                 records: {
