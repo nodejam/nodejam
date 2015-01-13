@@ -15,7 +15,7 @@
 
 
     ApiConnector.prototype.get = function*(url) {
-        return yield* this.makeRequest("GET", url);
+        return yield this.makeRequest("GET", url);
     };
 
 
@@ -34,12 +34,12 @@
             }
 
             if (match) {
-                return yield* visit(
+                return yield visit(
                     match.requestContext.body,
                     function*(item) {
                         if (item._mustReconstruct) {
-                            var entitySchema = yield* self.typesService.getEntitySchema(item.type);
-                            var model = yield* self.typesService.constructEntity(item, entitySchema);
+                            var entitySchema = yield self.typesService.getEntitySchema(item.type);
+                            var model = yield self.typesService.constructEntity(item, entitySchema);
                             return { value: model, stop: true };
                         }
                     }

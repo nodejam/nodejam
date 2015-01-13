@@ -36,7 +36,7 @@
 
 
     Membership.prototype.save = function*() {
-        yield* membershipStore.save(this);
+        yield membershipStore.save(this);
     };
 
 

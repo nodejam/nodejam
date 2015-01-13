@@ -11,7 +11,7 @@
 		App.entitySchema = {
 			collection: 'apps',
 			discriminator: function*(obj, typesService) {
-				return yield* typesService.getEntitySchema(obj.type);
+				return yield typesService.getEntitySchema(obj.type);
 			},
 			schema: {
 				id: 'app',

@@ -13,21 +13,21 @@
     var index = function*() {
         var cacheItemStore = new DbConnector(models.CacheItem);
 
-        var cacheItem = yield* cacheItemStore.findOne({ type: 'cache', key: 'home' });
+        var cacheItem = yield cacheItemStore.findOne({ type: 'cache', key: 'home' });
 
         var makeRecords = function*(cacheItems) {
             var results = [];
             for (var i = 0; i < cacheItems.length; i++) {
                 results.push({
-                    record: yield* models.Record.new(cacheItems[i].record),
+                    record: yield models.Record.new(cacheItems[i].record),
                     app: cacheItems[i].app
                 });
             }
             return results;
         };
 
-        var editorsPicks = yield* makeRecords(cacheItem.value.editorsPicks);
-        var featured = yield* makeRecords(cacheItem.value.featured);
+        var editorsPicks = yield makeRecords(cacheItem.value.editorsPicks);
+        var featured = yield makeRecords(cacheItem.value.featured);
 
         var cover = {
             image: { src: '/images/cover.jpg' },
@@ -43,12 +43,12 @@
     var actions = function*() {
         var parser = new Parser(this, typesService);
 
-        var items = (yield* parser.body("type")).split(',');
+        var items = (yield parser.body("type")).split(',');
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
             switch(item) {
                 case "refresh-cache":
-                    yield* refreshHome.call(this);
+                    yield refreshHome.call(this);
             }
         }
     };
@@ -59,10 +59,10 @@
 
         var recordStore = new DbConnector(models.Record);
 
-        var editorsPicks = yield* recordStore.find({ meta: 'pick' }, { sort: db.setRowId({}, -1), limit: 1 });
+        var editorsPicks = yield recordStore.find({ meta: 'pick' }, { sort: db.setRowId({}, -1), limit: 1 });
 
         //Featured must not included editor's Picks.
-        var featured = yield* recordStore.find({ meta: 'featured' }, { sort: db.setRowId({}, -1), limit: 12 });
+        var featured = yield recordStore.find({ meta: 'featured' }, { sort: db.setRowId({}, -1), limit: 12 });
         featured = featured.filter(function(fi) {
             return editorsPicks.map(function(ei) { return DbConnector.getRowId(ei); }).indexOf(DbConnector.getRowId(fi)) === -1;
         });
@@ -70,9 +70,9 @@
         var cacheItemStore = new DbConnector(models.CacheItem);
 
         //Delete all existing
-        var existingCacheItems = yield* cacheItemStore.find({ type: 'cache', key: 'home' });
+        var existingCacheItems = yield cacheItemStore.find({ type: 'cache', key: 'home' });
         for (var i = 0; i < existingCacheItems.length; i++) {
-            yield* existingCacheItems[i].destroy();
+            yield existingCacheItems[i].destroy();
         }
 
         //Add a new one.
@@ -81,7 +81,7 @@
         var makeCacheItem = function*(records) {
             var results = [];
             for (var i = 0; i < records.length; i++) {
-                var app = yield* appStore.findById(records[i].appId);
+                var app = yield appStore.findById(records[i].appId);
                 results.push({ record: records[i], app: app.summarize() });
             }
             return results;
@@ -90,9 +90,9 @@
         var cacheItem = new models.CacheItem({
             type: 'cache',
             key: 'home',
-            value: { featured: yield* makeCacheItem(editorsPicks), editorsPicks: yield* makeCacheItem(featured) },
+            value: { featured: yield makeCacheItem(editorsPicks), editorsPicks: yield makeCacheItem(featured) },
         });
-        yield* cacheItem.save();
+        yield cacheItem.save();
 
         this.body = "OK";
     };

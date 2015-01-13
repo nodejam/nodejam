@@ -22,7 +22,7 @@
             var props;
 
             if (reactClass.componentInit)
-                props = yield* reactClass.componentInit.call(null, api);
+                props = yield reactClass.componentInit.call(null, api);
 
             props = props || {};
 

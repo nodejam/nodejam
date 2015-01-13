@@ -28,7 +28,7 @@
                 var token = this.query.token || this.cookies.get('token');
 
                 if (token)
-                    this.session = yield* sessionStore.findOne({ token: token });
+                    this.session = yield sessionStore.findOne({ token: token });
             }
 
             switch (options.session) {
@@ -54,7 +54,7 @@
                     break;
             }
 
-            return yield* fn.apply(this, arguments);
+            return yield fn.apply(this, arguments);
         };
     };
 })();

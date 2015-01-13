@@ -2,7 +2,7 @@
 
     "use strict";
 
-    var thunkify = require('fora-node-thunkify'),
+    var promisify = require('nodefunc-promisify'),
         hasher = require('fora-lib-hasher'),
         randomizer = require('fora-lib-randomizer'),
         models = require('./'),
@@ -94,12 +94,12 @@
         var typesService = services.getTypesService();
         var parser = new Parser(request, typesService);
 
-        if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
-            var type = yield* parser.body('type');
+        if ((yield parser.body('secret')) === conf.services.auth.adminkeys.default) {
+            var type = yield parser.body('type');
 
             var credential = new Credential(
                 {
-                    email: yield* parser.body('email'),
+                    email: yield parser.body('email'),
                     preferences: { canEmail: true }
                 }
             );
@@ -107,26 +107,26 @@
             var username;
             switch(type) {
                 case 'builtin':
-                    username = yield* parser.body('username');
-                    var password = yield* parser.body('password');
-                    yield* credential.addBuiltin(username, password);
+                    username = yield parser.body('username');
+                    var password = yield parser.body('password');
+                    yield credential.addBuiltin(username, password);
                     break;
                 case 'twitter':
-                    var id = yield* parser.body('id');
-                    username = yield* parser.body('username');
-                    var accessToken = yield* parser.body('accessToken');
-                    var accessTokenSecret = yield* parser.body('accessTokenSecret');
-                    yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
+                    var id = yield parser.body('id');
+                    username = yield parser.body('username');
+                    var accessToken = yield parser.body('accessToken');
+                    var accessTokenSecret = yield parser.body('accessTokenSecret');
+                    yield credential.addTwitter(id, username, accessToken, accessTokenSecret);
                     break;
             }
-            yield* credential.save();
+            yield credential.save();
             return credential;
         }
     };
 
 
     Credential.prototype.save = function*() {
-        return yield* credentialStore.save(this);
+        return yield credentialStore.save(this);
     };
 
 
@@ -142,15 +142,15 @@
                 token: randomizer.uniqueId(24)
             }
         );
-        yield* session.save();
+        yield session.save();
         return session;
     };
 
 
     Credential.prototype.addBuiltin = function*(username, password) {
-        var existing = yield* credentialStore.findOne({ "builtin.username": username });
+        var existing = yield credentialStore.findOne({ "builtin.username": username });
         if (!existing) {
-            var hashed = yield* thunkify(hasher)({ plaintext: password });
+            var hashed = yield promisify(hasher)({ plaintext: password });
             this.builtin = {
                 method: 'PBKDF2',
                 username: username,
@@ -164,7 +164,7 @@
 
 
     Credential.prototype.addTwitter = function*(id, username, accessToken, accessTokenSecret) {
-        var existing = yield* credentialStore.findOne({ "twitter.id": id });
+        var existing = yield credentialStore.findOne({ "twitter.id": id });
         if (!existing) {
             this.twitter = {
                 id: id,

@@ -25,7 +25,7 @@
                 img = img.resize(options.width, options.height);
         }
 
-        yield* thunkify(img.write).call(img, dest);
+        yield thunkify(img.write).call(img, dest);
         logger.log("Resized #{src} to #{dest} [#{JSON.stringify options}]");
     };
 
@@ -65,7 +65,7 @@
         var typesService = services.getTypesService();
         var parser = new Parser(this, typesService);
 
-        var files = yield* parser.files();
+        var files = yield parser.files();
 
         var file, timestamp, extension, filename;
         var pathArr, src, dir;
@@ -81,14 +81,14 @@
 
                 //copy to originals directory
                 var original = fsutils.getRandomFilePath('original-images', filename);
-                yield* fsutils.copyFile(file.path, original);
+                yield fsutils.copyFile(file.path, original);
 
                 var image = fsutils.getRandomFilePath('images', filename);
                 var smallImage = image.replace(/(.*)\//,"$1/small_");
 
                 //resize
-                yield* resizeImage(original, image, { width: srcWidth, height: srcHeight, gravity: gravity, imageType: imageType });
-                yield* resizeImage(original, smallImage, { width: smallWidth, height: smallHeight, gravity: gravity, imageType: imageType });
+                yield resizeImage(original, image, { width: srcWidth, height: srcHeight, gravity: gravity, imageType: imageType });
+                yield resizeImage(original, smallImage, { width: smallWidth, height: smallHeight, gravity: gravity, imageType: imageType });
 
                 pathArr = image.split('/');
                 filename = pathArr.pop();

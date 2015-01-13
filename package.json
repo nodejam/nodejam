@@ -30,7 +30,7 @@
     "co": "*",
     "co-body": "*",
     "co-multipart": "*",
-    "fora-node-thunkify": "*",
+    "nodefunc-promisify": "*",
     "mongodb": "~2.0",
     "validator": "*",
     "sanitizer": "*",

@@ -10,7 +10,7 @@
         Record.entitySchema = {
             collection: 'records',
             discriminator: function*(obj, typesService) {
-                return yield* typesService.getEntitySchema(obj.type);
+                return yield typesService.getEntitySchema(obj.type);
             },
             schema: {
                 id: "record",
@@ -49,7 +49,7 @@
             },
             initialize: function*(record, raw, typeDef, typesService) {
                 var clone = JSON.parse(JSON.stringify(raw));
-                var original = yield* typesService.constructEntity(clone, typeDef, {}, true);
+                var original = yield typesService.constructEntity(clone, typeDef, {}, true);
                 this.getOriginal = function*() {
                     return original;
                 };
@@ -70,14 +70,14 @@
                     if (dataUtils.isPrimitiveType(def.type)) {
                         if (def.type === "array" && dataUtils.isCustomType(def.items.type)) {
                                 prefix.push(field);
-                                yield* getCustomFields(def.items.entitySchema, acc, prefix);
+                                yield getCustomFields(def.items.entitySchema, acc, prefix);
                                 prefix.pop(field);
                         } else {
                             acc.push(prefix.concat(field).join('_'));
                         }
                     } else if (dataUtils.isCustomType(def.type)) {
                         prefix.push(field);
-                        yield* getCustomFields(def.entitySchema, acc, prefix);
+                        yield getCustomFields(def.entitySchema, acc, prefix);
                         prefix.pop(field);
                     }
                 }
@@ -88,14 +88,14 @@
 
 
         Record.prototype.getCustomFields = function*(entitySchema) {
-            return yield* getCustomFields(entitySchema);
+            return yield getCustomFields(entitySchema);
         };
 
 
         Record.new = function*(params) {
             var typesService = services.getTypesService();
-            var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.schema.id);
-            return yield* typesService.constructEntity(params, entitySchema);
+            var entitySchema = yield typesService.getEntitySchema(Record.entitySchema.schema.id);
+            return yield typesService.constructEntity(params, entitySchema);
         };
 
 

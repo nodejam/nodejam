@@ -3,7 +3,7 @@
 
     var path = require('path'),
         fs = require('fs'),
-        thunkify = require('fora-node-thunkify');
+        promisify = require('nodefunc-promisify');
 
 
     var FileService = function(configuration) {
@@ -76,7 +76,7 @@
         src = fs.createReadStream(src);
         dest = fs.createWriteStream(dest);
         src.pipe(dest);
-        return yield* thunkify(src.on).call(src, 'end');
+        return yield promisify.call(src, src.on)('end');
     };
 
 

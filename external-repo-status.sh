@@ -11,7 +11,7 @@ check_status_of_repos() {
     echo
 }
 
-check_status_of_repos "fora-build" "node_modules"
+check_status_of_repos "crankshaft" "node_modules"
 check_status_of_repos "fora-data-utils" "node_modules"
 check_status_of_repos "ceramic" "node_modules"
 check_status_of_repos "ceramic-db" "node_modules"

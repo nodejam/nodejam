@@ -23,7 +23,7 @@
 
         var routeFunc = requestHandler.__router.route();
 
-        return yield* routeFunc.call(requestContext, null);
+        return yield routeFunc.call(requestContext, null);
     };
 
 

@@ -26,21 +26,21 @@
         var parser = new Parser(request, typesService);
 
         var user = new User({
-            username: yield* parser.body('username'),
+            username: yield parser.body('username'),
             credentialId: request.session.credentialId,
-            name: yield* parser.body('name'),
-            location: yield* parser.body('location'),
-            email: (yield* parser.body('email') || 'unknownthis.foraproject.org'),
-            about: yield* parser.body('about'),
+            name: yield parser.body('name'),
+            location: yield parser.body('location'),
+            email: (yield parser.body('email') || 'unknownthis.foraproject.org'),
+            about: yield parser.body('about'),
             lastLogin: Date.now()
         });
 
-        yield* user.save();
+        yield user.save();
 
         //Move images to assets
         var picture = {
-            src: yield* parser.body('picture_src'),
-            small: yield* parser.body('picture_small')
+            src: yield parser.body('picture_src'),
+            small: yield parser.body('picture_small')
         };
 
         var copy = function*(sourcePath, destFilename) {
@@ -49,11 +49,11 @@
             var subdir = srcPathArr.pop();
             var source = fileService.getFilePath('images', subdir, file);
             var dest = fileService.getFilePath('assets', user.assets, destFilename);
-            yield* fileService.copyFile(source, dest);
+            yield fileService.copyFile(source, dest);
         };
 
-        yield* copy(picture.src, user.username + ".jpg");
-        yield* copy(picture.small, user.username + "_t.jpg");
+        yield copy(picture.src, user.username + ".jpg");
+        yield copy(picture.small, user.username + "_t.jpg");
 
         return user;
     };
@@ -61,7 +61,7 @@
 
     User.prototype.save = function*() {
         if (!DbConnector.getRowId(this)) {
-            var existing = yield* userStore.findOne({ username: this.username });
+            var existing = yield userStore.findOne({ username: this.username });
             if (!existing) {
                 var conf = services.getConfiguration();
                 this.assets = (dataUtils.getHashCode(this.username) % conf.services.file.userDirCount).toString();
@@ -72,12 +72,12 @@
                 throw new Error("User(#{@username}) already exists");
             }
         }
-        return yield* userStore.save(this);
+        return yield userStore.save(this);
     };
 
 
     User.prototype.getRecords = function*(limit, sort, context) {
-        return yield* models.Record.find(
+        return yield models.Record.find(
             { "createdBy.id": this.getRowId(), state: 'published' },
             { sort: sort, limit: limit },
             context

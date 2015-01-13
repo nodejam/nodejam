@@ -13,11 +13,11 @@
 
 
     ApiConnector.prototype.get = function*(url) {
-        var requestContext = yield* this.makeRequest("GET", url);
+        var requestContext = yield this.makeRequest("GET", url);
 
         //On the client, we can't tell if the deserialized JSON needs to go through a constructor.
         //So, set a flag __mustReconstruct.
-        var response = yield* visit(
+        var response = yield visit(
             requestContext.body,
             function*(x) {
                 if (x && x.getEntitySchema) {
@@ -51,10 +51,10 @@
 
 
     ApiConnector.prototype.makeRequest = function*(method, url) {
-        var requestContext = yield* this.requestContext.clone();
+        var requestContext = yield this.requestContext.clone();
         requestContext.url = url;
         requestContext.method = method;
-        yield* this.routeFn.call(requestContext);
+        yield this.routeFn.call(requestContext);
 
         return requestContext;
     };

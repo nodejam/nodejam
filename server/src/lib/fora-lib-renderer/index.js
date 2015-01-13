@@ -26,7 +26,7 @@
                         http: new HttpConnector(this, self.router),
                         views: viewApi
                     };
-                    this.body = yield* self.renderFunc.call(null, this, route.handler, api);
+                    this.body = yield self.renderFunc.call(null, this, route.handler, api);
                 }
             });
         });
