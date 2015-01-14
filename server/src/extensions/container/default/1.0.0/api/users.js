@@ -13,15 +13,15 @@
 
 
     var create = function*() {
-        var user = yield models.User.createViaRequest(this);
+        var user = yield* models.User.createViaRequest(this);
         this.body = user.summarize();
     };
 
 
     var login = function*() {
         var parser = new Parser(this, services.getTypesService());
-        yield this.session.upgrade(yield parser.body('username'));
-        yield this.session.save();
+        yield* this.session.upgrade(yield* parser.body('username'));
+        yield* this.session.save();
 
         var user = this.session.user;
         user.token = this.session.token;
@@ -36,7 +36,7 @@
 
 
     var item = function*(username) {
-        var user = yield models.User.findOne({ username: username });
+        var user = yield* models.User.findOne({ username: username });
         if (user)
             this.body = user.summarize();
     };

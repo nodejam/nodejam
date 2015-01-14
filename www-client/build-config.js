@@ -33,8 +33,8 @@
                 console.log("Started fora/www-client build");
                 console.log("*****************************");
                 this.state.start = Date.now();
-                yield exec("rm -rf app");
-                yield exec("mkdir app");
+                yield* exec("rm -rf app");
+                yield* exec("mkdir app");
             }, "client_build_start");
 
 
@@ -48,8 +48,8 @@
                     var exlcudes = ["\\.less$", "\\.sh$"];
                     if (!exlcudes.some(function(ex) { return new RegExp(ex).test(path.extname(filePath)); })) {
                         var dest = filePath.replace(/^src\//, 'app/');
-                        yield ensureDirExists(dest);
-                        yield exec("cp " + filePath + " " + dest);
+                        yield* ensureDirExists(dest);
+                        yield* exec("cp " + filePath + " " + dest);
                     }
                 },
                 "client_files_copy"
@@ -62,8 +62,8 @@
                 ["../server/src/config/*.*"],
                 function*(filePath) {
                     var dest = filePath.replace(/^\.\.\/server\/src\//, 'app/www/js/');
-                    yield ensureDirExists(dest);
-                    yield exec("cp " + filePath + " " + dest);
+                    yield* ensureDirExists(dest);
+                    yield* exec("cp " + filePath + " " + dest);
                 },
                 "client_server_config_copy"
             );
@@ -76,11 +76,12 @@
                 serverNpmModules.map(function(m) { return "../node_modules/" + m + "/*.*";}),
                 function*(filePath) {
                     //We dont want anything inside .git dir and inner node_modules
-                    if (!/\/\.git\//.test(filePath) &&
-                        (filePath.split('/').filter(function(x) { return x === "node_modules"; }).length <= 1)) {
+                    var mustCopy = !/\/\.git\//.test(filePath) &&
+                        (filePath.split('/').filter(function(x) { return x === "node_modules"; }).length <= 1);
+                    if (mustCopy) {
                         var dest = filePath.replace(/^\.\.\/node_modules\//, 'app/www/js/lib/');
-                        yield ensureDirExists(dest);
-                        yield exec("cp " + filePath + " " + dest);
+                        yield* ensureDirExists(dest);
+                        yield* exec("cp " + filePath + " " + dest);
                     }
                 },
                 "client_server_npm_copy"
@@ -94,8 +95,8 @@
                 ["../server/app/extensions/*.*"],
                 function*(filePath) {
                     var dest = filePath.replace(/^\.\.\/server\/app\/extensions\//, 'app/www/js/extensions/');
-                    yield ensureDirExists(dest);
-                    yield exec("cp " + filePath + " " + dest);
+                    yield* ensureDirExists(dest);
+                    yield* exec("cp " + filePath + " " + dest);
                     extensions.push(dest);
                 },
                 "client_server_extensions_copy"
@@ -109,10 +110,10 @@
                 libModules.map(function(m) { return "../server/app/lib/" + m + "/*.*";}),
                 function*(filePath) {
                     var dest = filePath.replace(/^\.\.\/server\/app\/lib\//, 'app/www/js/lib/');
-                    yield ensureDirExists(dest);
+                    yield* ensureDirExists(dest);
                     var parts = filePath.split("/");
                     if (parts[4] === "fora-lib-ui" || !fs.existsSync(dest))
-                        yield exec("cp " + filePath + " " + dest);
+                        yield* exec("cp " + filePath + " " + dest);
                     else
                         console.log("Skipping " + filePath + " -> " + dest);
                 },
@@ -125,9 +126,9 @@
             /*
                 Compile less files. Schedule it at the end.
             */
-            var lessCompile = function*() { yield exec(cmd_lessc + " --verbose src/www/css/main.less app/www/css/main.css"); };
+            var lessCompile = function*() { yield* exec(cmd_lessc + " --verbose src/www/css/main.less app/www/css/main.css"); };
             this.watch(["src/www/css/*.less"], function*(filePath) {
-                yield ensureDirExists('app/www/css/main.css');
+                yield* ensureDirExists('app/www/css/main.css');
                 this.queue(lessCompile);
             }, "client_less_compile");
 
@@ -139,7 +140,7 @@
                 this.watch(
                     ["app/www/js/*.js"],
                     function*(filePath) {
-                        var result = yield exec(cmd_regenerator + " " + filePath);
+                        var result = yield* exec(cmd_regenerator + " " + filePath);
                         fs.writeFileSync(filePath, result);
                     },
                     "client_regenerator_transform",
@@ -176,7 +177,7 @@
                 });
 
                 console.log("Writing out app/www/js/extensions/extensions.json");
-                yield ensureDirExists("app/www/js/extensions/extensions.json");
+                yield* ensureDirExists("app/www/js/extensions/extensions.json");
                 fs.writeFileSync("app/www/js/extensions/extensions.json", JSON.stringify(
                     extensions.map(function(e) {
                         return e.replace(/\/index\.json$|\/index\.js$/, '')
@@ -196,7 +197,7 @@
                     };
 
                     console.log("Minifying CSS to lib.css");
-                    yield minify({
+                    yield* minify({
                         type: 'sqwish',
                         buffer: 1000 * 1024,
                         tempPath: '../temp/',
@@ -211,7 +212,7 @@
                     });
 
                     console.log("Minifying JS to vendor.js");
-                    yield minify({
+                    yield* minify({
                         type: 'no-compress',
                         buffer: 1000 * 2048,
                         tempPath: '../temp/',
@@ -262,8 +263,8 @@
                     cmdMakeBundle += " --debug";
                 }
 
-                yield exec(cmdMakeLib);
-                yield exec(cmdMakeBundle);
+                yield* exec(cmdMakeLib);
+                yield* exec(cmdMakeBundle);
 
 
             }, "client_bundle_files");

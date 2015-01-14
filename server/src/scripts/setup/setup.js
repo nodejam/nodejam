@@ -9,7 +9,7 @@
         fs = require('fs'),
         querystring = require('querystring'),
         co = require('co'),
-        promisify = require('nodefunc-promisify'),
+        generatorify = require('nodefunc-generatorify'),
         logger = require('fora-lib-logger'),
         data = require('./data'),
         conf = require('../../config');
@@ -35,7 +35,7 @@
         var del = function*() {
             if(process.env.NODE_ENV === 'development') {
                 logger.log('Deleting main database.');
-                db = yield database.deleteDatabase();
+                db = yield* database.deleteDatabase();
                 logger.log('Everything is gone now.');
             } else {
                 logger.log("Delete database can only be used if NODE_ENV is 'development'");
@@ -47,7 +47,7 @@
 
             //Create Users
             _globals.sessions = {};
-            _doHttpRequest = promisify(doHttpRequest);
+            _doHttpRequest = generatorify(doHttpRequest);
 
             var user, token, resp, cred, adminkey;
             for (var _i = 0; _i < data.users.length; _i++) {
@@ -75,16 +75,16 @@
                         break;
                 }
 
-                resp = yield _doHttpRequest('/api/v1/credentials', querystring.stringify(cred), 'post');
+                resp = yield* _doHttpRequest('/api/v1/credentials', querystring.stringify(cred), 'post');
                 token = JSON.parse(resp).token;
 
-                resp = yield _doHttpRequest("/api/v1/users?token=" + token, querystring.stringify(user), 'post');
+                resp = yield* _doHttpRequest("/api/v1/users?token=" + token, querystring.stringify(user), 'post');
                 resp = JSON.parse(resp);
                 logger.log("Created " + resp.username);
                 _globals.sessions[user.username] = resp;
 
                 logger.log("Creating session for " + resp.username);
-                resp = yield _doHttpRequest("/api/v1/login?token=" + token, querystring.stringify({ token: token, username: user.username }), 'post');
+                resp = yield* _doHttpRequest("/api/v1/login?token=" + token, querystring.stringify({ token: token, username: user.username }), 'post');
                 _globals.sessions[user.username].token = JSON.parse(resp).token;
             }
 
@@ -106,7 +106,7 @@
                 delete app._about;
 
                 app.type = "app_forum_1.0.0";
-                resp = yield _doHttpRequest("/api/v1/forums?token=" + token, querystring.stringify(app), 'post');
+                resp = yield* _doHttpRequest("/api/v1/forums?token=" + token, querystring.stringify(app), 'post');
                 var appJson = JSON.parse(resp);
                 apps[appJson.stub] = appJson;
                 logger.log("Created " + appJson.name);
@@ -114,7 +114,7 @@
                 for (var u in _globals.sessions) {
                     var uToken = _globals.sessions[u];
                     if (uToken.token !== token) {
-                        resp = yield _doHttpRequest("/api/app/" + appJson.stub + "/members?token=" + uToken.token, querystring.stringify(app), 'post');
+                        resp = yield* _doHttpRequest("/api/app/" + appJson.stub + "/members?token=" + uToken.token, querystring.stringify(app), 'post');
                         logger.log(u + " joined " + app.name);
                     }
                 }
@@ -139,14 +139,14 @@
                 delete article._content;
                 delete article._meta;
 
-                resp = yield _doHttpRequest("/api/app/" + app + "?token=" + token, querystring.stringify(article), 'post');
+                resp = yield* _doHttpRequest("/api/app/" + app + "?token=" + token, querystring.stringify(article), 'post');
                 resp = JSON.parse(resp);
                 logger.log("Created " + resp.title + " with stub " + resp.stub);
 
                 var metaTags = meta.split(',');
                 for (var _i2 = 0; _i2 < metaTags.length; _i2++) {
                     var metaTag = metaTags[_i2];
-                    resp = yield _doHttpRequest("/api/app/" + app + "/posts/" + resp.stub + "/meta?token=" + adminkey,
+                    resp = yield* _doHttpRequest("/api/app/" + app + "/posts/" + resp.stub + "/meta?token=" + adminkey,
                         querystring.stringify({ meta: metaTag }), 'post');
                     resp = JSON.parse(resp);
                     logger.log("Added " + metaTag + " tag to article " + resp.title);
@@ -154,21 +154,21 @@
             }
 
             //Refresh the cache.
-            resp = yield _doHttpRequest("/api/v1/ui/home/actions?token=" + adminkey,
+            resp = yield* _doHttpRequest("/api/v1/ui/home/actions?token=" + adminkey,
                 querystring.stringify({ type: "refresh-cache" }), 'post');
 
             return;
         };
 
         if (argv["delete"]) {
-            yield del();
+            yield* del();
             return process.exit();
         } else if (argv.create) {
-            yield create();
+            yield* create();
             return process.exit();
         } else if (argv.recreate) {
-            yield del();
-            yield create();
+            yield* del();
+            yield* create();
             return process.exit();
         } else {
             logger.log('Invalid option.');
@@ -214,7 +214,7 @@
     };
 
     co(function*() {
-        return yield init();
+        return yield* init();
     }).then(null, function(err) { console.log(err); });
 
 })();

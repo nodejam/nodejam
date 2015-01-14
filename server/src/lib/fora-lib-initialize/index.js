@@ -29,12 +29,12 @@
                 extModule.schema.id = kind + "_" + typeName + "_" + version;
             }
             if (extModule.init)
-                yield extModule.init();
+                yield* extModule.init();
 
             return extModule;
         };
         var extensionsService = new ExtensionsService(config.services.extensions, baseConfig.services.extensions, fnModuleMapper);
-        yield extensionsService.init();
+        yield* extensionsService.init();
         services.setExtensionsService(extensionsService);
 
         /*
@@ -56,7 +56,7 @@
             return entitySchema;
         });
 
-        var appExtensions = yield extensionsService.getExtensionsByKind("app");
+        var appExtensions = yield* extensionsService.getExtensionsByKind("app");
         var appVirtEntitySchemas = [].concat.apply([], Object.keys(appExtensions).map(function(type) {
             var versions = appExtensions[type];
             return Object.keys(versions).map(function(version) {
@@ -66,7 +66,7 @@
             });
         }));
 
-        var recordExtensions = yield extensionsService.getExtensionsByKind("record");
+        var recordExtensions = yield* extensionsService.getExtensionsByKind("record");
         var recordVirtEntitySchemas = [].concat.apply([], Object.keys(recordExtensions).map(function(type) {
             var versions = recordExtensions[type];
             return Object.keys(versions).map(function(version) {
@@ -76,7 +76,7 @@
             });
         }));
 
-        yield typesService.init(
+        yield* typesService.init(
             entitySchemas,
             [
                 { entitySchemas: appVirtEntitySchemas, baseEntitySchema: models.App.entitySchema },

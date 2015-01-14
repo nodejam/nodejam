@@ -31,33 +31,33 @@
         var typesService = services.getTypesService();
         var parser = new Parser(request, typesService);
 
-        var stub = (yield parser.body('name')).toLowerCase().trim();
+        var stub = (yield* parser.body('name')).toLowerCase().trim();
         if (conf.reservedNames.indexOf(stub) > -1)
             stub = stub + "-app";
         stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'');
 
-        var app = yield appStore.findOne({ $or: [{ stub: stub }, { name: yield parser.body('name') }] });
+        var app = yield* appStore.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
 
         if (!app) {
-            var type = yield parser.body('type');
-            var entitySchema = yield typesService.getEntitySchema(type);
+            var type = yield* parser.body('type');
+            var entitySchema = yield* typesService.getEntitySchema(type);
             var params = {
                 type: type,
-                name: yield parser.body('name'),
-                access: yield parser.body('access'),
+                name: yield* parser.body('name'),
+                access: yield* parser.body('access'),
                 stub: stub,
                 createdBy: request.session.user,
             };
-            app = yield typesService.constructEntity(params, entitySchema);
+            app = yield* typesService.constructEntity(params, entitySchema);
 
-            yield parser.map(
+            yield* parser.map(
                 app,
-                (yield appStore.getEntitySchema()),
+                (yield* appStore.getEntitySchema()),
                 ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']
             );
 
-            yield app.save();
-            yield app.createRole(request.session.user, 'admin');
+            yield* app.save();
+            yield* app.createRole(request.session.user, 'admin');
             return app;
         } else {
             throw new Error("App exists");
@@ -69,8 +69,8 @@
         var parser = new Parser(request, services.getTypesService());
 
         if (request.session.user.username === request.createdBy.username || request.session.admin) {
-            yield parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
-            yield this.save();
+            yield* parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
+            yield* this.save();
         } else {
             throw new Error("Access denied");
         }
@@ -79,20 +79,20 @@
 
 
     App.prototype.createRecordViaRequest = function*(request) {
-        var record = yield models.Record.createViaRequest(this, request);
+        var record = yield* models.Record.createViaRequest(this, request);
         this.stats.lastRecord = Date.now();
-        yield this.save();
+        yield* this.save();
         return record;
     };
 
 
 
     App.prototype.updateRecordViaRequest = function*(stub, request) {
-        var record = yield this.getRecord({ stub: stub });
+        var record = yield* this.getRecord({ stub: stub });
 
         if (record) {
             if (record.createdBy.username === request.session.user.username) {
-                yield record.updateViaRequest(request);
+                yield* record.updateViaRequest(request);
                 return record;
             } else {
                 throw new Error("Access denied");
@@ -104,10 +104,10 @@
 
 
     App.prototype.deleteRecordViaRequest = function*(stub, request) {
-        var record = yield this.getRecord(stub);
+        var record = yield* this.getRecord(stub);
         if (record) {
             if(record.createdBy.username === request.session.user.username) {
-                yield record.destroy();
+                yield* record.destroy();
                 return record;
             } else {
                 throw new Error('Access denied');
@@ -120,9 +120,9 @@
 
 
     App.prototype.addRecordMetaViaRequest = function*(stub, request) {
-        var record = yield this.getRecord(stub);
+        var record = yield* this.getRecord(stub);
         if (record) {
-            yield record.addMetaViaRequest(request);
+            yield* record.addMetaViaRequest(request);
             return record;
         } else {
             throw new Error("Not found");
@@ -132,9 +132,9 @@
 
 
     App.prototype.deleteRecordMetaViaRequest = function*(stub, request) {
-        var record = yield this.getRecord(stub);
+        var record = yield* this.getRecord(stub);
         if (record) {
-            yield record.deleteMetaViaRequest(request);
+            yield* record.deleteMetaViaRequest(request);
             return record;
         } else {
             throw new Error("Not found");
@@ -161,14 +161,14 @@
         this.versionMinor = parseInt(versionParts[1]);
         this.versionRevision = parseInt(versionParts[2]);
 
-        yield appStore.save(this);
+        yield* appStore.save(this);
     };
 
 
 
     App.prototype.getRecord = function*(stub) {
         var recordStore = new DbConnector(models.Record);
-        return yield recordStore.findOne({ 'appId': DbConnector.getRowId(this), stub: stub });
+        return yield* recordStore.findOne({ 'appId': DbConnector.getRowId(this), stub: stub });
     };
 
 
@@ -176,7 +176,7 @@
     App.prototype.findRecord = function*(query) {
         query.appId = DbConnector.getRowId(this);
         var recordStore = new DbConnector(models.Record);
-        return yield recordStore.findOne(query);
+        return yield* recordStore.findOne(query);
     };
 
 
@@ -195,14 +195,14 @@
         query.appId = DbConnector.getRowId(this);
         settings = settings ? { sort: settings.sort, limit: getLimit(settings.limit, 100, 1000) } : {};
         var recordStore = new DbConnector(models.Record);
-        return yield recordStore.find(query, settings);
+        return yield* recordStore.find(query, settings);
     };
 
 
 
     App.prototype.join = function*(user) {
         if (this.access === 'public') {
-            return yield this.createRole(user, 'member');
+            return yield* this.createRole(user, 'member');
         } else {
             throw new Error("Access denied");
         }
@@ -212,7 +212,7 @@
 
     App.prototype.createRole = function*(user, role) {
         var membershipStore = new DbConnector(models.Membership);
-        var membership = yield membershipStore.findOne({ 'appId': DbConnector.getRowId(this), 'user.username': user.username });
+        var membership = yield* membershipStore.findOne({ 'appId': DbConnector.getRowId(this), 'user.username': user.username });
 
         var typesService = services.getTypesService();
         if (!membership) {
@@ -230,7 +230,7 @@
             }
         }
 
-        yield membership.save();
+        yield* membership.save();
         return membership;
     };
 
@@ -238,12 +238,12 @@
 
     App.prototype.deleteRole = function*(user, role) {
         var membershipStore = new DbConnector(models.Membership);
-        var membership = yield membershipStore.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
+        var membership = yield* membershipStore.findOne({ 'appId': this.getRowId(), 'user.username': user.username });
         membership.roles = membership.roles.filter(function(r) { return r != role; });
         if (membership.roles.length)
-            yield membership.save();
+            yield* membership.save();
         else
-            yield membership.destroy();
+            yield* membership.destroy();
         return membership;
     };
 
@@ -251,14 +251,14 @@
 
     App.prototype.getMembership = function*(username) {
         var membershipStore = new DbConnector(models.Membership);
-        return yield membershipStore.findOne({ 'app.id': this.getRowId(), 'user.username': username });
+        return yield* membershipStore.findOne({ 'app.id': this.getRowId(), 'user.username': username });
     };
 
 
 
     App.prototype.getMemberships = function*(roles) {
         var membershipStore = new DbConnector(models.Membership);
-        return yield membershipStore.find(
+        return yield* membershipStore.find(
             { 'appId': this.getRowId(), roles: { $in: roles } },
             { sort: { id: -1 }, limit: 200}
         );

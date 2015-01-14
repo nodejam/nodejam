@@ -49,7 +49,7 @@
     */
     Session.prototype.upgrade = function*(username) {
         var userStore = new DbConnector(models.User);
-        var user = yield userStore.findOne({ username: username, credentialId: this.credentialId });
+        var user = yield* userStore.findOne({ username: username, credentialId: this.credentialId });
         if (user) {
             this.token = randomizer.uniqueId(24);
             this.userId = user._id.toString();
@@ -61,7 +61,7 @@
 
 
     Session.prototype.save = function*() {
-        return yield sessionStore.save(this);
+        return yield* sessionStore.save(this);
     };
 
 

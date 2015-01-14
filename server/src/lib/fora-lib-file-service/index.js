@@ -3,7 +3,7 @@
 
     var path = require('path'),
         fs = require('fs'),
-        promisify = require('nodefunc-promisify');
+        generatorify = require('nodefunc-generatorify');
 
 
     var FileService = function(configuration) {
@@ -76,7 +76,7 @@
         src = fs.createReadStream(src);
         dest = fs.createWriteStream(dest);
         src.pipe(dest);
-        return yield promisify.call(src, src.on)('end');
+        return yield* generatorify(src.on).call(src, 'end');
     };
 
 

@@ -88,7 +88,7 @@ function co(gen) {
     if (ret.done) return Promise.resolve(ret.value);
     var value = toPromise.call(ctx, ret.value);
     if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
-    return onRejected(new TypeError('You may only yield a function, promise, generator, array, or object, '
+    return onRejected(new TypeError('You may only yield* a function, promise, generator, array, or object, '
       + 'but the following object was passed: "' + String(ret.value) + '"'));
   }
 }

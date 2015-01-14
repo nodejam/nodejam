@@ -52,7 +52,7 @@
                 return this.hostname && (baseConfig.domains.indexOf(this.hostname) === -1);
             },
             function*() {
-                this.app = yield appStore.findOne({ domains: this.hostname });
+                this.app = yield* appStore.findOne({ domains: this.hostname });
                 return true; //continue matching.
             }
         );
@@ -62,7 +62,7 @@
     /*  Container API Routes */
     var addContainerAPIRoutes = function*(router, urlPrefix) {
         var extensionsService = services.getExtensionsService();
-        var apiModule = yield extensionsService.getModule("container", "default", "1.0.0", "api");
+        var apiModule = yield* extensionsService.getModule("container", "default", "1.0.0", "api");
 
         apiModule.routes.forEach(function(route) {
             router[route.method](path.join(urlPrefix, route.url), route.handler);
@@ -73,7 +73,7 @@
     /*  Container UI Routes */
     var addContainerUIRoutes = function*(router, urlPrefix) {
         var extensionsService = services.getExtensionsService();
-        var webModule = yield extensionsService.getModule("container", "default", "1.0.0", "web");
+        var webModule = yield* extensionsService.getModule("container", "default", "1.0.0", "web");
 
         var renderer = new Renderer(router, argv['debug-client']);
 
@@ -108,7 +108,7 @@
             },
             function*() {
                 if (!this.app) {
-                    this.app = yield appStore.findOne({ stub: this.path.split("/")[prefixPartsCount] });
+                    this.app = yield* appStore.findOne({ stub: this.path.split("/")[prefixPartsCount] });
                     if (this.app) {
                         var urlParts = this.url.split("/");
                         this.url = this.url.replace(appRootRegex, "/");
@@ -119,9 +119,9 @@
 
                 var token = this.query.token || this.cookies.get('token');
                 if (token)
-                    this.session = yield sessionStore.findOne({ token: token });
+                    this.session = yield* sessionStore.findOne({ token: token });
 
-                return yield sandbox.executeRequest(this);
+                return yield* sandbox.executeRequest(this);
             }
         );
     };
@@ -176,20 +176,20 @@
 
             var appInfo = setupInstanceStats();
 
-            var initResult = yield initializeApp(config, baseConfig);
+            var initResult = yield* initializeApp(config, baseConfig);
             var router = new Router();
             addHealthCheck(router, appInfo);
             addDomainRewrite(router);
 
             if (baseConfig.serveStaticFiles) {
-                yield addStaticRoutes(router);
+                yield* addStaticRoutes(router);
             }
 
-            yield addContainerAPIRoutes(router, "/api/v1");
-            yield addExtensionRoutes(router, "/api/app", "api");
+            yield* addContainerAPIRoutes(router, "/api/v1");
+            yield* addExtensionRoutes(router, "/api/app", "api");
 
-            yield addContainerUIRoutes(router, "/");
-            yield addExtensionRoutes(router, "/", "web");
+            yield* addContainerUIRoutes(router, "/");
+            yield* addExtensionRoutes(router, "/", "web");
 
             /* Init koa */
             var koa = require('koa');

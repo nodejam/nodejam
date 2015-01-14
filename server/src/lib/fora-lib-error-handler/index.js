@@ -5,7 +5,7 @@
 
     module.exports = function*(next) {
         try {
-            yield next;
+            yield* next;
         } catch (err) {
             var printer = argv['show-errors'] ? console.log : console.error;
             printer.call(console, err);

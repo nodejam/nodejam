@@ -30,7 +30,7 @@
     "co": "*",
     "co-body": "*",
     "co-multipart": "*",
-    "nodefunc-promisify": "*",
+    "nodefunc-generatorify": "*",
     "mongodb": "~2.0",
     "validator": "*",
     "sanitizer": "*",

@@ -18,9 +18,9 @@
 
 
     ForaAppTypesService.prototype.constructEntity = function*(obj, entitySchema, options, skipInitialize) {
-        var effectiveTypeDef = yield ForaTypesService.prototype.getEffectiveEntitySchema.call(this, obj, entitySchema);
+        var effectiveTypeDef = yield* ForaTypesService.prototype.getEffectiveEntitySchema.call(this, obj, entitySchema);
 
-        var result = yield ForaTypesService.prototype.constructEntity.call(this, obj, effectiveTypeDef, options);
+        var result = yield* ForaTypesService.prototype.constructEntity.call(this, obj, effectiveTypeDef, options);
 
         result.getEntitySchema = function*() {
             return effectiveTypeDef;
@@ -41,7 +41,7 @@
 
 
     ForaAppTypesService.prototype.updateEntity = function*(target, obj, entitySchema, options) {
-        yield ForaTypesService.prototype.updateEntity.call(this, target, obj, entitySchema, options);
+        yield* ForaTypesService.prototype.updateEntity.call(this, target, obj, entitySchema, options);
         var rowId = this.db.getRowId(obj);
         if (rowId)
             this.db.setRowId(target, rowId);

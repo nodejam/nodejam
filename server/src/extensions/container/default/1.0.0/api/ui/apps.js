@@ -10,7 +10,7 @@
 
     var index = function*() {
         var appStore = new DbConnector(models.App);
-        this.body = { apps: yield appStore.find({}, { sort: { 'stats.lastRecord': -1 }, limit: 32 }) };
+        this.body = { apps: yield* appStore.find({}, { sort: { 'stats.lastRecord': -1 }, limit: 32 }) };
     };
 
 

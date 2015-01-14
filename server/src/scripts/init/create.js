@@ -44,10 +44,10 @@
                 }
             };
 
-            var initResult = yield initializeApp(config, baseConfig);
+            var initResult = yield* initializeApp(config, baseConfig);
             var db = services.getDb();
             var typesService = services.getTypesService();
-            yield db.setupIndexes(typesService.getEntitySchemas());
+            yield* db.setupIndexes(typesService.getEntitySchemas());
         } catch (err) {
             console.log(err.stack);
         }

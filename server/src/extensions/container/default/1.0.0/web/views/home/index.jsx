@@ -13,17 +13,17 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(api) {
-                var props = yield api.http.get("/api/v1/ui/home");
+                var props = yield* api.http.get("/api/v1/ui/home");
 
                 /* Attach the templates */
                 var init = function*(items) {
                   for (var i = 0; i < items.length; i++) {
-                      items[i].record.template = yield api.views.getWidget("list", items[i].record);
+                      items[i].record.template = yield* api.views.getWidget("list", items[i].record);
                   }
                 };
 
-                yield init(props.featured);
-                yield init(props.editorsPicks);
+                yield* init(props.featured);
+                yield* init(props.editorsPicks);
 
                 return props;
             }

@@ -34,7 +34,7 @@
                 var fullName = extensionName + "_" + moduleName;
 
                 var extModule = require(["/extensions", kind, typeName, version, moduleName].join("/"));
-                extModule = yield self.fnModuleMapper(extModule, kind, typeName, version, moduleName);
+                extModule = yield* self.fnModuleMapper(extModule, kind, typeName, version, moduleName);
 
                 //Put the module in cache
                 moduleCache[fullName] = extModule;

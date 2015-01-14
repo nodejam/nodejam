@@ -16,7 +16,7 @@
 
     /*  Container UI Routes */
     var addContainerUIRoutes = function*(router, urlPrefix, extensionsService) {
-        var webModule = yield extensionsService.getModule("container", "default", "1.0.0", "web");
+        var webModule = yield* extensionsService.getModule("container", "default", "1.0.0", "web");
 
         var renderer = new Renderer(router);
 
@@ -43,17 +43,17 @@
                 }
             };
 
-            var initResult = yield initializeApp(config, baseConfig);
+            var initResult = yield* initializeApp(config, baseConfig);
             var router = new Router();
 
             var extensionsService = services.getExtensionsService();
-            yield addContainerUIRoutes(router, "/", extensionsService);
+            yield* addContainerUIRoutes(router, "/", extensionsService);
 
             var routeFunc = router.route();
 
             var doRouting = function*() {
                 var request = new ForaRequest();
-                yield routeFunc.call(request, null);
+                yield* routeFunc.call(request, null);
             };
 
             var onChange = function() {

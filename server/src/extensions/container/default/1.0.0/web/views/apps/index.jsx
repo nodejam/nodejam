@@ -12,10 +12,10 @@
     module.exports = React.createClass({
         statics: {
             componentInit: function*(api) {
-                var props = yield api.http.get("/api/v1/ui/apps");
+                var props = yield* api.http.get("/api/v1/ui/apps");
 
                 for (var i = 0; i < props.apps.length; i++) {
-                      props.apps[i].template = yield api.views.getWidget("list", props.apps[i]);
+                      props.apps[i].template = yield* api.views.getWidget("list", props.apps[i]);
                 }
 
                 return props;

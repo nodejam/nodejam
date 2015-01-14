@@ -11,14 +11,14 @@
 
 
     var create = function*() {
-        this.body = yield models.App.createViaRequest(this);
+        this.body = yield* models.App.createViaRequest(this);
     };
 
 
     var edit = function*(stub) {
         var appStore = new DbConnector(models.App);
-        var app = yield appStore.findOne({ stub: stub });
-        this.body = yield app.editViaRequest(this);
+        var app = yield* appStore.findOne({ stub: stub });
+        this.body = yield* app.editViaRequest(this);
     };
 
 

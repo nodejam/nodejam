@@ -44,51 +44,51 @@
             params[k] = v;
         }
 
-        return yield recordStore.find(params, { sort: settings.sort, limit: limit });
+        return yield* recordStore.find(params, { sort: settings.sort, limit: limit });
     };
 
 
 
     Record.createViaRequest = function*(app, request) {
         var typesService = services.getTypesService();
-        var entitySchema = yield typesService.getEntitySchema(Record.entitySchema.schema.id);
+        var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.schema.id);
 
         var parser = new Parser(request, typesService);
 
-        var record = yield typesService.constructEntity({
-            type: yield parser.body('type'),
-            version: yield parser.body('version'),
+        var record = yield* typesService.constructEntity({
+            type: yield* parser.body('type'),
+            version: yield* parser.body('version'),
             createdBy: request.session.user,
-            state: yield parser.body('state'),
+            state: yield* parser.body('state'),
             rating: 0,
             savedAt: Date.now(),
             appId: DbConnector.getRowId(app)
         }, entitySchema);
 
-        var def = yield record.getEntitySchema();
-        yield parser.map(record, def, yield record.getCustomFields(def));
-        yield record.save();
+        var def = yield* record.getEntitySchema();
+        yield* parser.map(record, def, yield* record.getCustomFields(def));
+        yield* record.save();
         return record;
     };
 
 
 
     Record.prototype.updateViaRequest = function*(request) {
-        var def = yield this.getEntitySchema();
-        yield parser.map(this, def, yield this.getCustomFields());
+        var def = yield* this.getEntitySchema();
+        yield* parser.map(this, def, yield* this.getCustomFields());
         this.savedAt = Date.now();
-        if (yield parser.body('state') === 'published') this.state = 'published';
-        yield this.save();
+        if (yield* parser.body('state') === 'published') this.state = 'published';
+        yield* this.save();
     };
 
 
 
     Record.prototype.addMetaViaRequest = function*(request) {
         var parser = new Parser(request, services.getTypesService());
-        var meta = yield parser.body('meta');
+        var meta = yield* parser.body('meta');
         if (meta) {
-            yield this.addMeta(meta.split(','));
-            yield this.save();
+            yield* this.addMeta(meta.split(','));
+            yield* this.save();
         } else {
             throw new Error("Meta was not supplied");
         }
@@ -98,10 +98,10 @@
 
     Record.prototype.deleteMetaViaRequest = function*(request) {
         var parser = new Parser(request, services.getTypesService());
-        var meta = yield parser.body('meta');
+        var meta = yield* parser.body('meta');
         if (meta) {
-            yield this.deleteMeta(meta.split(','));
-            return yield this.save();
+            yield* this.deleteMeta(meta.split(','));
+            return yield* this.save();
         } else {
             throw new Error("Meta was not supplied");
         }
@@ -134,7 +134,7 @@
             this.stub = this.stub || randomizer.uniqueId(16);
         }
 
-        yield recordStore.save(this);
+        yield* recordStore.save(this);
     };
 
 
@@ -158,7 +158,7 @@
 
     Record.prototype.getCreator = function*() {
         var userStore = new DbConnector(models.User);
-        return yield userStore.findById(this.createdBy.id);
+        return yield* userStore.findById(this.createdBy.id);
     };
 
 

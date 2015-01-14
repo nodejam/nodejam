@@ -9,7 +9,7 @@
         var typesService = services.getTypesService();
         var extensionsService = services.getExtensionsService();
 
-        var extensionSearchResult = yield extensionsService.get(item.type);
+        var extensionSearchResult = yield* extensionsService.get(item.type);
         if (extensionSearchResult) {
             var extension = extensionSearchResult.extension;
             if (!extension.__widgets)
