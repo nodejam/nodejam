@@ -22,6 +22,7 @@
     "optimist": "*",
     "node-minify": "*",
     "crankshaft": "*",
+    "crankshaft-tools": "*",
     "react-tools": "*",
     "koa": "*",
     "koa-send": "*",
