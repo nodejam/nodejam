@@ -31,17 +31,18 @@
     var start = Date.now();
 
     var crankshaft = require('crankshaft');
-
-    var spawn = crankshaft.tools.process.spawn();
-    var exec = crankshaft.tools.process.exec({ log: console.log });
+    var tools = require('crankshaft-tools');
+    
+    var spawn = tools.process.spawn();
+    var exec = tools.process.exec({ log: console.log });
 
     /* Create the build */
     var threads = argv.threads ? parseInt(argv.threads) : 8;
     var build = crankshaft.create({ threads: threads });
 
     /* The three configs */
-    var serverConfig = require('./server/build-config')(crankshaft.tools);
-    var clientConfig = require('./www-client/build-config')(crankshaft.tools);
+    var serverConfig = require('./server/build-config')(tools);
+    var clientConfig = require('./www-client/build-config')(tools);
 
     /* Set build parameters */
     build.state.monitor = true;

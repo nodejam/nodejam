@@ -12,6 +12,7 @@ npm_publish() {
 }
 
 npm_publish "crankshaft" "node_modules"
+npm_publish "crankshaft-tools" "node_modules"
 npm_publish "fora-data-utils" "node_modules"
 npm_publish "ceramic" "node_modules"
 npm_publish "ceramic-db" "node_modules"

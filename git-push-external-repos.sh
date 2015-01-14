@@ -12,6 +12,7 @@ git_push() {
 }
 
 git_push "crankshaft" "node_modules"
+git_push "crankshaft-tools" "node_modules"
 git_push "fora-data-utils" "node_modules"
 git_push "ceramic" "node_modules"
 git_push "ceramic-db" "node_modules"
