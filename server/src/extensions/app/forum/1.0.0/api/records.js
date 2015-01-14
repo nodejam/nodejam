@@ -33,8 +33,7 @@
         create: auth({ session: 'user' }, create),
         update: auth({ session: 'user' }, update),
         del: auth({ session: 'user' }, del),
-        addMeta: auth({ session: 'admin' }, addMeta
-        )
+        addMeta: auth({ session: 'admin' }, addMeta)
     };
 
 
