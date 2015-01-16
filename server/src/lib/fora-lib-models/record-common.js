@@ -9,8 +9,8 @@
 
         Record.entitySchema = {
             collection: 'records',
-            discriminator: function*(obj, typesService) {
-                return yield* typesService.getEntitySchema(obj.type);
+            discriminator: function*(obj, schemaManager) {
+                return yield* schemaManager.getEntitySchema(obj.type);
             },
             schema: {
                 id: "record",
@@ -47,9 +47,9 @@
                 createdAt: { event: 'created' },
                 updatedAt: { event: 'updated' }
             },
-            initialize: function*(record, raw, typeDef, typesService) {
+            initialize: function*(record, raw, typeDef, schemaManager) {
                 var clone = JSON.parse(JSON.stringify(raw));
-                var original = yield* typesService.constructEntity(clone, typeDef, {}, true);
+                var original = yield* schemaManager.constructEntity(clone, typeDef, {}, true);
                 this.getOriginal = function*() {
                     return original;
                 };
@@ -93,9 +93,9 @@
 
 
         Record.new = function*(params) {
-            var typesService = services.getTypesService();
-            var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.schema.id);
-            return yield* typesService.constructEntity(params, entitySchema);
+            var schemaManager = services.getSchemaManager();
+            var entitySchema = yield* schemaManager.getEntitySchema(Record.entitySchema.schema.id);
+            return yield* schemaManager.constructEntity(params, entitySchema);
         };
 
 

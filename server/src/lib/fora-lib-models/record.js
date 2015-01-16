@@ -6,10 +6,10 @@
         dataUtils = require('fora-data-utils'),
         services = require('fora-lib-services'),
         DbConnector = require('fora-lib-db-connector'),
-        Parser = require('fora-request-parser'),
+        Parser = require('ceramic-dictionary-parser'),
         models = require('./');
 
-    var typesService = services.getTypesService();
+    var schemaManager = services.getSchemaManager();
 
     var Record = function(params) {
         dataUtils.extend(this, params);
@@ -50,16 +50,16 @@
 
 
     Record.createViaRequest = function*(app, request) {
-        var typesService = services.getTypesService();
-        var entitySchema = yield* typesService.getEntitySchema(Record.entitySchema.schema.id);
+        var schemaManager = services.getSchemaManager();
+        var entitySchema = yield* schemaManager.getEntitySchema(Record.entitySchema.schema.id);
 
-        var parser = new Parser(request, typesService);
+        var parser = new Parser(request, request.getFormField, schemaManager);
 
-        var record = yield* typesService.constructEntity({
-            type: yield* parser.body('type'),
-            version: yield* parser.body('version'),
+        var record = yield* schemaManager.constructEntity({
+            type: yield* parser.getField('type'),
+            version: yield* parser.getField('version'),
             createdBy: request.session.user,
-            state: yield* parser.body('state'),
+            state: yield* parser.getField('state'),
             rating: 0,
             savedAt: Date.now(),
             appId: DbConnector.getRowId(app)
@@ -77,15 +77,15 @@
         var def = yield* this.getEntitySchema();
         yield* parser.map(this, def, yield* this.getCustomFields());
         this.savedAt = Date.now();
-        if (yield* parser.body('state') === 'published') this.state = 'published';
+        if (yield* parser.getField('state') === 'published') this.state = 'published';
         yield* this.save();
     };
 
 
 
     Record.prototype.addMetaViaRequest = function*(request) {
-        var parser = new Parser(request, services.getTypesService());
-        var meta = yield* parser.body('meta');
+        var parser = new Parser(request, request.getFormField, services.getSchemaManager());
+        var meta = yield* parser.getField('meta');
         if (meta) {
             yield* this.addMeta(meta.split(','));
             yield* this.save();
@@ -97,8 +97,8 @@
 
 
     Record.prototype.deleteMetaViaRequest = function*(request) {
-        var parser = new Parser(request, services.getTypesService());
-        var meta = yield* parser.body('meta');
+        var parser = new Parser(request, request.getFormField, services.getSchemaManager());
+        var meta = yield* parser.getField('meta');
         if (meta) {
             yield* this.deleteMeta(meta.split(','));
             return yield* this.save();

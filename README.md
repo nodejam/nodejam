@@ -3,10 +3,10 @@ Some re-usable components of fora have been moved to separate packages.
 - Ceramic (Serialization and validation for datatypes based on JSON Schema) https://github.com/jeswin/ceramic
 - Ceramic Db (Database backend for Ceramic) https://github.com/jeswin/ceramic-db
 - Ceramic MongoDb Backend (Ceramic's Mongo Backend) https://github.com/jeswin/ceramic-backend-mongodb
+- Ceramic Dictionary Parser (http form data to an object) https://github.com/jeswin/ceramic-dictionary-parser
 - Fora Extensions (Extensions and Plugin Management) https://github.com/jeswin/fora-extensions
 - Fora Router (Router for Koa) https://github.com/jeswin/fora-router
 - Fora Request (Wrapper around Koa Request) https://github.com/jeswin/fora-request
-- Fora Request Parser (Parse and HTTP Request into an object) https://github.com/jeswin/fora-request-parser
 
 To know what Fora is about, see this https://slides.com/jeswin/fora/fullscreen#
 This is __not ready__ to be forked yet. Our first priority is to get the foundation right.

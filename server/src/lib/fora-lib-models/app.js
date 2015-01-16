@@ -6,7 +6,7 @@
         dataUtils = require('fora-data-utils'),
         DbConnector = require('fora-lib-db-connector'),
         services = require('fora-lib-services'),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
     var conf = services.getConfiguration();
 
@@ -28,27 +28,27 @@
 
 
     App.createViaRequest = function*(request) {
-        var typesService = services.getTypesService();
-        var parser = new Parser(request, typesService);
+        var schemaManager = services.getSchemaManager();
+        var parser = new Parser(request, request.getFormField, schemaManager);
 
-        var stub = (yield* parser.body('name')).toLowerCase().trim();
+        var stub = (yield* parser.getField('name')).toLowerCase().trim();
         if (conf.reservedNames.indexOf(stub) > -1)
             stub = stub + "-app";
         stub = stub.replace(/\s+/g,'-').replace(/[^a-z0-9|-]/g, '').replace(/^\d*/,'');
 
-        var app = yield* appStore.findOne({ $or: [{ stub: stub }, { name: yield* parser.body('name') }] });
+        var app = yield* appStore.findOne({ $or: [{ stub: stub }, { name: yield* parser.getField('name') }] });
 
         if (!app) {
-            var type = yield* parser.body('type');
-            var entitySchema = yield* typesService.getEntitySchema(type);
+            var type = yield* parser.getField('type');
+            var entitySchema = yield* schemaManager.getEntitySchema(type);
             var params = {
                 type: type,
-                name: yield* parser.body('name'),
-                access: yield* parser.body('access'),
+                name: yield* parser.getField('name'),
+                access: yield* parser.getField('access'),
                 stub: stub,
                 createdBy: request.session.user,
             };
-            app = yield* typesService.constructEntity(params, entitySchema);
+            app = yield* schemaManager.constructEntity(params, entitySchema);
 
             yield* parser.map(
                 app,
@@ -66,7 +66,7 @@
 
 
     App.prototype.editViaRequest = function*(request) {
-        var parser = new Parser(request, services.getTypesService());
+        var parser = new Parser(request, request.getFormField, services.getSchemaManager());
 
         if (request.session.user.username === request.createdBy.username || request.session.admin) {
             yield* parser.map(request, ['description', 'cover_image_src', 'cover_image_small', 'cover_image_alt', 'cover_image_credits']);
@@ -214,7 +214,7 @@
         var membershipStore = new DbConnector(models.Membership);
         var membership = yield* membershipStore.findOne({ 'appId': DbConnector.getRowId(this), 'user.username': user.username });
 
-        var typesService = services.getTypesService();
+        var schemaManager = services.getSchemaManager();
         if (!membership) {
             membership = new models.Membership(
                 {

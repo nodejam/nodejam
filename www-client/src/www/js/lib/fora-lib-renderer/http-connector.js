@@ -10,7 +10,7 @@
         this.requestContext = requestContext;
         this.router = router;
         this.routeFn = router.route();
-        this.typesService = services.getTypesService();
+        this.schemaManager = services.getSchemaManager();
     };
 
 
@@ -38,8 +38,8 @@
                     match.requestContext.body,
                     function*(item) {
                         if (item._mustReconstruct) {
-                            var entitySchema = yield* self.typesService.getEntitySchema(item.type);
-                            var model = yield* self.typesService.constructEntity(item, entitySchema);
+                            var entitySchema = yield* self.schemaManager.getEntitySchema(item.type);
+                            var model = yield* self.schemaManager.constructEntity(item, entitySchema);
                             return { value: model, stop: true };
                         }
                     }

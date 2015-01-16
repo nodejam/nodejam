@@ -6,9 +6,9 @@
     var models = require('fora-lib-models'),
         services = require('fora-lib-services'),
         DbConnector = require('fora-lib-db-connector'),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
-    var typesService = services.getTypesService();
+    var schemaManager = services.getSchemaManager();
 
     var index = function*() {
         var cacheItemStore = new DbConnector(models.CacheItem);
@@ -41,9 +41,9 @@
 
 
     var actions = function*() {
-        var parser = new Parser(this, typesService);
+        var parser = new Parser(this, schemaManager);
 
-        var items = (yield* parser.body("type")).split(',');
+        var items = (yield* parser.getField("type")).split(',');
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
             switch(item) {

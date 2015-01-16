@@ -6,7 +6,7 @@
     var models = require('fora-lib-models'),
         services = require('fora-lib-services'),
         dataUtils = require('fora-data-utils'),
-        Parser = require('fora-request-parser'),
+        Parser = require('ceramic-dictionary-parser'),
         DbConnector = require('fora-lib-db-connector');
 
 

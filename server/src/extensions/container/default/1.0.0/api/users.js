@@ -6,7 +6,7 @@
     var models = require('fora-lib-models'),
         services = require('fora-lib-services'),
         FileService = require('fora-lib-file-service'),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
     var conf = services.getConfiguration();
     var fileService = new FileService(conf);
@@ -19,8 +19,8 @@
 
 
     var login = function*() {
-        var parser = new Parser(this, services.getTypesService());
-        yield* this.session.upgrade(yield* parser.body('username'));
+        var parser = new Parser(this, this.getFormField, services.getSchemaManager());
+        yield* this.session.upgrade(yield* parser.getField('username'));
         yield* this.session.save();
 
         var user = this.session.user;

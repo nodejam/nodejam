@@ -7,7 +7,7 @@
         DbConnector = require('fora-lib-db-connector'),
         services = require('fora-lib-services'),
         FileService = require('fora-lib-file-service'),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
     var conf = services.getConfiguration();
     var fileService = new FileService(conf);
@@ -22,16 +22,16 @@
 
 
     User.createViaRequest = function*(request) {
-        var typesService = services.getTypesService();
-        var parser = new Parser(request, typesService);
+        var schemaManager = services.getSchemaManager();
+        var parser = new Parser(request, request.getFormField, schemaManager);
 
         var user = new User({
-            username: yield* parser.body('username'),
+            username: yield* parser.getField('username'),
             credentialId: request.session.credentialId,
-            name: yield* parser.body('name'),
-            location: yield* parser.body('location'),
-            email: (yield* parser.body('email') || 'unknownthis.foraproject.org'),
-            about: yield* parser.body('about'),
+            name: yield* parser.getField('name'),
+            location: yield* parser.getField('location'),
+            email: (yield* parser.getField('email') || 'unknownthis.foraproject.org'),
+            about: yield* parser.getField('about'),
             lastLogin: Date.now()
         });
 
@@ -39,8 +39,8 @@
 
         //Move images to assets
         var picture = {
-            src: yield* parser.body('picture_src'),
-            small: yield* parser.body('picture_small')
+            src: yield* parser.getField('picture_src'),
+            small: yield* parser.getField('picture_small')
         };
 
         var copy = function*(sourcePath, destFilename) {

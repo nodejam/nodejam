@@ -7,7 +7,7 @@
     var services = require("fora-lib-services"),
         models = require('fora-lib-models');
 
-    var typesService = services.getTypesService();
+    var schemaManager = services.getSchemaManager();
 
     module.exports = models.App.extend({
 

@@ -5,7 +5,7 @@
 
     var models = require('fora-lib-models'),
         services = require('fora-lib-services'),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
     var conf = services.getConfiguration();
 
@@ -62,8 +62,8 @@
             throw new Error("Invalid width or height setting #{srcWidth}, #{srcHeight}, #{smallWidth}, #{smallHeight}");
         }
 
-        var typesService = services.getTypesService();
-        var parser = new Parser(this, typesService);
+        var schemaManager = services.getSchemaManager();
+        var parser = new Parser(this, schemaManager);
 
         var files = yield* parser.files();
 

@@ -4,7 +4,7 @@
     var _;
 
     var services = require("fora-lib-services"),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
 
     var create = function*() {

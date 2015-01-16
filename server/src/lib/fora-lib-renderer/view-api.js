@@ -6,7 +6,7 @@
         services = require('fora-lib-services');
 
     var getWidget = function*(viewName, item) {
-        var typesService = services.getTypesService();
+        var schemaManager = services.getSchemaManager();
         var extensionsService = services.getExtensionsService();
 
         var extensionSearchResult = yield* extensionsService.get(item.type);

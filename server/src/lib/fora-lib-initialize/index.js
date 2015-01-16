@@ -40,12 +40,12 @@
         /*
             Types Service
             -------------
-            We must pass all the entitySchemas and virtual entitySchemas to typesService.
+            We must pass all the entitySchemas and virtual entitySchemas to schemaManager.
             Virtual Type Definitions are defined in extensions, so we need to get it via extensionsService.
         */
         var TypesService = require('fora-lib-types-service');
-        var typesService = new TypesService();
-        services.setTypesService(typesService);
+        var schemaManager = new TypesService();
+        services.setTypesService(schemaManager);
 
         var models = require("fora-lib-models");
 
@@ -76,7 +76,7 @@
             });
         }));
 
-        yield* typesService.init(
+        yield* schemaManager.init(
             entitySchemas,
             [
                 { entitySchemas: appVirtEntitySchemas, baseEntitySchema: models.App.entitySchema },

@@ -1,54 +1,54 @@
 {
-  "name": "fora",
-  "version": "0.0.1",
-  "description": "A platform for building apps around communities",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jeswin/fora"
-  },
-  "author": "",
-  "license": "GNU GPL",
-  "bugs": {
-    "url": "https://github.com/jeswin/fora/issues"
-  },
-  "dependencies": {
-    "regenerator": "*",
-    "browserify": "*",
-    "less": "*",
-    "optimist": "*",
-    "node-minify": "*",
-    "crankshaft": "*",
-    "crankshaft-tools": "*",
-    "react-tools": "*",
-    "koa": "*",
-    "koa-send": "*",
-    "koa-route": "*",
-    "koa-favicon": "*",
-    "co": "*",
-    "co-body": "*",
-    "co-multipart": "*",
-    "nodefunc-generatorify": "*",
-    "mongodb": "~2.0",
-    "validator": "*",
-    "sanitizer": "*",
-    "fs-extra": "*",
-    "gm": "*",
-    "oauth": "*",
-    "markdown": "*",
-    "multiparty": "*",
-    "react": "*",
-    "path-to-regexp": "*",
-    "fora-data-utils": "*",
-    "ceramic": "*",
-    "ceramic-db": "*",
-    "ceramic-backend-mongodb": "*",
-    "fora-extensions-service": "*",
-    "fora-request": "*",
-    "fora-request-parser": "*",
-    "fora-router": "*"
- }
+    "name": "fora",
+    "version": "0.0.1",
+    "description": "A platform for building apps around communities",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jeswin/fora"
+    },
+    "author": "",
+    "license": "GNU GPL",
+    "bugs": {
+        "url": "https://github.com/jeswin/fora/issues"
+    },
+    "dependencies": {
+        "regenerator": "*",
+        "browserify": "*",
+        "less": "*",
+        "optimist": "*",
+        "node-minify": "*",
+        "crankshaft": "*",
+        "crankshaft-tools": "*",
+        "react-tools": "*",
+        "koa": "*",
+        "koa-send": "*",
+        "koa-route": "*",
+        "koa-favicon": "*",
+        "co": "*",
+        "co-body": "*",
+        "co-multipart": "*",
+        "nodefunc-generatorify": "*",
+        "mongodb": "~2.0",
+        "validator": "*",
+        "sanitizer": "*",
+        "fs-extra": "*",
+        "gm": "*",
+        "oauth": "*",
+        "markdown": "*",
+        "multiparty": "*",
+        "react": "*",
+        "path-to-regexp": "*",
+        "fora-data-utils": "*",
+        "ceramic": "*",
+        "ceramic-db": "*",
+        "ceramic-backend-mongodb": "*",
+        "ceramic-dictionary-parser": "*",
+        "fora-extensions-service": "*",
+        "fora-request": "*",
+        "fora-router": "*"
+    }
 }

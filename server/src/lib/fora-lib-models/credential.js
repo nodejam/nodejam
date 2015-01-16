@@ -9,9 +9,9 @@
         services = require('fora-lib-services'),
         DbConnector = require('fora-lib-db-connector'),
         dataUtils = require('fora-data-utils'),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
-    var typesService = services.getTypesService(),
+    var schemaManager = services.getSchemaManager(),
         conf = services.getConfiguration();
 
     var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -91,15 +91,15 @@
 
 
     Credential.createViaRequest = function*(request) {
-        var typesService = services.getTypesService();
-        var parser = new Parser(request, typesService);
+        var schemaManager = services.getSchemaManager();
+        var parser = new Parser(request, request.getFormField, schemaManager);
 
-        if ((yield* parser.body('secret')) === conf.services.auth.adminkeys.default) {
-            var type = yield* parser.body('type');
+        if ((yield* parser.getField('secret')) === conf.services.auth.adminkeys.default) {
+            var type = yield* parser.getField('type');
 
             var credential = new Credential(
                 {
-                    email: yield* parser.body('email'),
+                    email: yield* parser.getField('email'),
                     preferences: { canEmail: true }
                 }
             );
@@ -107,15 +107,15 @@
             var username;
             switch(type) {
                 case 'builtin':
-                    username = yield* parser.body('username');
-                    var password = yield* parser.body('password');
-                    yield credential.addBuiltin(username, password);
+                    username = yield* parser.getField('username');
+                    var password = yield* parser.getField('password');
+                    yield* credential.addBuiltin(username, password);
                     break;
                 case 'twitter':
-                    var id = yield* parser.body('id');
-                    username = yield* parser.body('username');
-                    var accessToken = yield* parser.body('accessToken');
-                    var accessTokenSecret = yield* parser.body('accessTokenSecret');
+                    var id = yield* parser.getField('id');
+                    username = yield* parser.getField('username');
+                    var accessToken = yield* parser.getField('accessToken');
+                    var accessTokenSecret = yield* parser.getField('accessTokenSecret');
                     yield* credential.addTwitter(id, username, accessToken, accessTokenSecret);
                     break;
             }
@@ -135,7 +135,7 @@
         This can be used to upgrade to a user token, which is then used for login.
     */
     Credential.prototype.createSession = function*() {
-        var typesService = services.getTypesService();
+        var schemaManager = services.getSchemaManager();
         var session = new models.Session(
             {
                 credentialId: DbConnector.getRowId(this),

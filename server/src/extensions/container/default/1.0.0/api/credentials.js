@@ -5,7 +5,7 @@
 
     var models = require('fora-lib-models'),
         services = require('fora-lib-services'),
-        Parser = require('fora-request-parser');
+        Parser = require('ceramic-dictionary-parser');
 
     var conf = services.getConfiguration();
 

@@ -1,6 +1,6 @@
 (function() {
 
-    var _db, _configuration, _extensionsService, _typesService;
+    var _db, _configuration, _extensionsService, _schemaManager;
 
     var services = {
         copy: function(params) {
@@ -8,7 +8,7 @@
                 db: _db,
                 configuration: _configuration,
                 extensionsService: _extensionsService,
-                typesService: _typesService
+                schemaManager: _schemaManager
             };
         },
 
@@ -36,12 +36,12 @@
             _extensionsService = svc;
         },
 
-        getTypesService: function() {
-            return _typesService;
+        getSchemaManager: function() {
+            return _schemaManager;
         },
 
         setTypesService: function(svc) {
-            _typesService = svc;
+            _schemaManager = svc;
         }
     };
 
