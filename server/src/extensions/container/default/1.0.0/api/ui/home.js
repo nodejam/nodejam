@@ -41,7 +41,7 @@
 
 
     var actions = function*() {
-        var parser = new Parser(this, schemaManager);
+        var parser = new Parser(this, this.getFormField, schemaManager);
 
         var items = (yield* parser.getField("type")).split(',');
         for (var i = 0; i < items.length; i++) {

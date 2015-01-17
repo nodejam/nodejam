@@ -63,7 +63,7 @@
         }
 
         var schemaManager = services.getSchemaManager();
-        var parser = new Parser(this, schemaManager);
+        var parser = new Parser(this, this.getFormField, schemaManager);
 
         var files = yield* parser.files();
 
