@@ -5,9 +5,9 @@
 
     var co = require('co'),
         logger = require('fora-lib-logger'),
-        Router = require('fora-router'),
+        Router = require('fora-lib-router'),
         Renderer = require('fora-lib-renderer'),
-        ForaRequest = require('fora-request'),
+        ForaRequest = require('fora-lib-request'),
         services = require('fora-lib-services'),
         models = require('fora-lib-models'),
         initializeApp = require('fora-lib-initialize'),

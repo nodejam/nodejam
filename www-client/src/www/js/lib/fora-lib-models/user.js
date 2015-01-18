@@ -5,7 +5,7 @@
     var _;
 
     var userCommon = require('./user-common'),
-        dataUtils = require('fora-data-utils');
+        dataUtils = require('fora-lib-data-utils');
 
     var User = function(params) {
         dataUtils.extend(this, params);

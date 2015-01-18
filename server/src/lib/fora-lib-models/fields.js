@@ -2,7 +2,7 @@
     "use strict";
 
     var markdown = require('markdown').markdown,
-        dataUtils = require('fora-data-utils');
+        dataUtils = require('fora-lib-data-utils');
 
     var Image = function(params) {
         dataUtils.extend(this, params);

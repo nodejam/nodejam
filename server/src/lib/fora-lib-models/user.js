@@ -2,7 +2,7 @@
     "use strict";
 
     var models = require('./'),
-        dataUtils = require('fora-data-utils'),
+        dataUtils = require('fora-lib-data-utils'),
         userCommon = require('./user-common'),
         DbConnector = require('fora-lib-db-connector'),
         services = require('fora-lib-services'),

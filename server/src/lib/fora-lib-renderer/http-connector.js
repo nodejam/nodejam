@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    var visit = require('fora-data-utils').visit;
+    var visit = require('transform-tree');
 
 
     var ApiConnector = function(requestContext, router) {

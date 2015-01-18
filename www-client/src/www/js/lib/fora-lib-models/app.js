@@ -4,7 +4,7 @@
     var _;
 
     var appCommon = require('./app-common'),
-        dataUtils = require('fora-data-utils'),
+        dataUtils = require('fora-lib-data-utils'),
         DbConnector = require('fora-lib-db-connector'),
         services = require('fora-lib-services');
 

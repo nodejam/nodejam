@@ -4,7 +4,7 @@
     var models = require('./'),
         randomizer = require('fora-lib-randomizer'),
         services = require('fora-lib-services'),
-        dataUtils = require('fora-data-utils'),
+        dataUtils = require('fora-lib-data-utils'),
         DbConnector = require('fora-lib-db-connector');
 
     /*

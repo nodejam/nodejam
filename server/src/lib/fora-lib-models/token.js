@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    var dataUtils = require('fora-data-utils');
+    var dataUtils = require('fora-lib-data-utils');
 
     var Token = function(params) {
         dataUtils.extend(this, params);

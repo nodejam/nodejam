@@ -42,13 +42,10 @@
         "multiparty": "*",
         "react": "*",
         "path-to-regexp": "*",
-        "fora-data-utils": "*",
         "ceramic": "*",
         "ceramic-db": "*",
         "ceramic-backend-mongodb": "*",
         "ceramic-dictionary-parser": "*",
-        "fora-extensions-service": "*",
-        "fora-request": "*",
-        "fora-router": "*"
+        "transform-tree": "*"
     }
 }

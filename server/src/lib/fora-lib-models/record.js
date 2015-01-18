@@ -3,7 +3,7 @@
 
     var recordCommon = require('./record-common'),
         randomizer = require('fora-lib-randomizer'),
-        dataUtils = require('fora-data-utils'),
+        dataUtils = require('fora-lib-data-utils'),
         services = require('fora-lib-services'),
         DbConnector = require('fora-lib-db-connector'),
         Parser = require('ceramic-dictionary-parser'),

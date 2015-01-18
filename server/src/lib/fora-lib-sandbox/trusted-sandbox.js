@@ -3,7 +3,7 @@
 
     var _;
 
-    var Router = require('fora-router');
+    var Router = require('fora-lib-router');
 
     var TrustedSandbox = function(extension, moduleName, extensionsService) {
         this.extension = extension;
@@ -13,7 +13,7 @@
 
     TrustedSandbox.prototype.executeRequest = function*(requestContext) {
         var requestHandler = this.extension[this.moduleName];
-        
+
         if (!requestHandler.__router) {
             requestHandler.__router = new Router();
             requestHandler.routes.forEach(function(route) {

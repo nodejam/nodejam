@@ -2,7 +2,7 @@
 
     "use strict";
 
-    var dataUtils = require('fora-data-utils'),
+    var dataUtils = require('fora-lib-data-utils'),
         services = require('fora-lib-services');
 
     var extendRecord = function(Record) {

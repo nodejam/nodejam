@@ -11,14 +11,10 @@ git_push() {
     echo
 }
 
+git_push "nodefunc-generatorify" "node_modules"
 git_push "crankshaft" "node_modules"
 git_push "crankshaft-tools" "node_modules"
-git_push "fora-data-utils" "node_modules"
 git_push "ceramic" "node_modules"
 git_push "ceramic-db" "node_modules"
 git_push "ceramic-backend-mongodb" "node_modules"
 git_push "ceramic-dictionary-parser" "node_modules"
-git_push "fora-extensions-service" "node_modules"
-git_push "fora-request" "node_modules"
-git_push "fora-router" "node_modules"
-git_push "nodefunc-generatorify" "node_modules"

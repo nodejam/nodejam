@@ -8,7 +8,7 @@
         models = require('./'),
         services = require('fora-lib-services'),
         DbConnector = require('fora-lib-db-connector'),
-        dataUtils = require('fora-data-utils'),
+        dataUtils = require('fora-lib-data-utils'),
         Parser = require('ceramic-dictionary-parser');
 
     var schemaManager = services.getSchemaManager(),

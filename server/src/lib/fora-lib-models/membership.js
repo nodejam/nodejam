@@ -2,7 +2,7 @@
     "use strict";
 
     var DbConnector = require('fora-lib-db-connector'),
-        dataUtils = require('fora-data-utils');
+        dataUtils = require('fora-lib-data-utils');
 
 
     var Membership = function(params) {

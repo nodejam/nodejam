@@ -6,7 +6,7 @@
         co = require('co'),
         koaSend = require("koa-send"),
         logger = require('fora-lib-logger'),
-        Router = require('fora-router'),
+        Router = require('fora-lib-router'),
         Renderer = require('fora-lib-renderer'),
         services = require('fora-lib-services'),
         initializeApp = require('fora-lib-initialize'),

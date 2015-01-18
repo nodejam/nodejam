@@ -12,10 +12,11 @@
         var path = require('path');
         var fs = require('fs');
 
-        var clientModules = ["fora-lib-db-backend", "fora-extensions-service", "fora-request"];
-        var serverNpmModules = ["fora-data-utils", "fora-router", "ceramic"];
+        var clientModules = ["fora-lib-db-backend", "fora-lib-extensions-service", "fora-lib-request"];
+        var serverNpmModules = ["ceramic"];
         var libModules = ["fora-lib-ui", "fora-lib-services", "fora-lib-models", "fora-lib-logger", "fora-lib-renderer", "fora-lib-sandbox",
-                          "fora-lib-types-service", "fora-lib-initialize", "fora-lib-randomizer", "fora-lib-db-connector"];
+                          "fora-lib-types-service", "fora-lib-initialize", "fora-lib-randomizer", "fora-lib-db-connector", "fora-lib-data-utils",
+                          "fora-lib-router"];
 
         var cmd_browserify = "../node_modules/.bin/browserify";
         var cmd_regenerator = "../node_modules/.bin/regenerator";

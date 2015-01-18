@@ -23,7 +23,7 @@
             Extensions Service
             ------------------
         */
-        var ExtensionsService = require('fora-extensions-service');
+        var ExtensionsService = require('fora-lib-extensions-service');
         var fnModuleMapper = function*(extModule, kind, typeName, version, moduleName) {
             if ((kind === "record" || kind === "app") && moduleName === "definition") {
                 extModule.schema.id = kind + "_" + typeName + "_" + version;

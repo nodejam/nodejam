@@ -8,8 +8,7 @@
         var ensureDirExists = tools.fs.ensureDirExists();
         var react = require('react-tools');
 
-        var npmModules = ["fora-data-utils", "ceramic", "ceramic-backend-mongodb", "fora-extensions-service", "fora-request", "ceramic-dictionary-parser",
-            "fora-router", "ceramic"];
+        var npmModules = ["ceramic", "ceramic-backend-mongodb", "ceramic-dictionary-parser", "ceramic"];
 
         return function() {
 

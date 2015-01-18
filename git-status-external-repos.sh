@@ -11,14 +11,10 @@ check_status_of_repos() {
     echo
 }
 
+check_status_of_repos "nodefunc-generatorify" "node_modules"
 check_status_of_repos "crankshaft" "node_modules"
 check_status_of_repos "crankshaft-tools" "node_modules"
-check_status_of_repos "fora-data-utils" "node_modules"
 check_status_of_repos "ceramic" "node_modules"
 check_status_of_repos "ceramic-db" "node_modules"
 check_status_of_repos "ceramic-backend-mongodb" "node_modules"
 check_status_of_repos "ceramic-dictionary-parser" "node_modules"
-check_status_of_repos "fora-extensions-service" "node_modules"
-check_status_of_repos "fora-request" "node_modules"
-check_status_of_repos "fora-router" "node_modules"
-check_status_of_repos "nodefunc-generatorify" "node_modules"
