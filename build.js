@@ -26,13 +26,13 @@
         process.exit(0);
     }
 
-    GLOBAL.ENABLE_DEBUG_MODE = argv['debug-build'];
+    GLOBAL.CRANKSHAFT_DEBUG_MODE = argv['debug-build'];
 
     var start = Date.now();
 
     var crankshaft = require('crankshaft');
     var tools = require('crankshaft-tools');
-    
+
     var spawn = tools.process.spawn();
     var exec = tools.process.exec({ log: console.log });
 
