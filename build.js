@@ -124,7 +124,7 @@
 
     /* Start */
     try {
-        build.start(build.state.monitor);
+        crankshaft.run(build, build.state.monitor);
     } catch(e) {
         console.log(e.stack);
         if (e._inner) console.log(e._inner.stack);
