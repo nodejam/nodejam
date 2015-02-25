@@ -232,11 +232,11 @@
 
                 var cmdMakeLib = cmd_browserify + " " +
                      "-r ./app/www/vendor/js/shims/react.shim.js:react " +
-                     "-r ./app/www/vendor/js/shims/react.shim.js:react " +
+                     "-r ./app/www/js/lib/jayschema:jayschema " +
                      "-r ./app/www/vendor/js/shims/co.shim.js:co " +
                      "-r ./app/www/vendor/js/shims/markdown.shim.js:markdown " +
                      "-r ./app/www/js/lib/path-to-regexp:path-to-regexp " +
-                     "-r ./app/www/js/lib/jayschema:jayschema " +
+                     "-x jayschema " +
                      serverNpmModules.map(function(m) {
                          return "-r ./app/www/js/lib/" + m + "/lib/" + m + ":" + m;
                      }).join(" ") + " " +

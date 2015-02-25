@@ -123,10 +123,10 @@
     }
 
     /* Start */
-    try {
-        crankshaft.run(build, build.state.monitor);
-    } catch(e) {
-        console.log(e.stack);
-        if (e._inner) console.log(e._inner.stack);
-    }
+    crankshaft
+        .run(build, build.state.monitor)
+        .catch(function(e) {
+            console.log(e);
+            if (e._inner) console.log(e._inner.stack);
+        });
 })();
