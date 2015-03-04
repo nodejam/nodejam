@@ -26,7 +26,7 @@
         process.exit(0);
     }
 
-    GLOBAL.CRANKSHAFT_DEBUG_MODE = argv['debug-build'];
+    GLOBAL.CO_PARALLEL_TOOLS_DEBUG = argv['debug-build'];
 
     var start = Date.now();
 
