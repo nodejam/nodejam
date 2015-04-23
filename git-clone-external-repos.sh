@@ -1,11 +1,12 @@
 echo Fetching dev repos related to Fora
 
-get_repos_from_git() {
+runtask() {
     curdir=`pwd`
     proj=$1
     basedir=$2
     if [ ! -d $basedir/$proj/.git ]; then
         echo cloning $basedir/$proj
+        echo ----------------------
         rm -rf $basedir/$proj
         git clone https://github.com/jeswin/$proj $basedir/$proj
         cd $basedir/$proj
@@ -16,10 +17,17 @@ get_repos_from_git() {
     fi
 }
 
-get_repos_from_git "nodefunc-generatorify" "node_modules"
-get_repos_from_git "crankshaft" "node_modules"
-get_repos_from_git "crankshaft-tools" "node_modules"
-get_repos_from_git "ceramic" "node_modules"
-get_repos_from_git "ceramic-db" "node_modules"
-get_repos_from_git "ceramic-backend-mongodb" "node_modules"
-get_repos_from_git "ceramic-dictionary-parser" "node_modules"
+echo ....................................
+echo Git Clone
+echo ....................................
+
+runtask "fora-template-blog" "node_modules"
+
+runtask "isotropy-koa-mode" "node_modules/fora-template-blog/node_modules"
+runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-koa-mode/node_modules"
+runtask "isotropy-router" "node_modules/fora-template-blog/node_modules/isotropy-koa-mode/node_modules/isotropy/node_modules"
+
+runtask "isotropy-browser-mode" "node_modules/fora-template-blog/node_modules"
+runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules"
+runtask "isotropy-browser-request" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules"
+runtask "isotropy-router" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules/isotropy/node_modules"

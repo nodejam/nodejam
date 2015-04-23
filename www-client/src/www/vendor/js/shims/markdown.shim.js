@@ -1,1 +1,0 @@
-exports.markdown = window.markdown;

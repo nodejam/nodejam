@@ -1,51 +1,53 @@
 {
-    "name": "fora",
-    "version": "0.0.1",
-    "description": "A platform for building apps around communities",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/jeswin/fora"
-    },
-    "author": "",
-    "license": "GNU GPL",
-    "bugs": {
-        "url": "https://github.com/jeswin/fora/issues"
-    },
-    "dependencies": {
-        "regenerator": "*",
-        "browserify": "*",
-        "less": "*",
-        "optimist": "*",
-        "node-minify": "*",
-        "crankshaft": "*",
-        "crankshaft-tools": "*",
-        "react-tools": "*",
-        "koa": "*",
-        "koa-send": "*",
-        "koa-route": "*",
-        "koa-favicon": "*",
-        "co": "*",
-        "co-body": "*",
-        "co-multipart": "*",
-        "nodefunc-generatorify": "*",
-        "mongodb": "~2.0",
-        "validator": "*",
-        "sanitizer": "*",
-        "fs-extra": "*",
-        "gm": "*",
-        "oauth": "*",
-        "markdown": "*",
-        "multiparty": "*",
-        "react": "*",
-        "path-to-regexp": "*",
-        "ceramic": "*",
-        "ceramic-db": "*",
-        "ceramic-backend-mongodb": "*",
-        "ceramic-dictionary-parser": "*",
-        "transform-tree": "*"
-    }
+  "name": "hitchslap",
+  "version": "0.0.2",
+  "description": "A static website generator",
+  "preferGlobal": "true",
+  "main": "lib/hitchslap.js",
+  "bin": {
+    "hitchslap": "lib/hitchslap.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeswin/hitchslap"
+  },
+  "author": {
+    "name": "Jeswin Kumar",
+    "email": "jeswinpk@agilehead.com"
+  },
+  "license": "GNU GPL",
+  "bugs": {
+    "url": "https://github.com/jeswin/hitchslap/issues"
+  },
+  "dependencies": {
+    "optimist": "*",
+    "co": "*",
+    "crankshaft": "*",
+    "crankshaft-tools": "*",
+    "front-matter": "*",
+    "js-yaml": "*",
+    "react": "*",
+    "babel": "*",
+    "node-markdown": "*",
+    "mkdirp": "*",
+    "nodefunc-generatorify": "*",
+    "extfs": "*",
+    "fs.extra": "*",
+    "browserify": "*",
+    "babelify": "*",
+    "exposify": "*",
+    "pretty": "*",
+    "wrench": "*",
+    "rimraf": "*",
+    "less": "*",
+    "koa": "*",
+    "koa-static": "*",
+    "ceramic-backend-mongodb": "*",
+    "ceramic-backend-nedb": "*"
+  },
+  "devDependencies": {
+  }
 }

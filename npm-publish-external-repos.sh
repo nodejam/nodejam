@@ -1,20 +1,28 @@
 #This checks if there are uncommitted files in any of the projects associated with fora
 
-npm_publish() {
+runtask() {
     curdir=`pwd`
     proj=$1
     basedir=$2
     echo checking $basedir/$proj
+    echo ----------------------
     cd $basedir/$proj
     npm publish
     cd $curdir
     echo
 }
 
-npm_publish "nodefunc-generatorify" "node_modules"
-npm_publish "crankshaft" "node_modules"
-npm_publish "crankshaft-tools" "node_modules"
-npm_publish "ceramic" "node_modules"
-npm_publish "ceramic-db" "node_modules"
-npm_publish "ceramic-backend-mongodb" "node_modules"
-npm_publish "ceramic-dictionary-parser" "node_modules"
+echo ....................................
+echo NPM publish
+echo ....................................
+
+runtask "fora-template-blog" "node_modules"
+
+runtask "isotropy-koa-mode" "node_modules/fora-template-blog/node_modules"
+runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-koa-mode/node_modules"
+runtask "isotropy-router" "node_modules/fora-template-blog/node_modules/isotropy-koa-mode/node_modules/isotropy/node_modules"
+
+runtask "isotropy-browser-mode" "node_modules/fora-template-blog/node_modules"
+runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules"
+runtask "isotropy-browser-request" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules"
+runtask "isotropy-router" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules/isotropy/node_modules"
