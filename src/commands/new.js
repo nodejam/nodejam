@@ -56,7 +56,7 @@ let copyTemplateFiles = function*() {
 
     let dest = argv.destination || argv.d || !(/^--/.test(process.argv[3])) ? process.argv[3] : "";
     if (!dest) {
-        print("Error:  You must specify a path. eg: hitchslap new <dir> [options..].");
+        print("Error:  You must specify a path. eg: fora new <dir> [options..].");
         return;
     }
 

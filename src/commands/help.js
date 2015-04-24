@@ -2,11 +2,11 @@ import { print } from "../utils/logging";
 
 let help = function*() {
     print(`
-        hitchslap 0.0.1 -- hitchslap is a blog-aware, static site generator in NodeJS
+        fora 0.0.1 -- fora is a blog-aware, static site generator in NodeJS
 
         Usage:
 
-          hitchslap <subcommand> [options]
+          fora <subcommand> [options]
 
         Options:
                 -s, --source [DIR]      Source directory (defaults to ./)
@@ -22,7 +22,7 @@ let help = function*() {
 
         Subcommands:
           build, b              Build your site
-          new                   Creates a new hitchslap site scaffold in PATH
+          new                   Creates a new fora site scaffold in PATH
           help                  Show the help message, optionally for a given subcommand.
           serve, s              Serve your site locally
           make, m               Same as build --no-static
