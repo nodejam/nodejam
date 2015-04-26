@@ -91,10 +91,11 @@ let buildClient = function(name, options) {
                 let regex = new RegExp(`${options.clientJSSuffix}\\.${extension}$`);
 
                 let original = filePath.replace(regex, `.${extension}`);
-                let renamed = original.replace(/\.js$/, `${options.originalJSSuffix}.${extension}`);
-
-                let originalContents = yield* fsutils.readFile(original);
-                yield* fsutils.writeFile(renamed, originalContents);
+                if (yield* fsutils.exists(original)) {
+                    let renamed = original.replace(/\.js$/, `${options.originalJSSuffix}.${extension}`);
+                    let originalContents = yield* fsutils.readFile(original);
+                    yield* fsutils.writeFile(renamed, originalContents);
+                }
 
                 let overriddenContents = yield* fsutils.readFile(filePath);
                 yield* fsutils.writeFile(original, overriddenContents);
