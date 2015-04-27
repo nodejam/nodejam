@@ -10,6 +10,7 @@ let argv = optimist.argv;
     options: {
         destination: string,
         extensions: [string],
+        excludedFiles: [string],
         excludedDirectories: [string],
         excludedPatterns: [regex or string],
         excludedWatchPatterns: [regex],
@@ -23,24 +24,24 @@ let babel = function(name, options) {
 
     //defaults
     options.extensions = options.extensions || ["js", "jsx"];
-    options.excludedDirectories = options.excludedDirectories || [options.destination];
-    options.excludedPatterns = (options.excludedPatterns || [])
-        .map(p => typeof p === "string" ? new RegExp(p) : p);
+    options.excludedFiles = options.excludedFiles || [];
+    options.excludedDirectories = (options.excludedDirectories || []).concat(options.destination);
+    options.excludedPatterns = options.excludedPatterns || [];
     options.blacklist = options.blacklist || [];
     options.excludedWatchPatterns = options.excludedWatchPatterns || [];
 
     let fn = function() {
         let extensions = options.extensions.map(e => `*.${e}`);
 
-        let excluded = options.excludedDirectories
-            .map(dir => `!${dir}/`)
+        let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
+            .concat(options.excludedFiles.map(e => `!${e}`))
             .concat(options.excludedPatterns);
 
         let transpiledFiles = [];
 
         //We compile client, dev build separately because they may have different blacklists.
         //For example, on iojs we want to blacklist regenerator. But on the client, we don't.
-        this.watch(extensions.concat(excluded), function*(filePath, ev, match) {            
+        this.watch(extensions.concat(excluded), function*(filePath, ev, match) {
             if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
                 transpiledFiles.push(filePath);
 

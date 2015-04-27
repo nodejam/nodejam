@@ -10,6 +10,7 @@ let argv = optimist.argv;
     options: {
         destination: string,
         extensions: [string],
+        excludedFiles: [string],
         excludedDirectories: [string],
         excludedPatterns: [regex or string],
         excludedExtensions: [string],
@@ -23,15 +24,15 @@ let copyStaticFiles = function(name, options) {
 
     //defaults
     options.extensions = options.extensions || ["*.*"];
-    options.excludedDirectories = options.excludedDirectories || [options.destination];
-    options.excludedPatterns = (options.excludedPatterns || [])
-        .map(p => typeof p === "string" ? new RegExp(p) : p);
+    options.excludedFiles = options.excludedFiles || [];
+    options.excludedDirectories = (options.excludedDirectories || []).concat(options.destination);
+    options.excludedPatterns = options.excludedPatterns || [];
     options.excludedExtensions = options.excludedExtensions || [];
     options.excludedWatchPatterns = options.excludedWatchPatterns || [];
 
     let fn = function() {
-        let excluded = options.excludedDirectories
-            .map(dir => `!${dir}/`)
+        let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
+            .concat(options.excludedFiles.map(e => `!${e}`))
             .concat(options.excludedExtensions.map(ext => `!*.${ext}`))
             .concat(options.excludedPatterns);
 

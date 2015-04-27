@@ -24,7 +24,8 @@ let argv = optimist.argv;
         excludedModules: [string],
         clientJSSuffix: string,
         originalJSSuffix: string,
-        blacklist: [string]
+        blacklist: [string],
+        excludedFiles: [string],
         excludedDirectories: [string],
         excludedPatterns: [regex or string],
         excludedWatchPatterns = [regex],
@@ -37,9 +38,9 @@ let buildClient = function(name, options) {
 
     //defaults
     options.extensions = options.extensions || ["js", "jsx", "json"];
-    options.excludedDirectories = options.excludedDirectories || [options.destination];
-    options.excludedPatterns = (options.excludedPatterns || [])
-        .map(p => typeof p === "string" ? new RegExp(p) : p);
+    options.excludedFiles = options.excludedFiles || [];
+    options.excludedDirectories = (options.excludedDirectories || []).concat(options.destination);
+    options.excludedPatterns = options.excludedPatterns || [];
     options.blacklist = options.blacklist || [];
     options.excludedWatchPatterns = options.excludedWatchPatterns || [];
 
@@ -56,8 +57,8 @@ let buildClient = function(name, options) {
     let fn = function() {
         let extensions = options.extensions.map(e => `*.${e}`);
 
-        let excluded = options.excludedDirectories
-            .map(dir => `!${dir}/`)
+        let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
+            .concat(options.excludedFiles.map(e => `!${e}`))
             .concat(options.excludedPatterns);
 
         let clientSpecificFiles = [];
