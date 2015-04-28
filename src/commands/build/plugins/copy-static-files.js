@@ -34,7 +34,7 @@ let copyStaticFiles = function(name, options) {
         let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
             .concat(options.excludedFiles.map(e => `!${e}`))
             .concat(options.excludedExtensions.map(ext => `!*.${ext}`))
-            .concat(options.excludedPatterns);
+            .concat(options.excludedPatterns.map(e => { return { exclude: e.exclude, regex: new RegExp(e.regex) }; }));
 
         let copiedFiles = [];
 

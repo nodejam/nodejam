@@ -59,7 +59,7 @@ let buildClient = function(name, options) {
 
         let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
             .concat(options.excludedFiles.map(e => `!${e}`))
-            .concat(options.excludedPatterns);
+            .concat(options.excludedPatterns.map(e => { return { exclude: e.exclude, regex: new RegExp(e.regex) }; }));
 
         let clientSpecificFiles = [];
 

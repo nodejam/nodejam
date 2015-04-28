@@ -19,6 +19,7 @@ let writeConfig = function(name, options) {
 
     let fn = function*() {
         let outputPath = path.join(options.destination, options.filename);
+        yield* fsutils.ensureDirExists(outputPath);
         yield* fsutils.writeFile(outputPath, JSON.stringify(options.config, null, "\t"));
         logger(`Wrote config to ${outputPath}`);
     };

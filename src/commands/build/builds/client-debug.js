@@ -23,9 +23,7 @@ var build = getStandardBuild("client-debug", function*(siteConfig, buildConfig, 
             debug: true,
             globalModules: configutils.tryRead(buildConfig, ["tasks", "build-client", "global-modules"], []),
             excludedModules: configutils.tryRead(buildConfig, ["tasks", "build-client", "excluded-modules"], []),
-            excludedDirectories: [siteConfig.destination]
-                .concat(siteConfig["dirs-client-vendor"])
-                .concat(siteConfig["dirs-exclude"]),
+            excludedDirectories: siteConfig["dirs-client-vendor"].concat(siteConfig["dirs-exclude"]),
             excludedPatterns: siteConfig["patterns-exclude"],
             clientJSSuffix: siteConfig["client-js-suffix"],
             originalJSSuffix: siteConfig["original-js-suffix"],

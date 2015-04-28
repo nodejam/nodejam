@@ -1,6 +1,7 @@
+import path from "path";
 import configutils from "../../../utils/config";
 
-var getCommonTasks = function(siteConfig, buildConfig, builtInPlugins) {
+var getCommonTasks = function(siteConfig, buildConfig, builtInPlugins, options) {
 
     var excludedJSSuffixes = [siteConfig["client-js-suffix"], siteConfig["dev-js-suffix"]].filter(e => typeof e === "string");
     var excludedWatchPatterns = excludedJSSuffixes.map(s => new RegExp(`${s}\.(js|json)$`));
@@ -49,7 +50,7 @@ var getCommonTasks = function(siteConfig, buildConfig, builtInPlugins) {
         name: "write-config", //write the merged config file into the destination directory
         plugin: builtInPlugins["write-config"],
         options: {
-            destination: siteConfig.destination,
+            destination: path.join(siteConfig.destination, siteConfig["dir-client-build"]),
             filename: configutils.tryRead(buildConfig, ["tasks", "write-config", "filename"], "config.json"),
             config: siteConfig
         }

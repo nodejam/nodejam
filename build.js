@@ -15,7 +15,7 @@ build.onStart(function*() {
 });
 
 build.configure(function() {
-    var excluded = [ "!node_modules/"];
+    var excluded = [ "!node_modules/", "!.git/"];
 
     /*
         Transpile js and jsx with babel.
@@ -30,7 +30,6 @@ build.configure(function() {
         var result = babel.transform(contents, { blacklist: "regenerator" });
         yield* fsutils.writeFile(outputPath, result.code);
     }, "babel");
-
 
     this.watch(["src/*.*", "!src/*.js"].concat(excluded), function*(filePath, ev, match) {
         var outputPath = filePath.replace(/^src\//, "lib/");
