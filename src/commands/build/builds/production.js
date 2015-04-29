@@ -27,7 +27,7 @@ var build = getStandardBuild("production", function*(siteConfig, buildConfig, bu
                 .concat(siteConfig["dirs-client-vendor"])
                 .concat(siteConfig["dirs-exclude"]),
             excludedPatterns: siteConfig["patterns-exclude"],
-            clientJSSuffix: siteConfig["client-js-suffix"],
+            buildSpecificJSSuffix: siteConfig["client-js-suffix"],
             originalJSSuffix: siteConfig["original-js-suffix"],
             excludedWatchPatterns: siteConfig["dev-js-suffix"] ? [new RegExp(`${siteConfig["dev-js-suffix"]}\.(js|json)$`)] : [],
             blacklist: configutils.tryRead(buildConfig, ["tasks", "build-client", "es6-transpile", "blacklist"], [])

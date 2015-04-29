@@ -22,7 +22,7 @@ let argv = optimist.argv;
         debug: bool,
         globalModules: [string],
         excludedModules: [string],
-        clientJSSuffix: string,
+        buildSpecificJSSuffix: string,
         originalJSSuffix: string,
         blacklist: [string],
         excludedFiles: [string],
@@ -65,7 +65,7 @@ let buildClient = function(name, options) {
 
         this.watch(extensions.concat(excluded), function*(filePath, ev, matches) {
             if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
-                let clientFileRegex = new RegExp(`${options.clientJSSuffix}\.(js|json)$`);
+                let clientFileRegex = new RegExp(`${options.buildSpecificJSSuffix}\.(js|json)$`);
 
                 if (clientFileRegex.test(filePath)) {
                     clientSpecificFiles.push(filePath);
@@ -89,7 +89,7 @@ let buildClient = function(name, options) {
                 let filePath = path.join(options.destination, options.clientBuildDirectory, file);
 
                 let extension = /\.js$/.test(file) ? "js" : "json";
-                let regex = new RegExp(`${options.clientJSSuffix}\\.${extension}$`);
+                let regex = new RegExp(`${options.buildSpecificJSSuffix}\\.${extension}$`);
 
                 let original = filePath.replace(regex, `.${extension}`);
                 if (yield* fsutils.exists(original)) {
