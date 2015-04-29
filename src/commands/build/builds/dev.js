@@ -36,7 +36,7 @@ var build = getStandardBuild("dev", function*(siteConfig, buildConfig, builtInPl
             excludedPatterns: siteConfig["patterns-exclude"],
             buildSpecificJSSuffix: siteConfig["dev-js-suffix"],
             originalJSSuffix: siteConfig["original-js-suffix"],
-            excludedWatchPatterns: siteConfig["dev-js-suffix"] ? [new RegExp(`${siteConfig["dev-js-suffix"]}\.(js|json)$`)] : [],
+            excludedWatchPatterns: siteConfig["client-js-suffix"] ? [new RegExp(`${siteConfig["client-js-suffix"]}\.(js|json)$`)] : [],
             blacklist: configutils.tryRead(buildConfig, ["tasks", "build-client", "es6-transpile", "blacklist"], [])
         }
     });
