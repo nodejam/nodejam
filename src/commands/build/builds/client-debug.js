@@ -6,8 +6,8 @@ import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 
 var build = getStandardBuild("client-debug", function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
-    var { transpileServer, less, copyStaticFiles, writeConfig } = getCommonTasks(siteConfig, buildConfig, builtInPlugins);
-    var tasks = [transpileServer, less, copyStaticFiles, writeConfig];
+    var { transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig } = getCommonTasks(siteConfig, buildConfig, builtInPlugins);
+    var tasks = [transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig];
 
     tasks.push({
         name: "build-client", //build client js bundle

@@ -6,8 +6,14 @@ import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 
 var build = getStandardBuild("dev", function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
-    var { less, copyStaticFiles, writeConfig } = getCommonTasks(siteConfig, buildConfig, builtInPlugins);
-    var tasks = [less, copyStaticFiles, writeConfig];
+    var { less, copyStaticFiles, writeConfig, writeClientConfig } = getCommonTasks(siteConfig, buildConfig, builtInPlugins);
+
+    //In the dev build we wouldn't need server-side JS files.
+    //They will anyway be copied into the client directory by the build-client plugin.
+    copyStaticFiles.options.extensions = ["*.*", "vendor/*.js"];
+    copyStaticFiles.options.excludedExtensions = (copyStaticFiles.options.excludedExtensions || []).concat(["js", "jsx", "json"]);
+
+    var tasks = [less, copyStaticFiles, writeConfig, writeClientConfig];
 
     tasks.push({
         name: "build-client", //build client js bundle

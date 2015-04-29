@@ -26,7 +26,7 @@ var getCommonTasks = function(siteConfig, buildConfig, builtInPlugins, options) 
         plugin: builtInPlugins.less,
         options: {
             destination: siteConfig.destination,
-            directories: configutils.tryRead(buildConfig, ["tasks", "less", "dirs"], [])
+            directories: configutils.tryRead(buildConfig, ["tasks", "less", "dirs"], ["css"])
         }
     };
 
@@ -50,13 +50,24 @@ var getCommonTasks = function(siteConfig, buildConfig, builtInPlugins, options) 
         name: "write-config", //write the merged config file into the destination directory
         plugin: builtInPlugins["write-config"],
         options: {
+            destination: path.join(siteConfig.destination),
+            filename: configutils.tryRead(buildConfig, ["tasks", "write-config", "filename"], "config.json"),
+            config: siteConfig
+        }
+    };
+
+
+    var writeClientConfig = {
+        name: "write-client-config", //write the merged config file into the destination directory
+        plugin: builtInPlugins["write-config"],
+        options: {
             destination: path.join(siteConfig.destination, siteConfig["dir-client-build"]),
             filename: configutils.tryRead(buildConfig, ["tasks", "write-config", "filename"], "config.json"),
             config: siteConfig
         }
     };
 
-    return { transpileServer, less, copyStaticFiles, writeConfig };
+    return { transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig };
 };
 
 export default getCommonTasks;
