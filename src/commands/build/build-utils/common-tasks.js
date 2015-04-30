@@ -25,7 +25,7 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         let excludedDirectories = [siteConfig.destination]
             .concat(vendorDirs)
             .concat(siteConfig["excluded-dirs"]);
-        let blacklist = taskConfigReader(["blacklist"], []);
+        let blacklist = ["regenerator"];
 
         return {
             name: options.name, //babel transpile server files, blacklist (regenerator)
@@ -108,7 +108,7 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
 
     let getBuildClientTask = function(options) {
 
-        let excludedDirectories = siteConfig["excluded-dirs"];
+        let excludedDirectories = siteConfig["excluded-dirs"].concat(siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]);
         let excludedPatterns = siteConfig["excluded-patterns"];
         let changeExtensions = siteConfig["change-extensions"];
         let jsExtensions = siteConfig["js-extensions"].concat("json");
@@ -117,7 +117,7 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         let taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
 
         let vendorDirs = taskConfigReader(["vendor-dirs"], ["vendor"]);
-        let clientBuildDirectory = buildConfigReader(["client-build-dir"], "js");
+        let clientBuildDirectory = options.clientBuildDirectory || buildConfigReader(["client-build-dir"], "js");
         let appEntryPoint = taskConfigReader(["entry-point"], "app.js");
         let bundleName = taskConfigReader(["bundle-name"], "app.bundle.js");
         let globalModules = options.globalModules || taskConfigReader(["global-modules"], []);
@@ -153,7 +153,36 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         };
     };
 
-    return { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask };
+    let getLoadDataTask = function(options) {
+        let collections = siteConfig.collections;
+        let collectionRootDirectory = siteConfig["collections-root-dir"];
+        let dataDirectories = siteConfig["data-dirs"];
+        let scavengeCollection = siteConfig["scavenge-collection"] || "posts";
+        let excludedDirectories = siteConfig["excluded-dirs"].concat(siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]);
+
+        let buildConfigReader = configutils.getReader(siteConfig, ["builds", buildName]);
+        let taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
+
+        let excludedFiles = taskConfigReader(["excluded-files"], ["config.yml", "config.yaml", "config.json", "package.json"]);
+        let markdownExtensions = taskConfigReader(["markdown-extensions"], ["md", "markdown"]);
+
+        return {
+            name: options.name,
+            plugin: builtInPlugins["load-data"],
+            options: {
+                data: options.data,
+                collections,
+                collectionRootDirectory,
+                dataDirectories,
+                scavengeCollection,
+                excludedDirectories,
+                excludedFiles,
+                markdownExtensions
+            }
+        };
+    };
+
+    return { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask, getLoadDataTask };
 };
 
 export default getCommonTasks;

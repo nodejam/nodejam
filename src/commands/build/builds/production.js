@@ -5,55 +5,44 @@ import { getLogger } from "../../../utils/logging";
 import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 
-let build = getStandardBuild("production", function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
-    let { transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig } = getCommonTasks(siteConfig, buildConfig, builtInPlugins);
-    let tasks = [transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig];
+let build = getStandardBuild(
+    "production",
+    function*(siteConfig, builtInPlugins, buildUtils) {
+        let { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("client-debug", siteConfig, builtInPlugins);
 
-    let getBuildClientTask = function() {
-        let buildClientReader = configutils.getReader(siteConfig, ["tasks", "build-browser-app"]);
+        let buildConfigReader = configutils.getReader(siteConfig, ["builds", "production"]);
+        let browserBuildFileSuffix = buildConfigReader(["browser-build-file-suffix"], "~client");
+        let browserReplacedFileSuffix = buildConfigReader(["browser-replaced-file-suffix"], "_base");
 
-        let vendorDirs = buildClientReader(["vendor-dirs"], ["vendor"]);
-        let changeExtensions = buildClientReader(["change-extensions"], [{ to: "js", from: ["jsx"] }]);
-        let clientBuildDirectory = buildClientReader(["dir-build"], "js");
-        let appEntryPoint = buildClientReader(["entry-point"], "app.js");
-        let bundleName = buildClientReader(["bundle-name"], "app.bundle.js");
-        let extensions = buildClientReader(["extensions"], ["js", "jsx", "json"]);
-        let globalModules = buildClientReader(["global-modules"], []);
-        let excludedModules = buildClientReader(["excluded-modules"], []);
-        let excludedDirectories = buildClientReader(["excluded-dirs"], []);
-        let excludedPatterns = buildClientReader(["excluded-patterns"], []);
-        let specializationFileSuffix = buildClientReader(["specialization-file-suffix"], "~client");
-        let replacedFileSuffix = buildClientReader(["replaced-file-suffix"], "_base");
-        let excludedWatchPatterns = buildClientReader(["excluded-watch-patterns"], []);
-        let blacklist = buildClientReader(["blacklist"], []);
+        let tasks = [
+            getTranspileServerTask({
+                name: "transpile-server"
+            }),
+            getLessTask({
+                name: "less"
+            }),
+            getCopyStaticFilesTask({
+                name: "copy-static-files",
+                destination: siteConfig.destination
+            }),
+            getWriteConfigTask({
+                name: "write-config",
+                destination: siteConfig.destination
+            }),
+            getWriteConfigTask({
+                name: "write-client-config",
+                destination: buildConfigReader(["client-build-dir"], "js")
+            }),
+            getBuildClientTask({
+                name: "build-browser-app",
+                browserBuildFileSuffix,
+                browserReplacedFileSuffix,
+                debug: false
+            })
+        ];
 
-        return {
-            name: "build-browser-app", //build client js bundle
-            plugin: builtInPlugins["build-browser-app"],
-            options: {
-                source: siteConfig.source,
-                destination: siteConfig.destination,
-                clientBuildDirectory,
-                appEntryPoint,
-                bundleName,
-                extensions,
-                changeExtensions,
-                debug: false,
-                globalModules,
-                excludedModules,
-                excludedDirectories: vendorDirs.concat(excludedDirectories),
-                excludedPatterns,
-                specializationFileSuffix,
-                replacedFileSuffix,
-                excludedWatchPatterns: excludedWatchPatterns ? [new RegExp(`${excludedWatchPatterns}\.(js|json)$`)] : [],
-                blacklist,
-            }
-        };
-    };
-
-    tasks.push(getBuildClientTask());
-
-    return tasks;
-});
+        return tasks;
+    }
+);
 
 export default build;

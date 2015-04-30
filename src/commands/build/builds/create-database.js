@@ -13,27 +13,21 @@ let data = {};
 
 let build = getStandardBuild(
     "create-database",
-    function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
+    function*(siteConfig, builtInPlugins, buildUtils) {
+
         if (process.env.NODE_ENV === "production") {
             throw new Error("This build cannot be run when NODE_ENV is set to production.");
         }
 
-        let tasks = [];
+        let { getLoadDataTask } = getCommonTasks("create-database", siteConfig, builtInPlugins);
 
-        tasks.push({
-            name: "load-data",
-            plugin: builtInPlugins["load-data"],
-            options: {
-                data: data,
-                collections: siteConfig.collections || {},
-                collectionRootDirectory: siteConfig["collections-root-dir"] || "",
-                dataDirectories: siteConfig["data-dirs"] || [],
-                scavengeCollection: siteConfig["scavenge-collection"] || "",
-                excludedDirectories: configutils.tryRead(buildConfig, ["tasks", "load-data", "excluded-directories"], ["node_modules"]),
-                excludedFiles: configutils.tryRead(buildConfig, ["tasks", "load-data", "excluded-files"], ["config.yml", "config.yaml", "config.json"]),
-                markdownExtensions: configutils.tryRead(buildConfig, ["tasks", "load-data", "markdown-extensions"], ["md", "markdown"])
-            }
-        });
+        let tasks = [
+            getLoadDataTask({
+                name: "load-data",
+                data: data
+            })
+        ];
+
         return tasks;
     },
     function*() {

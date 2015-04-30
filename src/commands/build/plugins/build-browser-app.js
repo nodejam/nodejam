@@ -82,6 +82,10 @@ let buildClient = function(name, options) {
                 }
 
                 yield* copyFile(filePath, this.root);
+            } else {
+                if (verboseMode) {
+                    logger(`Skipped ${filePath}`);
+                }
             }
         }, "build-browser-app");
 

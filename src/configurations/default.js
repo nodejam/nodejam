@@ -25,7 +25,7 @@ let loadDefaults = function(source, destination) {
         "data-dirs": ["data"],
 
         //Handling Reading
-        "watch": true,
+        "watch": false,
 
         //Serving
         "detach": false,
