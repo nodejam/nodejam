@@ -14,12 +14,24 @@ let tryRead = function(obj, path, defaultVal) {
     let currentVal = obj;
     for (let i = 0; i < path.length; i++) {
         let p = path[i];
-        if (typeof currentVal[p] !== "undefined")
+        if (typeof currentVal[p] !== "undefined") {
             currentVal = currentVal[p];
-        else
-            return defaultVal;
+        } else {
+            if (typeof defaultVal !== "undefined") {
+                return defaultVal;
+            } else {
+                throw new Error(`${path.join(".")} is mandatory in ${JSON.stringify(obj)}`);
+            }
+        }
     }
     return currentVal;
+};
+
+
+let getReader = function(obj, defaultPath) {
+    return function(remainingPath, defaultValue) {
+        return tryRead(obj, defaultPath.concat(remainingPath), defaultValue);
+    };
 };
 
 
@@ -141,4 +153,4 @@ let getFullyQualifiedProperties = function(obj, prefixes = [], acc = []) {
 
 
 
-export default { tryRead, getValueSetter, commandLineSetter, getFullyQualifiedProperties };
+export default { tryRead, getReader, getValueSetter, commandLineSetter, getFullyQualifiedProperties };

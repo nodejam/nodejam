@@ -5,34 +5,53 @@ import { getLogger } from "../../../utils/logging";
 import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 
-var build = getStandardBuild("production", function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
-    var { transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig } = getCommonTasks(siteConfig, buildConfig, builtInPlugins);
-    var tasks = [transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig];
+let build = getStandardBuild("production", function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
+    let { transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig } = getCommonTasks(siteConfig, buildConfig, builtInPlugins);
+    let tasks = [transpileServer, less, copyStaticFiles, writeConfig, writeClientConfig];
 
-    tasks.push({
-        name: "build-client", //build client js bundle
-        plugin: builtInPlugins["build-client"],
-        options: {
-            source: siteConfig.source,
-            destination: siteConfig.destination,
-            clientBuildDirectory: siteConfig["dir-client-build"],
-            appEntryPoint: siteConfig["app-entry-point"],
-            bundleName: siteConfig["client-bundle-name"],
-            extensions: ["js", "jsx", "json"],
-            changeExtensions: configutils.tryRead(buildConfig, ["tasks", "build-client", "change-extensions"], [{ to: "js", from: ["jsx"] }]),
-            debug: false,
-            globalModules: configutils.tryRead(buildConfig, ["tasks", "build-client", "global-modules"], []),
-            excludedModules: configutils.tryRead(buildConfig, ["tasks", "build-client", "excluded-modules"], []),
-            excludedDirectories: [siteConfig.destination]
-                .concat(siteConfig["dirs-client-vendor"])
-                .concat(siteConfig["dirs-exclude"]),
-            excludedPatterns: siteConfig["patterns-exclude"],
-            buildSpecificJSSuffix: siteConfig["client-js-suffix"],
-            originalJSSuffix: siteConfig["original-js-suffix"],
-            excludedWatchPatterns: siteConfig["dev-js-suffix"] ? [new RegExp(`${siteConfig["dev-js-suffix"]}\.(js|json)$`)] : [],
-            blacklist: configutils.tryRead(buildConfig, ["tasks", "build-client", "es6-transpile", "blacklist"], [])
-        }
-    });
+    let getBuildClientTask = function() {
+        let buildClientReader = configutils.getReader(siteConfig, ["tasks", "build-browser-app"]);
+
+        let vendorDirs = buildClientReader(["vendor-dirs"], ["vendor"]);
+        let changeExtensions = buildClientReader(["change-extensions"], [{ to: "js", from: ["jsx"] }]);
+        let clientBuildDirectory = buildClientReader(["dir-build"], "js");
+        let appEntryPoint = buildClientReader(["entry-point"], "app.js");
+        let bundleName = buildClientReader(["bundle-name"], "app.bundle.js");
+        let extensions = buildClientReader(["extensions"], ["js", "jsx", "json"]);
+        let globalModules = buildClientReader(["global-modules"], []);
+        let excludedModules = buildClientReader(["excluded-modules"], []);
+        let excludedDirectories = buildClientReader(["excluded-dirs"], []);
+        let excludedPatterns = buildClientReader(["excluded-patterns"], []);
+        let specializationFileSuffix = buildClientReader(["specialization-file-suffix"], "~client");
+        let replacedFileSuffix = buildClientReader(["replaced-file-suffix"], "_base");
+        let excludedWatchPatterns = buildClientReader(["excluded-watch-patterns"], []);
+        let blacklist = buildClientReader(["blacklist"], []);
+
+        return {
+            name: "build-browser-app", //build client js bundle
+            plugin: builtInPlugins["build-browser-app"],
+            options: {
+                source: siteConfig.source,
+                destination: siteConfig.destination,
+                clientBuildDirectory,
+                appEntryPoint,
+                bundleName,
+                extensions,
+                changeExtensions,
+                debug: false,
+                globalModules,
+                excludedModules,
+                excludedDirectories: vendorDirs.concat(excludedDirectories),
+                excludedPatterns,
+                specializationFileSuffix,
+                replacedFileSuffix,
+                excludedWatchPatterns: excludedWatchPatterns ? [new RegExp(`${excludedWatchPatterns}\.(js|json)$`)] : [],
+                blacklist,
+            }
+        };
+    };
+
+    tasks.push(getBuildClientTask());
 
     return tasks;
 });

@@ -5,7 +5,6 @@ import { print, getLogger } from "../../../utils/logging";
 import optimist from "optimist";
 
 let argv = optimist.argv;
-
 /*
     options: {
         destination: string,
@@ -20,6 +19,7 @@ let argv = optimist.argv;
     }
 */
 let copyStaticFiles = function(name, options) {
+    let verboseMode = argv[`verbose-${name}`];
     let logger = getLogger(options.quiet, name || "copy-static-files");
 
     //defaults
@@ -30,6 +30,8 @@ let copyStaticFiles = function(name, options) {
     options.excludedExtensions = options.excludedExtensions || [];
     options.excludedWatchPatterns = options.excludedWatchPatterns || [];
 
+    var excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
+
     let fn = function() {
         let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
             .concat(options.excludedFiles.map(e => `!${e}`))
@@ -39,13 +41,13 @@ let copyStaticFiles = function(name, options) {
         let copiedFiles = [];
 
         this.watch(options.extensions.concat(excluded), function*(filePath, ev, matches) {
-            if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
+            if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
                 copiedFiles.push(filePath);
                 let newFilePath = fsutils.changeExtension(filePath, options.changeExtensions);
                 let outputPath = path.join(options.destination, newFilePath);
                 yield* fsutils.copyFile(filePath, outputPath, { overwrite: false });
 
-                if (argv[`verbose-${name}`]) {
+                if (verboseMode) {
                     logger(`${filePath} -> ${outputPath}`);
                 }
             }

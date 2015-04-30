@@ -4,38 +4,25 @@ let loadDefaults = function(source, destination) {
         "destination": destination,
 
         //Build customization
-        "dir-custom-builds": "custom-builds",
-        "dir-custom-tasks": "custom-tasks",
-
-        "dirs-client-vendor": ["vendor"],
+        "custom-builds-dir": "custom-builds",
+        "custom-tasks-dir": "custom-tasks",
 
         //Exclude these patterns
-        "dirs-exclude": [".git", "node_modules"],
-        "patterns-exclude": [
+        "excluded-dirs": [".git", "node_modules"],
+        "excluded-patterns": [
             { "exclude": "file", "regex": "\.gitignore" }
         ],
 
+        "js-extensions": ["js", "jsx"],
+        "change-extensions": [{ to: "js", from: ["jsx"] }],
+
         //build
         "build-name": "client-debug",
-        "dir-client-build": "js",
-        "client-js-suffix": "~client",
-        "client-bundle-name": "app.bundle.js",
-
-        "build-dev": true,
-        "dir-dev-build": "dev-js",
-        "dev-js-suffix": "~dev",
-        "dev-bundle-name": "dev.bundle.js",
-
-        //original file replaced by *~client.js and *~dev.js will be renamed to *-base.js
-        "original-js-suffix": "_base",
 
         //static data and collections
         "collections": {},
         "collections-root-dir": "",
-        "data-directories": ["data"],
-
-        "app-entry-point": "app.js",
-        "js-extensions": ["js", "jsx"],
+        "data-dirs": ["data"],
 
         //Handling Reading
         "watch": true,
@@ -46,7 +33,6 @@ let loadDefaults = function(source, destination) {
         "host": "127.0.0.1",
         "baseurl": "",
         "serve-static": "true",
-        "dirs-static-files": ["js", "vendor", "css", "images", "fonts"],
 
         //Outputting
         "beautify": true, //beautify html output?
@@ -55,23 +41,11 @@ let loadDefaults = function(source, destination) {
         "quiet": false,
 
         "builds": {
-            "production": {
-                "disabled-tasks": [],
-                "tasks": {
-                    "server-transpile": {
-                        "blacklist": ["regenerator"]
-                    },
-                    "less": {
-                        "dirs": ["css"]
-                    },
-                    "copy-static-files": {
-                        "skip-extensions": ["less"]
-                    },
-                    "build-client": {},
-                    "write-config": {
-                        "filename": "config.json"
-                    }
-                }
+            "client-debug": {
+                "browser-build-file-suffix": "~client"
+            },
+            "dev": {
+                "browser-build-file-suffix": "~dev"
             }
         }
     };

@@ -3,8 +3,10 @@ import path from "path";
 import fsutils from "../../../utils/fs";
 import generatorify from "nodefunc-generatorify";
 import { print, getLogger } from "../../../utils/logging";
+import optimist from "optimist";
 
 let lessc = generatorify(less.render.bind(less));
+let argv = optimist.argv;
 
 /*
     options: {
@@ -14,6 +16,7 @@ let lessc = generatorify(less.render.bind(less));
     }
 */
 let compileLess = function(name, options) {
+    let verboseMode = argv[`verbose-${name}`];
     let logger = getLogger(options.quiet, name || "less");
 
     //defaults

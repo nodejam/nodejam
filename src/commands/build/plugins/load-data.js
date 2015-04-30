@@ -4,6 +4,9 @@ import yaml from "js-yaml";
 import fsutils from "../../../utils/fs";
 import readFileByFormat from "../../../utils/file-reader";
 import { print, getLogger } from "../../../utils/logging";
+import optimist from "optimist";
+
+let argv = optimist.argv;
 
 /*
     options: {
@@ -21,6 +24,7 @@ import { print, getLogger } from "../../../utils/logging";
     }
 */
 let loadStaticData = function(name, options) {
+    let verboseMode = argv[`verbose-${name}`];
     let logger = getLogger(options.quiet, name || "load-static-data");
 
     var data = options.data;

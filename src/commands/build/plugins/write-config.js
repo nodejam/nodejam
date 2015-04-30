@@ -1,7 +1,9 @@
 import path from "path";
 import fsutils from "../../../utils/fs";
 import { print, getLogger } from "../../../utils/logging";
+import optimist from "optimist";
 
+let argv = optimist.argv;
 
 /*
     options: {
@@ -12,6 +14,7 @@ import { print, getLogger } from "../../../utils/logging";
     }
 */
 let writeConfig = function(name, options) {
+    let verboseMode = argv[`verbose-${name}`];
     let logger = getLogger(options.quiet, name || "write-config");
 
     //defaults

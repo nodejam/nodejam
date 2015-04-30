@@ -13,11 +13,9 @@ import readFileByFormat from "./utils/file-reader";
 
 //modes
 import defaultConfig from "./configurations/default";
-import jekyllConfig from "./configurations/jekyll";
 
 let configurations = {
-    "default": defaultConfig,
-    "jekyll": jekyllConfig
+    "default": defaultConfig
 };
 
 

@@ -54,9 +54,9 @@ let resolveTemplatePath = function*(name) {
 let copyTemplateFiles = function*() {
     let logger = getLogger(argv.quiet || false);
 
-    let dest = argv.destination || argv.d || !(/^--/.test(process.argv[3])) ? process.argv[3] : "";
+    let dest = argv.destination || argv.d || "";
     if (!dest) {
-        print("Error:  You must specify a path. eg: fora new <dir> [options..].");
+        print("Error:  You must specify a path. eg: fora new -d <destination> -t <template> [--force] [--recreate]");
         return;
     }
 

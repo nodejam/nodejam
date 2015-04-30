@@ -14,9 +14,9 @@ import getCommonTasks from "../build-utils/common-tasks";
 */
 
 let getStandardBuild = function(buildName, fn, cbOnComplete) {
-    return function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
+    return function*(siteConfig, builtInPlugins, buildUtils) {
 
-        let tasks = yield* fn(siteConfig, buildConfig, builtInPlugins, buildUtils);
+        let tasks = yield* fn(siteConfig,builtInPlugins, buildUtils);
 
         let startTime = Date.now();
 
@@ -24,7 +24,7 @@ let getStandardBuild = function(buildName, fn, cbOnComplete) {
 
         let logger = getLogger(siteConfig.quiet, buildName);
 
-        let customTasks = yield* getCustomTasks(siteConfig, buildConfig, builtInPlugins, buildUtils);
+        let customTasks = yield* getCustomTasks(siteConfig, builtInPlugins, buildUtils);
 
         if (customTasks)
             yield* buildUtils.tasks.runTasks(customTasks["on-start"]);

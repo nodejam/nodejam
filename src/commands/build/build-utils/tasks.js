@@ -5,7 +5,7 @@ import configutils from "../../../utils/config";
 
 /*
     Parameters:
-
+    ----------
     tasks = [
         {
             name: "transpile-custom-builds-and-plugins",
@@ -18,11 +18,8 @@ import configutils from "../../../utils/config";
            }
        }
    ];
-
    dir: root director for the build
-
    onComplete: Callback when the build completes
-
    monitor: bool, keep monitoring the files?
 */
 let runTasks = function*(tasks, dir, onComplete, monitor) {
@@ -55,13 +52,12 @@ let runTasks = function*(tasks, dir, onComplete, monitor) {
 
 /*
     Load customTasks from the config.dir_custom_tasks directory.
-
 */
-let getCustomTasks = function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
-    var tasksFile = path.resolve(siteConfig.destination, siteConfig["dir-custom-tasks"], `${siteConfig.build}.js`);
+let getCustomTasks = function*(siteConfig, builtInPlugins, buildUtils) {
+    var tasksFile = path.resolve(siteConfig.destination, siteConfig["custom-tasks-dir"], `${siteConfig.build}.js`);
 
     if (yield* fsutils.exists(tasksFile)) {
-        return require(taskPath)(siteConfig, buildConfig, builtInPlugins, buildUtils);
+        return require(taskPath)(siteConfig, builtInPlugins, buildUtils);
     }
 };
 

@@ -2,7 +2,7 @@ import babel from "./babel";
 import copyStaticFiles from "./copy-static-files";
 import less from "./less";
 import writeConfig from "./write-config";
-import buildClient from "./build-client";
+import buildBrowserApp from "./build-browser-app";
 import loadData from "./load-data";
 //import buildStaticPages from "./build-static-pages";
 
@@ -11,7 +11,7 @@ export default {
     "copy-static-files": copyStaticFiles,
     "less": less,
     "write-config": writeConfig,
-    "build-client": buildClient,
+    "build-browser-app": buildBrowserApp,
     "load-data": loadData,
     //"build-static-pages": buildStaticPages
 };

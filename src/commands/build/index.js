@@ -72,8 +72,7 @@ let build = function*(siteConfig) {
     let build = builds[siteConfig["build-name"]] || (yield* getCustomBuild(siteConfig));
 
     if (build) {
-        let buildConfig = siteConfig.builds[siteConfig["build-name"]] || {};
-        yield* build(siteConfig, buildConfig, builtInPlugins, buildUtils);
+        yield* build(siteConfig, builtInPlugins, buildUtils);
     } else {
         throw new Error(`Build named ${siteConfig["build-name"]} was not found.`);
     }
@@ -87,7 +86,7 @@ let build = function*(siteConfig) {
     Transpile dir_custom_builds and dir_custom_tasks
 */
 let transpileCustomBuildsAndTasks = function*(siteConfig) {
-    for(var dir of [siteConfig["dir-custom-builds"], siteConfig["dir-custom-tasks"]]) {
+    for(var dir of [siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]) {
         var buildRoot = path.resolve(siteConfig.source, dir);
         if (yield* fsutils.exists(buildRoot)) {
             yield* buildUtils.tasks.runTasks(
@@ -113,8 +112,8 @@ let transpileCustomBuildsAndTasks = function*(siteConfig) {
     Basically, require(dir_custom_builds/buildName);
 */
 let getCustomBuild = function*(siteConfig) {
-    if (siteConfig["dir-custom-builds"] && siteConfig["build-name"]) {
-        let fullPath = path.resolve(siteConfig.destination, siteConfig["dir-custom-builds"], `${siteConfig["build-name"]}.js`);
+    if (siteConfig["custom-builds-dir"] && siteConfig["build-name"]) {
+        let fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-name"]}.js`);
         if (yield* fsutils.exists(fullPath)) {
             return require(fullPath);
         }

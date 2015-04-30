@@ -2,31 +2,28 @@ import { print } from "../utils/logging";
 
 let help = function*() {
     print(`
-        fora 0.0.1 -- fora is a blog-aware, static site generator in NodeJS
+        fora 1.0.0 -- A full-stack isomorphic framework for Node.JS and Browser
 
         Usage:
 
-          fora <subcommand> [options]
+          fora <command> [options]
 
-        Options:
-                -s, --source [DIR]      Source directory (defaults to ./)
-                -d, --destination [DIR] Destination directory (defaults to ./_site)
-                -h, --help              Show this message
-                -v, --version           Print the name and version
+        Commands:
+            new: Create a new site
+                fora new -d <destination> -t <template> [--force] [--recreate]
 
-        Build and Serve options
-                -n, --no-static         Do not create static html files
-                --db <DB name>          Mongo database name
-                --db-host [DB Host]     MongoDb server (defaults to localhost)
-                --db-port [DB Port]     MongoDb port (defaults to 27017)
+            build: Build a site
+                fora build -s <source> [-d <destination>]
 
-        Subcommands:
-          build, b              Build your site
-          new                   Creates a new fora site scaffold in PATH
-          help                  Show the help message, optionally for a given subcommand.
-          serve, s              Serve your site locally
-          make, m               Same as build --no-static
-          run, r                Same as serve --no-static
+            help: Show this screen
+                fora help
+                fora -h
+                fora --help
+
+            version: Display the version number
+                fora version
+                fora -v
+                fora --version
     `);
 };
 

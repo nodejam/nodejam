@@ -15,7 +15,7 @@ let build = getStandardBuild(
     "create-database",
     function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
         if (process.env.NODE_ENV === "production") {
-            throw new Error("This build cannot be run when NODE_ENV is set to production.")
+            throw new Error("This build cannot be run when NODE_ENV is set to production.");
         }
 
         let tasks = [];
@@ -27,7 +27,7 @@ let build = getStandardBuild(
                 data: data,
                 collections: siteConfig.collections || {},
                 collectionRootDirectory: siteConfig["collections-root-dir"] || "",
-                dataDirectories: siteConfig["data-directories"] || [],
+                dataDirectories: siteConfig["data-dirs"] || [],
                 scavengeCollection: siteConfig["scavenge-collection"] || "",
                 excludedDirectories: configutils.tryRead(buildConfig, ["tasks", "load-data", "excluded-directories"], ["node_modules"]),
                 excludedFiles: configutils.tryRead(buildConfig, ["tasks", "load-data", "excluded-files"], ["config.yml", "config.yaml", "config.json"]),

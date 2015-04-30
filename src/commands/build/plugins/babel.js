@@ -20,6 +20,7 @@ let argv = optimist.argv;
 */
 
 let babel = function(name, options) {
+    let verboseMode = argv[`verbose-${name}`];
     let logger = getLogger(options.quiet, name || "babel");
 
     //defaults
@@ -28,7 +29,7 @@ let babel = function(name, options) {
     options.excludedDirectories = (options.excludedDirectories || []).concat(options.destination);
     options.excludedPatterns = options.excludedPatterns || [];
     options.blacklist = options.blacklist || [];
-    options.excludedWatchPatterns = options.excludedWatchPatterns || [];
+    options.excludedWatchPatterns = (options.excludedWatchPatterns || []).map(p => new RegExp(p));
 
     let fn = function() {
         let extensions = options.extensions.map(e => `*.${e}`);
@@ -39,8 +40,6 @@ let babel = function(name, options) {
 
         let transpiledFiles = [];
 
-        //We compile client, dev build separately because they may have different blacklists.
-        //For example, on iojs we want to blacklist regenerator. But on the client, we don't.
         this.watch(extensions.concat(excluded), function*(filePath, ev, match) {
             if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
                 transpiledFiles.push(filePath);
@@ -56,7 +55,7 @@ let babel = function(name, options) {
                 let result = transform(contents, { blacklist: options.blacklist });
                 yield* fsutils.writeFile(outputPath, result.code);
 
-                if (argv[`verbose-${name}`]) {
+                if (verboseMode) {
                     logger(`${filePath} -> ${outputPath}`);
                 }
             }

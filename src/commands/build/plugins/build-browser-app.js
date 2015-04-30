@@ -18,12 +18,12 @@ let argv = optimist.argv;
         clientBuildDirectory: string,
         appEntryPoint: string,
         bundleName: string,
-        extensions: [string],
+        jsExtensions: [string],
         debug: bool,
         globalModules: [string],
         excludedModules: [string],
-        buildSpecificJSSuffix: string,
-        originalJSSuffix: string,
+        browserBuildFileSuffix: string,
+        browserReplacedFileSuffix: string,
         blacklist: [string],
         excludedFiles: [string],
         excludedDirectories: [string],
@@ -34,15 +34,18 @@ let argv = optimist.argv;
 */
 
 let buildClient = function(name, options) {
-    let logger = getLogger(options.quiet, name || "build-client");
+    let verboseMode = argv[`verbose-${name}`];
+    let logger = getLogger(options.quiet, name || "build-browser-app");
 
     //defaults
-    options.extensions = options.extensions || ["js", "jsx", "json"];
+    options.jsExtensions = options.jsExtensions || ["js", "jsx", "json"];
     options.excludedFiles = options.excludedFiles || [];
     options.excludedDirectories = (options.excludedDirectories || []).concat(options.destination);
     options.excludedPatterns = options.excludedPatterns || [];
     options.blacklist = options.blacklist || [];
     options.excludedWatchPatterns = options.excludedWatchPatterns || [];
+
+    var excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
 
     //Copy file into destDir
     let copyFile = function*(filePath, root) {
@@ -52,10 +55,14 @@ let buildClient = function(name, options) {
         //We might have some jsx files. Switch extension to js.
         let pathWithFixedExtension = fsutils.changeExtension(clientPath, options.changeExtensions);
         yield* fsutils.copyFile(originalPath, pathWithFixedExtension, { createDir: true });
+
+        if (verboseMode) {
+            logger(`Copied ${filePath} to ${pathWithFixedExtension}`);
+        }
     };
 
     let fn = function() {
-        let extensions = options.extensions.map(e => `*.${e}`);
+        let jsExtensions = options.jsExtensions.map(e => `*.${e}`);
 
         let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
             .concat(options.excludedFiles.map(e => `!${e}`))
@@ -63,23 +70,26 @@ let buildClient = function(name, options) {
 
         let clientSpecificFiles = [];
 
-        this.watch(extensions.concat(excluded), function*(filePath, ev, matches) {
-            if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
-                let clientFileRegex = new RegExp(`${options.buildSpecificJSSuffix}\.(js|json)$`);
+        this.watch(jsExtensions.concat(excluded), function*(filePath, ev, matches) {
+            if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
+                let clientFileRegex = new RegExp(`${options.browserBuildFileSuffix}\.(js|json)$`);
 
                 if (clientFileRegex.test(filePath)) {
+                    if (verboseMode) {
+                        logger(`Found client-specific file ${filePath}`);
+                    }
                     clientSpecificFiles.push(filePath);
                 }
 
                 yield* copyFile(filePath, this.root);
             }
-        }, "build-client");
+        }, "build-browser-app");
 
 
         /*
             Rules:
                 1. In the client build, filename~client.js will be moved to filename.js
-                2. Original filename.js will then be renamed filename_base.js (_base is configurable via options.originalJSSuffix)
+                2. Original filename.js will then be renamed filename_base.js (_base is configurable via options.browserReplacedFileSuffix)
                 3. filename~client.js will longer exist, since it was moved.
 
                 The same rules apply for "dev", "test" and other builds.
@@ -89,20 +99,32 @@ let buildClient = function(name, options) {
                 let filePath = path.join(options.destination, options.clientBuildDirectory, file);
 
                 let extension = /\.js$/.test(file) ? "js" : "json";
-                let regex = new RegExp(`${options.buildSpecificJSSuffix}\\.${extension}$`);
+                let regex = new RegExp(`${options.browserBuildFileSuffix}\\.${extension}$`);
 
                 let original = filePath.replace(regex, `.${extension}`);
                 if (yield* fsutils.exists(original)) {
-                    let renamed = original.replace(/\.js$/, `${options.originalJSSuffix}.${extension}`);
+                    let renamed = original.replace(/\.js$/, `${options.browserReplacedFileSuffix}.${extension}`);
                     let originalContents = yield* fsutils.readFile(original);
                     yield* fsutils.writeFile(renamed, originalContents);
+
+                    if (verboseMode) {
+                        logger(`Original ${original} is now ${renamed}`);
+                    }
                 }
 
                 let overriddenContents = yield* fsutils.readFile(filePath);
                 yield* fsutils.writeFile(original, overriddenContents);
 
                 //Remove abc~client.js and abc~dev.js, as the case may be.
+                if (verboseMode) {
+                    logger(`Moved ${filePath} to ${original}`);
+                }
+
                 yield* fsutils.remove(filePath);
+
+                if (verboseMode) {
+                    logger(`Deleted ${filePath}`);
+                }
             }
         };
 
