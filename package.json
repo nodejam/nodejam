@@ -1,7 +1,7 @@
 {
   "name": "fora",
-  "version": "0.1.0",
-  "description": "A static website generator",
+  "version": "0.2.0",
+  "description": "Full-stack (DB-to-UI) Isomorphic JS framework",
   "preferGlobal": "true",
   "main": "lib/fora.js",
   "bin": {
