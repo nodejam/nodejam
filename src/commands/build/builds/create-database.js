@@ -13,7 +13,7 @@ let data = {};
 
 let build = getStandardBuild(
     "create-database",
-    function*(siteConfig, builtInPlugins, buildUtils) {
+    function*(siteConfig, builtInPlugins) {
 
         if (process.env.NODE_ENV === "production") {
             throw new Error("This build cannot be run when NODE_ENV is set to production.");

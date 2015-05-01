@@ -53,11 +53,11 @@ let runTasks = function*(tasks, dir, onComplete, monitor) {
 /*
     Load customTasks from the config.dir_custom_tasks directory.
 */
-let getCustomTasks = function*(siteConfig, builtInPlugins, buildUtils) {
+let getCustomTasks = function*(siteConfig, builtInPlugins) {
     var tasksFile = path.resolve(siteConfig.destination, siteConfig["custom-tasks-dir"], `${siteConfig.build}.js`);
 
     if (yield* fsutils.exists(tasksFile)) {
-        return require(taskPath)(siteConfig, builtInPlugins, buildUtils);
+        return require(taskPath)(siteConfig, builtInPlugins);
     }
 };
 

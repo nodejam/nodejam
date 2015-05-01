@@ -40,26 +40,31 @@ let babel = function(name, options) {
 
         let transpiledFiles = [];
 
-        this.watch(extensions.concat(excluded), function*(filePath, ev, match) {
-            if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
-                transpiledFiles.push(filePath);
+        this.watch(
+            extensions.concat(excluded),
+            function*(filePath, ev, match) {
+                if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
+                    transpiledFiles.push(filePath);
 
-                //Make the output dir, if it doesn't exist
-                let outputPath = fsutils.changeExtension(
-                    path.join(options.destination, filePath),
-                    [ { to:"js", from: options.extensions }]
-                );
-                yield* fsutils.ensureDirExists(outputPath);
-                let contents = yield* fsutils.readFile(filePath);
+                    //Make the output dir, if it doesn't exist
+                    let outputPath = fsutils.changeExtension(
+                        path.join(options.destination, filePath),
+                        [ { to:"js", from: options.extensions }]
+                    );
+                    yield* fsutils.ensureDirExists(outputPath);
+                    let contents = yield* fsutils.readFile(filePath);
 
-                let result = transform(contents, { blacklist: options.blacklist });
-                yield* fsutils.writeFile(outputPath, result.code);
+                    let result = transform(contents, { blacklist: options.blacklist });
+                    yield* fsutils.writeFile(outputPath, result.code);
 
-                if (verboseMode) {
-                    logger(`${filePath} -> ${outputPath}`);
+                    if (verboseMode) {
+                        logger(`${filePath} -> ${outputPath}`);
+                    }
                 }
-            }
-        }, "babel_em_all");
+            },
+            name, 
+            options.dependencies || []
+        );
 
         this.onComplete(function*() {
             logger(`rewrote ${transpiledFiles.length} files`);

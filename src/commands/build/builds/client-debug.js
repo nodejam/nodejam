@@ -7,7 +7,7 @@ import getStandardBuild from "../build-utils/standard-build";
 
 let build = getStandardBuild(
     "client-debug",
-    function*(siteConfig, builtInPlugins, buildUtils) {
+    function*(siteConfig, builtInPlugins) {
         let { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("client-debug", siteConfig, builtInPlugins);
 
         let buildConfigReader = configutils.getReader(siteConfig, ["builds", "client-debug"]);

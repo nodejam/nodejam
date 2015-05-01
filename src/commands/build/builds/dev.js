@@ -9,8 +9,8 @@ let data = {};
 
 let build = getStandardBuild(
     "dev",
-    function*(siteConfig, buildConfig, builtInPlugins, buildUtils) {
-        let { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask, getLoadDataTask } = getCommonTasks("client-debug", siteConfig, builtInPlugins);
+    function*(siteConfig, builtInPlugins) {
+        let { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask, getLoadDataTask } = getCommonTasks("dev", siteConfig, builtInPlugins);
 
         let buildConfigReader = configutils.getReader(siteConfig, ["builds", "dev"]);
         let browserBuildFileSuffix = buildConfigReader(["browser-build-file-suffix"], "~dev");
@@ -39,21 +39,31 @@ let build = getStandardBuild(
                 name: "build-browser-app",
                 browserBuildFileSuffix,
                 browserReplacedFileSuffix,
-                debug: true
+                debug: true,
+                dependencies: ["load-data"]
             }),
             getLoadDataTask({
                 name: "load-data",
                 data: data
-            })
+            }),
+            {
+                build: true,
+                fn: function() {
+                    this.job(
+                        function*() {
+                            let buildConfigReader = configutils.getReader(siteConfig, ["builds", "dev"]);
+                            var filename = buildConfigReader(["data-filename"], "data.json");
+                            let devBuildDir = buildConfigReader(["dev-build-dir"], "js");
+                            yield* fsutils.writeFile(path.join(siteConfig.destination, devBuildDir, filename), JSON.stringify(data));
+                        },
+                        "write-static-data",
+                        ["load-data"]
+                    );
+                }
+            }
         ];
 
         return tasks;
-    },
-    function*() {
-        let buildConfigReader = configutils.getReader(siteConfig, ["builds", "dev"]);
-        var filename = buildConfigReader(["data-filename"], "data.json");
-        let devBuildDir = buildConfigReader(["dev-build-dir"], "js");
-        yield* fsutils.writeFile(path.join(siteConfig.destination, devBuildDir, filename), JSON.stringify(data));
     }
 );
 

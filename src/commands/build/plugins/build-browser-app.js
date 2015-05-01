@@ -70,24 +70,29 @@ let buildClient = function(name, options) {
 
         let clientSpecificFiles = [];
 
-        this.watch(jsExtensions.concat(excluded), function*(filePath, ev, matches) {
-            if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
-                let clientFileRegex = new RegExp(`${options.browserBuildFileSuffix}\.(js|json)$`);
+        this.watch(
+            jsExtensions.concat(excluded),
+            function*(filePath, ev, matches) {
+                if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
+                    let clientFileRegex = new RegExp(`${options.browserBuildFileSuffix}\.(js|json)$`);
 
-                if (clientFileRegex.test(filePath)) {
-                    if (verboseMode) {
-                        logger(`Found client-specific file ${filePath}`);
+                    if (clientFileRegex.test(filePath)) {
+                        if (verboseMode) {
+                            logger(`Found client-specific file ${filePath}`);
+                        }
+                        clientSpecificFiles.push(filePath);
                     }
-                    clientSpecificFiles.push(filePath);
-                }
 
-                yield* copyFile(filePath, this.root);
-            } else {
-                if (verboseMode) {
-                    logger(`Skipped ${filePath}`);
+                    yield* copyFile(filePath, this.root);
+                } else {
+                    if (verboseMode) {
+                        logger(`Skipped ${filePath}`);
+                    }
                 }
-            }
-        }, "build-browser-app");
+            },
+            name,
+            options.dependencies || []
+        );
 
 
         /*

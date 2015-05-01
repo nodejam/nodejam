@@ -40,18 +40,23 @@ let copyStaticFiles = function(name, options) {
 
         let copiedFiles = [];
 
-        this.watch(options.extensions.concat(excluded), function*(filePath, ev, matches) {
-            if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
-                copiedFiles.push(filePath);
-                let newFilePath = fsutils.changeExtension(filePath, options.changeExtensions);
-                let outputPath = path.join(options.destination, newFilePath);
-                yield* fsutils.copyFile(filePath, outputPath, { overwrite: false });
+        this.watch(
+            options.extensions.concat(excluded),
+            function*(filePath, ev, matches) {
+                if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
+                    copiedFiles.push(filePath);
+                    let newFilePath = fsutils.changeExtension(filePath, options.changeExtensions);
+                    let outputPath = path.join(options.destination, newFilePath);
+                    yield* fsutils.copyFile(filePath, outputPath, { overwrite: false });
 
-                if (verboseMode) {
-                    logger(`${filePath} -> ${outputPath}`);
+                    if (verboseMode) {
+                        logger(`${filePath} -> ${outputPath}`);
+                    }
                 }
-            }
-        }, "copy-static-files");
+            },
+            name,
+            options.dependencies || []
+        );
 
         this.onComplete(function*() {
             logger(`copied ${copiedFiles.length} files`);

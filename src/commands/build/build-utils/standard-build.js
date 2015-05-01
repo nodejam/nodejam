@@ -1,5 +1,6 @@
 import { getLogger } from "../../../utils/logging";
-import getCommonTasks from "../build-utils/common-tasks";
+import { runTasks, getCustomTasks } from "./tasks";
+import builtInPlugins from "../plugins";
 /*
     Hookable Build Pipeline Events
     ------------------------------
@@ -14,27 +15,25 @@ import getCommonTasks from "../build-utils/common-tasks";
 */
 
 let getStandardBuild = function(buildName, fn, cbOnComplete) {
-    return function*(siteConfig, builtInPlugins, buildUtils) {
+    return function*(siteConfig) {
 
-        let tasks = yield* fn(siteConfig,builtInPlugins, buildUtils);
+        let tasks = yield* fn(siteConfig, builtInPlugins);
 
         let startTime = Date.now();
 
-        let { runTasks, getCustomTasks } = buildUtils.tasks;
-
         let logger = getLogger(siteConfig.quiet, buildName);
 
-        let customTasks = yield* getCustomTasks(siteConfig, builtInPlugins, buildUtils);
+        let customTasks = yield* getCustomTasks(siteConfig, builtInPlugins);
 
         if (customTasks)
-            yield* buildUtils.tasks.runTasks(customTasks["on-start"]);
+            yield* runTasks(customTasks["on-start"]);
 
         let onComplete = function*() {
             if (customTasks)
-                yield* buildUtils.tasks.runTasks(customTasks["on-complete"]);
+                yield* runTasks(customTasks["on-complete"]);
 
             if (cbOnComplete) {
-                yield* cbOnComplete();
+                yield* cbOnComplete(siteConfig);
             }
 
             let endTime = Date.now();
@@ -42,7 +41,7 @@ let getStandardBuild = function(buildName, fn, cbOnComplete) {
         };
 
         try {
-            yield* buildUtils.tasks.runTasks(tasks, siteConfig.source, onComplete, siteConfig.watch);
+            yield* runTasks(tasks, siteConfig.source, onComplete, siteConfig.watch);
         } catch (ex) {
             console.log(ex);
             console.log(ex.stack);

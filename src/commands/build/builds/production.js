@@ -7,8 +7,8 @@ import getStandardBuild from "../build-utils/standard-build";
 
 let build = getStandardBuild(
     "production",
-    function*(siteConfig, builtInPlugins, buildUtils) {
-        let { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("client-debug", siteConfig, builtInPlugins);
+    function*(siteConfig, builtInPlugins) {
+        let { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("production", siteConfig, builtInPlugins);
 
         let buildConfigReader = configutils.getReader(siteConfig, ["builds", "production"]);
         let browserBuildFileSuffix = buildConfigReader(["browser-build-file-suffix"], "~client");

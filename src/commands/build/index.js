@@ -9,7 +9,7 @@ import devBuild from "./builds/dev";
 import staticBuild from "./builds/static";
 import createDatabase from "./builds/create-database";
 
-import buildUtils from "./build-utils";
+import { runTasks, getCustomTasks } from "./build-utils/tasks";
 import builtInPlugins from "./plugins";
 
 let builds = {
@@ -72,7 +72,7 @@ let build = function*(siteConfig) {
     let build = builds[siteConfig["build-name"]] || (yield* getCustomBuild(siteConfig));
 
     if (build) {
-        yield* build(siteConfig, builtInPlugins, buildUtils);
+        yield* build(siteConfig);
     } else {
         throw new Error(`Build named ${siteConfig["build-name"]} was not found.`);
     }
@@ -89,7 +89,7 @@ let transpileCustomBuildsAndTasks = function*(siteConfig) {
     for(var dir of [siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]) {
         var buildRoot = path.resolve(siteConfig.source, dir);
         if (yield* fsutils.exists(buildRoot)) {
-            yield* buildUtils.tasks.runTasks(
+            yield* runTasks(
                  {
                      name: "transpile-custom-builds-and-plugins",
                      plugin: builtInPlugins.babel,

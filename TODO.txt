@@ -1,4 +1,0 @@
-- jekyll
-    - drafts
-    - future
-- watch

@@ -41,7 +41,8 @@ let compileLess = function(name, options) {
                 }
                 logger(`compiled ${filePath} to ${outputPath}`);
             },
-            "less_compile"
+            name,
+            options.dependencies || []
         );
     };
 

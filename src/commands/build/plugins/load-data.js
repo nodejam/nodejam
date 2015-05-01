@@ -70,7 +70,9 @@ let loadStaticData = function(name, options) {
                 } catch (ex) {
                     logger(ex);
                 }
-            }
+            },
+            name,
+            options.dependencies || []
         );
 
         //Check the collection directories
@@ -81,7 +83,9 @@ let loadStaticData = function(name, options) {
                 let collectionDir = options.collectionRootDirectory ? path.combine(options.collectionRootDirectory, collection.dir) : collection.dir;
                 this.watch(
                     options.markdownExtensions.concat(["json"]).map(ext => `${collectionDir}/*.${ext}`),
-                    getCollectionLoader(collectionName)
+                    getCollectionLoader(collectionName),
+                    `${name}-collection-loader`,
+                    options.collectionLoaderDependencies || []
                 );
             }
         }
@@ -103,8 +107,11 @@ let loadStaticData = function(name, options) {
 
             var filePatterns = options.markdownExtensions.concat(["json"]).map(ext => `*.${ext}`);
 
-            this.watch(filePatterns.concat(exclusions),
-                getCollectionLoader(options.scavengeCollection)
+            this.watch(
+                filePatterns.concat(exclusions),
+                getCollectionLoader(options.scavengeCollection),
+                `${name}-scavenge-collection`,
+                options.scavengeCollectionDependencies || []
             );
         }
     };

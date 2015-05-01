@@ -14,6 +14,7 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
     let excludedBuildSpecificFilePatterns = browserBuildFileSuffixes.map(s => `${s}\.(js|json)$`);
 
     let getTranspileServerTask = function(options) {
+        let dependencies = options.dependencies;
         let destination = siteConfig.destination;
         let extensions = siteConfig["js-extensions"];
         let excludedPatterns = siteConfig["excluded-patterns"]
@@ -36,12 +37,14 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
                 excludedDirectories,
                 excludedPatterns,
                 excludedWatchPatterns: excludedBuildSpecificFilePatterns,
-                blacklist
+                blacklist,
+                dependencies
             }
         };
     };
 
     let getLessTask = function(options) {
+        let dependencies = options.dependencies;
         let destination = siteConfig.destination;
 
         let taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
@@ -53,13 +56,15 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
             plugin: builtInPlugins.less,
             options: {
                 destination,
-                directories
+                directories,
+                dependencies
             }
         };
     };
 
 
     let getCopyStaticFilesTask = function(options) {
+        let dependencies = options.dependencies;
         let destination = options.destination;
         let extensions = options.extensions || ["*.*"];
         let excludedDirectories = [siteConfig.destination]
@@ -81,13 +86,15 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
                 excludedPatterns,
                 excludedExtensions,
                 excludedWatchPatterns: excludedBuildSpecificFilePatterns,
-                changeExtensions
+                changeExtensions,
+                dependencies
             }
         };
     };
 
 
     let getWriteConfigTask = function(options) {
+        let dependencies = options.dependencies;
         let destination = path.join(siteConfig.destination);
 
         let taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
@@ -100,14 +107,15 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
             options: {
                 destination,
                 filename,
-                config: siteConfig
+                config: siteConfig,
+                dependencies
             }
         };
     };
 
 
     let getBuildClientTask = function(options) {
-
+        let dependencies = options.dependencies;
         let excludedDirectories = siteConfig["excluded-dirs"].concat(siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]);
         let excludedPatterns = siteConfig["excluded-patterns"];
         let changeExtensions = siteConfig["change-extensions"];
@@ -149,11 +157,15 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
                 browserReplacedFileSuffix,
                 excludedWatchPatterns,
                 blacklist,
+                dependencies
             }
         };
     };
 
     let getLoadDataTask = function(options) {
+        let dependencies = options.dependencies;
+        let scavengeCollectionDependencies = options.scavengeCollectionDependencies;
+        let collectionLoaderDependencies = options.collectionLoaderDependencies;
         let collections = siteConfig.collections;
         let collectionRootDirectory = siteConfig["collections-root-dir"];
         let dataDirectories = siteConfig["data-dirs"];
@@ -177,7 +189,10 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
                 scavengeCollection,
                 excludedDirectories,
                 excludedFiles,
-                markdownExtensions
+                markdownExtensions,
+                dependencies,
+                scavengeCollectionDependencies,
+                collectionLoaderDependencies
             }
         };
     };
