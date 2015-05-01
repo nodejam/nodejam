@@ -23,6 +23,9 @@ echo ....................................
 
 runtask "fora-template-blog" "node_modules"
 
+runtask "ceramic-backend-mongodb" "node_modules/fora-template-blog/node_modules"
+runtask "ceramic-backend-nedb" "node_modules/fora-template-blog/node_modules"
+
 runtask "isotropy-koa-mode" "node_modules/fora-template-blog/node_modules"
 runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-koa-mode/node_modules"
 runtask "isotropy-router" "node_modules/fora-template-blog/node_modules/isotropy-koa-mode/node_modules/isotropy/node_modules"
@@ -31,3 +34,5 @@ runtask "isotropy-browser-mode" "node_modules/fora-template-blog/node_modules"
 runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules"
 runtask "isotropy-browser-request" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules"
 runtask "isotropy-router" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules/isotropy/node_modules"
+
+runtask "isotropy-xml-http-request" "node_modules/fora-template-blog/node_modules"
