@@ -25,7 +25,7 @@ let compileLess = function(name, options) {
     let extensions = options.directories.map(dir => `${dir}/*.less`);
     let excluded = options.excludedDirectories.map(dir => `!${dir}/`);
 
-    let fn = function() {
+    return function() {
         this.watch(
             extensions.concat(excluded),
             function*(filePath, ev, match) {
@@ -45,8 +45,6 @@ let compileLess = function(name, options) {
             options.dependencies || []
         );
     };
-
-    return { build: true, fn: fn };
 };
 
 export default compileLess;

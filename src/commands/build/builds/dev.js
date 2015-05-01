@@ -40,26 +40,25 @@ let build = getStandardBuild(
                 browserBuildFileSuffix,
                 browserReplacedFileSuffix,
                 debug: true,
-                dependencies: ["load-data"]
+                dependencies: ["write-static-data"]
             }),
             getLoadDataTask({
                 name: "load-data",
                 data: data
             }),
-            {
-                build: true,
-                fn: function() {
-                    this.job(
-                        function*() {
-                            let buildConfigReader = configutils.getReader(siteConfig, ["builds", "dev"]);
-                            var filename = buildConfigReader(["data-filename"], "data.json");
-                            let devBuildDir = buildConfigReader(["dev-build-dir"], "js");
-                            yield* fsutils.writeFile(path.join(siteConfig.destination, devBuildDir, filename), JSON.stringify(data));
-                        },
-                        "write-static-data",
-                        ["load-data"]
-                    );
-                }
+            function() {
+                this.job(
+                    function*() {
+                        let buildConfigReader = configutils.getReader(siteConfig, ["builds", "dev"]);
+                        var filename = buildConfigReader(["data-filename"], "data.json");
+                        let devBuildDir = buildConfigReader(["dev-build-dir"], "js");
+                        var outputPath = path.join(siteConfig.destination, devBuildDir, filename);
+                        yield* fsutils.ensureDirExists(outputPath);
+                        yield* fsutils.writeFile(outputPath, JSON.stringify(data));
+                    },
+                    "write-static-data",
+                    ["load-data"]
+                );
             }
         ];
 

@@ -47,7 +47,7 @@ let loadStaticData = function(name, options) {
         };
     };
 
-    let fn = function() {
+    return function() {
         //Data directories
         this.watch(
             ["yaml", "yml", "json"]
@@ -115,8 +115,6 @@ let loadStaticData = function(name, options) {
             );
         }
     };
-
-    return { build: true, fn: fn };
 };
 
 export default loadStaticData;

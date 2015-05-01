@@ -32,7 +32,7 @@ let copyStaticFiles = function(name, options) {
 
     var excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
 
-    let fn = function() {
+    return function() {
         let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
             .concat(options.excludedFiles.map(e => `!${e}`))
             .concat(options.excludedExtensions.map(ext => `!*.${ext}`))
@@ -62,8 +62,6 @@ let copyStaticFiles = function(name, options) {
             logger(`copied ${copiedFiles.length} files`);
         });
     };
-
-    return { build: true, fn: fn };
 };
 
 export default copyStaticFiles;

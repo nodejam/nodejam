@@ -61,7 +61,7 @@ let buildClient = function(name, options) {
         }
     };
 
-    let fn = function() {
+    return function() {
         let jsExtensions = options.jsExtensions.map(e => `*.${e}`);
 
         let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
@@ -146,6 +146,10 @@ let buildClient = function(name, options) {
             let entry = path.join(options.destination, options.clientBuildDirectory, options.appEntryPoint);
             let output = path.join(options.destination, options.clientBuildDirectory, options.bundleName);
 
+            if (verboseMode) {
+                logger(`Browserify started: entry is ${entry}`);
+            }
+
             let b = browserify([entry], { debug: options.debug });
 
             options.excludedModules.concat(Object.keys(options.globalModules)).forEach(function(e) {
@@ -171,8 +175,6 @@ let buildClient = function(name, options) {
             clientSpecificFiles = [];
         });
     };
-
-    return { build: true, fn: fn };
 };
 
 export default buildClient;

@@ -31,7 +31,7 @@ let babel = function(name, options) {
     options.blacklist = options.blacklist || [];
     options.excludedWatchPatterns = (options.excludedWatchPatterns || []).map(p => new RegExp(p));
 
-    let fn = function() {
+    return function() {
         let extensions = options.extensions.map(e => `*.${e}`);
 
         let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
@@ -62,7 +62,7 @@ let babel = function(name, options) {
                     }
                 }
             },
-            name, 
+            name,
             options.dependencies || []
         );
 
@@ -70,8 +70,6 @@ let babel = function(name, options) {
             logger(`rewrote ${transpiledFiles.length} files`);
         });
     };
-
-    return { build: true, fn: fn };
 };
 
 export default babel;

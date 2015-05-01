@@ -23,24 +23,14 @@ import configutils from "../../../utils/config";
    monitor: bool, keep monitoring the files?
 */
 let runTasks = function*(tasks, dir, onComplete, monitor) {
-    if (!(tasks instanceof Array))
-        tasks = [tasks];
-
     let build = crankshaft.create();
 
-    for (let task of tasks) {
-        let plugin = task.plugin(task.name, (task.options || {}));
-
-        if (plugin.build) {
-            if (plugin.fn) {
-                build.configure(plugin.fn, dir);
-            }
-        } else {
-            if (plugin.fn) {
-                yield* plugin.fn();
-            }
+    build.configure(function() {
+        for (let task of tasks) {
+            var runnable = (task.plugin) ? task.plugin(task.name, (task.options || {})) : task;
+            runnable.call(this);
         }
-    }
+    }, dir);
 
     if (onComplete) {
         build.onComplete(onComplete);

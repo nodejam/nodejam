@@ -90,7 +90,7 @@ let transpileCustomBuildsAndTasks = function*(siteConfig) {
         var buildRoot = path.resolve(siteConfig.source, dir);
         if (yield* fsutils.exists(buildRoot)) {
             yield* runTasks(
-                 {
+                 [{
                      name: "transpile-custom-builds-and-plugins",
                      plugin: builtInPlugins.babel,
                      options: {
@@ -99,7 +99,7 @@ let transpileCustomBuildsAndTasks = function*(siteConfig) {
                         extensions: siteConfig["js-extensions"],
                         blacklist: ["regenerator"]
                     }
-                },
+                }],
                 buildRoot
             );
         }
