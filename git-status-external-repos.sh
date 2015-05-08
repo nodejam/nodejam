@@ -27,3 +27,7 @@ runtask "isotropy-browser-request" "node_modules/fora-template-blog/node_modules
 
 runtask "isotropy-koa-mode" "node_modules/fora-template-blog/node_modules";
 runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-koa-mode/node_modules";
+
+runtask "isotropy-dev-mode" "node_modules/fora-template-blog/node_modules";
+runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-dev-mode/node_modules";
+runtask "koa-in-browser" "node_modules/fora-template-blog/node_modules/isotropy-dev-mode/node_modules";
