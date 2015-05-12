@@ -16,10 +16,13 @@ echo ....................................
 echo NPM publish
 echo ....................................
 
+runtask "ceramic-backend-mongodb" "node_modules"
+runtask "ceramic-backend-nedb" "node_modules"
 runtask "fora-template-blog" "node_modules"
 
 runtask "ceramic-backend-mongodb" "node_modules/fora-template-blog/node_modules"
 runtask "ceramic-backend-nedb" "node_modules/fora-template-blog/node_modules"
+runtask "isotropy-xml-http-request" "node_modules/fora-template-blog/node_modules"
 
 runtask "isotropy-browser-mode" "node_modules/fora-template-blog/node_modules";
 runtask "isotropy" "node_modules/fora-template-blog/node_modules/isotropy-browser-mode/node_modules";
