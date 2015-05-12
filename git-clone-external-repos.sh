@@ -21,6 +21,8 @@ echo ....................................
 echo Git Clone
 echo ....................................
 
+runtask "ceramic-backend-mongodb" "node_modules"
+runtask "ceramic-backend-nedb" "node_modules"
 runtask "fora-template-blog" "node_modules"
 
 runtask "ceramic-backend-mongodb" "node_modules/fora-template-blog/node_modules"
