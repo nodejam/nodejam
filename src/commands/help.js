@@ -10,7 +10,8 @@ let help = function*() {
 
         Commands:
             new: Create a new site
-                fora new -d <destination> -t <template> [--force] [--recreate]
+                fora new -n <name> -t <template> -d <destination> [--force] [--recreate]
+                eg: fora new -n my-blog -t blog -d ~/code --recreate
 
             build: Build a site
                 fora build -s <source> [-d <destination>]
