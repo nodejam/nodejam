@@ -58,7 +58,7 @@ let copyTemplateFiles = function*() {
 
     let logger = getLogger(argv.quiet || false);
 
-    let name = argv.name || argv.n;
+    let name = (argv.name || argv.n || "").trim();
     if (!name) {
         printSyntax("You must specify a name for the project.");
         return;
