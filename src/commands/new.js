@@ -53,7 +53,7 @@ let resolveTemplatePath = function*(name) {
 */
 let copyTemplateFiles = function*() {
     let printSyntax = (msg) => {
-        print(`Error: ${msg} eg: fora new -n <name> -t <template> -d <destination> [--force] [--recreate]`);
+        print(`Error: ${msg} eg: fora new -n my-personal-blog -t blog -d ~/mycode [--force] [--recreate]`);
     };
 
     let logger = getLogger(argv.quiet || false);
@@ -63,6 +63,7 @@ let copyTemplateFiles = function*() {
         printSyntax("You must specify a name for the project.");
         return;
     }
+    name = name.replace(/\s+/g, '-').toLowerCase();
 
     let destinationRoot = argv.destination || argv.d || "";
     if (!destinationRoot) {
