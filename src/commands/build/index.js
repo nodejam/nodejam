@@ -1,4 +1,5 @@
 import path from "path";
+import optimist from "optimist";
 
 import fsutils   from "../../utils/fs";
 import { getLogger } from "../../utils/logging";
@@ -19,6 +20,8 @@ let builds = {
     "static": staticBuild,
     "create-database": createDatabase
 };
+
+let argv = optimist.argv;
 
 /*
     We have these build modes
@@ -59,6 +62,10 @@ let builds = {
 
 let build = function*(siteConfig) {
     let logger = getLogger(siteConfig.quiet);
+
+    if (argv.n) {
+        siteConfig["build-name"] = argv.n;
+    }
 
     logger(`Source: ${siteConfig.source}`);
     logger(`Destination: ${siteConfig.destination}`);
