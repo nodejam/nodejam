@@ -1,4 +1,5 @@
-//This polyfill is needed on ES5
+#!/usr/bin/env node
+
 require("babel/polyfill");
 
 import co from "co";
