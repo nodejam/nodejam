@@ -170,12 +170,14 @@ let getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         let collectionRootDirectory = siteConfig["collections-root-dir"];
         let dataDirectories = siteConfig["data-dirs"];
         let scavengeCollection = siteConfig["scavenge-collection"] || "posts";
-        let excludedDirectories = siteConfig["excluded-dirs"].concat(siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]);
 
         let buildConfigReader = configutils.getReader(siteConfig, ["builds", buildName]);
         let taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
 
-        let excludedFiles = taskConfigReader(["excluded-files"], ["config.yml", "config.yaml", "config.json", "package.json"]);
+        let vendorDirs = taskConfigReader(["vendor-dirs"], ["vendor"]);
+        let excludedDirectories = siteConfig["excluded-dirs"].concat([siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]).concat(vendorDirs);
+
+        let excludedFiles = taskConfigReader(["excluded-files"], ["config.yml", "config.yaml", "config.json", "package.json", "README.md"]);
         let markdownExtensions = taskConfigReader(["markdown-extensions"], ["md", "markdown"]);
 
         return {
