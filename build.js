@@ -2,7 +2,6 @@ var crankshaft = require("crankshaft");
 var path = require("path");
 var fs = require("fs");
 var fsutils = require("./src/utils/fs");
-var tools = require("crankshaft-tools");
 var babel = require("babel");
 var build = crankshaft.create();
 

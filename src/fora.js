@@ -79,7 +79,7 @@ co(function*() {
         let commandName = getCommand();
         if (commandName) {
             let command = commands[`_${commandName}`];
-            if (["new", "help", "version"].indexOf(commandName) !== -1) {
+            if (["new", "help", "install", "version"].indexOf(commandName) !== -1) {
                 yield* command();
             } else {
                 let config = yield* getSiteConfig();
