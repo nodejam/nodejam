@@ -1,7 +1,9 @@
 import { print, getLogger } from "../utils/logging";
+import foraUtils from "../utils/fora";
 
 let version = function*(siteConfig) {
-    print("hitchslap 0.0.1");
+    var version = yield* foraUtils.getVersion();
+    print(`fora ${version}`);
 };
 
 export default version;

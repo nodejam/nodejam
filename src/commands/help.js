@@ -1,20 +1,38 @@
 import { print } from "../utils/logging";
+import foraUtils from "../utils/fora";
 
 let help = function*() {
+    var version =  yield* foraUtils.getVersion();
     print(`
-        fora 1.0.0 -- A full-stack isomorphic framework for Node.JS and Browser
+        fora ${version} -- A full-stack isomorphic framework for Node.JS and Browser
 
         Usage:
-
-          fora <command> [options]
+            fora <command> <params> <flags>
 
         Commands:
+            install: Installs a new template from npm or git
+                fora install <template_name> [--git]
+                    template_name should be in npm, or you must use the --git parameter
+                    --git clones from git. template_name must be a git url.
+
+                eg: fora install fora-template-blog
+                eg: fora install fora-template-something --git
+
             new: Create a new site
-                fora new -n <name> -t <template> -d <destination> [--force] [--recreate]
-                eg: fora new -n my-blog -t blog -d ~/code --recreate
+                fora new <project_name> <template> [-d destination] [--force] [--recreate]
+                    -d or --destination may be used to install to a separate directory.
+
+                eg: fora new my-blog blog --recreate
+                eg: fora new my-blog -d ~/code/fora_apps/ --recreate
 
             build: Build a site
-                fora build -s <source> [-d <destination>]
+                fora build [<source>] [-d <destination>]
+                    source defaults to current directory
+                    destination defaults to source/_site
+                    -d or --destination may be used to override the default destination.
+
+                eg: fora build
+                eg: fora build ~/code/my-blog
 
             help: Show this screen
                 fora help
