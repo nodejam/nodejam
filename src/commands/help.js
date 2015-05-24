@@ -19,16 +19,17 @@ let help = function*() {
                 eg: fora build ~/code/my-blog ~/some/destination/dir
 
                 options:
-                    -n <build-name> (or --build-name <build-name>)
-                        Specify a build-name. Defaults to "client-debug" or what's in config.json
+                    --build-type <type> (or -t <type>)
+                        Specify a build type. Defaults to "client-debug" or what's in config.json.
+                        Built-in build types are production, client-debug and dev.
 
             install: Installs a new template from npm or git
                 fora install <template_name> [--git]
-                    template_name should be in npm, or you must use the --git parameter
+                    template_name should be in npm, or you must use the --git parameter.
                     --git clones from git. template_name must be a git url.
 
                 eg: fora install fora-template-blog
-                eg: fora install fora-template-something --git
+                eg: fora install http://www.github.com/onefora/fora-template-something --git
 
             new: Create a new site
                 fora new <template> <project_name> [-d <destination>] [--force] [--recreate]

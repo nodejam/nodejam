@@ -1,8 +1,12 @@
 import path from "path";
 import optimist from "optimist";
+import yaml from "js-yaml";
 
+import configutils from "../../utils/config";
 import fsutils   from "../../utils/fs";
 import { getLogger } from "../../utils/logging";
+import readFileByFormat from "../../utils/file-reader";
+import cli from "../../utils/cli";
 
 import productionBuild from "./builds/production";
 import clientDebugBuild from "./builds/client-debug";
@@ -35,19 +39,16 @@ let printSyntax = (msg) => {
     if (msg) {
         print(`Error: ${msg}`);
     }
-    print(`Usage: fora build [<source>] [<destination>]`);
+    print(`Usage: fora build [<source>] [<destination>] -t <type>`);
     process.exit();
 };
 
 
-let getParams = function() {
-    let args = process.argv.filter(a => !/^-/.test(a));
+let getArgs = function() {
+    var args = cli.getArgs();
 
-    if (args.length < 4) {
-        printSyntax();
-    }
     /* params */
-    let source = args[3];
+    let source = args.length >= 4 ? args[3] : "./";
     let destination = args.length >= 5 ? args[4] : "_site";
     return { source, destination };
 };
@@ -90,12 +91,14 @@ let getParams = function() {
 */
 
 let build = function*() {
-    let siteConfig = yield* getSiteConfig();
+    let { source, destination } = getArgs();
+
+    let siteConfig = yield* getSiteConfig(source, destination);
 
     let logger = getLogger(siteConfig.quiet);
 
-    if (argv.n) {
-        siteConfig["build-name"] = argv.n;
+    if (argv.t) {
+        siteConfig["build-type"] = argv.t;
     }
 
     logger(`Source: ${siteConfig.source}`);
@@ -107,12 +110,12 @@ let build = function*() {
     //Transpile custom builds and custom tasks directory first.
     yield* transpileCustomBuildsAndTasks(siteConfig);
 
-    let build = builds[siteConfig["build-name"]] || (yield* getCustomBuild(siteConfig));
+    let build = builds[siteConfig["build-type"]] || (yield* getCustomBuild(siteConfig));
 
     if (build) {
         yield* build(siteConfig);
     } else {
-        throw new Error(`Build named ${siteConfig["build-name"]} was not found.`);
+        throw new Error(`Build named ${siteConfig["build-type"]} was not found.`);
     }
 
     let endTime = Date.now();
@@ -120,11 +123,8 @@ let build = function*() {
 };
 
 
-let getSiteConfig = function*() {
+let getSiteConfig = function*(source, destination) {
     let siteConfig = {};
-
-    let source = args[3] || "./";
-    let destination = args.length >= 4 ? args[4] : "_site";
 
     let configFilePath = argv.config ? path.join(source, argv.config) :
         (yield* fsutils.exists(path.join(source, "config.json"))) ? path.join(source, "config.json") : path.join(source, "config.yml");
@@ -184,8 +184,8 @@ let transpileCustomBuildsAndTasks = function*(siteConfig) {
     Basically, require(dir_custom_builds/buildName);
 */
 let getCustomBuild = function*(siteConfig) {
-    if (siteConfig["custom-builds-dir"] && siteConfig["build-name"]) {
-        let fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-name"]}.js`);
+    if (siteConfig["custom-builds-dir"] && siteConfig["build-type"]) {
+        let fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-type"]}.js`);
         if (yield* fsutils.exists(fullPath)) {
             return require(fullPath);
         }

@@ -1,8 +1,9 @@
+import path from "path";
 import optimist from "optimist";
 import tools from "crankshaft-tools";
 import fsutils from "../utils/fs";
 import { print, getLogger } from "../utils/logging";
-import path from "path";
+import cli from "../utils/cli";
 
 let argv = optimist.argv;
 
@@ -16,8 +17,8 @@ let printSyntax = (msg) => {
 };
 
 
-let getParams = function() {
-    let args = process.argv.filter(a => !/^-/.test(a));
+let getArgs = function() {
+    var args = cli.getArgs();
 
     if (args.length < 4) {
         printSyntax();
@@ -42,7 +43,7 @@ let install = function*() {
 
     if (argv.git) {
         process.chdir(nodeModulesDir);
-        let templateUrl = getParams().template;
+        let templateUrl = getArgs().template;
         let urlParts = templateUrl.split("/");
         let template = urlParts[urlParts.length - 1];
         let destDir = path.join(nodeModulesDir, template);
@@ -57,7 +58,7 @@ let install = function*() {
             print(yield* exec(`npm install`));
         }
     } else {
-        let { template } = getParams();
+        let { template } = getArgs();
         print(`Installing ${template} with npm. This make take a few minutes.`);
         process.chdir(templatesDir);
         print(yield* exec(`npm install ${template}`));

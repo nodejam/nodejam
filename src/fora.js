@@ -5,12 +5,7 @@ require("babel/polyfill");
 import co from "co";
 import optimist from "optimist";
 import * as commands from "./commands";
-import yaml from "js-yaml";
-import path from "path";
-import configutils from "./utils/config";
-import fsutils from "./utils/fs";
 import { print } from "./utils/logging";
-import readFileByFormat from "./utils/file-reader";
 
 let argv = optimist.argv;
 

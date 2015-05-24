@@ -17,7 +17,7 @@ let loadDefaults = function(source, destination) {
         "change-extensions": [{ to: "js", from: ["jsx"] }],
 
         //build
-        "build-name": "client-debug",
+        "build-type": "client-debug",
 
         //static data and collections
         "collections": {},

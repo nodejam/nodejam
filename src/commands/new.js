@@ -3,6 +3,7 @@ import optimist from "optimist";
 import path from "path";
 import fsutils from "../utils/fs";
 import { print, getLogger } from "../utils/logging";
+import cli from "../utils/cli";
 
 let argv = optimist.argv;
 
@@ -16,8 +17,8 @@ let printSyntax = (msg) => {
 };
 
 
-let getParams = function() {
-    let args = process.argv.filter(a => !/^-/.test(a));
+let getArgs = function() {
+    var args = cli.getArgs();
 
     if (args.length < 5) {
         printSyntax();
@@ -35,7 +36,7 @@ let getParams = function() {
 let copyTemplateFiles = function*() {
     let logger = getLogger(argv.quiet || false);
 
-    let { template, name } = getParams();
+    let { template, name } = getArgs();
 
     let destinationRoot = argv.d || argv.destination || "./";
     let destination = path.join(destinationRoot, name);
