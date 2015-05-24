@@ -13,6 +13,13 @@ import createDatabase from "./builds/create-database";
 import { runTasks, getCustomTasks } from "./build-utils/tasks";
 import builtInPlugins from "./plugins";
 
+//modes
+import defaultConfig from "../../configurations/default";
+
+let configurations = {
+    "default": defaultConfig
+};
+
 let builds = {
     "production": productionBuild,
     "client-debug": clientDebugBuild,
@@ -22,6 +29,28 @@ let builds = {
 };
 
 let argv = optimist.argv;
+
+
+let printSyntax = (msg) => {
+    if (msg) {
+        print(`Error: ${msg}`);
+    }
+    print(`Usage: fora build [<source>] [<destination>]`);
+    process.exit();
+};
+
+
+let getParams = function() {
+    let args = process.argv.filter(a => !/^-/.test(a));
+
+    if (args.length < 4) {
+        printSyntax();
+    }
+    /* params */
+    let source = args[3];
+    let destination = args.length >= 5 ? args[4] : "_site";
+    return { source, destination };
+};
 
 /*
     We have these build modes
@@ -60,7 +89,9 @@ let argv = optimist.argv;
 
 */
 
-let build = function*(siteConfig) {
+let build = function*() {
+    let siteConfig = yield* getSiteConfig();
+
     let logger = getLogger(siteConfig.quiet);
 
     if (argv.n) {
@@ -86,6 +117,40 @@ let build = function*(siteConfig) {
 
     let endTime = Date.now();
     logger(`Total ${(endTime - startTime)/1000} seconds.`);
+};
+
+
+let getSiteConfig = function*() {
+    let siteConfig = {};
+
+    let source = args[3] || "./";
+    let destination = args.length >= 4 ? args[4] : "_site";
+
+    let configFilePath = argv.config ? path.join(source, argv.config) :
+        (yield* fsutils.exists(path.join(source, "config.json"))) ? path.join(source, "config.json") : path.join(source, "config.yml");
+
+    siteConfig = yield* readFileByFormat(configFilePath);
+    siteConfig.mode = siteConfig.mode || "default";
+
+    let modeSpecificConfigDefaults = configurations[siteConfig.mode].loadDefaults(source, destination);
+    let defaults = configutils.getFullyQualifiedProperties(modeSpecificConfigDefaults);
+
+    let setter = configutils.getValueSetter(siteConfig);
+    for (let args of defaults) {
+        setter.apply(null, args);
+    }
+
+    configutils.commandLineSetter(siteConfig);
+
+    //Store absolute paths for source and destination
+    siteConfig.source = path.resolve(siteConfig.source);
+    siteConfig.destination = path.resolve(siteConfig.source, siteConfig.destination);
+
+    //Give modes one chance to update the siteConfig
+    if (configurations[siteConfig.mode].updateSiteConfig)
+    configurations[siteConfig.mode].updateSiteConfig(siteConfig);
+
+    return siteConfig;
 };
 
 

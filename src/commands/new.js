@@ -6,6 +6,87 @@ import { print, getLogger } from "../utils/logging";
 
 let argv = optimist.argv;
 
+
+let printSyntax = (msg) => {
+    if (msg) {
+        print(`Error: ${msg}`);
+    }
+    print(`Usage: fora new <template> <project_name> [-d <destination>] [--force] [--recreate]`);
+    process.exit();
+};
+
+
+let getParams = function() {
+    let args = process.argv.filter(a => !/^-/.test(a));
+
+    if (args.length < 5) {
+        printSyntax();
+    }
+    /* params */
+    let template = args[3];
+    let name = args[4].trim().replace(/\s+/g, '-').toLowerCase();
+    return { template, name };
+};
+
+
+/*
+    Copy files from the template directory to the destination directory.
+*/
+let copyTemplateFiles = function*() {
+    let logger = getLogger(argv.quiet || false);
+
+    let { template, name } = getParams();
+
+    let destinationRoot = argv.d || argv.destination || "./";
+    let destination = path.join(destinationRoot, name);
+
+    //Make sure the directory is empty or the force flag is on
+    if (!argv.force && !argv.recreate && !(yield* fsutils.empty(destination))) {
+        print(`Conflict: ${path.resolve(destination)} is not empty.`);
+    } else {
+
+        if (argv.recreate) {
+            if (yield* fsutils.exists(destination)) {
+                print(`Deleting ${destination}`);
+                yield* fsutils.remove(destination);
+            }
+        }
+
+        //Copy template
+        let exec = tools.process.exec();
+        let templatePath = yield* resolveTemplatePath(template);
+        logger(`Copying ${templatePath} -> ${destination}`);
+        yield* fsutils.copyRecursive(templatePath, destination, { forceDelete: true });
+
+        //Install npm dependencies.
+        let curdir = yield* exec(`pwd`);
+        process.chdir(destination);
+        let npmMessages = yield* exec(`npm install`);
+        print(npmMessages);
+        process.chdir(curdir);
+
+        //Let's overwrite package.json
+        let packageJsonPath = path.join(destination, "package.json");
+        let packageJson = yield* fsutils.readFile(packageJsonPath);
+        let packageInfo = JSON.parse(packageJson);
+        packageInfo.name = name;
+        packageInfo.description = argv["set-package-description"] || "Description for your project";
+        packageInfo.version = argv["set-package-version"] || "0.0.1";
+        packageInfo.homepage = argv["set-package-homepage"] || "Your home page";
+        packageInfo.repository = {
+            type: argv["set-package-repository-type"] || "git",
+            url: argv["set-package-repository-url"] || "https://example.com/your/repository/path"
+        };
+        packageInfo.author = argv["set-package-author"] || "Your name";
+        packageInfo.email = argv["set-package-email"] || "youremail@example.com";
+        packageInfo.bugs = argv["set-package-bugs"] || "http://www.example.com/bugzilla/your-project";
+        yield* fsutils.writeFile(path.join(destination, "package.json"), JSON.stringify(packageInfo, null, 4));
+
+        print(`New ${template} site installed in ${path.resolve(destination)}.`);
+    }
+};
+
+
 /*
     Search paths are:
         a) Current node_modules directory
@@ -47,77 +128,5 @@ let resolveTemplatePath = function*(name) {
     throw new Error(`Template "${name}" or "fora-template-${name}" was not found.`);
 };
 
-
-/*
-    Copy files from the template directory to the destination directory.
-*/
-let copyTemplateFiles = function*() {
-    let printSyntax = (msg) => {
-        print(`Error: ${msg} eg: fora new -n my-personal-blog -t blog -d ~/mycode [--force] [--recreate]`);
-    };
-
-    let logger = getLogger(argv.quiet || false);
-
-    let name = (argv.name || argv.n || "").trim();
-    if (!name) {
-        printSyntax("You must specify a name for the project.");
-        return;
-    }
-    name = name.replace(/\s+/g, '-').toLowerCase();
-
-    let destinationRoot = argv.destination || argv.d || "";
-    if (!destinationRoot) {
-        printSyntax("You must specify a path.");
-        return;
-    }
-
-    let dest = path.join(destinationRoot, name);
-
-    //Make sure the directory is empty or the force flag is on
-    if (!argv.force && !argv.recreate && !(yield* fsutils.empty(dest))) {
-        print(`Conflict: ${path.resolve(dest)} is not empty.`);
-    } else {
-
-        if (argv.recreate) {
-            if (yield* fsutils.exists(dest)) {
-                print(`Deleting ${dest}`);
-                yield* fsutils.remove(dest);
-            }
-        }
-
-        //Copy template
-        let exec = tools.process.exec();
-        let template = argv.template || argv.t || "blog";
-        let templatePath = yield* resolveTemplatePath(template);
-        logger(`Copying ${templatePath} -> ${dest}`);
-        yield* fsutils.copyRecursive(templatePath, dest, { forceDelete: true });
-
-        //Install npm dependencies.
-        let curdir = yield* exec(`pwd`);
-        process.chdir(dest);
-        let npmMessages = yield* exec(`npm install`);
-        print(npmMessages);
-        process.chdir(curdir);
-
-        //Let's overwrite package.json
-        var packageJsonPath = path.join(dest, "package.json");
-        let packageJson = yield* fsutils.readFile(packageJsonPath);
-        let packageInfo = JSON.parse(packageJson);
-        packageInfo.name = name;
-        packageInfo.description = argv["set-package-description"] || "Description for your project";
-        packageInfo.version = argv["set-package-version"] || "0.0.1";
-        packageInfo.homepage = argv["set-package-homepage"] || "Your home page";
-        packageInfo.repository = {
-            type: argv["set-package-repository-type"] || "git",
-            url: argv["set-package-repository-url"] || "https://example.com/your/repository/path"
-        };
-        packageInfo.author = argv["set-package-author"] || "Your name";
-        packageInfo.email = argv["set-package-email"] || "youremail@example.com";
-        packageInfo.bugs = argv["set-package-bugs"] || "http://www.example.com/bugzilla/your-project";
-        yield* fsutils.writeFile(path.join(dest, "package.json"), JSON.stringify(packageInfo, null, 4));
-
-        print(`New ${template} site installed in ${path.resolve(dest)}.`);
-    }
-};
 
 export default copyTemplateFiles;
