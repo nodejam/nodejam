@@ -54,7 +54,12 @@ let copyTemplateFiles = function*() {
         }
 
         //Copy template
+        var _shellExec = tools.process.spawn({ stdio: "inherit" });
+        let shellExec = function*(cmd) {
+            yield* _shellExec("sh", ["-c", cmd]);
+        };
         let exec = tools.process.exec();
+
         let templatePath = yield* resolveTemplatePath(template);
         logger(`Copying ${templatePath} -> ${destination}`);
         yield* fsutils.copyRecursive(templatePath, destination, { forceDelete: true });
@@ -62,8 +67,7 @@ let copyTemplateFiles = function*() {
         //Install npm dependencies.
         let curdir = yield* exec(`pwd`);
         process.chdir(destination);
-        let npmMessages = yield* exec(`npm install`);
-        print(npmMessages);
+        yield* shellExec(`npm install`);
         process.chdir(curdir);
 
         //Let's overwrite package.json

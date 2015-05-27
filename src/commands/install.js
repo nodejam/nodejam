@@ -39,7 +39,10 @@ let install = function*() {
         yield* fsutils.mkdirp(nodeModulesDir);
     }
 
-    let exec = tools.process.exec();
+    var _shellExec = tools.process.spawn({ stdio: "inherit" });
+    let shellExec = function*(cmd) {
+        yield* _shellExec("sh", ["-c", cmd]);
+    };
 
     if (argv.git) {
         process.chdir(nodeModulesDir);
@@ -50,18 +53,18 @@ let install = function*() {
         if (yield* fsutils.exists(destDir)) {
             print(`${destDir} exists. Will git pull.`);
             process.chdir(template);
-            print(yield* exec(`git pull`));
+            yield* shellExec(`git pull`);
         } else {
             print(`Cloning to ${destDir}.`);
-            print(yield* exec(`git clone ${templateUrl}`));
+            yield* shellExec(`git clone ${templateUrl}`);
             process.chdir(template);
-            print(yield* exec(`npm install`));
+            yield* shellExec(`npm install`);
         }
     } else {
         let { template } = getArgs();
         print(`Installing ${template} with npm. This make take a few minutes.`);
         process.chdir(templatesDir);
-        print(yield* exec(`npm install ${template}`));
+        yield* shellExec(`npm install ${template}`);
     }
 };
 
