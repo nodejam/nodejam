@@ -5,16 +5,16 @@ import { getLogger } from "../../../utils/logging";
 import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 
-let build = getStandardBuild(
+const build = getStandardBuild(
     "production",
     function*(siteConfig, builtInPlugins) {
-        let { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("production", siteConfig, builtInPlugins);
+        const { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("production", siteConfig, builtInPlugins);
 
-        let buildConfigReader = configutils.getReader(siteConfig, ["builds", "production"]);
-        let browserBuildFileSuffix = buildConfigReader(["browser-build-file-suffix"], "~client");
-        let browserReplacedFileSuffix = buildConfigReader(["browser-replaced-file-suffix"], "_base");
+        const buildConfigReader = configutils.getReader(siteConfig, ["builds", "production"]);
+        const browserBuildFileSuffix = buildConfigReader(["browser-build-file-suffix"], "~client");
+        const browserReplacedFileSuffix = buildConfigReader(["browser-replaced-file-suffix"], "_base");
 
-        let tasks = [
+        const tasks = [
             getTranspileServerTask({
                 name: "transpile-server"
             }),

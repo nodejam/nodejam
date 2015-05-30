@@ -5,10 +5,10 @@ import fsutils from "../utils/fs";
 import { print, getLogger } from "../utils/logging";
 import cli from "../utils/cli";
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
 
-let printSyntax = (msg) => {
+const printSyntax = (msg) => {
     if (msg) {
         print(`Error: ${msg}`);
     }
@@ -17,15 +17,15 @@ let printSyntax = (msg) => {
 };
 
 
-let getArgs = function() {
+const getArgs = function() {
     var args = cli.getArgs();
 
     if (args.length < 5) {
         printSyntax();
     }
     /* params */
-    let template = args[3];
-    let name = args[4].trim().replace(/\s+/g, '-').toLowerCase();
+    const template = args[3];
+    const name = args[4].trim().replace(/\s+/g, '-').toLowerCase();
     return { template, name };
 };
 
@@ -33,13 +33,13 @@ let getArgs = function() {
 /*
     Copy files from the template directory to the destination directory.
 */
-let copyTemplateFiles = function*() {
-    let logger = getLogger(argv.quiet || false);
+const copyTemplateFiles = function*() {
+    const logger = getLogger(argv.quiet || false);
 
-    let { template, name } = getArgs();
+    const { template, name } = getArgs();
 
-    let destinationRoot = argv.d || argv.destination || "./";
-    let destination = path.join(destinationRoot, name);
+    const destinationRoot = argv.d || argv.destination || "./";
+    const destination = path.join(destinationRoot, name);
 
     //Make sure the directory is empty or the force flag is on
     if (!argv.force && !argv.recreate && !(yield* fsutils.empty(destination))) {
@@ -55,25 +55,25 @@ let copyTemplateFiles = function*() {
 
         //Copy template
         var _shellExec = tools.process.spawn({ stdio: "inherit" });
-        let shellExec = function*(cmd) {
+        const shellExec = function*(cmd) {
             yield* _shellExec("sh", ["-c", cmd]);
         };
-        let exec = tools.process.exec();
+        const exec = tools.process.exec();
 
-        let templatePath = yield* resolveTemplatePath(template);
+        const templatePath = yield* resolveTemplatePath(template);
         logger(`Copying ${templatePath} -> ${destination}`);
         yield* fsutils.copyRecursive(templatePath, destination, { forceDelete: true });
 
         //Install npm dependencies.
-        let curdir = yield* exec(`pwd`);
+        const curdir = yield* exec(`pwd`);
         process.chdir(destination);
         yield* shellExec(`npm install`);
         process.chdir(curdir);
 
         //Let's overwrite package.json
-        let packageJsonPath = path.join(destination, "package.json");
-        let packageJson = yield* fsutils.readFile(packageJsonPath);
-        let packageInfo = JSON.parse(packageJson);
+        const packageJsonPath = path.join(destination, "package.json");
+        const packageJson = yield* fsutils.readFile(packageJsonPath);
+        const packageInfo = JSON.parse(packageJson);
         packageInfo.name = name;
         packageInfo.description = argv["set-package-description"] || "Description for your project";
         packageInfo.version = argv["set-package-version"] || "0.0.1";
@@ -97,25 +97,25 @@ let copyTemplateFiles = function*() {
         a) Current node_modules directory
         b) ~/.fora/templates/node_modules
 */
-let resolveTemplatePath = function*(name) {
-    let templateName = /^fora-template-/.test(name) ? name : `fora-template-${name}`;
+const resolveTemplatePath = function*(name) {
+    const templateName = /^fora-template-/.test(name) ? name : `fora-template-${name}`;
 
     //Current node_modules_dir
-    let node_modules_templatePath = path.resolve(GLOBAL.__libdir, "../node_modules", name);
-    let node_modules_prefixedTemplatePath = path.resolve(GLOBAL.__libdir, "../node_modules", `fora-template-${name}`);
+    const node_modules_templatePath = path.resolve(GLOBAL.__libdir, "../node_modules", name);
+    const node_modules_prefixedTemplatePath = path.resolve(GLOBAL.__libdir, "../node_modules", `fora-template-${name}`);
 
     /*
         Templates can also be under
             ~/.fora/templates/example-template
             ~/.fora/templates/node_modules/example-template
     */
-    let HOME_DIR = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-    let HOME_templatePath = path.resolve(`${HOME_DIR}/.fora/templates`, name);
-    let HOME_prefixedTemplatePath = path.resolve(`${HOME_DIR}/.fora/templates`, `fora-template-${name}`);
-    let HOME_node_modules_templatePath = path.resolve(`${HOME_DIR}/.fora/templates/node_modules`, name);
-    let HOME_node_modules_prefixedTemplatePath = path.resolve(`${HOME_DIR}/.fora/templates/node_modules`, `fora-template-${name}`);
+    const HOME_DIR = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+    const HOME_templatePath = path.resolve(`${HOME_DIR}/.fora/templates`, name);
+    const HOME_prefixedTemplatePath = path.resolve(`${HOME_DIR}/.fora/templates`, `fora-template-${name}`);
+    const HOME_node_modules_templatePath = path.resolve(`${HOME_DIR}/.fora/templates/node_modules`, name);
+    const HOME_node_modules_prefixedTemplatePath = path.resolve(`${HOME_DIR}/.fora/templates/node_modules`, `fora-template-${name}`);
 
-    let paths = [
+    const paths = [
         node_modules_templatePath,
         node_modules_prefixedTemplatePath,
         HOME_templatePath,

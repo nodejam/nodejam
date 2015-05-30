@@ -14,21 +14,21 @@ import builtInPlugins from "../plugins";
     example: dir_custom_tasks/production/on-start/*.js will be run "on start".
 */
 
-let getStandardBuild = function(buildName, fn, cbOnComplete) {
+const getStandardBuild = function(buildName, fn, cbOnComplete) {
     return function*(siteConfig) {
 
-        let tasks = yield* fn(siteConfig, builtInPlugins);
+        const tasks = yield* fn(siteConfig, builtInPlugins);
 
-        let startTime = Date.now();
+        const startTime = Date.now();
 
-        let logger = getLogger(siteConfig.quiet, buildName);
+        const logger = getLogger(siteConfig.quiet, buildName);
 
-        let customTasks = yield* getCustomTasks(siteConfig, builtInPlugins);
+        const customTasks = yield* getCustomTasks(siteConfig, builtInPlugins);
 
         if (customTasks)
             yield* runTasks(customTasks["on-start"]);
 
-        let onComplete = function*() {
+        const onComplete = function*() {
             if (customTasks)
                 yield* runTasks(customTasks["on-complete"]);
 
@@ -36,7 +36,7 @@ let getStandardBuild = function(buildName, fn, cbOnComplete) {
                 yield* cbOnComplete(siteConfig);
             }
 
-            let endTime = Date.now();
+            const endTime = Date.now();
             logger(`Build ${buildName} took ${(endTime - startTime)/1000} seconds.`);
         };
 

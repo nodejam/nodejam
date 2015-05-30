@@ -20,11 +20,11 @@ import builtInPlugins from "./plugins";
 //modes
 import defaultConfig from "../../configurations/default";
 
-let configurations = {
+const configurations = {
     "default": defaultConfig
 };
 
-let builds = {
+const builds = {
     "production": productionBuild,
     "client-debug": clientDebugBuild,
     "dev": devBuild,
@@ -32,10 +32,10 @@ let builds = {
     "create-database": createDatabase
 };
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
 
-let printSyntax = (msg) => {
+const printSyntax = (msg) => {
     if (msg) {
         print(`Error: ${msg}`);
     }
@@ -44,12 +44,12 @@ let printSyntax = (msg) => {
 };
 
 
-let getArgs = function() {
+const getArgs = function() {
     var args = cli.getArgs();
 
     /* params */
-    let source = args.length >= 4 ? args[3] : "./";
-    let destination = args.length >= 5 ? args[4] : "_site";
+    const source = args.length >= 4 ? args[3] : "./";
+    const destination = args.length >= 5 ? args[4] : "_site";
     return { source, destination };
 };
 
@@ -90,12 +90,12 @@ let getArgs = function() {
 
 */
 
-let build = function*() {
-    let { source, destination } = getArgs();
+const build = function*() {
+    const { source, destination } = getArgs();
 
     let siteConfig = yield* getSiteConfig(source, destination);
 
-    let logger = getLogger(siteConfig.quiet);
+    const logger = getLogger(siteConfig.quiet);
 
     if (argv.t) {
         siteConfig["build-type"] = argv.t;
@@ -105,12 +105,12 @@ let build = function*() {
     logger(`Destination: ${siteConfig.destination}`);
 
     /* Start */
-    let startTime = Date.now();
+    const startTime = Date.now();
 
     //Transpile custom builds and custom tasks directory first.
     yield* transpileCustomBuildsAndTasks(siteConfig);
 
-    let build = builds[siteConfig["build-type"]] || (yield* getCustomBuild(siteConfig));
+    const build = builds[siteConfig["build-type"]] || (yield* getCustomBuild(siteConfig));
 
     if (build) {
         yield* build(siteConfig);
@@ -118,24 +118,24 @@ let build = function*() {
         throw new Error(`Build named ${siteConfig["build-type"]} was not found.`);
     }
 
-    let endTime = Date.now();
+    const endTime = Date.now();
     logger(`Total ${(endTime - startTime)/1000} seconds.`);
 };
 
 
-let getSiteConfig = function*(source, destination) {
+const getSiteConfig = function*(source, destination) {
     let siteConfig = {};
 
-    let configFilePath = argv.config ? path.join(source, argv.config) :
+    const configFilePath = argv.config ? path.join(source, argv.config) :
         (yield* fsutils.exists(path.join(source, "config.json"))) ? path.join(source, "config.json") : path.join(source, "config.yml");
 
     siteConfig = yield* readFileByFormat(configFilePath);
     siteConfig.mode = siteConfig.mode || "default";
 
-    let modeSpecificConfigDefaults = configurations[siteConfig.mode].loadDefaults(source, destination);
-    let defaults = configutils.getFullyQualifiedProperties(modeSpecificConfigDefaults);
+    const modeSpecificConfigDefaults = configurations[siteConfig.mode].loadDefaults(source, destination);
+    const defaults = configutils.getFullyQualifiedProperties(modeSpecificConfigDefaults);
 
-    let setter = configutils.getValueSetter(siteConfig);
+    const setter = configutils.getValueSetter(siteConfig);
     for (let args of defaults) {
         setter.apply(null, args);
     }
@@ -157,7 +157,7 @@ let getSiteConfig = function*(source, destination) {
 /*
     Transpile dir_custom_builds and dir_custom_tasks
 */
-let transpileCustomBuildsAndTasks = function*(siteConfig) {
+const transpileCustomBuildsAndTasks = function*(siteConfig) {
     for(var dir of [siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]) {
         var buildRoot = path.resolve(siteConfig.source, dir);
         if (yield* fsutils.exists(buildRoot)) {
@@ -183,9 +183,9 @@ let transpileCustomBuildsAndTasks = function*(siteConfig) {
     Get a build from the siteConfig.dir_custom_builds directory.
     Basically, require(dir_custom_builds/buildName);
 */
-let getCustomBuild = function*(siteConfig) {
+const getCustomBuild = function*(siteConfig) {
     if (siteConfig["custom-builds-dir"] && siteConfig["build-type"]) {
-        let fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-type"]}.js`);
+        const fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-type"]}.js`);
         if (yield* fsutils.exists(fullPath)) {
             return require(fullPath);
         }

@@ -75,7 +75,7 @@ export default function(siteConfig) {
 
     var fn = function*() {
         for (let collectionName in siteConfig.collections) {
-            let collection = siteConfig.collections[collectionName];
+            const collection = siteConfig.collections[collectionName];
             if (collection.output) {
                 for (let item of GLOBAL.site.data[collectionName]) {
                     var makePath = collectionName === "posts" ? makePostPath :

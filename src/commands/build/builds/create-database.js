@@ -7,11 +7,11 @@ import getStandardBuild from "../build-utils/standard-build";
 import optimist from "optimist";
 import mongoBackend from "ceramic-backend-mongodb";
 
-let argv  = optimist.argv;
+const argv  = optimist.argv;
 
-let data = {};
+const data = {};
 
-let build = getStandardBuild(
+const build = getStandardBuild(
     "create-database",
     function*(siteConfig, builtInPlugins) {
 
@@ -19,9 +19,9 @@ let build = getStandardBuild(
             throw new Error("This build cannot be run when NODE_ENV is set to production.");
         }
 
-        let { getLoadDataTask } = getCommonTasks("create-database", siteConfig, builtInPlugins);
+        const { getLoadDataTask } = getCommonTasks("create-database", siteConfig, builtInPlugins);
 
-        let tasks = [
+        const tasks = [
             getLoadDataTask({
                 name: "load-data",
                 data: data
@@ -34,8 +34,8 @@ let build = getStandardBuild(
         var db = argv.db;
 
         if (db) {
-            let mongoDb = yield* mongoBackend.MongoClient.connect({database: db});
-            for(let coll in data) {
+            const mongoDb = yield* mongoBackend.MongoClient.connect({database: db});
+            for (let coll in data) {
                 var mongoCollection = yield* mongoDb.collection(coll);
                 yield* mongoCollection.insertMany(data[coll]);
             }

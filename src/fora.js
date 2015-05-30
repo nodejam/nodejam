@@ -7,7 +7,7 @@ import optimist from "optimist";
 import * as commands from "./commands";
 import { print } from "./utils/logging";
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
 //debug mode?
 if (argv.debug) {
@@ -17,7 +17,7 @@ if (argv.debug) {
 //Commands might need the templates directory. Easier from root.
 GLOBAL.__libdir = __dirname;
 
-let getCommand = function() {
+const getCommand = function() {
     return (
         (argv.help || argv.h) ? "help" :
         (argv.version || argv.v) ? "version" :
@@ -28,9 +28,9 @@ let getCommand = function() {
 
 co(function*() {
     try {
-        let commandName = getCommand();
+        const commandName = getCommand();
         if (commandName) {
-            let command = commands[`_${commandName}`];
+            const command = commands[`_${commandName}`];
             yield* command();
         } else {
             print("Invalid command. Use --help for more information.");

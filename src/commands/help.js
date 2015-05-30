@@ -1,8 +1,8 @@
 import { print } from "../utils/logging";
 import foraUtils from "../utils/fora";
 
-let help = function*() {
-    var version =  yield* foraUtils.getVersion();
+const help = function*() {
+    const version =  yield* foraUtils.getVersion();
     print(`
         fora ${version} -- A full-stack isomorphic framework for Node.JS and Browser
 

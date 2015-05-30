@@ -9,7 +9,7 @@ import browserify from "browserify";
 import babelify from "babelify";
 import exposify from "exposify";
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
 /*
     options: {
@@ -33,9 +33,9 @@ let argv = optimist.argv;
     }
 */
 
-let buildClient = function(name, options) {
-    let verboseMode = argv[`verbose-${name}`];
-    let logger = getLogger(options.quiet, name || "build-browser-app");
+const buildClient = function(name, options) {
+    const verboseMode = argv[`verbose-${name}`];
+    const logger = getLogger(options.quiet, name || "build-browser-app");
 
     //defaults
     options.jsExtensions = options.jsExtensions || ["js", "jsx", "json"];
@@ -48,12 +48,12 @@ let buildClient = function(name, options) {
     var excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
 
     //Copy file into destDir
-    let copyFile = function*(filePath, root) {
+    const copyFile = function*(filePath, root) {
         //Get the relative filePath by removing the monitored directory (options.source)
-        let originalPath = path.join(root, filePath);
-        let clientPath = path.join(options.destination, options.clientBuildDirectory, filePath);
+        const originalPath = path.join(root, filePath);
+        const clientPath = path.join(options.destination, options.clientBuildDirectory, filePath);
         //We might have some jsx files. Switch extension to js.
-        let pathWithFixedExtension = fsutils.changeExtension(clientPath, options.changeExtensions);
+        const pathWithFixedExtension = fsutils.changeExtension(clientPath, options.changeExtensions);
         yield* fsutils.copyFile(originalPath, pathWithFixedExtension, { createDir: true });
 
         if (verboseMode) {
@@ -62,9 +62,9 @@ let buildClient = function(name, options) {
     };
 
     return function() {
-        let jsExtensions = options.jsExtensions.map(e => `*.${e}`);
+        const jsExtensions = options.jsExtensions.map(e => `*.${e}`);
 
-        let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
+        const excluded = options.excludedDirectories.map(dir => `!${dir}/`)
             .concat(options.excludedFiles.map(e => `!${e}`))
             .concat(options.excludedPatterns.map(e => { return { exclude: e.exclude, regex: new RegExp(e.regex) }; }));
 
@@ -74,7 +74,7 @@ let buildClient = function(name, options) {
             jsExtensions.concat(excluded),
             function*(filePath, ev, matches) {
                 if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
-                    let clientFileRegex = new RegExp(`${options.browserBuildFileSuffix}\.(js|json)$`);
+                    const clientFileRegex = new RegExp(`${options.browserBuildFileSuffix}\.(js|json)$`);
 
                     if (clientFileRegex.test(filePath)) {
                         if (verboseMode) {
@@ -103,17 +103,17 @@ let buildClient = function(name, options) {
 
                 The same rules apply for "dev", "test" and other builds.
         */
-        let replaceFiles = function*(files) {
+        const replaceFiles = function*(files) {
             for (let file of files) {
-                let filePath = path.join(options.destination, options.clientBuildDirectory, file);
+                const filePath = path.join(options.destination, options.clientBuildDirectory, file);
 
-                let extension = /\.js$/.test(file) ? "js" : "json";
-                let regex = new RegExp(`${options.browserBuildFileSuffix}\\.${extension}$`);
+                const extension = /\.js$/.test(file) ? "js" : "json";
+                const regex = new RegExp(`${options.browserBuildFileSuffix}\\.${extension}$`);
 
-                let original = filePath.replace(regex, `.${extension}`);
+                const original = filePath.replace(regex, `.${extension}`);
                 if (yield* fsutils.exists(original)) {
-                    let renamed = original.replace(/\.js$/, `${options.browserReplacedFileSuffix}.${extension}`);
-                    let originalContents = yield* fsutils.readFile(original);
+                    const renamed = original.replace(/\.js$/, `${options.browserReplacedFileSuffix}.${extension}`);
+                    const originalContents = yield* fsutils.readFile(original);
                     yield* fsutils.writeFile(renamed, originalContents);
 
                     if (verboseMode) {
@@ -121,7 +121,7 @@ let buildClient = function(name, options) {
                     }
                 }
 
-                let overriddenContents = yield* fsutils.readFile(filePath);
+                const overriddenContents = yield* fsutils.readFile(filePath);
                 yield* fsutils.writeFile(original, overriddenContents);
 
                 //Remove abc~client.js and abc~dev.js, as the case may be.
@@ -142,9 +142,9 @@ let buildClient = function(name, options) {
             Create the client and dev builds with browserify.
             Take the entry point from options, which defaults to app.js
         */
-        let browserifyFiles = function*() {
-            let entry = path.join(options.destination, options.clientBuildDirectory, options.appEntryPoint);
-            let output = path.join(options.destination, options.clientBuildDirectory, options.bundleName);
+        const browserifyFiles = function*() {
+            const entry = path.join(options.destination, options.clientBuildDirectory, options.appEntryPoint);
+            const output = path.join(options.destination, options.clientBuildDirectory, options.bundleName);
 
             if (verboseMode) {
                 logger(`Browserify started: entry is ${entry}`);

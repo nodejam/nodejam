@@ -1,8 +1,8 @@
 import optimist from "optimist";
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
-let isEmpty = function(val) {
+const isEmpty = function(val) {
     return typeof val === "undefined" || val === null;
 };
 
@@ -10,10 +10,10 @@ let isEmpty = function(val) {
     Tries to read a.b.c.d when passed a, ["b", "c", "d"]
     If anything is undefined, returns defaultVal
 */
-let tryRead = function(obj, path, defaultVal) {
+const tryRead = function(obj, path, defaultVal) {
     let currentVal = obj;
     for (let i = 0; i < path.length; i++) {
-        let p = path[i];
+        const p = path[i];
         if (typeof currentVal[p] !== "undefined") {
             currentVal = currentVal[p];
         } else {
@@ -28,7 +28,7 @@ let tryRead = function(obj, path, defaultVal) {
 };
 
 
-let getReader = function(obj, defaultPath) {
+const getReader = function(obj, defaultPath) {
     return function(remainingPath, defaultValue) {
         return tryRead(obj, defaultPath.concat(remainingPath), defaultValue);
     };
@@ -38,9 +38,9 @@ let getReader = function(obj, defaultPath) {
 var getProperty = function(config, fullyQualifiedProperty) {
     //props are like "a.b.c"; we need to find config.a.b.c
     //propParent will be config.a.b, in this case.
-    let propArray = fullyQualifiedProperty.split(".");
-    let propertyName = propArray.slice(propArray.length - 1)[0];
-    let propParents = propArray.slice(0, propArray.length - 1);
+    const propArray = fullyQualifiedProperty.split(".");
+    const propertyName = propArray.slice(propArray.length - 1)[0];
+    const propParents = propArray.slice(0, propArray.length - 1);
 
     //Make sure a.b exists in config
     let parentProperty = config;
@@ -64,7 +64,7 @@ var getProperty = function(config, fullyQualifiedProperty) {
         a) command-line params, if specified
         b) default values, if property is currently empty
 */
-let getValueSetter = function(config) {
+const getValueSetter = function(config) {
     return (fullyQualifiedProperty, defaultValue, options = {}) => {
         var { propertyName, parentProperty } = getProperty(config, fullyQualifiedProperty);
 
@@ -79,7 +79,7 @@ let getValueSetter = function(config) {
 };
 
 
-let commandLineSetter = function(config) {
+const commandLineSetter = function(config) {
     for (var cmd in argv) {
         let isArray = false;
         if (cmd !== "_" && !(/^\$/.test(cmd)) && ["s", "d", "source", "destination"].indexOf(cmd) === -1) {
@@ -133,10 +133,10 @@ let commandLineSetter = function(config) {
     ]
 }
 */
-let getFullyQualifiedProperties = function(obj, prefixes = [], acc = []) {
+const getFullyQualifiedProperties = function(obj, prefixes = [], acc = []) {
     for (let key in obj) {
-        let val = obj[key];
-        let fullNameArray = prefixes.concat(key);
+        const val = obj[key];
+        const fullNameArray = prefixes.concat(key);
         if (!(val instanceof Array) && val !== null && typeof val === "object" && (typeof val.value === "undefined")) {
             acc.push([fullNameArray.join("."), {}]);
             getFullyQualifiedProperties(val, fullNameArray, acc);

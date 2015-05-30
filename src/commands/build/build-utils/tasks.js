@@ -22,8 +22,8 @@ import configutils from "../../../utils/config";
    onComplete: Callback when the build completes
    monitor: bool, keep monitoring the files?
 */
-let runTasks = function*(tasks, dir, onComplete, monitor) {
-    let build = crankshaft.create();
+const runTasks = function*(tasks, dir, onComplete, monitor) {
+    const build = crankshaft.create();
 
     build.configure(function() {
         for (let task of tasks) {
@@ -43,7 +43,7 @@ let runTasks = function*(tasks, dir, onComplete, monitor) {
 /*
     Load customTasks from the config.dir_custom_tasks directory.
 */
-let getCustomTasks = function*(siteConfig, builtInPlugins) {
+const getCustomTasks = function*(siteConfig, builtInPlugins) {
     var tasksFile = path.resolve(siteConfig.destination, siteConfig["custom-tasks-dir"], `${siteConfig.build}.js`);
 
     if (yield* fsutils.exists(tasksFile)) {

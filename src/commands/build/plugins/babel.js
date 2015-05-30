@@ -4,7 +4,7 @@ import path from "path";
 import fsutils from "../../../utils/fs";
 import { print, getLogger } from "../../../utils/logging";
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
 /*
     options: {
@@ -19,9 +19,9 @@ let argv = optimist.argv;
     }
 */
 
-let babel = function(name, options) {
-    let verboseMode = argv[`verbose-${name}`];
-    let logger = getLogger(options.quiet, name || "babel");
+const babel = function(name, options) {
+    const verboseMode = argv[`verbose-${name}`];
+    const logger = getLogger(options.quiet, name || "babel");
 
     //defaults
     options.extensions = options.extensions || ["js", "jsx"];
@@ -32,13 +32,13 @@ let babel = function(name, options) {
     options.excludedWatchPatterns = (options.excludedWatchPatterns || []).map(p => new RegExp(p));
 
     return function() {
-        let extensions = options.extensions.map(e => `*.${e}`);
+        const extensions = options.extensions.map(e => `*.${e}`);
 
-        let excluded = options.excludedDirectories.map(dir => `!${dir}/`)
+        const excluded = options.excludedDirectories.map(dir => `!${dir}/`)
             .concat(options.excludedFiles.map(e => `!${e}`))
             .concat(options.excludedPatterns.map(e => { return { exclude: e.exclude, regex: new RegExp(e.regex) }; }));
 
-        let transpiledFiles = [];
+        const transpiledFiles = [];
 
         this.watch(
             extensions.concat(excluded),
@@ -47,14 +47,14 @@ let babel = function(name, options) {
                     transpiledFiles.push(filePath);
 
                     //Make the output dir, if it doesn't exist
-                    let outputPath = fsutils.changeExtension(
+                    const outputPath = fsutils.changeExtension(
                         path.join(options.destination, filePath),
                         [ { to:"js", from: options.extensions }]
                     );
                     yield* fsutils.ensureDirExists(outputPath);
-                    let contents = yield* fsutils.readFile(filePath);
+                    const contents = yield* fsutils.readFile(filePath);
 
-                    let result = transform(contents, { blacklist: options.blacklist });
+                    const result = transform(contents, { blacklist: options.blacklist });
                     yield* fsutils.writeFile(outputPath, result.code);
 
                     if (verboseMode) {

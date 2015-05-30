@@ -5,10 +5,10 @@ import fsutils from "../utils/fs";
 import { print, getLogger } from "../utils/logging";
 import cli from "../utils/cli";
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
 
-let printSyntax = (msg) => {
+const printSyntax = (msg) => {
     if (msg) {
         print(`Error: ${msg}`);
     }
@@ -17,39 +17,39 @@ let printSyntax = (msg) => {
 };
 
 
-let getArgs = function() {
-    var args = cli.getArgs();
+const getArgs = function() {
+    const args = cli.getArgs();
 
     if (args.length < 4) {
         printSyntax();
     }
     /* params */
-    let template = args[3];
+    const template = args[3];
     return { template };
 };
 
 
-let install = function*() {
-    let HOME_DIR = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-    let templatesDir = path.join(HOME_DIR, ".fora", "templates");
-    let nodeModulesDir = path.join(templatesDir, "node_modules");
+const install = function*() {
+    const HOME_DIR = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+    const templatesDir = path.join(HOME_DIR, ".fora", "templates");
+    const nodeModulesDir = path.join(templatesDir, "node_modules");
 
     //Make sure ~/.fora/templates/node_modules exists
     if (!(yield* fsutils.exists(nodeModulesDir))) {
         yield* fsutils.mkdirp(nodeModulesDir);
     }
 
-    var _shellExec = tools.process.spawn({ stdio: "inherit" });
-    let shellExec = function*(cmd) {
+    const _shellExec = tools.process.spawn({ stdio: "inherit" });
+    const shellExec = function*(cmd) {
         yield* _shellExec("sh", ["-c", cmd]);
     };
 
     if (argv.git) {
         process.chdir(nodeModulesDir);
-        let templateUrl = getArgs().template;
-        let urlParts = templateUrl.split("/");
-        let template = urlParts[urlParts.length - 1];
-        let destDir = path.join(nodeModulesDir, template);
+        const templateUrl = getArgs().template;
+        const urlParts = templateUrl.split("/");
+        const template = urlParts[urlParts.length - 1];
+        const destDir = path.join(nodeModulesDir, template);
         if (yield* fsutils.exists(destDir)) {
             print(`${destDir} exists. Will git pull.`);
             process.chdir(template);
@@ -61,7 +61,7 @@ let install = function*() {
             yield* shellExec(`npm install`);
         }
     } else {
-        let { template } = getArgs();
+        const { template } = getArgs();
         print(`Installing ${template} with npm. This make take a few minutes.`);
         process.chdir(templatesDir);
         yield* shellExec(`npm install ${template}`);

@@ -1,4 +1,4 @@
-let getArgs = function() {
+const getArgs = function() {
     var args = [];
     for (let arg of process.argv) {
         if (/^-/.test(arg)) {

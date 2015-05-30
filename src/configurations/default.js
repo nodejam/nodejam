@@ -1,4 +1,4 @@
-let loadDefaults = function(source, destination) {
+const loadDefaults = function(source, destination) {
     return {
         "source": source,
         "destination": destination,

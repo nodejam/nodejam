@@ -6,7 +6,7 @@ import readFileByFormat from "../../../utils/file-reader";
 import { print, getLogger } from "../../../utils/logging";
 import optimist from "optimist";
 
-let argv = optimist.argv;
+const argv = optimist.argv;
 
 /*
     options: {
@@ -23,19 +23,19 @@ let argv = optimist.argv;
         markdownExtensions: [string]
     }
 */
-let loadStaticData = function(name, options) {
-    let verboseMode = argv[`verbose-${name}`];
-    let logger = getLogger(options.quiet, name || "load-static-data");
+const loadStaticData = function(name, options) {
+    const verboseMode = argv[`verbose-${name}`];
+    const logger = getLogger(options.quiet, name || "load-static-data");
 
     var data = options.data;
 
     //Add a watch for each collection.
-    let getCollectionLoader = function(collection) {
+    const getCollectionLoader = function(collection) {
         return function*(filePath) {
-            let extension = path.extname(filePath);
+            const extension = path.extname(filePath);
 
             try {
-                let record = yield* readFileByFormat(filePath, { markdown: options.markdownExtensions });
+                const record = yield* readFileByFormat(filePath, { markdown: options.markdownExtensions });
                 record.__filePath = filePath;
 
                 if (record)
@@ -54,13 +54,12 @@ let loadStaticData = function(name, options) {
                 .map(ext => options.dataDirectories.map(dir => `${dir}/*.${ext}`))
                 .reduce((a,b) => a.concat(b)),
             function*(filePath) {
-                let extension = path.extname(filePath);
+                const extension = path.extname(filePath);
 
-                let records;
                 try {
-                    records = yield* readFileByFormat(filePath);
+                    const records = yield* readFileByFormat(filePath);
 
-                    let filename = path.basename(filePath, extension);
+                    const filename = path.basename(filePath, extension);
                     if (records && records.length) {
                         data[filename] = data[filename] ? data[filename].concat(records) : records ;
                     }
@@ -78,9 +77,9 @@ let loadStaticData = function(name, options) {
         //Check the collection directories
         for (let collectionName in options.collections) {
             data[collectionName] = [];
-            let collection = options.collections[collectionName];
+            const collection = options.collections[collectionName];
             if (collection.dir) {
-                let collectionDir = options.collectionRootDirectory ? path.combine(options.collectionRootDirectory, collection.dir) : collection.dir;
+                const collectionDir = options.collectionRootDirectory ? path.combine(options.collectionRootDirectory, collection.dir) : collection.dir;
                 this.watch(
                     options.markdownExtensions.concat(["json"]).map(ext => `${collectionDir}/*.${ext}`),
                     getCollectionLoader(collectionName),
@@ -95,13 +94,13 @@ let loadStaticData = function(name, options) {
         if (options.scavengeCollection) {
             data[options.scavengeCollection] = [];
 
-            let collectionsAndDataDirs = Object.keys(options.collections)
+            const collectionsAndDataDirs = Object.keys(options.collections)
                 .map(coll => options.collections[coll].dir)
                 .filter(item => item)
                 .concat(options.dataDirectories)
                 .map(dir => `!${dir}/`);
 
-            let exclusions = options.excludedDirectories.map(e => `!${e}/`)
+            const exclusions = options.excludedDirectories.map(e => `!${e}/`)
                 .concat(options.excludedFiles.map(e => `!${e}`))
                 .concat(collectionsAndDataDirs);
 

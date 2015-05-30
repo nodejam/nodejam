@@ -1,6 +1,6 @@
-let print = function(what, prefix) {
+const print = function(what, prefix) {
     if (what || prefix) {
-        let _log = function(x) {
+        const _log = function(x) {
             console.log(prefix ? `[${prefix}] ${x}` : x);
         };
 
@@ -17,7 +17,7 @@ let print = function(what, prefix) {
     }
 };
 
-let getLogger = function(quiet, prefix) {
+const getLogger = function(quiet, prefix) {
     return function(what) {
         if (!quiet) {
             print(what, prefix);
