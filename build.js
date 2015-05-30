@@ -26,7 +26,7 @@ build.configure(function() {
             yield* fsutils.mkdirp(outputDir);
         }
         var contents = yield* fsutils.readFile(filePath);
-        var result = babel.transform(contents, { blacklist: "regenerator" });
+        var result = babel.transform(contents, { blacklist: ["regenerator", "es6.constants", "es6.blockScoping"] });
         yield* fsutils.writeFile(outputPath, result.code);
     }, "babel");
 

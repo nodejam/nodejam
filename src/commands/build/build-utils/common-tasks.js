@@ -26,7 +26,7 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         const excludedDirectories = [siteConfig.destination]
             .concat(vendorDirs)
             .concat(siteConfig["excluded-dirs"]);
-        const blacklist = ["regenerator"];
+        const blacklist = ["regenerator", "es6.constants", "es6.blockScoping"];
 
         return {
             name: options.name, //babel transpile server files, blacklist (regenerator)
