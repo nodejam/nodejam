@@ -1,10 +1,11 @@
 # What's Fora
 A platform for building end-to-end Isomorphic JS apps.
 
-Fora's builds on the significance of every shipping browser also including a debugging and dev environment for JavaScript.
+Fora builds on the significance of every shipping browser also including a debugging and dev environment for JavaScript.
 Which means that if the stack is entirely JavaScript, you could develop/test in a browser and expect it to run with Node.JS on the Server.
+
 - Fora is an Build System + App Store + IDE for "End-to-End Isomorphic" JS Apps.
-- End-to-End Isomorphism? We've gotten the Web Server, App and the Db (MongoDb initially) to run entirely within the browser
+- End-to-End Isomorphism? We've gotten the Web Server, App and the Db API (MongoDb initially) to run entirely within the browser
 - The App Store will feature (eventually) apps in various categories, like Publishing, Social Service, Travel ...
 - Most Apps will be Open Source, but there'll be an Enterprise Version
 - Any user can Fork, Edit and Debug an existing app within just the browser (we've an IDE, based on http://ace.c9.io/)
