@@ -2,8 +2,8 @@ import { print, getLogger } from "../utils/logging";
 import foraUtils from "../utils/fora";
 
 const version = function*(siteConfig) {
-    var version = yield* foraUtils.getVersion();
-    print(`fora ${version}`);
+    var ver = yield* foraUtils.getVersion();
+    print(`fora ${ver}`);
 };
 
 export default version;
