@@ -19,6 +19,7 @@ The platform preview is ready, but at this point we're working on *docs and exam
 - We were planning to do this by June 1st week, but it might take a month more. Apologies.
 - We will also be switching the licenses for all Fora Projects from GPL3 to MIT.
 
+
 If you're adventurous:
 ```
 npm install -g fora
@@ -27,3 +28,8 @@ fora new fora-appstore somedir
 cd somedir
 fora build
 ```
+
+Most of the development testing has been with io.js, so we recommend using io.js. 
+
+The example appstore template is an empty template right now.
+
