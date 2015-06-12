@@ -29,7 +29,7 @@ cd somedir
 fora build
 ```
 
-Most of the development testing has been with io.js, so we recommend using io.js. 
+Most of the development &  testing has been with io.js, so we recommend using io.js. 
 
 The example appstore template is an empty template right now.
 
