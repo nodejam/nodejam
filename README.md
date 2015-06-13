@@ -23,13 +23,12 @@ The platform preview is ready, but at this point we're working on *docs and exam
 If you're adventurous:
 ```
 npm install -g fora
-fora install fora-template-fora-appstore
-fora new fora-appstore somedir
+fora install fora-template-blog
+fora new blog somedir
 cd somedir
 fora build
 ```
 
-Most of the development &  testing has been with io.js, so we recommend using io.js. 
+Most of the development &  testing has been with io.js, so we recommend using io.js.
 
 The example appstore template is an empty template right now.
-
