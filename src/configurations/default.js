@@ -17,7 +17,7 @@ const loadDefaults = function(source, destination) {
         "change-extensions": [{ to: "js", from: ["jsx"] }],
 
         //build
-        "build-type": "client-debug",
+        "build-type": "debug",
 
         //static data and collections
         "collections": {},
@@ -41,7 +41,7 @@ const loadDefaults = function(source, destination) {
         "quiet": false,
 
         "builds": {
-            "client-debug": {
+            "debug": {
                 "browser-build-file-suffix": "~client"
             },
             "dev": {

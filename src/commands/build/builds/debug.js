@@ -6,11 +6,11 @@ import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 
 const build = getStandardBuild(
-    "client-debug",
+    "debug",
     function*(siteConfig, builtInPlugins) {
-        const { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("client-debug", siteConfig, builtInPlugins);
+        const { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("debug", siteConfig, builtInPlugins);
 
-        const buildConfigReader = configutils.getReader(siteConfig, ["builds", "client-debug"]);
+        const buildConfigReader = configutils.getReader(siteConfig, ["builds", "debug"]);
         const browserBuildFileSuffix = buildConfigReader(["browser-build-file-suffix"], "~client");
         const browserReplacedFileSuffix = buildConfigReader(["browser-replaced-file-suffix"], "_base");
 

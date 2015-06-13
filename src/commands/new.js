@@ -38,7 +38,7 @@ const copyTemplateFiles = function*() {
 
     const { template, name } = getArgs();
 
-    const destination = (argv.d || argv.destination) ? (argv.d || argv.destination) : path.join("./", name);
+    const destination = path.join((argv.d || argv.destination || "./"), name);
     const destinationExists = yield* fsutils.exists(destination);
 
     //Make sure the directory is empty or the force flag is on

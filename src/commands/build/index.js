@@ -9,10 +9,10 @@ import readFileByFormat from "../../utils/file-reader";
 import cli from "../../utils/cli";
 
 import productionBuild from "./builds/production";
-import clientDebugBuild from "./builds/client-debug";
+import debugBuild from "./builds/debug";
 import devBuild from "./builds/dev";
 import staticBuild from "./builds/static";
-import createDatabase from "./builds/create-database";
+import databaseBuild from "./builds/database";
 
 import { runTasks, getCustomTasks } from "./build-utils/tasks";
 import builtInPlugins from "./plugins";
@@ -26,10 +26,10 @@ const configurations = {
 
 const builds = {
     "production": productionBuild,
-    "client-debug": clientDebugBuild,
+    "debug": debugBuild,
     "dev": devBuild,
     "static": staticBuild,
-    "create-database": createDatabase
+    "database": databaseBuild
 };
 
 const argv = optimist.argv;
@@ -39,7 +39,7 @@ const printSyntax = (msg) => {
     if (msg) {
         print(`Error: ${msg}`);
     }
-    print(`Usage: fora build [<source>] [<destination>] -t <type>`);
+    print(`Usage: fora build [-t <type>] [-s <source>] [-d <destination>]`);
     process.exit();
 };
 
@@ -48,57 +48,63 @@ const getArgs = function() {
     var args = cli.getArgs();
 
     /* params */
-    const source = args.length >= 4 ? args[3] : "./";
-    const destination = args.length >= 5 ? args[4] : "_site";
-    return { source, destination };
+    const buildType = args.length >= 3 ? args [3] : null;
+    return { buildType };
 };
 
 /*
     We have these build modes
 
     1. Production
-        build: "production" or --build production
+        build-type production
 
         We generate server files and client_js files, and skip dev_js files.
         Source-maps are off by default. By default, we compile client_js files
         with full ES5 compatibility.
 
-    2. Client-Debug Build
-        build: "client-debug" or --build client-debug
+    2. Debug Build
+        build-type debug
 
         We generate server files and client_js files, and skip dev_js files.
         Source-maps are on by default. We also compile client_js files
         without regenerator transforms.
 
     3. Dev Build
-        build: "dev" or --build dev
+        build-type dev
 
         We do not transpile server js files, since the app will entirely run
         on the client. Source maps are on, and regenerator transforms are off.
 
     4. Static build
-        build: "static" or --build static
+        build-type static
 
         We transpile server js files. We build static html files for each route.
         Client_js files will be transpiled (wil regenerator transforms) and
         source-maps will be on by default.
 
+    5.  Database build
+        build-type database
+
+        Loads the build from siteConfig.custom_build_dir
+
+
     5.  Custom named build
-        --build "buildname"
+        build-type "buildname"
 
         Loads the build from siteConfig.custom_build_dir
 
 */
 
 const build = function*() {
-    const { source, destination } = getArgs();
-
-    let siteConfig = yield* getSiteConfig(source, destination);
-
+    let siteConfig = yield* getSiteConfig(
+        (argv.s || argv.source || "./"),
+        (argv.d || argv.destination || "_site")
+    );
     const logger = getLogger(siteConfig.quiet);
 
-    if (argv.t) {
-        siteConfig["build-type"] = argv.t;
+    const { buildType } = getArgs();
+    if (buildType) {
+        siteConfig["build-type"] = buildType;
     }
 
     logger(`Source: ${siteConfig.source}`);
