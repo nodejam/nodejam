@@ -38,19 +38,22 @@ const copyTemplateFiles = function*() {
 
     const { template, name } = getArgs();
 
-    const destinationRoot = argv.d || argv.destination || "./";
-    const destination = path.join(destinationRoot, name);
+    const destination = (argv.d || argv.destination) ? (argv.d || argv.destination) : path.join("./", name);
+    const destinationExists = yield* fsutils.exists(destination);
 
     //Make sure the directory is empty or the force flag is on
-    if (!argv.force && !argv.recreate && !(yield* fsutils.empty(destination))) {
-        print(`Conflict: ${path.resolve(destination)} is not empty.`);
+    if (destinationExists && !argv.force && !argv.recreate) {
+        print(`Conflict: ${path.resolve(destination)} is not empty. Delete the directory manually or use --force or --recreate.`);
     } else {
 
-        if (argv.recreate) {
-            if (yield* fsutils.exists(destination)) {
+        if (destinationExists) {
+            if (argv.recreate) {
                 print(`Deleting ${destination}`);
                 yield* fsutils.remove(destination);
+                yield* fsutils.mkdirp(destination);
             }
+        } else {
+            yield* fsutils.mkdirp(destination);
         }
 
         //Copy template
