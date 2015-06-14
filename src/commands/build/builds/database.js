@@ -1,7 +1,7 @@
 import path from "path";
 import fsutils from "../../../utils/fs";
 import configutils from "../../../utils/config";
-import { getLogger } from "../../../utils/logging";
+import { print, getLogger } from "../../../utils/logging";
 import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 import optimist from "optimist";
@@ -31,13 +31,18 @@ const build = getStandardBuild(
         return tasks;
     },
     function*() {
-        var db = argv.db;
+        const db = argv.db;
 
         if (db) {
             const mongoDb = yield* mongoBackend.MongoClient.connect({database: db});
             for (let coll in data) {
-                var mongoCollection = yield* mongoDb.collection(coll);
-                yield* mongoCollection.insertMany(data[coll]);
+                const mongoCollection = yield* mongoDb.collection(coll);
+                if (data[coll].length) {
+                    print(`inserting ${data[coll].length} records into ${coll}.`);
+                    yield* mongoCollection.insertMany(data[coll]);
+                } else {
+                    print(`${coll}} has zero records. skipping.`);
+                }
             }
             yield* mongoDb.close();
         } else {

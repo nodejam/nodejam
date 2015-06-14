@@ -1,7 +1,7 @@
 import path from "path";
 import fsutils from "../../../utils/fs";
 import configutils from "../../../utils/config";
-import { getLogger } from "../../../utils/logging";
+import { print, getLogger } from "../../../utils/logging";
 import getCommonTasks from "../build-utils/common-tasks";
 import getStandardBuild from "../build-utils/standard-build";
 

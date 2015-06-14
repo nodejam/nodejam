@@ -4,7 +4,7 @@ import yaml from "js-yaml";
 
 import configutils from "../../utils/config";
 import fsutils   from "../../utils/fs";
-import { getLogger } from "../../utils/logging";
+import { print, getLogger } from "../../utils/logging";
 import readFileByFormat from "../../utils/file-reader";
 import cli from "../../utils/cli";
 

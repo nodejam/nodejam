@@ -1,4 +1,4 @@
-import { getLogger } from "../../../utils/logging";
+import { print, getLogger } from "../../../utils/logging";
 import { runTasks, getCustomTasks } from "./tasks";
 import builtInPlugins from "../plugins";
 /*
