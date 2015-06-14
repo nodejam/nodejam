@@ -46,7 +46,7 @@ const help = function*() {
 
 
             new: Create a new site
-                fora new <template> <project_name> [-d <destination>] [--force] [--recreate]
+                fora new <template> <project_name> [-d <destination>] [--recreate]
 
                 eg: fora new blog my-blog --recreate
                 eg: fora new blog my-blog -d ~/code/fora_apps/
@@ -57,11 +57,11 @@ const help = function*() {
                         If the template name is fora-template-blog, you may omit the 'fora-template' prefix and just use 'blog'
 
                 options:
-                    --source <source> (or -s <source>)
-                        defaults to current directory
-
                     --destination <destination> (or -d <destination>)
                         defaults to <source>/_site
+
+                    --recreate
+                        Deletes the directory if it exists
 
             version: Display the version number
                 fora version

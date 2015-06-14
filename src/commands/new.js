@@ -12,7 +12,7 @@ const printSyntax = (msg) => {
     if (msg) {
         print(`Error: ${msg}`);
     }
-    print(`Usage: fora new <template> <project_name> [-d <destination>] [--force] [--recreate]`);
+    print(`Usage: fora new <template> <project_name> [-d <destination>] [--recreate]`);
     process.exit();
 };
 
@@ -41,9 +41,9 @@ const copyTemplateFiles = function*() {
     const destination = path.join((argv.d || argv.destination || "./"), name);
     const destinationExists = yield* fsutils.exists(destination);
 
-    //Make sure the directory is empty or the force flag is on
-    if (destinationExists && !argv.force && !argv.recreate) {
-        print(`Conflict: ${path.resolve(destination)} is not empty. Delete the directory manually or use --force or --recreate.`);
+    //Make sure the directory is empty or the recreate flag is on
+    if (destinationExists && !argv.recreate) {
+        print(`Conflict: ${path.resolve(destination)} is not empty. Delete the directory manually or use --recreate.`);
     } else {
 
         if (destinationExists) {
