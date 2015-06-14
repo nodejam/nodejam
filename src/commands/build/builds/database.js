@@ -8,12 +8,12 @@ import optimist from "optimist";
 import mongoBackend from "ceramic-backend-mongodb";
 
 const argv  = optimist.argv;
-
 const data = {};
 
 const build = getStandardBuild(
     "database",
     function*(siteConfig, builtInPlugins) {
+
 
         if (process.env.NODE_ENV === "production") {
             throw new Error("This build cannot be run when NODE_ENV is set to production.");
@@ -30,7 +30,8 @@ const build = getStandardBuild(
 
         return tasks;
     },
-    function*() {
+    function*(siteConfig) {
+        const logger = getLogger(siteConfig.quiet, "database");
         const db = argv.db;
 
         if (db) {
@@ -38,10 +39,10 @@ const build = getStandardBuild(
             for (let coll in data) {
                 const mongoCollection = yield* mongoDb.collection(coll);
                 if (data[coll].length) {
-                    print(`inserting ${data[coll].length} records into ${coll}.`);
+                    logger(`inserting ${data[coll].length} records into ${coll}.`);
                     yield* mongoCollection.insertMany(data[coll]);
                 } else {
-                    print(`${coll} has zero records. skipping.`);
+                    logger(`${coll} has zero records. skipping.`);
                 }
             }
             yield* mongoDb.close();
