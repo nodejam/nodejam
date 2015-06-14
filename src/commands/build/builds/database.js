@@ -12,14 +12,14 @@ const argv  = optimist.argv;
 const data = {};
 
 const build = getStandardBuild(
-    "create-database",
+    "database",
     function*(siteConfig, builtInPlugins) {
 
         if (process.env.NODE_ENV === "production") {
             throw new Error("This build cannot be run when NODE_ENV is set to production.");
         }
 
-        const { getLoadDataTask } = getCommonTasks("create-database", siteConfig, builtInPlugins);
+        const { getLoadDataTask } = getCommonTasks("database", siteConfig, builtInPlugins);
 
         const tasks = [
             getLoadDataTask({

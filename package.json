@@ -1,6 +1,6 @@
 {
   "name": "fora",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Full-stack (DB-to-UI) Isomorphic JS framework",
   "preferGlobal": "true",
   "main": "lib/fora.js",
