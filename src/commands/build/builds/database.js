@@ -41,7 +41,7 @@ const build = getStandardBuild(
                     print(`inserting ${data[coll].length} records into ${coll}.`);
                     yield* mongoCollection.insertMany(data[coll]);
                 } else {
-                    print(`${coll}} has zero records. skipping.`);
+                    print(`${coll} has zero records. skipping.`);
                 }
             }
             yield* mongoDb.close();
