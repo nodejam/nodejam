@@ -13,6 +13,30 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
 
     const excludedBuildSpecificFilePatterns = browserBuildFileSuffixes.map(s => `${s}\.(js|json)$`);
 
+    /*
+        Read builds <buildname>.tasks.<name>.
+        If not found, check builds.common
+    */
+    const getBuildConfigReader = function(buildName) {
+        const buildReader = configutils.getReader(siteConfig, ["builds", buildName]);
+        const commonReader = configutils.getReader(siteConfig, ["builds", "common"]);
+        return function(readPath, defaultValue) {
+            return buildReader(readPath, commonReader(readPath, defaultValue));
+        };
+    };
+
+    /*
+        Read tasks <buildname>.tasks.<name>.
+        If not found, check builds.common.tasks.<name>
+    */
+    const getTaskConfigReader = function(buildName, name) {
+        const taskReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", name]);
+        const commonReader = configutils.getReader(siteConfig, ["builds", "common", "tasks", name]);
+        return function(readPath, defaultValue) {
+            return taskReader(readPath, commonReader(readPath, defaultValue));
+        };
+    };
+
     const getTranspileServerTask = function(options) {
         const dependencies = options.dependencies;
         const destination = siteConfig.destination;
@@ -20,7 +44,7 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         const excludedPatterns = siteConfig["excluded-patterns"]
             .map(p => { return { exclude: p.exclude, regex: new RegExp(p.regex) }; });
 
-        const taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
+        const taskConfigReader = getTaskConfigReader(buildName, options.name);
 
         const vendorDirs = taskConfigReader(["vendor-dirs"], ["vendor"]);
         const excludedDirectories = [siteConfig.destination]
@@ -45,18 +69,20 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
 
     const getLessTask = function(options) {
         const dependencies = options.dependencies;
+        const source = siteConfig.source;
         const destination = siteConfig.destination;
 
-        const taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
+        const taskConfigReader = getTaskConfigReader(buildName, options.name);
 
-        const directories = taskConfigReader(["dirs"], ["css"]);
+        const files = taskConfigReader(["files"], ["css/main.less"]);
 
         return {
             name: options.name, //compile less files
             plugin: builtInPlugins.less,
             options: {
+                source,
                 destination,
-                directories,
+                files,
                 dependencies
             }
         };
@@ -71,7 +97,7 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
             .concat(siteConfig["excluded-dirs"]);
         const excludedPatterns = siteConfig["excluded-patterns"];
 
-        const taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
+        const taskConfigReader = getTaskConfigReader(buildName, options.name);
 
         const excludedExtensions = taskConfigReader(["excluded-extensions"], ["less"]);
         const changeExtensions = taskConfigReader(["change-extensions"], [{ to: "js", from: ["jsx"] }]);
@@ -97,7 +123,7 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         const dependencies = options.dependencies;
         const destination = path.join(siteConfig.destination);
 
-        const taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
+        const taskConfigReader = getTaskConfigReader(buildName, options.name);
 
         const filename = taskConfigReader(["filename"], "config.json");
 
@@ -121,8 +147,8 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         const changeExtensions = siteConfig["change-extensions"];
         const jsExtensions = siteConfig["js-extensions"].concat("json");
 
-        const buildConfigReader = configutils.getReader(siteConfig, ["builds", buildName]);
-        const taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
+        const buildConfigReader = getBuildConfigReader(buildName);
+        const taskConfigReader = getTaskConfigReader(buildName, options.name);
 
         const vendorDirs = taskConfigReader(["vendor-dirs"], ["vendor"]);
         const clientBuildDirectory = options.clientBuildDirectory || buildConfigReader(["client-build-dir"], "js");
@@ -171,8 +197,8 @@ const getCommonTasks = function(buildName, siteConfig, builtInPlugins) {
         const dataDirectories = siteConfig["data-dirs"];
         const scavengeCollection = siteConfig["scavenge-collection"] || "posts";
 
-        const buildConfigReader = configutils.getReader(siteConfig, ["builds", buildName]);
-        const taskConfigReader = configutils.getReader(siteConfig, ["builds", buildName, "tasks", options.name]);
+        const buildConfigReader = getBuildConfigReader(buildName);
+        const taskConfigReader = getTaskConfigReader(buildName, options.name);
 
         const vendorDirs = taskConfigReader(["vendor-dirs"], ["vendor"]);
         const excludedDirectories = siteConfig["excluded-dirs"].concat([siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]).concat(vendorDirs);

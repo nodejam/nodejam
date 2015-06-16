@@ -54,11 +54,12 @@ const buildClient = function(name, options) {
         const clientPath = path.join(options.destination, options.clientBuildDirectory, filePath);
         //We might have some jsx files. Switch extension to js.
         const pathWithFixedExtension = fsutils.changeExtension(clientPath, options.changeExtensions);
-        yield* fsutils.copyFile(originalPath, pathWithFixedExtension, { createDir: true });
 
         if (verboseMode) {
-            logger(`Copied ${filePath} to ${pathWithFixedExtension}`);
+            logger(`Copying ${filePath} to ${pathWithFixedExtension}`);
         }
+
+        yield* fsutils.copyFile(originalPath, pathWithFixedExtension, { createDir: true });
     };
 
     return function() {
@@ -113,12 +114,13 @@ const buildClient = function(name, options) {
                 const original = filePath.replace(regex, `.${extension}`);
                 if (yield* fsutils.exists(original)) {
                     const renamed = original.replace(/\.js$/, `${options.browserReplacedFileSuffix}.${extension}`);
-                    const originalContents = yield* fsutils.readFile(original);
-                    yield* fsutils.writeFile(renamed, originalContents);
 
                     if (verboseMode) {
-                        logger(`Original ${original} is now ${renamed}`);
+                        logger(`Moving original ${original} to ${renamed}`);
                     }
+
+                    const originalContents = yield* fsutils.readFile(original);
+                    yield* fsutils.writeFile(renamed, originalContents);
                 }
 
                 const overriddenContents = yield* fsutils.readFile(filePath);

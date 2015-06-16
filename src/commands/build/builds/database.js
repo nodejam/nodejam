@@ -39,7 +39,7 @@ const build = getStandardBuild(
             for (let coll in data) {
                 const mongoCollection = yield* mongoDb.collection(coll);
                 if (data[coll].length) {
-                    logger(`inserting ${data[coll].length} records into ${coll}.`);
+                    logger(`Inserting ${data[coll].length} records into ${coll}.`);
                     yield* mongoCollection.insertMany(data[coll]);
                 } else {
                     logger(`${coll} has zero records. skipping.`);

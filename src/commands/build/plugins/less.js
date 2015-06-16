@@ -10,6 +10,7 @@ const argv = optimist.argv;
 
 /*
     options: {
+        files: [string],
         destination: string,
         directories: [string],
         quiet: bool
@@ -20,26 +21,43 @@ const compileLess = function(name, options) {
     const logger = getLogger(options.quiet, name || "less");
 
     //defaults
+    let directories = options.files
+        .map(f => path.dirname(f))
+        .filter((item, i, ar) => ar.indexOf(item) === i);
+
     options.excludedDirectories = options.excludedDirectories || [];
 
-    const extensions = options.directories.map(dir => `${dir}/*.less`);
+    const extensions = directories.map(dir => `${dir}/*.less`);
     const excluded = options.excludedDirectories.map(dir => `!${dir}/`);
 
     return function() {
+        let mustCompile = false;
+
         this.watch(
-            extensions.concat(excluded),
-            function*(filePath, ev, match) {
-                const outputPath = path.join(options.destination, filePath).replace(/\.less$/, ".css");
-                const outputDir = path.dirname(outputPath);
-                if (!(yield* fsutils.exists(outputDir))) {
-                    yield* fsutils.mkdirp(outputDir);
+           extensions.concat(excluded),
+           function*(filePath, ev, match) {
+               mustCompile = true;
+           }
+        );
+        this.onComplete(
+            function*() {
+                if (mustCompile) {
+                    mustCompile = false;
+                    for (let filePath of options.files) {
+                        const outputPath = path.join(options.destination, filePath).replace(/\.less$/, ".css");
+                        logger(`Compiling ${filePath} to ${outputPath}`);
+
+                        const outputDir = path.dirname(outputPath);
+                        if (!(yield* fsutils.exists(outputDir))) {
+                            yield* fsutils.mkdirp(outputDir);
+                        }
+                        const contents = yield* fsutils.readFile(filePath);
+                        if (contents) {
+                            const result = yield* lessc(contents, { paths: [path.dirname(path.join(options.source, filePath))] });
+                            yield* fsutils.writeFile(outputPath, result.css);
+                        }
+                    }
                 }
-                const contents = yield* fsutils.readFile(filePath);
-                if (contents) {
-                    const result = yield* lessc(contents);
-                    yield* fsutils.writeFile(outputPath, result.css);
-                }
-                logger(`compiled ${filePath} to ${outputPath}`);
             },
             name,
             options.dependencies || []

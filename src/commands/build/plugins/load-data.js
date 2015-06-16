@@ -35,12 +35,15 @@ const loadStaticData = function(name, options) {
             const extension = path.extname(filePath);
 
             try {
+                logger(`Loading ${filePath} into ${collection}`);
+
                 const record = yield* readFileByFormat(filePath, { markdown: options.markdownExtensions });
                 record.__filePath = filePath;
 
-                if (record)
+                if (record) {
                     data[collection].push(record);
-                    logger(`loaded ${filePath} into ${collection}`);
+                }
+
             } catch (ex) {
                 logger(ex);
             }
@@ -58,14 +61,13 @@ const loadStaticData = function(name, options) {
 
                 try {
                     const records = yield* readFileByFormat(filePath);
-
                     const filename = path.basename(filePath, extension);
+
+                    logger(`Loading ${filePath} into ${filename}`);
+
                     if (records && records.length) {
                         data[filename] = data[filename] ? data[filename].concat(records) : records ;
                     }
-
-                    logger(`loaded ${filePath} into ${filename}`);
-
                 } catch (ex) {
                     logger(ex);
                 }

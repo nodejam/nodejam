@@ -59,7 +59,7 @@ const copyStaticFiles = function(name, options) {
         );
 
         this.onComplete(function*() {
-            logger(`copied ${copiedFiles.length} files`);
+            logger(`Copied ${copiedFiles.length} files`);
         });
     };
 };

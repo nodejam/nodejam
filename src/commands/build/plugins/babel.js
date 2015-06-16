@@ -67,7 +67,7 @@ const babel = function(name, options) {
         );
 
         this.onComplete(function*() {
-            logger(`rewrote ${transpiledFiles.length} files`);
+            logger(`Rewrote ${transpiledFiles.length} files`);
         });
     };
 };
