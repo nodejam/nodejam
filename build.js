@@ -6,11 +6,11 @@ var babel = require("babel");
 var build = crankshaft.create();
 
 /*
-    Remove the lib directory if it exists.
+    Remove the dist directory if it exists.
 */
 build.onStart(function*() {
-    if (yield* fsutils.exists("lib"))
-        yield* fsutils.remove("lib");
+    if (yield* fsutils.exists("dist"))
+        yield* fsutils.remove("dist");
 });
 
 build.configure(function() {
@@ -20,7 +20,7 @@ build.configure(function() {
         Transpile js and jsx with babel.
     */
     this.watch(["src/*.js"].concat(excluded), function*(filePath, ev, match) {
-        var outputPath = filePath.replace(/^src\//, "lib/");
+        var outputPath = filePath.replace(/^src\//, "dist/");
         var outputDir = path.dirname(outputPath);
         if (!(yield* fsutils.exists(outputDir))) {
             yield* fsutils.mkdirp(outputDir);
@@ -31,7 +31,7 @@ build.configure(function() {
     }, "babel");
 
     this.watch(["src/*.*", "!src/*.js"].concat(excluded), function*(filePath, ev, match) {
-        var outputPath = filePath.replace(/^src\//, "lib/");
+        var outputPath = filePath.replace(/^src\//, "dist/");
         var outputDir = path.dirname(outputPath);
         if (!(yield* fsutils.exists(outputDir))) {
             yield* fsutils.mkdirp(outputDir);

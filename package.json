@@ -3,7 +3,7 @@
   "version": "0.4.0",
   "description": "Full-stack (DB-to-UI) Isomorphic JS framework",
   "preferGlobal": "true",
-  "main": "lib/fora.js",
+  "main": "dist/fora.js",
   "bin": {
     "fora": "lib/fora.js"
   },
