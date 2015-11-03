@@ -3,49 +3,49 @@
     This file is used by the build bootstrap.
 */
 
-var fs = require("fs");
-var generatorify = require("nodefunc-generatorify");
-var extfs = require('extfs');
-var _mkdirp = require("mkdirp");
-var wrench = require("wrench");
-var rimraf = require("rimraf");
-var path = require("path");
+import fs from "fs";
+import promisify from "nodefunc-promisify";
+import extfs from 'extfs';
+import _mkdirp from "mkdirp";
+import wrench from "wrench";
+import rimraf from "rimraf";
+import path from "path";
 
-var mkdirp = generatorify(_mkdirp);
+const mkdirp = promisify(_mkdirp);
 
-var exists = generatorify(function(what, cb) {
+const exists = promisify(function(what, cb) {
     fs.exists(what, function(exists) {
         cb(null, exists);
     });
 });
 
-var ensureDirExists = function*(outputPath) {
-    var outputDir = path.dirname(outputPath);
-    if (!(yield* exists(outputDir))) {
-        yield* mkdirp(outputDir);
+const ensureDirExists = async function(outputPath) {
+    const outputDir = path.dirname(outputPath);
+    if (!(await exists(outputDir))) {
+        await mkdirp(outputDir);
     }
 };
 
 
-var empty = generatorify(function(path, cb) {
+const empty = promisify(function(path, cb) {
     extfs.isEmpty(path, function(result) {
         cb(null, result);
     });
 });
 
-var readFile = function*() {
-    var fn = generatorify(fs.readFile);
-    return (yield* fn.apply(null, arguments)).toString();
+const readFile = async function() {
+    const fn = promisify(fs.readFile);
+    return (await fn.apply(null, arguments)).toString();
 };
 
-var _doCopy = generatorify(function(source, target, cb) {
-    var cbCalled = false;
+const _doCopy = promisify(function(source, target, cb) {
+    let cbCalled = false;
 
-    var rd = fs.createReadStream(source);
+    const rd = fs.createReadStream(source);
     rd.on("error", function(err) {
         done(err);
     });
-    var wr = fs.createWriteStream(target);
+    const wr = fs.createWriteStream(target);
     wr.on("error", function(err) {
         done(err);
     });
@@ -62,36 +62,36 @@ var _doCopy = generatorify(function(source, target, cb) {
     }
 });
 
-var copyFile = function*(source, target, options) {
+const copyFile = async function(source, target, options) {
     options = options || {};
     if (typeof options.overwrite === "undefined" || options.overwrite === null)
         options.overwrite = true;
     if (typeof options.createDir === "undefined" || options.createDir === null)
         options.createDir = true;
 
-    var outputDir = path.dirname(target);
+    const outputDir = path.dirname(target);
 
-    if (options.createDir && !(yield* exists(outputDir))) {
-        yield* mkdirp(outputDir);
+    if (options.createDir && !(await exists(outputDir))) {
+        await mkdirp(outputDir);
     }
 
-    if (!options.overwrite && (yield* exists(target))) {
+    if (!options.overwrite && (await exists(target))) {
         return;
     }
 
-    return yield* _doCopy(source, target);
+    return await _doCopy(source, target);
 };
 
 /*
     Changes the extension to toExtension
     If fromExtensions[array] is not empty, filePath is changed only if extension is in fromExtensions
 */
-var changeExtension = function(filePath, extensions) {
-    var dir = path.dirname(filePath);
-    var fileExtension = path.extname(filePath);
-    var filename = path.basename(filePath, fileExtension);
-    for (var i = 0; i < extensions.length; i++) {
-        var extension = extensions[i];
+const changeExtension = function(filePath, extensions) {
+    const dir = path.dirname(filePath);
+    const fileExtension = path.extname(filePath);
+    const filename = path.basename(filePath, fileExtension);
+    for (let i = 0; i < extensions.length; i++) {
+        const extension = extensions[i];
         if (extension.from && extension.from.length) {
             if (extension.from.indexOf(fileExtension.split(".")[1]) !== -1)
                 return path.join(dir, `${filename}.${extension.to}`);
@@ -104,14 +104,14 @@ var changeExtension = function(filePath, extensions) {
 
 module.exports = {
     readFile: readFile,
-    writeFile: generatorify(fs.writeFile),
+    writeFile: promisify(fs.writeFile),
     copyFile: copyFile,
     mkdirp: mkdirp,
     ensureDirExists: ensureDirExists,
-    copyRecursive: generatorify(wrench.copyDirRecursive),
+    copyRecursive: promisify(wrench.copyDirRecursive),
     exists: exists,
     empty: empty,
     changeExtension: changeExtension,
-    remove: generatorify(rimraf),
-    readdir: generatorify(fs.readdir)
+    remove: promisify(rimraf),
+    readdir: promisify(fs.readdir)
 };

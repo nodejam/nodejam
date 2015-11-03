@@ -24,7 +24,7 @@ const knownFormats = {
     text: ["txt"]
 };
 
-export default function*(fileName, _formats) {
+export default async function(fileName, _formats) {
     const formats = Object.assign({}, knownFormats);
 
     if (_formats) {
@@ -36,7 +36,7 @@ export default function*(fileName, _formats) {
     for (let key in formats) {
         const regexen = formats[key].map(f => new RegExp(`\.${f}$`));
         if (regexen.some(regex => regex.test(fileName))) {
-            return reader[key](yield* fsutils.readFile(fileName));
+            return reader[key](await fsutils.readFile(fileName));
         }
     }
 

@@ -1,4 +1,4 @@
-import {transform} from "babel";
+import {transform} from "babel-core";
 import optimist from "optimist";
 import path from "path";
 import fsutils from "../../../utils/fs";
@@ -42,7 +42,7 @@ const babel = function(name, options) {
 
         this.watch(
             extensions.concat(excluded),
-            function*(filePath, ev, match) {
+            async function(filePath, ev, match) {
                 if (!options.excludedWatchPatterns.some(regex => regex.test(filePath))) {
                     transpiledFiles.push(filePath);
 
@@ -51,11 +51,11 @@ const babel = function(name, options) {
                         path.join(options.destination, filePath),
                         [ { to:"js", from: options.extensions }]
                     );
-                    yield* fsutils.ensureDirExists(outputPath);
-                    const contents = yield* fsutils.readFile(filePath);
+                    await fsutils.ensureDirExists(outputPath);
+                    const contents = await fsutils.readFile(filePath);
 
                     const result = transform(contents, { blacklist: options.blacklist });
-                    yield* fsutils.writeFile(outputPath, result.code);
+                    await fsutils.writeFile(outputPath, result.code);
 
                     if (verboseMode) {
                         logger(`${filePath} -> ${outputPath}`);
@@ -66,7 +66,7 @@ const babel = function(name, options) {
             options.dependencies || []
         );
 
-        this.onComplete(function*() {
+        this.onComplete(async function() {
             logger(`Rewrote ${transpiledFiles.length} files`);
         });
     };

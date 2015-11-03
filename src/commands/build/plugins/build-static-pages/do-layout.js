@@ -6,14 +6,14 @@ import fsutils from "../../../../utils/fs";
 import pretty from "pretty";
 import { print, getLogger } from "../../../../utils/logging";
 
-var md = markdown.Markdown;
+const md = markdown.Markdown;
 
-export default function*(page, sourcePath, layout, makePath, siteConfig) {
-    var logger = getLogger(siteConfig.quiet, "jekyll html generator");
-    var jekyllConfig = siteConfig.jekyll;
+export default async function(page, sourcePath, layout, makePath, siteConfig) {
+    const logger = getLogger(siteConfig.quiet, "jekyll html generator");
+    const jekyllConfig = siteConfig.jekyll;
 
     try {
-        var layoutsourcePath, params, component;
+        let layoutsourcePath, params, component;
 
         //Source path and layout are the same only when generating plain JSX templates (without frontmatter)
         if (sourcePath !== layout) {
@@ -25,22 +25,22 @@ export default function*(page, sourcePath, layout, makePath, siteConfig) {
             params = { page: page, content: "", site: siteConfig };
         }
         component = React.createFactory(require(layoutsourcePath))(params);
-        var reactHtml = React.renderToString(component);
-        var html = `<!DOCTYPE html>` + siteConfig.beautify ? pretty(reactHtml) : reactHtml;
+        const reactHtml = React.renderToString(component);
+        const html = `<!DOCTYPE html>` + siteConfig.beautify ? pretty(reactHtml) : reactHtml;
 
-        var outputPath = path.resolve(
+        const outputPath = path.resolve(
             siteConfig.destination,
             makePath(sourcePath, page)
         );
 
-        var outputDir = path.dirname(outputPath);
-        if (!(yield* fsutils.exists(outputDir))) {
-            yield* fsutils.mkdirp(outputDir);
+        const outputDir = path.dirname(outputPath);
+        if (!(await fsutils.exists(outputDir))) {
+            await fsutils.mkdirp(outputDir);
         }
 
         logger(`${sourcePath} -> ${outputPath}`);
 
-        yield* fsutils.writeFile(outputPath, html);
+        await fsutils.writeFile(outputPath, html);
 
         return { page };
     } catch(err) {

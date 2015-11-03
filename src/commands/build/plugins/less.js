@@ -1,11 +1,11 @@
 import less from "less";
 import path from "path";
 import fsutils from "../../../utils/fs";
-import generatorify from "nodefunc-generatorify";
+import promisify from "nodefunc-promisify";
 import { print, getLogger } from "../../../utils/logging";
 import optimist from "optimist";
 
-const lessc = generatorify(less.render.bind(less));
+const lessc = promisify(less.render.bind(less));
 const argv = optimist.argv;
 
 /*
@@ -35,12 +35,12 @@ const compileLess = function(name, options) {
 
         this.watch(
            extensions.concat(excluded),
-           function*(filePath, ev, match) {
+           async function(filePath, ev, match) {
                mustCompile = true;
            }
         );
         this.onComplete(
-            function*() {
+            async function() {
                 if (mustCompile) {
                     mustCompile = false;
                     for (let filePath of options.files) {
@@ -48,13 +48,13 @@ const compileLess = function(name, options) {
                         logger(`Compiling ${filePath} to ${outputPath}`);
 
                         const outputDir = path.dirname(outputPath);
-                        if (!(yield* fsutils.exists(outputDir))) {
-                            yield* fsutils.mkdirp(outputDir);
+                        if (!(await fsutils.exists(outputDir))) {
+                            await fsutils.mkdirp(outputDir);
                         }
-                        const contents = yield* fsutils.readFile(filePath);
+                        const contents = await fsutils.readFile(filePath);
                         if (contents) {
-                            const result = yield* lessc(contents, { paths: [path.dirname(path.join(options.source, filePath))] });
-                            yield* fsutils.writeFile(outputPath, result.css);
+                            const result = await lessc(contents, { paths: [path.dirname(path.join(options.source, filePath))] });
+                            await fsutils.writeFile(outputPath, result.css);
                         }
                     }
                 }

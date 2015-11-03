@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import generatorify from "nodefunc-generatorify";
+import promisify from "nodefunc-promisify";
 import fsutils from "../../../utils/fs";
 import { tryRead } from "../../../utils/config";
 import { print, getLogger } from "../../../utils/logging";
@@ -45,10 +45,10 @@ const buildClient = function(name, options) {
     options.blacklist = options.blacklist || [];
     options.excludedWatchPatterns = options.excludedWatchPatterns || [];
 
-    var excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
+    const excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
 
     //Copy file into destDir
-    const copyFile = function*(filePath, root) {
+    const copyFile = async function(filePath, root) {
         //Get the relative filePath by removing the monitored directory (options.source)
         const originalPath = path.join(root, filePath);
         const clientPath = path.join(options.destination, options.clientBuildDirectory, filePath);
@@ -59,7 +59,7 @@ const buildClient = function(name, options) {
             logger(`Copying ${filePath} to ${pathWithFixedExtension}`);
         }
 
-        yield* fsutils.copyFile(originalPath, pathWithFixedExtension, { createDir: true });
+        await fsutils.copyFile(originalPath, pathWithFixedExtension, { createDir: true });
     };
 
     return function() {
@@ -73,7 +73,7 @@ const buildClient = function(name, options) {
 
         this.watch(
             jsExtensions.concat(excluded),
-            function*(filePath, ev, matches) {
+            async function(filePath, ev, matches) {
                 if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
                     const clientFileRegex = new RegExp(`${options.browserBuildFileSuffix}\.(js|json)$`);
 
@@ -84,7 +84,7 @@ const buildClient = function(name, options) {
                         clientSpecificFiles.push(filePath);
                     }
 
-                    yield* copyFile(filePath, this.root);
+                    await copyFile(filePath, this.root);
                 } else {
                     if (verboseMode) {
                         logger(`Skipped ${filePath}`);
@@ -104,7 +104,7 @@ const buildClient = function(name, options) {
 
                 The same rules apply for "dev", "test" and other builds.
         */
-        const replaceFiles = function*(files) {
+        const replaceFiles = async function(files) {
             for (let file of files) {
                 const filePath = path.join(options.destination, options.clientBuildDirectory, file);
 
@@ -112,26 +112,26 @@ const buildClient = function(name, options) {
                 const regex = new RegExp(`${options.browserBuildFileSuffix}\\.${extension}$`);
 
                 const original = filePath.replace(regex, `.${extension}`);
-                if (yield* fsutils.exists(original)) {
+                if (await fsutils.exists(original)) {
                     const renamed = original.replace(/\.js$/, `${options.browserReplacedFileSuffix}.${extension}`);
 
                     if (verboseMode) {
                         logger(`Moving original ${original} to ${renamed}`);
                     }
 
-                    const originalContents = yield* fsutils.readFile(original);
-                    yield* fsutils.writeFile(renamed, originalContents);
+                    const originalContents = await fsutils.readFile(original);
+                    await fsutils.writeFile(renamed, originalContents);
                 }
 
-                const overriddenContents = yield* fsutils.readFile(filePath);
-                yield* fsutils.writeFile(original, overriddenContents);
+                const overriddenContents = await fsutils.readFile(filePath);
+                await fsutils.writeFile(original, overriddenContents);
 
                 //Remove abc~client.js and abc~dev.js, as the case may be.
                 if (verboseMode) {
                     logger(`Moved ${filePath} to ${original}`);
                 }
 
-                yield* fsutils.remove(filePath);
+                await fsutils.remove(filePath);
 
                 if (verboseMode) {
                     logger(`Deleted ${filePath}`);
@@ -144,7 +144,7 @@ const buildClient = function(name, options) {
             Create the client and dev builds with browserify.
             Take the entry point from options, which defaults to app.js
         */
-        const browserifyFiles = function*() {
+        const browserifyFiles = async function() {
             const entry = path.join(options.destination, options.clientBuildDirectory, options.appEntryPoint);
             const output = path.join(options.destination, options.clientBuildDirectory, options.bundleName);
 
@@ -158,21 +158,21 @@ const buildClient = function(name, options) {
                 b = b.external(e);
             });
 
-            var r = b.transform(babelify.configure({ blacklist: options.blacklist }), { global: true })
+            const r = b.transform(babelify.configure({ blacklist: options.blacklist }), { global: true })
                 .transform(exposify, { expose: options.globalModules, global: true })
                 .bundle()
                 .pipe(fs.createWriteStream(output));
 
-            yield* generatorify(function(cb) {
+            await promisify(function(cb) {
                 r.on("finish", cb);
             })();
         };
 
 
-        this.onComplete(function*() {
+        this.onComplete(async function() {
             //Make the client build
-            yield* replaceFiles(clientSpecificFiles);
-            yield* browserifyFiles();
+            await replaceFiles(clientSpecificFiles);
+            await browserifyFiles();
             logger(`Wrote ${options.bundleName}`);
             clientSpecificFiles = [];
         });

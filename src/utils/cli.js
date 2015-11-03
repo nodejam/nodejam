@@ -1,5 +1,5 @@
 const getArgs = function() {
-    var args = [];
+    const args = [];
     for (let arg of process.argv) {
         if (/^-/.test(arg)) {
             break;

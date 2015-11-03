@@ -9,7 +9,7 @@ const data = {};
 
 const build = getStandardBuild(
     "dev",
-    function*(siteConfig, builtInPlugins) {
+    async function(siteConfig, builtInPlugins) {
         const { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask, getLoadDataTask } = getCommonTasks("dev", siteConfig, builtInPlugins);
 
         const buildConfigReader = configutils.getReader(siteConfig, ["builds", "dev"]);
@@ -48,13 +48,13 @@ const build = getStandardBuild(
             }),
             function() {
                 this.job(
-                    function*() {
+                    async function() {
                         const buildConfigReader = configutils.getReader(siteConfig, ["builds", "dev"]);
-                        var filename = buildConfigReader(["data-filename"], "data.json");
+                        const filename = buildConfigReader(["data-filename"], "data.json");
                         const devBuildDir = buildConfigReader(["dev-build-dir"], "js");
-                        var outputPath = path.join(siteConfig.destination, devBuildDir, filename);
-                        yield* fsutils.ensureDirExists(outputPath);
-                        yield* fsutils.writeFile(outputPath, JSON.stringify(data));
+                        const outputPath = path.join(siteConfig.destination, devBuildDir, filename);
+                        await fsutils.ensureDirExists(outputPath);
+                        await fsutils.writeFile(outputPath, JSON.stringify(data));
                     },
                     "write-static-data",
                     ["load-data"]

@@ -1,6 +1,6 @@
 {
   "name": "fora",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Full-stack (DB-to-UI) Isomorphic JS framework",
   "preferGlobal": "true",
   "main": "dist/fora.js",
@@ -18,22 +18,22 @@
     "name": "Jeswin Kumar",
     "email": "jeswinpk@agilehead.com"
   },
-  "license": "GNU GPL",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jeswin/fora/issues"
   },
   "dependencies": {
     "optimist": "*",
-    "co": "*",
     "crankshaft": "*",
     "crankshaft-tools": "*",
     "front-matter": "*",
     "js-yaml": "*",
     "react": "*",
     "babel": "*",
+    "babel-core": "*",
     "node-markdown": "*",
     "mkdirp": "*",
-    "nodefunc-generatorify": "*",
+    "nodefunc-promisify": "*",
     "extfs": "*",
     "wrench": "*",
     "browserify": "*",

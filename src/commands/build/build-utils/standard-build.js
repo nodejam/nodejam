@@ -15,25 +15,25 @@ import builtInPlugins from "../plugins";
 */
 
 const getStandardBuild = function(buildName, fn, cbOnComplete) {
-    return function*(siteConfig) {
+    return async function(siteConfig) {
 
-        const tasks = yield* fn(siteConfig, builtInPlugins);
+        const tasks = await fn(siteConfig, builtInPlugins);
 
         const startTime = Date.now();
 
         const logger = getLogger(siteConfig.quiet, buildName);
 
-        const customTasks = yield* getCustomTasks(siteConfig, builtInPlugins);
+        const customTasks = await getCustomTasks(siteConfig, builtInPlugins);
 
         if (customTasks)
-            yield* runTasks(customTasks["on-start"]);
+            await runTasks(customTasks["on-start"]);
 
-        const onComplete = function*() {
+        const onComplete = async function() {
             if (customTasks)
-                yield* runTasks(customTasks["on-complete"]);
+                await runTasks(customTasks["on-complete"]);
 
             if (cbOnComplete) {
-                yield* cbOnComplete(siteConfig);
+                await cbOnComplete(siteConfig);
             }
 
             const endTime = Date.now();
@@ -41,7 +41,7 @@ const getStandardBuild = function(buildName, fn, cbOnComplete) {
         };
 
         try {
-            yield* runTasks(tasks, siteConfig.source, onComplete, siteConfig.watch);
+            await runTasks(tasks, siteConfig.source, onComplete, siteConfig.watch);
         } catch (ex) {
             console.log(ex);
             console.log(ex.stack);

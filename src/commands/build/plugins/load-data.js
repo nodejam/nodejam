@@ -27,17 +27,17 @@ const loadStaticData = function(name, options) {
     const verboseMode = argv[`verbose-${name}`];
     const logger = getLogger(options.quiet, name || "load-static-data");
 
-    var data = options.data;
+    const data = options.data;
 
     //Add a watch for each collection.
     const getCollectionLoader = function(collection) {
-        return function*(filePath) {
+        return async function(filePath) {
             const extension = path.extname(filePath);
 
             try {
                 logger(`Loading ${filePath} into ${collection}`);
 
-                const record = yield* readFileByFormat(filePath, { markdown: options.markdownExtensions });
+                const record = await readFileByFormat(filePath, { markdown: options.markdownExtensions });
                 record.__filePath = filePath;
 
                 if (record) {
@@ -56,11 +56,11 @@ const loadStaticData = function(name, options) {
             ["yaml", "yml", "json"]
                 .map(ext => options.dataDirectories.map(dir => `${dir}/*.${ext}`))
                 .reduce((a,b) => a.concat(b)),
-            function*(filePath) {
+            async function(filePath) {
                 const extension = path.extname(filePath);
 
                 try {
-                    const records = yield* readFileByFormat(filePath);
+                    const records = await readFileByFormat(filePath);
                     const filename = path.basename(filePath, extension);
 
                     logger(`Loading ${filePath} into ${filename}`);
@@ -106,7 +106,7 @@ const loadStaticData = function(name, options) {
                 .concat(options.excludedFiles.map(e => `!${e}`))
                 .concat(collectionsAndDataDirs);
 
-            var filePatterns = options.markdownExtensions.concat(["json"]).map(ext => `*.${ext}`);
+            const filePatterns = options.markdownExtensions.concat(["json"]).map(ext => `*.${ext}`);
 
             this.watch(
                 filePatterns.concat(exclusions),

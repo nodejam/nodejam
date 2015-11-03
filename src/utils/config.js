@@ -35,7 +35,7 @@ const getReader = function(obj, defaultPath) {
 };
 
 
-var getProperty = function(config, fullyQualifiedProperty) {
+const getProperty = function(config, fullyQualifiedProperty) {
     //props are like "a.b.c"; we need to find config.a.b.c
     //propParent will be config.a.b, in this case.
     const propArray = fullyQualifiedProperty.split(".");
@@ -66,7 +66,7 @@ var getProperty = function(config, fullyQualifiedProperty) {
 */
 const getValueSetter = function(config) {
     return (fullyQualifiedProperty, defaultValue, options = {}) => {
-        var { propertyName, parentProperty } = getProperty(config, fullyQualifiedProperty);
+        const { propertyName, parentProperty } = getProperty(config, fullyQualifiedProperty);
 
         if (isEmpty(parentProperty[propertyName])) {
             parentProperty[propertyName] = defaultValue;
@@ -80,7 +80,7 @@ const getValueSetter = function(config) {
 
 
 const commandLineSetter = function(config) {
-    for (var cmd in argv) {
+    for (let cmd in argv) {
         let isArray = false;
         if (cmd !== "_" && !(/^\$/.test(cmd)) && ["s", "d", "source", "destination"].indexOf(cmd) === -1) {
             if (/\[\]$/.test(cmd)) {
@@ -88,9 +88,9 @@ const commandLineSetter = function(config) {
                 isArray = true;
             }
 
-            var { propertyName, parentProperty } = getProperty(config, cmd);
+            const { propertyName, parentProperty } = getProperty(config, cmd);
 
-            var commandLineValue = argv[cmd];
+            const commandLineValue = argv[cmd];
             if (!isEmpty(commandLineValue)) {
                 if (isEmpty(parentProperty[propertyName])) {
                     parentProperty[propertyName] = isArray ? [].concat(commandLineValue) : commandLineValue;

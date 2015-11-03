@@ -7,12 +7,12 @@ export default function(siteConfig) {
 
     GLOBAL.site.collections = [];
 
-    var getMakePath = function(collection) {
+    const getMakePath = function(collection) {
         return function(filePath, page) {
-            var permalink = page.permalink || collection.permalink || siteConfig.jekyll.permalink;
-            var dir = path.dirname(filePath);
-            var extension = path.extname(filePath);
-            var basename = path.basename(filePath, extension);
+            let permalink = page.permalink || collection.permalink || siteConfig.jekyll.permalink;
+            const dir = path.dirname(filePath);
+            const extension = path.extname(filePath);
+            const basename = path.basename(filePath, extension);
 
             if (/\/$/.test(permalink))
                 permalink += "index.html";
@@ -23,15 +23,15 @@ export default function(siteConfig) {
         };
     };
 
-    var makePostPath = function(filePath, page) {
-        var permalink = page.permalink || siteConfig.jekyll.permalink;
+    const makePostPath = function(filePath, page) {
+        let permalink = page.permalink || siteConfig.jekyll.permalink;
 
-        var dir = path.dirname(filePath);
-        var extension = path.extname(filePath);
-        var basename = path.basename(filePath, extension);
+        const dir = path.dirname(filePath);
+        const extension = path.extname(filePath);
+        const basename = path.basename(filePath, extension);
 
-        var [year, month, day, ...titleArr] = basename.split("-");
-        var placeholders = {
+        const [year, month, day, ...titleArr] = basename.split("-");
+        const placeholders = {
             year: year,
             month: month,
             day: day,
@@ -42,9 +42,9 @@ export default function(siteConfig) {
             categories: page.categories ? page.categories.split(/\s+/).join("/") : ""
         };
 
-        var parsePlaceholders = function(permalink) {
-            for (var key in placeholders) {
-                var regex = new RegExp(`\:\\b${key}\\b`);
+        const parsePlaceholders = function(permalink) {
+            for (const key in placeholders) {
+                const regex = new RegExp(`\:\\b${key}\\b`);
                 permalink = permalink.replace(regex, placeholders[key]);
             }
             return permalink.replace(/^\/*/, "");
@@ -61,30 +61,30 @@ export default function(siteConfig) {
         );
     };
 
-    var makePagePath = function(filePath, page) {
-        var permalink = page.permalink || siteConfig.permalink;
+    const makePagePath = function(filePath, page) {
+        const permalink = page.permalink || siteConfig.permalink;
 
-        var dir = path.dirname(filePath);
-        var extension = path.extname(filePath);
-        var basename = path.basename(filePath, extension);
+        const dir = path.dirname(filePath);
+        const extension = path.extname(filePath);
+        const basename = path.basename(filePath, extension);
 
         return permalink === "pretty" ?
             path.join(dir, basename, "index.html") :
             path.join(dir, `${basename}.html`);
     };
 
-    var fn = function*() {
+    const fn = async function() {
         for (let collectionName in siteConfig.collections) {
             const collection = siteConfig.collections[collectionName];
             if (collection.output) {
                 for (let item of GLOBAL.site.data[collectionName]) {
-                    var makePath = collectionName === "posts" ? makePostPath :
+                    const makePath = collectionName === "posts" ? makePostPath :
                         collectionName === "pages" ? makePagePath :
                         getMakePath(collection);
 
                     //If we don't have a filename, we don't need to process it individually.
                     if (item.__filePath) {
-                        yield* doLayout(item, item.__filePath, collection.layout || "default", makePath, siteConfig);
+                        await doLayout(item, item.__filePath, collection.layout || "default", makePath, siteConfig);
                     }
                 }
             }

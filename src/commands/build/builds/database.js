@@ -12,7 +12,7 @@ const data = {};
 
 const build = getStandardBuild(
     "database",
-    function*(siteConfig, builtInPlugins) {
+    async function(siteConfig, builtInPlugins) {
 
 
         if (process.env.NODE_ENV === "production") {
@@ -30,22 +30,22 @@ const build = getStandardBuild(
 
         return tasks;
     },
-    function*(siteConfig) {
+    async function(siteConfig) {
         const logger = getLogger(siteConfig.quiet, "database");
         const db = argv.db;
 
         if (db) {
-            const mongoDb = yield* mongoBackend.MongoClient.connect({database: db});
+            const mongoDb = await mongoBackend.MongoClient.connect({database: db});
             for (let coll in data) {
-                const mongoCollection = yield* mongoDb.collection(coll);
+                const mongoCollection = await mongoDb.collection(coll);
                 if (data[coll].length) {
                     logger(`Inserting ${data[coll].length} records into ${coll}.`);
-                    yield* mongoCollection.insertMany(data[coll]);
+                    await mongoCollection.insertMany(data[coll]);
                 } else {
                     logger(`${coll} has zero records. skipping.`);
                 }
             }
-            yield* mongoDb.close();
+            await mongoDb.close();
         } else {
             throw new Error("Specify the name of the db with the --db parameter.");
         }

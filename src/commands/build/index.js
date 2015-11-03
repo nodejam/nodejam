@@ -45,7 +45,7 @@ const printSyntax = (msg) => {
 
 
 const getArgs = function() {
-    var args = cli.getArgs();
+    const args = cli.getArgs();
 
     /* params */
     const buildType = args.length >= 3 ? args [3] : null;
@@ -95,8 +95,8 @@ const getArgs = function() {
 
 */
 
-const build = function*() {
-    let siteConfig = yield* getSiteConfig(
+const build = async function() {
+    let siteConfig = await getSiteConfig(
         (argv.s || argv.source || "./"),
         (argv.d || argv.destination || "_site")
     );
@@ -114,12 +114,12 @@ const build = function*() {
     const startTime = Date.now();
 
     //Transpile custom builds and custom tasks directory first.
-    yield* transpileCustomBuildsAndTasks(siteConfig);
+    await transpileCustomBuildsAndTasks(siteConfig);
 
-    const build = builds[siteConfig["build-type"]] || (yield* getCustomBuild(siteConfig));
+    const build = builds[siteConfig["build-type"]] || (await getCustomBuild(siteConfig));
 
     if (build) {
-        yield* build(siteConfig);
+        await build(siteConfig);
     } else {
         throw new Error(`Build named ${siteConfig["build-type"]} was not found.`);
     }
@@ -129,13 +129,13 @@ const build = function*() {
 };
 
 
-const getSiteConfig = function*(source, destination) {
+const getSiteConfig = async function(source, destination) {
     let siteConfig = {};
 
     const configFilePath = argv.config ? path.join(source, argv.config) :
-        (yield* fsutils.exists(path.join(source, "config.json"))) ? path.join(source, "config.json") : path.join(source, "config.yml");
+        (await fsutils.exists(path.join(source, "config.json"))) ? path.join(source, "config.json") : path.join(source, "config.yml");
 
-    siteConfig = yield* readFileByFormat(configFilePath);
+    siteConfig = await readFileByFormat(configFilePath);
     siteConfig.mode = siteConfig.mode || "default";
 
     const modeSpecificConfigDefaults = configurations[siteConfig.mode].loadDefaults(source, destination);
@@ -163,11 +163,11 @@ const getSiteConfig = function*(source, destination) {
 /*
     Transpile dir_custom_builds and dir_custom_tasks
 */
-const transpileCustomBuildsAndTasks = function*(siteConfig) {
-    for(var dir of [siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]) {
-        var buildRoot = path.resolve(siteConfig.source, dir);
-        if (yield* fsutils.exists(buildRoot)) {
-            yield* runTasks(
+const transpileCustomBuildsAndTasks = async function(siteConfig) {
+    for(const dir of [siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]) {
+        const buildRoot = path.resolve(siteConfig.source, dir);
+        if (await fsutils.exists(buildRoot)) {
+            await runTasks(
                  [{
                      name: "transpile-custom-builds-and-plugins",
                      plugin: builtInPlugins.babel,
@@ -189,10 +189,10 @@ const transpileCustomBuildsAndTasks = function*(siteConfig) {
     Get a build from the siteConfig.dir_custom_builds directory.
     Basically, require(dir_custom_builds/buildName);
 */
-const getCustomBuild = function*(siteConfig) {
+const getCustomBuild = async function(siteConfig) {
     if (siteConfig["custom-builds-dir"] && siteConfig["build-type"]) {
         const fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-type"]}.js`);
-        if (yield* fsutils.exists(fullPath)) {
+        if (await fsutils.exists(fullPath)) {
             return require(fullPath);
         }
     }

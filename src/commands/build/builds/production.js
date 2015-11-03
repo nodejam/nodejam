@@ -7,7 +7,7 @@ import getStandardBuild from "../build-utils/standard-build";
 
 const build = getStandardBuild(
     "production",
-    function*(siteConfig, builtInPlugins) {
+    async function(siteConfig, builtInPlugins) {
         const { getTranspileServerTask, getLessTask, getCopyStaticFilesTask, getWriteConfigTask, getBuildClientTask } = getCommonTasks("production", siteConfig, builtInPlugins);
 
         const buildConfigReader = configutils.getReader(siteConfig, ["builds", "production"]);

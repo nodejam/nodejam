@@ -18,7 +18,7 @@ const printSyntax = (msg) => {
 
 
 const getArgs = function() {
-    var args = cli.getArgs();
+    const args = cli.getArgs();
 
     if (args.length < 5) {
         printSyntax();
@@ -33,13 +33,13 @@ const getArgs = function() {
 /*
     Copy files from the template directory to the destination directory.
 */
-const copyTemplateFiles = function*() {
+const copyTemplateFiles = async function() {
     const logger = getLogger(argv.quiet || false);
 
     const { template, name } = getArgs();
 
     const destination = path.join((argv.d || argv.destination || "./"), name);
-    const destinationExists = yield* fsutils.exists(destination);
+    const destinationExists = await fsutils.exists(destination);
 
     //Make sure the directory is empty or the recreate flag is on
     if (destinationExists && !argv.recreate) {
@@ -49,33 +49,33 @@ const copyTemplateFiles = function*() {
         if (destinationExists) {
             if (argv.recreate) {
                 print(`Deleting ${destination}`);
-                yield* fsutils.remove(destination);
-                yield* fsutils.mkdirp(destination);
+                await fsutils.remove(destination);
+                await fsutils.mkdirp(destination);
             }
         } else {
-            yield* fsutils.mkdirp(destination);
+            await fsutils.mkdirp(destination);
         }
 
         //Copy template
-        var _shellExec = tools.process.spawn({ stdio: "inherit" });
-        const shellExec = function*(cmd) {
-            yield* _shellExec("sh", ["-c", cmd]);
+        const _shellExec = tools.process.spawn({ stdio: "inherit" });
+        const shellExec = async function(cmd) {
+            await _shellExec("sh", ["-c", cmd]);
         };
         const exec = tools.process.exec();
 
-        const templatePath = yield* resolveTemplatePath(template);
+        const templatePath = await resolveTemplatePath(template);
         logger(`Copying ${templatePath} -> ${destination}`);
-        yield* fsutils.copyRecursive(templatePath, destination, { forceDelete: true });
+        await fsutils.copyRecursive(templatePath, destination, { forceDelete: true });
 
         //Install npm dependencies.
-        const curdir = yield* exec(`pwd`);
+        const curdir = await exec(`pwd`);
         process.chdir(destination);
-        yield* shellExec(`npm install`);
+        await shellExec(`npm install`);
         process.chdir(curdir);
 
         //Let's overwrite package.json
         const packageJsonPath = path.join(destination, "package.json");
-        const packageJson = yield* fsutils.readFile(packageJsonPath);
+        const packageJson = await fsutils.readFile(packageJsonPath);
         const packageInfo = JSON.parse(packageJson);
         packageInfo.name = name;
         packageInfo.description = argv["set-package-description"] || "Description for your project";
@@ -88,7 +88,7 @@ const copyTemplateFiles = function*() {
         packageInfo.author = argv["set-package-author"] || "Your name";
         packageInfo.email = argv["set-package-email"] || "youremail@example.com";
         packageInfo.bugs = argv["set-package-bugs"] || "http://www.example.com/bugzilla/your-project";
-        yield* fsutils.writeFile(path.join(destination, "package.json"), JSON.stringify(packageInfo, null, 4));
+        await fsutils.writeFile(path.join(destination, "package.json"), JSON.stringify(packageInfo, null, 4));
 
         print(`New ${template} site installed in ${path.resolve(destination)}.`);
     }
@@ -100,7 +100,7 @@ const copyTemplateFiles = function*() {
         a) Current node_modules directory
         b) ~/.fora/templates/node_modules
 */
-const resolveTemplatePath = function*(name) {
+const resolveTemplatePath = async function(name) {
     const templateName = /^fora-template-/.test(name) ? name : `fora-template-${name}`;
 
     //Current node_modules_dir
@@ -128,7 +128,7 @@ const resolveTemplatePath = function*(name) {
     ];
 
     for (let templatePath of paths) {
-        if (yield* fsutils.exists(templatePath)) {
+        if (await fsutils.exists(templatePath)) {
             return templatePath;
         }
     }

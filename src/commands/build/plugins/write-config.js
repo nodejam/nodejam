@@ -22,11 +22,11 @@ const writeConfig = function(name, options) {
 
     return function() {
         this.onStart(
-            function*() {
+            async function() {
                 const outputPath = path.join(options.destination, options.filename);
                 logger(`Writing config to ${outputPath}`);
-                yield* fsutils.ensureDirExists(outputPath);
-                yield* fsutils.writeFile(outputPath, JSON.stringify(options.config, null, "\t"));
+                await fsutils.ensureDirExists(outputPath);
+                await fsutils.writeFile(outputPath, JSON.stringify(options.config, null, "\t"));
             },
             name
         );

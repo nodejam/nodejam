@@ -30,7 +30,7 @@ const copyStaticFiles = function(name, options) {
     options.excludedExtensions = options.excludedExtensions || [];
     options.excludedWatchPatterns = options.excludedWatchPatterns || [];
 
-    var excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
+    const excludedWatchPatterns = options.excludedWatchPatterns.map(r => new RegExp(r));
 
     return function() {
         const excluded = options.excludedDirectories.map(dir => `!${dir}/`)
@@ -42,12 +42,12 @@ const copyStaticFiles = function(name, options) {
 
         this.watch(
             options.extensions.concat(excluded),
-            function*(filePath, ev, matches) {
+            async function(filePath, ev, matches) {
                 if (!excludedWatchPatterns.some(regex => regex.test(filePath))) {
                     copiedFiles.push(filePath);
                     const newFilePath = fsutils.changeExtension(filePath, options.changeExtensions);
                     const outputPath = path.join(options.destination, newFilePath);
-                    yield* fsutils.copyFile(filePath, outputPath, { overwrite: false });
+                    await fsutils.copyFile(filePath, outputPath, { overwrite: false });
 
                     if (verboseMode) {
                         logger(`${filePath} -> ${outputPath}`);
@@ -58,7 +58,7 @@ const copyStaticFiles = function(name, options) {
             options.dependencies || []
         );
 
-        this.onComplete(function*() {
+        this.onComplete(async function() {
             logger(`Copied ${copiedFiles.length} files`);
         });
     };

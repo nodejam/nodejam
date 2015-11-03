@@ -1,8 +1,8 @@
 import { print, getLogger } from "../utils/logging";
 import foraUtils from "../utils/fora";
 
-const version = function*(siteConfig) {
-    var ver = yield* foraUtils.getVersion();
+const version = async function(siteConfig) {
+    const ver = await foraUtils.getVersion();
     print(`fora ${ver}`);
 };
 

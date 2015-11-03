@@ -29,19 +29,19 @@ const getArgs = function() {
 };
 
 
-const install = function*() {
+const install = async function() {
     const HOME_DIR = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
     const templatesDir = path.join(HOME_DIR, ".fora", "templates");
     const nodeModulesDir = path.join(templatesDir, "node_modules");
 
     //Make sure ~/.fora/templates/node_modules exists
-    if (!(yield* fsutils.exists(nodeModulesDir))) {
-        yield* fsutils.mkdirp(nodeModulesDir);
+    if (!(await fsutils.exists(nodeModulesDir))) {
+        await fsutils.mkdirp(nodeModulesDir);
     }
 
     const _shellExec = tools.process.spawn({ stdio: "inherit" });
-    const shellExec = function*(cmd) {
-        yield* _shellExec("sh", ["-c", cmd]);
+    const shellExec = async function(cmd) {
+        await _shellExec("sh", ["-c", cmd]);
     };
 
     if (argv.git) {
@@ -50,21 +50,21 @@ const install = function*() {
         const urlParts = templateUrl.split("/");
         const template = urlParts[urlParts.length - 1];
         const destDir = path.join(nodeModulesDir, template);
-        if (yield* fsutils.exists(destDir)) {
+        if (await fsutils.exists(destDir)) {
             print(`${destDir} exists. Will git pull.`);
             process.chdir(template);
-            yield* shellExec(`git pull`);
+            await shellExec(`git pull`);
         } else {
             print(`Cloning to ${destDir}.`);
-            yield* shellExec(`git clone ${templateUrl}`);
+            await shellExec(`git clone ${templateUrl}`);
             process.chdir(template);
-            yield* shellExec(`npm install`);
+            await shellExec(`npm install`);
         }
     } else {
         const { template } = getArgs();
         print(`Installing ${template} with npm. This make take a few minutes.`);
         process.chdir(templatesDir);
-        yield* shellExec(`npm install ${template}`);
+        await shellExec(`npm install ${template}`);
     }
 };
 

@@ -4,14 +4,14 @@ import fsutils from "../../../../utils/fs";
 
 export default function(siteConfig) {
 
-    var jekyllConfig = siteConfig.jekyll;
+    const jekyllConfig = siteConfig.jekyll;
 
-    var makePath = function(filePath, page) {
-        var permalink = siteConfig.permalink;
+    const makePath = function(filePath, page) {
+        const permalink = siteConfig.permalink;
 
-        var dir = path.dirname(filePath);
-        var extension = path.extname(filePath);
-        var basename = path.basename(filePath, extension);
+        const dir = path.dirname(filePath);
+        const extension = path.extname(filePath);
+        const basename = path.basename(filePath, extension);
 
         return path.join(dir, `${basename}.html`);
     };
@@ -19,10 +19,10 @@ export default function(siteConfig) {
     /*
         Templates are JSX files outside the _layouts directory
     */
-    var fn = function() {
-        var extensions = [`${path.resolve(siteConfig.destination)}/*.js`];
+    const fn = function() {
+        const extensions = [`${path.resolve(siteConfig.destination)}/*.js`];
 
-        var excluded = ["!app.bundle.js"]
+        const excluded = ["!app.bundle.js"]
             .concat(
                 siteConfig.dirs_exclude
                     .concat(siteConfig.dirs_client_vendor)
@@ -36,8 +36,8 @@ export default function(siteConfig) {
                     .concat(siteConfig.patterns_exclude)
             );
 
-        this.watch(extensions.concat(excluded), function*(filePath, ev, matches) {
-            var result = yield* doLayout(null, filePath, filePath, makePath, siteConfig);
+        this.watch(extensions.concat(excluded), async function(filePath, ev, matches) {
+            const result = await doLayout(null, filePath, filePath, makePath, siteConfig);
         }, `build_templates`);
     };
 
