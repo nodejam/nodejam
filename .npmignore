@@ -1,1 +1,4 @@
 src/*
+build.sh
+.jshintrc
+.gitignore
