@@ -12,9 +12,9 @@ runtask() {
     echo
 }
 
-echo ....................................
+echo ==========
 echo Git Status
-echo ....................................
+echo ==========
 
 runtask "ceramic-backend-mongodb" "node_modules"
 runtask "ceramic-backend-nedb" "node_modules"

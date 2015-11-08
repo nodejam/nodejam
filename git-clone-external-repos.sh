@@ -17,9 +17,9 @@ runtask() {
     fi
 }
 
-echo ....................................
+echo =========
 echo Git Clone
-echo ....................................
+echo =========
 
 runtask "ceramic-backend-mongodb" "node_modules"
 runtask "ceramic-backend-nedb" "node_modules"

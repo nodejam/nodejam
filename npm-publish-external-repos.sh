@@ -12,9 +12,9 @@ runtask() {
     echo
 }
 
-echo ....................................
-echo NPM publish
-echo ....................................
+echo ===========
+echo NPM Publish
+echo ===========
 
 runtask "ceramic-backend-mongodb" "node_modules"
 runtask "ceramic-backend-nedb" "node_modules"
