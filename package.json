@@ -1,18 +1,18 @@
 {
-  "name": "fora",
-  "version": "0.5.1",
+  "name": "nodejam",
+  "version": "0.0.1",
   "description": "Full-stack (DB-to-UI) Isomorphic JS framework",
   "preferGlobal": "true",
-  "main": "dist/fora.js",
+  "main": "dist/nodejam.js",
   "bin": {
-    "fora": "lib/fora.js"
+    "nodejam": "lib/nodejam.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jeswin/fora"
+    "url": "https://github.com/nodejam/nodejam"
   },
   "author": {
     "name": "Jeswin Kumar",
@@ -20,7 +20,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jeswin/fora/issues"
+    "url": "https://github.com/jeswin/nodejam/issues"
   },
   "dependencies": {
     "optimist": "*",
