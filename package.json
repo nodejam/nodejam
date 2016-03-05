@@ -20,7 +20,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jeswin/nodejam/issues"
+    "url": "https://github.com/nodejam/nodejam/issues"
   },
   "dependencies": {
     "optimist": "*",
