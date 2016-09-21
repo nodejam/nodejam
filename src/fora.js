@@ -9,15 +9,15 @@ const argv = optimist.argv;
 GLOBAL.__libdir = __dirname;
 
 const getCommand = function() {
-    return (
-        (argv.help || argv.h) ? "help" :
-        (argv.version || argv.v) ? "version" :
-        process.argv[2]
-    );
+  return (
+    (argv.help || argv.h) ? "help" :
+    (argv.version || argv.v) ? "version" :
+    process.argv[2]
+  );
 };
 
 const commandName = getCommand();
 if (commandName) {
-    const command = commands[`_${commandName}`];
-    command().catch((err) => { print(err); print("Use --help for more information."); });
+  const command = commands[`_${commandName}`];
+  command().catch((err) => { print(err); print("Use --help for more information."); });
 }

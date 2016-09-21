@@ -21,181 +21,181 @@ import builtInPlugins from "./plugins";
 import defaultConfig from "../../configurations/default";
 
 const configurations = {
-    "default": defaultConfig
+  "default": defaultConfig
 };
 
 const builds = {
-    "production": productionBuild,
-    "debug": debugBuild,
-    "dev": devBuild,
-    "static": staticBuild,
-    "database": databaseBuild
+  "production": productionBuild,
+  "debug": debugBuild,
+  "dev": devBuild,
+  "static": staticBuild,
+  "database": databaseBuild
 };
 
 const argv = optimist.argv;
 
 
 const printSyntax = (msg) => {
-    if (msg) {
-        print(`Error: ${msg}`);
-    }
-    print(`Usage: fora build [-t <type>] [-s <source>] [-d <destination>]`);
-    process.exit();
+  if (msg) {
+    print(`Error: ${msg}`);
+  }
+  print(`Usage: fora build [-t <type>] [-s <source>] [-d <destination>]`);
+  process.exit();
 };
 
 
 const getArgs = function() {
-    const args = cli.getArgs();
+  const args = cli.getArgs();
 
-    /* params */
-    const buildType = args.length >= 3 ? args [3] : null;
-    return { buildType };
+  /* params */
+  const buildType = args.length >= 3 ? args [3] : null;
+  return { buildType };
 };
 
 /*
-    We have these build modes
+We have these build modes
 
-    1. Production
-        build-type production
+1. Production
+build-type production
 
-        We generate server files and client_js files, and skip dev_js files.
-        Source-maps are off by default. By default, we compile client_js files
-        with full ES5 compatibility.
+We generate server files and client_js files, and skip dev_js files.
+Source-maps are off by default. By default, we compile client_js files
+with full ES5 compatibility.
 
-    2. Debug Build
-        build-type debug
+2. Debug Build
+build-type debug
 
-        We generate server files and client_js files, and skip dev_js files.
-        Source-maps are on by default. We also compile client_js files
-        without regenerator transforms.
+We generate server files and client_js files, and skip dev_js files.
+Source-maps are on by default. We also compile client_js files
+without regenerator transforms.
 
-    3. Dev Build
-        build-type dev
+3. Dev Build
+build-type dev
 
-        We do not transpile server js files, since the app will entirely run
-        on the client. Source maps are on, and regenerator transforms are off.
+We do not transpile server js files, since the app will entirely run
+on the client. Source maps are on, and regenerator transforms are off.
 
-    4. Static build
-        build-type static
+4. Static build
+build-type static
 
-        We transpile server js files. We build static html files for each route.
-        Client_js files will be transpiled (wil regenerator transforms) and
-        source-maps will be on by default.
+We transpile server js files. We build static html files for each route.
+Client_js files will be transpiled (wil regenerator transforms) and
+source-maps will be on by default.
 
-    5.  Database build
-        build-type database
+5.  Database build
+build-type database
 
-        Loads the build from siteConfig.custom_build_dir
+Loads the build from siteConfig.custom_build_dir
 
 
-    5.  Custom named build
-        build-type "buildname"
+5.  Custom named build
+build-type "buildname"
 
-        Loads the build from siteConfig.custom_build_dir
+Loads the build from siteConfig.custom_build_dir
 
 */
 
 const build = async function() {
-    let siteConfig = await getSiteConfig(
-        (argv.s || argv.source || "./"),
-        (argv.d || argv.destination || "_site")
-    );
-    const logger = getLogger(siteConfig.quiet);
+  let siteConfig = await getSiteConfig(
+    (argv.s || argv.source || "./"),
+    (argv.d || argv.destination || "_site")
+  );
+  const logger = getLogger(siteConfig.quiet);
 
-    const { buildType } = getArgs();
-    if (buildType) {
-        siteConfig["build-type"] = buildType;
-    }
+  const { buildType } = getArgs();
+  if (buildType) {
+    siteConfig["build-type"] = buildType;
+  }
 
-    logger(`Source: ${siteConfig.source}`);
-    logger(`Destination: ${siteConfig.destination}`);
+  logger(`Source: ${siteConfig.source}`);
+  logger(`Destination: ${siteConfig.destination}`);
 
-    /* Start */
-    const startTime = Date.now();
+  /* Start */
+  const startTime = Date.now();
 
-    //Transpile custom builds and custom tasks directory first.
-    await transpileCustomBuildsAndTasks(siteConfig);
+  //Transpile custom builds and custom tasks directory first.
+  await transpileCustomBuildsAndTasks(siteConfig);
 
-    const build = builds[siteConfig["build-type"]] || (await getCustomBuild(siteConfig));
+  const build = builds[siteConfig["build-type"]] || (await getCustomBuild(siteConfig));
 
-    if (build) {
-        await build(siteConfig);
-    } else {
-        throw new Error(`Build named ${siteConfig["build-type"]} was not found.`);
-    }
+  if (build) {
+    await build(siteConfig);
+  } else {
+    throw new Error(`Build named ${siteConfig["build-type"]} was not found.`);
+  }
 
-    const endTime = Date.now();
-    logger(`Total ${(endTime - startTime)/1000} seconds.`);
+  const endTime = Date.now();
+  logger(`Total ${(endTime - startTime)/1000} seconds.`);
 };
 
 
 const getSiteConfig = async function(source, destination) {
-    let siteConfig = {};
+  let siteConfig = {};
 
-    const configFilePath = argv.config ? path.join(source, argv.config) :
-        (await fsutils.exists(path.join(source, "config.json"))) ? path.join(source, "config.json") : path.join(source, "config.yml");
+  const configFilePath = argv.config ? path.join(source, argv.config) :
+  (await fsutils.exists(path.join(source, "config.json"))) ? path.join(source, "config.json") : path.join(source, "config.yml");
 
-    siteConfig = await readFileByFormat(configFilePath);
-    siteConfig.mode = siteConfig.mode || "default";
+  siteConfig = await readFileByFormat(configFilePath);
+  siteConfig.mode = siteConfig.mode || "default";
 
-    const modeSpecificConfigDefaults = configurations[siteConfig.mode].loadDefaults(source, destination);
-    const defaults = configutils.getFullyQualifiedProperties(modeSpecificConfigDefaults);
+  const modeSpecificConfigDefaults = configurations[siteConfig.mode].loadDefaults(source, destination);
+  const defaults = configutils.getFullyQualifiedProperties(modeSpecificConfigDefaults);
 
-    const setter = configutils.getValueSetter(siteConfig);
-    for (let args of defaults) {
-        setter.apply(null, args);
-    }
+  const setter = configutils.getValueSetter(siteConfig);
+  for (let args of defaults) {
+    setter.apply(null, args);
+  }
 
-    configutils.commandLineSetter(siteConfig);
+  configutils.commandLineSetter(siteConfig);
 
-    //Store absolute paths for source and destination
-    siteConfig.source = path.resolve(siteConfig.source);
-    siteConfig.destination = path.resolve(siteConfig.source, siteConfig.destination);
+  //Store absolute paths for source and destination
+  siteConfig.source = path.resolve(siteConfig.source);
+  siteConfig.destination = path.resolve(siteConfig.source, siteConfig.destination);
 
-    //Give modes one chance to update the siteConfig
-    if (configurations[siteConfig.mode].updateSiteConfig)
-    configurations[siteConfig.mode].updateSiteConfig(siteConfig);
+  //Give modes one chance to update the siteConfig
+  if (configurations[siteConfig.mode].updateSiteConfig)
+  configurations[siteConfig.mode].updateSiteConfig(siteConfig);
 
-    return siteConfig;
+  return siteConfig;
 };
 
 
 /*
-    Transpile dir_custom_builds and dir_custom_tasks
+Transpile dir_custom_builds and dir_custom_tasks
 */
 const transpileCustomBuildsAndTasks = async function(siteConfig) {
-    for(const dir of [siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]) {
-        const buildRoot = path.resolve(siteConfig.source, dir);
-        if (await fsutils.exists(buildRoot)) {
-            await runTasks(
-                 [{
-                     name: "transpile-custom-builds-and-plugins",
-                     plugin: builtInPlugins.babel,
-                     options: {
-                        source: buildRoot,
-                        destination: path.resolve(siteConfig.destination, dir),
-                        extensions: siteConfig["js-extensions"],
-                        blacklist: ["regenerator"]
-                    }
-                }],
-                buildRoot
-            );
-        }
+  for(const dir of [siteConfig["custom-builds-dir"], siteConfig["custom-tasks-dir"]]) {
+    const buildRoot = path.resolve(siteConfig.source, dir);
+    if (await fsutils.exists(buildRoot)) {
+      await runTasks(
+        [{
+          name: "transpile-custom-builds-and-plugins",
+          plugin: builtInPlugins.babel,
+          options: {
+            source: buildRoot,
+            destination: path.resolve(siteConfig.destination, dir),
+            extensions: siteConfig["js-extensions"],
+            blacklist: ["regenerator"]
+          }
+        }],
+        buildRoot
+      );
     }
+  }
 };
 
 
 /*
-    Get a build from the siteConfig.dir_custom_builds directory.
-    Basically, require(dir_custom_builds/buildName);
+Get a build from the siteConfig.dir_custom_builds directory.
+Basically, require(dir_custom_builds/buildName);
 */
 const getCustomBuild = async function(siteConfig) {
-    if (siteConfig["custom-builds-dir"] && siteConfig["build-type"]) {
-        const fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-type"]}.js`);
-        if (await fsutils.exists(fullPath)) {
-            return require(fullPath);
-        }
+  if (siteConfig["custom-builds-dir"] && siteConfig["build-type"]) {
+    const fullPath = path.resolve(siteConfig.destination, siteConfig["custom-builds-dir"], `${siteConfig["build-type"]}.js`);
+    if (await fsutils.exists(fullPath)) {
+      return require(fullPath);
     }
+  }
 };
 
 export default build;
